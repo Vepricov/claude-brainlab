@@ -77,12 +77,56 @@ for c in "${COMPONENTS[@]}"; do
   backup_if_exists "$dst"
   # Use rsync so we merge instead of clobber.
   if command -v rsync >/dev/null 2>&1; then
-    run "rsync -a --delete-excluded \"$src/\" \"$dst/\""
+    run "rsync -a \"$src/\" \"$dst/\""
   else
     run "rm -rf \"$dst\""
     run "cp -R \"$src\" \"$dst\""
   fi
 done
+
+# ── Substitute placeholders in installed text files ──
+# Skills/scripts contain ${OBSIDIAN_VAULT}, ${VAULT_NAME}, ${UNPAYWALL_EMAIL}
+# placeholders. Markdown is read literally by the agent, not by a shell, so we
+# must expand these to real values at install time. Use the values from .env.
+echo "  ↪ expanding placeholders in installed files"
+if (( ! DRY_RUN )); then
+  "${PYTHON_BIN:-python3}" - <<PYEOF
+import os, pathlib, re
+roots = ["${COMPONENTS[@]}".split() ] if False else "skills commands agents hooks scripts rules".split()
+home = pathlib.Path("$CLAUDE_HOME")
+exts = {".md", ".py", ".sh", ".js", ".json", ".yaml", ".yml", ".txt"}
+subs = {
+    "OBSIDIAN_VAULT": os.environ.get("OBSIDIAN_VAULT", ""),
+    "VAULT_NAME":     os.environ.get("VAULT_NAME", ""),
+    "UNPAYWALL_EMAIL":os.environ.get("UNPAYWALL_EMAIL", ""),
+    "USER_EMAIL":     os.environ.get("USER_EMAIL", ""),
+    "PAPERS_ROOT":    os.environ.get("PAPERS_ROOT", ""),
+    "PROJECTS_ROOT":  os.environ.get("PROJECTS_ROOT", ""),
+    "STAFF_ROOT":     os.environ.get("STAFF_ROOT", ""),
+    "PYTHON_BIN":     os.environ.get("PYTHON_BIN", "python3"),
+}
+pattern = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
+def rep(m):
+    v = subs.get(m.group(1))
+    return v if v else m.group(0)
+n_files = n_subs = 0
+for root in roots:
+    base = home / root
+    if not base.exists(): continue
+    for p in base.rglob("*"):
+        if not p.is_file() or p.suffix not in exts: continue
+        try:
+            text = p.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        new, k = pattern.subn(rep, text)
+        if k:
+            p.write_text(new, encoding="utf-8")
+            n_files += 1
+            n_subs  += k
+print(f"    {n_files} files, {n_subs} substitutions")
+PYEOF
+fi
 
 # ── CLAUDE.md ──
 if [[ -f "$CLAUDE_HOME/CLAUDE.md" ]]; then

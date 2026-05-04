@@ -90,21 +90,15 @@ done
 # must expand these to real values at install time. Use the values from .env.
 echo "  ↪ expanding placeholders in installed files"
 if (( ! DRY_RUN )); then
-  "${PYTHON_BIN:-python3}" - <<PYEOF
+  export CLAUDE_HOME
+  "${PYTHON_BIN:-python3}" - <<'PYEOF'
 import os, pathlib, re
-roots = ["${COMPONENTS[@]}".split() ] if False else "skills commands agents hooks scripts rules".split()
-home = pathlib.Path("$CLAUDE_HOME")
+home = pathlib.Path(os.environ["CLAUDE_HOME"])
+roots = ["skills", "commands", "agents", "hooks", "scripts", "rules"]
 exts = {".md", ".py", ".sh", ".js", ".json", ".yaml", ".yml", ".txt"}
-subs = {
-    "OBSIDIAN_VAULT": os.environ.get("OBSIDIAN_VAULT", ""),
-    "VAULT_NAME":     os.environ.get("VAULT_NAME", ""),
-    "UNPAYWALL_EMAIL":os.environ.get("UNPAYWALL_EMAIL", ""),
-    "USER_EMAIL":     os.environ.get("USER_EMAIL", ""),
-    "PAPERS_ROOT":    os.environ.get("PAPERS_ROOT", ""),
-    "PROJECTS_ROOT":  os.environ.get("PROJECTS_ROOT", ""),
-    "STAFF_ROOT":     os.environ.get("STAFF_ROOT", ""),
-    "PYTHON_BIN":     os.environ.get("PYTHON_BIN", "python3"),
-}
+keys = ["OBSIDIAN_VAULT", "VAULT_NAME", "UNPAYWALL_EMAIL", "USER_EMAIL",
+        "PAPERS_ROOT", "PROJECTS_ROOT", "STAFF_ROOT", "PYTHON_BIN"]
+subs = {k: os.environ.get(k, "") for k in keys}
 pattern = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
 def rep(m):
     v = subs.get(m.group(1))

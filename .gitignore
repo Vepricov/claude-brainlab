@@ -1,0 +1,48 @@
+# Personal config — never commit
+.env
+.env.local
+*.local.json
+secrets/
+settings.json
+settings.json.original
+obsidian-projects.json
+
+# Backups produced by setup.sh
+.claude-brainlab-backups/
+*.bak
+*.bak-*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+.uv/
+
+# Node
+node_modules/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Logs / runtime
+*.log
+.claude/logs/
+.claude/sessions/
+.claude/projects/
+.claude/history.jsonl
+.claude/file-history/
+.claude/paste-cache/
+.claude/telemetry/
+.claude/shell-snapshots/
+.claude/tasks/
+.claude/cache/
+.claude/debug/
+.claude/memory/

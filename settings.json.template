@@ -1,0 +1,115 @@
+{
+  "_comment": "settings.json.template — placeholders are filled in by install/setup.sh from .env. See docs/INSTALL.md.",
+  "env": {
+    "EDITOR": "${HOME}/.claude/scripts/editor.sh"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/security-guard.js'),{stdio:'inherit'})\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/session-start.js'),{stdio:'inherit'})\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/session-summary.js'),{stdio:'inherit'})\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/export-conversation.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/stop-summary.js'),{stdio:'inherit'})\"",
+            "timeout": 10
+          },
+          {
+            "_comment": "MemPalace auto-save. Disable by removing this hook entry. See docs/MEMPALACE.md.",
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/mempalace-obsidian-hook.py",
+            "timeout": 30
+          },
+          {
+            "_comment": "Obsidian daily-note sync. Disable by removing this hook entry.",
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/obsidian-daily-sync.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/skill-forced-eval.js'),{stdio:'inherit'})\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/statusline.py",
+    "padding": 1
+  },
+  "mcpServers": {
+    "mempalace": {
+      "_comment": "Local-first memory: https://github.com/MemPalace/mempalace. Install with: pip install mempalace",
+      "command": "${PYTHON_BIN}",
+      "args": [
+        "-m",
+        "mempalace.mcp_server"
+      ]
+    },
+    "zotero": {
+      "_comment": "Zotero local MCP: https://github.com/54yyyu/zotero-mcp. Find ZOTERO_API_KEY at https://www.zotero.org/settings/keys",
+      "command": "${HOME}/.local/bin/zotero-mcp",
+      "args": [
+        "serve"
+      ],
+      "env": {
+        "ZOTERO_LOCAL": "true",
+        "ZOTERO_API_KEY": "${ZOTERO_API_KEY}",
+        "ZOTERO_LIBRARY_ID": "${ZOTERO_LIBRARY_ID}",
+        "ZOTERO_LIBRARY_TYPE": "user",
+        "UNPAYWALL_EMAIL": "${UNPAYWALL_EMAIL}",
+        "UNSAFE_OPERATIONS": "all"
+      }
+    }
+  }
+}

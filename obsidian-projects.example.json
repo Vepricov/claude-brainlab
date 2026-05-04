@@ -1,0 +1,21 @@
+{
+  "_comment": "Example mapping. Copy to ~/.claude/obsidian-projects.json and edit.",
+  "_doc": "Each `roots[]` entry maps a filesystem location to a vault subfolder. When a project lives under `fs`, agents write notes to vault `obsidian/<slug>/`. The `items` map is auto-populated by the create-project skill.",
+  "roots": [
+    {
+      "fs": "~/Papers",
+      "obsidian": "Papers",
+      "items": {}
+    },
+    {
+      "fs": "~/Projects",
+      "obsidian": "Projects",
+      "items": {}
+    },
+    {
+      "fs": "~/Staff",
+      "obsidian": "Staff",
+      "items": {}
+    }
+  ]
+}

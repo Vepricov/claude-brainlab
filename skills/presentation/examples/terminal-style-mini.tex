@@ -1,0 +1,108 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+
+\definecolor{bg}{HTML}{0D1117}
+\definecolor{bgcard}{HTML}{161B22}
+\definecolor{accent}{HTML}{00FF88}
+\definecolor{accentblue}{HTML}{58A6FF}
+\definecolor{accentorange}{HTML}{FF7B54}
+\definecolor{textmain}{HTML}{E6EDF3}
+\definecolor{textsub}{HTML}{8B949E}
+\definecolor{border}{HTML}{30363D}
+
+\setbeamercolor{background canvas}{bg=bg}
+\setbeamercolor{normal text}{fg=textmain,bg=bg}
+\setbeamercolor{frametitle}{fg=accent,bg=bgcard}
+\setbeamercolor{progress bar}{fg=accent,bg=bgcard}
+\setbeamercolor{title}{fg=accent}
+\setbeamercolor{subtitle}{fg=accentblue}
+
+\setbeamerfont{title}{family=\ttfamily,series=\bfseries,size=\Large}
+\setbeamerfont{frametitle}{family=\ttfamily,series=\bfseries,size=\large}
+\setbeamertemplate{navigation symbols}{}
+
+\tcbset{
+  mathbox/.style={colback=bgcard,colframe=border,coltext=textmain,boxrule=0.5pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt},
+  thmbox/.style={colback=bgcard,colframe=accentorange,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=5pt,right=4pt,top=3pt,bottom=3pt},
+  ideabox/.style={colback=bgcard,colframe=accent,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=5pt,right=4pt,top=3pt,bottom=3pt}
+}
+
+\title{Название презентации}
+\subtitle{Короткий подзаголовок}
+\author{Имя Фамилия}
+\institute{Lab or University}
+\date{}
+
+\newcommand{\topicframe}[2]{%
+  \begin{frame}[plain]
+    \vfill
+    \begin{center}
+      {\color{accent}\texttt{\small // #1}}\\[0.25cm]
+      {\color{border}\rule{0.72\textwidth}{0.4pt}}\\[0.4cm]
+      {\color{accent}\Huge\ttfamily #2}\\[0.35cm]
+      {\color{border}\rule{0.42\textwidth}{0.3pt}}
+    \end{center}
+    \vfill
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \vfill
+  \begin{center}
+    {\color{accent}\texttt{\small // Теория оптимизации}}\\[0.25cm]
+    {\color{border}\rule{0.82\textwidth}{0.4pt}}\\[0.35cm]
+    {\color{accent}\usebeamerfont{title}\inserttitle}\\[0.25cm]
+    {\color{accentblue}\large\insertsubtitle}\\[0.45cm]
+    {\color{border}\rule{0.55\textwidth}{0.3pt}}\\[0.25cm]
+    {\color{textsub}\texttt{\small\insertauthor}}\\[0.1cm]
+    {\color{textsub}\texttt{\small\insertinstitute}}\\[0.35cm]
+    {\color{accent}\texttt{\small\$ run --topic curvature-aware-methods}}
+  \end{center}
+  \vfill
+\end{frame}
+
+\topicframe{01}{Основная тема}
+
+\begin{frame}{Ключевая идея}
+\begin{columns}[T]
+\column{0.56\textwidth}
+Короткий связный текст. Одна мысль на слайд.
+
+\begin{tcolorbox}[ideabox]
+Новые объекты должны быть мотивированы предыдущим слайдом.
+\end{tcolorbox}
+
+\column{0.4\textwidth}
+\begin{tcolorbox}[mathbox]
+$$x_{t+1}=x_t-\eta P_t^{-1}g_t$$
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Теорема}
+\begin{tcolorbox}[thmbox]
+Если $A\preceq B$, то шаг строится из $B$ и сохраняет нужный порядок оценки.
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[plain]
+  \vfill
+  \begin{center}
+    {\color{accent}\texttt{\small // Questions and Discussion}}\\[0.25cm]
+    {\color{border}\rule{0.72\textwidth}{0.4pt}}\\[0.35cm]
+    {\color{accent}\Huge\ttfamily Спасибо!}\\[0.25cm]
+    {\color{accentblue}\large Вопросы?}
+  \end{center}
+  \vfill
+\end{frame}
+
+\end{document}

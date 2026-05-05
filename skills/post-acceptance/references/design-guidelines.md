@@ -6,7 +6,7 @@ For research presentations, prefer LaTeX Beamer unless the user explicitly asks 
 
 ## Terminal Style
 
-When the user asks for `terminal style` or `терминальный стиль`, use `~/Staff/conf mipt/warmup_talk.tex` as the exact reference.
+When the user asks for `terminal style` or `терминальный стиль`, use `~/.claude/skills/presentation/examples/terminal-style-mini.tex` as the exact reference.
 
 Implement the style with these concrete settings:
 

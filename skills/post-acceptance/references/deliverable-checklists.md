@@ -7,7 +7,7 @@
 - if Beamer: compiles cleanly after edits
 - no overfull boxes or clipped figures
 - no frame feels crowded or text-heavy
-- if `terminal style` requested: match `~/Staff/conf mipt/warmup_talk.tex` on theme, aspect ratio, color palette, progress bar placement, monospace title typography, box styling, and muted monospace figure captions
+- if `terminal style` requested: match `~/.claude/skills/presentation/examples/terminal-style-mini.tex` on theme, aspect ratio, color palette, progress bar placement, monospace title typography, box styling, and muted monospace figure captions
 
 ## Poster
 - readable from 4-6 feet

@@ -54,9 +54,9 @@ Guidance for creating conference presentation slides:
 - If content does not fit cleanly, split the slide instead of shrinking text below readability
 
 **Terminal style**
-- If the user asks for `terminal style` or `терминальный стиль`, use the Beamer style defined by `~/Staff/conf mipt/warmup_talk.tex` as the authoritative reference.
+- If the user asks for `terminal style` or `терминальный стиль`, use the canonical compact reference at `~/.claude/skills/presentation/examples/terminal-style-mini.tex`. The `presentation` skill owns this style — both skills share one source of truth.
 - Interpret `terminal style` exactly as: `\usetheme{metropolis}`, `aspectratio=169`, dark background (`#0D1117`), dark title bar (`#161B22`), main text color (`#E6EDF3`), muted secondary text (`#8B949E`), primary accent (`#00FF88`), orange alert accent (`#FF7B54`), monospace bold title and frame title, progress bar in frame title, compact `tcolorbox` blocks for idea/theorem content, and small muted monospace figure captions.
-- Keep this style name stable. Future requests for `terminal style` should map to this visual language even if the user does not mention `warmup_talk.tex` again.
+- Keep this style name stable. Future requests for `terminal style` should map to this visual language even if the user does not mention the example file again.
 
 **Presentation Tips**
 - Practice timing with a stopwatch

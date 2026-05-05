@@ -26,6 +26,46 @@ These are the parts you won't find in upstream `claude-scholar`. Full details in
 - **`create-project`** / **`new-paper`** — set up `~/Papers/<slug>/` with `.claude/CLAUDE.md`, Overleaf `latexmkrc`, Obsidian hub card, people cards, and `obsidian-projects.json` registration.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs — see [`docs/MEMPALACE.md`](docs/MEMPALACE.md)).
+- **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for both `presentation` and `post-acceptance`.
+
+## The `presentation` skill
+
+A LaTeX Beamer skill for theory talks, mathematical decks, and conference presentations. It enforces:
+
+- **One mathematical chain** — every new formula must be motivated by the previous slide. No fact-bag decks.
+- **Stable notation** across the whole talk; if you reject a notation choice once, the skill keeps the preferred one in later edits.
+- **Russian prose by default** for slide bodies (English for code, method names, file paths). Configurable in `skills/presentation/references/user-presentation-preferences.md`.
+- **Overflow is an error** — `Overfull \hbox/\vbox` and `Frame text is shrunk` warnings are treated as layout failures. The skill cuts text, splits frames, or rebalances columns instead of shrinking aggressively.
+
+### Terminal style (the dark theme)
+
+When you say `terminal style` or `терминальный стиль`, the skill applies a custom Beamer theme defined in [`skills/presentation/examples/terminal-style-mini.tex`](skills/presentation/examples/terminal-style-mini.tex). The compiled PDF lives at [`docs/assets/terminal-style-mini.pdf`](docs/assets/terminal-style-mini.pdf).
+
+![Terminal-style preview](docs/assets/terminal-style-preview.png)
+
+Visual contract (also documented in [`skills/presentation/examples/terminal-style-notes.md`](skills/presentation/examples/terminal-style-notes.md)):
+
+| Element | Value |
+|---|---|
+| Theme base | `\usetheme{metropolis}` |
+| Aspect ratio | 16:9 (`aspectratio=169`) |
+| Background | `#0D1117` |
+| Card / title bar | `#161B22` |
+| Primary accent (titles, frame headers) | `#00FF88` |
+| Secondary accent (subtitles) | `#58A6FF` |
+| Theorem / proof accent | `#FF7B54` |
+| Body text | `#E6EDF3` |
+| Muted text | `#8B949E` |
+| Title font | monospace bold (`\ttfamily\bfseries`) |
+| Frame title font | monospace bold |
+| Theorem/idea blocks | `tcolorbox` with thin colored left rule |
+| Title slide | `// header` line + thin rules + large title + terminal-like `$ run --topic ...` footer |
+| Section dividers | `// 01`, `// 02`, ... + one large title, no other content |
+| Final slide | `Спасибо!` + optional `Вопросы?`, same visual language as title |
+
+The `post-acceptance` skill (conference prep workflow) routes `terminal style` requests to the same canonical example, so a request for "make me a NeurIPS talk in terminal style" produces a deck with this exact look.
+
+To customize the theme: edit `skills/presentation/examples/terminal-style-mini.tex` (or fork it into your project), rerun `bash install/setup.sh` if you want it propagated to `~/.claude/`.
 
 ## Install
 

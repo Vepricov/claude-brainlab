@@ -101,8 +101,11 @@ Produce slides that are:
 ### 8. Terminal Style
 
 - If the user asks for `terminal style` or `терминальный стиль`, use the local example deck `examples/terminal-style-mini.tex` as the authoritative compact reference.
-- Interpret it as: `\usetheme{metropolis}`, `aspectratio=169`, dark background (`#0D1117`), dark card/title background (`#161B22`), green accent (`#00FF88`), blue secondary accent (`#58A6FF`), orange theorem/proof accent (`#FF7B54`), monospace bold title and frame title, section-divider slides in the same visual language, compact `tcolorbox` blocks, and a clean plain-style final slide.
-- Follow the tone of that mini deck rather than copying exact slide text.
+- Interpret it as: `\usetheme{metropolis}`, `aspectratio=169`, dark background (`#0D1117`), dark card/title background (`#161B22`), green accent (`#00FF88`), blue secondary accent (`#58A6FF`), orange theorem/proof accent (`#FF7B54`), red problem accent (`#FF6B6B`), monospace bold title and frame title, section-divider slides in the same visual language, compact `tcolorbox` blocks, and a clean plain-style final slide.
+- Title slide is rich, not bare: top `// tag` line, thin rules, title, blue subtitle, a colored author line (presenting author orange-bold, co-authors muted), a colored affiliation line (home lab orange, rest muted), and one or two short terminal command lines (`$ run --...` green, `$ git clone ...` blue). Optional QR-code row when links exist. Mirror this layout.
+- Box color convention: `mathbox` (neutral, gray) for equations/tables; `ideabox` (green) for ideas/results/takeaways; `thmbox` (orange) for theorems/lemmas/assumptions; `bluebox` (blue) for secondary notes; `probbox` (red) for problems/pitfalls. Proofs: green `// proof` lead-in, long proofs split across slides.
+- Figures are mandatory for diversifying a text-heavy deck. Always wrap figures in a white `figcard` panel (define `\figcard{path}`) — raw figures on the dark canvas look broken. Pull/copy the paper's figures into the deck's `figures/`; if a needed figure does not exist, generate a clean one (matplotlib, white background, accent-matched line colors). For Russian decks use `[T2A]{fontenc}` + `lmodern`.
+- Follow the tone and structure of that mini deck rather than copying exact slide text.
 
 ## Preferred Output Shape For Theory Decks
 

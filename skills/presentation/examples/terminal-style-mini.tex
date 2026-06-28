@@ -1,18 +1,23 @@
 \documentclass[aspectratio=169,10pt]{beamer}
 
 \usetheme{metropolis}
-\usepackage[T2A]{fontenc}
+\usepackage[T2A]{fontenc}   % use [T1] if the deck is English-only
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
+\usepackage{lmodern}        % needed for Cyrillic with T2A
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage[most]{tcolorbox}
 \usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{colortbl}
 
 \definecolor{bg}{HTML}{0D1117}
 \definecolor{bgcard}{HTML}{161B22}
 \definecolor{accent}{HTML}{00FF88}
 \definecolor{accentblue}{HTML}{58A6FF}
 \definecolor{accentorange}{HTML}{FF7B54}
+\definecolor{accentred}{HTML}{FF6B6B}
 \definecolor{textmain}{HTML}{E6EDF3}
 \definecolor{textsub}{HTML}{8B949E}
 \definecolor{border}{HTML}{30363D}
@@ -23,23 +28,33 @@
 \setbeamercolor{progress bar}{fg=accent,bg=bgcard}
 \setbeamercolor{title}{fg=accent}
 \setbeamercolor{subtitle}{fg=accentblue}
+\setbeamercolor{itemize item}{fg=accent}
+\setbeamercolor{itemize subitem}{fg=accentblue}
+\setbeamercolor{enumerate item}{fg=accent}
 
 \setbeamerfont{title}{family=\ttfamily,series=\bfseries,size=\Large}
 \setbeamerfont{frametitle}{family=\ttfamily,series=\bfseries,size=\large}
 \setbeamertemplate{navigation symbols}{}
+\metroset{block=fill}
 
+% Box styles: math (neutral), idea (green), thm (orange), blue (secondary),
+% prob (red), figcard (figure on a clean WHITE panel — essential on dark bg).
 \tcbset{
-  mathbox/.style={colback=bgcard,colframe=border,coltext=textmain,boxrule=0.5pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt},
-  thmbox/.style={colback=bgcard,colframe=accentorange,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=5pt,right=4pt,top=3pt,bottom=3pt},
-  ideabox/.style={colback=bgcard,colframe=accent,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=5pt,right=4pt,top=3pt,bottom=3pt}
+  mathbox/.style={colback=bgcard,colframe=border,coltext=textmain,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt},
+  thmbox/.style={colback=bgcard,colframe=accentorange,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  ideabox/.style={colback=bgcard,colframe=accent,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  bluebox/.style={colback=bgcard,colframe=accentblue,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  probbox/.style={colback=bgcard,colframe=accentred,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  figcard/.style={colback=white,colframe=border,boxrule=0.5pt,arc=2pt,left=3pt,right=3pt,top=3pt,bottom=3pt}
 }
+% Always wrap figures in a white figcard — raw PDFs look broken on the dark canvas.
+\newcommand{\figcard}[2][\linewidth]{%
+  \begin{tcolorbox}[figcard]\centering\includegraphics[width=#1]{#2}\end{tcolorbox}}
 
 \title{Название презентации}
 \subtitle{Короткий подзаголовок}
-\author{Имя Фамилия}
-\institute{Lab or University}
-\date{}
 
+% Section divider — same visual language as the title slide.
 \newcommand{\topicframe}[2]{%
   \begin{frame}[plain]
     \vfill
@@ -50,37 +65,40 @@
       {\color{border}\rule{0.42\textwidth}{0.3pt}}
     \end{center}
     \vfill
-  \end{frame}
-}
+  \end{frame}}
 
 \begin{document}
 
+% ===== Title: rules, title, subtitle, COLORED author + affiliation lines,
+%       and one or two terminal command lines ($ run / $ git clone). =====
 \begin{frame}[plain]
   \vfill
   \begin{center}
-    {\color{accent}\texttt{\small // Теория оптимизации}}\\[0.25cm]
-    {\color{border}\rule{0.82\textwidth}{0.4pt}}\\[0.35cm]
-    {\color{accent}\usebeamerfont{title}\inserttitle}\\[0.25cm]
-    {\color{accentblue}\large\insertsubtitle}\\[0.45cm]
-    {\color{border}\rule{0.55\textwidth}{0.3pt}}\\[0.25cm]
-    {\color{textsub}\texttt{\small\insertauthor}}\\[0.1cm]
-    {\color{textsub}\texttt{\small\insertinstitute}}\\[0.35cm]
-    {\color{accent}\texttt{\small\$ run --topic curvature-aware-methods}}
+    {\color{accent}\texttt{\small // short topic tag}}\\[0.22cm]
+    {\color{border}\rule{0.82\textwidth}{0.4pt}}\\[0.30cm]
+    {\color{accent}\usebeamerfont{title}\inserttitle}\\[0.14cm]
+    {\color{accentblue}\large\insertsubtitle}\\[0.34cm]
+    {\color{border}\rule{0.55\textwidth}{0.3pt}}\\[0.22cm]
+    % first/presenting author orange+bold, co-authors muted:
+    {\texttt{\small{\color{accentorange}\textbf{A.\,First}}{\color{textsub}\quad B.\,Second\quad C.\,Third}}}\\[0.12cm]
+    % home labs orange, others muted:
+    {\texttt{\small{\color{accentorange}Main Lab}{\color{textsub}\ $\cdot$\ University\ $\cdot$\ Institute}}}\\[0.32cm]
+    {\color{accent}\texttt{\small \$ run --topic curvature-aware-methods}}\\[0.16cm]
+    {\color{accentblue}\texttt{\small \$ git clone github.com/org/project}}
   \end{center}
   \vfill
 \end{frame}
 
 \topicframe{01}{Основная тема}
 
+% ===== Content: balanced two columns, compact boxes, one idea per frame. =====
 \begin{frame}{Ключевая идея}
 \begin{columns}[T]
 \column{0.56\textwidth}
 Короткий связный текст. Одна мысль на слайд.
-
 \begin{tcolorbox}[ideabox]
-Новые объекты должны быть мотивированы предыдущим слайдом.
+{\color{accent}\bfseries Идея.} Новые объекты мотивированы предыдущим слайдом.
 \end{tcolorbox}
-
 \column{0.4\textwidth}
 \begin{tcolorbox}[mathbox]
 $$x_{t+1}=x_t-\eta P_t^{-1}g_t$$
@@ -88,12 +106,29 @@ $$x_{t+1}=x_t-\eta P_t^{-1}g_t$$
 \end{columns}
 \end{frame}
 
-\begin{frame}{Теорема}
-\begin{tcolorbox}[thmbox]
-Если $A\preceq B$, то шаг строится из $B$ и сохраняет нужный порядок оценки.
+% ===== Figure slide: text + figure on a white figcard. =====
+\begin{frame}{Результат в одной картинке}
+\begin{columns}[T]
+\column{0.6\textwidth}
+\figcard{figures/result.pdf}
+\column{0.4\textwidth}
+\begin{tcolorbox}[ideabox]
+{\color{accent}\bfseries Вывод.} Подпись к рисунку коротко и по делу.
 \end{tcolorbox}
+\end{columns}
 \end{frame}
 
+% ===== Theorem (orange) =====
+\begin{frame}{Теорема}
+\begin{tcolorbox}[thmbox]
+{\color{accentorange}\bfseries Теорема 1.} Если $A\preceq B$, то шаг строится из $B$ и сохраняет порядок оценки.
+\end{tcolorbox}
+% put proofs as plain text with a green "// proof" lead-in:
+{\color{accent}\ttfamily\small // proof}\\
+Краткая, но полная цепочка шагов. Длинные доказательства — на отдельных слайдах.
+\end{frame}
+
+% ===== Closing: same visual language as the title. =====
 \begin{frame}[plain]
   \vfill
   \begin{center}

@@ -7,7 +7,7 @@ tags: [Project, Obsidian, Students, Meetings]
 
 # Call Notes
 
-> **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `${OBSIDIAN_VAULT}/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
+> **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `~/Obsidian/shkodnik1917/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
 
 Log meeting/call notes into the project's Obsidian folder and update each participant's people/ card.
 
@@ -24,12 +24,12 @@ Read obsidian-projects.json to find the Obsidian path:
 import json
 from pathlib import Path
 cfg = json.loads(Path.home().joinpath(".claude/obsidian-projects.json").read_text())
-# find matching slug → root → obsidian_dir = ${OBSIDIAN_VAULT}/<root>/<slug>/
+# find matching slug → root → obsidian_dir = ~/Obsidian/shkodnik1917/<root>/<slug>/
 ```
 
 ### Step 2: Read the project hub card
 
-Read `${OBSIDIAN_VAULT}/<root>/<slug>/<slug>.md` and extract the `участники:` field.
+Read `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md` and extract the `участники:` field.
 This gives you the canonical list of people in this project and their `people/` card paths.
 
 Example — if hub card has:
@@ -107,7 +107,7 @@ Rules:
 
 ### Step 5b: Update hub card ## Задачи
 
-Open the hub card `${OBSIDIAN_VAULT}/<root>/<slug>/<slug>.md`.
+Open the hub card `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md`.
 
 If it has no `## Задачи` section — append one before the last section or at the end of the file.
 
@@ -128,7 +128,7 @@ Rules:
 ### Step 6: Update people/ cards
 
 For each person who appears in the notes (resolved in Step 4):
-1. Read their `${OBSIDIAN_VAULT}/people/<LastName>-<FirstName>.md`
+1. Read their `~/Obsidian/shkodnik1917/people/<LastName>-<FirstName>.md`
 2. Find or create a `## Активность` section
 3. Insert a dated entry at the top of `## Активность`, describing what they did or need to do in this project:
 ```markdown
@@ -162,7 +162,7 @@ If the file doesn't exist (new participant added in Step 4) — create it:
 
 Report:
 ```
-✓ Задачи.md: ${OBSIDIAN_VAULT}/<root>/<slug>/Задачи.md (N задач)
+✓ Задачи.md: ~/Obsidian/shkodnik1917/<root>/<slug>/Задачи.md (N задач)
 ✓ Обновлены карточки: [[people/X]], [[people/Y]]
 ```
 

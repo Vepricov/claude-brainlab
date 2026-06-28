@@ -31,7 +31,7 @@ from pathlib import Path
 
 ZOTERO_API_BASE = "http://localhost:23119/api/users/0"
 VAULT_LITERATURE = Path(
-    "${OBSIDIAN_VAULT}/Literature"
+    "/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
 )
 DB_PATH = Path("~/Zotero/zotero.sqlite").expanduser()
 

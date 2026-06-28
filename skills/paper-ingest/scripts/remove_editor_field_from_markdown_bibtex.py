@@ -47,7 +47,7 @@ def process_file(path: Path) -> bool:
 
 
 def main():
-    root = Path('${OBSIDIAN_VAULT}/Literature')
+    root = Path('/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature')
     changed = []
     for path in sorted(root.rglob('*.md')):
         try:

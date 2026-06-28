@@ -19,19 +19,19 @@ Run these commands first:
 
 ```bash
 # Existing org/ tags
-grep -rh "^  - org/" ${OBSIDIAN_VAULT}/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - org/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing conf/ tags
-grep -rh "^  - conf/" ${OBSIDIAN_VAULT}/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - conf/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing тип/ tags
-grep -rh "^  - тип/" ${OBSIDIAN_VAULT}/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - тип/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing статус/ tags
-grep -rh "^  - статус/" ${OBSIDIAN_VAULT}/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - статус/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing topic tags (no prefix)
-grep -rh "^  - " ${OBSIDIAN_VAULT}/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | grep -vE "^(org|conf|тип|статус)/" | sort -u
+grep -rh "^  - " ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | grep -vE "^(org|conf|тип|статус)/" | sort -u
 ```
 
 Then ask via AskUserQuestion, showing discovered values as options:
@@ -79,7 +79,7 @@ Lowercase, replace spaces/`_` with `-`. Example: `LoRA Bench` → `lora-bench`.
 ### Step 4: Create / update people cards
 
 For each student:
-1. Check `${OBSIDIAN_VAULT}/people/<LastName>-<FirstName>.md`
+1. Check `~/Obsidian/shkodnik1917/people/<LastName>-<FirstName>.md`
 2. Not exists → create:
 ```markdown
 ---
@@ -100,10 +100,10 @@ For each student:
 ### Step 5: Create hub card
 
 ```bash
-mkdir -p ${OBSIDIAN_VAULT}/Papers/<slug>
+mkdir -p ~/Obsidian/shkodnik1917/Papers/<slug>
 ```
 
-Create `${OBSIDIAN_VAULT}/Papers/<slug>/<slug>.md`:
+Create `~/Obsidian/shkodnik1917/Papers/<slug>/<slug>.md`:
 
 ```markdown
 ---
@@ -158,7 +158,7 @@ cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
 ### Step 7: Confirm
 
 ```
-✓ Hub card: ${OBSIDIAN_VAULT}/Papers/<slug>/<slug>.md
+✓ Hub card: ~/Obsidian/shkodnik1917/Papers/<slug>/<slug>.md
 ✓ People cards: <created/updated list>
 ✓ Registered: "<fs_name>" → "<slug>"
 ```

@@ -12,7 +12,7 @@ Use when the user writes `/want-2-read` or asks to "обработай мой с
 
 ## Input File
 
-`${OBSIDIAN_VAULT}/Literature/want_2_read.md`
+`/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature/want_2_read.md`
 
 Если файла еще нет, его нужно создать.
 
@@ -80,6 +80,36 @@ Example:
   **Краткая идея**: Уже прочитано.
 ```
 
+## Step 0: Pre-flight — Free the Zotero SQLite Lock
+
+**HARD RULE.** Before launching any per-paper agent, quit Zotero desktop. While Zotero is running it holds an exclusive write-lock on `~/Zotero/zotero.sqlite`, which causes `sqlite3.OperationalError: database is locked` in every parallel `paper-ingest` agent and produces tens of retry rounds per agent (observed: 11-20 min wall-clock per agent instead of 2-3 min). All `paper-ingest` scripts (`zot_find_item.py`, `zotero_check_dup.py`, `zotero_attach_pdf.py`, inline SQLite writes for collection membership) require unlocked DB access.
+
+Recipe at the start of `/want-2-read`:
+
+```bash
+# 1. Graceful Zotero shutdown (NOT kill — let Zotero flush its own state)
+osascript -e 'tell application "Zotero" to quit'
+
+# 2. Verify it's down
+sleep 3
+pgrep -lf "Zotero" | head -5  # should be empty (or only mdworker etc., not zotero process)
+fuser ~/Zotero/zotero.sqlite   # should print empty
+```
+
+If `pgrep` still shows the `Zotero.app` process after 3 s, wait another 3 s and re-check. Do not `kill -9` — corrupted DB write tail is much worse than a slow batch.
+
+Tell the user one line, e.g. "Закрыл Zotero на время батча, перезапущу в конце." The user is free to ignore this and let the batch run with Zotero open, but the default is quit-then-batch because it is dramatically faster.
+
+After **Step 8 (Report to User)** add one final action:
+
+```bash
+open -a Zotero
+```
+
+Zotero will autosync on relaunch and the newly added items/attachments/collections will appear. If the batch failed in the middle, still relaunch Zotero so the user is not left with a closed Zotero session.
+
+If the user explicitly says "не закрывай Zotero" or the batch is exactly one paper, skip Step 0 entirely and accept the slower run.
+
 ## Step 1: Parse the File
 
 Read `want_2_read.md`. Preserve all headings such as `## Daily_papers_DD-MM-YYYY` and any thematic subheadings under them.
@@ -118,7 +148,7 @@ Do not use a hardcoded ontology.
 
 Before suggesting any permanent destination, inspect the current library:
 ```bash
-VAULT="${OBSIDIAN_VAULT}/Literature"
+VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
 find "$VAULT" -mindepth 2 -maxdepth 2 -type d | sort
 find "$VAULT" -name "*.md" | xargs grep -h "^tags:" -A 20 | grep "  - " | sed 's/^  - //' | sort | uniq -c | sort -rn
 ```
@@ -240,7 +270,9 @@ For each successfully ingested paper:
 - move the Zotero item into the matching permanent collection
 - if a new folder was needed, create the corresponding permanent destination and use it immediately
 
-Update `want_2_read.md` in-place so each processed unresolved checkbox entry becomes a final unchecked checkbox with a permanent WikiLink.
+Update `want_2_read.md` in-place so each processed unresolved checkbox entry becomes a final **unchecked** checkbox `- [ ]` with a permanent WikiLink.
+
+**HARD RULE — DO NOT CHECK OFF ANYTHING.** Resolved entries MUST stay as `- [ ]`. Never write `- [x]`, never append `✅ DATE` markers, never use any other "completed" syntax for entries you just ingested. The `[x]` state is the user's own signal for "I have read this paper". The `want-2-read` workflow only resolves entries (raw → canonical block with wiki-link); marking them as read is exclusively the user's action. This applies to per-paper ingest agents, the merge step, and the final QA review agent.
 
 The description in `want_2_read.md` must not be a short shortlist blurb. It must be copied or condensed from the full `paper-ingest` note and remain detailed enough that the user can understand the paper without opening the PDF.
 
@@ -283,6 +315,18 @@ After processing all entries, report only the finished results:
 
 If some entries could not be resolved at all, list them separately as unresolved titles or URLs.
 
+## Step 9: Post-flight — Relaunch Zotero
+
+After the user-facing report, run:
+
+```bash
+open -a Zotero
+```
+
+This is mandatory unless Step 0 was skipped. Zotero will autosync the new items, attachments, and collection memberships on startup. Do not block on the relaunch — the batch is already done by this point.
+
+If the batch failed mid-way (some agents errored, partial Zotero writes), still run `open -a Zotero` so the user is not left with a closed Zotero session.
+
 ## Key Rules
 
 - Never create duplicates — always check existing library first
@@ -291,7 +335,7 @@ If some entries could not be resolved at all, list them separately as unresolved
 - completed checkboxes `- [x]` must be preserved and skipped
 - Daily blocks created by `paper-search` under `## Daily_papers_DD-MM-YYYY` must be preserved
 - thematic substructure inside daily blocks must be preserved
-- final resolved entries should remain unchecked checkboxes with permanent WikiLinks so the user can later mark them as read
+- final resolved entries MUST remain unchecked `- [ ]` with permanent WikiLinks; the `[x]`/`✅ DATE` markers are exclusively the user's signal for "read" and the skill must never set them, neither during ingest nor during QA review
 - canonical article fields are checkbox + article header, then `**Тема**`, `**Предлагаемая папка**`, `**arXiv**`, `**Zotero**`, `**Дата**`, `**Краткая идея**`
 - `**Тема**` is a human-facing label and must not use underscore slugs like `lora_base`
 - Haiku agent writes cards; sonnet verifies 7 sections + Related Papers
@@ -306,3 +350,4 @@ If some entries could not be resolved at all, list them separately as unresolved
 - Do not assume a fixed Literature taxonomy; inspect the current tree every run
 - Do not propose papers already present in the library, inbox, or trash
 - Accepted papers from `paper-search` are not considered done until the Zotero parent paper item exists, its PDF attachment exists, the Obsidian note exists, and the `want_2_read.md` entry contains both the wiki-link and the parent-item `zotero://` link
+- ALWAYS quit Zotero desktop at Step 0 and relaunch at Step 9. While Zotero is running it holds an exclusive write-lock on `zotero.sqlite` that turns every parallel `paper-ingest` agent into a retry loop. Wall-clock impact measured on a 5-paper batch: ~16 min/agent with Zotero open vs ~2-3 min/agent with Zotero closed. Use `osascript -e 'tell application "Zotero" to quit'` (never `kill -9`), verify with `pgrep -lf Zotero`, then `open -a Zotero` at the end.

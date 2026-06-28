@@ -27,7 +27,7 @@ version: 1.2.0
 Работать от текущей структуры:
 
 ```bash
-VAULT="${OBSIDIAN_VAULT}/Literature"
+VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
 ```
 
 Извлечь сигналы из:

@@ -8,7 +8,7 @@ Built on top of [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/clau
 
 | | What it does | Where |
 |---|---|---|
-| **71 skills** | research, literature, Obsidian, code, writing — full list in [`SKILLS.md`](SKILLS.md) | `skills/` |
+| **72 skills** | research, literature, Obsidian, code, writing — full list in [`SKILLS.md`](SKILLS.md) | `skills/` |
 | **37 slash commands** | `/paper-ingest`, `/want-2-read`, `/obsidian-init`, `/analyze-results`, `/rebuttal`, … | `commands/` |
 | **16 agents** | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | `agents/` |
 | **6 hooks** | security guard, session start/stop, MemPalace auto-save, Obsidian daily sync, skill activation | `hooks/` |
@@ -19,7 +19,7 @@ Built on top of [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/clau
 ## Highlights — what's unique to this fork
 
 These are the parts you won't find in upstream `claude-scholar`. Per-skill detail for all
-71 skills is in [`SKILLS.md`](SKILLS.md).
+72 skills is in [`SKILLS.md`](SKILLS.md).
 
 - **`paper-ingest`** — end-to-end pipeline: arXiv URL → BibTeX (external API, never LLM-generated) → PDF → Zotero parent item with PDF child attachment → Obsidian note with 8-section AI Explanation written by Haiku → mandatory final audit.
 - **`want-2-read`** — process a Markdown reading queue with one fan-out agent per paper, each invoking `paper-ingest`, plus a final review agent for quality control.
@@ -28,6 +28,7 @@ These are the parts you won't find in upstream `claude-scholar`. Per-skill detai
 - **`paper-to-social`** — turn a paper into copy-paste-ready Telegram / X / Habr posts with arXiv figures, in your own voice.
 - **`code-ingest`** / **`code-library`** — map an external repo into Obsidian Code-library notes (`path:line`, no code copied) and document the whole code workflow.
 - **`create-project`** / **`new-paper`** — set up `~/Papers/<slug>/` with `.claude/CLAUDE.md`, Overleaf `latexmkrc`, Obsidian hub card, people cards, and `obsidian-projects.json` registration.
+- **`operon-obsidian-setup`** / **`call-notes`** — task tracking runs on the Operon plugin: `operon-obsidian-setup` reproduces the lab's task-manager setup (flat `project` tags, "my tasks" dashboard, service-link badges, emoji icons, day-boundary auto-archiving), and `call-notes` turns a call into Operon file-tasks assigned per person. This replaces the old ad-hoc `Задачи.md` convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
 - **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for both `presentation` and `post-acceptance`.

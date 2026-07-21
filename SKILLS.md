@@ -105,9 +105,10 @@ The core research loop: get a paper into your library with a real, audited note.
 - **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
   (SSH servers, code paths), Obsidian hub card, people cards, `obsidian-projects.json`
   registration. *Fires on:* "create project / new project".
-- **`call-notes`** ⭐ — Log meeting/call notes into the project's `Задачи.md`: per-student
-  task assignments, follow-ups, deadlines. *Fires on:* "запиши звонок / задачи после
-  звонка".
+- **`call-notes`** ⭐ — Turn meeting/call notes into Operon file-tasks (one `.md` per action,
+  assigned to the responsible person) and interleave them on the project hub card; also updates
+  each participant's `people/` card. Assumes `operon-obsidian-setup`. *Fires on:* "запиши звонок
+  / задачи после звонка".
 - **`code-ingest`** ⭐ — One-time deep analysis of an external repo (GitHub URL or path)
   into a structured set of Obsidian Code-library notes mapping how it works (entrypoint,
   modules, where to change X) — citing `path:line`, never copying code. *Fires on:*
@@ -135,6 +136,12 @@ The core research loop: get a paper into your library with a real, audited note.
   tasks, properties; also plugin/theme dev and debugging.
 - **`json-canvas`** ◇ — Create/edit JSON Canvas (`.canvas`): nodes, edges, groups —
   mind maps, flowcharts.
+- **`operon-obsidian-setup`** ⭐ — Reproduce the lab's Operon task-manager setup in a vault:
+  flat `project` tags (no `parentTask` hierarchy), a "my tasks" table dashboard, service-link
+  badges on project pages, emoji task icons, and day-boundary auto-archiving. Applies plugin
+  settings (`data.json`), templates, a CSS snippet, optional `main.js` display patches, and an
+  optional macOS launchd archiver — bundled scripts + assets do the work. *Fires on:* "set up
+  Operon / настрой Operon как у тебя / воспроизведи таск-систему Obsidian".
 
 ## F. Coding — development
 

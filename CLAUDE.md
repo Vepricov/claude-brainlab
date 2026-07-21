@@ -35,6 +35,7 @@
 - Maintain durable notes only when the task materially changes research state. Use `~/.claude/obsidian-projects.json` when you need project-to-vault routing.
 - In human-facing Obsidian notes, use `DD-MM-YYYY` for dates by default.
 - Check `${OBSIDIAN_VAULT}/general/servers.md` before choosing remote GPU indices, and update it when server configuration changes.
+- **Task tracking is Operon, not ad-hoc `Задачи.md`.** Project tasks are Operon file-tasks (`Operon/Tasks/<title>.md` with `assignees`, `project: [<slug>]`, `status: Project.<Label>`), interleaved on the project page via Task Wikilink Overlay. A project is a flat `project` tag, never a `parentTask` hierarchy. Set up a vault with the `operon-obsidian-setup` skill; log call/meeting tasks with `call-notes`. Do not create new `Задачи.md` files.
 
 ### HARD ROUTING RULE (applies to ALL agents, ALL sessions)
 - When the user asks to create, make, write, or update a `.md` file, the default destination is Obsidian, not the local repository, unless the user explicitly says otherwise.

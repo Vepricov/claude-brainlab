@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Placeholders to substitute before installing:
+       <OWNER>       macOS username (also the Label suffix)
+       <SCRIPT_PATH> absolute path to operon_daily_archive.py (e.g. /Users/<OWNER>/.local/bin/operon_daily_archive.py)
+       <VAULT>       absolute path to the Obsidian vault
+     Install: copy to ~/Library/LaunchAgents/com.<OWNER>.operon-archive.plist then
+       launchctl unload <plist> 2>/dev/null; launchctl load <plist> -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.<OWNER>.operon-archive</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string><SCRIPT_PATH></string>
+    <string>--vault</string>
+    <string><VAULT></string>
+    <string>--archive-subdir</string>
+    <string>Operon/Archives</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>0</integer><key>Minute</key><integer>5</integer></dict>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/<OWNER>/Library/Logs/operon-archive.log</string>
+  <key>StandardErrorPath</key><string>/Users/<OWNER>/Library/Logs/operon-archive.err</string>
+</dict>
+</plist>

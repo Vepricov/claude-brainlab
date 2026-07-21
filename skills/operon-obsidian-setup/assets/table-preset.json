@@ -1,0 +1,41 @@
+{
+	"version": 1,
+	"id": "table-preset-my-first-table",
+	"name": "tasks",
+	"filterSetId": "fs_mytasks",
+	"columns": [
+		{ "key": "taskIcon", "kind": "task", "align": "center", "displayMode": "icon" },
+		{ "key": "description", "kind": "task", "widthPx": 296 },
+		{ "key": "note", "kind": "task", "displayMode": "icon" },
+		{ "key": "priority", "kind": "task", "widthPx": 100, "align": "center" },
+		{ "key": "status", "kind": "task", "widthPx": 135 },
+		{ "key": "progress", "kind": "task", "widthPx": 177, "align": "center" },
+		{ "key": "dateScheduled", "kind": "task", "align": "center" },
+		{ "key": "dateDue", "kind": "task", "align": "center" },
+		{ "key": "project", "kind": "task", "widthPx": 180 },
+		{ "key": "taskType", "kind": "task", "hidden": true, "align": "center", "displayMode": "icon" },
+		{ "key": "taskColor", "kind": "task", "hidden": true, "align": "center", "displayMode": "icon" },
+		{ "key": "parentTask", "kind": "task", "widthPx": 290, "hidden": true },
+		{ "key": "tags", "kind": "task", "widthPx": 229, "hidden": true, "colorMode": "randomColors" },
+		{ "key": "checkbox", "kind": "task", "hidden": true, "align": "center", "displayMode": "icon" }
+	],
+	"sortRules": [
+		{ "key": "taskType", "direction": "asc", "empty": "last" },
+		{ "key": "status", "direction": "desc", "empty": "last" },
+		{ "key": "priority", "direction": "asc", "empty": "last" }
+	],
+	"groupBy": null,
+	"groupOrder": "asc",
+	"subgroupBy": null,
+	"subgroupOrder": "asc",
+	"summaries": [],
+	"display": { "showSource": true, "density": "compact" },
+	"search": {
+		"scope": {
+			"projectMode": null, "showOverdue": false, "showHappensToday": false,
+			"showRecentModified": false, "includeInline": true, "includeFile": true,
+			"includeCancelled": true, "includeFinished": true
+		},
+		"parent": null
+	}
+}

@@ -135,6 +135,12 @@ The core research loop: get a paper into your library with a real, audited note.
   tasks, properties; also plugin/theme dev and debugging.
 - **`json-canvas`** ◇ — Create/edit JSON Canvas (`.canvas`): nodes, edges, groups —
   mind maps, flowcharts.
+- **`operon-obsidian-setup`** ⭐ — Reproduce the lab's Operon task-manager setup in a vault:
+  flat `project` tags (no `parentTask` hierarchy), a "my tasks" table dashboard, service-link
+  badges on project pages, emoji task icons, and day-boundary auto-archiving. Applies plugin
+  settings (`data.json`), templates, a CSS snippet, optional `main.js` display patches, and an
+  optional macOS launchd archiver — bundled scripts + assets do the work. *Fires on:* "set up
+  Operon / настрой Operon как у тебя / воспроизведи таск-систему Obsidian".
 
 ## F. Coding — development
 

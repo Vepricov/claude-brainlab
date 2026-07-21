@@ -1,15 +1,21 @@
 ---
 name: call-notes
-description: Use when the user wants to log meeting or call notes for a project — task assignments per student, follow-ups, deadlines. Creates or updates Задачи.md in the project's Obsidian folder. Trigger on: "запиши звонок", "записать встречу", "call notes", "что сделать студентам", "задачи после звонка".
-version: 2.2.0
-tags: [Project, Obsidian, Students, Meetings]
+description: Use when the user wants to log meeting or call notes for a project — task assignments per student, follow-ups, deadlines. Creates Operon file-tasks in the vault (one .md per task, assigned to the person) and interleaves them on the project hub card via Task Wikilink Overlay. Trigger on: "запиши звонок", "записать встречу", "call notes", "что сделать студентам", "задачи после звонка".
+version: 3.0.0
+tags: [Project, Obsidian, Operon, Tasks, Students, Meetings]
 ---
 
 # Call Notes
 
 > **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `~/Obsidian/shkodnik1917/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
 
-Log meeting/call notes into the project's Obsidian folder and update each participant's people/ card.
+Turn meeting/call notes into **Operon file-tasks** (one `.md` per action, assigned to the
+responsible person), interleave them on the project hub card, and update each participant's
+`people/` card. Tasks are real Operon tasks — they show up in the "my tasks" table, Kanban,
+Calendar, and get archived by the day-boundary archiver. This skill assumes the vault is
+already configured with the `operon-obsidian-setup` skill (Operon plugin + the `Operon/`
+folders + the `project` field). If it is not, warn and suggest running `operon-obsidian-setup`
+first.
 
 ## Workflow
 
@@ -53,7 +59,7 @@ If notes were not provided inline, ask via AskUserQuestion:
 **Source of truth: ONLY the `участники:` list from the hub card (Step 2).** Do NOT search globally across `people/` — a person may exist in other projects but not be a participant here.
 
 For each person mentioned in the notes:
-1. Extract their `[[people/Фамилия-Имя]]` from the hub card's `участники:` field — this gives you both the file path and the canonical full name
+1. Extract their `[[people/Фамилия-Имя]]` from the hub card's `участники:` field — this gives you both the file path and the canonical full name (`имя:` in that card)
 2. Try to match the mentioned name to one of these participants:
    - Match by first name: "Гриша" → "Евсеев-Гриша" ✓
    - Match by last name: "Евсеев" → "Евсеев-Гриша" ✓
@@ -68,62 +74,75 @@ For each person mentioned in the notes:
    а) один из участников выше (укажи кто)
    б) новый участник — напиши "новый: Имя Фамилия"
    ```
-   - If user picks an existing participant → map and use their wikilink
+   - If user picks an existing participant → map and use their card
    - If user says "новый: Имя Фамилия" → create a new `people/<LastName>-<FirstName>.md` stub and add `"[[people/<LastName>-<FirstName>]]"` to the hub card's `участники:` field
 
-### Step 5: Write to Задачи.md
+### Step 5: Create one Operon file-task per action
 
-**If file doesn't exist** — create it:
+For every distinct action in the notes, create a file-task at
+`~/Obsidian/shkodnik1917/Operon/Tasks/<Task title>.md`:
+
 ```markdown
 ---
-тип: задачи
-проект: <slug>
+assignees: [<Assignee>]
+project: [<slug>]
+status: Project.Planned
+dateDue: <YYYY-MM-DD>   # only if a deadline was mentioned; otherwise omit the line
 ---
-# Задачи — <Project Name>
+# <Task title>
 
-```
+## Описание
+<Context for this task: preserve the substance of what was said — status, concerns,
+parameters, decisions. Do NOT over-summarize.>
 
-**Insert a new entry at the top of the notes list** (place the newest entry immediately under the `# Задачи — ...` heading, never overwrite existing content):
-```markdown
-## <DD-MM-YYYY> — <topic extracted from notes, or "Синхронизация">
+## Прогресс
 
-<Context paragraph: preserve the key content from the notes in 2–4 sentences. Do NOT over-summarize — keep the substance of what was said. If someone described what they did, write it out fully. Include any status info, concerns, or decisions mentioned.>
 
-### Задачи
-
-- [ ] [[people/<LastName>-<FirstName>]] — <specific task>
-- [ ] [[people/<LastName>-<FirstName>]] — <specific task>
-- [ ] <Plain Name> — <specific task>  ← only if no people/ card
-
+## Результат
 ```
 
 Rules:
-- Preserve the original detail level — do not compress "подточил лемму, переписал акцент, пофиксил графики" into "правки статьи"
-- Each distinct action = its own `- [ ]` checkbox
-- Group multiple tasks under the same person
-- Dates always absolute (DD-MM-YYYY)
-- Topic: extract from content (e.g. "Правки статьи", "Статус экспериментов") or use "Синхронизация"
-- Newest call entry goes first. Insert the whole new `## DD-MM-YYYY ...` block above older call entries
+- **Assignee** = the person's full name exactly as in the `имя:` field of their `people/` card
+  (this is what Operon's `assignees` picker and the "my tasks" filter match on). If there is no
+  card, use the plain name as written (e.g. `Андрей` for the PI/user).
+- **`project: [<slug>]`** — the flat project tag. A task may carry several slugs if it spans
+  projects. Never use `parentTask`.
+- **`status: Project.Planned`** for a newly assigned task; use `Project.InProgress` only if the
+  notes say the person already started, `Project.Finished` if it was reported done in the call.
+- **Do NOT write `operonId`** — Operon assigns it when it indexes the file.
+- **Title / filename** = a concise phrase from the action. Strip characters Obsidian disallows
+  (`/ \ : * ? " < > |`). If a file with that name exists, append ` (2)`, ` (3)`, …
+- Each distinct action = its own task file. Group nothing; one action per file.
+- Preserve the original detail level — do not compress "подточил лемму, переписал акцент,
+  пофиксил графики" into "правки статьи".
 
-### Step 5b: Update hub card ## Задачи
+### Step 5b: Interleave the tasks on the hub card
 
-Open the hub card `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md`.
+Open the hub card `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md`. If it has no `## Задачи`
+section, append one before the last section or at the end of the file.
 
-If it has no `## Задачи` section — append one before the last section or at the end of the file.
+Insert a **new dated block at the top** of `## Задачи` (newest first, never remove existing
+blocks). Each task created in Step 5 is referenced by a `[[Task title]]` wikilink, which Operon
+renders as an interactive task row (Task Wikilink Overlay) in Reading/Live Preview:
 
-Insert each task from this call as a new checkbox line at the top of the `## Задачи` section (never remove existing ones):
 ```markdown
 ## Задачи
 
-- [ ] [[people/<LastName>-<FirstName>]] — <task> (<DD-MM-YYYY>)
-- [ ] <Plain Name> — <task> (<DD-MM-YYYY>)  ← if no people/ card
+### <DD-MM-YYYY> — <topic extracted from notes, or "Синхронизация">
+
+<Context paragraph: 2–4 sentences preserving the substance of the call — who is doing what,
+status, decisions, deadlines.>
+
+- [[<Task title 1>]]
+- [[<Task title 2>]]
+- [[<Task title 3>]]
 ```
 
 Rules:
-- One line per task
-- Always include the date in parentheses at the end
-- Use wikilinks where available, plain name otherwise (e.g. Андрей for the PI/user if not in participants)
-- Newest tasks go first within `## Задачи`
+- One `[[Task title]]` line per created task, in the same order as the notes.
+- Dates always absolute (DD-MM-YYYY). Topic: extract from content (e.g. "Правки статьи",
+  "Статус экспериментов") or use "Синхронизация".
+- The wikilink text must match the task filename exactly (without `.md`).
 
 ### Step 6: Update people/ cards
 
@@ -162,9 +181,12 @@ If the file doesn't exist (new participant added in Step 4) — create it:
 
 Report:
 ```
-✓ Задачи.md: ~/Obsidian/shkodnik1917/<root>/<slug>/Задачи.md (N задач)
+✓ Создано задач Operon: N → ~/Obsidian/shkodnik1917/Operon/Tasks/
+✓ Hub card обновлён: ## Задачи (блок <DD-MM-YYYY>)
 ✓ Обновлены карточки: [[people/X]], [[people/Y]]
 ```
+Remind the user that tasks appear in Operon views only after a reindex
+(restart Obsidian or run `operon:rebuild-index`).
 
 ## Example
 
@@ -175,17 +197,54 @@ Report:
 Артёму запустить QLoRA на llama-3-8b с lr=1e-4, прислать логи до пятницы.
 ```
 
-**Задачи.md entry:**
+**`Operon/Tasks/Дописать анализ базелайна.md`:**
 ```markdown
-## 20-04-2026 — Анализ и эксперименты
+---
+assignees: [Роман Кутенков]
+project: [lora-bench]
+status: Project.Planned
+---
+# Дописать анализ базелайна
+
+## Описание
+Baseline-анализ нужно доработать перед сравнением методов.
+
+## Прогресс
+
+
+## Результат
+```
+
+**`Operon/Tasks/Запустить QLoRA на llama-3-8b.md`:**
+```markdown
+---
+assignees: [Артем Утегенов]
+project: [lora-bench]
+status: Project.Planned
+dateDue: 2026-04-25
+---
+# Запустить QLoRA на llama-3-8b
+
+## Описание
+QLoRA на llama-3-8b, lr=1e-4. Прислать логи до 25 апреля.
+
+## Прогресс
+
+
+## Результат
+```
+
+**hub card `lora-bench.md` — `## Задачи` gets a new top block:**
+```markdown
+## Задачи
+
+### 20-04-2026 — Анализ и эксперименты
 
 Рома дорабатывает baseline-анализ: нужна таблица сравнения с GaLore. Артём запускает QLoRA на llama-3-8b (lr=1e-4), дедлайн по логам — 25 апреля.
 
-### Задачи
-
-- [ ] [[people/Кутенков-Рома]] — дописать анализ базелайна
-- [ ] [[people/Кутенков-Рома]] — добавить таблицу сравнения с GaLore
-- [ ] [[people/Утегенов-Артем]] — запустить QLoRA на llama-3-8b (lr=1e-4), прислать логи до 25-04-2026
+- [[Дописать анализ базелайна]]
+- [[Добавить таблицу сравнения с GaLore]]
+- [[Запустить QLoRA на llama-3-8b]]
 ```
 
 **people/Кутенков-Рома.md — appended:**
@@ -195,7 +254,10 @@ Report:
 
 ## Notes
 
-- Never delete or rewrite existing entries anywhere
-- For any Markdown section you update, put the newest information at the top and keep older items below
-- If the project has no Obsidian hub card yet → warn and suggest `/new-paper` first
-- Do not invent tasks not mentioned in the notes
+- Requires the vault configured via `operon-obsidian-setup` (Operon plugin + `Operon/` folders +
+  the `project` field). If Operon is absent, warn and suggest that skill first.
+- Never delete or rewrite existing entries anywhere — new tasks are new files; hub-card and
+  people-card edits only prepend.
+- For any Markdown section you update, put the newest information at the top and keep older items below.
+- If the project has no Obsidian hub card yet → warn and suggest `/new-paper` first.
+- Do not invent tasks not mentioned in the notes.

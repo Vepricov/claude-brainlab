@@ -105,9 +105,10 @@ The core research loop: get a paper into your library with a real, audited note.
 - **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
   (SSH servers, code paths), Obsidian hub card, people cards, `obsidian-projects.json`
   registration. *Fires on:* "create project / new project".
-- **`call-notes`** ⭐ — Log meeting/call notes into the project's `Задачи.md`: per-student
-  task assignments, follow-ups, deadlines. *Fires on:* "запиши звонок / задачи после
-  звонка".
+- **`call-notes`** ⭐ — Turn meeting/call notes into Operon file-tasks (one `.md` per action,
+  assigned to the responsible person) and interleave them on the project hub card; also updates
+  each participant's `people/` card. Assumes `operon-obsidian-setup`. *Fires on:* "запиши звонок
+  / задачи после звонка".
 - **`code-ingest`** ⭐ — One-time deep analysis of an external repo (GitHub URL or path)
   into a structured set of Obsidian Code-library notes mapping how it works (entrypoint,
   modules, where to change X) — citing `path:line`, never copying code. *Fires on:*

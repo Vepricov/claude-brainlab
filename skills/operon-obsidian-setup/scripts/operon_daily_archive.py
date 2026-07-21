@@ -18,7 +18,7 @@ from pathlib import Path
 
 logger = logging.getLogger("operon_archive")
 
-ARCHIVE_STATUSES = {"Project.Finished", "Project.Cancelled"}
+ARCHIVE_STATUSES = {"Project.Finished", "Project.Dropped", "Project.Cancelled"}
 FM_RE = re.compile(r"^---\n(.*?)\n---", re.S)
 SKIP_DIRS = {".obsidian", ".git", ".trash"}
 

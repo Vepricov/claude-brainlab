@@ -57,5 +57,17 @@ done
 # Sidecar CLAUDE.brainlab.md: always remove on uninstall.
 [[ -f "$CLAUDE_HOME/CLAUDE.brainlab.md" ]] && rm -f "$CLAUDE_HOME/CLAUDE.brainlab.md"
 
+# Unregister MCP servers added by the installers (~/.claude.json, user scope).
+# Server executables and their data (memory palace, Zotero library) are kept.
+if command -v claude >/dev/null 2>&1; then
+  for server in mempalace zotero; do
+    if claude mcp remove "$server" -s user >/dev/null 2>&1; then
+      echo "  ↪ unregistered MCP server: $server"
+    fi
+  done
+else
+  echo "  [skip] MCP unregister (claude CLI not found)"
+fi
+
 echo
 echo "✓ Rolled back. Backup snapshot is preserved at $LATEST_BACKUP."

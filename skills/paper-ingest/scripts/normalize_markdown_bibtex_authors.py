@@ -132,16 +132,23 @@ def process_file(path: Path) -> bool:
 
 def main():
     root = Path('/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature')
+    if not root.is_dir():
+        raise SystemExit(f'ERROR: literature root not found: {root}')
     changed = []
+    failed = []
     for path in sorted(root.rglob('*.md')):
         try:
             if process_file(path):
                 changed.append(str(path))
-        except Exception:
-            continue
+        except Exception as exc:
+            failed.append(f'{path}: {exc}')
     print(f'CHANGED {len(changed)}')
     for p in changed:
         print(p)
+    if failed:
+        print(f'FAILED {len(failed)}')
+        for item in failed:
+            print(item)
 
 
 if __name__ == '__main__':

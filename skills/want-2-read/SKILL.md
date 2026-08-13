@@ -12,7 +12,7 @@ Use when the user writes `/want-2-read` or asks to "обработай мой с
 
 ## Input File
 
-`/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature/want_2_read.md`
+`${OBSIDIAN_VAULT}/Literature/want_2_read.md`
 
 Если файла еще нет, его нужно создать.
 
@@ -148,7 +148,7 @@ Do not use a hardcoded ontology.
 
 Before suggesting any permanent destination, inspect the current library:
 ```bash
-VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
+VAULT="${OBSIDIAN_VAULT}/Literature"
 find "$VAULT" -mindepth 2 -maxdepth 2 -type d | sort
 find "$VAULT" -name "*.md" | xargs grep -h "^tags:" -A 20 | grep "  - " | sed 's/^  - //' | sort | uniq -c | sort -rn
 ```

@@ -7,7 +7,7 @@ tags: [Project, Obsidian, Operon, Tasks, Students, Meetings]
 
 # Call Notes
 
-> **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `~/Obsidian/shkodnik1917/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
+> **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `${OBSIDIAN_VAULT}/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
 
 Turn meeting/call notes into **Operon file-tasks** (one `.md` per action, assigned to the
 responsible person), interleave them on the project hub card, and update each participant's
@@ -30,12 +30,12 @@ Read obsidian-projects.json to find the Obsidian path:
 import json
 from pathlib import Path
 cfg = json.loads(Path.home().joinpath(".claude/obsidian-projects.json").read_text())
-# find matching slug → root → obsidian_dir = ~/Obsidian/shkodnik1917/<root>/<slug>/
+# find matching slug → root → obsidian_dir = ${OBSIDIAN_VAULT}/<root>/<slug>/
 ```
 
 ### Step 2: Read the project hub card
 
-Read `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md` and extract the `участники:` field.
+Read `${OBSIDIAN_VAULT}/<root>/<slug>/<slug>.md` and extract the `участники:` field.
 This gives you the canonical list of people in this project and their `people/` card paths.
 
 Example — if hub card has:
@@ -80,7 +80,7 @@ For each person mentioned in the notes:
 ### Step 5: Create one Operon file-task per action
 
 For every distinct action in the notes, create a file-task at
-`~/Obsidian/shkodnik1917/Operon/Tasks/<Task title>.md`:
+`${OBSIDIAN_VAULT}/Operon/Tasks/<Task title>.md`:
 
 ```markdown
 ---
@@ -118,7 +118,7 @@ Rules:
 
 ### Step 5b: Interleave the tasks on the hub card
 
-Open the hub card `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md`. If it has no `## Задачи`
+Open the hub card `${OBSIDIAN_VAULT}/<root>/<slug>/<slug>.md`. If it has no `## Задачи`
 section, append one before the last section or at the end of the file.
 
 Insert a **new dated block at the top** of `## Задачи` (newest first, never remove existing
@@ -147,7 +147,7 @@ Rules:
 ### Step 6: Update people/ cards
 
 For each person who appears in the notes (resolved in Step 4):
-1. Read their `~/Obsidian/shkodnik1917/people/<LastName>-<FirstName>.md`
+1. Read their `${OBSIDIAN_VAULT}/people/<LastName>-<FirstName>.md`
 2. Find or create a `## Активность` section
 3. Insert a dated entry at the top of `## Активность`, describing what they did or need to do in this project:
 ```markdown
@@ -181,7 +181,7 @@ If the file doesn't exist (new participant added in Step 4) — create it:
 
 Report:
 ```
-✓ Создано задач Operon: N → ~/Obsidian/shkodnik1917/Operon/Tasks/
+✓ Создано задач Operon: N → ${OBSIDIAN_VAULT}/Operon/Tasks/
 ✓ Hub card обновлён: ## Задачи (блок <DD-MM-YYYY>)
 ✓ Обновлены карточки: [[people/X]], [[people/Y]]
 ```

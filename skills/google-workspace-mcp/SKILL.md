@@ -9,7 +9,7 @@ tags: [mcp, google, oauth, infrastructure]
 
 User-scope MCP `google-workspace` (package `workspace-mcp`, taylorwilsdon) gives all Claude agents read+edit access to Google Docs and Drive. This skill is the operational playbook for it.
 
-For full setup history and rationale, see `~/Obsidian/shkodnik1917/general/Knowledge/google-workspace-mcp.md`.
+For full setup history and rationale, see `${OBSIDIAN_VAULT}/general/Knowledge/google-workspace-mcp.md`.
 
 ## Quick state check
 
@@ -157,4 +157,4 @@ Then re-auth — Google will request consent for the new scopes.
 - `~/.config/google-workspace-mcp/reauth.sh` — one-shot re-auth helper
 - `~/.claude.json` — MCP server registration (user scope, entry `google-workspace`)
 - GCP project: `claude-mcp-workspace` (number `375915317046`), owner `Zeyka666@gmail.com`
-- Full setup notes: `~/Obsidian/shkodnik1917/general/Knowledge/google-workspace-mcp.md`
+- Full setup notes: `${OBSIDIAN_VAULT}/general/Knowledge/google-workspace-mcp.md`

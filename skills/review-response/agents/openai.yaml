@@ -1,0 +1,4 @@
+interface:
+  display_name: "A* Review Response"
+  short_description: "Plan evidence-grounded A* rebuttals"
+  default_prompt: "Use $review-response to map these reviews and build an evidence-grounded rebuttal strategy."

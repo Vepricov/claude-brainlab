@@ -33,6 +33,42 @@ These are the parts you won't find in upstream `claude-scholar`. Per-skill detai
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
 - **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for both `presentation` and `post-acceptance`.
 
+## Evidence-first paper review and rebuttal
+
+The repository includes two related skills for internal A* conference work. Both ship native Codex metadata in `agents/openai.yaml` and keep their detailed procedures inside the skill directory.
+
+### `astar-paper-review`
+
+Use `$astar-paper-review` to review an ML paper from the submission PDF, supplement, and optional code. The workflow:
+
+1. sanitizes untrusted PDFs and preserves page-level evidence locations;
+2. builds a claim and evidence ledger before assigning scores;
+3. runs a theory coordinator with separate proof and rate/prior-art checks;
+4. audits experiments from reported claim through configuration and raw evidence;
+5. produces a severity-ranked review with explicit uncertainty and incomplete checks.
+
+The theory comparison normalizes assumptions, convergence criteria, oracle cost, dimension, and limiting cases before calling one rate better than another. The empirical audit distinguishes a plausible number from a verified result and never treats a one-seed smoke test as reproduction.
+
+```text
+Use $astar-paper-review to review this submission and audit its theory,
+closest prior work, experiments, and reproducibility.
+```
+
+### `review-response`
+
+Use `$review-response` with the submitted paper, reviewer reports, and any available experiment artifacts. It maps every review into atomic concerns, grounds each response in the frozen submission, and selects the smallest experiment that can resolve a decision-critical objection.
+
+The skill tracks evidence from E0, a proposal without artifacts, through E5, an independently auditable replication. It separates post-hoc rescoring from reward-model re-optimization, checks paper-to-code parameterization, and quarantines results from a changed core method. A revised pipeline can be discussed, but it cannot silently defend the submitted one.
+
+Drafts pass two adversarial checks before release: a skeptical reviewer/AC pass and an evidence-consistency audit across all reviewer threads.
+
+```text
+Use $review-response to map these reviews, triage the available runs,
+and prepare an evidence-grounded rebuttal strategy.
+```
+
+These skills are designed to improve scientific coverage and response discipline. They do not promise acceptance or replace the authors' judgment.
+
 ## The `presentation` skill
 
 A LaTeX Beamer skill for theory talks, mathematical decks, and conference presentations. It enforces:

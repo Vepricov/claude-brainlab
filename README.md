@@ -35,19 +35,70 @@ These are the parts you won't find in upstream `claude-scholar`. Per-skill detai
 
 ## Evidence-first paper review and rebuttal
 
-The repository includes two related skills for internal A* conference work. Both ship native Codex metadata in `agents/openai.yaml` and keep their detailed procedures inside the skill directory.
+The repository includes two related skills for internal A* conference work. They share the same rule: every important judgment must point to the submitted paper or a verified artifact. Both ship native Codex metadata in `agents/openai.yaml`. The rebuttal skill reuses the audited PDF sanitizer bundled with the review skill, so the two directories should be installed together.
+
+| Skill | Main question | Required inputs | Primary output |
+|---|---|---|---|
+| [`astar-paper-review`](skills/astar-paper-review/) | Is the submitted claim correct, novel, and supported? | Paper, supplement, optional code and annotations | Evidence-backed review with a weakness skeleton, questions, limitations, and calibrated score |
+| [`review-response`](skills/review-response/) | What would actually resolve each reviewer concern? | Frozen submission, reviews, discussion, optional code, configs, logs, and running-job state | Canonical evidence packet, explicit completion status, and a draft or verified final response when the gates permit it |
+
+```mermaid
+flowchart LR
+    P["Paper and optional code"] --> PS["Review sanitizer and visual inspection"]
+    PS --> CL["Claim ledger"]
+    CL --> TA["Theory, literature, and experiment audit"]
+    TA --> RV["Weakness skeleton and calibrated review"]
+
+    R["Frozen submission, reviews, and run state"] --> RS["Rebuttal sanitizers and preflight"]
+    RS --> CO["Atomic concern ledger"]
+    CO --> AD["Grounding, triage, and adjudication"]
+    AD --> QA["Skeptical reviewer and evidence verifier"]
+    QA --> FR["Explicit status and evidence-bounded response"]
+```
+
+The review skill schedules its nested theory coordinator so that the coordinator can spawn two children within a four-slot runtime. The rebuttal skill stages all roles within the same limit and documents a sequential fallback. In both workflows, one coordinator owns the canonical ledger. Specialist agents return structured evidence, not competing final drafts. Load-bearing findings are checked again before they affect a score or response stance.
 
 ### `astar-paper-review`
 
-Use `$astar-paper-review` to review an ML paper from the submission PDF, supplement, and optional code. The workflow:
+Use `$astar-paper-review` to review an ML paper from the submission PDF, supplement, and optional code. The full procedure is in [`skills/astar-paper-review/SKILL.md`](skills/astar-paper-review/SKILL.md).
 
-1. sanitizes untrusted PDFs and preserves page-level evidence locations;
-2. builds a claim and evidence ledger before assigning scores;
-3. runs a theory coordinator with separate proof and rate/prior-art checks;
-4. audits experiments from reported claim through configuration and raw evidence;
-5. produces a severity-ranked review with explicit uncertainty and incomplete checks.
+#### Intake and claim ledger
 
-The theory comparison normalizes assumptions, convergence criteria, oracle cost, dimension, and limiting cases before calling one rate better than another. The empirical audit distinguishes a plausible number from a verified result and never treats a one-seed smoke test as reproduction.
+The bundled extractor redacts detected high-confidence prompt-injection patterns and flags selected suspicious text before agent fan-out. It preserves page boundaries, reports detections, and recovers user PDF annotations. A page with very little extracted text and embedded images stops with `OCR_REQUIRED`. The skill also requires visual inspection of the first and last pages, low-text pages, and pages with large rasterized text. This is defense in depth, not a guarantee that every hostile instruction will be detected. Local LaTeX sources take precedence when they are available.
+
+The coordinator then records every material theory, empirical, novelty, efficiency, reproducibility, and scope claim. Each ledger row contains the exact paper location, required support, observed evidence, and audit status.
+
+#### Theory audit
+
+Formal claims get a dedicated theory tree:
+
+1. A proof and assumptions auditor reconstructs the load-bearing derivation, checks joint satisfiability, and tests boundary cases.
+2. A rate and prior-art comparator reads the closest primary theorems and normalizes their settings.
+3. The theory coordinator checks the bridge from the proved update to the stated and implemented algorithms.
+
+The comparison matrix includes the submitted theorem, the method with its new mechanism disabled, the closest same-setting theorem, and a canonical baseline such as SGD, momentum SGD, SignSGD, or standard zeroth-order optimization. It aligns objective class, oracle, assumptions, convergence criterion, initialization, dimension, calls per iteration, total query cost, memory, and hidden constants. If the criteria cannot be converted, the results are marked `not directly comparable`.
+
+#### Experimental forensics
+
+The experiments auditor follows the chain:
+
+```text
+claim -> protocol -> configuration -> raw evidence -> reported number
+```
+
+It checks tuning parity, seed protocol, uncertainty, data leakage, selected checkpoints, query or compute budgets, paper-code consistency, and numerical arithmetic. Code execution is optional and isolated. A static config inspection, a smoke test, and an independent reproduction are reported as different evidence levels.
+
+#### Review output
+
+Before prose, the skill shows a short severity-ranked weakness skeleton. The user can remove a weak concern or redirect the audit before scores are assigned. The final review contains:
+
+- a neutral contribution summary
+- specific strengths and grouped weaknesses
+- questions whose answers could change the recommendation
+- acknowledged and unacknowledged limitations
+- a statement of proof coverage, empirical evidence level, and checks not completed.
+
+The skill never converts missing seeds into an accusation of fabrication, calls a smoke test a reproduction, or treats matching Big-O notation under different assumptions as an improvement.
 
 ```text
 Use $astar-paper-review to review this submission and audit its theory,
@@ -56,18 +107,84 @@ closest prior work, experiments, and reproducibility.
 
 ### `review-response`
 
-Use `$review-response` with the submitted paper, reviewer reports, and any available experiment artifacts. It maps every review into atomic concerns, grounds each response in the frozen submission, and selects the smallest experiment that can resolve a decision-critical objection.
+Use `$review-response` with the submitted paper, reviewer reports, and any available experiment artifacts. The complete workflow is in [`skills/review-response/SKILL.md`](skills/review-response/SKILL.md).
 
-The skill tracks evidence from E0, a proposal without artifacts, through E5, an independently auditable replication. It separates post-hoc rescoring from reward-model re-optimization, checks paper-to-code parameterization, and quarantines results from a changed core method. A revised pipeline can be discussed, but it cannot silently defend the submitted one.
+#### Freeze the submission and map the reviews
 
-Drafts pass two adversarial checks before release: a skeptical reviewer/AC pass and an evidence-consistency audit across all reviewer threads.
+The workflow stores the original paper, supplement, code snapshot, reviews, later comments, and experiment state separately from all rebuttal revisions. The PDF and text sanitizers redact detected high-confidence injection patterns. Review-export mode uses narrower rules so legitimate reviewer recommendations remain visible. Raw artifacts are retained for provenance, and sanitized copies become canonical agent input.
+
+Every review is split into atomic IDs such as `R2-C03`. A concern row records:
+
+```text
+reviewer claim -> attacked component -> decision relevance -> paper anchors
+-> existing evidence -> missing evidence -> response stance -> risk -> status
+```
+
+Coverage must reach 100 percent before drafting. Duplicate concerns can share evidence, but none disappears from the ledger.
+
+#### Existing evidence before new experiments
+
+The coordinator inventories completed, running, queued, failed, and cancelled runs before proposing work. Each run records method identity, setting, seeds, artifact paths, verification state, and failure or exclusion reason. This prevents the skill from recommending an expensive run that the team has already finished.
+
+New experiments are chosen by the reviewer's decision test. The preferred test changes one disputed factor and keeps the rest fixed. The plan states the positive, null, and negative interpretation before launch. Broad benchmark expansion is rejected when a smaller causal control or matched baseline answers the concern.
+
+The method-identity gate distinguishes:
+
+- `same-method`, which evaluates the submitted method unchanged
+- `local-fix`, which repairs a narrow bug or missing control and discloses the delta
+- `core-revision`, which changes a defining source, objective, representation, theorem setting, or evaluation contract.
+
+Results from a core revision are quarantined. They may motivate a resubmission, but they cannot silently defend the original paper. A labeled comparator or swap-only ablation may differ from the submission when the submitted arm remains unchanged.
+
+#### Evidence levels
+
+| Level | Evidence available | Safe interpretation |
+|---|---|---|
+| E0 | Proposal without an artifact | Planned work only |
+| E1 | Claim or number in the submission | The paper reports it |
+| E2 | Config, table, log, or reported arithmetic checked | Static artifact confirmation |
+| E3 | Reproducible smoke test or one completed run | Result in this run, without robustness claims |
+| E4 | Frozen paired multi-seed protocol with uncertainty | Repeated evidence within the tested setting |
+| E5 | Independent replication or broad preregistered-style validation | Strong claim within the validated scope |
+
+A one-seed result stays E3. A mean without seed identities, dispersion, or raw outputs is at most E2.
+
+#### Theory, strategy, and drafting
+
+Theory concerns use the same nested proof and rate-comparison structure as the review skill. Empirical concerns go to an experiment triage lead. A response strategist then selects an explicit stance for every concern: correct, clarify, defend, concede locally, narrow, revise, run a test, or state that the issue cannot be resolved.
+
+The draft is composed from the adjudicated ledger. Each major answer follows a compact structure:
+
+```text
+direct answer -> decisive evidence -> exact paper change -> residual limitation
+```
+
+The final pass uses two independent roles. A skeptical reviewer/AC asks what objection remains. An evidence verifier traces every number, theorem statement, citation, and revision promise back to an artifact, then checks cross-review consistency and venue limits.
+
+#### Canonical artifacts
+
+The workflow keeps a resumable packet instead of one opaque response:
+
+- `00-preflight.md` and `00-experiment-registry.md`
+- `01-concern-ledger.md`
+- `02-evidence-plan.md`
+- `03-adjudication.md`
+- `04-rebuttal-draft.md`
+- `05-verification-report.md`
+- `final-rebuttal.md`.
+
+The final status is one of `BLOCKED`, `AWAITING_EXPERIMENT_APPROVAL`, `EVIDENCE_IN_PROGRESS`, `DRAFT_READY`, `VERIFIED_WITH_LIMITATIONS`, or `VERIFIED`. A draft is never presented as final before the adversarial and evidence gates pass.
+
+The skill also distinguishes post-hoc rescoring from optimization under a new reward judge, checks paper-to-code tensor shapes and parameter counts, and requires profiling artifacts before claiming that a requested baseline is infeasible.
 
 ```text
 Use $review-response to map these reviews, triage the available runs,
 and prepare an evidence-grounded rebuttal strategy.
 ```
 
-These skills are designed to improve scientific coverage and response discipline. They do not promise acceptance or replace the authors' judgment.
+Both skills include compact lessons extracted from real laboratory review and rebuttal cases. Those cards preserve reusable diagnostic moves, not conclusions or canned prose. Current submission artifacts, verified primary literature, official venue rules, and verified experiment evidence remain authoritative for the task at hand.
+
+These skills improve scientific coverage and response discipline. They do not promise acceptance or replace the authors' judgment.
 
 ## The `presentation` skill
 

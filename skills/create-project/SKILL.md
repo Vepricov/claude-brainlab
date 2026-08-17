@@ -22,19 +22,19 @@ Run these commands first (before showing the form):
 grep "^Host " ~/.ssh/config | grep -v "Host \*" | awk '{print $2}'
 
 # Existing org/ tags in vault
-grep -rh "^  - org/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - org/" "${OBSIDIAN_VAULT}/" --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing conf/ tags
-grep -rh "^  - conf/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - conf/" "${OBSIDIAN_VAULT}/" --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing тип/ tags
-grep -rh "^  - тип/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - тип/" "${OBSIDIAN_VAULT}/" --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing статус/ tags
-grep -rh "^  - статус/" ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
+grep -rh "^  - статус/" "${OBSIDIAN_VAULT}/" --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | sort -u
 
 # Existing topic tags (no prefix)
-grep -rh "^  - " ~/Obsidian/shkodnik1917/ --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | grep -vE "^(org|conf|тип|статус)/" | sort -u
+grep -rh "^  - " "${OBSIDIAN_VAULT}/" --include="*.md" 2>/dev/null | sed 's/[[:space:]]*- //' | grep -vE "^(org|conf|тип|статус)/" | sort -u
 ```
 
 Then present the form using AskUserQuestion with discovered values as options:
@@ -149,7 +149,7 @@ servers:
 - GPU load: `ssh <host> "nvidia-smi --query-gpu=index,memory.used,memory.free,utilization.gpu --format=csv,noheader"`
 
 ## Obsidian
-- vault: ~/Obsidian/shkodnik1917/<obsidian_root>/<slug>/
+- vault: ${OBSIDIAN_VAULT}/<obsidian_root>/<slug>/
 
 ## Project Memory
 - Wing in MemPalace: `<project>`
@@ -167,7 +167,7 @@ Omit sections for missing info (no Overleaf → no Paper section; no SSH → no 
 ### Step 5: Create Obsidian hub card
 
 Derive slug: lowercase, replace `_` and spaces with `-`.
-Vault: `~/Obsidian/shkodnik1917/`
+Vault: `${OBSIDIAN_VAULT}/`
 Obsidian root matches filesystem root (Papers/Projects/Staff).
 
 **Get description:**
@@ -176,10 +176,10 @@ Obsidian root matches filesystem root (Papers/Projects/Staff).
 
 **Create folder:**
 ```bash
-mkdir -p ~/Obsidian/shkodnik1917/<obsidian_root>/<slug>
+mkdir -p "${OBSIDIAN_VAULT}/<obsidian_root>/<slug>"
 ```
 
-**For each student** — check `~/Obsidian/shkodnik1917/people/<LastName>-<FirstName>.md`:
+**For each student** — check `${OBSIDIAN_VAULT}/people/<LastName>-<FirstName>.md`:
 - Not exists → create stub:
 ```markdown
 ---
@@ -197,7 +197,7 @@ mkdir -p ~/Obsidian/shkodnik1917/<obsidian_root>/<slug>
 ```
 - Exists → append `- [[<slug>]] — <one-line description>` to `## Проекты`
 
-**Create `~/Obsidian/shkodnik1917/<obsidian_root>/<slug>/<slug>.md`:**
+**Create `${OBSIDIAN_VAULT}/<obsidian_root>/<slug>/<slug>.md`:**
 
 ```markdown
 ---
@@ -242,7 +242,7 @@ Rules:
 Before writing the project hub card, search the Obsidian literature library and select 2-10 relevant papers.
 
 Library root:
-`~/Obsidian/shkodnik1917/Literature/`
+`${OBSIDIAN_VAULT}/Literature/`
 
 Selection policy:
 - Prefer exact topical matches from the user's project title, code repo name, Overleaf title, and short description
@@ -254,10 +254,10 @@ Selection policy:
 Suggested retrieval workflow:
 ```bash
 # broad keyword search in the library
-grep -Rin "<keyword1>\|<keyword2>\|<keyword3>" ~/Obsidian/shkodnik1917/Literature --include="*.md"
+grep -Rin "<keyword1>\|<keyword2>\|<keyword3>" "${OBSIDIAN_VAULT}/Literature" --include="*.md"
 
 # list candidate note paths
-find ~/Obsidian/shkodnik1917/Literature -name "*.md"
+find "${OBSIDIAN_VAULT}/Literature" -name "*.md"
 ```
 
 Output format in the project card:
@@ -290,7 +290,7 @@ cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
 ```
 ✓ ~/Papers/<project>/.claude/CLAUDE.md
 ✓ Cloned: <code repo> (if any)
-✓ Obsidian: ~/Obsidian/shkodnik1917/<obsidian_root>/<slug>/<slug>.md
+✓ Obsidian: ${OBSIDIAN_VAULT}/<obsidian_root>/<slug>/<slug>.md
 ✓ People cards: <created/updated list>
 ✓ Registered in obsidian-projects.json
 ```

@@ -71,7 +71,7 @@ Use when the user provides:
 The note must be detailed enough that the user can understand the paper without opening the PDF. Treat that as a hard quality bar, not a nice-to-have.
 
 High-quality local example for depth and structure:
-- `/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature/PEFT/lora_base/ShadowPEFT: Shadow Network for Parameter-Efficient Fine-Tuning.md`
+- `${OBSIDIAN_VAULT}/Literature/PEFT/lora_base/ShadowPEFT: Shadow Network for Parameter-Efficient Fine-Tuning.md`
 
 Use this example as a style and completeness reference, especially for:
 - mechanism explained step by step
@@ -200,7 +200,7 @@ sqlite3 ~/Zotero/zotero.sqlite \
 
 Also check the Obsidian Literature folder:
 ```bash
-grep -rl "ARXIV_ID" "/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature/" 2>/dev/null
+grep -rl "ARXIV_ID" "${OBSIDIAN_VAULT}/Literature/" 2>/dev/null
 ```
 
 If duplicate found anywhere:
@@ -424,7 +424,7 @@ Target path: `{VAULT_ROOT}/Literature/{TopLevel}/{collection}/{Sanitized Paper T
 
 Where `{TopLevel}` is one of: `Optimization`, `PEFT`, `LLM`, `RL`, `Applied`, `Reference`, `_inbox`.
 
-**Vault root:** `/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/`
+**Vault root:** `${OBSIDIAN_VAULT}/`
 
 **IMPORTANT:** The output file name must be the **sanitized** paper title per the "Title Sanitization" section near the top of this SKILL — no `$`, no `\`, no LaTeX commands. Never shorten the title semantically; only the LaTeX-to-ASCII rewrite is allowed. The same sanitized title also goes into frontmatter `title:`.
 
@@ -472,7 +472,7 @@ ATTACHMENTS DIR (relative to vault root):
   Literature/{TopLevel}/{collection}/_attachments/{ARXIV_ID}/
 
 HIGH-QUALITY LOCAL EXAMPLE:
-/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature/PEFT/lora_base/ShadowPEFT: Shadow Network for Parameter-Efficient Fine-Tuning.md
+${OBSIDIAN_VAULT}/Literature/PEFT/lora_base/ShadowPEFT: Shadow Network for Parameter-Efficient Fine-Tuning.md
 
 WRITING RULES:
 - Russian prose must be the default. Use English only in narrow cases:
@@ -754,7 +754,7 @@ The whole add-paper workflow is considered successful only when **both A and B p
 | Item | Path |
 |------|------|
 | PDF library | `~/Papers/Library/` |
-| Obsidian vault | `/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/` |
+| Obsidian vault | `${OBSIDIAN_VAULT}/` |
 | Literature base | `{vault}/Literature/` |
 | Zotero DB | `~/Zotero/zotero.sqlite` |
 | Zotero local API | `http://localhost:23119` |

@@ -105,11 +105,11 @@ At minimum, a good paper note must make it possible for the reader to answer all
 
 Three execution modes:
 
-1. **Solo invocation, Zotero is running**: the skill MAY quit Zotero itself via `osascript -e 'tell application "Zotero" to quit'`, do its work, and relaunch with `open -a Zotero` at the end. Inform the user.
+1. **Solo invocation, Zotero is running**: the skill MAY quit Zotero itself via `python3 ~/.claude/skills/paper-ingest/scripts/zotero_app.py stop`, do its work, and relaunch with `python3 ~/.claude/skills/paper-ingest/scripts/zotero_app.py start` at the end. Inform the user.
 2. **Batch invocation from a parent skill** (e.g. `want-2-read` fan-out): the parent skill is responsible for Zotero lifecycle. `paper-ingest` MUST NOT quit or relaunch Zotero itself inside the batch — that would race other parallel `paper-ingest` agents. Assume Zotero is already closed when the parent skill says so.
 3. **Zotero already closed**: just proceed. Do not relaunch at the end, the parent skill (or the user) will.
 
-Never `kill -9` Zotero. Always use the AppleScript graceful quit. Always verify with `pgrep -lf Zotero` (empty) and `fuser ~/Zotero/zotero.sqlite` (empty) before SQLite writes.
+Never force-kill Zotero. `zotero_app.py stop` always closes it gracefully (AppleScript on macOS, a close request on Windows, SIGTERM elsewhere) and waits for the process to exit, so the database is flushed and released. Always verify with `python3 ~/.claude/skills/paper-ingest/scripts/zotero_app.py status` (must print `STOPPED`) before SQLite writes; on macOS and Linux `fuser ~/Zotero/zotero.sqlite` (empty) is a useful second check.
 
 ## Canonical Successful Outcome
 
@@ -261,8 +261,7 @@ rm "$HOME/Papers/Library/${ARXIV_ID}.pdf"
 PDF naming: `{arxiv_id}.pdf`. Extract text immediately for the AI step:
 
 ```bash
-export PATH=/opt/homebrew/bin:$PATH
-pdftotext "$HOME/Papers/Library/${ARXIV_ID}.pdf" /tmp/paper_${ARXIV_ID}.txt
+python3 ~/.claude/skills/paper-ingest/scripts/pdf_to_text.py   "$HOME/Papers/Library/${ARXIV_ID}.pdf" "/tmp/paper_${ARXIV_ID}.txt"
 ```
 
 ### Step 4b: Extract figures and tables (arXiv source preferred)
@@ -277,11 +276,7 @@ SRC_DIR="$HOME/Papers/Library/${ARXIV_ID}_src"
 mkdir -p "$SRC_DIR"
 curl -L -o "${SRC_DIR}.tar.gz" "https://arxiv.org/e-print/${ARXIV_ID}"
 # arXiv bundles are usually gzipped tarballs; sometimes a single gzipped .tex
-if tar -tzf "${SRC_DIR}.tar.gz" >/dev/null 2>&1; then
-  tar -xzf "${SRC_DIR}.tar.gz" -C "$SRC_DIR"
-else
-  gunzip -c "${SRC_DIR}.tar.gz" > "$SRC_DIR/main.tex"
-fi
+python3 ~/.claude/skills/paper-ingest/scripts/extract_arxiv_source.py   "${SRC_DIR}.tar.gz" "$SRC_DIR"
 ```
 
 Then prepare the attachments directory in the vault:
@@ -763,7 +758,7 @@ The whole add-paper workflow is considered successful only when **both A and B p
 | PDF attach script | `~/.claude/skills/paper-ingest/scripts/zotero_attach_pdf.py` |
 | Papers with Code enrichment | `~/.claude/skills/paper-ingest/scripts/pwc_fetch.py` |
 | PwC API cache | `~/.cache/pwc/{arxiv_id}.json` |
-| PDF extraction | `export PATH=/opt/homebrew/bin:$PATH && pdftotext` |
+| PDF extraction | `scripts/pdf_to_text.py` (pdftotext, else PyMuPDF) |
 | AI model | `claude-haiku-4-5-20251001` |
 
 ## Duplicate Prevention And Sync Audit (full checklist)
@@ -822,6 +817,6 @@ For a completely new top-level category: propose to the user first, then create 
 | BibTeX fetch fails | Report error, do NOT use LLM-generated BibTeX, offer to retry |
 | PwC enrichment 404 / network error | Skip Step 6b silently; the note is left untouched and the pipeline continues |
 | Local PDF not in Zotero yet | Stop, ingest the PDF into Zotero first |
-| pdftotext not found | `export PATH=/opt/homebrew/bin:$PATH` then retry |
+| pdftotext not found | nothing to do, `pdf_to_text.py` falls back to PyMuPDF |
 | Obsidian file exists | Read it, offer to update (overwrite only the AI Explanation) |
 | haiku writes wrong filename | Read wrong file, Write content to correct path, delete wrong file |

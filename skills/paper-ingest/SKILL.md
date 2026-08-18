@@ -1,7 +1,7 @@
 ---
 name: paper-ingest
-description: Ingest papers from AlphaXiv/arXiv into Zotero + Obsidian. Trigger when user provides an arXiv URL or AlphaXiv folder link and wants a full literature note created. Handles BibTeX from external APIs, PDF download, tex-source figure/table extraction, creation of a proper Zotero parent paper item with child PDF attachment, duplicate prevention, and an especially detailed Obsidian note with 8-section AI Explanation (incl. Prerequisites) written by haiku, plus a strict BibTeX audit at the end.
-version: 1.6.1
+description: Ingest papers from AlphaXiv/arXiv into Zotero + Obsidian. Trigger when user provides an arXiv URL or AlphaXiv folder link and wants a full literature note created. Handles BibTeX from external APIs, PDF download, tex-source figure/table extraction, creation of a proper Zotero parent paper item with child PDF attachment, duplicate prevention, an especially detailed Obsidian note with 8-section AI Explanation written by a specialised multi-agent pass (recon router, section writers, adversarial verifier), the AlphaXiv mirror write, and a strict BibTeX audit at the end.
+version: 2.0.0
 ---
 
 # Paper Ingest Pipeline
@@ -53,7 +53,7 @@ Example:
 The sanitized title is canonical for:
 - the Obsidian `.md` filename
 - the frontmatter `title:` field
-- every `[[Literature/...]]` wikilink in `## Related Papers` and `want_2_read.md`
+- every `[[Literature/...]]` wikilink in `## Related Papers` and in the cards of the Operon Reading board (`Operon/Reading/*.md`)
 - the final audit `--expect-title` argument
 
 Keep the **raw LaTeX title** only inside the BibTeX `title = {...}` field. Never put a LaTeX-formula title into a filename.
@@ -123,7 +123,8 @@ For a paper ingest to count as successful, **all** of the following must be true
    - `zotero_key` = the **parent paper item** key
    - `zotero_link` = `zotero://select/library/items/PARENT_KEY`
 6. The PDF attachment key is **not** written into the Obsidian note as the main Zotero key or main Zotero link.
-7. The final audit passes.
+7. The paper is mirrored to the matching AlphaXiv folder (Step 7), or the reason it cannot be is stated.
+8. The final audit passes.
 
 If any one of these is false, the ingest is incomplete and must be repaired before the workflow is considered done.
 
@@ -140,11 +141,35 @@ For arXiv papers, the default happy path is:
 7. Ensure the parent item belongs to the intended Zotero collection.
 8. Close Zotero if needed and attach the local PDF to that parent via `zotero_attach_pdf.py`.
 9. Re-open Zotero if needed and verify the PDF child attachment exists.
-10. Write the Obsidian note using the parent item key in frontmatter.
+10. Write the Obsidian note through the **multi-agent pass** of Step 6, using the parent item key in frontmatter.
 11. Enrich the note with Papers with Code metadata via `pwc_fetch.py --inject` (best-effort, skip on 404).
-12. Run final audit.
+12. Mirror the paper into its AlphaXiv folder (Step 7).
+13. Run final audit.
 
 Do not reorder these steps casually. In particular, do not write the final Obsidian note before the Zotero parent item is known-good.
+
+## Zotero MCP is available — prefer it for reads
+
+The `zotero` MCP server (`zotero-mcp-server`, package name matters: **not** `zotero-mcp`) exposes the
+library over MCP and is the preferred path for everything read-only, because it does not fight the
+SQLite write-lock and does not need Zotero desktop closed:
+
+| Need | MCP tool | Beats |
+|---|---|---|
+| find an existing item | `mcp__zotero__zotero_search_items`, `zotero_advanced_search` | raw `sqlite3` SELECT |
+| find by citation key | `mcp__zotero__zotero_search_by_citation_key` | grep over notes |
+| nearest papers in the library | `mcp__zotero__zotero_semantic_search` | folder-name guessing |
+| collection tree / keys | `mcp__zotero__zotero_get_collections` | `curl localhost:23119/api/.../collections` |
+| create a sub-collection | `mcp__zotero__zotero_create_collection` | manual SQLite insert |
+| duplicates in the library | `mcp__zotero__zotero_find_duplicates` | three-way manual check |
+| read specific PDF pages | `mcp__zotero__zotero_read_pdf_pages`, `zotero_get_pdf_outline` | full `pdftotext` dump |
+
+The semantic index is passage-level (chunking enabled, cross-encoder reranker on) and refreshes
+weekly. If `zotero_semantic_search` returns nothing sensible, check `zotero-mcp db-status` before
+concluding the paper is absent.
+
+Writes (creating the parent item, attaching the PDF, fixing collection membership) still go through
+the connector API and the direct SQLite path, and those still require Zotero to be closed.
 
 ### Step 0: Local PDF pre-ingest
 
@@ -209,6 +234,31 @@ If duplicate found anywhere:
 - If it is in trash, restore it instead of creating a new duplicate
 - Ask user whether to skip, update, or force-add
 - **NEVER create a duplicate without explicit confirmation**
+
+### Step 2b: Ask the shared lab corpus first
+
+Another member may have ingested this paper already. The shared corpus is checked before any
+work is done:
+
+```bash
+python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
+```
+
+If it prints a title and a section count, the paper is already in the lab base. That changes two
+things.
+
+**Reuse its `citation_key`.** Keys are generated deterministically, so they usually match anyway,
+but if the corpus holds a different one, the corpus wins: a divergent key silently splits the same
+paper across two `\cite{...}` entries in shared bibliographies.
+
+**Your own vault still gets its own note.** The corpus is shared, the reading is personal, and
+another member's note lives in their vault, not yours. Ingest locally as usual.
+
+Duplicates in the corpus are impossible by construction: a paper is matched by `arxiv_id`, `doi`
+and `zotero_key` separately, and a match reuses the existing row while accumulating identifiers.
+What *is* possible is losing someone's work: sections are replaced wholesale, so pushing your
+shorter reading over their fuller one erases theirs from the corpus. `sync_to_lab.py` refuses that
+by itself and explains what it found; `--force` overrides it deliberately.
 
 ### Step 3: Fetch BibTeX (external, NOT LLM-generated)
 
@@ -410,15 +460,23 @@ Record the bibliographic parent key as `zotero_key` for Obsidian frontmatter.
 Never put the child attachment key into:
 - `zotero_key`
 - `zotero_link`
-- `want_2_read.md` `**Zotero**:` field
+- the `**Zotero**:` line inside `## Комментарии` of the Operon Reading card
 
 Those fields must always point to the canonical paper parent item.
 
+When the caller is `want-2-read`, the card write-back uses the canonical four-section schema
+(`## Заметка`, `## arXiv`, `## Тема`, `## Комментарии`) documented in that skill. `paper-ingest`
+supplies the material for it — the sanitized title for the wikilink, the parent Zotero key, the final
+folder, and the condensed Russian description — but the parent skill owns the write.
+
 If Zotero is not running: create the Obsidian note without `zotero_key`, leave `zotero_key: "PENDING"` and tell the user.
 
-### Step 6: Create Obsidian Note (haiku agent)
+### Step 6: Write the Obsidian Note (multi-agent)
 
-**The AI Explanation is written by `claude-haiku-4-5-20251001`. Spawn it as a sub-agent.**
+The note is written by a small crew, not one agent. The pattern follows what the current literature
+pipelines converge on: a cheap **recon/routing** stage that decides how the paper can be read at all,
+**specialised writers** per section family, and an **adversarial verifier** that checks claims against
+the source instead of re-reading its own output.
 
 Target path: `{VAULT_ROOT}/Literature/{TopLevel}/{collection}/{Sanitized Paper Title}.md`
 
@@ -459,13 +517,83 @@ The `git:` field is populated by Step 4c (below). Omit the line entirely when th
 ```
 ```
 
-#### AI Explanation (written by haiku, 8 sections, Russian + LaTeX)
+#### Step 6a: Recon router (cheap, runs first)
 
-Haiku agent prompt template:
+One short agent inspects what is actually on disk before any writing starts, and returns a routing
+verdict. This is the stage that prevents a confident-sounding note built on a broken extraction.
+
+It reports:
+- `source_mode`: `tex` (LaTeX bundle downloaded and parsed), `pdf_text` (clean `pdftotext` output, no
+  source), or `pdf_vision` (text layer is garbage or absent — scanned/figure-only paper)
+- `figures_found`, `tables_found`: counts from `$ATTACH_DIR` and from `\begin{table}` blocks
+- `theory_weight`: `heavy` (theorems, lemmas, proofs, convergence rates) or `light` (algorithmic or
+  empirical paper)
+- `blockers`: anything missing — no PDF, no source bundle, zero extracted figures, truncated text
+
+Routing consequences:
+- `source_mode: pdf_vision` → tables must be transcribed by reading the rasterised page regions, and
+  every number carries a higher error risk; the verifier in Step 6c checks tables cell by cell.
+- `theory_weight: heavy` → Sections 3 and 4 go to a stronger model (see the crew table); a haiku pass
+  on a theorem-dense paper reliably drops conditions and mis-transcribes bounds.
+- `figures_found: 0` → Section 7 falls back to textual descriptions with `*(исходник недоступен)*`
+  markers, and this limitation is stated to the user, not hidden.
+
+#### Step 6b: The writing crew
+
+Spawn these agents. Each receives the paper text, the recon verdict, the attachments directory, and
+the shared writing rules below. They write **into the same file**, each owning its own sections, so
+run them sequentially in this order to avoid write races, or have each return its Markdown block and
+assemble once.
+
+| Agent | Model | Owns | Why split out |
+|---|---|---|---|
+| **Обзорщик** | `claude-haiku-4-5-20251001` | 1. Общий обзор, 2. Посекционный разбор, 5. Новые архитектуры, 6. Методология и данные | narrative sections, cheap and high-volume |
+| **Математик** | haiku if `theory_weight: light`, otherwise the session model | 3. Прериквизиты, 4. Математика и формулы | every formula, theorem, and per-variable glossary; the single most error-prone part of the note |
+| **Экспериментатор** | `claude-haiku-4-5-20251001` | 7. Графики и таблицы | transcribes tables from the `tex` `tabular` blocks or the rasterised regions verbatim, embeds figures |
+| **Критик** | session model | 8. Критическая оценка | must contradict the paper's own framing, so it is deliberately not the agent that wrote the summary |
+| **Связист** | session model | `## Related Papers` | uses the library index, see Step 6c |
+
+Model choice is a floor, not a ceiling: if the paper is long or dense, raise it. Never lower the
+Математик below the Обзорщик.
+
+#### Step 6c: Related Papers via the library index
+
+Do not guess neighbours from folder names. Query the passage-level index:
+
+```
+mcp__zotero__zotero_semantic_search(query="<paper title> <method name> <core mechanism>", limit=10)
+```
+
+Keep 1-3 hits that are genuinely connected **methodologically or theoretically**, not merely by topic,
+and that already exist as notes under `Literature/`. Format each as
+`[[Literature/{TopLevel}/{collection}/{Exact Paper Title}]]` with one sentence naming the connection
+(shared assumption, competing estimator, predecessor of the same bound, ablation of the same module).
+
+Verify every wikilink resolves to a real file before writing it. A dangling `[[...]]` is worse than
+one fewer related paper.
+
+#### Step 6d: Adversarial verifier
+
+After the crew finishes, one verifier agent runs against **the paper**, not against the note. Its
+prompt frames it as trying to *refute* the note:
+
+- pick every numeric claim in Sections 6 and 7 and find it in the source; flag anything that is not there
+- pick every formula in Sections 3 and 4 and check the glossary defines each symbol, including indices
+  and operators, and that stated conditions (smoothness, convexity, step-size ranges) were not dropped
+- check each `![[...]]` embed resolves to a real file in `_attachments/{ARXIV_ID}/`
+- check each `[[Literature/...]]` in Related Papers resolves to a real note
+- check the note answers all nine questions from the Quality Bar above without reopening the PDF
+- check the prose is strong Russian without mixed-language fragments
+
+The verifier **fixes what it finds, inline**. It does not re-run the writers and it does not merely
+report. If it cannot verify a number against the source, it removes the number rather than keeping an
+unsupported one.
+
+#### Shared writing rules (given to every writing agent)
 
 ```
 You are writing a paper analysis card for an Obsidian research library.
-Read the full paper text provided below and write ALL 8 sections in Russian.
+Read the full paper text provided below and write your assigned sections in Russian.
 
 OUTPUT FILE: {ABSOLUTE_PATH_TO_MD_FILE}
 ATTACHMENTS DIR (relative to vault root):
@@ -570,7 +698,7 @@ Strengths. Numbered list of limitations (be specific, not generic). Distinguish 
 The final card must be useful as a standalone reading substitute for first-pass understanding. If a smart reader could not explain the paper's mechanism, setup, main numbers, and limitations after reading the note, the note is not detailed enough.
 
 ## Related Papers
-1-3 papers from the same `Literature/{TopLevel}/{collection}/` folder that relate to this paper.
+Written by the Связист agent from the semantic-search hits of Step 6c, not guessed from folder contents.
 Format: `[[Literature/{TopLevel}/{collection}/{Exact Paper Title}]]` — one sentence explaining the connection.
 Focus on methodological or theoretical connections, not just topic overlap.
 
@@ -578,17 +706,18 @@ PAPER TEXT:
 {FULL_TEXT_FROM_PDF}
 ```
 
-After haiku writes the file, the main model must:
-1. Read the written file and verify all 8 sections are present (1. Общий обзор, 2. Посекционный разбор, 3. Прериквизиты, 4. Математика и формулы, 5. Новые архитектуры, 6. Методология и данные, 7. Графики и таблицы, 8. Критическая оценка)
-2. Verify Section 3 is substantial (not a stub) and covers at least 3 background items with formal definitions + glossaries
-3. Verify Section 7 contains at least one `![[Literature/.../_attachments/...]]` embed OR an explicit `*(исходник недоступен)*` marker per figure
-4. Verify each major formula in Sections 3 and 4 is followed by a per-variable glossary (not just the formula alone)
-5. Verify `## Related Papers` section exists with at least 1 WikiLink
-6. Verify frontmatter is complete (no `PENDING` fields left unresolved)
-7. Verify the filename and frontmatter `title:` match the sanitized title (no `$`, no `\`)
-8. If any section is missing or malformed, fix it inline (do not re-run haiku)
+After the crew and the verifier finish, the main model must check the assembled file itself:
+1. All 8 sections present (1. Общий обзор, 2. Посекционный разбор, 3. Прериквизиты, 4. Математика и формулы, 5. Новые архитектуры, 6. Методология и данные, 7. Графики и таблицы, 8. Критическая оценка)
+2. Section 3 is substantial (not a stub) and covers at least 3 background items with formal definitions + glossaries
+3. Section 7 contains at least one `![[Literature/.../_attachments/...]]` embed OR an explicit `*(исходник недоступен)*` marker per figure
+4. Each major formula in Sections 3 and 4 is followed by a per-variable glossary (not just the formula alone)
+5. `## Related Papers` exists with at least 1 WikiLink, and every WikiLink resolves to a real file
+6. Frontmatter is complete (no `PENDING` fields left unresolved)
+7. Filename and frontmatter `title:` match the sanitized title (no `$`, no `\`)
+8. No section boundary was clobbered by a second agent writing over the same region
+9. If anything is missing or malformed, fix it inline — do not re-run the crew for a formatting slip
 
-### Step 6b: Enrich with Papers with Code (best-effort)
+### Step 6e: Enrich with Papers with Code (best-effort)
 
 After the Obsidian note exists, enrich it with `paperswithcode.co` metadata via the JSON API. This is a **best-effort** step — PwC.co does not have every paper, the API is undocumented, so any failure is silently skipped and the pipeline continues.
 
@@ -628,11 +757,90 @@ Hard rules for this step:
 - If `pwc_fetch.py` reports `"found": false`, treat the paper as not in PwC and move on — do not retry forever, do not fall back to HTML scraping (the site is a SPA).
 - The cache directory `~/.cache/pwc/` is the source of truth for repeated runs — clear it manually if you want a fresh fetch.
 
-### Step 7: Mandatory Final Audit
+### Step 7: Mirror the paper to AlphaXiv
+
+**Mandatory.** Local Obsidian is master, the AlphaXiv account mirrors it, and per
+`~/.claude/rules/alphaxiv-sync.md` the mirror write happens in the **same run** as the local write.
+Skipping it is how the two libraries drift.
+
+Read `~/.claude/alphaxiv-library-map.json`, resolve `Literature/{TopLevel}/{collection}` to its
+`folder_id`, then:
+
+```
+mcp__claude_ai_alphaXiv__save_papers_to_folder(
+    folder_id=<mapped folder_id>, paper_ids_or_urls=[ARXIV_ID])
+```
+
+Variants:
+- The paper is currently in the AlphaXiv **"Want to read"** folder (typical when the caller is
+  `want-2-read`): use `move_papers_between_folders(from=<want_to_read_folder_id>, to=<folder_id>)`
+  instead, so it lands in the topic folder and leaves the queue atomically.
+- **Batch invocation from `want-2-read`**: the parent skill owns the mirror write and does it in its
+  own Step 6. Do not call the MCP here as well — a double write is harmless but a double *move* is not.
+- Several destination folders: repeat `save_papers_to_folder` for each. A paper may live in many folders.
+- A folder that does not exist on AlphaXiv yet: `create_folder` nested under the mapped top-level
+  parent, then **add its id to `~/.claude/alphaxiv-library-map.json`**. A missing map entry silently
+  breaks every later sync.
+- A stale `folder_id` (the call errors): refresh via `list_library` and update the map file.
+- **No arXiv ID** (ICML-poster-only, book, blog digest, private PDF): the MCP can only add arXiv
+  papers — there is no upload tool. File the paper locally, skip this step, and tell the user they can
+  upload the PDF manually as a Private Paper on alphaxiv.org. Never invent an arXiv ID to satisfy this step.
+- The AlphaXiv MCP is not connected: finish the local work, then tell the user the mirror was skipped
+  and needs `/mcp` auth. Do not drop it silently.
+
+Never touch the `My publications` or `Private Papers` system folders.
+
+### Step 7b: Push the paper into the lab library corpus
+
+The same note that lands in the vault also belongs in the shared `library` corpus of the Lab
+Knowledge MCP, where it becomes searchable next to the laboratory's own hypotheses. Skipping this
+leaves the corpus behind the vault, exactly the way the AlphaXiv mirror used to drift.
+
+```bash
+python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
+```
+
+The wrapper exists because the two halves of the job live on different machines. Parsing needs the
+vault and Zotero, which are here. Pushing needs the `mcp` package, which is installed in the
+server's environment and absent from the Mac's system Python, so calling `push_library.py` here
+fails with `ModuleNotFoundError`. The wrapper parses locally, copies the manifest and pushes there.
+
+Do not filter the parser by arXiv id with its own `--only`: that flag matches the note **path**,
+which never contains the id, so the filter selects nothing and the step silently pushes an empty
+manifest. The wrapper filters on the parsed `arxiv_id` instead.
+
+`--verify` asks the base afterwards whether the paper is really there, by title and section count.
+The exit code of the push says only that the call went through, and this step is exactly where a
+silent no-op used to hide.
+
+The research theme of the paper is derived on the server from its `library_folder`, so a paper
+filed into a known folder is immediately visible from the theme it belongs to, next to the
+laboratory's own hypotheses on the same area. Nothing to pass here. When the paper goes into a
+**new** folder, add that folder to `services/lab-knowledge/src/lab_knowledge/library_themes.py`,
+otherwise the paper falls back to the theme of its top-level section, which is coarser than it
+deserves. A folder that fits no existing theme is a signal to propose a new theme to the owner,
+not to invent one.
+
+Repeating this is safe: the paper is matched by its natural key and updated, and its sections are
+replaced rather than appended. Sources already pointing at the same arXiv id get attached to it
+automatically, so a hypothesis that cites this paper starts showing the link with no extra step.
+
+If the Lab Knowledge MCP is unreachable, finish the local work and tell the user the library push
+was skipped. Do not drop it silently.
+
+The sync is one-way and strict: **everything in the personal library must exist in the shared
+corpus**. The reverse does not hold — other members will add their own papers there, and those do
+not belong in this vault. A full reconciliation is one command and is idempotent:
+
+```bash
+python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --all
+```
+
+### Step 8: Mandatory Final Audit
 
 **This step is required. Do not finish the add-paper workflow without it.**
 
-The audit has two parts: **A. Zotero/Obsidian sync audit** and **B. Strict BibTeX audit**. Both must pass.
+The audit has three parts: **A. Zotero/Obsidian sync audit**, **B. Strict BibTeX audit** and **C. Lab corpus audit**. All three must pass.
 
 #### A. Zotero/Obsidian sync audit
 
@@ -747,7 +955,24 @@ python3 ~/.claude/skills/paper-ingest/scripts/remove_editor_field_from_markdown_
 
 If the structural problem persists, re-run `bibtex_fetch.py` from the original source.
 
-The whole add-paper workflow is considered successful only when **both A and B pass for every note created in this batch**.
+#### C. Lab corpus audit
+
+The paper must be present in the shared `library` corpus, not merely pushed to it:
+
+```bash
+python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
+```
+
+The check must print the paper's title and a non-zero section count. Zero sections means the note
+was parsed but its reading is empty, and an empty paper answers no question — treat it as a
+failure, not as a pass.
+
+A silent no-op is the failure mode this part exists for. The push reports success whenever the call
+goes through, so without asking the base afterwards a paper filtered out by a wrong flag looks
+exactly like a paper that was written.
+
+The whole add-paper workflow is considered successful only when **A, B and C pass for every note
+created in this batch**.
 
 ## Paths and Config
 
@@ -764,7 +989,7 @@ The whole add-paper workflow is considered successful only when **both A and B p
 | Papers with Code enrichment | `~/.claude/skills/paper-ingest/scripts/pwc_fetch.py` |
 | PwC API cache | `~/.cache/pwc/{arxiv_id}.json` |
 | PDF extraction | `export PATH=/opt/homebrew/bin:$PATH && pdftotext` |
-| AI model | `claude-haiku-4-5-20251001` |
+| Writing crew | Обзорщик + Экспериментатор on `claude-haiku-4-5-20251001`; Математик and Критик on the session model (see Step 6b) |
 
 ## Duplicate Prevention And Sync Audit (full checklist)
 
@@ -820,8 +1045,8 @@ For a completely new top-level category: propose to the user first, then create 
 | Obsidian note points to attachment key | Rewrite `zotero_key` and `zotero_link` to the parent paper item key and keep the attachment only as child PDF |
 | PDF download fails | Try `export.arxiv.org/pdf/`, then ask user |
 | BibTeX fetch fails | Report error, do NOT use LLM-generated BibTeX, offer to retry |
-| PwC enrichment 404 / network error | Skip Step 6b silently; the note is left untouched and the pipeline continues |
+| PwC enrichment 404 / network error | Skip Step 6e silently; the note is left untouched and the pipeline continues |
 | Local PDF not in Zotero yet | Stop, ingest the PDF into Zotero first |
 | pdftotext not found | `export PATH=/opt/homebrew/bin:$PATH` then retry |
 | Obsidian file exists | Read it, offer to update (overwrite only the AI Explanation) |
-| haiku writes wrong filename | Read wrong file, Write content to correct path, delete wrong file |
+| a writing agent writes the wrong filename | Read the wrong file, Write its content to the correct sanitized path, delete the wrong file |

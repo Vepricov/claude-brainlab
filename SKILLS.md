@@ -103,12 +103,20 @@ The core research loop: get a paper into your library with a real, audited note.
 - **`new-paper`** ⭐ — Track a new idea/paper project in Obsidian (hub card + people
   cards) without creating a filesystem folder. *Fires on:* "new paper / new idea".
 - **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
-  (SSH servers, code paths), Obsidian hub card, people cards, `obsidian-projects.json`
-  registration. *Fires on:* "create project / new project".
-- **`call-notes`** ⭐ — Turn meeting/call notes into Operon file-tasks (one `.md` per action,
-  assigned to the responsible person) and interleave them on the project hub card; also updates
-  each participant's `people/` card. Assumes `operon-obsidian-setup`. *Fires on:* "запиши звонок
-  / задачи после звонка".
+  (SSH servers, code paths), private Obsidian hub, `obsidian-projects.json` registration,
+  and a handoff to shared onboarding for Brain Lab projects. *Fires on:* "create project / new project".
+- **`lab-project-onboarding`** ⭐ — Idempotently create or reuse the Lab Knowledge project,
+  generated Yonote showcase, and private named Kanban, then store only stable links in the
+  private Obsidian hub. *Fires on:* "добавь проект в лабораторию / свяжи проект с Brain Lab".
+- **`lab-knowledge`** ⭐ — Run Ask Lab in the local agent: combine permission-scoped research
+  context from Lab Knowledge MCP with shared task state from the bound Yonote Kanban, publish
+  private Obsidian hypotheses only after explicit confirmation, and keep hypotheses,
+  experiments, evidence, decisions, and tasks distinct. *Fires on:* "Ask Lab / проверял ли
+  кто-то эту гипотезу / опубликуй гипотезу".
+- **`call-notes`** ⭐ — Turn meeting notes into canonical records: personal actions go to
+  the private note, shared project actions to Yonote, and approved research objects to Lab
+  Knowledge. It records stable links without task or hypothesis mirrors. *Fires on:* "запиши
+  звонок / задачи после звонка".
 - **`code-ingest`** ⭐ — One-time deep analysis of an external repo (GitHub URL or path)
   into a structured set of Obsidian Code-library notes mapping how it works (entrypoint,
   modules, where to change X) — citing `path:line`, never copying code. *Fires on:*

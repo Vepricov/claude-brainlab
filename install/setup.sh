@@ -143,22 +143,34 @@ if (( ! DRY_RUN )); then
 import json, os, re, sys
 src, dst = sys.argv[1], sys.argv[2]
 with open(src) as f:
-    text = f.read()
-def sub(m):
-    var = m.group(1)
-    return os.environ.get(var, m.group(0))
-text = re.sub(r"\$\{([A-Z_][A-Z0-9_]*)\}", sub, text)
-data = json.loads(text)
+    data = json.load(f)
+pattern = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
+def substitute(obj):
+    if isinstance(obj, dict):
+        return {k: substitute(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [substitute(x) for x in obj]
+    if isinstance(obj, str):
+        return pattern.sub(lambda m: os.environ.get(m.group(1), m.group(0)), obj)
+    return obj
 def strip_comments(obj):
     if isinstance(obj, dict):
         return {k: strip_comments(v) for k, v in obj.items() if not k.startswith("_")}
     if isinstance(obj, list):
         return [strip_comments(x) for x in obj]
     return obj
-data = strip_comments(data)
+data = strip_comments(substitute(data))
 # Drop zotero MCP entry if no API key was provided.
 if not os.environ.get("ZOTERO_API_KEY"):
     data.get("mcpServers", {}).pop("zotero", None)
+# Shared MCP entries are all-or-nothing so incomplete credentials never leave
+# unusable clients or unresolved secret placeholders in settings.json.
+if not (os.environ.get("LAB_MCP_URL") and os.environ.get("LAB_MCP_TOKEN")):
+    data.get("mcpServers", {}).pop("lab-knowledge", None)
+if not (os.environ.get("PLANE_API_KEY") and os.environ.get("PLANE_WORKSPACE_SLUG")):
+    data.get("mcpServers", {}).pop("plane", None)
+elif not os.environ.get("PLANE_BASE_URL"):
+    data["mcpServers"]["plane"].get("env", {}).pop("PLANE_BASE_URL", None)
 with open(dst, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 print(f"  rendered {dst}")

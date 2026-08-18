@@ -35,13 +35,24 @@
 - Maintain durable notes only when the task materially changes research state. Use `~/.claude/obsidian-projects.json` when you need project-to-vault routing.
 - In human-facing Obsidian notes, use `DD-MM-YYYY` for dates by default.
 - Check `${OBSIDIAN_VAULT}/general/servers.md` before choosing remote GPU indices, and update it when server configuration changes.
-- **Task tracking is Operon, not ad-hoc `Задачи.md`.** Project tasks are Operon file-tasks (`Operon/Tasks/<title>.md` with `assignees`, `project: [<slug>]`, `status: Project.<Label>`), interleaved on the project page via Task Wikilink Overlay. A project is a flat `project` tag, never a `parentTask` hierarchy. Set up a vault with the `operon-obsidian-setup` skill; log call/meeting tasks with `call-notes`. Do not create new `Задачи.md` files.
+- **Route tasks by scope.** Personal reminders and private self-management use Operon file-tasks (`Operon/Tasks/<title>.md`) with a flat `project` tag, never `parentTask`. Shared project work, assignees, deadlines, and milestones use the project's private Yonote board. Never mirror one writable task in both systems and never create ad-hoc `Задачи.md` files. Use `call-notes` to classify meeting actions before writing.
+- **Route hypotheses by visibility.** Private and unfinished hypotheses stay in Obsidian. Shared hypotheses, experiments, evidence, and proposed decisions use Lab Knowledge MCP after an explicit publication preview and human confirmation. A completed task is not evidence that a hypothesis is confirmed.
+- **Ask Lab is a local-agent workflow.** Read research context from Lab Knowledge MCP. Read task state from Yonote only when an authorized Yonote integration is configured for the caller. Do not implement or assume a website chat. Read-only questions must not cause writes; include shared IDs and links, never local filesystem paths.
+- Before any Yonote or Lab Knowledge mutation, show the target project, object, owner when applicable, and source; obtain explicit approval. Never upload a local Obsidian path, repository path, or raw private note. Never broaden credentials after denial or expose tokens.
+
+- **Соглашения по хранилищу лежат в самом хранилище.** Перед созданием статьи, проекта или
+  папки, а также перед правкой иконок, цветов, досок Operon и стартовой раскладки читать
+  `general/Knowledge/obsidian-conventions.md`. Там же правила про смайлики и цвета папок.
+  Держать эти правила в контексте не нужно: они меняются редко, читать по факту работы.
 
 ### HARD ROUTING RULE (applies to ALL agents, ALL sessions)
 - When the user asks to create, make, write, or update a `.md` file, the default destination is Obsidian, not the local repository, unless the user explicitly says otherwise.
 - Project notes MUST be routed by the project's filesystem location. NEVER write to `Research/`.
 - Mapping (authoritative source: `~/.claude/obsidian-projects.json`):
-  - Project in `~/Papers/<slug>/`  → vault `Papers/<slug>/`
+  - Project in `~/Papers/<slug>/`  → vault `Papers/<тема>/<slug>/`. Статьи разложены
+    по темам (Матричная оптимизация, LoRA и PEFT, ZO, Теория и методы, RL, Прочее),
+    поэтому тему нельзя угадывать: она берётся из `~/.claude/obsidian-projects.json`,
+    а если слага там нет — поиском `Papers/**/<slug>` по хранилищу.
   - Project in `~/Projects/<slug>/` → vault `Projects/<slug>/`
   - Project in `~/Staff/<slug>/`    → vault `Staff/<slug>/`
 - Before writing a note, resolve the target path via `obsidian-projects.json` (look up the `fs` root matching the project's location, then use the mapped `obsidian` root + slug). Do not rely on per-project `.claude/CLAUDE.md` alone and do not guess.

@@ -110,6 +110,27 @@
         "UNPAYWALL_EMAIL": "${UNPAYWALL_EMAIL}",
         "UNSAFE_OPERATIONS": "all"
       }
+    },
+    "lab-knowledge": {
+      "_comment": "Remote BRAIn Lab knowledge service. Installed only when LAB_MCP_URL and LAB_MCP_TOKEN are configured.",
+      "type": "http",
+      "url": "${LAB_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${LAB_MCP_TOKEN}"
+      }
+    },
+    "plane": {
+      "_comment": "Plane official local stdio MCP server. Requires uv/uvx and is installed only when PLANE_API_KEY and PLANE_WORKSPACE_SLUG are configured.",
+      "command": "uvx",
+      "args": [
+        "plane-mcp-server",
+        "stdio"
+      ],
+      "env": {
+        "PLANE_API_KEY": "${PLANE_API_KEY}",
+        "PLANE_WORKSPACE_SLUG": "${PLANE_WORKSPACE_SLUG}",
+        "PLANE_BASE_URL": "${PLANE_BASE_URL}"
+      }
     }
   }
 }

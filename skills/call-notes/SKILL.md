@@ -1,263 +1,386 @@
 ---
 name: call-notes
-description: Use when the user wants to log meeting or call notes for a project — task assignments per student, follow-ups, deadlines. Creates Operon file-tasks in the vault (one .md per task, assigned to the person) and interleaves them on the project hub card via Task Wikilink Overlay. Trigger on: "запиши звонок", "записать встречу", "call notes", "что сделать студентам", "задачи после звонка".
-version: 3.0.0
-tags: [Project, Obsidian, Operon, Tasks, Students, Meetings]
+description: Process research call or meeting notes when the user says "запиши звонок", "записать встречу", "call notes", "что сделать студентам", or "задачи после звонка". Keep the private narrative in Obsidian, publish approved hypotheses, experiments, evidence, and decisions to Lab Knowledge MCP, and create laboratory tasks only on the project's bound Yonote Kanban without duplicates.
 ---
 
 # Call Notes
 
-> **Execution model**: spawn `Agent(model="haiku")` and delegate ALL steps including user interaction. Pass: (1) these full instructions, (2) the user's message, (3) today's date, (4) vault path `~/Obsidian/shkodnik1917/`, (5) `~/.claude/obsidian-projects.json`. The haiku agent uses AskUserQuestion when needed.
+Turn one meeting into reviewed canonical records across three layers. Load `lab-knowledge` before
+any shared knowledge write. Read [`references/analysis-contract.md`](references/analysis-contract.md)
+before analyzing a transcript.
 
-Turn meeting/call notes into **Operon file-tasks** (one `.md` per action, assigned to the
-responsible person), interleave them on the project hub card, and update each participant's
-`people/` card. Tasks are real Operon tasks — they show up in the "my tasks" table, Kanban,
-Calendar, and get archived by the day-boundary archiver. This skill assumes the vault is
-already configured with the `operon-obsidian-setup` skill (Operon plugin + the `Operon/`
-folders + the `project` field). If it is not, warn and suggest running `operon-obsidian-setup`
-first.
+When changing or validating this skill, also use
+[`references/evaluation-fixture.md`](references/evaluation-fixture.md).
+When changing semantic reconstruction, human-correction handling, or preview revision, also run the
+real-call regression in
+[`references/hwo-preview-regression.md`](references/hwo-preview-regression.md).
+For project terminology, unknown-term questions, and explicitly confirmed vocabulary learning, follow
+[`references/asr-glossary.md`](references/asr-glossary.md).
+Write every private meeting note with
+[`references/obsidian-meeting-template.md`](references/obsidian-meeting-template.md).
+Maintain the project's curated local hypothesis hub with
+[`references/obsidian-hypothesis-template.md`](references/obsidian-hypothesis-template.md).
+
+Do not analyze a full call with one monolithic prompt. Normalize it, hydrate project context, use
+independent extraction lanes, adjudicate their output, and run a skeptical review.
+
+## Mandatory execution topology
+
+Every full call uses this topology. It is not an optional optimization:
+
+1. **Context hydration:** use one bounded `ProjectDossier` containing Lab Knowledge, private/paper, and
+   coordination sections. An interactive agent builds it with independent read-only workers. The local
+   `brain-call` runner may instead consume the already curated, hash-verified project packet produced by
+   `build_project_context`; it must block if any required section or confirmed roster is missing.
+2. **Independent lanes:** a scientific lane, action lane, and chronology and privacy lane analyze the
+   same normalized transcript and dossier without reading one another's conclusions.
+3. **Integrator:** a distinct integrator merges candidates, preserves disagreements, and prepares one
+   `CallBundle`; it does not write to any destination.
+4. **Fresh independent skeptic:** a reviewer that did not participate in extraction or integration
+   checks the complete bundle and may veto any item.
+5. **Orchestrator:** after explicit approval, the call-notes orchestrator performs every Obsidian, Lab
+   Knowledge MCP, and Yonote mutation itself and reads each destination back.
+
+If this topology cannot be executed, stop before any canonical write and report
+`blocked: mandatory_multi_agent_topology_unavailable`. Do not replace it with one large prompt or a
+single-agent write path.
+
+## Canonical routing
+
+| Item | Canonical destination |
+|---|---|
+| Raw audio and transcript | Local private `~/BrainLab/Calls` storage only |
+| Curated project minutes and relevant unfinished interpretation | Private Obsidian meeting note |
+| Laboratory task, owner, issue date, deadline, dependency | Bound Yonote project Kanban plus a private Obsidian snapshot |
+| Approved shared hypothesis | Lab Knowledge MCP hypothesis |
+| Experiment protocol or run | Lab Knowledge MCP experiment |
+| Observed result with provenance | Lab Knowledge MCP evidence |
+| Proposed conclusion | Lab Knowledge MCP decision proposal |
+
+Do not create a second writable task tracker in Obsidian. Record every meeting task in the private
+meeting note as a detailed historical snapshot, then link it to the canonical Yonote item after
+publication. A hypothesis and a task to test it are distinct objects linked by stable IDs.
+Treat legacy project task files and checkboxes as read-only archives. Never update their status or add
+new meeting tasks there; Yonote is the sole live task-status source.
+
+## Destination-specific curation
+
+- **Private Obsidian meeting note:** preserve the complete project-relevant narrative: hypotheses,
+  tentative ideas, experiment discussions, intermediate observations, contradictions, corrections,
+  decisions, open questions, and every task with its owner, issue date, due date, dependency, and
+  scientific context. The task section is a historical snapshot; live status remains canonical in
+  Yonote. Keep personal or unrelated material private and omit it from the research summary.
+- **Private Obsidian hypothesis hub:** maintain one `Гипотезы.md` per project for durable, useful
+  hypotheses. Mirror the same compact scientific claim shown in Yonote, add the richer local context
+  needed by personal agents, and link bidirectionally to call files, experiments, Lab Knowledge IDs,
+  and Yonote. Tentative call-only ideas stay in their call file until they are curated.
+- **Lab Knowledge MCP:** publish approved project knowledge as typed objects. Preserve hypotheses,
+  experiments, evidence, and decision proposals separately. Intermediate results may be evidence when
+  their provenance and limitations are explicit; otherwise keep them as unresolved private notes.
+- **Yonote project view:** create laboratory actions only on the bound project Kanban. The human-facing
+  project page may show a small curated set of high-level hypotheses that help a reader understand the
+  project. Do not project raw transcripts, run-by-run intermediate results, private commentary, local
+  paths, or MCP implementation details into Yonote.
+
+Every accepted task has a confirmed non-null `assignee` and `issued_date`, normally the call date. If
+either field cannot be resolved, keep the candidate blocked until the user confirms it.
+Set `due_date` only when a deadline is explicitly stated and not later withdrawn. If the live Yonote
+schema has no dedicated native `Исполнитель` or `Выдана` property, block the Yonote mutation. Never
+fall back to the document body and never copy `issued_date` into `due_date`.
+Task titles contain only the atomic action. Never add the project code, assignee, issue date, due date,
+or status to the title; store them in their dedicated fields. Store each call in
+`Звонки/<CODE> DD-MM-YYYY.md`; its H1 must not contain the project code.
+
+For every experimental execution task, resolve the concrete `method_variant`, `model_scale`,
+`initialization`, whether RL is enabled, and the expected artifact. Resolve the dataset and evaluation
+protocol whenever changing either could alter the command, config, data split, metric, or acceptance
+result; otherwise mark it `not_material` with an explicit reason. Phrases such as “current line”,
+“canonical run config”, “matched setup”, or “same experiment” do not substitute for these fields unless
+the destination contains a direct, accessible link to an immutable config that resolves every required
+value.
+
+If a required execution field is unresolved, block that task before shared mutation with
+`missing_execution_parameters`. Put every missing key in `missing` and add focused, candidate-linked
+questions to the single batch `questions_for_user`; their union must cover all missing keys. Do not
+silently infer the method or run variant. Do not create `write_payload` or publish the task until the
+user answers.
+
+## Accepted inputs and transcription
+
+Prefer a platform-provided `.vtt` or `.txt`. The configured local live-capture path is `brain-call`,
+which runs ownscribe with system audio plus microphone and writes private `transcript.json` files under
+`~/BrainLab/Calls`. Accept that JSON directly and retain its segment timestamps. Ignore an ownscribe
+summary as scientific evidence; the normalized transcript is the analysis source. For Zoom, prefer a
+local recording with a separate audio file for every participant when it is available; use the track
+name as speaker identity only after it matches the project roster. For Yandex Telemost, accept an
+ownscribe transcript, the Alice Pro transcript, or the `_audio_only.webm` recording. A mixed audio file
+may use anonymous speaker labels, but never inferred real names.
+
+Treat an ownscribe `speaker` value only as an anonymous source label. It becomes a canonical person
+only when it exactly matches a name explicitly supplied from the confirmed project roster.
+
+Drop voice-assistant prompts, subtitle credits, repeated recording watermarks, and unrelated dictation
+as `out_of_scope_personal`. They remain only in the untouched local raw transcript when the user keeps
+it. Do not copy them into candidates, summaries, Obsidian call notes, or even private project minutes;
+private project minutes still contain only meeting material relevant to the selected project.
+
+For live local Apple Silicon transcription, prefer the configured isolated ownscribe/WhisperX tool.
+For an existing audio file when ownscribe is unavailable, prefer an isolated MLX Whisper runtime.
+Keep diarization optional: it adds operational complexity and cannot establish real identities by
+itself. Never use a live dictation tool such as SuperDictate to capture the meeting.
+
+After resolving the project roster, normalize supported text input in a private temporary directory.
+Pass every confirmed TXT speaker with a repeated `--speaker` flag; an unconfirmed prefix remains text:
+
+```bash
+umask 077
+call_notes_dir="$(mktemp -d)"
+normalized="$call_notes_dir/normalized.json"
+call_notes_skill_dir="${CODEX_SKILLS_DIR:-$HOME/.agents/skills}/call-notes"
+trap 'rm -f "$normalized"; rmdir "$call_notes_dir"' EXIT
+python3 "$call_notes_skill_dir/scripts/normalize_transcript.py" /path/to/call.txt \
+  --speaker "Confirmed Name" > "$normalized"
+```
+
+The source audio, raw transcript, and normalized transcript remain private. Do not upload them to
+Lab Knowledge or Yonote.
+
+Use only the shared global glossary plus the selected project's scoped glossary. If a material term is
+unknown, keep the heard form in the private preview and ask one focused terminology question.
+Never let the model add its own guess. After the user explicitly explains and confirms the mapping, update the
+shared glossary through the deterministic `brain-call --learn-term ... --confirmed-by-user` command,
+then regenerate the affected preview. A terminology correction is not approval for any other write.
 
 ## Workflow
 
-### Step 1: Identify Project
+### 1. Resolve the bound project
 
-1. If the user named a project in their message (slug or partial name) → use it
-2. Otherwise check cwd against `~/.claude/obsidian-projects.json` → use that slug
-3. If still unclear → ask via AskUserQuestion: "Для какого проекта записать?"
+Resolve the current project through `~/.Codex/obsidian-projects.json` and the private hub card.
+If the registry is absent, follow the active `AGENTS.md` filesystem-to-vault routing rules; do
+not silently substitute a Claude registry as the source of truth.
+Read its stable Lab Knowledge project reference and Yonote page/board links. Confirm that the
+named board belongs to the same project. If the binding is absent, use `lab-project-onboarding`
+before preparing shared writes.
 
-Read obsidian-projects.json to find the Obsidian path:
-```python
-import json
-from pathlib import Path
-cfg = json.loads(Path.home().joinpath(".claude/obsidian-projects.json").read_text())
-# find matching slug → root → obsidian_dir = ~/Obsidian/shkodnik1917/<root>/<slug>/
+Resolve participants only against confirmed project members. Ask one focused question when a
+project or person is ambiguous. Never search globally and guess.
+
+### 2. Hydrate a bounded context packet
+
+Read the current project context, hypotheses, related Lab Knowledge search results, confirmed roster,
+and the relevant paper sections. Read Yonote task state only through an authorized integration. Give the
+same bounded packet to every analysis lane. Do not expose unrelated private notes.
+
+For long calls, segment at topic or project boundaries with a short overlap and retain global segment
+IDs. Do not split blindly by token count or lose cross-segment decisions.
+
+### 3. Extract with independent agents
+
+Follow the mandatory topology, ownership rules, and candidate schema in the analysis contract. Do not
+collapse a context worker, extraction lane, integrator, skeptic, or orchestrator into another role.
+
+### 4. Adjudicate without collapsing object types
+
+Preserve distinct tasks, hypotheses, experiments, evidence, and decisions. A completed task is
+not evidence. A reported metric is not a decision. Evidence must state what was observed and
+where the supporting artifact can be found.
+
+Keep raw text private by default. Merge by semantic identity and stable IDs, preserve contradictions,
+and publish only the minimum project-relevant facts explicitly approved for laboratory reuse. Produce
+one typed `CallBundle` with private minutes, shared candidates, blocked items, and questions.
+
+### 5. Check duplicates and permissions
+
+Use Lab Knowledge search and project context to find semantically related shared records before
+creating any hypothesis, experiment, evidence, or decision. Use the configured server-side
+Yonote broker to resolve existing board items. The client must never read or store a shared
+Yonote API token.
+
+Treat access denial as final. Do not infer hidden records from result counts, timing, IDs, or
+different error messages.
+
+### 6. Preview once and approve
+
+Build the semantic reconstruction before rendering task cards or shared candidates. Label which facts
+came from the transcript, project context, and user correction. Keep unresolved human uncertainties in
+a separate visible section instead of hiding them in fluent prose.
+
+If a spoken correction is ambiguous, use the voice-restatement fallback from the HWO regression:
+restate the interpreted changes and remaining uncertainties, then ask for explicit confirmation. Every
+correction follows revision-before-write: revise the preview, retain the correction trail, rerun the
+applicable gates and skeptical review, and request approval of the exact revised payload. A correction
+alone never authorizes a write.
+
+ASR quality gates automatic publication, not semantic recovery. For `degraded` and `unusable` transcripts,
+run the independent science, actions, and privacy lanes over every recoverable fragment. Preserve planned
+experiments as tasks or focused owner questions; never ask for a full retelling merely because speakers are
+anonymous or coverage is low. Only a transcript with no meaningful recoverable content may use
+`needs_restatement`.
+
+When that empty-transcript gate stopped the original full-call analysis and the user then supplies an
+authoritative restatement, do not rerun the entire empty transcript topology. Run a bounded revision
+path: one read-only structurer creates the corrected preview and a separate fresh read-only verifier
+checks it against the restatement, project dossier, and regression contract. The runner records both
+successful invocations before marking the revision reviewed. This exception applies only to a
+user-restatement revision; every transcript with recoverable content still uses the full mandatory topology.
+
+Show one compact batch preview:
+
+```text
+Obsidian private: meeting summary and private context
+Yonote tasks: title, project, assignee, issued date, due date, related Lab Knowledge ID
+Lab Knowledge: type, claim/result, project, provenance, duplicate candidate
 ```
 
-### Step 2: Read the project hub card
+Mark unresolved fields, source spans, confidence, and suspected duplicates. Obtain explicit approval
+before all shared mutations and before creating new participant cards. Let the user remove or edit
+individual items without re-approving unchanged items.
 
-Read `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md` and extract the `участники:` field.
-This gives you the canonical list of people in this project and their `people/` card paths.
+The local orchestrator may also send a **Jarvis sanitized digest** after the complete `CallBundle` has
+passed skeptical review. Jarvis is notification and correction UI only: it does not watch the call,
+does not run extraction, and never receives the raw transcript, audio, source excerpts, local paths,
+secrets, or destination credentials. The digest is derived from the reviewed bundle and is bounded to
+the project, call date, three to five main theses, destination counts, blocked questions, and existing
+Yonote/project links. Keep it under 1,200 characters and identify editable items by stable candidate ID.
 
-Example — if hub card has:
+Jarvis may return one optional correction comment that refers to those stable IDs. No comment means
+“no correction requested”, not explicit approval. The local call-notes orchestrator applies a correction
+to the preview and asks for explicit approval of the exact changed payload. Jarvis never performs
+Obsidian, Lab Knowledge, or Yonote mutations and does not start a watcher or follow-up loop.
+
+## Task examples embedded in the contract
+
+These examples define the required human-facing quality and the execution gate. They are included here
+directly so an agent does not need to infer the expected card shape from a link.
+
+### Good example: 1B KronZO run
+
+This example assumes the dossier contains a direct immutable config reference that resolves the
+material dataset and evaluator. Without that reference, the same candidate is blocked.
+
 ```yaml
-участники:
-  - "[[people/Иванов-Ваня]]"
-  - "[[people/Петрова-Катя]]"
-```
-Then the project participants are Ваня Иванов and Катя Петрова.
-
-### Step 3: Collect Notes
-
-If notes were not provided inline, ask via AskUserQuestion:
-```
-Что обсуждалось / что нужно сделать?
-(Пиши свободно: "Роме дописать раздел 2, Диме запустить эксперименты на A100")
-```
-
-### Step 4: Resolve names in the notes
-
-**Source of truth: ONLY the `участники:` list from the hub card (Step 2).** Do NOT search globally across `people/` — a person may exist in other projects but not be a participant here.
-
-For each person mentioned in the notes:
-1. Extract their `[[people/Фамилия-Имя]]` from the hub card's `участники:` field — this gives you both the file path and the canonical full name (`имя:` in that card)
-2. Try to match the mentioned name to one of these participants:
-   - Match by first name: "Гриша" → "Евсеев-Гриша" ✓
-   - Match by last name: "Евсеев" → "Евсеев-Гриша" ✓
-   - Match by common nickname only if it's unambiguous: "Катя" → "Екатерина", "Рома" → "Роман", "Валера" → "Валерий" (NOT "Владислав")
-   - Do NOT guess or stretch: "Валера" ≠ "Владислав", "Саша" alone is ambiguous if multiple participants could match
-3. If NO clear match found among the hub card participants → ask via AskUserQuestion:
-   ```
-   Не нашёл "<name>" среди участников проекта <slug>.
-   Участники в карточке: <list from hub card>
-
-   Это кто? Варианты:
-   а) один из участников выше (укажи кто)
-   б) новый участник — напиши "новый: Имя Фамилия"
-   ```
-   - If user picks an existing participant → map and use their card
-   - If user says "новый: Имя Фамилия" → create a new `people/<LastName>-<FirstName>.md` stub and add `"[[people/<LastName>-<FirstName>]]"` to the hub card's `участники:` field
-
-### Step 5: Create one Operon file-task per action
-
-For every distinct action in the notes, create a file-task at
-`~/Obsidian/shkodnik1917/Operon/Tasks/<Task title>.md`:
-
-```markdown
----
-assignees: [<Assignee>]
-project: [<slug>]
-status: Project.Planned
-dateDue: <YYYY-MM-DD>   # only if a deadline was mentioned; otherwise omit the line
----
-# <Task title>
-
-## Описание
-<Context for this task: preserve the substance of what was said — status, concerns,
-parameters, decisions. Do NOT over-summarize.>
-
-## Прогресс
-
-
-## Результат
+title: Запустить KronZO + ARC-ZO + RL на 1B с FO initialization
+body: >-
+  Проверить масштабирование KronZO + ARC-ZO + RL на модель 1B. FO initialization
+  и RL должны быть включены; это отдельный запуск от layer-wise ветки без RL.
+  Сохранить config, logs и checkpoint, а также learning и validation curves для
+  сопоставления с текущим 360M запуском.
+assignee: Трофимов Владислав
+issued_date: 2026-08-06
+due_date: null
+execution_spec:
+  method_variant: KronZO + ARC-ZO + RL
+  model_scale: 1B
+  initialization: FO initialization
+  rl_enabled: true
+  dataset: resolved by the immutable baseline config in context_refs
+  evaluation: resolved by the immutable baseline config in context_refs
+  expected_artifact: config, logs, checkpoint, learning curve, validation curve
 ```
 
-Rules:
-- **Assignee** = the person's full name exactly as in the `имя:` field of their `people/` card
-  (this is what Operon's `assignees` picker and the "my tasks" filter match on). If there is no
-  card, use the plain name as written (e.g. `Андрей` for the PI/user).
-- **`project: [<slug>]`** — the flat project tag. A task may carry several slugs if it spans
-  projects. Never use `parentTask`.
-- **`status: Project.Planned`** for a newly assigned task; use `Project.InProgress` only if the
-  notes say the person already started, `Project.Finished` if it was reported done in the call.
-- **Do NOT write `operonId`** — Operon assigns it when it indexes the file.
-- **Title / filename** = a concise phrase from the action. Strip characters Obsidian disallows
-  (`/ \ : * ? " < > |`). If a file with that name exists, append ` (2)`, ` (3)`, …
-- Each distinct action = its own task file. Group nothing; one action per file.
-- Preserve the original detail level — do not compress "подточил лемму, переписал акцент,
-  пофиксил графики" into "правки статьи".
+### Good example: two-seed DyKAF reproduction
 
-### Step 5b: Interleave the tasks on the hub card
-
-Open the hub card `~/Obsidian/shkodnik1917/<root>/<slug>/<slug>.md`. If it has no `## Задачи`
-section, append one before the last section or at the end of the file.
-
-Insert a **new dated block at the top** of `## Задачи` (newest first, never remove existing
-blocks). Each task created in Step 5 is referenced by a `[[Task title]]` wikilink, which Operon
-renders as an interactive task row (Task Wikilink Overlay) in Reading/Live Preview:
-
-```markdown
-## Задачи
-
-### <DD-MM-YYYY> — <topic extracted from notes, or "Синхронизация">
-
-<Context paragraph: 2–4 sentences preserving the substance of the call — who is doing what,
-status, decisions, deadlines.>
-
-- [[<Task title 1>]]
-- [[<Task title 2>]]
-- [[<Task title 3>]]
+```yaml
+title: Запустить ещё два seed для DyKAF + Shampoo
+body: >-
+  Проверить воспроизводимость результата DyKAF + Shampoo ещё на двух seed. Полностью
+  переиспользовать immutable protocol E-DYC-017 и менять только seed. Для каждого запуска
+  сохранить config, logs, checkpoint и validation result и связать их с E-DYC-017.
+assignee: Иван Петров
+issued_date: 2026-08-06
+due_date: 2026-08-10
+due_date_basis: "к следующему понедельнику, Europe/Moscow"
+execution_spec:
+  method_variant: DyKAF + Shampoo from E-DYC-017
+  model_scale: from immutable E-DYC-017 protocol
+  initialization: from immutable E-DYC-017 protocol
+  rl_enabled: from immutable E-DYC-017 protocol
+  dataset: from immutable E-DYC-017 protocol
+  evaluation: evaluator and metric from immutable E-DYC-017 protocol
+  expected_artifact: two configs, logs, checkpoints, and per-seed validation results
 ```
 
-Rules:
-- One `[[Task title]]` line per created task, in the same order as the notes.
-- Dates always absolute (DD-MM-YYYY). Topic: extract from content (e.g. "Правки статьи",
-  "Статус экспериментов") or use "Синхронизация".
-- The wikilink text must match the task filename exactly (without `.md`).
+### Blocked anti-example
 
-### Step 6: Update people/ cards
-
-For each person who appears in the notes (resolved in Step 4):
-1. Read their `~/Obsidian/shkodnik1917/people/<LastName>-<FirstName>.md`
-2. Find or create a `## Активность` section
-3. Insert a dated entry at the top of `## Активность`, describing what they did or need to do in this project:
-```markdown
-## Активность
-
-- **<DD-MM-YYYY>** `[[<slug>]]` — <what they did or what was assigned to them>
-```
-Always insert new activity at the top of the section — never overwrite existing entries.
-
-If the file doesn't exist (new participant added in Step 4) — create it:
-```markdown
----
-тип: человек
-имя: <Full Name>
-роль: студент
----
-# <Full Name>
-
-## Проекты
-- [[<slug>]] — <one-line project description>
-
-## Активность
-
-- **<DD-MM-YYYY>** `[[<slug>]]` — <activity>
-
-## Заметки
-
+```yaml
+title: Запустить финальный training run для ablation
+candidate_state: blocked
+owner: Иван Петров
+issued_date: 2026-08-06
+execution_spec:
+  method_variant: null
+  model_scale: null
+  initialization: null
+  rl_enabled: null
+  dataset: null
+  evaluation: null
+  expected_artifact: null
+missing: [method_variant, model_scale, initialization, rl_enabled, dataset, evaluation, expected_artifact]
+block_reason: missing_execution_parameters
+operation: blocked
+write_payload: absent
 ```
 
-### Step 7: Confirm
+Never replace the missing fields in the anti-example with phrases such as “current run” or “use the
+canonical config”. Ask one candidate-linked question batch and publish nothing until the answers or a
+direct immutable config resolve every field.
 
-Report:
-```
-✓ Создано задач Operon: N → ~/Obsidian/shkodnik1917/Operon/Tasks/
-✓ Hub card обновлён: ## Задачи (блок <DD-MM-YYYY>)
-✓ Обновлены карточки: [[people/X]], [[people/Y]]
-```
-Remind the user that tasks appear in Operon views only after a reindex
-(restart Obsidian or run `operon:rebuild-index`).
+### 7. Write each object once
 
-## Example
+Create or update the private per-call note at `Звонки/<CODE> DD-MM-YYYY.md` with the full structured
+meeting snapshot and stable references to shared objects. Do not append new calls to one aggregate file.
 
-**User input:**
-```
-/call-notes lora-bench
-Роме надо дописать анализ базелайна и добавить таблицу сравнения с GaLore.
-Артёму запустить QLoRA на llama-3-8b с lr=1e-4, прислать логи до пятницы.
-```
+Before any mutation, require the configured broker to advertise actual Yonote task CRUD for the bound
+Kanban, including create/update, lookup or deduplication, and read-back. If it is absent, stop the write
+phase and report `blocked: yonote_task_crud_unavailable` loudly. Do not emit a manual fallback, write a
+partial batch, or claim that tasks were created. Never use a client-side shared token.
 
-**`Operon/Tasks/Дописать анализ базелайна.md`:**
-```markdown
----
-assignees: [Роман Кутенков]
-project: [lora-bench]
-status: Project.Planned
----
-# Дописать анализ базелайна
+For Lab Knowledge, use the object-specific operation advertised by the live MCP schema:
+`create_hypothesis`, `record_experiment`, `record_evidence`, or `propose_decision`. Preserve
+source provenance and returned stable IDs. Do not automatically change a hypothesis status when
+evidence is recorded.
 
-## Описание
-Baseline-анализ нужно доработать перед сравнением методов.
+For every Yonote task, keep the human-facing card clean:
 
-## Прогресс
+- the title contains only the action, without a project code, date, owner, or generic `Задача` prefix;
+- `Исполнитель` and `Выдана` are required native database properties, not lines duplicated in the
+  document body;
+- `Выдана` must also be configured as a visible native date property in the normal human-facing task,
+  card, or board view. Merely storing a hidden property is insufficient. If visibility cannot be
+  verified, block before mutation with `yonote_issued_date_not_visible`;
+- `Срок` is a separate native property and stays empty unless a deadline was explicitly agreed;
+- the body contains only a useful task description: the research or operational context, the exact
+  action, and an observable completion artifact or acceptance criterion. Use two to four concise
+  sentences when that context is available;
+- internal source hashes, idempotency markers, MCP IDs, HTML comments, and other machine metadata
+  must never appear in the title or body. Replay protection belongs to the Brain Lab service or another
+  destination-native hidden mechanism that is guaranteed not to render to users.
 
+After approval, the orchestrator creates or updates the approved Obsidian note and hypothesis hub,
+typed Lab Knowledge records, and Yonote tasks. Extraction agents, the integrator, and the skeptic remain
+read-only. The orchestrator then reads back the exact call file, every MCP object, and every Yonote item;
+missing or mismatched read-back is a failed write, not success with a warning.
+For Yonote, read-back verifies both the issued-date value and that the active human-facing view exposes
+the `Выдана` property.
 
-## Результат
-```
+Call a shared create/update only when the destination can persist and query the normalized source hash
+and candidate idempotency key, or exposes an equivalent server-side idempotency parameter. Otherwise
+leave that mutation `blocked`; prompt-level deduplication is not a replay guarantee.
 
-**`Operon/Tasks/Запустить QLoRA на llama-3-8b.md`:**
-```markdown
----
-assignees: [Артем Утегенов]
-project: [lora-bench]
-status: Project.Planned
-dateDue: 2026-04-25
----
-# Запустить QLoRA на llama-3-8b
+Use the transcript SHA-256 as the batch idempotency key. Reprocessing the same transcript updates the
+preview; it must not create a second set of records.
 
-## Описание
-QLoRA на llama-3-8b, lr=1e-4. Прислать логи до 25 апреля.
+### 8. Verify and report
 
-## Прогресс
+Read back every created or updated record under the caller's own permissions. Report IDs/links,
+duplicates reused or skipped, private files changed, and unresolved items. Success requires verified
+read-back from Obsidian, Lab Knowledge MCP, and Yonote for every approved item.
 
+## Safety
 
-## Результат
-```
-
-**hub card `lora-bench.md` — `## Задачи` gets a new top block:**
-```markdown
-## Задачи
-
-### 20-04-2026 — Анализ и эксперименты
-
-Рома дорабатывает baseline-анализ: нужна таблица сравнения с GaLore. Артём запускает QLoRA на llama-3-8b (lr=1e-4), дедлайн по логам — 25 апреля.
-
-- [[Дописать анализ базелайна]]
-- [[Добавить таблицу сравнения с GaLore]]
-- [[Запустить QLoRA на llama-3-8b]]
-```
-
-**people/Кутенков-Рома.md — appended:**
-```markdown
-- **20-04-2026** `[[lora-bench]]` — дописать анализ базелайна, добавить таблицу сравнения с GaLore
-```
-
-## Notes
-
-- Requires the vault configured via `operon-obsidian-setup` (Operon plugin + `Operon/` folders +
-  the `project` field). If Operon is absent, warn and suggest that skill first.
-- Never delete or rewrite existing entries anywhere — new tasks are new files; hub-card and
-  people-card edits only prepend.
-- For any Markdown section you update, put the newest information at the top and keep older items below.
-- If the project has no Obsidian hub card yet → warn and suggest `/new-paper` first.
-- Do not invent tasks not mentioned in the notes.
+- Use the exact term `ZO`, never a translated or expanded substitute in project metadata.
+- Never publish raw transcripts, private commentary, local paths, secrets, or credentials.
+- Never broaden visibility beyond the access mode explicitly approved for that project. A
+  workspace-visible board is allowed only when the user has explicitly selected that temporary
+  mode; do not generate a public share link.
+- Never invent an assignee, deadline, metric, result, source, or API response.

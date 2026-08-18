@@ -4,6 +4,7 @@ set -euo pipefail
 CLAUDE_DIR="$HOME/.claude"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SRC_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+ENV_FILE="$SRC_DIR/.env"
 COMPONENTS=(skills commands agents rules hooks scripts)
 CLAUDE_MD_SIDECAR="CLAUDE.scholar.md"
 CLAUDE_ZH_MD_SIDECAR="CLAUDE.zh-CN.scholar.md"
@@ -15,9 +16,53 @@ BACKUP_COUNT=0
 UPDATED_COUNT=0
 SKIPPED_COUNT=0
 
+if [ -f "$ENV_FILE" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "$ENV_FILE"
+  set +a
+fi
+
 info()  { echo -e "\033[1;34m[INFO]\033[0m $*"; }
 warn()  { echo -e "\033[1;33m[WARN]\033[0m $*"; }
 error() { echo -e "\033[1;31m[ERROR]\033[0m $*"; exit 1; }
+
+render_settings_template() {
+  local template="$1"
+  local target="$2"
+
+  SETTINGS_TEMPLATE_SOURCE="$template" SETTINGS_RENDER_TARGET="$target" node <<'NODE'
+const fs = require('fs');
+
+const source = process.env.SETTINGS_TEMPLATE_SOURCE;
+const target = process.env.SETTINGS_RENDER_TARGET;
+const placeholder = /\$\{([A-Z_][A-Z0-9_]*)\}/g;
+
+function substitute(value) {
+  if (Array.isArray(value)) return value.map(substitute);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([key]) => !key.startsWith('_'))
+        .map(([key, child]) => [key, substitute(child)]),
+    );
+  }
+  if (typeof value === 'string') {
+    return value.replace(placeholder, (match, name) => process.env[name] ?? match);
+  }
+  return value;
+}
+
+const settings = substitute(JSON.parse(fs.readFileSync(source, 'utf8')));
+const servers = settings.mcpServers || {};
+if (!process.env.ZOTERO_API_KEY) delete servers.zotero;
+if (!(process.env.LAB_MCP_URL && process.env.LAB_MCP_TOKEN)) delete servers['lab-knowledge'];
+if (!(process.env.PLANE_API_KEY && process.env.PLANE_WORKSPACE_SLUG)) delete servers.plane;
+else if (!process.env.PLANE_BASE_URL) delete servers.plane.env.PLANE_BASE_URL;
+
+fs.writeFileSync(target, JSON.stringify(settings, null, 2) + '\n');
+NODE
+}
 
 check_deps() {
   command -v git  >/dev/null || error "Git is required. Install it first."
@@ -57,9 +102,8 @@ create_settings() {
   local template="$1/settings.json.template"
   local target="$CLAUDE_DIR/settings.json"
   if [ -f "$template" ] && [ ! -f "$target" ]; then
-    cp "$template" "$target"
+    render_settings_template "$template" "$target"
     info "Created settings.json from template."
-    info "  → Edit $target to add your GITHUB_PERSONAL_ACCESS_TOKEN (optional)."
   fi
 }
 
@@ -71,13 +115,17 @@ merge_settings() {
   [ -f "$template" ] || return 0
   [ -f "$target" ]   || { create_settings "$1"; return 0; }
 
+  local rendered_template
+  rendered_template="$(mktemp)"
+  render_settings_template "$template" "$rendered_template"
+
   # Backup
   backup_path "$target"
   cp "$target" "${target}.bak"
   info "Backed up settings.json → settings.json.bak"
 
   # Merge hooks, mcpServers, enabledPlugins while preserving user env/model/API key settings.
-  CLAUDE_SETTINGS_TARGET="$target" CLAUDE_SETTINGS_TEMPLATE="$template" node <<'NODE'
+  CLAUDE_SETTINGS_TARGET="$target" CLAUDE_SETTINGS_TEMPLATE="$rendered_template" node <<'NODE'
 const fs = require('fs');
 
 const targetPath = process.env.CLAUDE_SETTINGS_TARGET;
@@ -160,7 +208,21 @@ existing.hooks = mergeHooks(existing.hooks, template.hooks);
 if (template.mcpServers) {
   existing.mcpServers = existing.mcpServers || {};
   for (const [key, value] of Object.entries(template.mcpServers)) {
-    existing.mcpServers[key] = mergeMissing(existing.mcpServers[key], value);
+    if (key === 'lab-knowledge' || key === 'plane') {
+      existing.mcpServers[key] = clone(value);
+    } else {
+      existing.mcpServers[key] = mergeMissing(existing.mcpServers[key], value);
+    }
+  }
+}
+
+// Lab Knowledge and Plane are managed by this bundle. If the rendered
+// template omitted one because its credentials are incomplete, remove the
+// stale installed entry instead of silently retaining old credentials.
+existing.mcpServers = existing.mcpServers || {};
+for (const key of ['lab-knowledge', 'plane']) {
+  if (!(template.mcpServers && key in template.mcpServers)) {
+    delete existing.mcpServers[key];
   }
 }
 
@@ -175,6 +237,7 @@ fs.writeFileSync(targetPath, JSON.stringify(existing, null, 2) + '\n');
 NODE
 
   local merge_status=$?
+  rm -f "$rendered_template"
   if [ "$merge_status" -ne 0 ]; then
     warn "Auto-merge failed. Please manually copy settings from settings.json.template."
     return 0

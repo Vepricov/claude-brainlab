@@ -71,6 +71,19 @@ ask_secret ZOTERO_API_KEY    "ZOTERO_API_KEY"
 ask        ZOTERO_LIBRARY_ID "ZOTERO_LIBRARY_ID (numeric)" ""
 ask        UNPAYWALL_EMAIL   "UNPAYWALL_EMAIL"             "you@example.com"
 
+# ── Shared lab knowledge ──
+echo
+echo "Lab Knowledge MCP (optional — leave blank to skip):"
+ask        LAB_MCP_URL       "LAB_MCP_URL" ""
+ask_secret LAB_MCP_TOKEN     "LAB_MCP_TOKEN"
+
+# ── Plane ──
+echo
+echo "Plane MCP (optional — leave API key blank to skip):"
+ask_secret PLANE_API_KEY        "PLANE_API_KEY"
+ask        PLANE_WORKSPACE_SLUG "PLANE_WORKSPACE_SLUG" ""
+ask        PLANE_BASE_URL       "PLANE_BASE_URL" "https://api.plane.so"
+
 # ── User identity ──
 ask USER_EMAIL "Your contact email" "$UNPAYWALL_EMAIL"
 
@@ -85,6 +98,11 @@ PYTHON_BIN="$PYTHON_BIN"
 ZOTERO_API_KEY="$ZOTERO_API_KEY"
 ZOTERO_LIBRARY_ID="$ZOTERO_LIBRARY_ID"
 UNPAYWALL_EMAIL="$UNPAYWALL_EMAIL"
+LAB_MCP_URL="$LAB_MCP_URL"
+LAB_MCP_TOKEN="$LAB_MCP_TOKEN"
+PLANE_API_KEY="$PLANE_API_KEY"
+PLANE_WORKSPACE_SLUG="$PLANE_WORKSPACE_SLUG"
+PLANE_BASE_URL="$PLANE_BASE_URL"
 USER_EMAIL="$USER_EMAIL"
 EOF
 

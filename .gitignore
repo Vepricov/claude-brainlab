@@ -21,6 +21,7 @@ __pycache__/
 .venv/
 venv/
 .uv/
+services/lab-knowledge/.model-cache/
 
 # Node
 node_modules/
@@ -46,3 +47,39 @@ node_modules/
 .claude/cache/
 .claude/debug/
 .claude/memory/
+
+# Копия сервиса, оставленная при переезде 13-08-2026: не исходник и не данные,
+# которые стоит публиковать.
+services/lab-knowledge.stale-20260813/
+
+# Внутренняя половина: собственный приватный репозиторий (см. INTERNAL.md).
+#
+# Публиковать это нельзя: в данных службы двадцать работ, имена сорока трёх человек,
+# адреса внутренних страниц Yonote и гипотезы с результатами, часть которых ещё не
+# опубликована. Здесь перечислено то же, что лежит в приватном репозитории, чтобы
+# случайный `git add -A` физически не мог отправить внутреннее наружу.
+INTERNAL.md
+services/lab-knowledge/
+services/lab-site/
+scripts/brain_call*
+scripts/braincall-app/
+scripts/braincall-capture/
+scripts/check-capture-permission.sh
+scripts/check-capture-recognition.sh
+scripts/lab_audit/
+scripts/lab_library/
+scripts/lab_onboarding/
+scripts/lab_revision/
+scripts/lab_search_eval/
+scripts/lab_themes/
+skills/lab-knowledge/
+skills/lab-project-onboarding/
+skills/call-notes/agents/
+skills/call-notes/references/
+skills/call-notes/scripts/
+skills/call-notes/tests/
+skills/create-project/agents/
+commands/publish-hypothesis.md
+install/braincall-courier.sh
+tests/test_brain_call*
+task_plan.md

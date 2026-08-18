@@ -35,8 +35,12 @@ for everybody, and [`docs/llm-providers.md`](docs/llm-providers.md) for which mo
 
 This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
 knowledge service with its data, the meeting pipeline, and the tests that carry real names — lives in a
-private repository in the same organisation. Access comes with team membership: if you work at BRAIn
-Lab, join the GitHub team and you get the internal repository together with the shared knowledge base.
+private repository in the `brain-lab-research` organisation. Access comes with team membership: if you
+work at BRAIn Lab, join the GitHub team and you get the internal repository together with the shared
+knowledge base.
+
+`Vepricov/claude-brainlab` is the canonical repository; `brain-lab-research/claude-brainlab` is a fork
+kept in sync with it. Open issues and pull requests against the canonical one.
 
 Everything here works without that access. The installer skips the Lab Knowledge server when
 `LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and every Obsidian-routed skill no-ops without a vault.

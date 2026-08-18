@@ -1,8 +1,69 @@
-# claude-brainlab
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="claude-brainlab — a research workbench for Claude Code" width="100%">
+</p>
 
-A research-oriented configuration for [Claude Code](https://docs.claude.com/en/docs/claude-code) — built for an ML/AI researcher's day: ingesting papers into Zotero + Obsidian, drafting and reviewing papers, running experiments, and keeping a tightly-linked project knowledge base.
+<p align="center">
+  <a href="https://docs.claude.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-configuration-000?style=flat-square&logo=anthropic&logoColor=white"></a>
+  <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
+  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-37-58A6FF?style=flat-square"></a>
+  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-16-BC8CFF?style=flat-square"></a>
+  <a href="docs/knowledge-base.md"><img alt="lab knowledge MCP" src="https://img.shields.io/badge/Lab%20Knowledge%20MCP-40%20tools-D29922?style=flat-square"></a>
+  <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
+  <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
+</p>
 
-Built on top of [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) (MIT). Adds a tighter literature pipeline (`paper-ingest`, `paper-search`, `want-2-read`), a deeper Obsidian integration (project hub cards, daily notes, experiment logs, hard-link de-duplication), and per-project SSH/GPU routing.
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#lab-knowledge-the-shared-research-base">Lab Knowledge</a> ·
+  <a href="#the-toolkit-skills-commands-agents-hooks">The toolkit</a> ·
+  <a href="#install">Install</a> ·
+  <a href="#for-brain-lab-members">For lab members</a> ·
+  <a href="SKILLS.md">All 75 skills</a>
+</p>
+
+## Overview
+
+`claude-brainlab` is the working configuration of a machine-learning research lab, packaged so that
+someone else can install it. It turns [Claude Code](https://docs.claude.com/en/docs/claude-code) into a
+workbench that covers a research day end to end: find the paper, read it properly, run the experiment,
+write the paper, survive the review — and leave every step in a base the rest of the lab can search.
+
+What it actually gives you:
+
+- **A literature pipeline that does not hallucinate metadata.** An arXiv link becomes a Zotero item with
+  its PDF, a vault note with an eight-section analysis, an AlphaXiv mirror entry and a bibliography
+  entry. BibTeX comes from external APIs, never from a model, and a hook blocks any `\cite{}` key that
+  is missing from `references.bib`.
+- **A shared research base over MCP.** Hypotheses with falsifiers, experiments with status, evidence tied
+  to its artifact, decisions with their grounds, and 490+ read papers — one search over all of it. See
+  [Lab Knowledge](#lab-knowledge-the-shared-research-base).
+- **Experiment work that survives the night.** Per-project SSH and GPU routing, long runs in `tmux`,
+  loops that append timestamped progress to an experiment note and refresh the plot, and a queue with a
+  circuit breaker instead of a job list that burns down silently.
+- **Writing and review with teeth.** Beamer decks in a terminal-style theme, A\*-grade internal review
+  (reviewer + theoretician + literature scout + experiments auditor), and a rebuttal workflow where
+  every claim must point at the submitted paper or a verified artifact.
+- **Obsidian as the personal half.** Project hub cards, daily research logs, experiment logs, hard-link
+  de-duplication for a paper that belongs in two folders, and routing rules so notes land where they
+  belong instead of a `Research/` dump.
+- **Memory across sessions.** MemPalace integration with auto-save, so the next session starts knowing
+  what the last one decided.
+
+```mermaid
+flowchart LR
+    A["arXiv / AlphaXiv link"] --> B["paper-ingest<br/>BibTeX · PDF · 8-section analysis"]
+    B --> C["Zotero + Obsidian vault"]
+    C --> D[("Lab Knowledge<br/>shared base")]
+    E["session markup<br/>calls · decisions"] --> D
+    F["experiments on GPU hosts"] --> E
+    D --> G["search over lab knowledge<br/>and 490+ papers"]
+    G --> H["paper drafting · review · rebuttal"]
+    H --> D
+```
+
+> [!TIP]
+> Everything works without lab access. The installer skips the Lab Knowledge server when
+> `LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and Obsidian-routed skills no-op without a vault.
 
 ## Lab Knowledge: the shared research base
 
@@ -34,16 +95,24 @@ for everybody, and [`docs/llm-providers.md`](docs/llm-providers.md) for which mo
 ## For BRAIn Lab members
 
 This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
-knowledge service with its data, the meeting pipeline, and the tests that carry real names — lives in a
-private repository in the `brain-lab-research` organisation. Access comes with team membership: if you
-work at BRAIn Lab, join the GitHub team and you get the internal repository together with the shared
-knowledge base.
+knowledge service with its data, the meeting pipeline, and the tests that carry real names — stays in a
+private repository inside the [brain-lab-research](https://github.com/brain-lab-research) organisation.
+Access comes with team membership: if you work at BRAIn Lab, join the
+[GitHub team](https://github.com/orgs/brain-lab-research/teams) and you get the internal repository
+together with a token for the shared knowledge base.
 
-`Vepricov/claude-brainlab` is the canonical repository; `brain-lab-research/claude-brainlab` is a fork
-kept in sync with it. Open issues and pull requests against the canonical one.
+| | Where |
+|---|---|
+| Canonical repository, issues and pull requests | [Vepricov/claude-brainlab](https://github.com/Vepricov/claude-brainlab) |
+| Organisation fork, kept in sync | [brain-lab-research/claude-brainlab](https://github.com/brain-lab-research/claude-brainlab) |
+| Lab organisation and papers | [github.com/brain-lab-research](https://github.com/brain-lab-research) |
+| Internal half: knowledge service, data, call pipeline | private, granted with team membership |
 
-Everything here works without that access. The installer skips the Lab Knowledge server when
-`LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and every Obsidian-routed skill no-ops without a vault.
+Syncing the fork after a change lands upstream is one command:
+
+```bash
+gh repo sync brain-lab-research/claude-brainlab --source Vepricov/claude-brainlab --branch main
+```
 
 | Read this | If you want to |
 |---|---|
@@ -51,22 +120,36 @@ Everything here works without that access. The installer skips the Lab Knowledge
 | [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
 | [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
 
-## What's in the box
+## The toolkit: skills, commands, agents, hooks
 
-| | What it does | Where |
-|---|---|---|
-| **74 skills** | research, literature, Obsidian, code, writing — full list in [`SKILLS.md`](SKILLS.md) | `skills/` |
-| **38 slash commands** | `/paper-ingest`, `/want-2-read`, `/publish-hypothesis`, `/analyze-results`, `/rebuttal`, … | `commands/` |
-| **16 agents** | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | `agents/` |
-| **6 hooks** | security guard, session start/stop, MemPalace auto-save, Obsidian daily sync, skill activation | `hooks/` |
-| **Helper scripts** | statusline, conversation export, MemPalace ↔ Obsidian bridge | `scripts/` |
-| **Rules** | coding style, citation rules, security, agent orchestration | `rules/` |
-| **Templates** | `settings.json.template`, `.env.example`, project-mapping example | repo root |
+| | Count | What it is | Where |
+|---|---|---|---|
+| **Skills** | 75 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
+| **Slash commands** | 37 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, `/rebuttal`, … | [`commands/`](commands/) |
+| **Agents** | 16 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
+| **Hooks** | 7 | security guard, citation validator, session start/stop, memory auto-save, skill activation | [`hooks/`](hooks/) |
+| **Rules** | 6 | coding style, citations, security, agent orchestration, code workflow, server hygiene | [`rules/`](rules/) |
+| **Templates** | — | `settings.json.template`, `.env.example`, project-mapping example | repo root |
 
-## Highlights — what's unique to this fork
+<details>
+<summary><b>What the 75 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
 
-These are the parts you won't find in upstream `claude-scholar`. Per-skill detail for all
-74 skills is in [`SKILLS.md`](SKILLS.md).
+| Area | Skills you will actually type |
+|---|---|
+| **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `obsidian-literature-workflow`, `zotero-obsidian-bridge`, `citation-verification` |
+| **Experiments** | `results-analysis`, `results-report`, `obsidian-experiment-log`, `handoff-to-jarvis`, `diagnose`, `verification-loop` |
+| **Writing** | `ml-paper-writing`, `new-paper`, `writing-anti-ai`, `presentation`, `post-acceptance`, `paper-to-social` |
+| **Review** | `astar-paper-review`, `review-response`, `paper-self-review`, `grill-me`, `grill-with-docs` |
+| **Knowledge** | `lab-knowledge`, `lab-project-onboarding`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
+| **Engineering** | `code-ingest`, `code-library`, `code-review-excellence`, `tdd`, `bug-detective`, `git-workflow`, `uv-package-manager` |
+| **Ideas and planning** | `research-ideation`, `planning-with-files`, `zoom-out`, `architecture-design`, `improve-codebase-architecture` |
+
+</details>
+
+## Highlights — what you won't find upstream
+
+The repository started from `claude-scholar` (see [Credits](#credits)); these are the parts that grew
+here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 
 - **`paper-ingest`** — end-to-end pipeline: arXiv URL → BibTeX (external API, never LLM-generated) → PDF → Zotero parent item with PDF child attachment → Obsidian note with 8-section AI Explanation written by Haiku → mandatory final audit.
 - **`want-2-read`** — process a Markdown reading queue with one fan-out agent per paper, each invoking `paper-ingest`, plus a final review agent for quality control.
@@ -304,7 +387,9 @@ Most paths and identifiers are driven by `.env`. To change a hook, skill, or rul
 
 ## Credits
 
-- [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) — foundation: skill catalog, agent set, install pattern.
+- [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) (MIT) — the starting
+  point: the original skill catalogue, agent set and install pattern. Most of what is here now was
+  written after that fork, but the shape of the installer and the skill layout come from it.
 - [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) — vendored Obsidian utility skills (`obsidian-markdown`, `obsidian-cli`, `obsidian-bases`, `json-canvas`, `defuddle`). See `skills/obsidian-skills.UPSTREAM-LICENSE.txt`.
 - [MemPalace](https://github.com/MemPalace/mempalace) — the local-first memory MCP this config plugs into.
 

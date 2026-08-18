@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="claude-brainlab — a research workbench for Claude Code">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="100%" stop-color="#161B22"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3FB950"/>
+      <stop offset="60%" stop-color="#58A6FF"/>
+      <stop offset="100%" stop-color="#161B22"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="300" rx="14" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="44" rx="14" fill="#161B22"/>
+  <circle cx="28" cy="22" r="6" fill="#F85149"/>
+  <circle cx="50" cy="22" r="6" fill="#D29922"/>
+  <circle cx="72" cy="22" r="6" fill="#3FB950"/>
+  <text x="104" y="27" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#8B949E">~/.claude — research workbench</text>
+
+  <text x="56" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" font-weight="bold" fill="#E6EDF3">claude<tspan fill="#3FB950">-</tspan>brainlab</text>
+  <rect x="56" y="136" width="420" height="3" fill="url(#rule)"/>
+
+  <text x="56" y="176" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#8B949E">75 skills for reading papers, running experiments and writing them up,</text>
+  <text x="56" y="202" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#8B949E">wired into a shared research base the whole lab can search.</text>
+
+  <text x="56" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#3FB950">$ <tspan fill="#E6EDF3">/paper-ingest</tspan> <tspan fill="#58A6FF">arxiv.org/abs/2502.16982</tspan> <tspan fill="#8B949E">→ zotero → obsidian → lab base</tspan></text>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">
+    <rect x="812" y="86" width="150" height="30" rx="15" fill="#0D1117" stroke="#3FB950" stroke-width="1.2"/>
+    <text x="887" y="106" fill="#3FB950" text-anchor="middle">literature</text>
+    <rect x="972" y="86" width="172" height="30" rx="15" fill="#0D1117" stroke="#58A6FF" stroke-width="1.2"/>
+    <text x="1058" y="106" fill="#58A6FF" text-anchor="middle">experiments</text>
+    <rect x="812" y="128" width="150" height="30" rx="15" fill="#0D1117" stroke="#D29922" stroke-width="1.2"/>
+    <text x="887" y="148" fill="#D29922" text-anchor="middle">writing</text>
+    <rect x="972" y="128" width="172" height="30" rx="15" fill="#0D1117" stroke="#BC8CFF" stroke-width="1.2"/>
+    <text x="1058" y="148" fill="#BC8CFF" text-anchor="middle">review</text>
+    <rect x="812" y="170" width="332" height="30" rx="15" fill="#0D1117" stroke="#8B949E" stroke-width="1.2"/>
+    <text x="978" y="190" fill="#8B949E" text-anchor="middle">shared knowledge base over MCP</text>
+  </g>
+</svg>

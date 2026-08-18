@@ -75,7 +75,7 @@ What makes it useful rather than another database:
 | **A computed bridge, not hand-made links** | Subject tags come from a term dictionary matched against the text, so a hypothesis about spectral norms finds the papers about spectral norms, and every tag can be traced to the sentence it was found in. |
 | **Contributions need nothing but an id** | `upsert_paper(title=…, arxiv_id=…)` is a complete contribution: no vault, no Zotero, no folder. Fields you leave empty never erase stored ones, sections are replaced only when you send some, and every write names its author in the audit log. |
 | **Human-facing views stay in sync** | Approved records are published to Yonote project pages and named project boards; the raw private notes stay in Obsidian. |
-| **Zero-token writing** | A stop hook turns markup left in a session into records in the base, so recording what you learned costs no extra call. |
+| **Nothing is written by accident** | A stop hook interrupts the end of a turn every few exchanges and asks the agent to save what happened, so records are written deliberately, by something that has the whole context, and reported back in one line. |
 
 Read [`docs/knowledge-base.md`](docs/knowledge-base.md) for the four ways in and the rules that hold
 for everybody, and [`docs/llm-providers.md`](docs/llm-providers.md) for which model does which job.

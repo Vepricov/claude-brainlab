@@ -30,9 +30,11 @@ Two operational habits matter more than they look:
 
 ## What runs unattended
 
-- A stop hook turns markup left in a session into records in the shared base, so writing knowledge
-  costs no extra tokens and no extra call. It reports three outcomes — written, already there, deferred —
-  because "written" for something that was not written is the failure that hides longest.
+- A stop hook interrupts the end of a turn every ten exchanges and asks the agent to save the session
+  into three places: the memory MCP, Obsidian, and the shared base. The earlier design had the hook
+  parse the session for markup and write the records itself, which cost nothing per turn and fired
+  almost never: the markup was documented in the hook and nowhere else. Interrupting and demanding
+  costs a turn and works.
 - A pre-tool hook blocks any `\cite{}` key that is missing from `references.bib`.
 - Long jobs live in `tmux` on GPU servers; the loop that watches them appends timestamped progress to
   an experiment note and refreshes a plot, so a dead run is visible without watching it.

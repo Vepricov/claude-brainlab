@@ -49,18 +49,6 @@ What it actually gives you:
 - **Memory across sessions.** MemPalace integration with auto-save, so the next session starts knowing
   what the last one decided.
 
-```mermaid
-flowchart LR
-    A["arXiv / AlphaXiv link"] --> B["paper-ingest<br/>BibTeX · PDF · 8-section analysis"]
-    B --> C["Zotero + Obsidian vault"]
-    C --> D[("Lab Knowledge<br/>shared base")]
-    E["session markup<br/>calls · decisions"] --> D
-    F["experiments on GPU hosts"] --> E
-    D --> G["search over lab knowledge<br/>and 490+ papers"]
-    G --> H["paper drafting · review · rebuttal"]
-    H --> D
-```
-
 > [!TIP]
 > Everything works without lab access. The installer skips the Lab Knowledge server when
 > `LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and Obsidian-routed skills no-op without a vault.

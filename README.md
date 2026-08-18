@@ -96,12 +96,6 @@ together with a token for the shared knowledge base.
 | Lab organisation and papers | [github.com/brain-lab-research](https://github.com/brain-lab-research) |
 | Internal half: knowledge service, data, call pipeline | private, granted with team membership |
 
-Syncing the fork after a change lands upstream is one command:
-
-```bash
-gh repo sync brain-lab-research/claude-brainlab --source Vepricov/claude-brainlab --branch main
-```
-
 | Read this | If you want to |
 |---|---|
 | [`docs/knowledge-base.md`](docs/knowledge-base.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |

@@ -1,0 +1,4 @@
+interface:
+  display_name: "A* Paper Review"
+  short_description: "Audit ML papers at A* conference depth"
+  default_prompt: "Use $astar-paper-review to run a grounded theory, literature, and experimental audit of this paper."

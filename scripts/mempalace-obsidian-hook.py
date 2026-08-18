@@ -66,13 +66,16 @@ LAB_ADDENDUM = """
    - a run, planned or finished → record_experiment / update_experiment_status
    - a measured outcome → record_evidence, tied to the source it came from
    - a rule the lab will follow → propose_decision
+   - a machine, quota, account, licence or dataset the lab now has → upsert_resource, and put
+     the gotchas in `quirks`: they are what breaks runs. Never a password there.
+   - an honest observation, incident or measurement that is none of the above → record_journal
    Find the home first with get_project_by_slug: work on the lab's own tooling belongs to
    the `lab-agents` theme, lab knowledge that fits no project to `lab-general`.
-   Requirements that cannot be waived: a hypothesis needs its falsifier, evidence needs its
-   source, an experiment needs a status. If what you have does not meet that bar, write
-   nothing here — an invented record in a citable base is worse than a missing one, and
-   private or unfinished thinking belongs in Obsidian instead.
-   Report in one line: the codes you wrote, or that nothing qualified.
+   Requirements that cannot be waived for the strict kinds: a hypothesis needs its falsifier,
+   evidence needs its source, an experiment needs a status. Something that meets none of them
+   is a journal entry, not an invented hypothesis — but keep private or unfinished thinking in
+   Obsidian.
+   Report in one line: what you wrote, or that nothing qualified.
 """
 
 

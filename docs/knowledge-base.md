@@ -1,6 +1,6 @@
 # Feeding the shared knowledge base
 
-The lab runs a shared knowledge service (Lab Knowledge MCP, 40 tools) that holds two corpora side by
+The lab runs a shared knowledge service (Lab Knowledge MCP, 44 tools) that holds two corpora side by
 side: the lab's own records — hypotheses, experiments, evidence, decisions — and the library of read
 papers. Search answers over both.
 
@@ -55,7 +55,33 @@ their themes.
 Records live inside a project and follow its access rules, so you need to be a member of that
 project. Papers are shared: the library has no per-project walls.
 
-### 4. Your knowledge is in a meeting, not in a file
+### 4. What you learned is not a hypothesis, and the lab still wants it
+
+Two record kinds exist for exactly this, because widening "hypothesis" would have cost the one
+thing that makes a hypothesis worth citing — that it must be falsifiable.
+
+```
+upsert_resource(slug="cloud-ru-mlspace", title="Cloud.ru MLSpace", kind="cluster",
+                role="…", capacity="…", quirks=["…"], themes=["…"])
+record_journal(body="…", kind="measurement", theme="lab-agents", resources=["shkodnik-opt"])
+```
+
+**A resource** is a machine, cluster, quota, account, licence, dataset, budget or service the lab
+has. It belongs to no project, like a paper, because one machine serves everybody. Its most useful
+field is `quirks`: the gotchas that cost somebody a broken run — CUDA numbering that disagrees with
+`nvidia-smi`, a host without systemd, a root filesystem too small for scratch. Access says how to
+reach it and who grants it; a password there is refused, because this base is shared and a record
+outlives the people in it.
+
+**A journal entry** is an honest observation, incident, measurement, onboarding note or
+organisational fact with no falsifier and no experiment behind it. Promoting one to a hypothesis
+stays a separate, deliberate act. Tasks are not journal entries: they live on the project board.
+
+Both are searched together with everything else, so "what cards does that server have and what is
+wrong with its CUDA numbering" answers from the resource, and "why did the service stop answering"
+answers from the journal.
+
+### 5. Your knowledge is in a meeting, not in a file
 
 The `call-notes` skill turns an approved meeting summary into records and lab tasks. Its runner lives
 in the lab's private repository, because meeting content and member names are not public.

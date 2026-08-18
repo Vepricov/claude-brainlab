@@ -224,6 +224,22 @@ The `post-acceptance` skill (conference prep workflow) routes `terminal style` r
 
 To customize the theme: edit `skills/presentation/examples/terminal-style-mini.tex` (or fork it into your project), rerun `bash install/setup.sh` if you want it propagated to `~/.claude/`.
 
+## For BRAIn Lab members
+
+This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
+knowledge service with its data, the meeting pipeline, and the tests that carry real names — lives in a
+private repository in the same organisation. Access comes with team membership: if you work at BRAIn
+Lab, join the GitHub team and you get the internal repository together with the shared knowledge base.
+
+Everything here works without that access. The installer skips the Lab Knowledge server when
+`LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and every Obsidian-routed skill no-ops without a vault.
+
+| Read this | If you want to |
+|---|---|
+| [`docs/knowledge-base.md`](docs/knowledge-base.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |
+| [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
+| [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
+
 ## Install
 
 ```bash

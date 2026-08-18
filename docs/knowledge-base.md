@@ -1,0 +1,88 @@
+# Feeding the shared knowledge base
+
+The lab runs a shared knowledge service (Lab Knowledge MCP, 40 tools) that holds two corpora side by
+side: the lab's own records — hypotheses, experiments, evidence, decisions — and the library of read
+papers. Search answers over both.
+
+The service is the master. A personal Obsidian vault and a Zotero library are one way to feed it, not
+a requirement. Most members have neither, and a paper contributed with nothing but an arXiv id is a
+first-class paper.
+
+## Four ways in, pick the one that matches your setup
+
+### 1. You have an arXiv id and nothing else
+
+```
+upsert_paper(title="…", arxiv_id="2606.19348", themes=["muon-sign-methods"])
+```
+
+That is the whole contribution. Sections are optional, a reading note is not needed, and any member
+may write. Add `abstract`, `summary_ru`, `url`, `code_url` if you have them; add `sections` (a list of
+`{section, ordinal, content}`) if you wrote a real analysis.
+
+Themes come from `list_themes`. Pass them explicitly here: without a library folder there is nothing
+to derive a theme from, and a paper without a theme is missing from every theme view. An unknown
+theme slug is refused with a message telling you how to create one — nothing is invented silently.
+
+### 2. You keep reading notes in Obsidian and papers in Zotero
+
+Run `/paper-ingest` for a new paper (it writes the note, the Zotero item and the library mirror), then
+push the library:
+
+```bash
+python3 scripts/library_sync/parse_library.py --vault "$OBSIDIAN_VAULT" --zotero ~/Zotero/zotero.sqlite --out library.json
+python3 scripts/library_sync/push_library.py --manifest library.json
+```
+
+Parsing and pushing are separate on purpose: notes and Zotero live on your machine, the database does
+not. The parse step reports by name what it skipped and what arrived without any sections, so a run
+that loses papers cannot look like a clean one.
+
+Themes are derived from the library folder. One paper hard-linked into several folders belongs to all
+their themes.
+
+### 3. You want to record what the lab learned, not what it read
+
+| Tool | Records |
+|---|---|
+| `create_hypothesis`, `update_hypothesis` | a claim, its falsifier, its status |
+| `record_experiment`, `update_experiment_status` | a planned or finished run |
+| `record_evidence` | what a run showed, tied to its source |
+| `propose_decision`, `update_decision` | a decision and what it rests on |
+| `publish_source_note` | the artifact a claim points at |
+| `set_record_papers` | which papers a record is about, and its theme |
+
+Records live inside a project and follow its access rules, so you need to be a member of that
+project. Papers are shared: the library has no per-project walls.
+
+### 4. Your knowledge is in a meeting, not in a file
+
+The `call-notes` skill turns an approved meeting summary into records and lab tasks. Its runner lives
+in the lab's private repository, because meeting content and member names are not public.
+
+## Rules that hold for everybody
+
+**A natural key is mandatory for papers** — arXiv id, DOI or Zotero key. Without one the next write
+cannot recognise the paper and would file a duplicate beside it. Keys accumulate: a writer who knows
+only the arXiv id never erases a stored Zotero key.
+
+**Empty never erases.** Fields you leave out keep their stored values, and sections are replaced only
+when you send some. Pushing a short card over somebody's full reading note takes nothing away.
+
+**Every write names its author** in the audit log, so "who changed this paper" always has an answer.
+
+**Subject tags are computed, not written.** A dictionary of terms is matched against the title,
+abstract, summary and the section text; a shared tag is what links a hypothesis to a paper. Tags can
+always be checked against the place in the text they came from, which is why they are trusted at all.
+Adding a term is a code change, and a deliberate one.
+
+## Reading
+
+`search_lab` (scope `lab`, `library` or `all`), `list_themes` and `get_theme_context` for the map,
+`get_paper` for one paper with its sections, `find_related_papers` and `related_by_terms` for the
+bridge between the two corpora, `who_works_on_what` and `recent_changes` for people and movement.
+
+Semantic search is optional and off unless the service enables it. After a large library sync, run the
+warm-up (`scripts/warm_all.py` in the private repository) instead of letting the first query compute
+thousands of vectors: a single query is capped at a small number of missing vectors precisely so that
+a cold corpus degrades to word search instead of hanging.

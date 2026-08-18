@@ -13,16 +13,33 @@ own. Two hooks blocking on two cadences would double the noise, and a second mec
 that writes on its own turned out not to work at all: the previous lab hook parsed the
 session for markup nobody was documented to write, so in real use it never fired.
 
+WHY THIS COUNTS ITS OWN EXCHANGES
+
+The interval is meant to be "every N messages from the human". The upstream counter takes
+every entry with role=user, and in an agentic session almost all of those are tool
+results: in one long session here, 5283 such entries were 4722 tool results, 177 hook
+replies and only 384 real messages. At an interval of ten that fired 552 times instead of
+38, and each extra turn re-reads the whole context — 8.6% of the session's output tokens
+and 8.0% of its cache reads went to saving. So the counting happens here, over genuine
+turns only, and the interval means what it says.
+
+Saving before compaction is the other obvious idea and it does not work: a blocking
+PreCompact hook cancels the compaction instead of deferring it. The cadence stays on Stop.
+
 The lab section appears only when a lab-knowledge MCP server is configured, so an install
 without lab access is not nagged about a base it cannot reach.
 """
 
 import json
+import sys
 from pathlib import Path
 
 import mempalace.hooks_cli as hooks_cli
 
 SETTINGS = Path.home() / ".claude" / "settings.json"
+
+#: Настоящих сообщений человека между сохранениями.
+SAVE_INTERVAL = 10
 
 OBSIDIAN_ADDENDUM = """
 4. obsidian — if the session had experiments/theory/key decisions (skip for Q&A only):
@@ -38,6 +55,9 @@ OBSIDIAN_ADDENDUM = """
         → ${OBSIDIAN_VAULT}/general/Knowledge/<topic>.md
    c) Tell the user one line: what you wrote and where.
    Skip entirely if nothing of durable research value happened this session.
+
+Keep each save short: one drawer under ~1500 characters, one diary line, no transcript
+dumps and no code blocks unless the code is the finding itself.
 """
 
 LAB_ADDENDUM = """
@@ -70,10 +90,89 @@ def lab_base_configured() -> bool:
     return isinstance(servers, dict) and "lab-knowledge" in servers
 
 
-reason = hooks_cli.STOP_BLOCK_REASON.rstrip() + OBSIDIAN_ADDENDUM
-if lab_base_configured():
-    reason = reason.rstrip() + "\n" + LAB_ADDENDUM
-hooks_cli.STOP_BLOCK_REASON = reason
-hooks_cli.SAVE_INTERVAL = 10  # default: 15
+def _text_of(content: object) -> str:
+    """Plain text of a message, whatever shape the harness wrote it in."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        return " ".join(
+            block.get("text", "")
+            for block in content
+            if isinstance(block, dict) and block.get("type") != "tool_result"
+        )
+    return ""
 
-hooks_cli.run_hook("stop", "claude-code")
+
+def human_turns(transcript_path: str) -> int:
+    """How many times the person actually said something.
+
+    Tool results and the hook's own reminders wear role=user too, and counting them is what
+    turned an interval of ten into a save every other tool call.
+    """
+    path = Path(transcript_path).expanduser()
+    if not path.is_file():
+        return 0
+    count = 0
+    with path.open(encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            try:
+                entry = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            message = entry.get("message")
+            if not isinstance(message, dict) or message.get("role") != "user":
+                continue
+            content = message.get("content")
+            if isinstance(content, list) and any(
+                isinstance(block, dict) and block.get("type") == "tool_result"
+                for block in content
+            ):
+                continue
+            text = _text_of(content)
+            if "<command-message>" in text:
+                continue
+            if "AUTO-SAVE checkpoint" in text or "Stop hook feedback" in text:
+                continue
+            count += 1
+    return count
+
+
+def main() -> None:
+    try:
+        data = json.load(sys.stdin)
+    except (json.JSONDecodeError, EOFError):
+        data = {}
+    parsed = hooks_cli._parse_harness_input(data, "claude-code")  # noqa: SLF001
+
+    # Уже внутри цикла сохранения: пропустить, иначе получится петля.
+    if str(parsed["stop_hook_active"]).lower() in ("true", "1", "yes"):
+        print(json.dumps({}))
+        return
+
+    turns = human_turns(parsed["transcript_path"])
+    state_dir = hooks_cli.STATE_DIR
+    state_dir.mkdir(parents=True, exist_ok=True)
+    marker = state_dir / f"{parsed['session_id']}_last_save_turns"
+    try:
+        last = int(marker.read_text(encoding="utf-8").strip())
+    except (OSError, ValueError):
+        last = 0
+
+    if turns - last < SAVE_INTERVAL or turns <= 0:
+        print(json.dumps({}))
+        return
+
+    try:
+        marker.write_text(str(turns), encoding="utf-8")
+    except OSError:
+        pass
+    hooks_cli._maybe_auto_ingest()  # noqa: SLF001 — сохраняем поведение обёртки
+
+    reason = hooks_cli.STOP_BLOCK_REASON.rstrip() + OBSIDIAN_ADDENDUM
+    if lab_base_configured():
+        reason = reason.rstrip() + "\n" + LAB_ADDENDUM
+    print(json.dumps({"decision": "block", "reason": reason}))
+
+
+if __name__ == "__main__":
+    main()

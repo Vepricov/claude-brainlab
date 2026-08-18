@@ -4,6 +4,49 @@ A research-oriented configuration for [Claude Code](https://docs.claude.com/en/d
 
 Built on top of [Galaxy-Dawn/claude-scholar](https://github.com/Galaxy-Dawn/claude-scholar) (MIT). Adds a tighter literature pipeline (`paper-ingest`, `paper-search`, `want-2-read`), a deeper Obsidian integration (project hub cards, daily notes, experiment logs, hard-link de-duplication), and per-project SSH/GPU routing.
 
+## Lab Knowledge: the shared research base
+
+The lab runs a knowledge service that this toolkit talks to over MCP. It answers the question a lab
+loses most often: *has anyone here already tried this, and what came out of it?*
+
+It holds two corpora side by side and searches both at once:
+
+- **What the lab knows** — hypotheses with their falsifiers, experiments with their status, evidence
+  tied to the artifact it came from, decisions and what they rest on. Every record has a stable code
+  such as `H-DYC-001`, so it can be cited in a paper, a call or a message and still resolve a year later.
+- **What the lab has read** — 490+ papers with their full reading notes, split into sections, plus
+  authors, venue, BibTeX key and code links.
+
+What makes it useful rather than another database:
+
+| | |
+|---|---|
+| **Research themes, not folders** | A theme is the entry point: `get_theme_context` returns the hypotheses, experiments, decisions **and** the literature of one research area together. Papers belong to several themes when they honestly do. |
+| **Hybrid search over both corpora** | Word search and semantic search fused by reciprocal rank, one ordering for lab records and literature, with lab knowledge weighted slightly above papers and a floor kept for literature so "what do the papers say" always gets an answer. Embeddings run locally, so search costs no tokens. |
+| **A computed bridge, not hand-made links** | Subject tags come from a term dictionary matched against the text, so a hypothesis about spectral norms finds the papers about spectral norms, and every tag can be traced to the sentence it was found in. |
+| **Contributions need nothing but an id** | `upsert_paper(title=…, arxiv_id=…)` is a complete contribution: no vault, no Zotero, no folder. Fields you leave empty never erase stored ones, sections are replaced only when you send some, and every write names its author in the audit log. |
+| **Human-facing views stay in sync** | Approved records are published to Yonote project pages and named project boards; the raw private notes stay in Obsidian. |
+| **Zero-token writing** | A stop hook turns markup left in a session into records in the base, so recording what you learned costs no extra call. |
+
+Read [`docs/knowledge-base.md`](docs/knowledge-base.md) for the four ways in and the rules that hold
+for everybody, and [`docs/llm-providers.md`](docs/llm-providers.md) for which model does which job.
+
+## For BRAIn Lab members
+
+This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
+knowledge service with its data, the meeting pipeline, and the tests that carry real names — lives in a
+private repository in the same organisation. Access comes with team membership: if you work at BRAIn
+Lab, join the GitHub team and you get the internal repository together with the shared knowledge base.
+
+Everything here works without that access. The installer skips the Lab Knowledge server when
+`LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and every Obsidian-routed skill no-ops without a vault.
+
+| Read this | If you want to |
+|---|---|
+| [`docs/knowledge-base.md`](docs/knowledge-base.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |
+| [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
+| [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
+
 ## What's in the box
 
 | | What it does | Where |
@@ -29,7 +72,7 @@ These are the parts you won't find in upstream `claude-scholar`. Per-skill detai
 - **`code-ingest`** / **`code-library`** — map an external repo into Obsidian Code-library notes (`path:line`, no code copied) and document the whole code workflow.
 - **`create-project`** / **`lab-project-onboarding`** — set up the private repository and Obsidian hub, then idempotently bind a Brain Lab project to its shared MCP record, human-facing Yonote page, and named project Kanban.
 - **`lab-knowledge`** / **`publish-hypothesis`** — Ask Lab runs inside the user's local agent and reads shared research context from Lab Knowledge MCP. Private drafts stay in Obsidian until an explicit curated publication preview is approved. Yonote is the clean human-facing project view.
-- **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc `Задачи.md` convention.
+- **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc per-project task file convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
 - **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for both `presentation` and `post-acceptance`.
@@ -198,7 +241,7 @@ A LaTeX Beamer skill for theory talks, mathematical decks, and conference presen
 
 ### Terminal style (the dark theme)
 
-When you say `terminal style` or `терминальный стиль`, the skill applies a custom Beamer theme defined in [`skills/presentation/examples/terminal-style-mini.tex`](skills/presentation/examples/terminal-style-mini.tex). Compile that file to preview the look.
+When you say `terminal style`, the skill applies a custom Beamer theme defined in [`skills/presentation/examples/terminal-style-mini.tex`](skills/presentation/examples/terminal-style-mini.tex). Compile that file to preview the look.
 
 Visual contract (also documented in [`skills/presentation/examples/terminal-style-notes.md`](skills/presentation/examples/terminal-style-notes.md)):
 
@@ -218,27 +261,11 @@ Visual contract (also documented in [`skills/presentation/examples/terminal-styl
 | Theorem/idea blocks | `tcolorbox` with thin colored left rule |
 | Title slide | `// header` line + thin rules + large title + terminal-like `$ run --topic ...` footer |
 | Section dividers | `// 01`, `// 02`, ... + one large title, no other content |
-| Final slide | `Спасибо!` + optional `Вопросы?`, same visual language as title |
+| Final slide | closing thanks and questions line, same visual language as title |
 
 The `post-acceptance` skill (conference prep workflow) routes `terminal style` requests to the same canonical example, so a request for "make me a NeurIPS talk in terminal style" produces a deck with this exact look.
 
 To customize the theme: edit `skills/presentation/examples/terminal-style-mini.tex` (or fork it into your project), rerun `bash install/setup.sh` if you want it propagated to `~/.claude/`.
-
-## For BRAIn Lab members
-
-This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
-knowledge service with its data, the meeting pipeline, and the tests that carry real names — lives in a
-private repository in the same organisation. Access comes with team membership: if you work at BRAIn
-Lab, join the GitHub team and you get the internal repository together with the shared knowledge base.
-
-Everything here works without that access. The installer skips the Lab Knowledge server when
-`LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and every Obsidian-routed skill no-ops without a vault.
-
-| Read this | If you want to |
-|---|---|
-| [`docs/knowledge-base.md`](docs/knowledge-base.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |
-| [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
-| [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
 
 ## Install
 

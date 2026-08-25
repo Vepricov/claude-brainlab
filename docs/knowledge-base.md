@@ -1,8 +1,16 @@
 # Feeding the shared knowledge base
 
-The lab runs a shared knowledge service (Lab Knowledge MCP, 44 tools) that holds two corpora side by
+The lab runs a shared knowledge service (Lab Knowledge MCP, 47 tools) that holds two corpora side by
 side: the lab's own records — hypotheses, experiments, evidence, decisions — and the library of read
 papers. Search answers over both.
+
+A record exists so that someone who was not there can cite it, which is also the one bar that keeps
+the base useful: reads are lab-wide, so a record written in a project's private vocabulary is private
+memory in a shared place. Each project therefore keeps a registry of its internal names — build
+nicknames, run ids, local protocol names — and defining a name is retroactive: every earlier record
+that used it becomes readable without being rewritten. The write path names what is still undefined
+instead of refusing, because a record carrying a measurement must not be lost because its vocabulary
+was late.
 
 The service is the master. A personal Obsidian vault and a Zotero library are one way to feed it, not
 a requirement. Most members have neither, and a paper contributed with nothing but an arXiv id is a

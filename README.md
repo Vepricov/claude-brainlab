@@ -7,7 +7,7 @@
   <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
   <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-37-58A6FF?style=flat-square"></a>
   <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-16-BC8CFF?style=flat-square"></a>
-  <a href="docs/knowledge-base.md"><img alt="lab knowledge MCP" src="https://img.shields.io/badge/Lab%20Knowledge%20MCP-44%20tools-D29922?style=flat-square"></a>
+  <a href="docs/knowledge-base.md"><img alt="lab knowledge MCP" src="https://img.shields.io/badge/Lab%20Knowledge%20MCP-47%20tools-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
   <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
 </p>

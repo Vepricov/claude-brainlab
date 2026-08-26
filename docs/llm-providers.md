@@ -39,6 +39,39 @@ analyses is exactly the workload that should be started off-peak.
 Sources: [DeepSeek pricing](https://deepseek.ai/pricing),
 [price change 16-08-2026](https://www.techtimes.com/articles/324764/20260817/deepseek-v4-api-prices-quadruple-peak-what-developers-pay-starting-now.htm).
 
+## Feeding the base: what a model has to be able to do
+
+Writing to the shared knowledge base is not a writing task, it is a tool-use task, and that is the
+only requirement worth checking before pointing a new model at it:
+
+- **reliable tool calling over ~24 tools** with typed arguments. The write path is a chain —
+  hypothesis, run, status, evidence — and every step takes ids returned by the previous one;
+- **reading its own tool results.** The service answers with more than a receipt: a missing resource
+  slug comes back as `unregistered_resources`, an undefined internal name as `unexplained_terms`, a
+  fresh project as `next_steps`. A model that ignores the response body loses exactly the guidance
+  that keeps records readable;
+- **restraint.** A hypothesis needs a falsifier, evidence needs its experiment, and an invented
+  record that someone later cites is worse than a missing one. This is a property of the prompt and
+  the model both;
+- **no long context needed.** One record is a few hundred tokens; the base is read through search,
+  not by loading it.
+
+What we have actually seen do the whole chain unattended: **Opus 5** inside Claude Code, and
+**gpt-5.6-sol** through Codex inside the Hermes agents on the server — the second one recorded a
+project, its hypotheses, four experiments and their evidence across a night, concluded a refuted
+claim itself and reported the codes.
+
+What is reasonable but unverified for this path: **DeepSeek V4** and other cheap OpenAI-compatible
+models. They are already the right tool for bulk paper reading above, and the chain is mechanical
+enough that they should manage it under review; nobody has run it end to end here, so do not
+promise it. Small local models are not suitable: they lose the id chain, not the prose.
+
+A cost note, because it decides how often an agent writes. One knowledge record costs a few hundred
+output tokens and one or two calls. What is expensive is the surrounding turn: the agent re-reads
+its context to decide there is something worth recording. That is why the autonomous agents are
+asked once every five turns rather than every turn, and why findings are buffered in a file and
+flushed together.
+
 ## How switching providers actually works today
 
 Be aware of what does not exist: there is no provider abstraction layer. The batch lane shells out to

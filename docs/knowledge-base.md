@@ -1,8 +1,8 @@
 # Feeding the shared knowledge base
 
-The lab runs a shared knowledge service (Lab Knowledge MCP, 47 tools) that holds two corpora side by
-side: the lab's own records — hypotheses, experiments, evidence, decisions — and the library of read
-papers. Search answers over both.
+The lab runs a shared knowledge service (Lab Knowledge MCP, 52 tools) that holds two corpora side by
+side: the lab's own records — hypotheses, experiments, evidence, derivations, decisions — and the
+library of read papers with the claims those papers make. Search answers over both.
 
 A record exists so that someone who was not there can cite it, which is also the one bar that keeps
 the base useful: reads are lab-wide, so a record written in a project's private vocabulary is private
@@ -56,9 +56,22 @@ their themes.
 | `create_hypothesis`, `update_hypothesis` | a claim, its falsifier, its status |
 | `record_experiment`, `update_experiment_status` | a planned or finished run |
 | `record_evidence` | what a run showed, tied to its source |
-| `propose_decision`, `update_decision` | a decision and what it rests on |
+| `record_derivation`, `update_derivation_status` | a proof of a claim: assumptions, argument, result, completeness |
+| `propose_decision`, `update_decision` | a decision and the evidence it rests on |
+| `record_paper_claim`, `link_paper` | what an outside paper claims, and how one of our records stands to it |
 | `publish_source_note` | the artifact a claim points at |
 | `set_record_papers` | which papers a record is about, and its theme |
+
+A claim is closed by our own evidence or our own derivation, and by nothing else. A theoretical
+result has no protocol, no seeds and no hardware, so recording it as an experiment used to make a
+purely theoretical project read as an experimental one; `record_derivation` is that shape, and a hole
+in a proof is named through `status='gap'` rather than left silent.
+
+An outside paper carries claims of its own, each on a sentence quoted from the text stored for that
+paper. The quote is checked against that text and a quote absent from it is refused, so
+"this paper contradicts us" points at a sentence a reader can check instead of at twenty pages. Such
+a claim never concludes a claim of ours: it can be prior art, a baseline, the reason we asked, or a
+contradiction.
 
 Records live inside a project and follow its access rules, so you need to be a member of that
 project. Papers are shared: the library has no per-project walls.

@@ -61,10 +61,12 @@ loses most often: *has anyone here already tried this, and what came out of it?*
 It holds two corpora side by side and searches both at once:
 
 - **What the lab knows** — hypotheses with their falsifiers, experiments with their status, evidence
-  tied to the artifact it came from, decisions and what they rest on. Every record has a stable code
-  such as `H-DYC-001`, so it can be cited in a paper, a call or a message and still resolve a year later.
+  tied to the artifact it came from, derivations for the claims that are closed by a proof rather than
+  a run, decisions and the evidence they rest on. Every record has a stable code such as `H-DYC-001`,
+  so it can be cited in a paper, a call or a message and still resolve a year later.
 - **What the lab has read** — 490+ papers with their full reading notes, split into sections, plus
-  authors, venue, BibTeX key and code links.
+  authors, venue, BibTeX key and code links, and the claims those papers make: each one quoted from
+  the paper's text, so "this paper contradicts us" points at a sentence instead of at twenty pages.
 
 What makes it useful rather than another database:
 
@@ -73,6 +75,8 @@ What makes it useful rather than another database:
 | **Research themes, not folders** | A theme is the entry point: `get_theme_context` returns the hypotheses, experiments, decisions **and** the literature of one research area together. Papers belong to several themes when they honestly do. |
 | **Hybrid search over both corpora** | Word search and semantic search fused by reciprocal rank, one ordering for lab records and literature, with lab knowledge weighted slightly above papers and a floor kept for literature so "what do the papers say" always gets an answer. Embeddings run locally, so search costs no tokens. |
 | **A computed bridge, not hand-made links** | Subject tags come from a term dictionary matched against the text, so a hypothesis about spectral norms finds the papers about spectral norms, and every tag can be traced to the sentence it was found in. |
+| **A record that outsiders can read** | Reads are lab-wide, so every project keeps a registry of its internal names — build nicknames, run ids, local protocol names. Defining a name is retroactive: one definition made seventy existing records readable without editing any of them, and the definition itself is findable by search. |
+| **Support that can be checked** | A theoretical claim is closed by a derivation with its assumptions and completeness, never by a run with a proof stuffed into its protocol. A decision names the evidence under it. A quote from an outside paper is verified against that paper's stored text, and one that is not in it is refused. |
 | **Contributions need nothing but an id** | `upsert_paper(title=…, arxiv_id=…)` is a complete contribution: no vault, no Zotero, no folder. Fields you leave empty never erase stored ones, sections are replaced only when you send some, and every write names its author in the audit log. |
 | **Human-facing views stay in sync** | Approved records are published to Yonote project pages and named project boards; the raw private notes stay in Obsidian. |
 | **Nothing is written by accident** | A stop hook interrupts the end of a turn every few exchanges and asks the agent to save what happened, so records are written deliberately, by something that has the whole context, and reported back in one line. |

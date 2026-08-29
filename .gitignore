@@ -69,6 +69,7 @@ scripts/check-capture-recognition.sh
 scripts/lab_audit/
 scripts/lab_library/
 scripts/lab_onboarding/
+scripts/lab_resources/
 scripts/lab_revision/
 scripts/lab_search_eval/
 scripts/lab_themes/

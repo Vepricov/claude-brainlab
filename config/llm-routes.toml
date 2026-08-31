@@ -1,0 +1,80 @@
+# Какая работа каким моделям достаётся.
+#
+# Одна модель на всё — это либо дорого, либо плохо. Поэтому работа разделена на роли, и у каждой
+# свой провайдер. Менять маршрут можно здесь, не трогая код: скрипты спрашивают роль, а не модель.
+#
+# Переопределить на один запуск: LAB_LLM_<РОЛЬ>=провайдер/модель, например
+#   LAB_LLM_IDEAS=anthropic/claude-opus-5 python3 scripts/lab_llm/route.py ideas
+#
+# Чего маршрутизация не может: скилл, который выполняется внутри Claude Code, исполняется Клодом по
+# построению. Развести можно то, что уходит в отдельный процесс: агентов Hermes, пакетные проходы и
+# любой скрипт, который сам ходит в API.
+
+default_provider = "deepseek"
+
+[roles.ideas]
+model = "deepseek-v4-pro"
+about = "генерация идей и углов атаки: своё мнение, а не пересказ"
+
+[roles.hypotheses]
+model = "deepseek-v4-pro"
+about = "разговор по гипотезам: критерий опровержения, что закроет утверждение"
+
+[roles.knowledge]
+model = "deepseek-v4-pro"
+about = "создание уникального знания: вывод, разбор чужого результата, формулировка"
+
+[roles.literature-review]
+provider = "claude-code"
+model = "claude-opus-5"
+about = "обзор литературы: много текста, длинный контекст, аккуратные цитаты"
+
+[roles.paper-analysis]
+model = "deepseek-v4-flash"
+about = "пакетный разбор статей: десятки штук, важна пропускная способность"
+
+[roles.call-notes]
+model = "deepseek-v4-flash"
+about = "разбор созвонов: расшифровка в решения и задачи"
+
+[roles.interactive]
+provider = "claude-code"
+model = "claude-opus-5"
+about = "интерактивный агент в терминале: правит код и решает, что делать дальше"
+
+[roles.retrieval]
+provider = "local"
+model = "intfloat/multilingual-e5-large"
+about = "поиск: считается на процессоре службы, провайдера не касается"
+
+[providers.deepseek]
+base_url = "https://api.deepseek.com/v1"
+key_env = "DEEPSEEK_API_KEY"
+api = "openai"
+
+# Claude через подписку в Claude Code: ключа нет, счёт идёт не по API.
+[providers.claude-code]
+base_url = ""
+key_env = ""
+api = "cli"
+
+# Тот же Claude, но по API-ключу: нужен, если роль уходит в отдельный пакетный процесс.
+[providers.anthropic]
+base_url = "https://api.anthropic.com/v1"
+key_env = "ANTHROPIC_API_KEY"
+api = "anthropic"
+
+[providers.openrouter]
+base_url = "https://openrouter.ai/api/v1"
+key_env = "OPENROUTER_API_KEY"
+api = "openai"
+
+[providers.openai-codex]
+base_url = ""
+key_env = ""
+api = "cli"
+
+[providers.local]
+base_url = ""
+key_env = ""
+api = "none"

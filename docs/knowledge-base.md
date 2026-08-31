@@ -174,3 +174,20 @@ Semantic search is optional and off unless the service enables it. After a large
 warm-up (`scripts/warm_all.py` in the private repository) instead of letting the first query compute
 thousands of vectors: a single query is capped at a small number of missing vectors precisely so that
 a cold corpus degrades to word search instead of hanging.
+
+### Search walks the graph, not only the words
+
+Hybrid ranking finds a record that resembles the question. The chain that record exists for does
+not resemble it: a measurement reading "9.694 s per hundred iterations" contains no word from the
+question that made someone run it, so it never appears beside the claim it closes. Those edges were
+already in the schema, and only `get_related` walked them, one record at a time.
+
+Search now expands two hops from its best hits along those edges — claim to run to number, decision
+to the evidence it names, run back to the claim it tests — and places each neighbour directly behind
+the record that pulled it in, labelled with the relation in `extra.relation` and `matched_by:
+["graph"]`. Two hops, because the chain is exactly that long. At most two neighbours per seed and
+six in total, so a page stays a page. Zero model calls: the edges exist, walking them is SQL.
+
+The idea is taken from [gbrain](https://github.com/garrytan/gbrain), whose benchmark puts hybrid
+ranking without graph traversal at P@5 ≈ 18 and the same stack with it at 49.1. Our hybrid was the
+first of those two.

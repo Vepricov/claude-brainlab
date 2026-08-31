@@ -84,3 +84,4 @@ commands/publish-hypothesis.md
 install/braincall-courier.sh
 tests/test_brain_call*
 task_plan.md
+scratch/

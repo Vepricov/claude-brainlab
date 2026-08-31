@@ -85,3 +85,4 @@ install/braincall-courier.sh
 tests/test_brain_call*
 task_plan.md
 scratch/
+.env.bak-*

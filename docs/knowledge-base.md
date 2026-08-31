@@ -93,6 +93,30 @@ every empirical claim carries a value.
 Records live inside a project and follow its access rules, so you need to be a member of that
 project. Papers are shared: the library has no per-project walls.
 
+### Who wrote it: the person answers, the agent acted
+
+One token per person is not enough. Three agents sharing one token turn every record into
+"a service account wrote this", and then nobody can tell which agent to stop when one of them starts
+writing noise. So a token carries a label naming the agent or machine it belongs to, and the journal
+records both: the person as the subject, the label as the actor. That is the split RFC 8693 draws
+between subject and actor, without the token exchange a ten-person lab does not need.
+
+```
+issue_agent_token(label="rl-muon")        # a member issues their own; a lead may add email=…
+list_agent_tokens()                       # labels and dates; the tokens themselves are not stored
+revoke_agent_token(label="laptop")        # a stolen laptop costs one agent, not the person
+```
+
+The label is read from the database by the token, so it cannot be forged. A caller may additionally
+send an `X-Lab-Actor` header saying what fired inside the agent — `codex_hook`, `board_sync`,
+`digest` — and the journal shows it beside the label: `veprikov via rl-muon / codex_hook`. That
+header is the caller's word rather than the database's, which is why it sits next to the label
+instead of replacing it, and only characters safe to print survive.
+
+`scripts/lab_connect.py --token <token>` does the client side: opens the tunnel, registers the
+server in Claude Code and Codex with the right headers, labels the machine by its hostname, and
+verifies that a call actually lands. Nothing to configure by hand.
+
 ### 4. What you learned is not a hypothesis, and the lab still wants it
 
 Two record kinds exist for exactly this, because widening "hypothesis" would have cost the one

@@ -1959,13 +1959,22 @@
       </header>
       <ol class="paths">${examples.map(x=>{
         const [from,to]=splitTitle(x.title);
-        return `<li class="path"><div class="path-kind"><span>${esc(x.kind)}</span></div>
+        // Куда ведёт строка, видно до нажатия: имя инструмента стоит в левой колонке рядом
+        // с родом. Раньше там было пусто, а под каждым маршрутом висела своя кнопка
+        // «Открыть инструмент» — шесть одинаковых кнопок подряд и ни одной подсказки, что
+        // за ними. Владелец: «я бы везде убрал это как кнопки, надо встроить в дизайн,
+        // чтобы было не так перегружено».
+        const tool=byId[x.id]?.tools?.find(t=>t.id===x.tool);
+        return `<li class="path"><div class="path-kind"><span>${esc(x.kind)}</span>
+            ${tool?`<i>${esc(tool.title)}</i>`:""}</div>
           <div class="path-body">
-            ${from?`<h2 class="is-journey"><em>от ${esc(from)}</em><b>до ${esc(to)}</b></h2>`
-                  :`<h2><b>${esc(to)}</b></h2>`}
+            <h2${from?` class="is-journey"`:""}>${from?`<em>от ${esc(from)}</em>`:""}<b>${
+              // Нажимается сам заголовок и вместе с ним вся строка: у маршрута одна цель,
+              // и отдельная кнопка под текстом только повторяла её словами.
+              ""}<button class="path-open" type="button" data-example-process="${esc(x.id)}"
+              data-example-tool="${esc(x.tool||"")}">${from?`до ${esc(to)}`:esc(to)}</button></b></h2>
             <p>${esc(x.text)}</p>
             <p class="path-outcome">${esc(x.outcome)}</p>
-            <button data-example-process="${esc(x.id)}" data-example-tool="${esc(x.tool||"")}" type="button">Открыть инструмент</button>
           </div></li>`}).join("")}</ol></div>`;
     view.querySelectorAll("[data-example-process]").forEach(b=>b.onclick=()=>
       openProcess(b.dataset.exampleProcess,b.dataset.exampleTool));

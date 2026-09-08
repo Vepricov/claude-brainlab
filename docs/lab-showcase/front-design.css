@@ -66,32 +66,40 @@
 .examples-head>p:last-child{margin-top:18px;max-width:620px;color:var(--muted);
   font-size:14px;line-height:1.7}
 .paths{list-style:none;margin:44px 0 0;padding:0}
-.path{display:grid;grid-template-columns:150px minmax(0,1fr);gap:26px;
-  padding:30px 0;border-top:1px solid var(--line)}
+.path{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr);gap:26px;
+  padding:30px 0;border-top:1px solid var(--line);transition:background .18s}
 .path:last-child{border-bottom:1px solid var(--line)}
+.path:hover{background:color-mix(in srgb,var(--lime) 3%,transparent)}
+/* Левая колонка держит две подписи: род маршрута и имя инструмента, который откроется.
+   Раньше здесь стоял только род, а куда ведёт строка, человек узнавал после нажатия. */
+.path-kind{display:flex;flex-direction:column;gap:7px}
 .path-kind span{color:var(--lime);font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.path-kind i{color:var(--muted);font:normal 11px/1.3 var(--mono);letter-spacing:-.01em}
 .path-body h2{font-weight:400;max-width:30ch}
-/* «от …» уходит в тон подписи, «до …» несёт вес: путь читается сверху вниз, без стрелок. */
+/* «от …» уходит в тон подписи, «до …» несёт вес: путь читается сверху вниз, без стрелок.
+   Стрелка тут была — маленький повёрнутый уголок перед «до». На экране он читался как
+   обрубленный символ и стоял только у трёх маршрутов из шести, потому что у остальных
+   заголовок не делится на «от» и «до». Разницу в размере и тоне видно и без него. */
 .path-body h2 em{display:block;color:var(--muted);font:400 clamp(16px,1.7vw,21px)/1.25 var(--display);
   font-style:normal;letter-spacing:-.025em}
-.path-body h2 b{display:block;position:relative;margin-top:6px;padding-left:19px;color:var(--ink);
+.path-body h2 b{display:block;margin-top:6px;color:var(--ink);
   font:500 clamp(21px,2.5vw,31px)/1.12 var(--display);letter-spacing:-.04em;text-wrap:balance}
-.path-body h2.is-journey b:before{content:"";position:absolute;left:2px;top:.44em;
-  width:9px;height:9px;border-right:1.5px solid var(--lime);border-bottom:1.5px solid var(--lime);
-  transform:rotate(45deg)}
-.path-body h2:not(.is-journey) b{padding-left:0}
+/* Нажимается заголовок, а область нажатия — вся строка: одна цель, одна мишень, ни одной
+   лишней рамки. Псевдоэлемент растягивается по .path, поэтому текст под ним остаётся
+   выделяемым, а с клавиатуры это по-прежнему обычная кнопка со своим контуром. */
+.path-open{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;
+  font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
+.path-open:after{content:"";position:absolute;inset:0}
+.path:hover .path-open,.path-open:hover{color:var(--lime)}
+.path-open:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
 .path-body>p{margin-top:15px;max-width:70ch;color:#aab2a7;font-size:13.5px;line-height:1.72}
 .path-outcome{margin-top:14px;padding-left:15px;
   border-left:2px solid color-mix(in srgb,var(--lime) 55%,transparent);
   color:var(--ink)!important;font-size:13.5px}
-.path-body button{margin-top:20px;padding:10px 14px;border:1px solid var(--line-strong);
-  border-radius:8px;background:none;color:var(--ink);font:9px var(--mono);letter-spacing:.06em;
-  text-transform:uppercase;cursor:pointer}
-.path-body button:hover{border-color:var(--lime);color:var(--lime)}
 @media (max-width:760px){
   .path{grid-template-columns:1fr;gap:12px;padding:24px 0}
+  .path-kind{flex-direction:row;align-items:baseline;gap:10px}
   .path-body h2{grid-template-columns:1fr}
-  .path-body h2 i{grid-column:1;grid-row:auto}
 }
 
 /* ============ Досье инструментов: метка вместо пилюли ============

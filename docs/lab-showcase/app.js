@@ -1118,7 +1118,11 @@
         html:`<section class="map-group"><p class="overline">Разделы библиотеки</p>${rows}${loose}</section>`});
     }
     if(m.directions.length){
-      parts.push(`<section class="map-group"><p class="overline">Научные направления лаборатории</p>${
+      // Направления раньше приклеивались после всех групп и в сортировке не участвовали:
+      // на прямой вопрос «какие направления есть в лаборатории» они оказывались последними,
+      // ниже тем и разделов библиотеки.
+      groups.push({rank:strength(m.directions),own:3,
+        html:`<section class="map-group"><p class="overline">Научные направления лаборатории</p>${
         m.directions.map(({node})=>{
           const projects=(base.records||[]).filter(r=>r.k==="project"&&
             (r.f||[]).some(f=>f[0]==="направление"&&(node.raw||[]).includes(f[1])));
@@ -1130,7 +1134,7 @@
             <h3>${esc(node.t)}</h3>
             <p class="map-node-abstract">${esc(unmark(node.a||""))}</p>
             ${list?`<div class="map-node-subs"><b>Проекты</b>${list}</div>`:""}
-          </article>`}).join("")}</section>`);
+          </article>`}).join("")}</section>`});
     }
     // Сильное совпадение выше слабого: «muon» — точное имя подраздела и лишь вхождение в
     // названия проектов. При равной силе своя работа идёт первой.
@@ -1167,15 +1171,26 @@
     // предобучение языковых моделей» проект ZO Pretraining набирает 332, а подтема «Muon за
     // пределами предобучения LLM» — 50, то есть 0.15, и всё равно стояла над проектом:
     // оглавление поднимало подтемы безусловно. Человек спрашивал про ZO и первым читал Muon.
+    // Порядок здесь такой же, как в самой выдаче, и порог общий. Раньше сначала шли подтемы
+    // найденных подразделов — все и без разбора, — а уже за ними те, что совпали сами.
+    // На запросе «какие направления есть в лаборатории» это выводило наверх подтемы про
+    // ZO, потому что в одной из них есть «выбор направлений возмущения»: подраздел попал в
+    // шестьдесят найденных узлов, и все его подтемы поднялись выше настоящих направлений.
+    // На «статьи про слияние адаптеров» так же поднимались четыре подтемы Reference/rndm_papers
+    // вместо подтемы «Слияние адаптеров и геометрия обновлений», которая и стояла первой.
     const best=Math.max(0,...[m.projects,m.themes,m.folders,m.subtopics,m.directions]
       .flat().map(x=>x.hit||0));
     const seen=new Set(),topics=[];
-    for(const {node} of m.folders)
-      for(const t of node.sub||[]){const key=node.f+"|"+t.slug;
-        if(!seen.has(key)){seen.add(key);topics.push({folder:node.f,topic:t})}}
-    for(const {folder,node,hit} of m.subtopics){const key=folder.f+"|"+node.slug;
-      if(seen.has(key)||(best&&(hit||0)<best*0.3))continue;
-      seen.add(key);topics.push({folder:folder.f,topic:node})}
+    const add=(folder,topic,hit)=>{const key=folder+"|"+topic.slug;
+      if(seen.has(key)||(best&&(hit||0)<best*0.3))return;
+      seen.add(key);topics.push({folder,topic,hit:hit||0})};
+    // Сначала те, что совпали сами: у них свой балл, и он выше балла папки. Если добавлять
+    // папки первыми, подтема «Слияние адаптеров и геометрия обновлений» получала 122 балла
+    // своей папки вместо собственных 167 и уходила вниз под чужие подтемы.
+    for(const {folder,node,hit} of m.subtopics)add(folder.f,node,hit);
+    // Затем содержимое найденных подразделов: выиграл подраздел, балл наследуется от него.
+    for(const {node,hit} of m.folders)for(const t of node.sub||[])add(node.f,t,hit);
+    topics.sort((a,b)=>b.hit-a.hit);
     if(!counts.length&&!topics.length)return "";
     return `<div class="map-index">
       ${counts.length?`<p class="map-index-counts">${counts.join(" · ")}</p>`:""}

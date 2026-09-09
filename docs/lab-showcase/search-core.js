@@ -209,6 +209,15 @@
          Понижаем: содержания в них нет, они нужны как ссылка, а не как ответ. */
       const CHORE_KINDS = new Set(["source", "journal"]);
       const context = options.context instanceof Set ? options.context : null;
+      /* Точная фраза. BM25 — мешок слов: он не отличает документ, в названии которого запрос
+         стоит подряд, от документа, где те же слова разбросаны. На запросе «LoRA Low-Rank
+         Adaptation of Large» это стоило самой статьи LoRA: наверх выходили OLoRA, TLoRA+ и
+         прочие, у которых те же слова встречаются чаще относительно длины текста.
+         Человек, набравший название подряд, ищет именно его. Порог в три слова — чтобы
+         «Muon» или «LoRA» не давали фразового совпадения половине базы. */
+      const flatten = (text) => ` ${String(text || "").toLowerCase()
+        .replace(/[^a-zа-яё0-9]+/g, " ").trim()} `;
+      const phrase = words.length >= 3 ? flatten(query).trim() : "";
       const boost = (payload) => {
         const isNode = NODE_KINDS.has(payload.kind);
         const inContext = context && (context.has(payload.project) || context.has(payload.folder)
@@ -221,7 +230,8 @@
         // Запись из области, которую этот же запрос поднял наверх, весит больше. Множитель
         // умеренный: он меняет порядок внутри похожих, а далёкое не вытягивает.
         const byContext = inContext ? 1.9 : (context ? 0.55 : 1);
-        return byKind * byChore * bySize * byContext;
+        const byPhrase = phrase && flatten(payload.title).includes(` ${phrase} `) ? 2.2 : 1;
+        return byKind * byChore * bySize * byContext * byPhrase;
       };
       const N = this.docs.length;
       const scores = new Map();

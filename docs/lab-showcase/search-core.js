@@ -194,10 +194,35 @@
      * записи оттуда весят больше, чем записи из инфраструктурного проекта.
      */
     search(query, limit = 40, options = {}) {
+      /* Слова про устройство базы («подтемы», «разделы», «направления») говорят, какой
+         формы ответ нужен, а не о чём он. В тематическом ранжировании они только шумят:
+         те же слова стоят в аннотациях узлов, где речь идёт про устройство подраздела.
+         Замер: на запросе «какие есть подтемы в PEFT» папка Optimization/optimization_rndm
+         набирала 142 балла против 111 у PEFT/lora_base, потому что слово «подтемы» есть в
+         её аннотации. Человек получал подтемы про Adam вместо подтем про PEFT.
+         Убираем их из запроса — форму ответа они и так задают, в wantsMap. Если после
+         этого не остаётся ничего («направления лаборатории»), ищем как есть. */
+      const raw = String(query).toLowerCase().match(/[a-zа-яё0-9][a-zа-яё0-9_-]*/g) || [];
+      const kept = raw.filter((w) => !MAP_WORDS.has(w));
+      // Выбрасывать их совсем нельзя: «тема» и «направление» — это ещё и настоящие уровни
+      // базы, и на запросе «какие темы есть по оптимизации» без них наверх лезли проекты.
+      // Поэтому вес, а не удаление: структурное слово всё ещё склоняет выдачу к узлам, но
+      // не перевешивает тему запроса.
+      const structural = new Set();
+      const askedKinds = new Set();
+      for (const word of raw) {
+        if (!MAP_WORDS.has(word)) continue;
+        for (const t of tokenize(word)) structural.add(t);
+        // Структурное слово называет уровень, на котором человек ждёт ответ. Пусть оно и
+        // поднимает этот уровень, а не свои же вхождения в чужих аннотациях: «какие темы
+        // есть по оптимизации» — вопрос про темы, а не про проекты, у которых слово
+        // «оптимизация» стоит в описании.
+        const kind = LEVEL_WORDS[word];
+        if (kind) for (const k of kind) askedKinds.add(k);
+      }
       const terms = tokenize(query);
       if (!terms.length) return [];
-      const words = (String(query).toLowerCase().match(/[a-zа-яё0-9][a-zа-яё0-9_-]*/g) || [])
-        .filter((w) => !STOP.has(w) && w.length > 1);
+      const words = (kept.length ? kept : raw).filter((w) => !STOP.has(w) && w.length > 1);
       const hasCode = /\b[a-zа-яё]-[a-z]{2,4}-\d{2,4}\b/i.test(query);
       // 1 значимое слово → 1.0 навигации, 5 и больше → 0.0. Промежуточные значения плавные.
       const navigational = hasCode ? 0 : Math.max(0, Math.min(1, (4 - words.length) / 3));
@@ -231,7 +256,8 @@
         // умеренный: он меняет порядок внутри похожих, а далёкое не вытягивает.
         const byContext = inContext ? 1.9 : (context ? 0.55 : 1);
         const byPhrase = phrase && flatten(payload.title).includes(` ${phrase} `) ? 2.2 : 1;
-        return byKind * byChore * bySize * byContext * byPhrase;
+        const byLevel = askedKinds.size && askedKinds.has(payload.kind) ? 1.6 : 1;
+        return byKind * byChore * bySize * byContext * byPhrase * byLevel;
       };
       const N = this.docs.length;
       const scores = new Map();
@@ -242,10 +268,11 @@
         const list = this.postings.get(term);
         if (!list) continue;
         const idf = Math.log(1 + (N - list.length + 0.5) / (list.length + 0.5));
+        const weight = structural.has(term) ? 0.08 : 1;
         for (const { id, tf } of list) {
           const len = this.docs[id].len;
           const norm = tf * (K1 + 1) / (tf + K1 * (1 - B + B * len / this.avgLen));
-          scores.set(id, (scores.get(id) || 0) + idf * norm);
+          scores.set(id, (scores.get(id) || 0) + weight * idf * norm);
         }
       }
       return [...scores.entries()]
@@ -352,6 +379,19 @@
   //
   // Это не список синонимов и не заплатка под конкретный запрос: здесь только служебные
   // слова, которые в обоих языках означают вопрос, и только имена уровней самой базы.
+  /* Какой уровень базы называет структурное слово. «Темы» — это theme, «разделы» — раздел
+     библиотеки и подраздел, «направления» — direction. Слова вроде «обзор» или «список»
+     уровня не называют и сюда не попадают: они говорят только, что ответ должен быть картой. */
+  const LEVEL_WORDS = {
+    "направление": ["direction"], "направления": ["direction"], "направлений": ["direction"],
+    "тема": ["theme"], "темы": ["theme"], "тем": ["theme"],
+    "раздел": ["section", "folder"], "разделы": ["section", "folder"],
+    "разделов": ["section", "folder"],
+    "подраздел": ["folder"], "подразделы": ["folder"],
+    "подтема": ["subtopic"], "подтемы": ["subtopic"],
+    "проекты": ["project"], "проектов": ["project"],
+  };
+
   const MAP_WORDS = new Set(["направление", "направления", "направлений", "тема", "темы", "тем",
     "раздел", "разделы", "разделов", "подраздел", "подразделы", "подтема", "подтемы",
     "обзор", "структура", "список", "карта", "области", "область", "проекты", "проектов"]);

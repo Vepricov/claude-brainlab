@@ -1991,7 +1991,9 @@
       card.querySelector("summary")?.focus({preventScroll:true})}
   },50)}
 function fitLoopMap(){const map=document.querySelector("#overview .loop-map");if(!map)return;
-  if(innerWidth<821||innerWidth<=1200){map.style.removeProperty("--map-scale");return}
+  // Ниже 1261 карта раскладывается в колонку средствами CSS, масштабировать нечего.
+  if(innerWidth<821||innerWidth<=1260){map.style.removeProperty("--map-scale");
+    map.style.removeProperty("margin-left");return}
   // Карта нарисована под 760 пикселей высоты. Свободное место — окно минус шапка, заголовок и
   // поля; берём реальную высоту заголовка, а не константы вёрстки, иначе замер разъедется при
   // первой же правке шрифта.
@@ -1999,14 +2001,25 @@ function fitLoopMap(){const map=document.querySelector("#overview .loop-map");if
   // ровно под свободное место, и внизу не остаётся пустоты, а сверху ничего не срезается.
   map.style.setProperty("--map-scale","1");
   const top=map.getBoundingClientRect().top;
-  const room=(map.parentElement||document.body).getBoundingClientRect().width;
+  // Свободное место по ширине — это содержимое родителя, без его полей. Раньше здесь стоял
+  // getBoundingClientRect().width, а он считает вместе с полями: на 1280 это 1280 вместо
+  // 1177, масштаб выходил 0.883 вместо 0.812, и карта шириной ровно в окно уезжала под
+  // поля с обеих сторон. У .overview стоит overflow:hidden, поэтому наружу это выглядело не
+  // как прокрутка, а как отрезанные карточки «Созвоны» и «Эксперименты».
+  const host=map.parentElement||document.body;
+  const pad=getComputedStyle(host);
+  const room=host.clientWidth-parseFloat(pad.paddingLeft)-parseFloat(pad.paddingRight);
   // Ниже 0.85 текст на карте становится нечитаемым (замер: 6.8 пикселя на 1440×900), поэтому
   // сильнее не ужимаем, а переходим в две колонки — там кегль остаётся прежним.
   const wanted=Math.min(1,(innerHeight-top-24)/628,room/1450);
-  if(wanted<.85){map.style.removeProperty("--map-scale");document.getElementById("overview")?.classList.add("map-stacked");return}
+  if(wanted<.80){map.style.removeProperty("--map-scale");document.getElementById("overview")?.classList.add("map-stacked");return}
   document.getElementById("overview")?.classList.remove("map-stacked");
   const scale=wanted;
-  map.style.setProperty("--map-scale",scale.toFixed(3))}
+  map.style.setProperty("--map-scale",scale.toFixed(3));
+  // Отсчёт масштаба идёт от левого верхнего угла, поэтому центрируем сами: свободное место
+  // за вычетом уменьшенной карты, пополам. Иначе карта прижата к левому полю, а на узких
+  // экранах правым краем уходила за окно.
+  map.style.marginLeft=`${Math.max(0,(room-1450*scale)/2).toFixed(1)}px`}
 addEventListener("resize",fitLoopMap);
   function showOverview(navigate=true){requestAnimationFrame(fitLoopMap);if(navigate)updateHash("loop");hidePrimaryViews();$("overview").hidden=false;active("loop");window.scrollTo({top:0,behavior:"instant"})}
   const processNames={"agent-orchestration":"нужно поручить работу отдельному агенту","code-engineering":"нужно изменить или проверить код","discussion":"нужно разобрать обсуждение","experiment-design":"нужно спроектировать проверку идеи","experiment-run":"нужно провести эксперимент","external-review":"нужна независимая проверка","knowledge-maintenance":"нужно сохранить или восстановить знание","literature-discovery":"нужно найти релевантные статьи","literature-ingest":"нужно добавить статью в библиотеку","presentation":"нужно подготовить научный доклад","project-lifecycle":"нужно создать, связать или закрыть проект","publication":"нужно подготовить результат к публикации","research-direction":"нужно уточнить исследовательское направление","results":"нужно разобраться в результатах","theory":"нужно проверить теоретическое рассуждение","writing":"нужно написать или проверить научный текст"};

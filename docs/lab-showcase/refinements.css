@@ -701,20 +701,38 @@
     width:1450px!important;
     max-width:none!important;
     transform:scale(var(--map-scale,1))!important;
-    transform-origin:top center;
-    height:calc(760px * var(--map-scale,1));
-    margin:8px auto 12px;
+    /* Точка отсчёта слева, а не по центру. Холст шире контейнера, а у блока шире родителя
+       margin:auto обращается в ноль: раскладочная коробка начинается от левого поля и уходит
+       вправо. При отсчёте от центра уменьшенная карта оставалась смещённой вправо на те же
+       85 пикселей и правым краем вылезала за окно. От левого края смещение считает скрипт:
+       он знает и масштаб, и свободное место. */
+    transform-origin:top left;
+    /* Высота холста настоящая, не умноженная на масштаб. Раньше здесь стояло
+       calc(760px * var(--map-scale,1)), и высота уменьшалась дважды: сначала в calc, потом
+       трансформом. Холст сжимался по вертикали — на 1280 до 510 пикселей вместо 628, — а
+       расстановка карточек задана в процентах от него, поэтому нижний ряд наезжал на круг
+       общего знания. Лишнее место под картой снимаем отрицательным полем: место занимает
+       нарисованная высота, а внутренняя геометрия остаётся целой. */
+    height:760px;
+    margin:8px 0 calc(12px - 760px * (1 - var(--map-scale,1)));
   }
 }
 
 /* Абсолютная раскладка держится только там, где ей хватает ширины.
    Замер: на 1150px карточка «Проверка статей» перекрывала «Презентацию» на 114px, на 1024
    таких наложений было тринадцать. Ниже 1200px карта переходит в столбец — он читается. */
-@media (max-width:1200px) and (min-width:821px){
+/* Граница поднята с 1200 до 1260. Ниже неё круговой раскладке не хватает ширины: масштаб
+   уходит меньше 0.80, и мелкие подписи становятся нечитаемыми. Колонка там честнее. */
+@media (max-width:1260px) and (min-width:821px){
   #overview .loop-map,
   #overview .loop-map:has(.overview-contour){
+    /* Ширину обязательно вернуть: блок выше жёстко ставит холст 1450px под круговую
+       раскладку, а здесь раскладка колоночная и холст ей не нужен. Без сброса колонка
+       строилась внутри коробки в 1450 пикселей и обрезалась с обеих сторон. */
+    width:min(100%,1180px)!important;
     height:auto;
     min-height:0;
+    transform:none!important;
     margin:24px auto 0;
   }
   #overview .loop-map:before{display:none}
@@ -722,8 +740,14 @@
   #overview .loop-map>.knowledge-cluster,
   #overview .loop-map>svg{transform:none}
   #overview .loop-map>svg{display:none}
+  /* Кластеру нужна собственная высота: и ядро, и три кнопки памяти внутри позиционированы
+     абсолютно, поэтому при height:auto он схлопывался в ноль, а его содержимое ложилось
+     поверх карточек и полосы с числами. Так же, как в мобильной ветке, задаём min-height. */
   #overview .knowledge-cluster{position:relative;left:auto;top:auto;transform:none;
-    width:100%;height:auto;margin:0 0 18px}
+    width:100%;height:auto;min-height:330px;margin:0 0 18px}
+  #overview .knowledge-core{position:absolute;left:50%;top:44%;width:168px;height:168px;
+    transform:translate(-50%,-50%)}
+  #overview .memory-surfaces{position:absolute;inset:0;width:auto;transform:none;margin:0}
   #overview .loop-nodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   #overview .loop-node,#overview .loop-node:nth-child(n){
     position:relative;left:auto;right:auto;top:auto;bottom:auto;
@@ -735,7 +759,10 @@
    Замер 05-09-2026: узлы 1 и 8 стоят в одной колонке, и при выросших рядах кнопок нижний край
    первого заходил на второй на 47 пикселей. То же у 4 и 5. Разводим по вертикали, композиция
    остаётся прежней: те же четыре колонки вокруг центра. */
-@media (min-width:1201px){
+/* Граница та же, что у перехода в колонку: ниже 1261 карточки не расставлены по кругу, и
+   сдвиги по вертикали там не поправляют композицию, а ломают колонку — узлы остаются
+   position:relative, и top/bottom смещают их друг на друга. */
+@media (min-width:1261px){
   #overview .loop-node:nth-child(1),#overview .loop-node:nth-child(4){top:9%}
   #overview .loop-node:nth-child(5),#overview .loop-node:nth-child(8){bottom:7%}
   #overview .loop-node:nth-child(1) .node-satellites,
@@ -785,9 +812,10 @@
    Замер 05-09-2026: чтобы влезть в 1440×900, карту приходилось ужимать до 0.75, и описания
    выходили по 6.8 пикселя. Теперь макет ниже и плотнее, а уменьшение ограничено 0.85: ниже
    этого порога карта переходит в две колонки, где текст остаётся нормального размера. */
-@media (min-width:1201px){
+@media (min-width:1261px){
   #overview .loop-map,
-  #overview .loop-map:has(.overview-contour){height:calc(628px * var(--map-scale,1))}
+  #overview .loop-map:has(.overview-contour){height:628px;
+    margin-bottom:calc(12px - 628px * (1 - var(--map-scale,1)))}
   #overview .knowledge-cluster{width:392px;height:286px}
   #overview .knowledge-core{width:196px;height:196px}
   #overview .knowledge-core strong{font-size:24px}
@@ -795,7 +823,12 @@
   #overview .memory-surfaces button{width:88px;height:88px}
   #overview .loop-node{width:224px}
   #overview .loop-node-main{padding:13px 15px}
-  #overview .loop-node-main strong{font-size:clamp(19px,1.4vw,23px)}
+  /* Внутри карты кегль фиксированный, без vw. Холст в 1450 пикселей и так уменьшается
+     целиком через --map-scale, и если типографика внутри него ещё раз реагирует на ширину
+     окна, карточки на каждой ширине получаются разной высоты, а расстановка задана в
+     процентах от холста. Из-за этого «Поделиться с сообществом» задевало кнопку Obsidian
+     на 1280 и не задевало на 1920: одна и та же геометрия, разная высота текста. */
+  #overview .loop-node-main strong{font-size:21px}
   #overview .loop-node-main .result{font-size:10px;line-height:1.35}
   #overview .loop-node:nth-child(n) .node-satellites{gap:5px;margin-top:7px}
   #overview .node-satellites button{padding:7px 9px;font-size:9.5px}
@@ -960,7 +993,9 @@ h1[tabindex="-1"]:focus-visible,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"
 
 /* Ряд кнопок под «Идеями и гипотезами» задевал круг общего знания углом на 6×12 пикселей.
    Узел сдвинут влево ровно настолько, чтобы касание пропало. */
-@media (min-width:1201px){#overview .loop-node:nth-child(2){left:22%}}
+/* Тот же порог: в колонке узлы стоят position:relative, и этот сдвиг влево не убирал
+   касание, а двигал «Идеи и гипотезы» прямо на «Созвоны». */
+@media (min-width:1261px){#overview .loop-node:nth-child(2){left:22%}}
 
 /* Одно свойство, ради которого сюда и пришли: можно ли поставить это себе. */
 .take-badge{justify-self:start;padding:3px 8px;border-radius:999px;font:8px var(--mono);
@@ -1203,8 +1238,14 @@ h1[tabindex="-1"]:focus-visible,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"
 /* ============ Поставить весь набор сразу ============
    Первый экран показывает, из чего система состоит; здесь она заканчивается ответом
    на вопрос, ради которого посетитель и пришёл: как забрать это себе. */
+/* minmax(0,…) вместо 1fr обязателен: у элемента сетки min-width по умолчанию auto, и колонка
+   растягивается до самой длинной строки внутри. Внутри лежит блок команд установки с
+   white-space:pre, поэтому на узком экране обе колонки уезжали за край — на 390 пикселях до
+   629, — и overflow-x:auto на самом блоке не спасал: не он был шире родителя, а колонка. */
 #overview .toolkit{width:min(100%,var(--max));margin:44px auto 0;padding-top:34px;
-  border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1.15fr;gap:28px 48px;align-items:start}
+  border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:28px 48px;align-items:start}
+.toolkit-head,.toolkit-body{min-width:0}
 .toolkit-head h2{margin-top:11px;font:500 clamp(24px,2.6vw,34px)/1.1 var(--display);letter-spacing:-.04em}
 .toolkit-head>p{margin-top:12px;max-width:460px;color:var(--muted);font-size:13px;line-height:1.65}
 .toolkit-parts{display:inline-block;margin-top:14px;padding:5px 11px;border:1px solid var(--line);
@@ -1214,7 +1255,7 @@ h1[tabindex="-1"]:focus-visible,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"
 .toolkit-body code{font:11.5px/1.75 var(--mono);white-space:pre;user-select:text}
 .toolkit-after{margin-top:11px;color:var(--muted);font-size:12px;line-height:1.6}
 .toolkit-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
-@media (max-width:900px){#overview .toolkit{grid-template-columns:1fr;gap:20px}}
+@media (max-width:900px){#overview .toolkit{grid-template-columns:minmax(0,1fr);gap:20px}}
 
 /* ============ Страница MCP: спросить общую базу ============
    Поиск идёт по живому снимку библиотеки, а каждый результат разворачивается в путь

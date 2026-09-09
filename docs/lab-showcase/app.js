@@ -1160,12 +1160,22 @@
     if(m.directions.length)counts.push(`<b>${esc(String(m.directions.length))}</b> ${esc(plural(m.directions.length,["направление","направления","направлений"]))}`);
     // Подтемы найденных подразделов плюс подтемы, совпавшие сами: это тот самый список,
     // который человек и хочет увидеть по имени темы.
+    // Подтемы найденного подраздела попадают сюда всегда: выиграл сам подраздел, а это его
+    // содержимое. А подтема, совпавшая сама по себе, обязана быть сопоставима с победителем.
+    // Замер: на настоящих тематических запросах («muon», «LoRA», «scaling laws») верхняя
+    // подтема держит от 0.35 до 0.82 балла лучшего узла. На запросе «безградиентное
+    // предобучение языковых моделей» проект ZO Pretraining набирает 332, а подтема «Muon за
+    // пределами предобучения LLM» — 50, то есть 0.15, и всё равно стояла над проектом:
+    // оглавление поднимало подтемы безусловно. Человек спрашивал про ZO и первым читал Muon.
+    const best=Math.max(0,...[m.projects,m.themes,m.folders,m.subtopics,m.directions]
+      .flat().map(x=>x.hit||0));
     const seen=new Set(),topics=[];
     for(const {node} of m.folders)
       for(const t of node.sub||[]){const key=node.f+"|"+t.slug;
         if(!seen.has(key)){seen.add(key);topics.push({folder:node.f,topic:t})}}
-    for(const {folder,node} of m.subtopics){const key=folder.f+"|"+node.slug;
-      if(!seen.has(key)){seen.add(key);topics.push({folder:folder.f,topic:node})}}
+    for(const {folder,node,hit} of m.subtopics){const key=folder.f+"|"+node.slug;
+      if(seen.has(key)||(best&&(hit||0)<best*0.3))continue;
+      seen.add(key);topics.push({folder:folder.f,topic:node})}
     if(!counts.length&&!topics.length)return "";
     return `<div class="map-index">
       ${counts.length?`<p class="map-index-counts">${counts.join(" · ")}</p>`:""}

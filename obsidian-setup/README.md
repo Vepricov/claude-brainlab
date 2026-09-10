@@ -120,14 +120,14 @@ python3 sync_hermes.py --config /absolute/path/to/test-config.json --snapshot ex
 
 ### Автоматическое обновление
 
-На Mac используется **launchd раз в 60 секунд**, пока компьютер включён и доступен сервер. В этом цикле нет LLM, Codex-tick или Operon. Скопируйте `schedules/com.lab-atlas.hermes-obsidian.plist` в `~/Library/LaunchAgents/`, заменив три абсолютных пути: Python, скрипт и конфиг. Затем:
+На Mac используется **launchd раз в 15 минут**, пока компьютер включён и доступен сервер. В этом цикле нет LLM, Codex-tick или Operon. Скопируйте `schedules/com.lab-atlas.hermes-obsidian.plist` в `~/Library/LaunchAgents/`, заменив три абсолютных пути: Python, скрипт и конфиг. Затем:
 
 ```bash
 launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.lab-atlas.hermes-obsidian.plist"
 launchctl print "gui/$(id -u)/com.lab-atlas.hermes-obsidian"
 ```
 
-На Linux замените абсолютные пути в `schedules/lab-atlas-hermes.service`, скопируйте этот файл и `lab-atlas-hermes.timer` в `~/.config/systemd/user/` (создайте каталог при необходимости). Выполните `systemctl --user daemon-reload`, затем `systemctl --user enable --now lab-atlas-hermes.timer`. Проверка: `systemctl --user status lab-atlas-hermes.timer`; журнал: `journalctl --user -u lab-atlas-hermes.service`. На Windows создайте задачу в Task Scheduler: запуск `python.exe`, аргументы `"C:\path\sync_hermes.py" --config "C:\path\hermes-config.json"`, повтор раз в минуту, новая копия не запускается, пока предыдущая работает. Для путей с пробелами сохраняйте кавычки.
+На Linux замените абсолютные пути в `schedules/lab-atlas-hermes.service`, скопируйте этот файл и `lab-atlas-hermes.timer` в `~/.config/systemd/user/` (создайте каталог при необходимости). Выполните `systemctl --user daemon-reload`, затем `systemctl --user enable --now lab-atlas-hermes.timer`. Проверка: `systemctl --user status lab-atlas-hermes.timer`; журнал: `journalctl --user -u lab-atlas-hermes.service`. На Windows создайте задачу в Task Scheduler: запуск `python.exe`, аргументы `"C:\path\sync_hermes.py" --config "C:\path\hermes-config.json"`, повтор раз в 15 минут, новая копия не запускается, пока предыдущая работает. Для путей с пробелами сохраняйте кавычки.
 
 Проверьте, что дата `Обновлено` меняется, исходные task IDs совпадают, а при отключённом сервере остаётся прежний снимок. Если причина помощи или ресурсы не записаны в Hermes, исправьте исходное сообщение агента. Экспортёр их не придумывает. Обратной записи статусов из Obsidian в Hermes или Yonote в этом наборе нет.
 

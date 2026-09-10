@@ -7,6 +7,6 @@
     <string>/absolute/path/to/obsidian-setup/sync_hermes.py</string>
     <string>--config</string><string>/absolute/path/to/hermes-config.json</string>
   </array>
-  <key>StartInterval</key><integer>60</integer>
+  <key>StartInterval</key><integer>900</integer>
   <key>RunAtLoad</key><true/>
 </dict></plist>

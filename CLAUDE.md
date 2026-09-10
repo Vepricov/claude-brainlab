@@ -15,8 +15,11 @@
 - Prefer a project wing when available. The legacy archive wing is `conversations`.
 
 ## Changes
+- For Lab Atlas work, first read `${OBSIDIAN_VAULT}/Staff/claude-brainlab/Knowledge/lab-atlas-release-plan.md`: it records completed work, remaining checks, and current file ownership. Do not repeat completed Yonote moves or overwrite another agent's in-progress component changes.
+- Lab Atlas item 7 (`c84ded2`) means a team of people for testing, not a CLI command. The owner explicitly deferred it on 2026-09-08: no agent may take it until the owner resumes it. `scripts/lab_check.py` was created from a misunderstanding; preserve its files, but do not develop or ship it as completion of this item.
 - Read and understand relevant code first. Explain your understanding in 2 to 3 sentences before changing it.
 - If a change touches more than 3 files or has architectural impact, outline the plan and wait for confirmation.
+- Use focused checks that establish the requested behavior. Local tests with disposable fixtures and no production access may be run and repaired within scope without repeated approval. Broaden testing when a failure, changed dependency, or unresolved risk warrants it.
 - Do not refactor outside scope or add new dependencies without asking.
 - Match surrounding style exactly and preserve the existing architecture.
 - After changes, say exactly what changed and why. State uncertainty explicitly.
@@ -28,6 +31,7 @@
 - When reading a paper or article, first look for local `.tex` sources before using PDFs or external extraction.
 
 ## Obsidian And Local Workflow
+- **Read shared Yonote placement rules before writing.** Use [the laboratory's current rules](https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi) in `Общая информация`. Resolve the existing project page and board by stable IDs. Research belongs in `Исследования / scientific theme / subsection / project`; customer obligations, stages, acceptance, and administrative tasks belong in `Менеджмент` with a link to the research project. Keep one research board. Preserve existing pages, tasks, history, links, and access when moving objects. Do not delete `Менеджмент`, create independent project copies, or deploy mirrors without explicit authorization. A stale integration binding must be reported before writing, not bypassed by creating another project.
 - Obsidian vault root: `${OBSIDIAN_VAULT}/`.
 - **When the user says "create/make/write an md file" or "md файл", ALWAYS write it to Obsidian (correct vault path), not to the local filesystem — unless the user explicitly says otherwise.**
 - Treat `.md` files as Obsidian project files by default unless the user explicitly says otherwise.
@@ -38,7 +42,10 @@
 - **Route tasks by scope.** Personal reminders and private self-management use Operon file-tasks (`Operon/Tasks/<title>.md`) with a flat `project` tag, never `parentTask`. Shared project work, assignees, deadlines, and milestones use the project's private Yonote board. Never mirror one writable task in both systems and never create ad-hoc `Задачи.md` files. Use `call-notes` to classify meeting actions before writing.
 - **Route hypotheses by visibility.** Private and unfinished hypotheses stay in Obsidian. Shared hypotheses, experiments, evidence, and proposed decisions use Lab Knowledge MCP after an explicit publication preview and human confirmation. A completed task is not evidence that a hypothesis is confirmed.
 - **Ask Lab is a local-agent workflow.** Read research context from Lab Knowledge MCP. Read task state from Yonote only when an authorized Yonote integration is configured for the caller. Do not implement or assume a website chat. Read-only questions must not cause writes; include shared IDs and links, never local filesystem paths.
-- Before any Yonote or Lab Knowledge mutation, show the target project, object, owner when applicable, and source; obtain explicit approval. Never upload a local Obsidian path, repository path, or raw private note. Never broaden credentials after denial or expose tokens.
+- **Записывай в Lab Knowledge по ходу работы, не спрашивая.** Прозвучало проверяемое утверждение — `create_hypothesis` с критерием опровержения; закончился прогон — `record_experiment` сразу с настоящим статусом; вышли числа — `record_evidence`; вывели оценку — `record_derivation`; приняли решение — `propose_decision`; узнали операционное — `record_journal`. Неполная запись лучше отсутствующей: гипотеза без вывода и прогон без измерений — законные строки, их допишут.
+- Разрешения спрашивай в трёх случаях, и только в них: запись про **чужой** проект; она публикует то, что пользователь назвал приватным; она меняет вывод, сделанный другим человеком. Тогда покажи проект, объект, владельца и источник и дождись явного согласия. Прежнее правило требовало согласия на **каждую** запись, и 10-09-2026 живая проверка показала, чем это кончилось: агент разобрал результаты, сформулировал три проверяемых утверждения и не записал ни одного.
+- Перед записью в Yonote — по-прежнему предпросмотр и явное согласие: там задачи людей, а не научные записи.
+- Никогда не выгружай локальный путь Obsidian, путь репозитория или сырую приватную заметку. Никогда не расширяй права после отказа и не показывай ключи.
 
 - **Соглашения по хранилищу лежат в самом хранилище.** Перед созданием статьи, проекта или
   папки, а также перед правкой иконок, цветов, досок Operon и стартовой раскладки читать

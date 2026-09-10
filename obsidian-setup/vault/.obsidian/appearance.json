@@ -1,0 +1,12 @@
+{
+  "cssTheme": "Border",
+  "accentColor": "#ff4d00",
+  "baseFontSize": 14,
+  "baseFontSizeAction": true,
+  "enabledCssSnippets": [
+    "project-link-badges",
+    "operon-kanban-polish",
+    "operon-inline-slim"
+  ],
+  "translucency": true
+}

@@ -1,0 +1,97 @@
+{
+  "cascadeColors": true,
+  "colorBackground": false,
+  "palette": [
+    {
+      "id": "slateGeneral01",
+      "name": "slate-general",
+      "value": "#7c8aa5"
+    },
+    {
+      "id": "papersIndigo01",
+      "name": "papers-indigo",
+      "value": "#7c90ff"
+    },
+    {
+      "id": "projectsTeal01",
+      "name": "projects-teal",
+      "value": "#55b7a5"
+    },
+    {
+      "id": "peopleLavender01",
+      "name": "people-lavender",
+      "value": "#b79cff"
+    },
+    {
+      "id": "staffStone01",
+      "name": "staff-stone",
+      "value": "#9aa3ad"
+    },
+    {
+      "id": "loraBlueSoft01",
+      "name": "lora-blue-soft",
+      "value": "#78a6ff"
+    },
+    {
+      "id": "zoCoral01",
+      "name": "zo-coral",
+      "value": "#ff9a6b"
+    },
+    {
+      "id": "optimMint01",
+      "name": "optim-mint",
+      "value": "#63c7a0"
+    },
+    {
+      "id": "rlViolet01",
+      "name": "rl-violet",
+      "value": "#bb8cff"
+    },
+    {
+      "id": "metaGold01",
+      "name": "meta-gold",
+      "value": "#e5bd59"
+    },
+    {
+      "id": "miscCyanSoft01",
+      "name": "misc-cyan-soft",
+      "value": "#5fc6c6"
+    },
+    {
+      "id": "miscPlum01",
+      "name": "misc-plum",
+      "value": "#cf8fe4"
+    },
+    {
+      "id": "roleStudent01",
+      "name": "role-student",
+      "value": "#7fb3ff"
+    },
+    {
+      "id": "roleLead01",
+      "name": "role-lead",
+      "value": "#ffb86b"
+    },
+    {
+      "id": "roleMid01",
+      "name": "role-mid",
+      "value": "#7fe0b2"
+    },
+    {
+      "id": "roleMidHse01",
+      "name": "role-mid-hse",
+      "value": "#62d2d6"
+    },
+    {
+      "id": "roleAdvisor01",
+      "name": "role-advisor",
+      "value": "#d69cff"
+    },
+    {
+      "id": "roleBoss01",
+      "name": "role-boss",
+      "value": "#ff8f9f"
+    }
+  ],
+  "fileColors": {}
+}

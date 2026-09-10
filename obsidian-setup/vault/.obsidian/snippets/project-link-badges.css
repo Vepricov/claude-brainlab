@@ -1,0 +1,108 @@
+/* Project service-link badges — auto-styles external links by domain.
+   Write a normal markdown link; the service logo + badge appear automatically.
+   Domains: github, arxiv, huggingface, overleaf, wandb, google docs, + generic. */
+
+.markdown-rendered a.external-link[href*="github.com"],
+.markdown-rendered a.external-link[href*="arxiv.org"],
+.markdown-rendered a.external-link[href*="huggingface.co"],
+.markdown-rendered a.external-link[href*="overleaf.com"],
+.markdown-rendered a.external-link[href*="wandb.ai"],
+.markdown-rendered a.external-link[href*="docs.google.com"],
+.markdown-rendered a.external-link[href*="colab.research.google.com"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 1px 9px 1px 8px;
+  margin: 0 2px;
+  border-radius: 7px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  text-decoration: none !important;
+  font-size: 0.9em;
+  line-height: 1.7;
+  vertical-align: baseline;
+}
+.markdown-rendered a.external-link[href*="github.com"]:hover,
+.markdown-rendered a.external-link[href*="arxiv.org"]:hover,
+.markdown-rendered a.external-link[href*="huggingface.co"]:hover,
+.markdown-rendered a.external-link[href*="overleaf.com"]:hover,
+.markdown-rendered a.external-link[href*="wandb.ai"]:hover,
+.markdown-rendered a.external-link[href*="docs.google.com"]:hover,
+.markdown-rendered a.external-link[href*="colab.research.google.com"]:hover {
+  border-color: var(--interactive-accent);
+}
+
+/* hide Obsidian's default external-link glyph on these badges */
+.markdown-rendered a.external-link[href*="github.com"]::after,
+.markdown-rendered a.external-link[href*="arxiv.org"]::after,
+.markdown-rendered a.external-link[href*="huggingface.co"]::after,
+.markdown-rendered a.external-link[href*="overleaf.com"]::after,
+.markdown-rendered a.external-link[href*="wandb.ai"]::after,
+.markdown-rendered a.external-link[href*="docs.google.com"]::after,
+.markdown-rendered a.external-link[href*="colab.research.google.com"]::after {
+  display: none !important;
+}
+
+/* icon slot */
+.markdown-rendered a.external-link[href*="github.com"]::before,
+.markdown-rendered a.external-link[href*="arxiv.org"]::before,
+.markdown-rendered a.external-link[href*="overleaf.com"]::before,
+.markdown-rendered a.external-link[href*="wandb.ai"]::before,
+.markdown-rendered a.external-link[href*="docs.google.com"]::before,
+.markdown-rendered a.external-link[href*="colab.research.google.com"]::before {
+  content: "";
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* GitHub — octocat mark */
+.markdown-rendered a.external-link[href*="github.com"] { color: var(--text-normal); }
+.markdown-rendered a.external-link[href*="github.com"]::before {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>');
+}
+
+/* arXiv — document mark, arXiv red */
+.markdown-rendered a.external-link[href*="arxiv.org"] { color: #b31b1b; }
+.markdown-rendered a.external-link[href*="arxiv.org"]::before {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16zm0-6h4v1.5H8V10z"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16zm0-6h4v1.5H8V10z"/></svg>');
+}
+
+/* Hugging Face — brand emoji */
+.markdown-rendered a.external-link[href*="huggingface.co"]::before {
+  content: "🤗";
+  font-size: 1em;
+  line-height: 1;
+}
+
+/* Overleaf — leaf mark, overleaf green */
+.markdown-rendered a.external-link[href*="overleaf.com"] { color: #138a07; }
+.markdown-rendered a.external-link[href*="overleaf.com"]::before {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 20c0-9 7-15 16-16-1 9-7 15-14 15 2-5 6-8 10-9-5 1-9 4-11 9-.4.4-1 .6-1 1z"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 20c0-9 7-15 16-16-1 9-7 15-14 15 2-5 6-8 10-9-5 1-9 4-11 9-.4.4-1 .6-1 1z"/></svg>');
+}
+
+/* Weights & Biases — three dots, W&B yellow */
+.markdown-rendered a.external-link[href*="wandb.ai"] { color: #c9930a; }
+.markdown-rendered a.external-link[href*="wandb.ai"]::before {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.4"/><circle cx="12" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><circle cx="18" cy="12" r="2.4"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.4"/><circle cx="12" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><circle cx="18" cy="12" r="2.4"/></svg>');
+}
+
+/* Google Docs / Colab — document, Google blue */
+.markdown-rendered a.external-link[href*="docs.google.com"],
+.markdown-rendered a.external-link[href*="colab.research.google.com"] { color: #1a73e8; }
+.markdown-rendered a.external-link[href*="docs.google.com"]::before,
+.markdown-rendered a.external-link[href*="colab.research.google.com"]::before {
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16z"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.5H8V13zm0 3h8v1.5H8V16z"/></svg>');
+}

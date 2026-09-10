@@ -1125,6 +1125,11 @@
         }
       }
     },
+    "calendarPresets": {
+      "version": 1,
+      "calendarPresets": [],
+      "calendarDefaultPresetId": null
+    },
     "kanbanPresets": {
       "version": 1,
       "kanbanPresets": [

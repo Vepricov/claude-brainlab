@@ -87,6 +87,21 @@ class ObsidianSetupTests(unittest.TestCase):
         self.assertIn(binding['id'], dashboard)
         self.assertEqual(json.loads((root/binding['path']).read_text())['id'], binding['id'])
 
+    def test_operon_views_satisfy_pinned_loader_contract(self):
+        # Operon 3.0.1 rejects the entire views group if any required object is absent.
+        root = ROOT / 'obsidian-setup/vault'
+        config = json.loads((root/'.obsidian/plugins/operon/data.json').read_text())
+        for section in ['filters', 'calendarPresets', 'kanbanPresets', 'kanbanOrder']:
+            with self.subTest(section=section):
+                self.assertIsInstance(config['views'].get(section), dict)
+
+    def test_file_color_assignments_remain_an_array(self):
+        # File Color 1.1.0 calls .find() on this field during native startup.
+        root = ROOT / 'obsidian-setup/vault'
+        config = json.loads((root/'.obsidian/plugins/obsidian-file-color/data.json').read_text())
+        self.assertIsInstance(config['fileColors'], list)
+        self.assertEqual(config['fileColors'], [])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh project-local Hermes boards every 15 minutes
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=15min
+Unit=lab-atlas-hermes.service
+
+[Install]
+WantedBy=timers.target

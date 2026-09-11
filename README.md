@@ -53,6 +53,14 @@ What it actually gives you:
 > Everything works without lab access. The installer skips the Lab Knowledge server when
 > `LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and Obsidian-routed skills no-op without a vault.
 
+## Obsidian desktop setup
+
+[Install the Obsidian setup](obsidian-setup/README.md): Operon Personal and Reading boards,
+Border, fourteen enabled plugins, project templates, and a deterministic read-only Hermes
+board in each project's folder. The installer creates a new vault from configuration and
+synthetic examples. Plugins are downloaded from pinned upstream releases and verified by SHA-256.
+Your existing vault, notes, accounts and task statuses are not changed.
+
 ## Lab Knowledge: the shared research base
 
 The lab runs a knowledge service that this toolkit talks to over MCP. It answers the question a lab

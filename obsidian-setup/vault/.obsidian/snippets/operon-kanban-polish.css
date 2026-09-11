@@ -1,0 +1,237 @@
+/* ============================================================================
+   Operon Kanban — visual polish snippet
+   ----------------------------------------------------------------------------
+   Layers tasteful refinements on top of Operon's own Kanban styles. Everything
+   is scoped under `.operon-kanban-root` (the board's top-level container that
+   already declares the plugin's surface variables), so no other Obsidian view
+   is touched. All colors come from Obsidian / Operon CSS variables so the board
+   follows the active theme; light/dark-sensitive values are split with the
+   `.theme-light` / `.theme-dark` classes Obsidian sets on <body>.
+
+   Only class names verified to exist in the plugin's styles.css + main.js are
+   targeted. Status-color note (see bottom): the plugin exposes
+   `--operon-kanban-status-color` ONLY on the column header, and
+   `--operon-kanban-lane-color` on swimlane labels. It does NOT expose a
+   per-card status variable, so the per-card left accent bar degrades to the
+   card's own accent hook (`--operon-calendar-accent` → `--interactive-accent`)
+   rather than inventing a status hook or hardcoding per-status colors.
+   ========================================================================== */
+
+/* --- Theme-aware design tokens -------------------------------------------- */
+/* Operon's own card shadow is a fixed rgba(0,0,0,…) that nearly vanishes in
+   dark themes. Redefine soft, elevation-correct shadows per theme instead.   */
+.operon-kanban-root {
+	--opk-radius: 10px;
+	--opk-card-accent: var(--operon-calendar-accent, var(--interactive-accent));
+}
+
+.theme-light .operon-kanban-root {
+	--opk-shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+	--opk-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.08), 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.theme-dark .operon-kanban-root {
+	--opk-shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.32), 0 6px 16px rgba(0, 0, 0, 0.42);
+	--opk-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.46), 0 14px 32px rgba(0, 0, 0, 0.56);
+}
+
+/* --- Card: rounded, comfortable, soft-elevated, left accent bar ----------- */
+.operon-kanban-root .operon-kanban-card {
+	border-radius: var(--opk-radius);
+	/* extra left padding leaves room for the accent bar drawn in ::before */
+	padding: 9px 11px 10px 14px;
+	box-shadow: var(--opk-shadow-rest);
+}
+
+/* Left accent bar — a soft rounded pill, tinted with the card accent hook.
+   (No per-card status var exists; see header rules for true status color.)   */
+.operon-kanban-root .operon-kanban-card::before {
+	content: "";
+	position: absolute;
+	left: 5px;
+	top: 9px;
+	bottom: 9px;
+	width: 3px;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--opk-card-accent) 60%, transparent);
+	transition: background 120ms ease, top 120ms ease, bottom 120ms ease;
+	pointer-events: none;
+}
+
+/* --- Card hover: gentle lift + stronger shadow + fuller accent ------------ */
+.operon-kanban-root .operon-kanban-card:hover,
+.operon-kanban-root .operon-kanban-card:focus-within {
+	transform: translateY(-1px);
+	box-shadow: var(--opk-shadow-hover);
+}
+
+.operon-kanban-root .operon-kanban-card:hover::before,
+.operon-kanban-root .operon-kanban-card:focus-within::before {
+	top: 7px;
+	bottom: 7px;
+	background: var(--opk-card-accent);
+}
+
+/* Keep done/cancelled cards visually quiet — mute their accent bar too. */
+.operon-kanban-root .operon-kanban-card.is-done::before,
+.operon-kanban-root .operon-kanban-card.is-cancelled::before {
+	background: color-mix(in srgb, var(--text-muted) 40%, transparent);
+}
+
+/* --- Card title: slightly larger, medium weight, clean wrapping ----------- */
+.operon-kanban-root .operon-kanban-card-title {
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.34;
+	color: var(--text-normal);
+	/* wrapping / break behaviour is already correct in the plugin; keep it */
+}
+
+/* --- Column header: status-tinted, clearly separated --------------------- */
+/* `--operon-kanban-status-color` is the real per-column status hook the plugin
+   sets inline on this element. Falls back to `transparent`, so status-less
+   columns simply get no tint/bar (graceful degradation, nothing hardcoded).  */
+.operon-kanban-root .operon-kanban-column-header {
+	position: relative;
+	border-radius: var(--opk-radius);
+	overflow: hidden;
+	background: color-mix(
+		in srgb,
+		var(--operon-kanban-status-color, transparent) 6%,
+		transparent
+	);
+}
+
+.operon-kanban-root .operon-kanban-column-header .operon-kanban-column-header-title {
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: var(--text-normal);
+}
+
+/* Status-colored top accent line across the header. */
+.operon-kanban-root .operon-kanban-column-header::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 2px;
+	background: var(--operon-kanban-status-color, transparent);
+	pointer-events: none;
+}
+
+/* --- Swimlane labels: use the plugin's real per-lane color hook ----------- */
+.operon-kanban-root .operon-kanban-lane-label {
+	border-radius: var(--opk-radius);
+}
+
+.operon-kanban-root .operon-kanban-lane-label .operon-kanban-lane-title {
+	color: var(--text-normal);
+}
+
+/* --- Cells match the softer radius so columns read as one system ---------- */
+.operon-kanban-root .operon-kanban-cell {
+	border-radius: var(--opk-radius);
+}
+
+/* Keep the native add affordance discoverable. Operon otherwise reveals the
+   centered + only after the pointer enters an empty part of a cell. */
+.operon-kanban-root .operon-kanban-cell-add-overlay {
+	opacity: 0.28;
+	/* The overlay covers the entire cell. Keep it transparent to pointer input
+	   until Operon marks the central add hotspot as `.is-visible`; otherwise it
+	   sits above every card (z-index: 7) and prevents native card dragging. */
+	pointer-events: none;
+}
+
+.operon-kanban-root .operon-kanban-cell-add-overlay.is-visible {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.operon-kanban-root .operon-kanban-cell:hover .operon-kanban-cell-add-overlay,
+.operon-kanban-root .operon-kanban-cell:focus-within .operon-kanban-cell-add-overlay,
+.operon-kanban-root .operon-kanban-cell-add-overlay.is-visible {
+	opacity: 1;
+}
+
+/* --- Chips (assignee / project / priority etc.): soft low-contrast pills --- */
+/* Only chips living inside a card row are affected; picker/settings chips are
+   left untouched. Radius + background come from theme variables.            */
+.operon-kanban-root .operon-kanban-card-chip-row .operon-chip,
+.operon-kanban-root .operon-kanban-card-chip-row .operon-task-chip {
+	border-radius: 7px;
+}
+
+/* Priority dot: add a faint separating ring so it reads on any background. */
+.operon-kanban-root .operon-kanban-card .operon-priority-dot {
+	box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--operon-kanban-surface-soft) 80%, transparent);
+}
+
+/* --- Reduce visual noise from empty / collapsed states -------------------- */
+.operon-kanban-root .operon-kanban-empty-state {
+	min-height: 120px;
+	border-color: color-mix(in srgb, var(--operon-kanban-surface-border) 55%, transparent);
+	background: transparent;
+	color: var(--text-faint);
+	font-size: 12px;
+}
+
+/* Collapsed columns / swimlanes and no-value lanes: dim, but still legible. */
+.operon-kanban-root .operon-kanban-column-header.is-collapsed,
+.operon-kanban-root .operon-kanban-lane-label.is-collapsed,
+.operon-kanban-root .operon-kanban-lane-label.is-no-value {
+	opacity: 0.72;
+}
+
+.operon-kanban-root .operon-kanban-collapsed-cell-summary {
+	color: var(--text-faint);
+}
+
+/* --- Per-project swimlane colors (board "По проектам") -------------------- */
+/* Operon tags each lane label with data-kanban-lane-key = the project slug.
+   Assign each project a distinct hue → colored left divider + tinted label. */
+
+/* Apply the color: thick left divider + faint tint + colored title.
+   Falls back to the plugin's own lane color, then the accent, if a project
+   has no mapping above (new projects just need one more line here).          */
+.operon-kanban-root .operon-kanban-lane-label[data-kanban-lane-key] {
+	border-left: 4px solid var(--opk-lane-c, var(--operon-kanban-lane-color, var(--interactive-accent)));
+	border-radius: var(--opk-radius);
+	padding-left: 9px;
+	background: color-mix(in srgb, var(--opk-lane-c, var(--interactive-accent)) 8%, transparent);
+}
+.operon-kanban-root .operon-kanban-lane-label[data-kanban-lane-key] .operon-kanban-lane-title {
+	color: var(--opk-lane-c, var(--text-normal));
+	font-weight: 600;
+}
+
+/* --- Ширина колонок: тянутся, минимум 200px -------------------------------- */
+/* Селекторы БЕЗ предков и с `!important`. Проверено: правило без предка
+   применяется, те же правила с `.operon-kanban-root ...` впереди — нет.
+   Не переписывать на вложенные. */
+.operon-kanban-board {
+	--operon-kanban-column-width: minmax(200px, 1fr) !important;
+}
+
+/* `min-content`, а не `max-content`: у трека `minmax(МИН, 1fr)` минимальная
+   функция фиксированная, поэтому min-content строки = колонок × МИН. При
+   `max-content` вклад `1fr` равен длине самого длинного заголовка в одну
+   строку, и строка раздувается под него. */
+.operon-kanban-grid-content,
+.operon-kanban-header-row,
+.operon-kanban-row {
+	min-width: min-content !important;
+}
+
+/* Штатный `align-self: start` не даёт строке растянуться по ширине обёртки:
+   шапка меряется по коротким подписям, строка карточек по длинным заголовкам. */
+.operon-kanban-header-row,
+.operon-kanban-row {
+	align-self: stretch !important;
+}
+
+/* --- Корзина: названия не зачёркивать -------------------------------------- */
+.operon-kanban-card.is-cancelled .operon-kanban-card-title {
+	text-decoration: none !important;
+}

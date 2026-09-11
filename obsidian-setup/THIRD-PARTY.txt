@@ -1,0 +1,21 @@
+Lab Atlas Obsidian setup, 10-09-2026
+
+The installer downloads plugins directly from author-published release assets.
+plugins.lock.json records their repositories, release URLs, versions and SHA-256.
+Downloaded plugins retain their own licenses; they are not relicensed by this kit.
+
+Border 1.13.6: Akifyss, MIT. The preferred source (theme.css) and manifest are
+included in vault/.obsidian/themes/Border with the full LICENSE.
+Source: https://github.com/Akifyss/obsidian-border
+
+Operon display modifications for 3.0.1: derivative patch data in patches/operon.json
+is under GNU GPL version 3, see patches/LICENSE-Operon-GPL-3.0.txt.
+The patch's editable source is the JSON replacement text and character offsets;
+install.py checks the original and resulting hashes before writing.
+Upstream corresponding source: https://github.com/hasanyilmaz/operon/tree/3.0.1
+
+Tasks date-format modifications for 7.23.1: MIT, see patches/LICENSE-Tasks.txt.
+Source: https://github.com/obsidian-tasks-group/obsidian-tasks/tree/7.23.1
+
+Other kit scripts, templates and lab-authored CSS: the repository MIT license.
+Public service logos embedded by project-link-badges remain their owners' marks.

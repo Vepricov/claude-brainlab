@@ -164,7 +164,7 @@ Adding a term is a code change, and a deliberate one.
 
 ## Reading
 
-### Four searches, because there are four shapes of question
+### Five searches, because there are five shapes of question
 
 One ranked list cannot answer every question, and trying to make it do so is what made the
 ranking bad at all of them. So the searches are separate, and the caller picks by the shape of
@@ -176,11 +176,17 @@ the answer they need.
 | give me the record | `search_lab` | one flat ranked list over everything, scope `lab`, `library` or `all`. The original search, and still the right one when the answer is a single record |
 | what do outside papers claim | `search_claims` | claims only, one by one, each with the place in the paper where it can be checked |
 | what exists on X at all | `browse_by_subject` | no ranking: every record naming the subject, grouped by its work, `total` against `shown` saying how much was cut. Muon alone holds four hundred records across fourteen works |
+| how do I run this, where do I edit it | `search_code` | places inside our repositories, not repositories as wholes: the command, the file, the quirk, each with the commit its map was checked against |
 
 `browse_by_subject` resolves the subject through the vocabulary, so Muon, muon and мюон reach
 the same place, and a subject the vocabulary does not know returns empty rather than something
 merely similar. Its cut takes the tail of every kind of record, never a whole kind: the
 truncated set is a smaller version of itself, not a different set.
+
+`search_code` takes the repository card apart into places and judges each place on its own
+short text, because the card as a whole answers "which code" and never "where in it". A place
+carries the commit its map was checked at: nothing here is read out of a working tree at query
+time, so the commit says when to doubt the pointer.
 
 Agents receive this same routing in the server's `instructions`, returned on connect, so the
 choice does not depend on anybody having read this file.
@@ -189,8 +195,8 @@ choice does not depend on anybody having read this file.
 
 `list_themes` and `get_theme_context` for the map, `get_paper` for one paper with its sections,
 `find_related_papers` and `related_by_terms` for the bridge between the two corpora,
-`who_works_on_what` and `recent_changes` for people and movement, `list_repositories` for what
-code exists before anything is cloned.
+`who_works_on_what` and `recent_changes` for people and movement, `list_repositories` for the
+inventory of code when the list itself is what you want.
 
 Semantic search is optional and off unless the service enables it. After a large library sync, run the
 warm-up (`scripts/warm_all.py` in the private repository) instead of letting the first query compute

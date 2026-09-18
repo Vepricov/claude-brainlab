@@ -183,6 +183,13 @@ the same place, and a subject the vocabulary does not know returns empty rather 
 merely similar. Its cut takes the tail of every kind of record, never a whole kind: the
 truncated set is a smaller version of itself, not a different set.
 
+Maps of code are written a line at a time, not as finished documents. `record_code_note`
+adds one seam or one quirk to a repository's card and starts the card when there is none,
+so a finding can be recorded the moment somebody makes it; `upsert_repository` replaces the
+whole card and is for composing a map in one sitting. The same finding can be recorded with
+no model involved at all: the lab hook parses `ЛАБ-КОД: <репозиторий> | шов: <что> -> <где>`
+out of a message and writes it, which is what makes the habit affordable.
+
 `search_code` takes the repository card apart into places and judges each place on its own
 short text, because the card as a whole answers "which code" and never "where in it". A place
 carries the commit its map was checked at: nothing here is read out of a working tree at query

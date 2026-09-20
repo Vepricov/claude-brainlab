@@ -16,7 +16,7 @@
 
     ЛАБ-ГИПОТЕЗА: <утверждение> | опровергается: <критерий>
     ЛАБ-РЕШЕНИЕ: <что постановили> | потому что: <обоснование>
-    ЛАБ-ЧИСЛО: <название метрики> = <значение> | где: <эксперимент>
+    ЛАБ-ЧИСЛО: <название метрики> = <значение> | где: <код прогона, E-WRM-019>
     ЛАБ-ВОПРОС: <что осталось непонятным>
     ЛАБ-КОД: <репозиторий> | шов: <что меняют> -> <файл или флаг>
     ЛАБ-КОД: <репозиторий> | грабли: <на чём теряют час>
@@ -503,13 +503,39 @@ def write(record: dict, settings: dict, base: dict, hint: str | None) -> str:
         })
         return "written"
     if record["kind"] == "metric":
-        # Число без эксперимента базе не нужно: она хранит результат прогона, а не
-        # цифру саму по себе. Поэтому число уходит открытым вопросом с пометкой, а
-        # оформлять его свидетельством должен человек, который знает постановку.
+        # Число пишется ИЗМЕРЕНИЕМ, как ему и положено. Раньше хук клал его строкой в
+        # открытые вопросы с пометкой «оформить свидетельством», то есть перекладывал
+        # работу на человека, и число до базы фактически не доходило. Записывать умеет
+        # сама служба: record_evidence принимает прогон и по публичному коду, поэтому
+        # «где: E-WRM-019» — это всё, что нужно.
+        where = record["where"].strip()
+        name = record["name"].strip()
+        value = record["value"].strip()
+        number = None
+        try:
+            number = float(value.replace(",", ".").split()[0])
+        except (ValueError, IndexError):
+            pass
+        written = call(endpoint, token, "record_evidence", {
+            "experiment_id": where,
+            "summary": f"{name} = {value}",
+            "kind": "metric" if number is not None else "observation",
+            "metrics": [{"name": name, "value": number}] if number is not None else [],
+            "observations": [] if number is not None else [f"{name} = {value}"],
+            "title": name[:120],
+            "idempotency_key": key(record),
+        })
+        if isinstance(written, dict) and written.get("id"):
+            return "written"
+        # Прогон не назван или назван так, что его не нашли. Догадываться нельзя: число,
+        # приписанное чужому прогону, хуже ненаписанного. Но и терять его нельзя, поэтому
+        # оно ложится открытым вопросом — как раньше, но теперь это запасной путь, а не
+        # основной, и в нём сказано, чего не хватило.
         context = call(endpoint, token, "get_project_context", {"project_id": project_id})
         current = ((context.get("project") or {}).get("open_questions") or [])
-        line = (f"Число из работы: {record['name'].strip()} = {record['value'].strip()} "
-                f"({record['where'].strip()}, {author}{tail}) — оформить свидетельством")
+        line = (f"Число из работы: {name} = {value} ({where or 'прогон не назван'}, "
+                f"{author}{tail}) — прогон по этому имени не нашёлся, назовите его "
+                f"публичным кодом вида E-XXX-123")
         if line in current:
             return "already"
         call(endpoint, token, "set_project_open_questions", {

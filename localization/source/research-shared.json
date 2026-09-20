@@ -1,0 +1,6126 @@
+{
+  "group": "research-shared",
+  "source": "data/research-loop-data.js",
+  "entries": [
+    {
+      "id": "dcbd8221bfb3",
+      "text": "Общее знание лаборатории",
+      "paths": [
+        "shared/verb"
+      ]
+    },
+    {
+      "id": "15bdc9fe40b9",
+      "text": "Проверяемая история гипотез, экспериментов, доказательств и решений",
+      "paths": [
+        "shared/result"
+      ]
+    },
+    {
+      "id": "1f034c078803",
+      "text": "Lab Knowledge MCP связывает исследования и литературу. Личные заметки живут в Obsidian, контекст агента — в MemPalace, общие поручения — в Yonote.",
+      "paths": [
+        "shared/purpose"
+      ]
+    },
+    {
+      "id": "2b2df3d03399",
+      "text": "Перед началом новой работы, чтобы не повторять уже сделанное.",
+      "paths": [
+        "shared/when/0"
+      ]
+    },
+    {
+      "id": "6f727b2602e4",
+      "text": "После подтвержденного результата, решения или теоретической выкладки.",
+      "paths": [
+        "shared/when/1"
+      ]
+    },
+    {
+      "id": "ce0fb9bbd906",
+      "text": "Когда сотруднику или агенту нужен полный контекст исследовательского направления.",
+      "paths": [
+        "shared/when/2"
+      ]
+    },
+    {
+      "id": "09a3b61668f0",
+      "text": "Общие типизированные научные записи",
+      "paths": [
+        "shared/destinations/0/what"
+      ]
+    },
+    {
+      "id": "b25fc0a7fe9a",
+      "text": "Каноническая доказательная память лаборатории",
+      "paths": [
+        "shared/destinations/0/why"
+      ]
+    },
+    {
+      "id": "4f60504c300d",
+      "text": "Личные объяснения, черновики и исследовательский дневник",
+      "paths": [
+        "shared/destinations/1/what"
+      ]
+    },
+    {
+      "id": "b08431122ae3",
+      "text": "Память конкретного сотрудника",
+      "paths": [
+        "shared/destinations/1/why"
+      ]
+    },
+    {
+      "id": "aec891f687cb",
+      "text": "Контекст и история работы агента",
+      "paths": [
+        "shared/destinations/2/what"
+      ]
+    },
+    {
+      "id": "e7395780a821",
+      "text": "Непрерывность между сессиями",
+      "paths": [
+        "shared/destinations/2/why"
+      ]
+    },
+    {
+      "id": "2b1ececb542b",
+      "text": "Общая система",
+      "paths": [
+        "shared/tools/0/type"
+      ]
+    },
+    {
+      "id": "490e44c00a2a",
+      "text": "Общая исследовательская память лаборатории, доступная человеку через Atlas и агентам через MCP. Здесь можно узнать, что уже пробовали, на чём основан вывод и какие вопросы открыты. База объединяет утверждения из статей и собственную работу, сохраняя источник и состояние каждого знания.",
+      "paths": [
+        "shared/tools/0/role",
+        "shared/tools/0/purpose"
+      ]
+    },
+    {
+      "id": "184b4ae5d14e",
+      "text": "Перед новой работой — чтобы не повторить уже проверенное; после результата — чтобы сохранить его вместе со связями и происхождением, когда этого требует тип записи.",
+      "paths": [
+        "shared/tools/0/when",
+        "shared/tools/0/useCases"
+      ]
+    },
+    {
+      "id": "54e6191067d4",
+      "text": "Вопрос, тема или идентификатор проекта. Для поиска во всей библиотеке проектный фильтр не обязателен.",
+      "paths": [
+        "shared/tools/0/inputs/0"
+      ]
+    },
+    {
+      "id": "712567e4ee4f",
+      "text": "Для новой записи: её содержание и настоящий тип — утверждение, эксперимент, измерение, доказательство, решение или запись журнала.",
+      "paths": [
+        "shared/tools/0/inputs/1"
+      ]
+    },
+    {
+      "id": "e793c2d14fd3",
+      "text": "Источник и связанные записи, когда они нужны этому типу. Черновая гипотеза или незавершённый эксперимент не требуют придуманного результата.",
+      "paths": [
+        "shared/tools/0/inputs/2"
+      ]
+    },
+    {
+      "id": "b86d65128f56",
+      "text": "Доступ к проекту; при повторе записи используется прежний ключ операции.",
+      "paths": [
+        "shared/tools/0/inputs/3"
+      ]
+    },
+    {
+      "id": "80c7ac242590",
+      "text": "Статья получает карточку с библиографией и смысловыми разделами. Её утверждения хранятся отдельно: формулировка, условия, место в статье и связи. Цитата возможна, но пересказ допустим.",
+      "paths": [
+        "shared/tools/0/inside/0",
+        "shared/tools/0/capabilities/0"
+      ]
+    },
+    {
+      "id": "52c1851a59b0",
+      "text": "Собственная работа начинается с проверяемого утверждения. Эксперимент хранит протокол и статус, измерение — числа и их происхождение, доказательство — предпосылки и вывод. Они связаны с утверждением и позволяют оценить его.",
+      "paths": [
+        "shared/tools/0/inside/1",
+        "shared/tools/0/capabilities/1"
+      ]
+    },
+    {
+      "id": "b62bc085a3bb",
+      "text": "Решения, наблюдения, термины и ресурсы имеют свои типы. Неудачный запуск и незаконченная проверка тоже сохраняются со своим настоящим состоянием.",
+      "paths": [
+        "shared/tools/0/inside/2",
+        "shared/tools/0/capabilities/2"
+      ]
+    },
+    {
+      "id": "e7a1d18de85f",
+      "text": "Для поиска по смыслу служба строит вектор вопроса моделью multilingual-e5-large; для точных слов PostgreSQL использует русский и английский полнотекстовые словари. Модель индекса работает на сервере.",
+      "paths": [
+        "shared/tools/0/inside/3",
+        "shared/tools/0/capabilities/3"
+      ]
+    },
+    {
+      "id": "85bfad6637fc",
+      "text": "Результаты двух веток объединяются. Jina reranker уточняет порядок кандидатов, а обход связей добавляет соседние записи: например, эксперимент и измерение к найденному утверждению.",
+      "paths": [
+        "shared/tools/0/inside/4",
+        "shared/tools/0/capabilities/4"
+      ]
+    },
+    {
+      "id": "1a3136387558",
+      "text": "MCP возвращает записи, ID, источники и связи. Агент может открыть нужный объект целиком, сравнить результаты или проверить основания решения. Связное объяснение пишет модель агента; поисковые модели только находят материал.",
+      "paths": [
+        "shared/tools/0/inside/5",
+        "shared/tools/0/capabilities/5"
+      ]
+    },
+    {
+      "id": "cff23adb9334",
+      "text": "При сохранении проверяются права, поля и связи. Запись получает ID и историю изменений; вызывающий агент перечитывает её. Отказ одной операции не превращается в успешное завершение всего маршрута.",
+      "paths": [
+        "shared/tools/0/inside/6",
+        "shared/tools/0/capabilities/6"
+      ]
+    },
+    {
+      "id": "544f09ef2530",
+      "text": "Находка с ID, источником и состоянием: черновик, проверяемое утверждение или вывод с основаниями.",
+      "paths": [
+        "shared/tools/0/outputs/0",
+        "shared/tools/0/outcomes/0"
+      ]
+    },
+    {
+      "id": "d669d3ba6c5f",
+      "text": "Цепочка от вопроса и протокола до результата; связи с утверждениями внешних статей.",
+      "paths": [
+        "shared/tools/0/outputs/1",
+        "shared/tools/0/outcomes/1"
+      ]
+    },
+    {
+      "id": "0396dddbbf96",
+      "text": "Новая запись и подтверждение её содержимого либо конкретная причина отказа.",
+      "paths": [
+        "shared/tools/0/outputs/2",
+        "shared/tools/0/outcomes/2"
+      ]
+    },
+    {
+      "id": "f16fe5d2e96a",
+      "text": "Два общих раздела PostgreSQL: собственная работа лаборатории и библиотека статей. Личные черновики, задачи и сырые чекпойнты остаются в своих системах.",
+      "paths": [
+        "shared/tools/0/writes"
+      ]
+    },
+    {
+      "id": "3d9afc1559f6",
+      "text": "Запись ограничена доступным проектом; личные черновики не становятся общими автоматически.",
+      "paths": [
+        "shared/tools/0/gates/0"
+      ]
+    },
+    {
+      "id": "c6a28cafb4b3",
+      "text": "Сохранённое утверждение не объявляется истинным по факту записи. Его статус зависит от оснований.",
+      "paths": [
+        "shared/tools/0/gates/1"
+      ]
+    },
+    {
+      "id": "4dca63320092",
+      "text": "После записи проверяются поля и связи, а не только наличие ID.",
+      "paths": [
+        "shared/tools/0/gates/2"
+      ]
+    },
+    {
+      "id": "57b02d404c37",
+      "text": "Результат поиска нужно сопоставлять с источниками и состоянием записи.",
+      "paths": [
+        "shared/tools/0/limits/0",
+        "shared/tools/0/important/0"
+      ]
+    },
+    {
+      "id": "891bc5e1d037",
+      "text": "Общая база хранит знания проекта; личные черновики не становятся общими автоматически.",
+      "paths": [
+        "shared/tools/0/limits/1",
+        "shared/tools/0/important/1"
+      ]
+    },
+    {
+      "id": "a64963c19918",
+      "text": "Публичное руководство по контракту Lab Knowledge MCP",
+      "paths": [
+        "shared/tools/0/links/0/label"
+      ]
+    },
+    {
+      "id": "b0e4a5bb58e7",
+      "text": "Через подключенный runtime",
+      "paths": [
+        "shared/tools/0/adoption/invoke",
+        "shared/tools/3/adoption/invoke",
+        "shared/tools/4/adoption/invoke"
+      ]
+    },
+    {
+      "id": "7c249864662e",
+      "text": "Служба лаборатории закрыта: публично открыт только её контракт в docs/knowledge-base.md, а адрес и ключ подключения выдаёт владелец.",
+      "paths": [
+        "shared/tools/0/adoption/installNote"
+      ]
+    },
+    {
+      "id": "cc36ada7a711",
+      "text": "связанная история проекта с доступными источниками",
+      "paths": [
+        "shared/tools/0/afterSetup"
+      ]
+    },
+    {
+      "id": "cca2d3f7a686",
+      "text": "Все участники лаборатории",
+      "paths": [
+        "shared/tools/0/usedBy/0/name",
+        "shared/tools/1/usedBy/0/name",
+        "shared/tools/2/usedBy/0/name",
+        "shared/tools/3/usedBy/0/name",
+        "shared/tools/4/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "d7e5f8b475b0",
+      "text": "читают общую историю и публикуют только проверенную часть личной работы",
+      "paths": [
+        "shared/tools/0/usedBy/0/role",
+        "shared/tools/1/usedBy/0/role",
+        "shared/tools/2/usedBy/0/role",
+        "shared/tools/3/usedBy/0/role",
+        "shared/tools/4/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "991db712402d",
+      "text": "Codex, Claude и Hermes",
+      "paths": [
+        "shared/tools/0/usedBy/1/name",
+        "shared/tools/1/usedBy/1/name",
+        "shared/tools/2/usedBy/1/name",
+        "shared/tools/3/usedBy/1/name",
+        "shared/tools/4/usedBy/1/name"
+      ]
+    },
+    {
+      "id": "6348306cd6ac",
+      "text": "восстанавливают контекст перед планированием и пишут только в выданном scope",
+      "paths": [
+        "shared/tools/0/usedBy/1/role",
+        "shared/tools/1/usedBy/1/role",
+        "shared/tools/2/usedBy/1/role",
+        "shared/tools/3/usedBy/1/role",
+        "shared/tools/4/usedBy/1/role"
+      ]
+    },
+    {
+      "id": "01483ad387fd",
+      "text": "skill безопасно вызывает MCP",
+      "paths": [
+        "shared/tools/0/relations/0/label"
+      ]
+    },
+    {
+      "id": "d85d6fe45a79",
+      "text": "Спросить, что уже известно",
+      "paths": [
+        "shared/tools/0/processRelations/0/stageTitle",
+        "shared/tools/0/processRelation/stageTitle",
+        "shared/tools/1/processRelations/0/stageTitle",
+        "shared/tools/1/processRelation/stageTitle",
+        "shared/tools/2/processRelations/0/stageTitle",
+        "shared/tools/2/processRelation/stageTitle",
+        "shared/tools/3/processRelations/0/stageTitle",
+        "shared/tools/3/processRelation/stageTitle",
+        "shared/tools/4/processRelations/0/stageTitle",
+        "shared/tools/4/processRelation/stageTitle"
+      ]
+    },
+    {
+      "id": "83b8ce87e095",
+      "text": "Модель поиска и модель ответа выполняют разные задачи",
+      "paths": [
+        "shared/tools/0/visual/label"
+      ]
+    },
+    {
+      "id": "00f4a8fd3f07",
+      "text": "Вопрос агента + доступный проект",
+      "paths": [
+        "shared/tools/0/visual/nodes/0"
+      ]
+    },
+    {
+      "id": "2a448beec960",
+      "text": "E5: смысл вопроса; PostgreSQL: точные слова",
+      "paths": [
+        "shared/tools/0/visual/nodes/1"
+      ]
+    },
+    {
+      "id": "bad429ca1e48",
+      "text": "Связи записей + Jina: ранжирование кандидатов",
+      "paths": [
+        "shared/tools/0/visual/nodes/2"
+      ]
+    },
+    {
+      "id": "17222f46a237",
+      "text": "Ответ MCP: записи, источники и ID",
+      "paths": [
+        "shared/tools/0/visual/nodes/3"
+      ]
+    },
+    {
+      "id": "d4b2b7435fc4",
+      "text": "Модель вызывающего агента: объяснение найденного",
+      "paths": [
+        "shared/tools/0/visual/nodes/4"
+      ]
+    },
+    {
+      "id": "f4c96ad7626f",
+      "text": "Публикация: подтверждённый объект → проверка контракта → сохранение → чтение обратно",
+      "paths": [
+        "shared/tools/0/visual/nodes/5"
+      ]
+    },
+    {
+      "id": "75d73c71fd3d",
+      "text": "PostgreSQL хранит типизированные записи, источники, связи и историю изменений.",
+      "paths": [
+        "shared/tools/0/storage/0"
+      ]
+    },
+    {
+      "id": "c59e3cdab1b0",
+      "text": "Поисковый индекс дополняет текст векторами; он не заменяет исходные записи.",
+      "paths": [
+        "shared/tools/0/storage/1"
+      ]
+    },
+    {
+      "id": "1500be9bc713",
+      "text": "Область поиска и записи ограничена доступом вызывающего пользователя или агента.",
+      "paths": [
+        "shared/tools/0/storage/2"
+      ]
+    },
+    {
+      "id": "1583f75b3674",
+      "text": "Подключите Lab Knowledge к агенту и назовите проект. Попросите найти прежние результаты или сохранить новый факт с источником.",
+      "paths": [
+        "shared/tools/0/start"
+      ]
+    },
+    {
+      "id": "17acebf596b8",
+      "text": "Навык",
+      "paths": [
+        "shared/tools/1/type",
+        "shared/tools/4/type"
+      ]
+    },
+    {
+      "id": "850a2d6d70b2",
+      "text": "Поддерживает человеко-читаемую память проекта и связывает ее с текущей исследовательской работой.",
+      "paths": [
+        "shared/tools/1/role",
+        "shared/tools/1/purpose"
+      ]
+    },
+    {
+      "id": "581d1dfe16c7",
+      "text": "Когда нужно восстановить или обновить личный контекст проекта.",
+      "paths": [
+        "shared/tools/1/when",
+        "shared/tools/1/useCases"
+      ]
+    },
+    {
+      "id": "b097d5cd0c41",
+      "text": "путь проекта",
+      "paths": [
+        "shared/tools/1/inputs/0"
+      ]
+    },
+    {
+      "id": "e395eee7784e",
+      "text": "текущее состояние",
+      "paths": [
+        "shared/tools/1/inputs/1"
+      ]
+    },
+    {
+      "id": "161181f0b61e",
+      "text": "решения и следующие шаги",
+      "paths": [
+        "shared/tools/1/inputs/2"
+      ]
+    },
+    {
+      "id": "e4db439adb7d",
+      "text": "находит canonical hub",
+      "paths": [
+        "shared/tools/1/inside/0",
+        "shared/tools/1/capabilities/0"
+      ]
+    },
+    {
+      "id": "b7385395d90e",
+      "text": "обновляет только подтвержденные разделы",
+      "paths": [
+        "shared/tools/1/inside/1",
+        "shared/tools/1/capabilities/1"
+      ]
+    },
+    {
+      "id": "869870b55e60",
+      "text": "сохраняет wikilinks и project structure",
+      "paths": [
+        "shared/tools/1/inside/2",
+        "shared/tools/1/capabilities/2"
+      ]
+    },
+    {
+      "id": "a0d3e5cc1cf8",
+      "text": "актуальная project note",
+      "paths": [
+        "shared/tools/1/outputs/0",
+        "shared/tools/1/outcomes/0",
+        "shared/tools/1/afterSetup"
+      ]
+    },
+    {
+      "id": "e4c9114b9bc9",
+      "text": "Личный Obsidian сотрудника",
+      "paths": [
+        "shared/tools/1/writes"
+      ]
+    },
+    {
+      "id": "64e6a8c441de",
+      "text": "правильная маршрутизация по obsidian-projects.json",
+      "paths": [
+        "shared/tools/1/gates/0"
+      ]
+    },
+    {
+      "id": "cfa0b8f14faa",
+      "text": "личная заметка не является shared evidence",
+      "paths": [
+        "shared/tools/1/limits/0",
+        "shared/tools/1/important/0"
+      ]
+    },
+    {
+      "id": "cb24125c4414",
+      "text": "Исходник навыка",
+      "paths": [
+        "shared/tools/1/links/0/label",
+        "shared/knowledgeModel/producers/2/links/0/label",
+        "shared/knowledgeModel/producers/3/links/0/label"
+      ]
+    },
+    {
+      "id": "e10c2eaf6172",
+      "text": "# перезапустите Claude Code, дальше — /obsidian-project-memory",
+      "paths": [
+        "shared/tools/1/adoption/install/3"
+      ]
+    },
+    {
+      "id": "d0fa76eff59a",
+      "text": "передает только явно одобренную часть в общую базу",
+      "paths": [
+        "shared/tools/1/relations/0/label"
+      ]
+    },
+    {
+      "id": "ed46fc27c8ff",
+      "text": "Укажите проект и попросите сохранить его текущее состояние, решения и следующие шаги.",
+      "paths": [
+        "shared/tools/1/start"
+      ]
+    },
+    {
+      "id": "6c0816d4b2d1",
+      "text": "Память агента",
+      "paths": [
+        "shared/tools/2/type"
+      ]
+    },
+    {
+      "id": "89744fce5498",
+      "text": "Долговременная память агента о вашей работе. Помогает в новом разговоре восстановить принятое решение, причину ошибки или незаконченный план вместе с исходным контекстом. Подключённый агент сам выбирает, что сохранить и что искать.",
+      "paths": [
+        "shared/tools/2/role",
+        "shared/tools/2/purpose"
+      ]
+    },
+    {
+      "id": "564b62c248ef",
+      "text": "До ответа о прошлой работе и при продолжении длинной задачи.",
+      "paths": [
+        "shared/tools/2/when",
+        "shared/tools/2/useCases"
+      ]
+    },
+    {
+      "id": "4c19a0ad617b",
+      "text": "Содержательный эпизод: решение, причина ошибки, результат или следующий шаг.",
+      "paths": [
+        "shared/tools/2/inputs/0"
+      ]
+    },
+    {
+      "id": "7b3202ac28cb",
+      "text": "Для поиска — короткий запрос и, если известны, проект и аспект работы.",
+      "paths": [
+        "shared/tools/2/inputs/1"
+      ]
+    },
+    {
+      "id": "47628cfb7c31",
+      "text": "Во время работы агент сохраняет то, что понадобится дальше. Hook на контрольной точке напоминает сделать это; само напоминание ещё не является записью.",
+      "paths": [
+        "shared/tools/2/inside/0",
+        "shared/tools/2/capabilities/0"
+      ]
+    },
+    {
+      "id": "a22c3c7eef1e",
+      "text": "В дневник попадает короткий итог с датой. В отдельный фрагмент можно положить точный текст решения или команды. Граф хранит отношения: какой метод, проект или событие с чем связаны.",
+      "paths": [
+        "shared/tools/2/inside/1",
+        "shared/tools/2/capabilities/1"
+      ]
+    },
+    {
+      "id": "3c091174a26d",
+      "text": "Фрагменты имеют адрес: крыло обозначает проект, комната — аспект работы, ящик — конкретную запись. Эти границы помогают искать нужную историю, не смешивая проекты.",
+      "paths": [
+        "shared/tools/2/inside/2",
+        "shared/tools/2/capabilities/2"
+      ]
+    },
+    {
+      "id": "435c41999814",
+      "text": "Поисковый запрос сравнивается с векторами сохранённого текста. Совпадения слов уточняют порядок; запрос к графу отдельно восстанавливает отношения между сущностями.",
+      "paths": [
+        "shared/tools/2/inside/3",
+        "shared/tools/2/capabilities/3"
+      ]
+    },
+    {
+      "id": "11ad7bb9202f",
+      "text": "Инструмент возвращает сохранённый текст и его происхождение. Агент читает источник, сверяет изменчивые факты с текущими файлами и затем продолжает работу.",
+      "paths": [
+        "shared/tools/2/inside/4",
+        "shared/tools/2/capabilities/4"
+      ]
+    },
+    {
+      "id": "3a103baaf23a",
+      "text": "Восстановленное решение с причиной и исходным текстом.",
+      "paths": [
+        "shared/tools/2/outputs/0",
+        "shared/tools/2/outcomes/0"
+      ]
+    },
+    {
+      "id": "9b34155ddcb8",
+      "text": "Дневниковый итог и отдельные фрагменты с ID; подтверждённые связи между сущностями.",
+      "paths": [
+        "shared/tools/2/outputs/1",
+        "shared/tools/2/outcomes/1"
+      ]
+    },
+    {
+      "id": "fef9df82492d",
+      "text": "Отдельная долговременная память",
+      "paths": [
+        "shared/tools/2/writes"
+      ]
+    },
+    {
+      "id": "4341adb08a67",
+      "text": "После сохранения агент читает запись обратно.",
+      "paths": [
+        "shared/tools/2/gates/0"
+      ]
+    },
+    {
+      "id": "6dca9ba53ea8",
+      "text": "У найденного факта проверяются источник, дата и актуальность.",
+      "paths": [
+        "shared/tools/2/gates/1"
+      ]
+    },
+    {
+      "id": "2bf52128cea5",
+      "text": "Память содержит только то, что действительно было сохранено. Она не гарантирует полного архива всех разговоров.",
+      "paths": [
+        "shared/tools/2/limits/0",
+        "shared/tools/2/important/0"
+      ]
+    },
+    {
+      "id": "819d57b1dc19",
+      "text": "Старое сообщение или решение не подтверждает текущее состояние эксперимента. Научные основания проверяются в исходных артефактах и Lab Knowledge.",
+      "paths": [
+        "shared/tools/2/limits/1",
+        "shared/tools/2/important/1"
+      ]
+    },
+    {
+      "id": "bd6a56ff7303",
+      "text": "Репозиторий на GitHub",
+      "paths": [
+        "shared/tools/2/links/0/label",
+        "shared/tools/3/links/1/label"
+      ]
+    },
+    {
+      "id": "3391b974fa8c",
+      "text": "Если набор уже поставлен через install/setup.sh, сервер mempalace уже прописан в settings.json и вторая строка не нужна.",
+      "paths": [
+        "shared/tools/2/adoption/installNote"
+      ]
+    },
+    {
+      "id": "2217f3d0c024",
+      "text": "релевантный контекст для агента",
+      "paths": [
+        "shared/tools/2/afterSetup"
+      ]
+    },
+    {
+      "id": "79b9f621fc8c",
+      "text": "используется вместе в одном процессе",
+      "paths": [
+        "shared/tools/2/relations/0/label",
+        "shared/tools/3/relations/0/label"
+      ]
+    },
+    {
+      "id": "5dec8bab6342",
+      "text": "Например: «Вспомни, почему мы отказались от этого подхода, и найди исходное решение». Агент ищет эпизод, читает его и проверяет, что после него изменилось.",
+      "paths": [
+        "shared/tools/2/start"
+      ]
+    },
+    {
+      "id": "60acf5795c74",
+      "text": "В проверенной установке тексты и векторы находятся в локальном Chroma, граф с периодами действия связей — в SQLite.",
+      "paths": [
+        "shared/tools/2/storage/0"
+      ]
+    },
+    {
+      "id": "09d5a6278b68",
+      "text": "Дневник допускает компактный формат AAAK. Точные исходные фрагменты сохраняются читаемым текстом.",
+      "paths": [
+        "shared/tools/2/storage/1"
+      ]
+    },
+    {
+      "id": "6cd2692a0f1a",
+      "text": "MemPalace хранит историю агента отдельно от Markdown-заметок Obsidian и общих научных записей Lab Knowledge.",
+      "paths": [
+        "shared/tools/2/storage/2"
+      ]
+    },
+    {
+      "id": "968f6159c130",
+      "text": "Машиночитаемый реестр",
+      "paths": [
+        "shared/tools/3/type"
+      ]
+    },
+    {
+      "id": "76f8223dc5df",
+      "text": "Дает человеку и агенту общую карту доступных skills, agents, commands, MCP tools, сервисов и правил их применения.",
+      "paths": [
+        "shared/tools/3/role",
+        "shared/tools/3/purpose"
+      ]
+    },
+    {
+      "id": "62e0e7d97bcc",
+      "text": "При старте нового агента, выборе исполнителя или поиске правильного инструмента.",
+      "paths": [
+        "shared/tools/3/when",
+        "shared/tools/3/useCases"
+      ]
+    },
+    {
+      "id": "c334406168ad",
+      "text": "аудированные manifests репозитория",
+      "paths": [
+        "shared/tools/3/inputs/0"
+      ]
+    },
+    {
+      "id": "634341aa27e5",
+      "text": "описания skills и agents",
+      "paths": [
+        "shared/tools/3/inputs/1"
+      ]
+    },
+    {
+      "id": "74ee20ee8f1e",
+      "text": "строит единый inventory",
+      "paths": [
+        "shared/tools/3/inside/0",
+        "shared/tools/3/capabilities/0"
+      ]
+    },
+    {
+      "id": "440d469725a6",
+      "text": "связывает capability с исследовательскими процессами",
+      "paths": [
+        "shared/tools/3/inside/1",
+        "shared/tools/3/capabilities/1"
+      ]
+    },
+    {
+      "id": "f1e1b0dc4c80",
+      "text": "сохраняет owner, входы, выходы, проверки, ограничения и source URL",
+      "paths": [
+        "shared/tools/3/inside/2",
+        "shared/tools/3/capabilities/2"
+      ]
+    },
+    {
+      "id": "7ac99c26b133",
+      "text": "отмечает local-only, archived и непроверенные компоненты",
+      "paths": [
+        "shared/tools/3/inside/3",
+        "shared/tools/3/capabilities/3"
+      ]
+    },
+    {
+      "id": "79da4006eca7",
+      "text": "поисковый реестр из 206 возможностей",
+      "paths": [
+        "shared/tools/3/outputs/0",
+        "shared/tools/3/outcomes/0",
+        "shared/tools/3/afterSetup"
+      ]
+    },
+    {
+      "id": "175cb9ed7913",
+      "text": "контекст для выбора инструмента",
+      "paths": [
+        "shared/tools/3/outputs/1",
+        "shared/tools/3/outcomes/1"
+      ]
+    },
+    {
+      "id": "cb9b734934bf",
+      "text": "Статический atlas inventory; публикация как live MCP resource остается целевым шагом",
+      "paths": [
+        "shared/tools/3/writes"
+      ]
+    },
+    {
+      "id": "0da51cca952b",
+      "text": "данные пересобираются из source",
+      "paths": [
+        "shared/tools/3/gates/0"
+      ]
+    },
+    {
+      "id": "cd80ebd9a0dc",
+      "text": "устаревшие компоненты маркируются отдельно",
+      "paths": [
+        "shared/tools/3/gates/1"
+      ]
+    },
+    {
+      "id": "a7f1c1a4aecf",
+      "text": "сейчас сайт читает реестр напрямую, но Hermes еще не получает его автоматически при старте",
+      "paths": [
+        "shared/tools/3/limits/0",
+        "shared/tools/3/important/0"
+      ]
+    },
+    {
+      "id": "7a2ac1571ce7",
+      "text": "реестр описывает доступность, а не факт запуска",
+      "paths": [
+        "shared/tools/3/limits/1",
+        "shared/tools/3/important/1"
+      ]
+    },
+    {
+      "id": "c0719a270be2",
+      "text": "Модель знаний · точный source закрыт",
+      "paths": [
+        "shared/tools/3/links/0/label"
+      ]
+    },
+    {
+      "id": "ee484b8358fd",
+      "text": "Реестр живёт внутри закрытой службы Lab Knowledge и приходит вместе с доступом к ней: спрашивать у владельца.",
+      "paths": [
+        "shared/tools/3/adoption/installNote"
+      ]
+    },
+    {
+      "id": "f8d2a0a647bd",
+      "text": "Как агент находит нужную возможность",
+      "paths": [
+        "shared/tools/3/visual/label"
+      ]
+    },
+    {
+      "id": "60d66784b330",
+      "text": "Реестр возможностей",
+      "paths": [
+        "shared/tools/3/visual/nodes/0"
+      ]
+    },
+    {
+      "id": "115c88c9a245",
+      "text": "Процессы",
+      "paths": [
+        "shared/tools/3/visual/nodes/1"
+      ]
+    },
+    {
+      "id": "9a5ebaa6a2b0",
+      "text": "Проектные ограничения",
+      "paths": [
+        "shared/tools/3/visual/nodes/2"
+      ]
+    },
+    {
+      "id": "037174d58809",
+      "text": "Исполнитель",
+      "paths": [
+        "shared/tools/3/visual/nodes/3"
+      ]
+    },
+    {
+      "id": "afd76f5f8a64",
+      "text": "Откройте поиск Atlas и опишите действие своими словами. Найденное досье покажет подходящий инструмент, условия применения и исходник.",
+      "paths": [
+        "shared/tools/3/start"
+      ]
+    },
+    {
+      "id": "71da7fe91f76",
+      "text": "Инструкция, по которой агент безопасно пользуется общей базой: чтение по умолчанию, точный предпросмотр перед записью и контрольное чтение после нее.",
+      "paths": [
+        "shared/tools/4/role",
+        "shared/tools/4/purpose"
+      ]
+    },
+    {
+      "id": "f2f3c71414b2",
+      "text": "Когда нужно спросить общую память лаборатории или явно опубликовать проверенную часть личного черновика.",
+      "paths": [
+        "shared/tools/4/when",
+        "shared/tools/4/useCases"
+      ]
+    },
+    {
+      "id": "060c468464e1",
+      "text": "человеческий вопрос или черновик",
+      "paths": [
+        "shared/tools/4/inputs/0"
+      ]
+    },
+    {
+      "id": "92eeb1962241",
+      "text": "точный проект",
+      "paths": [
+        "shared/tools/4/inputs/1"
+      ]
+    },
+    {
+      "id": "9aed86187e0b",
+      "text": "текущие права",
+      "paths": [
+        "shared/tools/4/inputs/2"
+      ]
+    },
+    {
+      "id": "0781b9c293a3",
+      "text": "явное подтверждение для любой записи",
+      "paths": [
+        "shared/tools/4/inputs/3"
+      ]
+    },
+    {
+      "id": "536aaa37ceba",
+      "text": "выбирает поиск или чтение контекста",
+      "paths": [
+        "shared/tools/4/inside/0",
+        "shared/tools/4/capabilities/0"
+      ]
+    },
+    {
+      "id": "07344e0b274a",
+      "text": "отделяет общую науку от личных заметок и задач",
+      "paths": [
+        "shared/tools/4/inside/1",
+        "shared/tools/4/capabilities/1"
+      ]
+    },
+    {
+      "id": "c5ebb517edee",
+      "text": "ищет возможный дубль",
+      "paths": [
+        "shared/tools/4/inside/2",
+        "shared/tools/4/capabilities/2"
+      ]
+    },
+    {
+      "id": "d69c937f38a4",
+      "text": "показывает проект, тип, формулировку и provenance, если он требуется",
+      "paths": [
+        "shared/tools/4/inside/3",
+        "shared/tools/4/capabilities/3"
+      ]
+    },
+    {
+      "id": "2b3bf745d35b",
+      "text": "после подтверждения вызывает MCP и перечитывает результат",
+      "paths": [
+        "shared/tools/4/inside/4",
+        "shared/tools/4/capabilities/4"
+      ]
+    },
+    {
+      "id": "6fb02b3bb0f5",
+      "text": "ответ со связями, пробелами и доступными источниками",
+      "paths": [
+        "shared/tools/4/outputs/0",
+        "shared/tools/4/outcomes/0",
+        "shared/tools/4/afterSetup"
+      ]
+    },
+    {
+      "id": "479caf5e802a",
+      "text": "подтвержденная запись и ее ID или public code",
+      "paths": [
+        "shared/tools/4/outputs/1",
+        "shared/tools/4/outcomes/1"
+      ]
+    },
+    {
+      "id": "b7068d2aa9de",
+      "text": "точный blocker при неоднозначном проекте, дубле или запрете доступа",
+      "paths": [
+        "shared/tools/4/outputs/2",
+        "shared/tools/4/outcomes/2"
+      ]
+    },
+    {
+      "id": "dd85744dbd7d",
+      "text": "Только одобренные записи в Lab Knowledge; исходный Obsidian-черновик остается на месте.",
+      "paths": [
+        "shared/tools/4/writes"
+      ]
+    },
+    {
+      "id": "c67681379357",
+      "text": "вопросы к базе ничего не меняют",
+      "paths": [
+        "shared/tools/4/gates/0"
+      ]
+    },
+    {
+      "id": "5ebdc80c8c5a",
+      "text": "наличие frontmatter не считается разрешением",
+      "paths": [
+        "shared/tools/4/gates/1"
+      ]
+    },
+    {
+      "id": "a55ee2d39bdc",
+      "text": "запрет доступа не обходится другим ключом",
+      "paths": [
+        "shared/tools/4/gates/2"
+      ]
+    },
+    {
+      "id": "1c7c33b8d78e",
+      "text": "каждая запись подтверждается контрольным чтением",
+      "paths": [
+        "shared/tools/4/gates/3"
+      ]
+    },
+    {
+      "id": "6f2f2b2dce09",
+      "text": "skill ничего не хранит сам",
+      "paths": [
+        "shared/tools/4/limits/0",
+        "shared/tools/4/important/0"
+      ]
+    },
+    {
+      "id": "81b232055fa1",
+      "text": "не создает вторую writable-копию между Obsidian, Yonote и Lab Knowledge",
+      "paths": [
+        "shared/tools/4/limits/1",
+        "shared/tools/4/important/1"
+      ]
+    },
+    {
+      "id": "ef86ec96941e",
+      "text": "Инструкция skill · точный source закрыт",
+      "paths": [
+        "shared/tools/4/links/0/label"
+      ]
+    },
+    {
+      "id": "6da0a086d3a3",
+      "text": "Публичное руководство: снимок, когда вызовов было 44; сейчас в службе 59, читающих 17",
+      "paths": [
+        "shared/tools/4/links/1/label",
+        "shared/knowledgeModel/publishFlow/0/links/0/label",
+        "shared/knowledgeModel/publishFlow/1/links/0/label",
+        "shared/knowledgeModel/publishFlow/2/links/0/label",
+        "shared/knowledgeModel/publishFlow/4/links/0/label",
+        "shared/knowledgeModel/publishFlow/5/links/0/label",
+        "shared/knowledgeModel/consumers/0/links/0/label",
+        "shared/knowledgeModel/consumers/1/links/0/label",
+        "shared/knowledgeModel/consumers/2/links/0/label",
+        "shared/knowledgeModel/consumers/3/links/0/label",
+        "shared/knowledgeModel/sources/0/label"
+      ]
+    },
+    {
+      "id": "7005fdf9115c",
+      "text": "Навык skills/lab-knowledge/ закрыт в .gitignore и приходит вместе с доступом к службе: спрашивать у владельца.",
+      "paths": [
+        "shared/tools/4/adoption/installNote"
+      ]
+    },
+    {
+      "id": "b278dadc4d36",
+      "text": "читает и публикует через MCP",
+      "paths": [
+        "shared/tools/4/relations/0/label"
+      ]
+    },
+    {
+      "id": "abf419e3aa2b",
+      "text": "оставляет личный черновик в Obsidian",
+      "paths": [
+        "shared/tools/4/relations/1/label"
+      ]
+    },
+    {
+      "id": "ae9da80bbf6e",
+      "text": "Навык управляет вызовами, но сам ничего не хранит",
+      "paths": [
+        "shared/tools/4/visual/label"
+      ]
+    },
+    {
+      "id": "53defae0b71a",
+      "text": "Вопрос к общей памяти или личный черновик",
+      "paths": [
+        "shared/tools/4/visual/nodes/0"
+      ]
+    },
+    {
+      "id": "e67f64543abd",
+      "text": "Поиск без записи",
+      "paths": [
+        "shared/tools/4/visual/nodes/1"
+      ]
+    },
+    {
+      "id": "278828d7dfd5",
+      "text": "Показ будущей записи и подтверждение",
+      "paths": [
+        "shared/tools/4/visual/nodes/2"
+      ]
+    },
+    {
+      "id": "4e9ce2f2ca73",
+      "text": "Запись нужного типа",
+      "paths": [
+        "shared/tools/4/visual/nodes/3"
+      ]
+    },
+    {
+      "id": "72d8a8d3b008",
+      "text": "Перечитывание записанного",
+      "paths": [
+        "shared/tools/4/visual/nodes/4"
+      ]
+    },
+    {
+      "id": "93a6b9321bc6",
+      "text": "Назовите проект и попросите найти прежние результаты или сохранить новое утверждение с источником.",
+      "paths": [
+        "shared/tools/4/start"
+      ]
+    },
+    {
+      "id": "079df1bc1797",
+      "text": "Хуки памяти",
+      "paths": [
+        "shared/tools/5/title"
+      ]
+    },
+    {
+      "id": "6349af004ba7",
+      "text": "Хуки сессии",
+      "paths": [
+        "shared/tools/5/type"
+      ]
+    },
+    {
+      "id": "a6f81f7213ad",
+      "text": "Напоминают агенту сохранить важный итог в подходящее место и проверить запись. Сам запрос checkpoint ещё не означает, что данные сохранены.",
+      "paths": [
+        "shared/tools/5/role"
+      ]
+    },
+    {
+      "id": "36e662da81dd",
+      "text": "При событиях сессии, настроенных в текущем клиенте Codex или Claude Code.",
+      "paths": [
+        "shared/tools/5/when",
+        "shared/tools/5/useCases"
+      ]
+    },
+    {
+      "id": "99fea2a50867",
+      "text": "текущая сессия и её рабочая папка",
+      "paths": [
+        "shared/tools/5/inputs/0"
+      ]
+    },
+    {
+      "id": "ca8daf8b2e95",
+      "text": "маршрутизация проектов из obsidian-projects.json",
+      "paths": [
+        "shared/tools/5/inputs/1"
+      ]
+    },
+    {
+      "id": "9b1bbeba45e8",
+      "text": "session-start.js поднимает контекст в начале сессии",
+      "paths": [
+        "shared/tools/5/inside/0",
+        "shared/tools/5/capabilities/0"
+      ]
+    },
+    {
+      "id": "680ae1d46e18",
+      "text": "mempalace-obsidian-hook.py прерывает ход и требует записать, что случилось: агент решает, что стоит сохранить",
+      "paths": [
+        "shared/tools/5/inside/1",
+        "shared/tools/5/capabilities/1"
+      ]
+    },
+    {
+      "id": "e24826512dcd",
+      "text": "obsidian-daily-sync.py кладёт запись в дневник нужного проекта хранилища",
+      "paths": [
+        "shared/tools/5/inside/2",
+        "shared/tools/5/capabilities/2"
+      ]
+    },
+    {
+      "id": "ab5973a77a92",
+      "text": "export-conversation.py сохраняет читаемую расшифровку в ~/.claude/logs/conversations",
+      "paths": [
+        "shared/tools/5/inside/3",
+        "shared/tools/5/capabilities/3"
+      ]
+    },
+    {
+      "id": "c5cc1f711497",
+      "text": "security-guard.js проверяет правки на утёкшие ключи до записи файла",
+      "paths": [
+        "shared/tools/5/inside/4",
+        "shared/tools/5/capabilities/4"
+      ]
+    },
+    {
+      "id": "699614367edc",
+      "text": "запрос на сохранение значимого контекста",
+      "paths": [
+        "shared/tools/5/outputs/0",
+        "shared/tools/5/outcomes/0"
+      ]
+    },
+    {
+      "id": "4ff84e5a005c",
+      "text": "подтверждённые записи в доступных хранилищах или явный pending",
+      "paths": [
+        "shared/tools/5/outputs/1",
+        "shared/tools/5/outcomes/1"
+      ]
+    },
+    {
+      "id": "c1e58e360956",
+      "text": "Агент сохраняет личный контекст в MemPalace и привязанные заметки Obsidian. В Lab Knowledge отправляется только разрешённое общее знание с подходящим типом и контрольным чтением.",
+      "paths": [
+        "shared/tools/5/writes"
+      ]
+    },
+    {
+      "id": "b94f0e564560",
+      "text": "Что сохранить и куда, определяется смыслом результата и поручением владельца.",
+      "paths": [
+        "shared/tools/5/gates/0"
+      ]
+    },
+    {
+      "id": "d26fd53f7b7c",
+      "text": "После публикации агент читает объект обратно; отказ остаётся pending.",
+      "paths": [
+        "shared/tools/5/gates/1"
+      ]
+    },
+    {
+      "id": "09f495e5fa28",
+      "text": "Личные задачи остаются в Operon, очередь Hermes показывается приватно в Obsidian.",
+      "paths": [
+        "shared/tools/5/gates/2"
+      ]
+    },
+    {
+      "id": "2363fb1ba53b",
+      "text": "Hook не подтверждает успешность записи вместо MCP.",
+      "paths": [
+        "shared/tools/5/limits/0",
+        "shared/tools/5/important/0"
+      ]
+    },
+    {
+      "id": "c5b7b3ad0d98",
+      "text": "Установленная конфигурация применяется к новым подключениям клиента; уже открытая сессия может потребовать переподключения.",
+      "paths": [
+        "shared/tools/5/limits/1",
+        "shared/tools/5/important/1"
+      ]
+    },
+    {
+      "id": "c57c835d024a",
+      "text": "Исходник хука памяти",
+      "paths": [
+        "shared/tools/5/links/0/label"
+      ]
+    },
+    {
+      "id": "8ffd17d145b4",
+      "text": "Запись в дневник проекта",
+      "paths": [
+        "shared/tools/5/links/1/label"
+      ]
+    },
+    {
+      "id": "823e048e56b4",
+      "text": "Выгрузка сессии",
+      "paths": [
+        "shared/tools/5/links/2/label"
+      ]
+    },
+    {
+      "id": "16cb5a3c5bb2",
+      "text": "Как всё это включается",
+      "paths": [
+        "shared/tools/5/links/3/label"
+      ]
+    },
+    {
+      "id": "095d45ad7b85",
+      "text": "Через хуки текущего клиента",
+      "paths": [
+        "shared/tools/5/adoption/invoke"
+      ]
+    },
+    {
+      "id": "54c0e6df8576",
+      "text": "Этому нужен полный установщик: хуки включаются записями в settings.json, а пути к хранилищу в scripts/mempalace-obsidian-hook.py подставляет setup.sh.",
+      "paths": [
+        "shared/tools/5/adoption/installNote"
+      ]
+    },
+    {
+      "id": "954e9e761490",
+      "text": "Любой агент в этой настройке",
+      "paths": [
+        "shared/tools/5/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "431d837348fa",
+      "text": "останавливается и записывает итог",
+      "paths": [
+        "shared/tools/5/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "3dfaf2b80e9a",
+      "text": "От события сессии к проверенной записи",
+      "paths": [
+        "shared/tools/5/visual/label"
+      ]
+    },
+    {
+      "id": "4f684d574475",
+      "text": "Событие сессии",
+      "paths": [
+        "shared/tools/5/visual/nodes/0"
+      ]
+    },
+    {
+      "id": "ebd210a7545a",
+      "text": "Отбор значимого контекста",
+      "paths": [
+        "shared/tools/5/visual/nodes/1"
+      ]
+    },
+    {
+      "id": "9a91e1bdc8b6",
+      "text": "Подходящее личное или общее хранилище",
+      "paths": [
+        "shared/tools/5/visual/nodes/2"
+      ]
+    },
+    {
+      "id": "6f9d35067fb1",
+      "text": "Запись в пределах поручения",
+      "paths": [
+        "shared/tools/5/visual/nodes/3"
+      ]
+    },
+    {
+      "id": "61cad6763d64",
+      "text": "Контрольное чтение или pending",
+      "paths": [
+        "shared/tools/5/visual/nodes/4"
+      ]
+    },
+    {
+      "id": "9143c7f88597",
+      "text": "После установки хуков продолжайте обычную работу в клиенте. На контрольной точке агент получит напоминание сохранить содержательный результат.",
+      "paths": [
+        "shared/tools/5/start"
+      ]
+    },
+    {
+      "id": "c79f9b960e0b",
+      "text": "Заметки об устройстве сетапа",
+      "paths": [
+        "shared/tools/6/title"
+      ]
+    },
+    {
+      "id": "ba7494f158e5",
+      "text": "Раскладка хранилища",
+      "paths": [
+        "shared/tools/6/type"
+      ]
+    },
+    {
+      "id": "a6562cffb59e",
+      "text": "Канонические инструкции, разборы инцидентов и правила работы с инструментами. Помогают восстановить, как устроен конкретный проект или личный сетап.",
+      "paths": [
+        "shared/tools/6/role"
+      ]
+    },
+    {
+      "id": "438dcf202cde",
+      "text": "Перед тем как трогать незнакомый контур, и после того, как разобрались в чём-то, что забудется.",
+      "paths": [
+        "shared/tools/6/when",
+        "shared/tools/6/useCases"
+      ]
+    },
+    {
+      "id": "cb09202f4705",
+      "text": "вопрос вида «как здесь принято» или «почему оно так сделано»",
+      "paths": [
+        "shared/tools/6/inputs/0"
+      ]
+    },
+    {
+      "id": "152b38ca0a26",
+      "text": "устройство контуров: разбор статей, вахтёры, отчётность по экспериментам, очередь запусков",
+      "paths": [
+        "shared/tools/6/inside/0",
+        "shared/tools/6/capabilities/0"
+      ]
+    },
+    {
+      "id": "388cf0261be6",
+      "text": "разборы инцидентов и подводные камни, из-за которых пришлось менять настройку",
+      "paths": [
+        "shared/tools/6/inside/1",
+        "shared/tools/6/capabilities/1"
+      ]
+    },
+    {
+      "id": "60b999069ac7",
+      "text": "соглашения самого хранилища: obsidian-conventions.md",
+      "paths": [
+        "shared/tools/6/inside/2",
+        "shared/tools/6/capabilities/2"
+      ]
+    },
+    {
+      "id": "2f516f6802cd",
+      "text": "канонический список серверов: general/servers.md",
+      "paths": [
+        "shared/tools/6/inside/3",
+        "shared/tools/6/capabilities/3"
+      ]
+    },
+    {
+      "id": "9f99359d450e",
+      "text": "готовый ответ, как здесь принято делать, со ссылкой на разбор",
+      "paths": [
+        "shared/tools/6/outputs/0",
+        "shared/tools/6/outcomes/0"
+      ]
+    },
+    {
+      "id": "7413d314a673",
+      "text": "Личный Obsidian: проектные знания — в привязанном проекте по obsidian-projects.json; общие инструкции — в существующих общих заметках.",
+      "paths": [
+        "shared/tools/6/writes"
+      ]
+    },
+    {
+      "id": "203d1e359255",
+      "text": "заметка появляется, когда работа изменила состояние дел, а не после каждой задачи",
+      "paths": [
+        "shared/tools/6/gates/0"
+      ]
+    },
+    {
+      "id": "9ac75ad3b911",
+      "text": "это личное хранилище: в общую базу лаборатории попадает только то, что явно опубликовали",
+      "paths": [
+        "shared/tools/6/limits/0",
+        "shared/tools/6/important/0"
+      ]
+    },
+    {
+      "id": "671a46553b9b",
+      "text": "Личное хранилище Obsidian",
+      "paths": [
+        "shared/tools/6/adoption/invoke"
+      ]
+    },
+    {
+      "id": "62f92ae81f76",
+      "text": "Личное хранилище не публикуется. Используйте свои существующие заметки и привязку проекта.",
+      "paths": [
+        "shared/tools/6/adoption/installNote"
+      ]
+    },
+    {
+      "id": "a6b95578a2ed",
+      "text": "Агент перед незнакомой работой",
+      "paths": [
+        "shared/tools/6/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "16eea970639b",
+      "text": "читает устройство контура до того, как его трогать",
+      "paths": [
+        "shared/tools/6/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "9e5cbf8cf4e7",
+      "text": "Откройте папку Knowledge нужного проекта или попросите агента найти инструкцию по конкретной настройке.",
+      "paths": [
+        "shared/tools/6/start"
+      ]
+    },
+    {
+      "id": "7c93fbe2782b",
+      "text": "Подключённые MCP",
+      "paths": [
+        "shared/tools/7/title"
+      ]
+    },
+    {
+      "id": "c56ef1e9c2b0",
+      "text": "Серверы MCP",
+      "paths": [
+        "shared/tools/7/type"
+      ]
+    },
+    {
+      "id": "81572fb3143b",
+      "text": "Подключения, через которые агент обращается к внешним системам: библиотеке Zotero, памяти MemPalace, документам Google, доскам Miro и каталогу AlphaXiv. Каждое подключение имеет собственные инструменты и права.",
+      "paths": [
+        "shared/tools/7/role",
+        "shared/tools/7/purpose"
+      ]
+    },
+    {
+      "id": "5b5478e0a682",
+      "text": "Когда работа выходит за пределы файлов на диске.",
+      "paths": [
+        "shared/tools/7/when",
+        "shared/tools/7/useCases"
+      ]
+    },
+    {
+      "id": "d7dd9a153ea3",
+      "text": "настроенный сервер в ~/.claude.json",
+      "paths": [
+        "shared/tools/7/inputs/0"
+      ]
+    },
+    {
+      "id": "53fe164f1929",
+      "text": "ключ доступа к внешней службе",
+      "paths": [
+        "shared/tools/7/inputs/1"
+      ]
+    },
+    {
+      "id": "228b81e3cc5a",
+      "text": "zotero — карточки, полный текст, разделы PDF и BibTeX без прямого чтения рабочей базы",
+      "paths": [
+        "shared/tools/7/inside/0",
+        "shared/tools/7/capabilities/0"
+      ]
+    },
+    {
+      "id": "a5465c05c198",
+      "text": "mempalace — память агента и история прошлых сессий",
+      "paths": [
+        "shared/tools/7/inside/1",
+        "shared/tools/7/capabilities/1"
+      ]
+    },
+    {
+      "id": "39edb751e881",
+      "text": "google-workspace — документы и диск, только чтение и запись документов",
+      "paths": [
+        "shared/tools/7/inside/2",
+        "shared/tools/7/capabilities/2"
+      ]
+    },
+    {
+      "id": "042b4c70df99",
+      "text": "miro — доски для схем и альтернатив",
+      "paths": [
+        "shared/tools/7/inside/3",
+        "shared/tools/7/capabilities/3"
+      ]
+    },
+    {
+      "id": "a615728ccf47",
+      "text": "alphaXiv — поиск статей и зеркало библиотеки",
+      "paths": [
+        "shared/tools/7/inside/4",
+        "shared/tools/7/capabilities/4"
+      ]
+    },
+    {
+      "id": "3689efc1de25",
+      "text": "ответ внешней службы как обычный инструмент агента",
+      "paths": [
+        "shared/tools/7/outputs/0",
+        "shared/tools/7/outcomes/0"
+      ]
+    },
+    {
+      "id": "4c91cfac6d70",
+      "text": "Каждая служба пишет только к себе",
+      "paths": [
+        "shared/tools/7/writes"
+      ]
+    },
+    {
+      "id": "d00a2ac98db5",
+      "text": "сервер подключается явно, и агент видит ровно те инструменты, что ему разрешены",
+      "paths": [
+        "shared/tools/7/gates/0"
+      ]
+    },
+    {
+      "id": "5a14a6cd5f97",
+      "text": "общая база лаборатории в этот список не входит: локальный агент ходит в неё через отдельный канал",
+      "paths": [
+        "shared/tools/7/limits/0",
+        "shared/tools/7/important/0"
+      ]
+    },
+    {
+      "id": "468466b7fa29",
+      "text": "у каждой службы свой тариф и свои ограничения, они всплывают в самой неудобный момент",
+      "paths": [
+        "shared/tools/7/limits/1",
+        "shared/tools/7/important/1"
+      ]
+    },
+    {
+      "id": "af6897063e13",
+      "text": "Пакет mcp-miro",
+      "paths": [
+        "shared/tools/7/links/0/label"
+      ]
+    },
+    {
+      "id": "9b6d520171da",
+      "text": "Пакет zotero-mcp",
+      "paths": [
+        "shared/tools/7/links/1/label"
+      ]
+    },
+    {
+      "id": "beb8d934dfa1",
+      "text": "claude mcp list покажет, что подключено сейчас",
+      "paths": [
+        "shared/tools/7/adoption/invoke"
+      ]
+    },
+    {
+      "id": "cfbaa647aa1b",
+      "text": "claude mcp add miro -s user -e MIRO_ACCESS_TOKEN=<ваш ключ Miro> -- npx -y @k-jarzyna/mcp-miro",
+      "paths": [
+        "shared/tools/7/adoption/install/2"
+      ]
+    },
+    {
+      "id": "e99ada4a8802",
+      "text": "google-workspace ставится отдельно: ему нужен свой OAuth-клиент Google, а не ключ в командной строке.",
+      "paths": [
+        "shared/tools/7/adoption/installNote"
+      ]
+    },
+    {
+      "id": "2d9266271a46",
+      "text": "Локальный агент",
+      "paths": [
+        "shared/tools/7/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "1b17b4c7cddc",
+      "text": "вызывает внешние службы как обычные инструменты",
+      "paths": [
+        "shared/tools/7/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "670236700ca3",
+      "text": "Выберите сервис, подключите его к своему клиенту и выполните пробное чтение. Доступный набор инструментов зависит от ваших подключений.",
+      "paths": [
+        "shared/tools/7/start"
+      ]
+    },
+    {
+      "id": "a02ef56b64a3",
+      "text": "Плагины Claude Code",
+      "paths": [
+        "shared/tools/8/title"
+      ]
+    },
+    {
+      "id": "68dd6f90c224",
+      "text": "Плагины",
+      "paths": [
+        "shared/tools/8/type"
+      ]
+    },
+    {
+      "id": "b309f521b5bc",
+      "text": "Расширения клиента, которые добавляют навыки и подключения для документов, GitHub, терминала и языковых инструментов. Набор зависит от установки пользователя.",
+      "paths": [
+        "shared/tools/8/role",
+        "shared/tools/8/purpose"
+      ]
+    },
+    {
+      "id": "0bf5d57c233f",
+      "text": "Всегда: они добавляют инструменты во все сессии.",
+      "paths": [
+        "shared/tools/8/when",
+        "shared/tools/8/useCases"
+      ]
+    },
+    {
+      "id": "74c273932992",
+      "text": "список включённых плагинов в settings.json",
+      "paths": [
+        "shared/tools/8/inputs/0"
+      ]
+    },
+    {
+      "id": "463856c79cba",
+      "text": "document-skills — чтение и правка docx, pptx, xlsx, pdf",
+      "paths": [
+        "shared/tools/8/inside/0",
+        "shared/tools/8/capabilities/0"
+      ]
+    },
+    {
+      "id": "ee7258b569b2",
+      "text": "github — работа с задачами и запросами на слияние",
+      "paths": [
+        "shared/tools/8/inside/1",
+        "shared/tools/8/capabilities/1"
+      ]
+    },
+    {
+      "id": "3e81a1fa6380",
+      "text": "warp — интеграция с терминалом",
+      "paths": [
+        "shared/tools/8/inside/2",
+        "shared/tools/8/capabilities/2"
+      ]
+    },
+    {
+      "id": "3137ec24ff72",
+      "text": "swift-lsp — подсказки по коду Swift",
+      "paths": [
+        "shared/tools/8/inside/3",
+        "shared/tools/8/capabilities/3"
+      ]
+    },
+    {
+      "id": "a8e98babdb65",
+      "text": "дополнительные инструменты в каждой сессии",
+      "paths": [
+        "shared/tools/8/outputs/0",
+        "shared/tools/8/outcomes/0"
+      ]
+    },
+    {
+      "id": "63fa14f00c9f",
+      "text": "Ничего сверх того, что делает сам плагин",
+      "paths": [
+        "shared/tools/8/writes"
+      ]
+    },
+    {
+      "id": "04d4debd4e6c",
+      "text": "плагин включается по одному, а не пачкой",
+      "paths": [
+        "shared/tools/8/gates/0"
+      ]
+    },
+    {
+      "id": "72fa5847362d",
+      "text": "плагин расширяет манифест инструментов, и лишние включённые плагины отъедают контекст",
+      "paths": [
+        "shared/tools/8/limits/0",
+        "shared/tools/8/important/0"
+      ]
+    },
+    {
+      "id": "8c292eabca19",
+      "text": "enabledPlugins в settings.json",
+      "paths": [
+        "shared/tools/8/adoption/invoke"
+      ]
+    },
+    {
+      "id": "0bef12a01b27",
+      "text": "swift-lsp@claude-plugins-official ставится той же командой и нужен только тем, кто пишет на Swift.",
+      "paths": [
+        "shared/tools/8/adoption/installNote"
+      ]
+    },
+    {
+      "id": "db96a0605f88",
+      "text": "Любая сессия",
+      "paths": [
+        "shared/tools/8/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "dccc879f4d81",
+      "text": "получает инструменты плагина",
+      "paths": [
+        "shared/tools/8/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "7cf0bffc2c60",
+      "text": "Установите нужное расширение в своём клиенте и проверьте, какие команды и инструменты оно добавило.",
+      "paths": [
+        "shared/tools/8/start"
+      ]
+    },
+    {
+      "id": "4db3c0c1cfc7",
+      "text": "Правила агента",
+      "paths": [
+        "shared/tools/9/title"
+      ]
+    },
+    {
+      "id": "9275365ee40e",
+      "text": "Правила",
+      "paths": [
+        "shared/tools/9/type"
+      ]
+    },
+    {
+      "id": "2de7bd550abb",
+      "text": "Девять файлов, которые агент читает до работы: как оформлять код, куда писать заметки, что нельзя коммитить, как вести себя на общих серверах. Не подсказки, а условия, при которых результат принимается.",
+      "paths": [
+        "shared/tools/9/role"
+      ]
+    },
+    {
+      "id": "d54838d334f6",
+      "text": "Всегда: правила подгружаются в каждую сессию из ~/.claude/rules/.",
+      "paths": [
+        "shared/tools/9/when",
+        "shared/tools/9/useCases"
+      ]
+    },
+    {
+      "id": "ea7c7263e1a4",
+      "text": "каталог ~/.claude/rules/ и файл CLAUDE.md",
+      "paths": [
+        "shared/tools/9/inputs/0"
+      ]
+    },
+    {
+      "id": "624ad44017ec",
+      "text": "agents.md — когда каких агентов запускать и что запускать параллельно",
+      "paths": [
+        "shared/tools/9/inside/0",
+        "shared/tools/9/capabilities/0"
+      ]
+    },
+    {
+      "id": "a4e9aef846a3",
+      "text": "coding-style.md — размер файла, замороженная конфигурация, типы, реестр моделей, что запрещено",
+      "paths": [
+        "shared/tools/9/inside/1",
+        "shared/tools/9/capabilities/1"
+      ]
+    },
+    {
+      "id": "b3a8c1acb22d",
+      "text": "security.md — что никогда не попадает в исходники и куда класть секреты",
+      "paths": [
+        "shared/tools/9/inside/2",
+        "shared/tools/9/capabilities/2"
+      ]
+    },
+    {
+      "id": "025f0dc4c816",
+      "text": "claude-scholar-core.md — уровень требований к тексту и стек по умолчанию",
+      "paths": [
+        "shared/tools/9/inside/3",
+        "shared/tools/9/capabilities/3"
+      ]
+    },
+    {
+      "id": "2a0050b89a97",
+      "text": "code-workflow.md, server-hygiene.md, alphaxiv-sync.md, autoresearch.md, obsidian-frontmatter.md — внутренние правила отдельных контуров",
+      "paths": [
+        "shared/tools/9/inside/4",
+        "shared/tools/9/capabilities/4"
+      ]
+    },
+    {
+      "id": "bafa3d251e37",
+      "text": "одинаковое поведение агента во всех проектах",
+      "paths": [
+        "shared/tools/9/outputs/0",
+        "shared/tools/9/outcomes/0"
+      ]
+    },
+    {
+      "id": "41e73da16d98",
+      "text": "Ничего: правила только ограничивают",
+      "paths": [
+        "shared/tools/9/writes"
+      ]
+    },
+    {
+      "id": "d3f8d45ebd1e",
+      "text": "правило описывает проверяемое условие, а не пожелание",
+      "paths": [
+        "shared/tools/9/gates/0"
+      ]
+    },
+    {
+      "id": "2bd97644a0f4",
+      "text": "четыре правила и два отключённых лежат в публичном репозитории, остальные пять внутренние: они называют внутренние адреса и раскладку хранилища",
+      "paths": [
+        "shared/tools/9/limits/0",
+        "shared/tools/9/important/0"
+      ]
+    },
+    {
+      "id": "fcdc71e2b762",
+      "text": "правила читаются целиком в каждую сессию, поэтому длинное правило стоит контекста",
+      "paths": [
+        "shared/tools/9/limits/1",
+        "shared/tools/9/important/1"
+      ]
+    },
+    {
+      "id": "0d7b42f76346",
+      "text": "Оркестрация агентов",
+      "paths": [
+        "shared/tools/9/links/0/label"
+      ]
+    },
+    {
+      "id": "b18c341a0e2e",
+      "text": "Стиль кода",
+      "paths": [
+        "shared/tools/9/links/1/label"
+      ]
+    },
+    {
+      "id": "ef27069d03ec",
+      "text": "Секреты",
+      "paths": [
+        "shared/tools/9/links/2/label"
+      ]
+    },
+    {
+      "id": "6def81d41775",
+      "text": "Требования к работе",
+      "paths": [
+        "shared/tools/9/links/3/label"
+      ]
+    },
+    {
+      "id": "944dc7eb593f",
+      "text": "Положить нужные файлы в ~/.claude/rules/",
+      "paths": [
+        "shared/tools/9/adoption/invoke"
+      ]
+    },
+    {
+      "id": "d8b494c46762",
+      "text": "# перезапустите Claude Code — правила читаются в начале каждой сессии",
+      "paths": [
+        "shared/tools/9/adoption/install/3"
+      ]
+    },
+    {
+      "id": "4b8081e148f8",
+      "text": "В открытом репозитории лежат четыре правила и два отключённых в rules/disabled/: остальные пять внутренние, они называют внутренние адреса и раскладку хранилища.",
+      "paths": [
+        "shared/tools/9/adoption/installNote"
+      ]
+    },
+    {
+      "id": "73eff95fa9a6",
+      "text": "Каждая сессия агента",
+      "paths": [
+        "shared/tools/9/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "837e0942b296",
+      "text": "читает правила до первой правки",
+      "paths": [
+        "shared/tools/9/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "dff5aef86b34",
+      "text": "Сохраните правила в поддерживаемом клиентом месте и укажите их область: весь профиль или один проект.",
+      "paths": [
+        "shared/tools/9/start"
+      ]
+    },
+    {
+      "id": "f95afdcb8e49",
+      "text": "Копия базы и сторож",
+      "paths": [
+        "shared/tools/10/title"
+      ]
+    },
+    {
+      "id": "65ec38f43255",
+      "text": "Задачи cron",
+      "paths": [
+        "shared/tools/10/type"
+      ]
+    },
+    {
+      "id": "c712a0f15592",
+      "text": "Две задачи держат общую базу живой: ночная логическая копия и проверка ответом каждые пять минут.",
+      "paths": [
+        "shared/tools/10/role"
+      ]
+    },
+    {
+      "id": "eb149f17c60e",
+      "text": "Постоянно, на сервере лаборатории.",
+      "paths": [
+        "shared/tools/10/when",
+        "shared/tools/10/useCases"
+      ]
+    },
+    {
+      "id": "738a2bce3cb2",
+      "text": "сама база",
+      "paths": [
+        "shared/tools/10/inputs/0"
+      ]
+    },
+    {
+      "id": "1c0d45eb1bc1",
+      "text": "ключ для пробного запроса",
+      "paths": [
+        "shared/tools/10/inputs/1"
+      ]
+    },
+    {
+      "id": "8b289358a0ab",
+      "text": "в 03:17 снимается логическая копия: строки таблиц без векторов поиска, потому что векторы восстанавливаются прогревом и весят больше самих данных",
+      "paths": [
+        "shared/tools/10/inside/0",
+        "shared/tools/10/capabilities/0"
+      ]
+    },
+    {
+      "id": "96a335c3b01f",
+      "text": "копии лежат две недели: база небольшая, но диск общий и почти полон",
+      "paths": [
+        "shared/tools/10/inside/1",
+        "shared/tools/10/capabilities/1"
+      ]
+    },
+    {
+      "id": "6e17200121e3",
+      "text": "каждые пять минут сторож зовёт службу настоящим запросом и ждёт ответа 200",
+      "paths": [
+        "shared/tools/10/inside/2",
+        "shared/tools/10/capabilities/2"
+      ]
+    },
+    {
+      "id": "47ee3ec6570c",
+      "text": "одна осечка не считается: под нагрузкой ответ мог не успеть, и сторож спрашивает второй раз через 20 секунд",
+      "paths": [
+        "shared/tools/10/inside/3",
+        "shared/tools/10/capabilities/3"
+      ]
+    },
+    {
+      "id": "a13025a248d1",
+      "text": "архив за каждый день в течение двух недель",
+      "paths": [
+        "shared/tools/10/outputs/0",
+        "shared/tools/10/outcomes/0"
+      ]
+    },
+    {
+      "id": "82dfa3e3374d",
+      "text": "перезапуск повисшей службы и запись в журнал",
+      "paths": [
+        "shared/tools/10/outputs/1",
+        "shared/tools/10/outcomes/1"
+      ]
+    },
+    {
+      "id": "cfc892c21acc",
+      "text": "Каталог копий и журнал на сервере лаборатории",
+      "paths": [
+        "shared/tools/10/writes"
+      ]
+    },
+    {
+      "id": "9e758290e7cb",
+      "text": "живость проверяется ответом на запрос, а не наличием процесса",
+      "paths": [
+        "shared/tools/10/gates/0"
+      ]
+    },
+    {
+      "id": "2720bf06c7c3",
+      "text": "перезапуск по факту молчания придумали после ночи на 01-09-2026: процесс был на месте, systemd был доволен, а загрузка модели повисла на недоступной сети, и обычный перезапуск при отказе такого не ловит",
+      "paths": [
+        "shared/tools/10/limits/0",
+        "shared/tools/10/important/0"
+      ]
+    },
+    {
+      "id": "1f50214f3658",
+      "text": "Задачи cron на сервере лаборатории",
+      "paths": [
+        "shared/tools/10/adoption/invoke"
+      ]
+    },
+    {
+      "id": "cfc58a9b1f99",
+      "text": "Копия базы и сторож живут на сервере лаборатории: доступ есть только у её администратора.",
+      "paths": [
+        "shared/tools/10/adoption/installNote"
+      ]
+    },
+    {
+      "id": "32d5d7c30896",
+      "text": "Все, кто пишет в общую базу",
+      "paths": [
+        "shared/tools/10/usedBy/0/name"
+      ]
+    },
+    {
+      "id": "cca62c5e8247",
+      "text": "полагается на то, что вчерашнее состояние можно вернуть",
+      "paths": [
+        "shared/tools/10/usedBy/0/role"
+      ]
+    },
+    {
+      "id": "f2f2071fc87e",
+      "text": "Проверка ответом, а не наличием процесса",
+      "paths": [
+        "shared/tools/10/visual/label"
+      ]
+    },
+    {
+      "id": "175868618be6",
+      "text": "Запрос к службе",
+      "paths": [
+        "shared/tools/10/visual/nodes/0"
+      ]
+    },
+    {
+      "id": "79edf8b248a3",
+      "text": "Ответ 200",
+      "paths": [
+        "shared/tools/10/visual/nodes/1"
+      ]
+    },
+    {
+      "id": "c1a95f7ebcbd",
+      "text": "Пауза 20 секунд и второй запрос",
+      "paths": [
+        "shared/tools/10/visual/nodes/2"
+      ]
+    },
+    {
+      "id": "2a3946e6a9c9",
+      "text": "Перезапуск",
+      "paths": [
+        "shared/tools/10/visual/nodes/3"
+      ]
+    },
+    {
+      "id": "f8c72d7c2f92",
+      "text": "Запись в журнал",
+      "paths": [
+        "shared/tools/10/visual/nodes/4"
+      ]
+    },
+    {
+      "id": "6a61c3853cc3",
+      "text": "Администратор настраивает резервное копирование и проверку доступности службы. Пользователи продолжают работать через обычное MCP-подключение.",
+      "paths": [
+        "shared/tools/10/start"
+      ]
+    },
+    {
+      "id": "87c1497dab66",
+      "text": "Одна база PostgreSQL и 59 инструментов MCP на brain_lab. Замер 06-09-2026.",
+      "paths": [
+        "shared/implementation/summary"
+      ]
+    },
+    {
+      "id": "4db3e0fbde92",
+      "text": "47 работ и тем: 24 статьи лаборатории и 23 темы над ними",
+      "paths": [
+        "shared/implementation/items/0"
+      ]
+    },
+    {
+      "id": "0ac0ed1d4f4c",
+      "text": "707 утверждений: 292 подтверждённых, 93 неопределённых, 33 опровергнутых, остальные в работе",
+      "paths": [
+        "shared/implementation/items/1"
+      ]
+    },
+    {
+      "id": "438b59e1310e",
+      "text": "721 прогон и 870 измерений; 153 доказательства, из них 145 доведены до конца",
+      "paths": [
+        "shared/implementation/items/2"
+      ]
+    },
+    {
+      "id": "02106163f2b9",
+      "text": "345 правил, 497 записей журнала, 129 терминов, 22 ресурса",
+      "paths": [
+        "shared/implementation/items/3"
+      ]
+    },
+    {
+      "id": "3c2f052ce92e",
+      "text": "Общая библиотека статей, смысловых разделов и отдельных тезисов. Тезисы могут быть пересказаны; явно добавленная цитата сверяется с сохранённым текстом.",
+      "paths": [
+        "shared/implementation/items/4"
+      ]
+    },
+    {
+      "id": "abff83485f29",
+      "text": "lab_health показывает шесть категорий: 121 измерение без правила, 111 прогонов без чисел, 90 утверждений без прогона, одно научное правило без оснований, ноль измерений без величин, ноль работ без словаря",
+      "paths": [
+        "shared/implementation/items/5"
+      ]
+    },
+    {
+      "id": "f480e46e7378",
+      "text": "Личные черновики остаются в Obsidian, история агента в MemPalace, задачи в Yonote; двусторонней синхронизации нет",
+      "paths": [
+        "shared/implementation/items/6"
+      ]
+    },
+    {
+      "id": "26e0d0731013",
+      "text": "Утверждение",
+      "paths": [
+        "shared/glossary/0/term",
+        "shared/knowledgeModel/objectTypes/2/title",
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/0/title",
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/0/title",
+        "shared/knowledgeModel/lifecycle/statuses/0/title",
+        "shared/controls/0/kind",
+        "shared/controls/1/kind",
+        "shared/controls/2/kind"
+      ]
+    },
+    {
+      "id": "b60b2e5b52bc",
+      "text": "То, что лаборатория считает верным и для чего заранее записано, какое наблюдение это опровергнет.",
+      "paths": [
+        "shared/glossary/0/definition"
+      ]
+    },
+    {
+      "id": "4e3667b5b780",
+      "text": "Выполненная задача или ссылка на чужую статью утверждение не подтверждают.",
+      "paths": [
+        "shared/glossary/0/not"
+      ]
+    },
+    {
+      "id": "0c162f69ff04",
+      "text": "Измерение",
+      "paths": [
+        "shared/glossary/1/term",
+        "shared/knowledgeModel/objectTypes/4/title",
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/2/title",
+        "shared/controls/6/kind",
+        "shared/controls/7/kind"
+      ]
+    },
+    {
+      "id": "92970cff5bab",
+      "text": "Что вышло из конкретного прогона: числа, артефакт или диагностическое наблюдение с источником.",
+      "paths": [
+        "shared/glossary/1/definition"
+      ]
+    },
+    {
+      "id": "da9bebe45199",
+      "text": "Толкование хранится отдельно, и статус утверждения сам собой не меняется.",
+      "paths": [
+        "shared/glossary/1/not"
+      ]
+    },
+    {
+      "id": "58a33e252f3c",
+      "text": "Доказательство",
+      "paths": [
+        "shared/glossary/2/term",
+        "shared/knowledgeModel/objectTypes/5/title",
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/1/title",
+        "shared/knowledgeModel/lifecycle/statuses/2/title",
+        "shared/controls/8/kind",
+        "shared/controls/9/kind"
+      ]
+    },
+    {
+      "id": "fa9fcf2239ef",
+      "text": "Предпосылки, ход рассуждения и итог, которыми теоретическое утверждение закрывается без запуска.",
+      "paths": [
+        "shared/glossary/2/definition"
+      ]
+    },
+    {
+      "id": "6aac0fea3247",
+      "text": "Это не прогон: у него нет сидов, железа и статуса запуска.",
+      "paths": [
+        "shared/glossary/2/not"
+      ]
+    },
+    {
+      "id": "1bcb0f9c020f",
+      "text": "Правило",
+      "paths": [
+        "shared/glossary/3/term",
+        "shared/knowledgeModel/objectTypes/6/title",
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/3/title",
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/2/title",
+        "shared/knowledgeModel/lifecycle/statuses/3/title",
+        "shared/controls/10/kind"
+      ]
+    },
+    {
+      "id": "4c3a1397d7d9",
+      "text": "Как лаборатория решила поступать дальше, с объяснением причин и опорой на измерения, когда она нужна.",
+      "paths": [
+        "shared/glossary/3/definition"
+      ]
+    },
+    {
+      "id": "c10a3359e9f0",
+      "text": "Предложенное правило не становится принятым само собой.",
+      "paths": [
+        "shared/glossary/3/not"
+      ]
+    },
+    {
+      "id": "f6061d9814f8",
+      "text": "Lab Knowledge — общая база проверяемой работы лаборатории. Она отвечает, что предполагали, как проверяли, что получили и какое правило из этого следует.",
+      "paths": [
+        "shared/knowledgeModel/boundary/mcp"
+      ]
+    },
+    {
+      "id": "bc044cbcf0eb",
+      "text": "lab-knowledge — инструкция для агента: сначала восстановить контекст, проверить дубли и тип записи, затем публиковать в пределах действующего разрешения и перечитать результат. Сам навык ничего не хранит.",
+      "paths": [
+        "shared/knowledgeModel/boundary/skill"
+      ]
+    },
+    {
+      "id": "752430d61863",
+      "text": "Obsidian хранит личные объяснения и черновики, MemPalace — историю агента, Yonote — задачи. Автоматического копирования всего во все системы нет.",
+      "paths": [
+        "shared/knowledgeModel/boundary/personal"
+      ]
+    },
+    {
+      "id": "382891f09efe",
+      "text": "Собственная работа лаборатории",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/title"
+      ]
+    },
+    {
+      "id": "396a427de914",
+      "text": "Гипотезы",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/0"
+      ]
+    },
+    {
+      "id": "3b110b3b754b",
+      "text": "Эксперименты",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/1"
+      ]
+    },
+    {
+      "id": "cce8e93db82a",
+      "text": "Результаты измерений",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/2"
+      ]
+    },
+    {
+      "id": "dbebfc98ffc6",
+      "text": "Теоретические выводы",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/3"
+      ]
+    },
+    {
+      "id": "7f1e9d274b1c",
+      "text": "Решения",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/4"
+      ]
+    },
+    {
+      "id": "d7ef472a0d9b",
+      "text": "Наблюдения",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/5"
+      ]
+    },
+    {
+      "id": "ef9c73740e87",
+      "text": "Термины",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/6"
+      ]
+    },
+    {
+      "id": "eba267d9f828",
+      "text": "Ресурсы",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/contains/7"
+      ]
+    },
+    {
+      "id": "01179f5e35b8",
+      "text": "Читают все участники: закрытого контура для чтения нет. Записывать в чужую работу нельзя без роли в ней; запись дополнительно ограничена project role.",
+      "paths": [
+        "shared/knowledgeModel/corpora/0/access"
+      ]
+    },
+    {
+      "id": "a6705bf757b2",
+      "text": "Общая библиотека статей",
+      "paths": [
+        "shared/knowledgeModel/corpora/1/title"
+      ]
+    },
+    {
+      "id": "279e6b2bd1dc",
+      "text": "Статьи",
+      "paths": [
+        "shared/knowledgeModel/corpora/1/contains/0"
+      ]
+    },
+    {
+      "id": "0fa0b62a8c55",
+      "text": "Утверждения статей",
+      "paths": [
+        "shared/knowledgeModel/corpora/1/contains/1"
+      ]
+    },
+    {
+      "id": "12415540e49b",
+      "text": "Связи статей с нашей работой",
+      "paths": [
+        "shared/knowledgeModel/corpora/1/contains/2"
+      ]
+    },
+    {
+      "id": "7c49b671717c",
+      "text": "Статья принадлежит всей лаборатории, а не одному проекту. Новая запись обязана иметь устойчивый внешний идентификатор, а цитата утверждения проверяется по сохраненному тексту.",
+      "paths": [
+        "shared/knowledgeModel/corpora/1/access"
+      ]
+    },
+    {
+      "id": "a98dc491d8e4",
+      "text": "Вопрос к базе ничего не меняет.",
+      "paths": [
+        "shared/knowledgeModel/read/default"
+      ]
+    },
+    {
+      "id": "8d5d9098a72a",
+      "text": "search_lab — найти тему сразу в знании лаборатории и в библиотеке статей",
+      "paths": [
+        "shared/knowledgeModel/read/tools/0"
+      ]
+    },
+    {
+      "id": "bdc6525bcc7a",
+      "text": "get_project_context — вся история одной работы: утверждения, прогоны, измерения, правила, выводы, термины",
+      "paths": [
+        "shared/knowledgeModel/read/tools/1"
+      ]
+    },
+    {
+      "id": "14fd5af3c1fc",
+      "text": "get_related — пройти по связям одной записи",
+      "paths": [
+        "shared/knowledgeModel/read/tools/2"
+      ]
+    },
+    {
+      "id": "ccb2d01332f5",
+      "text": "get_paper — статья с её разделами, утверждениями и связями с нашей работой",
+      "paths": [
+        "shared/knowledgeModel/read/tools/3"
+      ]
+    },
+    {
+      "id": "420efd269b17",
+      "text": "lab_health — шесть категорий структурных дыр по всей лаборатории",
+      "paths": [
+        "shared/knowledgeModel/read/tools/4"
+      ]
+    },
+    {
+      "id": "9580d6a78c2b",
+      "text": "recent_changes — что изменилось за последние дни, от 1 до 90",
+      "paths": [
+        "shared/knowledgeModel/read/tools/5"
+      ]
+    },
+    {
+      "id": "2e75a1e8893e",
+      "text": "Читать может любой участник лаборатории, и читать он может всё: список видимых работ — это список всех работ базы. Закрытого контура для чтения нет по замыслу, потому что вопрос «пробовал ли это кто-то» без ответа именно у того, кому он нужен.",
+      "paths": [
+        "shared/knowledgeModel/read/behavior/0"
+      ]
+    },
+    {
+      "id": "ee9a63644198",
+      "text": "Приватное и незрелое сюда не кладут: оно живёт в личных заметках. Здесь по определению лежит то, чем лаборатория делится.",
+      "paths": [
+        "shared/knowledgeModel/read/behavior/1"
+      ]
+    },
+    {
+      "id": "518a578d4fc2",
+      "text": "Ключ проверяется до разбора запроса, а не после.",
+      "paths": [
+        "shared/knowledgeModel/read/behavior/2"
+      ]
+    },
+    {
+      "id": "dac428e02419",
+      "text": "Поиск ходит по связям: спросили про прогрев — получите и утверждение о нём, и прогон, и число, вышедшее из прогона, даже если слова «прогрев» в этом числе нет.",
+      "paths": [
+        "shared/knowledgeModel/read/behavior/3"
+      ]
+    },
+    {
+      "id": "8fa35d663e6d",
+      "text": "Библиотека и знание лаборатории живут в одном поиске, scope выбирает где искать: all, lab, library.",
+      "paths": [
+        "shared/knowledgeModel/read/behavior/4"
+      ]
+    },
+    {
+      "id": "34434bd4c3c4",
+      "text": "create_hypothesis — записать проверяемое утверждение",
+      "paths": [
+        "shared/knowledgeModel/write/tools/0"
+      ]
+    },
+    {
+      "id": "3146e924a765",
+      "text": "record_experiment — записать протокол проверки",
+      "paths": [
+        "shared/knowledgeModel/write/tools/1"
+      ]
+    },
+    {
+      "id": "ad4aad2bc302",
+      "text": "record_evidence — записать, что вышло",
+      "paths": [
+        "shared/knowledgeModel/write/tools/2"
+      ]
+    },
+    {
+      "id": "eb919fa2d358",
+      "text": "record_derivation — записать доказательство",
+      "paths": [
+        "shared/knowledgeModel/write/tools/3"
+      ]
+    },
+    {
+      "id": "9924463bd0cf",
+      "text": "propose_decision — предложить правило",
+      "paths": [
+        "shared/knowledgeModel/write/tools/4"
+      ]
+    },
+    {
+      "id": "a6afc09cee77",
+      "text": "upsert_paper, add_paper_section, record_paper_claim, link_paper — вести библиотеку",
+      "paths": [
+        "shared/knowledgeModel/write/tools/5"
+      ]
+    },
+    {
+      "id": "c0570dcdf9f5",
+      "text": "record_journal, define_term, upsert_resource — сохранять рабочий контекст",
+      "paths": [
+        "shared/knowledgeModel/write/tools/6"
+      ]
+    },
+    {
+      "id": "78b59954d4f3",
+      "text": "delete_record — убрать запись любого из шести родов",
+      "paths": [
+        "shared/knowledgeModel/write/tools/7"
+      ]
+    },
+    {
+      "id": "46441c15c8d6",
+      "text": "Запись в чужую работу требует роли contributor или lead именно в ней. Глобальный ведущий пишет везде; глобальный распорядитель — нет, ему нужна роль в работе, как и всем.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/0"
+      ]
+    },
+    {
+      "id": "9c7011bfe3c6",
+      "text": "Библиотека статей и ресурсы лаборатории — исключение: у них нет работы-владельца, и писать в них может любой участник. Защищает не запрет, а устройство: пустое не затирает заполненное, а каждая правка названа в журнале.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/1"
+      ]
+    },
+    {
+      "id": "0e8fa72b3121",
+      "text": "Ключ повторной попытки обязателен у строгих записей: повтор того же вызова возвращает ту же запись, а не заводит вторую. Тот же ключ с другой нагрузкой — отказ.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/2"
+      ]
+    },
+    {
+      "id": "d64035542bd7",
+      "text": "Неизвестное поле в вызове отклоняется, а не игнорируется: молча проглоченное поле выглядит как принятое.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/3"
+      ]
+    },
+    {
+      "id": "38a051a9f231",
+      "text": "Источник подставляется сам, если его не назвали: один на работу в день.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/4"
+      ]
+    },
+    {
+      "id": "e2108c5d726d",
+      "text": "Код записи выдаёт сервер при создании и не меняет никогда.",
+      "paths": [
+        "shared/knowledgeModel/write/behavior/5"
+      ]
+    },
+    {
+      "id": "ffdacd40a78b",
+      "text": "Ключ проверяется до разбора запроса. У человека может быть несколько ключей — по одному на агента, чтобы в журнале было видно, кто из них писал.",
+      "paths": [
+        "shared/knowledgeModel/acl/0"
+      ]
+    },
+    {
+      "id": "a87492dc32fe",
+      "text": "Чтение открыто всем участникам лаборатории и не ограничено ни работой, ни темой.",
+      "paths": [
+        "shared/knowledgeModel/acl/1"
+      ]
+    },
+    {
+      "id": "982d4616fcee",
+      "text": "Запись в работу требует роли contributor или lead в этой работе. Глобальный ведущий — единственное исключение.",
+      "paths": [
+        "shared/knowledgeModel/acl/2"
+      ]
+    },
+    {
+      "id": "4c5e8cd88013",
+      "text": "Кто может писать в работу, тот может и убрать из неё запись: отдельного права автора нет, потому что у большинства записей автор в схеме не хранится.",
+      "paths": [
+        "shared/knowledgeModel/acl/3"
+      ]
+    },
+    {
+      "id": "5839488a7426",
+      "text": "Вывод чужого утверждения и принятие чужого правила остаются за ведущим или распорядителем: там нужен взгляд со стороны. Своё участник закрывает сам.",
+      "paths": [
+        "shared/knowledgeModel/acl/4"
+      ]
+    },
+    {
+      "id": "6ad0097a6c27",
+      "text": "Токен себе выдаёт любой участник, токен другому человеку — только ведущий или распорядитель. Приглашает участника ведущий или распорядитель, роль в работе выдаёт только ведущий.",
+      "paths": [
+        "shared/knowledgeModel/acl/5"
+      ]
+    },
+    {
+      "id": "936526066dce",
+      "text": "Ключ отзывается, а событие аудита держит человека, клиента и время.",
+      "paths": [
+        "shared/knowledgeModel/acl/6"
+      ]
+    },
+    {
+      "id": "1250c07585a0",
+      "text": "SourceRef хранится там, где его требует тип записи; это может быть URL, content hash или внутренний session reference.",
+      "paths": [
+        "shared/knowledgeModel/provenance/0"
+      ]
+    },
+    {
+      "id": "a4a549715b9a",
+      "text": "Journal, Term и Resource не обязаны иметь SourceRef.",
+      "paths": [
+        "shared/knowledgeModel/provenance/1"
+      ]
+    },
+    {
+      "id": "81c227f7e4bb",
+      "text": "Каждое изменение оставляет автора, используемый клиент и событие аудита.",
+      "paths": [
+        "shared/knowledgeModel/provenance/2"
+      ]
+    },
+    {
+      "id": "46d7cc8e1c5c",
+      "text": "Гипотеза связана с проверкой, проверка — с результатом, а смысл результата для гипотезы хранится на самой связи.",
+      "paths": [
+        "shared/knowledgeModel/provenance/3"
+      ]
+    },
+    {
+      "id": "10bb71330ca3",
+      "text": "Утверждение статьи хранит самостоятельную формулировку и locator. Цитата необязательна; quote_verified означает совпадение с сохранённым текстом, а не подтверждение оригинальной публикации.",
+      "paths": [
+        "shared/knowledgeModel/provenance/4"
+      ]
+    },
+    {
+      "id": "c21e1e3a07af",
+      "text": "Научные записи с public code получают понятный идентификатор; Journal и PaperClaim возвращаются по UUID.",
+      "paths": [
+        "shared/knowledgeModel/provenance/5"
+      ]
+    },
+    {
+      "id": "fc6e390c5f55",
+      "text": "Получить отдельный отзывной ключ для своего агента.",
+      "paths": [
+        "shared/knowledgeModel/agentConnection/0"
+      ]
+    },
+    {
+      "id": "f117f45703ec",
+      "text": "Запустить scripts/lab_connect.py --token <token>: скрипт подключит MCP к Codex и Claude Code и проверит список инструментов.",
+      "paths": [
+        "shared/knowledgeModel/agentConnection/1"
+      ]
+    },
+    {
+      "id": "4e136d2a6ce5",
+      "text": "Сначала прочитать контекст проекта или выполнить поиск.",
+      "paths": [
+        "shared/knowledgeModel/agentConnection/2"
+      ]
+    },
+    {
+      "id": "8167841d45be",
+      "text": "Перед записью найти возможный дубль, выбрать правильный тип записи и показать человеку точное изменение.",
+      "paths": [
+        "shared/knowledgeModel/agentConnection/3"
+      ]
+    },
+    {
+      "id": "baaddda9b02d",
+      "text": "После подтверждения записать объект, вернуть его идентификатор и перечитать теми же правами.",
+      "paths": [
+        "shared/knowledgeModel/agentConnection/4"
+      ]
+    },
+    {
+      "id": "e0cd22932fe3",
+      "text": "Работа",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/title",
+        "shared/knowledgeModel/lifecycle/statuses/4/title"
+      ]
+    },
+    {
+      "id": "4a82120fab99",
+      "text": "Одна статья лаборатории со своим кодом из трёх букв",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/plain"
+      ]
+    },
+    {
+      "id": "4f3dec03826d",
+      "text": "Рамка, внутри которой живут утверждения, прогоны, измерения и правила. Код работы стоит внутри кода каждой её записи: H-WBD-027 читается как двадцать седьмое утверждение работы SWD. Одиннадцать статусов от idea до archived; три из них — paused, completed, archived — считаются закрытыми.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/detail"
+      ]
+    },
+    {
+      "id": "6dd37c9698e5",
+      "text": "slug и трёхбуквенный код выдаёт сервер, если их не передали. Создаёт любой участник и сразу получает в этой работе роль lead: без работы нельзя записать ни утверждения, ни прогона, и ждать ведущего значило бы потерять находку.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/note"
+      ]
+    },
+    {
+      "id": "c2fbf95d55a0",
+      "text": "любой участник лаборатории",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/who",
+        "shared/knowledgeModel/objectTypes/1/who",
+        "shared/knowledgeModel/objectTypes/9/who",
+        "shared/knowledgeModel/objectTypes/10/who",
+        "shared/knowledgeModel/objectTypes/11/who",
+        "shared/knowledgeModel/objectTypes/12/who"
+      ]
+    },
+    {
+      "id": "04c170294de6",
+      "text": "входит в тему",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/connections/0/label"
+      ]
+    },
+    {
+      "id": "149b58e2420d",
+      "text": "держит утверждения",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/0/connections/1/label"
+      ]
+    },
+    {
+      "id": "682f961a0751",
+      "text": "Тема",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/1/title"
+      ]
+    },
+    {
+      "id": "c254799ebaff",
+      "text": "Область исследования, дом над несколькими работами",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/1/plain"
+      ]
+    },
+    {
+      "id": "5aa59062e928",
+      "text": "Та же таблица, что и работа, но с kind=theme: у темы нет исполнителя, поэтому в ответе «кому это отдать» темы не участвуют. Работа принадлежит одной теме и может быть упомянута другими через referenced_by_themes. Тема записи наследуется от работы, а заполненное поле theme_slug её перекрывает — так тему переставляют, не двигая запись и не меняя её код.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/1/detail"
+      ]
+    },
+    {
+      "id": "3e8624909439",
+      "text": "theme_slug подставляется из slug или имени, если его не передали: без слага тему не находит ни get_theme_context, ни фильтр списка. Неизвестный слаг темы служба отклоняет у статьи, ресурса и записи журнала.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/1/note"
+      ]
+    },
+    {
+      "id": "1a76e1f88970",
+      "text": "группирует работы",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/1/connections/0/label"
+      ]
+    },
+    {
+      "id": "bccab8dc369d",
+      "text": "То, что мы считаем верным и что можно опровергнуть",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/plain"
+      ]
+    },
+    {
+      "id": "dde85a9f57ff",
+      "text": "Единица этой базы. Обязательно называет наблюдение, после которого от утверждения придётся отказаться: без такого наблюдения запись не утверждение, а мнение. Род говорит, чем оно закроется: эмпирическое — прогоном и числом, теоретическое — доказательством.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/detail"
+      ]
+    },
+    {
+      "id": "cae1860664e5",
+      "text": "Источник можно не называть: если source_ref_id пуст, служба заводит один источник на работу в день — «Рабочая сессия <дата>».",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/note"
+      ]
+    },
+    {
+      "id": "3c9ed7f8b269",
+      "text": "участник с ролью contributor или lead в этой работе",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/who",
+        "shared/knowledgeModel/objectTypes/3/who",
+        "shared/knowledgeModel/objectTypes/4/who",
+        "shared/knowledgeModel/objectTypes/5/who",
+        "shared/knowledgeModel/objectTypes/6/who",
+        "shared/knowledgeModel/objectTypes/8/who"
+      ]
+    },
+    {
+      "id": "860dfc743787",
+      "text": "проверяется прогоном",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/connections/0/label"
+      ]
+    },
+    {
+      "id": "bb6dd2a2df8f",
+      "text": "или закрывается доказательством",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/connections/1/label"
+      ]
+    },
+    {
+      "id": "306f3fc02422",
+      "text": "может вырасти из чужого результата",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/2/connections/2/label"
+      ]
+    },
+    {
+      "id": "564307b4056f",
+      "text": "Прогон",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/title",
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/1/title",
+        "shared/knowledgeModel/lifecycle/statuses/1/title",
+        "shared/controls/4/kind",
+        "shared/controls/5/kind"
+      ]
+    },
+    {
+      "id": "20f22b146197",
+      "text": "Эксперимент, заведённый ради проверки утверждения",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/plain"
+      ]
+    },
+    {
+      "id": "9b0b2c9f8a6b",
+      "text": "Протокол, который можно повторить, и статус запуска. Здесь нет ни сырых чекпойнтов, ни толкования результата. Проект берётся у утверждения и отдельным полем не передаётся, чтобы прогон не оказался в чужой работе.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/detail"
+      ]
+    },
+    {
+      "id": "f15ec7ecab5e",
+      "text": "Создаётся только в статусе planned или running. Повесить прогон на закрытое утверждение нельзя: агент за ночь подвесил три прогона про SOAP на опровергнутое утверждение про Muon, и цепочка формально осталась целой, а по смыслу база стала врать.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/note"
+      ]
+    },
+    {
+      "id": "61daaa974456",
+      "text": "проверяет",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/connections/0/label"
+      ]
+    },
+    {
+      "id": "f86dd039c273",
+      "text": "даёт измерение",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/3/connections/1/label"
+      ]
+    },
+    {
+      "id": "a7e18681a252",
+      "text": "Что вышло из прогона",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/plain"
+      ]
+    },
+    {
+      "id": "45700b3964cd",
+      "text": "Числа, артефакт или диагностическое наблюдение с источником и границами применимости. Смысл для утверждения хранится на связи, а не в тексте: одно измерение поддерживает одно утверждение и подрубает соседнее, и флаг «эксперимент подтвердил гипотезу» такого сказать не может.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/detail"
+      ]
+    },
+    {
+      "id": "2e31c07d13e2",
+      "text": "Если kind обещает величину (metric, measurement), поле metrics обязано нести хотя бы одно число вида {\"name\":\"val_loss\",\"value\":2.71}. Число, оставленное только в тексте, не с чем сравнить.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/note"
+      ]
+    },
+    {
+      "id": "c54761a91e47",
+      "text": "получено в",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/connections/0/label"
+      ]
+    },
+    {
+      "id": "6b7341b3589b",
+      "text": "выносит вердикт через hypothesis_effects",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/connections/1/label"
+      ]
+    },
+    {
+      "id": "0120afeb5c0a",
+      "text": "может лечь в основание правила",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/4/connections/2/label"
+      ]
+    },
+    {
+      "id": "85d3990b986c",
+      "text": "То, чем теория опирается вместо прогона",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/5/plain"
+      ]
+    },
+    {
+      "id": "2df34c699f45",
+      "text": "Предпосылки, ход рассуждения, установленный результат и полнота. Раньше доказательство приходилось изображать экспериментом, и работа с двадцатью четырьмя выводами и ни одним запуском читалась как экспериментальная. Прямой связи с правилом нет: теоретическая опора идёт через общее утверждение.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/5/detail"
+      ]
+    },
+    {
+      "id": "8192a1800c87",
+      "text": "Статус gap требует объяснения: пробел, о котором молчат, читается как законченное доказательство. Вывод может зависеть от другого вывода (depends_on), но только внутри той же работы.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/5/note"
+      ]
+    },
+    {
+      "id": "bb408946136a",
+      "text": "закрывает или ограничивает",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/5/connections/0/label"
+      ]
+    },
+    {
+      "id": "5748739aec50",
+      "text": "Как лаборатория решила поступать дальше",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/6/plain"
+      ]
+    },
+    {
+      "id": "59e1ee553e02",
+      "text": "Выбранное действие и объяснение, почему оно лучше альтернатив. В API называется decision. Род разделяет научное правило («не заявлять победу меньше чем на трёх сидах») и рабочую договорённость («сколько страниц в статье»): основания в измерениях lab_health спрашивает только у научного.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/6/detail"
+      ]
+    },
+    {
+      "id": "b1b41e2177f0",
+      "text": "Ссылаться можно только на утверждения и измерения своей работы. Участник создаёт правило только в статусе proposed; чужое правило до accepted доводит ведущий или распорядитель.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/6/note"
+      ]
+    },
+    {
+      "id": "e6eb477210df",
+      "text": "стоит на измерениях",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/6/connections/0/label"
+      ]
+    },
+    {
+      "id": "cd5b4bfac4d0",
+      "text": "относится к утверждению",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/6/connections/1/label"
+      ]
+    },
+    {
+      "id": "574d43b44984",
+      "text": "Наблюдение",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/title"
+      ]
+    },
+    {
+      "id": "079b39b96137",
+      "text": "Честный факт, который не тянет на утверждение",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/plain"
+      ]
+    },
+    {
+      "id": "a374e2340862",
+      "text": "«Прогон висит третий час, процесс жив, чисел нет» — это наблюдение: опровергнуть его нечем, а знать полезно. Ни критерия опровержения, ни цепочки через прогон, ни кода записи. Пять родов: наблюдение, инцидент, замер, введение в курс дела, организационное.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/detail"
+      ]
+    },
+    {
+      "id": "82df6eb2c4ef",
+      "text": "Проект необязателен: половина таких записей про саму лабораторию, а не про работу над статьёй. Если проект назван, права проверяются по нему. Ключ повторной попытки, если его не передали, считается от текста, чтобы переигранный хук не оставил вторую копию.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/note"
+      ]
+    },
+    {
+      "id": "a5705f3abdfb",
+      "text": "любой участник; если назван проект — с правом записи в него",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/who"
+      ]
+    },
+    {
+      "id": "2c4776129cab",
+      "text": "часто описывает сбой ресурса",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/7/connections/0/label"
+      ]
+    },
+    {
+      "id": "c54e5e6fe538",
+      "text": "Термин работы",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/8/title"
+      ]
+    },
+    {
+      "id": "86da4737bf90",
+      "text": "Что в этой работе значит «доза», «окно», «фрейм»",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/8/plain"
+      ]
+    },
+    {
+      "id": "055782ab04ef",
+      "text": "Внутреннее имя с определением: то, чего нет в общем словаре лаборатории. Смысл в обратной силе — определив имя сегодня, читаемыми становятся все прежние записи, где оно встречалось, и переписывать их не нужно. Написания сводятся к одному ключу, поэтому exact-old124, exact_old124 и «Exact old124» это одно имя.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/8/detail"
+      ]
+    },
+    {
+      "id": "7965071cec70",
+      "text": "Пустое определение не принимается. Повторное определение уточняет прежнее, не стирая уже собранных ссылок и синонимов.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/8/note"
+      ]
+    },
+    {
+      "id": "71b63767a752",
+      "text": "делает прежние записи читаемыми",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/8/connections/0/label"
+      ]
+    },
+    {
+      "id": "7ad4b7be8f9b",
+      "text": "Ресурс",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/9/title",
+        "shared/knowledgeModel/lifecycle/statuses/5/title",
+        "shared/controls/16/kind"
+      ]
+    },
+    {
+      "id": "d8f0e53f0ca8",
+      "text": "Сервер, квота, аккаунт, лицензия, датасет, бюджет",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/9/plain"
+      ]
+    },
+    {
+      "id": "3da4fa9202ce",
+      "text": "Общелабораторный, как статья, и по той же причине: одной машиной пользуются все, и привязка к одной работе сделала бы её невидимой из остальных. Самое полезное поле — грабли: нумерация CUDA, маленький корень, отсутствие systemd. Их читают до запуска, а не после сломанного прогона.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/9/detail"
+      ]
+    },
+    {
+      "id": "b27b6666fdd1",
+      "text": "Секретов здесь нет: база многопользовательская, и запись переживёт смену состава. Пароль или токен, написанный рядом с адресом, служба отклоняет. Пустое не затирает заполненное, поэтому короткая запись «такая машина есть» не сотрёт чужие находки.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/9/note"
+      ]
+    },
+    {
+      "id": "6640402f87f7",
+      "text": "собирает наблюдения о сбоях",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/9/connections/0/label"
+      ]
+    },
+    {
+      "id": "4f0548d13284",
+      "text": "Статья",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/title"
+      ]
+    },
+    {
+      "id": "4585d1a7bb5b",
+      "text": "Одна каноническая запись чужой работы",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/plain"
+      ]
+    },
+    {
+      "id": "9421cbeaf449",
+      "text": "У статьи нет работы-владельца: одна и та же статья задевает сразу несколько, и библиотека принадлежит лаборатории целиком. Мастер — сам корпус; Obsidian и Zotero это один из способов его пополнять, необязательный.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/detail"
+      ]
+    },
+    {
+      "id": "5c56ba5c2764",
+      "text": "хотя бы один из arxiv_id, doi, zotero_key",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/required/1"
+      ]
+    },
+    {
+      "id": "716b11f81459",
+      "text": "Естественный ключ обязателен: без него следующая отправка не узнает статью и заведёт дубль рядом. Пустое не затирает заполненное, идентификаторы накапливаются. Неизвестный слаг темы отклоняется.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/note"
+      ]
+    },
+    {
+      "id": "1edcc7bd0290",
+      "text": "состоит из разделов",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/connections/0/label"
+      ]
+    },
+    {
+      "id": "da6776bbacd5",
+      "text": "несёт проверяемые утверждения",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/10/connections/1/label"
+      ]
+    },
+    {
+      "id": "9b6d2f4d423d",
+      "text": "Раздел статьи",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/title"
+      ]
+    },
+    {
+      "id": "f204b260ced3",
+      "text": "Кусок разбора, по которому идёт поиск и сверка цитат",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/plain"
+      ]
+    },
+    {
+      "id": "07ed2c82996e",
+      "text": "Границы совпадают с разделами разбора. По ним работает поиск; с их текстом также сверяется явно переданная цитата. Пересказ тезиса не требует совпадения с текстом раздела.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/detail"
+      ]
+    },
+    {
+      "id": "6b1718f9df02",
+      "text": "Пустой раздел не принимается: он выглядит как наличие текста и заставил бы сверку цитат проходить на пустоте. upsert_paper заменяет разделы целиком, add_paper_section дописывает один, не тронув остальные, и заново пересверяет цитаты.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/note"
+      ]
+    },
+    {
+      "id": "fa01d195fdc3",
+      "text": "принадлежит статье",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/connections/0/label"
+      ]
+    },
+    {
+      "id": "d7d77e627882",
+      "text": "по нему сверяется цитата",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/11/connections/1/label"
+      ]
+    },
+    {
+      "id": "b37cdb93cb1f",
+      "text": "Утверждение статьи",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/title"
+      ]
+    },
+    {
+      "id": "76e125a66f7f",
+      "text": "Конкретная мысль чужой работы, а не наш результат",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/plain"
+      ]
+    },
+    {
+      "id": "5f9ad3738cf5",
+      "text": "Самостоятельная мысль статьи с типом и местом в источнике. Её можно пересказать своими словами. Ссылка на отдельный тезис точнее ссылки на всю статью. Служба проверяет только явно переданную цитату и только по сохранённому тексту, который может быть конспектом.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/detail"
+      ]
+    },
+    {
+      "id": "1dad73c946c2",
+      "text": "Нет обязательной цитаты, минимальной длины или квоты на смешивание типов. Содержательность, численные условия и границы вывода проверяет автор тезиса по источнику. Сохранённые цитаты удалять не требуется.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/note"
+      ]
+    },
+    {
+      "id": "48ef7052f995",
+      "text": "взято из",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/connections/0/label"
+      ]
+    },
+    {
+      "id": "699423997c6e",
+      "text": "связывается типизированной связью, но само измерением не становится",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/12/connections/1/label"
+      ]
+    },
+    {
+      "id": "56e46960c104",
+      "text": "Источник",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/title"
+      ]
+    },
+    {
+      "id": "bee5bbe98eca",
+      "text": "Откуда запись взялась: созвон, заметка, статья, рабочая сессия",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/plain"
+      ]
+    },
+    {
+      "id": "2dd6ede15479",
+      "text": "Адрес, название и при желании хеш содержимого. Строгие научные записи держат ссылку на источник; наблюдение, термин и ресурс могут обойтись без него. Часть источников — публичные ссылки на arXiv, поэтому пришедшая в библиотеку статья сама находит утверждения, которые на неё уже опирались.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/detail"
+      ]
+    },
+    {
+      "id": "c9e8e2cb1c70",
+      "text": "Отдельно вызывать не обязательно: если запись не назвала источник, служба заводит один на работу в день по адресу brainlab-source://<работа>/session-<дата>. Тот же адрес с другими метаданными служба отклоняет, тот же адрес с новым текстом обновляет указатель.",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/note"
+      ]
+    },
+    {
+      "id": "986e3e6b515e",
+      "text": "участник с правом записи в эту работу",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/who"
+      ]
+    },
+    {
+      "id": "1ffa18efc96e",
+      "text": "держит происхождение строгой записи",
+      "paths": [
+        "shared/knowledgeModel/objectTypes/13/connections/0/label"
+      ]
+    },
+    {
+      "id": "09946b555bc9",
+      "text": "Понять, где искать",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/title"
+      ]
+    },
+    {
+      "id": "9138c19c260d",
+      "text": "Выбрать проект и часть базы.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/summary"
+      ]
+    },
+    {
+      "id": "791334aef8d5",
+      "text": "Агент уточняет проект и решает, искать ли в собственной работе лаборатории, библиотеке статей или сразу в обеих частях. Область поиска не расширяется молча.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/detail"
+      ]
+    },
+    {
+      "id": "ae19c3563ebd",
+      "text": "вопрос",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/required/0",
+        "shared/knowledgeModel/consumers/0/required/0"
+      ]
+    },
+    {
+      "id": "8efd41711ea7",
+      "text": "проект, если вопрос проектный",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/required/1"
+      ]
+    },
+    {
+      "id": "c24733848d12",
+      "text": "область поиска",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/required/2"
+      ]
+    },
+    {
+      "id": "ddb6188b667f",
+      "text": "передает найденный контекст",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/0/connections/0/label"
+      ]
+    },
+    {
+      "id": "bda83f605d9b",
+      "text": "Выбрать правильный тип записи",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/title"
+      ]
+    },
+    {
+      "id": "2135222d45fe",
+      "text": "Не смешивать предположение, запуск, результат и чужую статью.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/summary"
+      ]
+    },
+    {
+      "id": "2ccf82d677aa",
+      "text": "Тип определяет обязательные данные и допустимые связи. Если это просто наблюдение без проверки, оно остается наблюдением, а не превращается в гипотезу ради заполнения базы.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/detail"
+      ]
+    },
+    {
+      "id": "9f70d779ec94",
+      "text": "одна проверяемая мысль или наблюдение",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/required/0"
+      ]
+    },
+    {
+      "id": "cbd093c955ad",
+      "text": "понимание, свое это знание или чужая статья",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/required/1"
+      ]
+    },
+    {
+      "id": "ae28c5281fce",
+      "text": "после классификации проверяется происхождение",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/1/connections/0/label"
+      ]
+    },
+    {
+      "id": "49abcd6391af",
+      "text": "Проверить происхождение и дубли",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/title"
+      ]
+    },
+    {
+      "id": "dbda88cdccd0",
+      "text": "Найти существующую запись и достаточную опору для выбранного типа.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/summary"
+      ]
+    },
+    {
+      "id": "eb53a1f918e6",
+      "text": "Для строгой научной записи агент проверяет смысловые дубли и SourceRef. Источник может быть общей ссылкой, content hash или внутренним session reference. Journal, Term и Resource допускают запись без SourceRef.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/detail"
+      ]
+    },
+    {
+      "id": "ad7dd074171c",
+      "text": "текст будущей записи",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/required/0"
+      ]
+    },
+    {
+      "id": "a580711f1f42",
+      "text": "для строгой научной записи: SourceRef или существующий объект",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/required/1"
+      ]
+    },
+    {
+      "id": "26d5481deeec",
+      "text": "готовит точный черновик публикации",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/2/connections/0/label"
+      ]
+    },
+    {
+      "id": "5d52843e66b7",
+      "text": "Показать человеку будущую запись",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/title"
+      ]
+    },
+    {
+      "id": "efa172aac89d",
+      "text": "До изменения видно, что и куда будет записано.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/summary"
+      ]
+    },
+    {
+      "id": "fc306aa638e7",
+      "text": "Skill показывает проект, тип, формулировку, источник и то, создается новая запись или обновляется существующая. Это правило workflow, а не автоматическая кнопка MCP.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/detail"
+      ]
+    },
+    {
+      "id": "5a6b495902a0",
+      "text": "точный payload",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/required/0"
+      ]
+    },
+    {
+      "id": "7b0637d6a94c",
+      "text": "проект и владелец",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/required/1"
+      ]
+    },
+    {
+      "id": "70386823b321",
+      "text": "явное подтверждение человека",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/required/2"
+      ]
+    },
+    {
+      "id": "05bcae2f616f",
+      "text": "только подтвержденный preview идет в MCP",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/connections/0/label"
+      ]
+    },
+    {
+      "id": "d6bbaae8075c",
+      "text": "Skill lab-knowledge · точный source закрыт",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/3/links/0/label",
+        "shared/knowledgeModel/producers/0/links/0/label",
+        "shared/knowledgeModel/producers/1/links/1/label"
+      ]
+    },
+    {
+      "id": "ea82f5318cac",
+      "text": "Записать с проверками",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/title"
+      ]
+    },
+    {
+      "id": "cf6375539ce7",
+      "text": "MCP проверяет права, поля, связи и повторную попытку.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/summary"
+      ]
+    },
+    {
+      "id": "7560a1f97825",
+      "text": "Сервис отклоняет лишние поля, невозможный переход состояния, запись в чужой проект и неполные научные объекты. Повтор того же запроса с тем же ключом не создает второй объект.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/detail"
+      ]
+    },
+    {
+      "id": "bb7849d0aacd",
+      "text": "подтвержденный payload",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/required/0"
+      ]
+    },
+    {
+      "id": "e31b77fcb8f2",
+      "text": "подходящие права",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/required/1"
+      ]
+    },
+    {
+      "id": "079ea60c5bbd",
+      "text": "ключ повторной попытки, если его требует операция",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/required/2"
+      ]
+    },
+    {
+      "id": "6815b2dfe0af",
+      "text": "успех проверяется повторным чтением",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/connections/0/label"
+      ]
+    },
+    {
+      "id": "9c7998647f46",
+      "text": "Публичное руководство · live source закрыт",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/4/links/1/label"
+      ]
+    },
+    {
+      "id": "b7a8e84397cb",
+      "text": "Перечитать и вернуть результат",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/title"
+      ]
+    },
+    {
+      "id": "24fa3ad47a85",
+      "text": "Созданная запись проверяется теми же правами.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/summary"
+      ]
+    },
+    {
+      "id": "54324cbaf1b3",
+      "text": "Агент возвращает устойчивый идентификатор, фактически сохраненные поля и provenance, когда он задан для этого типа. Ошибка, частичная запись или запрет доступа не называются успехом.",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/detail"
+      ]
+    },
+    {
+      "id": "efd2a2c887ac",
+      "text": "ответ операции записи",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/required/0"
+      ]
+    },
+    {
+      "id": "d6ca8f244c5a",
+      "text": "идентификатор созданного объекта",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/required/1"
+      ]
+    },
+    {
+      "id": "d49d6bd0ebbd",
+      "text": "те же credentials",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/required/2"
+      ]
+    },
+    {
+      "id": "0d0d3cfefbfb",
+      "text": "после проверки запись доступна разрешенному поиску",
+      "paths": [
+        "shared/knowledgeModel/publishFlow/5/connections/0/label"
+      ]
+    },
+    {
+      "id": "3e320c88b7fd",
+      "text": "Исследователь",
+      "paths": [
+        "shared/knowledgeModel/producers/0/title"
+      ]
+    },
+    {
+      "id": "4a852c5f8b3c",
+      "text": "Решает, что из личной работы станет общим",
+      "paths": [
+        "shared/knowledgeModel/producers/0/action"
+      ]
+    },
+    {
+      "id": "e0d19d253185",
+      "text": "Ведет свободный черновик в Obsidian, проверяет формулировку и явно подтверждает публикацию. Само наличие frontmatter или ссылки не означает согласие на запись.",
+      "paths": [
+        "shared/knowledgeModel/producers/0/detail"
+      ]
+    },
+    {
+      "id": "dfb992e6d06a",
+      "text": "проект",
+      "paths": [
+        "shared/knowledgeModel/producers/0/required/0"
+      ]
+    },
+    {
+      "id": "9c3131fa3f76",
+      "text": "понятная формулировка",
+      "paths": [
+        "shared/knowledgeModel/producers/0/required/1"
+      ]
+    },
+    {
+      "id": "29a33ded420d",
+      "text": "источник",
+      "paths": [
+        "shared/knowledgeModel/producers/0/required/2"
+      ]
+    },
+    {
+      "id": "6b207ac6f036",
+      "text": "явное подтверждение",
+      "paths": [
+        "shared/knowledgeModel/producers/0/required/3"
+      ]
+    },
+    {
+      "id": "173e245cd3a3",
+      "text": "подтверждает публикацию",
+      "paths": [
+        "shared/knowledgeModel/producers/0/connections/0/label"
+      ]
+    },
+    {
+      "id": "9e00d612bf91",
+      "text": "создает собственные научные записи",
+      "paths": [
+        "shared/knowledgeModel/producers/0/connections/1/label"
+      ]
+    },
+    {
+      "id": "65519604c4cf",
+      "text": "решает, что станет общим",
+      "paths": [
+        "shared/knowledgeModel/producers/0/short"
+      ]
+    },
+    {
+      "id": "517b5721038f",
+      "text": "Агенты Hermes, Codex и Claude",
+      "paths": [
+        "shared/knowledgeModel/producers/1/title"
+      ]
+    },
+    {
+      "id": "21b2ec857d1d",
+      "text": "Читают общий контекст и работают в выданных границах",
+      "paths": [
+        "shared/knowledgeModel/producers/1/action"
+      ]
+    },
+    {
+      "id": "6d6884046d60",
+      "text": "Каждый агент использует отдельный отзывной ключ. Права принадлежат человеку и проектной роли; повторный запрос или другой клиент не расширяют их.",
+      "paths": [
+        "shared/knowledgeModel/producers/1/detail"
+      ]
+    },
+    {
+      "id": "86f64f64663d",
+      "text": "отдельный token",
+      "paths": [
+        "shared/knowledgeModel/producers/1/required/0"
+      ]
+    },
+    {
+      "id": "6754543c4a36",
+      "text": "идентичность клиента",
+      "paths": [
+        "shared/knowledgeModel/producers/1/required/1"
+      ]
+    },
+    {
+      "id": "212cc03fc666",
+      "text": "разрешенные write operations",
+      "paths": [
+        "shared/knowledgeModel/producers/1/operations/3"
+      ]
+    },
+    {
+      "id": "82a1ed438c8d",
+      "text": "начинают с чтения",
+      "paths": [
+        "shared/knowledgeModel/producers/1/connections/0/label"
+      ]
+    },
+    {
+      "id": "ea6b0506335e",
+      "text": "перед записью показывают preview",
+      "paths": [
+        "shared/knowledgeModel/producers/1/connections/1/label"
+      ]
+    },
+    {
+      "id": "7a82abeaef2f",
+      "text": "Подключение агента · точный source закрыт",
+      "paths": [
+        "shared/knowledgeModel/producers/1/links/0/label"
+      ]
+    },
+    {
+      "id": "2766d934b1ea",
+      "text": "хук требует сохранить работу",
+      "paths": [
+        "shared/knowledgeModel/producers/1/short"
+      ]
+    },
+    {
+      "id": "d5249671a46c",
+      "text": "Brain Call и call-notes",
+      "paths": [
+        "shared/knowledgeModel/producers/2/title"
+      ]
+    },
+    {
+      "id": "86063da28c6a",
+      "text": "Превращают подтвержденный разговор в отдельные научные записи",
+      "paths": [
+        "shared/knowledgeModel/producers/2/action"
+      ]
+    },
+    {
+      "id": "da685b0c41e7",
+      "text": "Полный конспект остается в Obsidian. Только одобренные гипотезы, планы экспериментов, результаты и решения публикуются отдельно, чтобы разговор не стал одной непрозрачной записью.",
+      "paths": [
+        "shared/knowledgeModel/producers/2/detail"
+      ]
+    },
+    {
+      "id": "c14f80c76bd2",
+      "text": "разделенный preview",
+      "paths": [
+        "shared/knowledgeModel/producers/2/required/2"
+      ]
+    },
+    {
+      "id": "8762e586e181",
+      "text": "подтверждение участника",
+      "paths": [
+        "shared/knowledgeModel/producers/2/required/3"
+      ]
+    },
+    {
+      "id": "9966cd833af0",
+      "text": "может породить гипотезу",
+      "paths": [
+        "shared/knowledgeModel/producers/2/connections/0/label"
+      ]
+    },
+    {
+      "id": "f79d2ea397b7",
+      "text": "или план проверки",
+      "paths": [
+        "shared/knowledgeModel/producers/2/connections/1/label"
+      ]
+    },
+    {
+      "id": "ca145ac5e609",
+      "text": "или решение",
+      "paths": [
+        "shared/knowledgeModel/producers/2/connections/2/label"
+      ]
+    },
+    {
+      "id": "398acf2aa4ef",
+      "text": "Владелец Brain Call · запросить доступ",
+      "paths": [
+        "shared/knowledgeModel/producers/2/links/1/label"
+      ]
+    },
+    {
+      "id": "49314114f53b",
+      "text": "созвон делится на записи",
+      "paths": [
+        "shared/knowledgeModel/producers/2/short"
+      ]
+    },
+    {
+      "id": "6200c88b254e",
+      "text": "Инструменты работы со статьями",
+      "paths": [
+        "shared/knowledgeModel/producers/3/title"
+      ]
+    },
+    {
+      "id": "0aae474d90ad",
+      "text": "Пополняют общую библиотеку и проверяют чужие утверждения",
+      "paths": [
+        "shared/knowledgeModel/producers/3/action"
+      ]
+    },
+    {
+      "id": "78e9969aaa68",
+      "text": "paper-ingest сохраняет статью и смысловые разделы. Литературный Hermes или агент формулирует тезисы, проверяет оригинальный источник, затем перечитывает сохранённые записи.",
+      "paths": [
+        "shared/knowledgeModel/producers/3/detail"
+      ]
+    },
+    {
+      "id": "0f78c1ff50d7",
+      "text": "каноническая статья",
+      "paths": [
+        "shared/knowledgeModel/producers/3/required/0"
+      ]
+    },
+    {
+      "id": "2dee7b29649a",
+      "text": "проверенные метаданные",
+      "paths": [
+        "shared/knowledgeModel/producers/3/required/1"
+      ]
+    },
+    {
+      "id": "2cf1353b46d1",
+      "text": "источник для содержательной проверки тезисов",
+      "paths": [
+        "shared/knowledgeModel/producers/3/required/2"
+      ]
+    },
+    {
+      "id": "899f4841baa5",
+      "text": "создает запись статьи",
+      "paths": [
+        "shared/knowledgeModel/producers/3/connections/0/label"
+      ]
+    },
+    {
+      "id": "2f8095e256fb",
+      "text": "после проверки создает утверждение",
+      "paths": [
+        "shared/knowledgeModel/producers/3/connections/1/label"
+      ]
+    },
+    {
+      "id": "3d884bc80a57",
+      "text": "проходит часть 08",
+      "paths": [
+        "shared/knowledgeModel/producers/3/connections/2/label"
+      ]
+    },
+    {
+      "id": "4d2a08225791",
+      "text": "Paper QA model · точный source закрыт",
+      "paths": [
+        "shared/knowledgeModel/producers/3/links/1/label"
+      ]
+    },
+    {
+      "id": "b97c1ae9c130",
+      "text": "статья делится на утверждения",
+      "paths": [
+        "shared/knowledgeModel/producers/3/short"
+      ]
+    },
+    {
+      "id": "c18872aca8e4",
+      "text": "Участник лаборатории",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/title"
+      ]
+    },
+    {
+      "id": "0cb4f490c6e1",
+      "text": "Спрашивает, что уже пробовали и чем это кончилось",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/action"
+      ]
+    },
+    {
+      "id": "2c1e6f47496f",
+      "text": "Получает связанную историю: предположение, способ проверки, наблюденный результат, противоречия и принятое решение. Ответ показывает источники и пробелы, а не только краткий пересказ.",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/detail"
+      ]
+    },
+    {
+      "id": "dfd2866a37c8",
+      "text": "проект или тема",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/required/1"
+      ]
+    },
+    {
+      "id": "e0c963286053",
+      "text": "понимание границ ответа",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/required/2"
+      ]
+    },
+    {
+      "id": "82627154be7b",
+      "text": "читает исходное предположение",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/connections/0/label"
+      ]
+    },
+    {
+      "id": "e20673f2adc0",
+      "text": "сверяет с результатом",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/connections/1/label"
+      ]
+    },
+    {
+      "id": "7daa9da5cde9",
+      "text": "видит принятое правило",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/connections/2/label"
+      ]
+    },
+    {
+      "id": "0cf1a836b64e",
+      "text": "спрашивает, пробовали ли это",
+      "paths": [
+        "shared/knowledgeModel/consumers/0/short"
+      ]
+    },
+    {
+      "id": "aa68086a4f18",
+      "text": "Проектные агенты и вахтёры",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/title"
+      ]
+    },
+    {
+      "id": "4bf03011777a",
+      "text": "Проверяют прошлые попытки до нового плана или запуска",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/action"
+      ]
+    },
+    {
+      "id": "ef541b3cd8ac",
+      "text": "Перед работой читают гипотезы, эксперименты, результаты, решения, словарь проекта и особенности ресурсов. Это снижает риск повторить закрытую ветку или выбрать неподходящий сервер.",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/detail"
+      ]
+    },
+    {
+      "id": "1897c38de750",
+      "text": "контекст проекта",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/required/0"
+      ]
+    },
+    {
+      "id": "93e7d3036043",
+      "text": "актуальные решения",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/required/1"
+      ]
+    },
+    {
+      "id": "d6ae828857ec",
+      "text": "термины и ресурсы",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/required/2"
+      ]
+    },
+    {
+      "id": "79604534d49c",
+      "text": "не повторяют прежний протокол вслепую",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/connections/0/label"
+      ]
+    },
+    {
+      "id": "ac9ca2d3206e",
+      "text": "понимают внутренние имена",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/connections/1/label"
+      ]
+    },
+    {
+      "id": "068bb6de745c",
+      "text": "учитывают ограничения среды",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/connections/2/label"
+      ]
+    },
+    {
+      "id": "89b2e107f8a8",
+      "text": "читают до нового запуска",
+      "paths": [
+        "shared/knowledgeModel/consumers/1/short"
+      ]
+    },
+    {
+      "id": "12cef7440429",
+      "text": "Статья и ответ рецензентам",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/title"
+      ]
+    },
+    {
+      "id": "7bb06b1fa8d2",
+      "text": "Ограничивает формулировки реально доступной опорой",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/action"
+      ]
+    },
+    {
+      "id": "b0f460f7e23e",
+      "text": "Чужое утверждение дает контекст и related work. Собственные измерения и теоретические выводы дают основание для научных claims. Эти роли не смешиваются.",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/detail"
+      ]
+    },
+    {
+      "id": "62df64179683",
+      "text": "точный тезис текста",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/required/0"
+      ]
+    },
+    {
+      "id": "8d3080adc28e",
+      "text": "ссылка на внешнюю статью или собственный результат",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/required/1"
+      ]
+    },
+    {
+      "id": "a8e0211e5a10",
+      "text": "границы evidence",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/required/2"
+      ]
+    },
+    {
+      "id": "ee1b4a6e0fbf",
+      "text": "использует для related work",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/connections/0/label"
+      ]
+    },
+    {
+      "id": "cb0226dce859",
+      "text": "использует для эмпирических claims",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/connections/1/label"
+      ]
+    },
+    {
+      "id": "ad0404e57314",
+      "text": "использует для теоретических claims",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/connections/2/label"
+      ]
+    },
+    {
+      "id": "d81fc30e0d8a",
+      "text": "опора для формулировок статьи",
+      "paths": [
+        "shared/knowledgeModel/consumers/2/short"
+      ]
+    },
+    {
+      "id": "49b3bb29151a",
+      "text": "Yonote и публичный сайт лаборатории",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/title"
+      ]
+    },
+    {
+      "id": "1c2bc2535809",
+      "text": "Показывают задачи и публичные проекции, но второй копии не держат",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/action"
+      ]
+    },
+    {
+      "id": "f6ec62429ed8",
+      "text": "Lab Knowledge хранит ссылку на внешний объект и его назначение. Задача или публичная карточка не становятся доказательством и не могут молча переписать научную историю.",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/detail"
+      ]
+    },
+    {
+      "id": "fb6162f1c6da",
+      "text": "стабильная внешняя ссылка",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/required/0"
+      ]
+    },
+    {
+      "id": "057138d22e69",
+      "text": "тип проекции",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/required/1"
+      ]
+    },
+    {
+      "id": "6dc0e2114f51",
+      "text": "связанная запись или проект",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/required/2"
+      ]
+    },
+    {
+      "id": "dad0e5086c22",
+      "text": "может показывать принятое правило",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/connections/0/label"
+      ]
+    },
+    {
+      "id": "bd36b653f314",
+      "text": "ведет обратно к канонической записи",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/connections/1/label"
+      ]
+    },
+    {
+      "id": "cfd289f76740",
+      "text": "показывают ссылку, копии нет",
+      "paths": [
+        "shared/knowledgeModel/consumers/3/short"
+      ]
+    },
+    {
+      "id": "ce1eb3740971",
+      "text": "Live contract проверен на deployment; публичный source закрыт",
+      "paths": [
+        "shared/knowledgeModel/sources/1/label"
+      ]
+    },
+    {
+      "id": "ae92e3658c64",
+      "text": "Утверждение закрывается одним из двух способов, и служба знает разницу. Эмпирическое закрывается прогоном и числом, теоретическое — доказательством. Третьего пути нет: перевести утверждение в supported, refuted или inconclusive служба даст только когда под ним есть либо измерение по цепочке, либо доказательство в статусе complete или verified.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/intro"
+      ]
+    },
+    {
+      "id": "a2cb58c58a99",
+      "text": "Через измерение",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/title"
+      ]
+    },
+    {
+      "id": "4bb6c51f7a97",
+      "text": "утверждение → прогон → измерение → правило",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/chain"
+      ]
+    },
+    {
+      "id": "fa51ca650e61",
+      "text": "код вида H-WBD-027",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/0/gives"
+      ]
+    },
+    {
+      "id": "61ff945bbce7",
+      "text": "Критерий опровержения — отдельное обязательное поле. Без него запись не создаётся.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/0/note"
+      ]
+    },
+    {
+      "id": "da4c244c526f",
+      "text": "код вида E-WBD-033",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/1/gives"
+      ]
+    },
+    {
+      "id": "023e0b7e5ad5",
+      "text": "Проект берётся у утверждения и не передаётся отдельно. Новый прогон создаётся только в статусе planned или running. На закрытое утверждение прогон повесить нельзя.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/1/note"
+      ]
+    },
+    {
+      "id": "a45b199e2dd0",
+      "text": "код вида R-WBD-023",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/2/gives"
+      ]
+    },
+    {
+      "id": "1224b8c0964b",
+      "text": "Измерение можно записать к прогону в любом статусе, включая planned. Если kind обещает число (metric, measurement), поле metrics обязано нести хотя бы одну величину.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/2/note"
+      ]
+    },
+    {
+      "id": "8d6b37e9c8e7",
+      "text": "код вида P-WBD-001",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/3/gives"
+      ]
+    },
+    {
+      "id": "cdc73db28409",
+      "text": "Род по умолчанию scientific. Измерения в основании необязательны, но у научного правила их отсутствие попадёт в lab_health.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/0/steps/3/note"
+      ]
+    },
+    {
+      "id": "6fefc4812811",
+      "text": "Через доказательство",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/title"
+      ]
+    },
+    {
+      "id": "d7a2cf8d9d5e",
+      "text": "утверждение → доказательство → правило",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/chain"
+      ]
+    },
+    {
+      "id": "b95377903e6d",
+      "text": "код H-*",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/0/gives"
+      ]
+    },
+    {
+      "id": "56e4df85c7fe",
+      "text": "то же самое, плюс kind=theoretical",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/0/needs"
+      ]
+    },
+    {
+      "id": "ac3074e95d6c",
+      "text": "Род утверждения говорит, чего от записи ждать: у теоремы нет сидов и датасета, и отсутствие прогона у неё не считается разрывом цепочки.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/0/note"
+      ]
+    },
+    {
+      "id": "ae6fcfb009d6",
+      "text": "код вида D-WBD-007",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/1/gives"
+      ]
+    },
+    {
+      "id": "1fd24aeb9fe5",
+      "text": "Отдельный род записи, а не эксперимент с выкладкой внутри. Здесь предпосылки, ход рассуждения, установленный результат и полнота — ни протокола, ни железа, ни сидов.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/1/note"
+      ]
+    },
+    {
+      "id": "e0a7cebc5e91",
+      "text": "код P-*",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/2/gives"
+      ]
+    },
+    {
+      "id": "3f7591b16429",
+      "text": "Прямого ребра «правило ↔ доказательство» в схеме нет: теоретическая опора идёт через общее утверждение.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/tracks/1/steps/2/note"
+      ]
+    },
+    {
+      "id": "d5561bc0608d",
+      "text": "Вердикт лежит на связи, а не в записи. Одно измерение может поддержать одно утверждение и подрубить соседнее, поэтому «поддерживает», «противоречит», «сужает область» пишутся в hypothesis_effects при record_evidence: объект с hypothesis_id той же работы, коротким effect (support, partial-support, contradict, inconclusive, scope-reduction) и необязательным reason. Один код гипотезы без UUID служба не примет.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/verdictOnEdge"
+      ]
+    },
+    {
+      "id": "d7f0c8ae6f7e",
+      "text": "Переходы жёстко заданы. Отказ перечисляет разрешённые. Перевод в supported, refuted или inconclusive требует опоры: либо измерение по цепочке прогона, либо доказательство в статусе complete или verified. Своё утверждение закрывает автор, чужое — только ведущий или распорядитель.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/rule"
+      ]
+    },
+    {
+      "id": "21c8fdcb1100",
+      "text": "запись заведена, вслух ещё не заявлена",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/0/means"
+      ]
+    },
+    {
+      "id": "f107773722d5",
+      "text": "в proposed или в archived",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/0/exit"
+      ]
+    },
+    {
+      "id": "7460f75a16e8",
+      "text": "заявлена лаборатории, проверка не начата",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/1/means"
+      ]
+    },
+    {
+      "id": "b10a30deecc6",
+      "text": "в testing или в archived",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/1/exit"
+      ]
+    },
+    {
+      "id": "51fea5b339e9",
+      "text": "идёт проверка: есть прогон или пишется доказательство",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/2/means"
+      ]
+    },
+    {
+      "id": "3ae3fac3792d",
+      "text": "в supported, refuted, inconclusive или archived",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/2/exit"
+      ]
+    },
+    {
+      "id": "6f46d098a075",
+      "text": "опора получена и утверждение держится",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/3/means"
+      ]
+    },
+    {
+      "id": "64dde721b0cb",
+      "text": "в inconclusive, если новые данные размыли вывод, или в archived",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/3/exit"
+      ]
+    },
+    {
+      "id": "a8151a311e12",
+      "text": "опровергнуто; ветку не переоткрывают",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/4/means"
+      ]
+    },
+    {
+      "id": "edb9169c9680",
+      "text": "только в archived",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/4/exit",
+        "shared/knowledgeModel/lifecycle/statuses/0/values/5/exit"
+      ]
+    },
+    {
+      "id": "6589dd5ae61b",
+      "text": "проверили, но ответа нет: шум, слишком мало сидов, неподходящий стенд",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/5/means"
+      ]
+    },
+    {
+      "id": "2c1516eae47a",
+      "text": "убрано с глаз, запись и её код сохранены",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/6/means"
+      ]
+    },
+    {
+      "id": "f455ef13aaca",
+      "text": "выхода нет, статус конечный",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/0/values/6/exit"
+      ]
+    },
+    {
+      "id": "eeb50280bd57",
+      "text": "Создаётся только в planned или running. Четыре конечных статуса не имеют выхода: прогон не переигрывают, а заводят новый.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/rule"
+      ]
+    },
+    {
+      "id": "a18f96f478a2",
+      "text": "программа работ описана, ничего не запускалось",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/0/means"
+      ]
+    },
+    {
+      "id": "e962b559e1d3",
+      "text": "в running или в cancelled",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/0/exit"
+      ]
+    },
+    {
+      "id": "52d4ae442c93",
+      "text": "считается прямо сейчас",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/1/means"
+      ]
+    },
+    {
+      "id": "b92f08426eb6",
+      "text": "в completed, cancelled, interrupted или failed",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/1/exit"
+      ]
+    },
+    {
+      "id": "206073b22d5f",
+      "text": "досчитан до конца",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/2/means"
+      ]
+    },
+    {
+      "id": "9aacfc3b1cdb",
+      "text": "конечный",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/2/exit",
+        "shared/knowledgeModel/lifecycle/statuses/1/values/3/exit",
+        "shared/knowledgeModel/lifecycle/statuses/1/values/4/exit",
+        "shared/knowledgeModel/lifecycle/statuses/1/values/5/exit"
+      ]
+    },
+    {
+      "id": "30d7ff5a33ce",
+      "text": "отменён решением человека",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/3/means"
+      ]
+    },
+    {
+      "id": "0339060ca026",
+      "text": "прерван внешне: упал сервер, кончилась квота",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/4/means"
+      ]
+    },
+    {
+      "id": "071b9d4aeeae",
+      "text": "сломался сам: ошибка в коде, разошлась потеря",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/1/values/5/means"
+      ]
+    },
+    {
+      "id": "d06770d59d81",
+      "text": "Не статус работы, а полнота самого вывода. Цепочки нет, любой статус ставится напрямую. Статус gap без названного пробела служба отклоняет: безымянная дыра читается как законченное доказательство.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/rule"
+      ]
+    },
+    {
+      "id": "33cc9e538831",
+      "text": "план вывода, шаги не расписаны",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/0/means"
+      ]
+    },
+    {
+      "id": "acfd7bc159fe",
+      "text": "в complete, когда шаги дописаны, или в gap, если пробел найден",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/0/exit"
+      ]
+    },
+    {
+      "id": "1268cd3e391b",
+      "text": "выкладка целиком, но никто её не перечитывал",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/1/means"
+      ]
+    },
+    {
+      "id": "ca773c384fb6",
+      "text": "в verified после чужой проверки",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/1/exit"
+      ]
+    },
+    {
+      "id": "741408683471",
+      "text": "выкладку прошёл кто-то, кроме автора",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/2/means"
+      ]
+    },
+    {
+      "id": "062b986c6d12",
+      "text": "в gap, если проверяющий нашёл дыру",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/2/exit"
+      ]
+    },
+    {
+      "id": "9e34e7c9ca37",
+      "text": "в доказательстве названный пробел",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/3/means"
+      ]
+    },
+    {
+      "id": "f30ae2fc2e92",
+      "text": "в complete, когда пробел закрыт; поле status_reason при этом обязательно",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/2/values/3/exit"
+      ]
+    },
+    {
+      "id": "1ba710103a33",
+      "text": "Графа переходов нет, ограничение только по правам: участник создаёт правило только в статусе proposed и переводит дальше только своё; чужое закрывает ведущий или распорядитель.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/rule"
+      ]
+    },
+    {
+      "id": "7e9b3b2272fd",
+      "text": "предложено, лаборатория ещё не приняла",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/0/means"
+      ]
+    },
+    {
+      "id": "e5219a4dbc86",
+      "text": "в accepted",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/0/exit"
+      ]
+    },
+    {
+      "id": "0fa96161a957",
+      "text": "принято, по нему работают",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/1/means"
+      ]
+    },
+    {
+      "id": "2154be8ec7f3",
+      "text": "в superseded, когда его сменило новое",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/1/exit"
+      ]
+    },
+    {
+      "id": "b91c3c211df7",
+      "text": "заменено более новым правилом; текст остаётся ради истории",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/2/means"
+      ]
+    },
+    {
+      "id": "b9c58e597c92",
+      "text": "выхода нет",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/3/values/2/exit"
+      ]
+    },
+    {
+      "id": "911d0f942fab",
+      "text": "Одиннадцать значений вместо прежних четырёх: раньше всё незакрытое сваливалось в active и по статусу нельзя было отличить идею от поданной статьи. Три значения считаются закрытыми — paused, completed, archived — и по ним карточка уезжает из корня коллекции Yonote в папку завершённых.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/rule"
+      ]
+    },
+    {
+      "id": "7d54d1467e55",
+      "text": "мысль записана, работа не начата",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/0/means"
+      ]
+    },
+    {
+      "id": "e967542910d4",
+      "text": "решается, что и чем проверять",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/1/means"
+      ]
+    },
+    {
+      "id": "0471d7afb6c2",
+      "text": "пишется текст",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/2/means"
+      ]
+    },
+    {
+      "id": "4f718c3d3270",
+      "text": "идёт оценка результатов",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/3/means"
+      ]
+    },
+    {
+      "id": "9d19e1205268",
+      "text": "работа идёт",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/4/means"
+      ]
+    },
+    {
+      "id": "73fd73313c30",
+      "text": "осталось немного до подачи",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/5/means"
+      ]
+    },
+    {
+      "id": "818390638ddd",
+      "text": "подано на площадку, ждём ответа",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/6/means"
+      ]
+    },
+    {
+      "id": "a55067ecf40b",
+      "text": "готово к подаче",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/7/means"
+      ]
+    },
+    {
+      "id": "cd298183afb4",
+      "text": "остановлено; задач и созвонов не будет",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/8/means"
+      ]
+    },
+    {
+      "id": "5a4ddbae15c1",
+      "text": "закончено",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/9/means"
+      ]
+    },
+    {
+      "id": "ac18b753f109",
+      "text": "убрано в архив",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/4/values/10/means"
+      ]
+    },
+    {
+      "id": "4afa7dcfdde9",
+      "text": "Переходы служба не проверяет: доступ к машине пропадает и возвращается не по расписанию.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/5/rule"
+      ]
+    },
+    {
+      "id": "93cb324d4b2d",
+      "text": "доступ запрошен, ещё не дан",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/5/values/0/means"
+      ]
+    },
+    {
+      "id": "daccb627b6b2",
+      "text": "работает и им пользуются",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/5/values/1/means"
+      ]
+    },
+    {
+      "id": "0b8f9ccd64d5",
+      "text": "срок вышел, можно продлить",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/5/values/2/means"
+      ]
+    },
+    {
+      "id": "6d4a32a00acb",
+      "text": "выведен насовсем",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/statuses/5/values/3/means"
+      ]
+    },
+    {
+      "id": "90e9f0f4a25f",
+      "text": "утверждения",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/0/of"
+      ]
+    },
+    {
+      "id": "79f704f2de74",
+      "text": "определяет, что считать опорой: измерение или доказательство. unspecified стоит у записей, сделанных до появления рода.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/0/why"
+      ]
+    },
+    {
+      "id": "92ff6f40e5a7",
+      "text": "правила",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/1/of"
+      ]
+    },
+    {
+      "id": "0e57b1dc18ef",
+      "text": "у научного правила lab_health спрашивает измерения в основании, у организационного нет. До появления рода отчёт выдавал 63 ложные находки из 63.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/1/why"
+      ]
+    },
+    {
+      "id": "b8862a002aa9",
+      "text": "измерения",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/2/of"
+      ]
+    },
+    {
+      "id": "4d15b9890f0d",
+      "text": "свободная строка; metric и measurement обещают число",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/2/values"
+      ]
+    },
+    {
+      "id": "6d42ce9ddf92",
+      "text": "род, чьё имя обещает величину, без поля metrics не принимается. Роды artifact, manuscript, diagnostic величины не обещают.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/2/why"
+      ]
+    },
+    {
+      "id": "c264919d1aab",
+      "text": "записи журнала",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/3/of"
+      ]
+    },
+    {
+      "id": "0f3c57b5d55c",
+      "text": "чтобы наблюдение не путали со сбоем и замером.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/3/why"
+      ]
+    },
+    {
+      "id": "be36fd290b98",
+      "text": "термина",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/4/of"
+      ]
+    },
+    {
+      "id": "739138e53dd8",
+      "text": "читатель сверит реализацию с коммитом, прогон найдёт в трекере, протокол сравнит со своим.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/4/why"
+      ]
+    },
+    {
+      "id": "659eaadfc5d7",
+      "text": "ресурса",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/5/of"
+      ]
+    },
+    {
+      "id": "3492786c2492",
+      "text": "список закрыт: открытое поле стало бы свалкой синонимов.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/5/why"
+      ]
+    },
+    {
+      "id": "a90e6b373ca6",
+      "text": "связи со статьёй",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/6/of"
+      ]
+    },
+    {
+      "id": "5843860d1cc4",
+      "text": "без типа связь означает «упомянуто рядом», и отчёт не отличит опору от опровержения.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/6/why"
+      ]
+    },
+    {
+      "id": "1d8dde9d051d",
+      "text": "утверждения статьи",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/7/of"
+      ]
+    },
+    {
+      "id": "11166770617e",
+      "text": "за эмпирическим стоят чужие измерения, за теоретическим чужое доказательство, и доверие к ним разное.",
+      "paths": [
+        "shared/knowledgeModel/lifecycle/kinds/7/why"
+      ]
+    },
+    {
+      "id": "9d170e41c0c4",
+      "text": "Своя работа",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/0/title"
+      ]
+    },
+    {
+      "id": "3eb94955747a",
+      "text": "Живёт внутри работы, и запись требует роли в этой работе.",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/0/note"
+      ]
+    },
+    {
+      "id": "983ba8a37eaa",
+      "text": "Эмпирика",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/0/chains/0/label"
+      ]
+    },
+    {
+      "id": "a5417d46925b",
+      "text": "Теория",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/0/chains/1/label"
+      ]
+    },
+    {
+      "id": "3056689a303e",
+      "text": "Библиотека статей",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/1/title"
+      ]
+    },
+    {
+      "id": "3c3c37f19170",
+      "text": "Принадлежит лаборатории целиком, работы-владельца нет, пишет любой участник.",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/1/note"
+      ]
+    },
+    {
+      "id": "88182448b7b1",
+      "text": "Разбор",
+      "paths": [
+        "shared/knowledgeModel/tree/roots/1/chains/0/label"
+      ]
+    },
+    {
+      "id": "51d5524da68b",
+      "text": "типизированная связь, не наш результат",
+      "paths": [
+        "shared/knowledgeModel/tree/bridge/label"
+      ]
+    },
+    {
+      "id": "0504fc8e4c53",
+      "text": "Человек публикует сам",
+      "paths": [
+        "shared/knowledgeModel/intake/0/title"
+      ]
+    },
+    {
+      "id": "5851b2a57ec8",
+      "text": "исследователь",
+      "paths": [
+        "shared/knowledgeModel/intake/0/who"
+      ]
+    },
+    {
+      "id": "710496174038",
+      "text": "человек: без подтверждения записи нет",
+      "paths": [
+        "shared/knowledgeModel/intake/0/decides"
+      ]
+    },
+    {
+      "id": "e4e2ad478171",
+      "text": "Черновик в Obsidian",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/0/title"
+      ]
+    },
+    {
+      "id": "cb7cf0088309",
+      "text": "Свободный текст. Ни ссылка, ни поля в шапке заметки не считаются согласием на запись.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/0/note"
+      ]
+    },
+    {
+      "id": "c7b32b79a843",
+      "text": "Поиск дубля и работы",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/1/title"
+      ]
+    },
+    {
+      "id": "15402b3345a4",
+      "text": "Сначала чтение: есть ли уже такая запись и в какой работе ей место.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/1/note"
+      ]
+    },
+    {
+      "id": "2f7d7bc8fa6a",
+      "text": "Выбор рода записи",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/2/title"
+      ]
+    },
+    {
+      "id": "0e8fa2b85318",
+      "text": "Род задаёт обязательные поля: наблюдение не становится утверждением ради заполнения базы.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/2/note"
+      ]
+    },
+    {
+      "id": "af53b38794f2",
+      "text": "Предпросмотр точной записи",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/3/title"
+      ]
+    },
+    {
+      "id": "32c7a4883f29",
+      "text": "Видно работу, род, формулировку, источник и то, новая это запись или правка.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/3/note"
+      ]
+    },
+    {
+      "id": "65438e3356b6",
+      "text": "Подтверждение человеком",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/4/title"
+      ]
+    },
+    {
+      "id": "de32d57c2021",
+      "text": "Правило навыка, а не кнопка службы: MCP запишет и без предпросмотра.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/4/note"
+      ]
+    },
+    {
+      "id": "2bbf1c1a51ca",
+      "text": "Запись и перечитывание",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/5/title"
+      ]
+    },
+    {
+      "id": "376b1daa411f",
+      "text": "Служба возвращает код записи, агент перечитывает её теми же правами.",
+      "paths": [
+        "shared/knowledgeModel/intake/0/steps/5/note"
+      ]
+    },
+    {
+      "id": "502b24cae8e8",
+      "text": "Хук на конце хода",
+      "paths": [
+        "shared/knowledgeModel/intake/1/title"
+      ]
+    },
+    {
+      "id": "7f5be7993377",
+      "text": "агент в любой сессии",
+      "paths": [
+        "shared/knowledgeModel/intake/1/who"
+      ]
+    },
+    {
+      "id": "d76b57b8ac24",
+      "text": "агент: у него весь контекст сессии",
+      "paths": [
+        "shared/knowledgeModel/intake/1/decides"
+      ]
+    },
+    {
+      "id": "49a63ac96dc8",
+      "text": "Работа идёт как обычно",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/0/title"
+      ]
+    },
+    {
+      "id": "3dc073e16bd8",
+      "text": "Ничего не помечают заранее: ни разметки в сообщениях, ни отдельной команды.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/0/note"
+      ]
+    },
+    {
+      "id": "1b9258f924cb",
+      "text": "Десятый ход человека",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/1/title"
+      ]
+    },
+    {
+      "id": "3cee773bccd3",
+      "text": "Хук сам считает настоящие реплики: результаты инструментов и свои напоминания отсекает.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/1/note"
+      ]
+    },
+    {
+      "id": "469998c5eff9",
+      "text": "Ход не даёт закончить",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/2/title"
+      ]
+    },
+    {
+      "id": "ca8f32cae430",
+      "text": "Вместо разбора текста — остановка и требование: сохрани то, что стоит сохранить.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/2/note"
+      ]
+    },
+    {
+      "id": "eaa34dacff39",
+      "text": "Агент называет находки",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/3/title"
+      ]
+    },
+    {
+      "id": "05d31c65ec8e",
+      "text": "Что записать и в каком роде, решает агент, а не правило поиска по строкам.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/3/note"
+      ]
+    },
+    {
+      "id": "7bcb540064de",
+      "text": "Подходящие места хранения",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/4/title"
+      ]
+    },
+    {
+      "id": "ad19d8c6dee5",
+      "text": "Агент сохраняет осмысленные результаты в MemPalace, существующих заметках Obsidian и, при разрешённой публикации, в Lab Knowledge. Пустой checkpoint не создаёт записей.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/4/note"
+      ]
+    },
+    {
+      "id": "b1a7a920c863",
+      "text": "Одна строка человеку",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/5/title"
+      ]
+    },
+    {
+      "id": "9c64bb647c93",
+      "text": "Что записано и куда, либо что ничего не подошло. Дальше ход завершается.",
+      "paths": [
+        "shared/knowledgeModel/intake/1/steps/5/note"
+      ]
+    },
+    {
+      "id": "c0c0abbff99e",
+      "text": "Созвон становится записями",
+      "paths": [
+        "shared/knowledgeModel/intake/2/title"
+      ]
+    },
+    {
+      "id": "dcedf31b8e8f",
+      "text": "участники созвона и навык call-notes",
+      "paths": [
+        "shared/knowledgeModel/intake/2/who"
+      ]
+    },
+    {
+      "id": "383552113497",
+      "text": "участник: подтверждает каждую запись отдельно",
+      "paths": [
+        "shared/knowledgeModel/intake/2/decides"
+      ]
+    },
+    {
+      "id": "4ec55ee8013f",
+      "text": "Дорожки участников записаны",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/0/title"
+      ]
+    },
+    {
+      "id": "4ecf6c10c55f",
+      "text": "Отдельная дорожка на человека, поэтому потом видно, кто что предложил.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/0/note"
+      ]
+    },
+    {
+      "id": "18ba1251c448",
+      "text": "Расшифровка с именами",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/1/title"
+      ]
+    },
+    {
+      "id": "275224d73391",
+      "text": "Полный конспект остаётся в Obsidian и в базу целиком не уходит.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/1/note"
+      ]
+    },
+    {
+      "id": "113474815446",
+      "text": "Агенты делят разговор",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/2/title"
+      ]
+    },
+    {
+      "id": "ab6d32ef9cb1",
+      "text": "Разговор режется на утверждения, планы прогонов, измерения и правила по работам.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/2/note"
+      ]
+    },
+    {
+      "id": "dfc0c071b5d8",
+      "text": "Предпросмотр по каждой записи",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/3/title"
+      ]
+    },
+    {
+      "id": "406700b4baae",
+      "text": "Записей много, поэтому подтверждают их по одной, а не разговор одним куском.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/3/note"
+      ]
+    },
+    {
+      "id": "e780b101d9a2",
+      "text": "Подтверждение участника",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/4/title"
+      ]
+    },
+    {
+      "id": "054996f5d13f",
+      "text": "Сказанное вслух ещё не решение лаборатории: правило уходит в базу как предложенное.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/4/note"
+      ]
+    },
+    {
+      "id": "3446b202ab30",
+      "text": "Источник, потом записи",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/5/title"
+      ]
+    },
+    {
+      "id": "df97f97594ad",
+      "text": "Сначала источник со ссылкой на конспект, дальше записи, которые на него опираются.",
+      "paths": [
+        "shared/knowledgeModel/intake/2/steps/5/note"
+      ]
+    },
+    {
+      "id": "d8cd831d6fc0",
+      "text": "Статья попадает в библиотеку",
+      "paths": [
+        "shared/knowledgeModel/intake/3/title"
+      ]
+    },
+    {
+      "id": "55960eebda67",
+      "text": "навык paper-ingest",
+      "paths": [
+        "shared/knowledgeModel/intake/3/who"
+      ]
+    },
+    {
+      "id": "f0e28e457bce",
+      "text": "агент формулирует и проверяет тезисы; служба валидирует запись",
+      "paths": [
+        "shared/knowledgeModel/intake/3/decides"
+      ]
+    },
+    {
+      "id": "8e3af7ccdd28",
+      "text": "Внешний код статьи",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/0/title"
+      ]
+    },
+    {
+      "id": "feb787b1dd07",
+      "text": "arXiv, DOI или ключ Zotero. Без такого кода следующая отправка заведёт дубль.",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/0/note"
+      ]
+    },
+    {
+      "id": "f05b090d3171",
+      "text": "Статья и её разделы",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/1/title"
+      ]
+    },
+    {
+      "id": "4fd602ba8ae3",
+      "text": "Границы разделов совпадают с разбором, а не с окном в N знаков.",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/1/note"
+      ]
+    },
+    {
+      "id": "701d61faadce",
+      "text": "Отдельные тезисы статьи",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/2/title"
+      ]
+    },
+    {
+      "id": "1bd328d20e7d",
+      "text": "Пересказ, тип тезиса и locator. Цитата добавляется только по необходимости.",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/2/note"
+      ]
+    },
+    {
+      "id": "7c3989a97b96",
+      "text": "Проверка записи и источника",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/3/title"
+      ]
+    },
+    {
+      "id": "2d53024767e9",
+      "text": "Агент сверяет смысл с оригиналом и перечитывает запись. quote_verified касается только необязательной цитаты в сохранённом тексте.",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/3/note"
+      ]
+    },
+    {
+      "id": "a48625e925ef",
+      "text": "Связь с нашей работой",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/4/title"
+      ]
+    },
+    {
+      "id": "001a540613f2",
+      "text": "Чужое утверждение подпирает или подрубает наше, но нашим измерением не становится.",
+      "paths": [
+        "shared/knowledgeModel/intake/3/steps/4/note"
+      ]
+    },
+    {
+      "id": "013a544a0ddd",
+      "text": "каждое десятое настоящее сообщение человека",
+      "paths": [
+        "shared/knowledgeModel/hook/trigger"
+      ]
+    },
+    {
+      "id": "6ec5499e58eb",
+      "text": "событие Stop в Claude Code и Codex",
+      "paths": [
+        "shared/knowledgeModel/hook/where"
+      ]
+    },
+    {
+      "id": "c33ff27e6775",
+      "text": "агент, у которого есть контекст, а не разбор текста",
+      "paths": [
+        "shared/knowledgeModel/hook/decides"
+      ]
+    },
+    {
+      "id": "9bd3ab126e4e",
+      "text": "Считает настоящие ходы",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/0/title"
+      ]
+    },
+    {
+      "id": "c0cce5105fff",
+      "text": "У harness почти всё помечено как человек: в одной сессии из 5283 записей 4722 были результатами инструментов, 177 ответами хуков и только 384 репликами человека.",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/0/note"
+      ]
+    },
+    {
+      "id": "8eee3d6478ef",
+      "text": "Не даёт закончить ход",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/1/title"
+      ]
+    },
+    {
+      "id": "1e28ca452e45",
+      "text": "Хук отвечает решением block: ход не завершается, пока агент не сохранит и не отчитается.",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/1/note"
+      ]
+    },
+    {
+      "id": "a2e06af41342",
+      "text": "Агент называет, что сохранить",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/2/title"
+      ]
+    },
+    {
+      "id": "f078d158461d",
+      "text": "Хук не вынимает знание из текста. Он останавливает и требует, а формулирует тот, у кого весь контекст.",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/2/note"
+      ]
+    },
+    {
+      "id": "3516fef55af9",
+      "text": "Отчитывается одной строкой",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/3/title"
+      ]
+    },
+    {
+      "id": "5ba7baa4be6b",
+      "text": "Агент сообщает реальные результаты и ID перечитанных записей. Метка hook фиксирует запрос на checkpoint, а не успешную запись.",
+      "paths": [
+        "shared/knowledgeModel/hook/steps/3/note"
+      ]
+    },
+    {
+      "id": "58ab725b4e82",
+      "text": "Ящик с дословными цитатами, решениями и кодом плюс одна сжатая строка дневника сессии.",
+      "paths": [
+        "shared/knowledgeModel/hook/outputs/0/what"
+      ]
+    },
+    {
+      "id": "e36f0dba6741",
+      "text": "Канонические проектные заметки по filesystem mapping: протоколы, результаты, решения и оставшиеся вопросы.",
+      "paths": [
+        "shared/knowledgeModel/hook/outputs/1/what"
+      ]
+    },
+    {
+      "id": "50593536e6db",
+      "text": "Только то, на что лаборатория потом сможет сослаться: утверждение, прогон, измерение, правило, ресурс, журнал.",
+      "paths": [
+        "shared/knowledgeModel/hook/outputs/2/what"
+      ]
+    },
+    {
+      "id": "ae278dcafd21",
+      "text": "только если Lab Knowledge настроен в текущем клиенте и публикация разрешена",
+      "paths": [
+        "shared/knowledgeModel/hook/outputs/2/conditional"
+      ]
+    },
+    {
+      "id": "9d905fd20ced",
+      "text": "Проект разрешается по существующему stable ID и aliases. Если привязка неизвестна, запись остаётся pending; случайный проект или доска не создаются.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/0"
+      ]
+    },
+    {
+      "id": "e002c8ddc9f2",
+      "text": "Утверждение не пишется без наблюдения, после которого от него придётся отказаться.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/1"
+      ]
+    },
+    {
+      "id": "e80c97289101",
+      "text": "Измерение не пишется без источника, прогон — без статуса.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/2"
+      ]
+    },
+    {
+      "id": "980296ec11d0",
+      "text": "Что не подходит ни под один строгий род — это журнал, а не выдуманное утверждение.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/3"
+      ]
+    },
+    {
+      "id": "60e1d3d47c69",
+      "text": "У ресурса в грабли пишут особенности машины; пароль или токен — никогда.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/4"
+      ]
+    },
+    {
+      "id": "e90a86231897",
+      "text": "Личное и незрелое остаётся в Obsidian: сюда идёт то, чем лаборатория делится.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/5"
+      ]
+    },
+    {
+      "id": "89124c8a88c1",
+      "text": "Раз в десять реплик, а не каждый ход: каждое срабатывание стоит лишнего вызова модели. При интервале по всем ходам сохранение сработало 552 раза вместо 38 и съело 8,6 % выходных токенов сессии.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/6"
+      ]
+    },
+    {
+      "id": "9fba0e0706e3",
+      "text": "Сохранять перед сжатием контекста нельзя: блокирующий хук на PreCompact отменяет сжатие, а не откладывает его.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/7"
+      ]
+    },
+    {
+      "id": "b8de1296244b",
+      "text": "Своё же прерывание хук пропускает, иначе получится петля.",
+      "paths": [
+        "shared/knowledgeModel/hook/rules/8"
+      ]
+    },
+    {
+      "id": "6befc84c37c5",
+      "text": "Что попробовали и выбросили",
+      "paths": [
+        "shared/knowledgeModel/hook/history/title"
+      ]
+    },
+    {
+      "id": "034e78459f39",
+      "text": "Прежний хук разбирал стенограмму по разметке вида «ЛАБ-ГИПОТЕЗА: … | опровергается: …» и писал в базу сам, без вызова модели: разбор стоил ноль, а запись шла ровно та, что написана, с очередью на случай недоступной базы.",
+      "paths": [
+        "shared/knowledgeModel/hook/history/what"
+      ]
+    },
+    {
+      "id": "c65340863fbf",
+      "text": "Разметку никто не был обязан писать, поэтому на практике он почти не срабатывал. Сейчас не подключён: в Stop его нет, последняя запись в его журнале — 17-08-2026.",
+      "paths": [
+        "shared/knowledgeModel/hook/history/why"
+      ]
+    },
+    {
+      "id": "b6e58f206c2e",
+      "text": "Исходник хука",
+      "paths": [
+        "shared/knowledgeModel/hook/links/0/label"
+      ]
+    },
+    {
+      "id": "3388dd6ab8ad",
+      "text": "Нет критерия опровержения",
+      "paths": [
+        "shared/controls/0/title"
+      ]
+    },
+    {
+      "id": "86dd9f747126",
+      "text": "Поле falsification_criteria обязательное. Без наблюдения, которое утверждение похоронит, это мнение, а не утверждение: проверить его нечем и закрыть нечем. Напишите, что именно вы увидите, если окажетесь неправы.",
+      "paths": [
+        "shared/controls/0/explanation"
+      ]
+    },
+    {
+      "id": "02333a586755",
+      "text": "Переход статуса, которого нет в цепочке",
+      "paths": [
+        "shared/controls/1/title"
+      ]
+    },
+    {
+      "id": "257a5bd63238",
+      "text": "Разрешены только draft→proposed→testing→supported, refuted или inconclusive→archived, плюс supported→inconclusive и выход в archived из любого места. Отказ перечисляет допустимые значения.",
+      "paths": [
+        "shared/controls/1/explanation"
+      ]
+    },
+    {
+      "id": "0b9ebf15033e",
+      "text": "draft → supported отклоняется: сначала proposed, затем testing.",
+      "paths": [
+        "shared/controls/1/example"
+      ]
+    },
+    {
+      "id": "f98acae6e3f1",
+      "text": "Вывод без опоры",
+      "paths": [
+        "shared/controls/2/title"
+      ]
+    },
+    {
+      "id": "cdd6d84c5790",
+      "text": "Перевод в supported, refuted или inconclusive требует либо измерения по цепочке прогона, либо доказательства в статусе complete или verified. Если опоры нет, статус остаётся testing — это честнее.",
+      "paths": [
+        "shared/controls/2/explanation"
+      ]
+    },
+    {
+      "id": "b2880545f369",
+      "text": "Права",
+      "paths": [
+        "shared/controls/3/kind",
+        "shared/controls/18/kind"
+      ]
+    },
+    {
+      "id": "783304a35c85",
+      "text": "Чужой вывод закрывает не участник",
+      "paths": [
+        "shared/controls/3/title"
+      ]
+    },
+    {
+      "id": "fe61f8b89852",
+      "text": "Своё утверждение и своё правило участник доводит до конца сам. Чужое закрывает ведущий или распорядитель: смысл в стороннем взгляде.",
+      "paths": [
+        "shared/controls/3/explanation"
+      ]
+    },
+    {
+      "id": "2f9996ace4b1",
+      "text": "Прогон повешен на закрытое утверждение",
+      "paths": [
+        "shared/controls/4/title"
+      ]
+    },
+    {
+      "id": "523760f804dc",
+      "text": "Утверждение в статусе supported, refuted, inconclusive или archived прогонов больше не принимает. Иначе числа про одно попадают в цепочку про другое, и цепочка остаётся формально целой, а по смыслу база начинает врать.",
+      "paths": [
+        "shared/controls/4/explanation"
+      ]
+    },
+    {
+      "id": "d3be7ca60600",
+      "text": "Новый прогон сразу в конечном статусе",
+      "paths": [
+        "shared/controls/5/title"
+      ]
+    },
+    {
+      "id": "4028d963c65f",
+      "text": "Создаётся только planned или running. Дальше двигает update_experiment_status. Из четырёх конечных статусов выхода нет, новый прогон заводится заново.",
+      "paths": [
+        "shared/controls/5/explanation"
+      ]
+    },
+    {
+      "id": "7ce3c8a976c0",
+      "text": "Род обещает число, а чисел нет",
+      "paths": [
+        "shared/controls/6/title"
+      ]
+    },
+    {
+      "id": "4cd95843849d",
+      "text": "Роды metric и measurement без поля metrics не принимаются: на такую запись потом ссылаются как на число, а сравнить её не с чем. Три выхода, и отказ их называет: дать величину в metrics, записать увиденное через record_journal, или взять род, который величины не обещает — artifact, manuscript, diagnostic.",
+      "paths": [
+        "shared/controls/6/explanation"
+      ]
+    },
+    {
+      "id": "e5a4e1be2bd9",
+      "text": "Вердикт указывает не на ту гипотезу",
+      "paths": [
+        "shared/controls/7/title"
+      ]
+    },
+    {
+      "id": "71e582dc4a9e",
+      "text": "В hypothesis_effects нужен UUID утверждения из той же работы. Один публичный код без UUID служба разрешить не может. Вердикт, указывающий в пустоту, хуже отсутствующего: отчёт по нему потом соврёт.",
+      "paths": [
+        "shared/controls/7/explanation"
+      ]
+    },
+    {
+      "id": "cd3bc7f71e64",
+      "text": "Пробел есть, но не назван",
+      "paths": [
+        "shared/controls/8/title"
+      ]
+    },
+    {
+      "id": "62d4ab320159",
+      "text": "Статус gap требует заполненного status_reason. Безымянная дыра при чтении выглядит как законченное доказательство, и на неё сошлются как на готовый результат.",
+      "paths": [
+        "shared/controls/8/explanation"
+      ]
+    },
+    {
+      "id": "13549173139d",
+      "text": "Нет результата или нет выкладки",
+      "paths": [
+        "shared/controls/9/title"
+      ]
+    },
+    {
+      "id": "94cb212e5363",
+      "text": "result — что именно установлено, argument — шаги, которые можно пройти заново. Запись без одного из них не доказательство, а заголовок. depends_on принимает только выводы той же работы.",
+      "paths": [
+        "shared/controls/9/explanation"
+      ]
+    },
+    {
+      "id": "3d14ea9dad48",
+      "text": "Опора из чужой работы",
+      "paths": [
+        "shared/controls/10/title"
+      ]
+    },
+    {
+      "id": "6bbbda6743fd",
+      "text": "Утверждения и измерения, названные в основании правила, обязаны принадлежать той же работе. Ссылка через границу работы означала бы правило, которое нечем проверить на месте.",
+      "paths": [
+        "shared/controls/10/explanation"
+      ]
+    },
+    {
+      "id": "d659e27ebecd",
+      "text": "Библиотека",
+      "paths": [
+        "shared/controls/11/kind",
+        "shared/controls/12/kind",
+        "shared/controls/13/kind",
+        "shared/controls/14/kind",
+        "shared/controls/15/kind"
+      ]
+    },
+    {
+      "id": "b1f4d39ab201",
+      "text": "Статья без устойчивого ключа",
+      "paths": [
+        "shared/controls/11/title"
+      ]
+    },
+    {
+      "id": "f957d3c4d990",
+      "text": "Нужен хотя бы один из arxiv_id, doi, zotero_key. Без него следующая отправка не узнает статью и положит дубль рядом. Название и авторы для этого не годятся: они пишутся по-разному.",
+      "paths": [
+        "shared/controls/11/explanation"
+      ]
+    },
+    {
+      "id": "9aa1867a6cd4",
+      "text": "Цитаты нет в сохранённом тексте статьи",
+      "paths": [
+        "shared/controls/12/title"
+      ]
+    },
+    {
+      "id": "547fa35dad28",
+      "text": "Тезис можно записать пересказом без цитаты. Если цитата явно передана и сохранённый текст есть, служба проверяет совпадение. Совпадение с русским конспектом не подтверждает оригинальную публикацию.",
+      "paths": [
+        "shared/controls/12/explanation"
+      ]
+    },
+    {
+      "id": "cfb7afec6bc7",
+      "text": "Обрывок вместо утверждения статьи",
+      "paths": [
+        "shared/controls/13/title"
+      ]
+    },
+    {
+      "id": "198339899bf8",
+      "text": "Утверждение должно выражать законченную мысль. Отдельный символ, заголовок таблицы или оборванная фраза не позволяют понять, что именно показано в статье.",
+      "paths": [
+        "shared/controls/13/explanation"
+      ]
+    },
+    {
+      "id": "da6ddcf89697",
+      "text": "Эмпирическое утверждение без величины",
+      "paths": [
+        "shared/controls/14/title"
+      ]
+    },
+    {
+      "id": "f92f75172cb8",
+      "text": "Для количественного вывода нужно сохранить величину, условия сравнения и источник. Формулировка «лучше» без указания, в чём и по каким данным, теряет смысл результата.",
+      "paths": [
+        "shared/controls/14/explanation"
+      ]
+    },
+    {
+      "id": "799c818249f3",
+      "text": "Пустой раздел или пустая формулировка",
+      "paths": [
+        "shared/controls/15/title"
+      ]
+    },
+    {
+      "id": "d64fbf0f99b9",
+      "text": "Пустой statement и пустой раздел отклоняются. Произвольных квот на длину цитат, формулировок или число типов тезисов нет.",
+      "paths": [
+        "shared/controls/15/explanation"
+      ]
+    },
+    {
+      "id": "0db987b47e01",
+      "text": "Пароль или токен в описании доступа",
+      "paths": [
+        "shared/controls/16/title"
+      ]
+    },
+    {
+      "id": "e49713f27bf4",
+      "text": "База многопользовательская, и запись переживёт смену состава лаборатории. Напишите, где секрет лежит и у кого спросить, а не сам секрет.",
+      "paths": [
+        "shared/controls/16/explanation"
+      ]
+    },
+    {
+      "id": "84dc33fff223",
+      "text": "Ключи",
+      "paths": [
+        "shared/controls/17/kind"
+      ]
+    },
+    {
+      "id": "e04754a18253",
+      "text": "Токен человеку, отключённому в базе",
+      "paths": [
+        "shared/controls/17/title"
+      ]
+    },
+    {
+      "id": "d652b88b2869",
+      "text": "Такой ключ выглядел бы рабочим и молча отвечал бы голым 401 без причины. Отказ говорит прямо: сначала включите человека обратно, потом выдавайте ключ.",
+      "paths": [
+        "shared/controls/17/explanation"
+      ]
+    },
+    {
+      "id": "668a03de3929",
+      "text": "Запись в работу без роли в ней",
+      "paths": [
+        "shared/controls/18/title"
+      ]
+    },
+    {
+      "id": "893c13e31223",
+      "text": "Прочитать эту работу вы можете — читают все, — а дописать в неё нет. Попросите роль contributor у ведущего этой работы.",
+      "paths": [
+        "shared/controls/18/explanation"
+      ]
+    },
+    {
+      "id": "68c9613d0636",
+      "text": "Повторы",
+      "paths": [
+        "shared/controls/19/kind"
+      ]
+    },
+    {
+      "id": "2ba1762b9648",
+      "text": "Тот же ключ с другой нагрузкой",
+      "paths": [
+        "shared/controls/19/title"
+      ]
+    },
+    {
+      "id": "90688acd6b4f",
+      "text": "Ключ повторной попытки хранит квитанцию: повтор с теми же аргументами вернёт ту же запись, повтор с другими — отказ. Пустой ключ тоже отклоняется.",
+      "paths": [
+        "shared/controls/19/explanation"
+      ]
+    },
+    {
+      "id": "d02e9d858931",
+      "text": "Схема",
+      "paths": [
+        "shared/controls/20/kind"
+      ]
+    },
+    {
+      "id": "d68fb722951a",
+      "text": "Неизвестное поле в вызове",
+      "paths": [
+        "shared/controls/20/title"
+      ]
+    },
+    {
+      "id": "abe9ea0d24e4",
+      "text": "Лишний ключ в запросе — отказ, а не молчаливое игнорирование. Проглоченное поле выглядит как принятое, и вызывающий думает, что записал больше, чем записал.",
+      "paths": [
+        "shared/controls/20/explanation"
+      ]
+    },
+    {
+      "id": "303c2b490a51",
+      "text": "Удаление",
+      "paths": [
+        "shared/controls/21/kind"
+      ]
+    },
+    {
+      "id": "95a3865110b8",
+      "text": "На записи что-то висит, а cascade не передан",
+      "paths": [
+        "shared/controls/21/title"
+      ]
+    },
+    {
+      "id": "8a1cc00c3df4",
+      "text": "Отказ перечисляет, что уйдёт вместе с записью: прогоны, измерения, доказательства, связи с правилами и статьями. Удалить утверждение и оставить его прогоны означало бы оставить прогоны без предмета. Событие удаления остаётся в журнале вместе с кодом убранной записи.",
+      "paths": [
+        "shared/controls/21/explanation"
+      ]
+    },
+    {
+      "id": "17b1928df386",
+      "text": "Личные заметки и контекст проекта",
+      "paths": [
+        "shared/constellation/cores/0/caption"
+      ]
+    },
+    {
+      "id": "a93de5af6b39",
+      "text": "Исследования, литература и связи",
+      "paths": [
+        "shared/constellation/cores/1/caption"
+      ]
+    },
+    {
+      "id": "d36a57dc9030",
+      "text": "Память агента между сессиями",
+      "paths": [
+        "shared/constellation/cores/2/caption"
+      ]
+    },
+    {
+      "id": "01c01e973474",
+      "text": "Рабочий контекст",
+      "paths": [
+        "shared/constellation/groups/0/title"
+      ]
+    },
+    {
+      "id": "e9967788a110",
+      "text": "Доступ и сохранение",
+      "paths": [
+        "shared/constellation/groups/1/title"
+      ]
+    },
+    {
+      "id": "3b88bb8af6b2",
+      "text": "Продолжение работы",
+      "paths": [
+        "shared/constellation/groups/2/title"
+      ]
+    },
+    {
+      "id": "ab4a5a107cac",
+      "text": "Исходники всей системы",
+      "paths": [
+        "meta/toolkit/title"
+      ]
+    },
+    {
+      "id": "4b25af75a3cb",
+      "text": "Инструменты лаборатории, промпты Hermes и внешние проекты. Скопируйте нужные репозитории и следуйте их README.",
+      "paths": [
+        "meta/toolkit/lead"
+      ]
+    },
+    {
+      "id": "b7da03445e52",
+      "text": "Для клонирования Lab Knowledge MCP и Brain Call нужен доступ к их закрытым репозиториям.",
+      "paths": [
+        "meta/toolkit/after"
+      ]
+    },
+    {
+      "id": "231edd8904ff",
+      "text": "72 публичных навыка, агенты, хуки и правила",
+      "paths": [
+        "meta/toolkit/pieces/0/what"
+      ]
+    },
+    {
+      "id": "4090a869f933",
+      "text": "открыто",
+      "paths": [
+        "meta/toolkit/pieces/0/access",
+        "meta/toolkit/pieces/2/access"
+      ]
+    },
+    {
+      "id": "dab78c758c5f",
+      "text": "среда агента проекта: профиль, очередь задач, планировщик",
+      "paths": [
+        "meta/toolkit/pieces/1/what"
+      ]
+    },
+    {
+      "id": "aa59b3613872",
+      "text": "чужой открытый проект",
+      "paths": [
+        "meta/toolkit/pieces/1/access",
+        "meta/toolkit/pieces/5/access",
+        "meta/toolkit/pieces/6/access"
+      ]
+    },
+    {
+      "id": "a75236dd7147",
+      "text": "Промпты Hermes",
+      "paths": [
+        "meta/toolkit/pieces/2/name"
+      ]
+    },
+    {
+      "id": "e55376b80bba",
+      "text": "боевые профили агентов: SOUL.md и задания планировщика",
+      "paths": [
+        "meta/toolkit/pieces/2/what"
+      ]
+    },
+    {
+      "id": "e6858e45b5f4",
+      "text": "общая база: утверждения, прогоны, измерения, правила",
+      "paths": [
+        "meta/toolkit/pieces/3/what"
+      ]
+    },
+    {
+      "id": "da96938572d0",
+      "text": "по заявке",
+      "paths": [
+        "meta/toolkit/pieces/3/access",
+        "meta/toolkit/pieces/4/access"
+      ]
+    },
+    {
+      "id": "b7379778fe50",
+      "text": "созвон от записи до публикации подтверждённого",
+      "paths": [
+        "meta/toolkit/pieces/4/what"
+      ]
+    },
+    {
+      "id": "da7009df8824",
+      "text": "память агента между сессиями",
+      "paths": [
+        "meta/toolkit/pieces/5/what"
+      ]
+    },
+    {
+      "id": "7d618f157dab",
+      "text": "библиотека статей и полные тексты для агента",
+      "paths": [
+        "meta/toolkit/pieces/6/what"
+      ]
+    }
+  ]
+}

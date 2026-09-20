@@ -1,0 +1,4503 @@
+{
+  "group": "demo-data",
+  "entries": [
+    {
+      "id": "39071cd8b47e",
+      "text": "Публикации Андрея",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "f5c8ea7d3cc5",
+      "text": "Открытые статьи и препринты Андрея Веприкова и соавторов: методы, результаты и ссылки на оригиналы.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "2b06e9794508",
+      "text": "Публикации Андрея/Статьи и препринты",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "1b7678a44ad5",
+      "text": "Учебные примеры сравнения качества, времени, памяти и воспроизводимости.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "1b9fc130da87",
+      "text": "Масштабирование, данные и воспроизводимость обучения.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "0820e40bcd12",
+      "text": "Расписания, адаптивные методы и стабильность начала обучения.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "8d30827849d2",
+      "text": "Другие исследования",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "9034e2feb417",
+      "text": "Публичные статьи по темам демонстрационных вопросов: исходные методы и другие подходы.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "0f27ad2848c0",
+      "text": "Другие исследования/Статьи по теме",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e86ece9c5333",
+      "text": "LoRA и выбор адаптеров",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "f9c35ba29d7a",
+      "text": "WeightLoRA, OPLoRA, LoRSum и LoRA-TSD: какие адаптеры обучать и как обновлять их факторы.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "ba64f1c59d8e",
+      "text": "Оптимизаторы и разогрев",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "19d373281400",
+      "text": "Softsign, LionMuon, DyKAF, предобусловленные нормы и адаптивный warm-up.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "79e1c824fea1",
+      "text": "Безградиентное обучение",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "d223dcceba50",
+      "text": "Координатная память JAGUAR, SignSGD, Muon и обучаемое распределение направлений.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "25752b7372c8",
+      "text": "Марковский шум и распределённое обучение",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "29edb66e5acf",
+      "text": "Зависимые наблюдения, сжатие градиентов и оптимизация на меняющихся графах.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "c0bde29d2552",
+      "text": "Динамика и устойчивость моделей",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "f22c7f20f67b",
+      "text": "Динамика SGD, групповая робастность, скрытая обратная связь и состязательные возмущения.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "7f34263367f6",
+      "text": "Подраздел про расписания шага обучения: разогрев, затухание и то, как они взаимодействуют с горизонтом. Опорный вопрос подраздела — можно ли выбрать расписание один раз и переносить между масштабами.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "0d1b0ce8f0a3",
+      "text": "Длина разогрева",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "03ed42454ea2",
+      "text": "Работы про то, сколько шагов разогрева нужно и от чего это зависит. Читать первым, если вопрос стоит «сколько», а не «зачем».",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "66a3f9b6ff18",
+      "text": "Форма затухания",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "878b6163bc2d",
+      "text": "Работы про вторую половину расписания: когда затухание можно заменить постоянным шагом и что при этом теряется.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "b4acac2f4f73",
+      "text": "Учебные статьи об оценке второго момента и условиях, в которых адаптивность не помогает.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "f7c919a7b6d9",
+      "text": "Учебные статьи о связи размера модели, данных и вычислительного бюджета.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "da54894a15cd",
+      "text": "Клиппинг, ширина окна и точность вычислений.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "2562a2fd80f8",
+      "text": "Стабильность начала обучения",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "e64f35093393",
+      "text": "Второй корпус, порядок данных и отложенная оценка.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "c1ab11932373",
+      "text": "Данные и перенос",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "594dd6ee6a59",
+      "text": "Рестарты, накопление градиента и история неудачных запусков.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "343d0f7da507",
+      "text": "Воспроизводимость",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "ded894d6a997",
+      "text": "Время до качества, разброс по сидам и ограничения памяти.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "83b017734fd0",
+      "text": "Стоимость результата",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "a23916bb99d4",
+      "text": "LoRA дообучает небольшие низкоранговые добавки к замороженным весам модели. Это сокращает число обучаемых параметров и расход памяти при адаптации к новой задаче. AdaLoRA распределяет бюджет обучаемых параметров между матрицами по их важности. Вместо одинакового ранга для всех обновлений метод сокращает менее полезные компоненты.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "36bb1aefabea",
+      "text": "Shampoo предобусловливает обновления с учётом тензорной структуры параметров. Набор матриц по отдельным осям заменяет одну огромную матрицу предобусловливания. Авторы исследуют, почему постепенное увеличение шага в начале обучения помогает SGD и Adam. Разогрев связывается с переходом в области, допускающие больший целевой шаг. SOAP применяет Adam в собственном базисе предобусловливателя Shampoo. Метод позволяет реже обновлять этот базис, продолжая накапливать статистики градиента между обновлениями.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "029ea932a40b",
+      "text": "MeZO дообучает языковую модель только прямыми проходами, оценивая направление обновления по значениям целевой функции. Основная цель — экономия памяти без обратного распространения.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b419c8f5d3aa",
+      "text": "QSGD уменьшает объём передаваемых градиентов с помощью квантования и кодирования. Уровень сжатия задаёт компромисс между стоимостью связи и временем сходимости.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "278f529804fa",
+      "text": "Работа рассматривает модели, чьи предсказания меняют будущие данные. Она вводит понятие устойчивости повторного обучения в среде, которая реагирует на предсказатель.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "57faec4d0373",
+      "text": "Расписания обучения",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/atlas-tree.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7d9d0d53fccb",
+      "text": "Как выбирать разогрев, сравнивать расписания и переносить настройки между размерами модели. Учебный проект содержит завершённые и неудачные проверки, открытые вопросы, измерения и решения с основаниями.",
+      "paths": [
+        "data/atlas-tree.js:2"
+      ]
+    },
+    {
+      "id": "1878461cf9ff",
+      "text": "Тема объединяет работы про длину разогрева: как она взаимодействует с размером батча и с горизонтом обучения. В демонстрационной сборке в теме один проект.",
+      "paths": [
+        "data/atlas-tree.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7cbf6359af4e",
+      "text": "Разогрев и его длина",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2f3d51f8b74e",
+      "text": "направление",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "51f38f4279e0",
+      "text": "тема",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fb51532a1ce6",
+      "text": "слаг",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "77d77553a46c",
+      "text": "род",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8555eb0a73a6",
+      "text": "Warmup Budget: сколько шагов разогрева достаточно",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dcbd40e82b59",
+      "text": "Проект проверяет, можно ли выбрать длину разогрева один раз и переносить её между размерами модели. Сравниваются фиксированный разогрев, разогрев пропорционально горизонту и адаптивный, который останавливается по признаку стабилизации нормы обновления.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "bf617c25638f",
+      "text": "Иванова-Мария",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/project-workspaces.js:2",
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "4ee68cefb98c",
+      "text": "Соколов-Пётр",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "80b5cb61ebfb",
+      "text": "Романов-Дмитрий",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "26de1b4a28bc",
+      "text": "задача",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ec449248b1df",
+      "text": "Длину разогрева подбирают на каждом масштабе заново, и стоимость подбора растёт быстрее самой модели.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9f3f0146d912",
+      "text": "цель",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4ee78c51b0af",
+      "text": "Проверить, переносится ли выбранная длина разогрева на модель вдвое большего размера без потери качества.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1deb6fef96f2",
+      "text": "подход",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5645a90763b3",
+      "text": "Три расписания на четырёх размерах модели, по три сида на точку, одинаковый бюджет вычислений и одинаковый горизонт.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f93e3661ac53",
+      "text": "механизм",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "762fda39f4b0",
+      "text": "Адаптивное расписание останавливает разогрев, когда норма обновления перестаёт расти между окнами.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a80f131d8042",
+      "text": "состояние",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "913386af7462",
+      "text": "Сравнены расписания, окна усреднения, клиппинг и точность вычислений. Проверка на втором учебном корпусе продолжается; остановленный запуск сохранён вместе с причиной.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "15579b9ef938",
+      "text": "открытые вопросы",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "26e5baf39432",
+      "text": "[\"Держится ли перенос при смене оптимизатора.\", \"Что происходит при батче больше восьми тысяч.\"]",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "be7875a85749",
+      "text": "кто ведёт",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a90a2fca07b3",
+      "text": "кто работал",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b2f4e2308e61",
+      "text": "Соколов-Пётр, Романов-Дмитрий",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "40e1674ce53a",
+      "text": "Длина разогрева переносится с 124M на 350M",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3b48f9b142b8",
+      "text": "Длина разогрева, выбранная на 124M, даёт на 350M валидационный лосс не хуже подбора на 350M.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "089042030bab",
+      "text": "основания",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8a8eef483953",
+      "text": "есть измерения",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b4133122f5b5",
+      "text": "критерий опровержения",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ed7c3e951f09",
+      "text": "Разрыв по валидационному лоссу больше 0.01 при трёх сидах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8c64ae99292b",
+      "text": "почему",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0d598d0a8c8f",
+      "text": "Подбор на каждом масштабе стоит дороже самого обучения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3dc62e15017b",
+      "text": "вид утверждения",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "629e12b9dd1f",
+      "text": "Короткий разогрев выходит на то же плато",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "71ebc23bf55d",
+      "text": "Разогрев в 100 шагов даёт то же качество, что 1000 шагов, если горизонт больше 16 тысяч шагов.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "264d6c9fbdf1",
+      "text": "Разрыв больше 0.01 сохраняется при удвоении горизонта.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "aa5382da4d65",
+      "text": "Если так, длинный разогрев можно не платить вовсе.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b02c11eb9692",
+      "text": "Признак остановки не зависит от размера модели",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e9969054f156",
+      "text": "Шаг, на котором норма обновления перестаёт расти, масштабируется как корень из числа параметров.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a4e8811b0208",
+      "text": "оснований пока нет",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "046fb6e6b95d",
+      "text": "Показатель степени выходит за 0.4–0.6 на четырёх размерах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4885ca911136",
+      "text": "Даёт правило остановки без подбора.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d84d2d002d12",
+      "text": "Адаптивный разогрев не хуже подобранного вручную",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b4510b844a05",
+      "text": "Остановка по признаку стабилизации даёт качество в пределах 0.005 от лучшего фиксированного.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9d149332fa3e",
+      "text": "Адаптивный проигрывает лучшему фиксированному больше 0.005.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "99158d3a0de5",
+      "text": "Снимает подбор целиком.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b6a64571c3ea",
+      "text": "При большом батче разогрев обязателен",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "12dd0f7ec005",
+      "text": "Без разогрева обучение с батчем больше четырёх тысяч расходится на первых пятистах шагах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5aa8a2d311f3",
+      "text": "Хотя бы один прогон без разогрева доходит до конца горизонта.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "abb279e63441",
+      "text": "Определяет, где разогрев нельзя убирать.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0c2a3bfbec49",
+      "text": "Перенос держится при смене оптимизатора",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ff2ae3cb602b",
+      "text": "Выбранная длина разогрева переносится с Adam на Muon без потери качества.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2b5b1075c581",
+      "text": "Разрыв больше 0.01 при трёх сидах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "10e58b88c0a2",
+      "text": "Иначе правило придётся переписывать под каждый оптимизатор.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fa9cacaa5d1a",
+      "text": "Клиппинг уменьшает выбросы нормы на старте",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6c72f4886d4d",
+      "text": "При пороге 1.0 число выбросов нормы градиента падает, а разрыв итогового лосса остаётся меньше 0.01.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9cfd5acae851",
+      "text": "Выбросов не меньше либо потеря качества превышает 0.01.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6ad27ad53c1c",
+      "text": "Разделить защиту от выбросов и выбор расписания.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f42ef32c19ce",
+      "text": "Окно в 20 шагов достаточно для остановки разогрева",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "732e1d6aff3e",
+      "text": "Короткое окно должно завершать разогрев раньше без роста доли ложных остановок выше 5%.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "aba7c599ef37",
+      "text": "Доля ложных остановок выше 5% на контрольных траекториях.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9a0ed1e67a7a",
+      "text": "Проверить, можно ли быстрее принимать решение.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "31488b34a992",
+      "text": "Сумма шагов линейного разогрева выражается через его длину",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6b1c8757a3d4",
+      "text": "При eta_k = eta_max * k / T сумма первых T значений равна eta_max * (T + 1) / 2.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "70f0d1ddbf21",
+      "text": "есть выкладка",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2ac95780697b",
+      "text": "Найдётся целое T >= 1, для которого сумма отличается от формулы.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "83fa5d5903c6",
+      "text": "Отделить арифметику расписания от утверждений о качестве обучения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8ed83f020151",
+      "text": "Накопление градиента сохраняет сравнение расписаний",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4b320ee52808",
+      "text": "При одинаковом эффективном батче четыре микробатча дают итоговый лосс в пределах 0.005 от одного большого.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "02800f9d227d",
+      "text": "Разрыв превышает 0.005 при одинаковых данных, порядке и сиде.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a0a5aec1d1eb",
+      "text": "Проверить перенос протокола на устройство с меньшей памятью.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "861d881ad3d2",
+      "text": "Тот же разогрев работает на втором корпусе",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1c8c869e2872",
+      "text": "Настройка с учебного корпуса Aurora переносится на учебный корпус Boreal с разрывом меньше 0.01 относительно местного подбора.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8fbaa9e26241",
+      "text": "Разрыв больше 0.01 в трёх завершённых парах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "cb96a71d0c60",
+      "text": "Проверить зависимость расписания от данных.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8b875240e150",
+      "text": "полнота проверки",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9e4045ef943e",
+      "text": "Готовы 2 из 3 пар. Средний разрыв 0.008 — предварительная оценка; утверждение остаётся на проверке.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ff5edfc55148",
+      "text": "Рестарт из полной контрольной точки сохраняет траекторию",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8ea825314cd2",
+      "text": "Сохранение весов, оптимизатора, генераторов случайности и позиции данных воспроизводит продолжение без рестарта.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ba7646dd79af",
+      "text": "На следующем шаге лосс отличается более чем на 1e-6 при детерминированных операциях.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f2b6555e8f5d",
+      "text": "Сделать продолжение длинного прогона проверяемым.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "cbfcae0b942d",
+      "text": "Шестнадцатибитный формат не требует нового разогрева",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8f8d0b1785f5",
+      "text": "Замена FP32 на BF16 при тех же настройках не увеличивает разрыв итогового лосса выше 0.01.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "61098f13b25e",
+      "text": "Разрыв выше 0.01 либо появляются нечисловые значения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ac14dea0194c",
+      "text": "Отделить экономию памяти от изменения алгоритма.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "03bab1172ffa",
+      "text": "Один сид достаточен для выбора расписания",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4dadb067c408",
+      "text": "Лидер на одном случайном запуске остаётся лидером по среднему пяти запусков.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2223d5400f6b",
+      "text": "Хотя бы в одном сравнимом наборе лидер меняется после пяти запусков.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3a0a5d69603f",
+      "text": "Оценить риск слишком дешёвого предварительного отбора.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4bcd40c8c6e1",
+      "text": "Косинусное затухание ускоряет достижение целевого качества",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "77b58ac00676",
+      "text": "При одном разогреве и лимите времени косинус достигает учебного порога лосса 3.05 раньше постоянного шага.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "81ff0f3f2c75",
+      "text": "Медианное время до порога не меньше либо порог достигают не все запуски.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e90bf1bdf22c",
+      "text": "Сравнивать стоимость достижения качества, а не только число шагов.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "27459cc46a63",
+      "text": "Большой батч укладывается в память после уменьшения микробатча",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3e71418e5161",
+      "text": "Эффективный батч 8192 можно сохранить накоплением градиента при микробатче 128.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9faecb07a802",
+      "text": "Пиковая память остаётся выше доступной либо накопление меняет эффективный батч.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dded4ada02c0",
+      "text": "Сформулировать проверку после остановленного запуска.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a76deeb1a790",
+      "text": "Оценка нормы обновления на разогреве",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6cea2928c30c",
+      "text": "При постоянном градиенте g и eta_k = eta_max * k / T норма обновления равна eta_max * k * ||g|| / T. Это линейный рост по k; для меняющегося градиента вывод не заявляется.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6f797e35ae52",
+      "text": "Граница шага на квадратичной учебной задаче",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0631e958ffc5",
+      "text": "Для градиентного шага на квадратичной функции с максимальным собственным значением L > 0 условие 0 < eta < 2/L ограничивает шаг. Связь размера батча с нужной длиной разогрева из этого условия сама по себе не следует.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2787b73b1a4b",
+      "text": "Сумма линейного расписания",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "60286cfa696c",
+      "text": "При eta_k = eta_max * k / T складываем k от 1 до T: сумма k равна T(T + 1)/2. Поэтому сумма eta_k равна eta_max(T + 1)/2.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1f8f45656742",
+      "text": "предпосылки",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "61ca05771734",
+      "text": "T — целое положительное; индексы от 1 до T.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6b47adad6ae9",
+      "text": "границы",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7aa1d7ebd48b",
+      "text": "Формула суммы шагов не доказывает сходимость обучения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "aff68c971668",
+      "text": "Средний градиент по микробатчам",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "33e173214f3f",
+      "text": "Если микробатчи одинакового размера, среднее их средних градиентов равно среднему градиенту объединённого батча.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5eac2ad315cb",
+      "text": "Веса фиксированы между микробатчами; нет зависимых от батча операций.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6e3a954467e8",
+      "text": "Погрешности арифметики и нелинейный клиппинг требуют отдельной проверки.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d73dfc55db21",
+      "text": "Число обновлений при накоплении",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "88946dc89eab",
+      "text": "Если один шаг оптимизатора выполняется после четырёх микробатчей, 400 микробатчей дают 100 обновлений.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c2564d199a4d",
+      "text": "Каждые четыре микробатча образуют один полный эффективный батч.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d18e50b7d063",
+      "text": "Индекс расписания должен считать обновления оптимизатора, а не микробатчи.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e028f505537b",
+      "text": "Четыре расписания на 124M, три сида",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "66361da74714",
+      "text": "Фиксированный 100 и 1000 шагов, пропорциональный, адаптивный. Горизонт 16 тысяч шагов, батч 512.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f51c9f333d3f",
+      "text": "Перенос длины с 124M на 350M",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f79d0d570b79",
+      "text": "Длина, выбранная на 124M, применяется к 350M без подбора; контроль — подбор на 350M.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ea07335bbe53",
+      "text": "Батчи 1024, 4096, 8192 без разогрева",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "823b4a813d53",
+      "text": "Проверка границы, за которой обучение без разогрева расходится.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "86a7c8f968f7",
+      "text": "Клиппинг 0.5, 1.0 и без клиппинга",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "08f99241421c",
+      "text": "Три порога, по три запуска. Один и тот же учебный корпус, батч 512, горизонт 16000 шагов.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7da2f4bf4453",
+      "text": "измеряем",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "570de1b2e22c",
+      "text": "Число выбросов нормы и итоговый валидационный лосс.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a4733c2f8090",
+      "text": "среда",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "722341ad93ab",
+      "text": "Учебный стенд, вымышленные данные и результаты",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "22b58e2c113d",
+      "text": "ограничение",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "034b8f0e18da",
+      "text": "Пример структуры записи, а не выполненный лабораторный эксперимент",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8e456ba2d975",
+      "text": "Окна 20, 100 и 200 шагов",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a2fa54c76618",
+      "text": "Девять учебных траекторий; одна формула остановки и три ширины окна.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4a824b451e1a",
+      "text": "Шаг остановки и доля преждевременных остановок.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "11a654a625fb",
+      "text": "Один батч и четыре микробатча",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d9f7009e7b79",
+      "text": "Эффективный батч 512: прямой шаг и накопление 4 × 128. Порядок примеров зафиксирован.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d2d1a15f8b56",
+      "text": "Лосс, максимальное расхождение весов, пиковая память.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "691fbb691687",
+      "text": "Перенос на учебный корпус Boreal",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e2368fdb89bb",
+      "text": "Две пары завершены, третья продолжает обучение. Итог по трём парам ещё не сформирован.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "eda118122eb1",
+      "text": "Разрыв с настройкой, подобранной на новом корпусе.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "81b3ffface58",
+      "text": "Рестарт на шаге 4000",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e2f880b568e8",
+      "text": "Сравниваются непрерывный запуск и продолжение из полной контрольной точки.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9ca2587744c2",
+      "text": "Первый шаг после рестарта и итоговый лосс.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "74c250e9a0ee",
+      "text": "Сравнение FP32 и BF16",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "30e604717fb1",
+      "text": "Парные запуски при одинаковых данных, сидах и расписании. Используются учебные измерения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0510e739ddbe",
+      "text": "Лосс, время шага, пиковая память и нечисловые значения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "83530396e63b",
+      "text": "Пять сидов и время до порога",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "cdd10e7927af",
+      "text": "Постоянный шаг и косинусное затухание, по пять запусков, порог лосса 3.05.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e5c895f82c82",
+      "text": "Среднее качество, разброс и медианное время до порога.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b7f0ce8d7ef9",
+      "text": "Попытка батча 8192 без накопления",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a1030e4a1b64",
+      "text": "Запуск остановлен на первом шаге из-за нехватки памяти. Итогового лосса нет.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b5287f254933",
+      "text": "Сохранить причину остановки; повтор с меньшим микробатчем ещё не запускался.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c2fbccc79394",
+      "text": "Разрыв переноса 0.004 при трёх сидах",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1ca8a9253664",
+      "text": "Валидационный лосс 3.012 против 3.008 при подборе на месте; разброс по сидам 0.003.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1ee66e25f595",
+      "text": "Разогрев 100 и 1000 шагов дают одинаковый лосс",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "47394211755e",
+      "text": "3.016 против 3.016 на горизонте 16 тысяч; при горизонте 8 тысяч разрыв 0.011.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f1b2f6fe6ef3",
+      "text": "Батч 4096 без разогрева расходится на шаге 380",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "134955ab9435",
+      "text": "Два сида из трёх расходятся, третий доходит до шага 520 и расходится.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ca0c8e28e89e",
+      "text": "Адаптивная остановка попадает в 0.003 от лучшего фиксированного",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6018a6bee08f",
+      "text": "Остановка на шаге 214 при лучшем фиксированном 100; лосс 3.019 против 3.016.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3e163cdbd0e0",
+      "text": "Клиппинг 1.0 снизил число выбросов с 18 до 2",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e92f86900545",
+      "text": "В трёх учебных запусках медианное число выбросов снизилось с 18 до 2. Лосс 3.018 вместо 3.016.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b92bf5906bbd",
+      "text": "метрики",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5f02c00820b7",
+      "text": "Выбросы: 18 → 2; разрыв лосса: +0.002.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "29a33ded420d",
+      "text": "источник",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "25af8d67456c",
+      "text": "Учебная таблица прогона E-WBD-004",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5e501d0123a3",
+      "text": "Один размер модели; перенос на другие размеры не проверен.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b33102aea91e",
+      "text": "Короткое окно давало 27% ложных остановок",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b5950bc687ef",
+      "text": "Окно 20 шагов завершало разогрев преждевременно в 27% проверок, окно 100 — в 4%.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "56d5799ed556",
+      "text": "Ложные остановки: 27% и 4%; девять траекторий.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "072a24ec293d",
+      "text": "Учебная таблица прогона E-WBD-005",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ccb7b5093761",
+      "text": "Учебное определение ложной остановки фиксировано протоколом.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b442813f48bd",
+      "text": "Накопление 4 × 128 сохранило качество при батче 512",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "819a3d69312f",
+      "text": "Итоговые лоссы 3.017 и 3.019; порядок данных и число обновлений совпадают.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7afa2e10e68e",
+      "text": "Разрыв: 0.002; пиковая память: 38 и 15 условных ГБ.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d85bb8631962",
+      "text": "Учебная таблица прогона E-WBD-006",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "29d5eef3425a",
+      "text": "Результат зависит от того, как нормируется сумма градиентов.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "90596e43326e",
+      "text": "После рестарта разрыв первого шага меньше 1e-7",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "efb43aca001d",
+      "text": "Полная контрольная точка сохранила позицию данных и состояние генераторов случайности.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c223a8c40482",
+      "text": "Максимальный разрыв лосса: 8e-8.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6c4de7d4f9d9",
+      "text": "Учебная таблица прогона E-WBD-008",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b18f6bfab3d5",
+      "text": "Проверен только детерминированный учебный стенд.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ad8125ce3e5d",
+      "text": "BF16 снизил память при разрыве лосса 0.003",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9e76fd78e339",
+      "text": "В парных запусках итоговые лоссы 3.016 и 3.019, нечисловых значений не обнаружено.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7e1e7646b950",
+      "text": "Память: 38 → 22 условных ГБ; лосс: +0.003.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3f8391b5ebbe",
+      "text": "Учебная таблица прогона E-WBD-009",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1fce1e91f0ea",
+      "text": "Это сравнение двух учебных конфигураций, а не универсальная оценка BF16.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "054585d9cc4b",
+      "text": "Лидер по одному сиду проиграл по пяти",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1d3c74b8f42e",
+      "text": "На первом сиде расписание A было лучше на 0.006. По среднему пяти запусков расписание B лучше на 0.004.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "16734e5b1fc9",
+      "text": "Один сид: A − B = −0.006; пять сидов: A − B = +0.004.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2f86e9247460",
+      "text": "Учебная таблица прогона E-WBD-010",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "930fbb22b806",
+      "text": "Разброс должен учитываться до принятия решения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3347ebb14237",
+      "text": "Косинус достиг порога за 42 вместо 51 минуты",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8086b4683385",
+      "text": "Все пять запусков достигли учебного порога 3.05. Медианное время 42 минуты у косинуса и 51 у постоянного шага.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0c09030d0472",
+      "text": "Время: 42 и 51 условная минута; пять запусков.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2678e3324564",
+      "text": "Время иллюстративное; сравнение допустимо только на одинаковом стенде.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "47fb3a89eb3f",
+      "text": "Для прямого батча не хватило 48 условных ГБ",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1aa634f3c654",
+      "text": "Пик перед остановкой достиг 49.6 условных ГБ. Запуск не сделал полного шага и не даёт оценки качества.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "efb0e5d1ce7b",
+      "text": "Доступно: 48; запрос: 49.6 условных ГБ; завершённых шагов: 0.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "32bb85d4ccb2",
+      "text": "Учебная таблица прогона E-WBD-011",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d3496e8a3e9d",
+      "text": "Нехватка памяти не опровергает возможность накопления градиента.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3b33f89c886a",
+      "text": "На двух завершённых парах разрыв переноса 0.008",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "91dbb7a1c295",
+      "text": "Пары дали разрывы 0.007 и 0.009. Третий запуск ещё идёт, итог по трём сидам не записан.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "05e8a0cdb459",
+      "text": "Предварительное среднее: 0.008; завершено 2 из 3 пар.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "27416ab70cda",
+      "text": "Учебная таблица прогона E-WBD-007",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e6d52d130d1a",
+      "text": "Предварительная оценка не закрывает утверждение о трёх парах.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6b6b6e7b8c03",
+      "text": "Окно 200 уменьшило ложные остановки до 2%",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c7cbdf18691d",
+      "text": "По сравнению с окном 100 шагов ошибка снизилась с 4% до 2%, но разогрев заканчивался позже.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a827cd877c7b",
+      "text": "Ложные остановки: 2%; задержка: 86 учебных шагов.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "37240ebd1fb6",
+      "text": "Меньше ложных остановок не означает автоматически лучшее итоговое качество.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c8d3e394505f",
+      "text": "Длину разогрева подбираем на меньшем размере и переносим",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e7119f4788ee",
+      "text": "Подбор на 350M и выше не проводим, пока разрыв переноса держится в пределах 0.01. Основание — R-WBD-001.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0ab19a72d364",
+      "text": "Оставить окно 100 шагов",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3986b748b429",
+      "text": "Окно 20 слишком часто останавливает разогрев раньше времени. Окно 200 снижает ошибку, но задерживает остановку.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "435e9f7ee805",
+      "text": "основание",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5f9c34effb90",
+      "text": "Сравнивать финал минимум по пяти сидам",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "786d4c9a53fa",
+      "text": "Победитель одного запуска менялся после усреднения пяти. Для предварительного отбора один сид допустим, для итогового вывода — нет.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "595727700cfe",
+      "text": "Сохранять полный контекст рестарта",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b232f171ab02",
+      "text": "В контрольную точку включаются оптимизатор, генераторы случайности и положение в данных.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f90c3d74cae3",
+      "text": "Повторить большой батч с накоплением",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9bf76f8f6149",
+      "text": "После нехватки памяти снизить микробатч, сохранив эффективный батч 8192. Это план следующей проверки.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ff2e80c1faf0",
+      "text": "Не закрывать перенос по двум парам",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c86bf4439990",
+      "text": "Дождаться третьей пары на корпусе Boreal; промежуточную оценку оставить с указанием 2 из 3.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c7bfe9acc5cf",
+      "text": "Начата проверка на втором корпусе",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c0f76be0dd41",
+      "text": "Запущены три пары с одинаковым бюджетом. Сравнение по двум парам пока предварительное.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c449fdd949ef",
+      "text": "вид",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7d3955ff90ba",
+      "text": "Учебное операционное наблюдение",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "203ed4dc4335",
+      "text": "Большой батч остановлен по памяти",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "36775baf240f",
+      "text": "Сохранены конфигурация и момент отказа. Ошибка ресурса не объявлена ухудшением метода.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e5e3bd4814ed",
+      "text": "Проверен путь восстановления",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1f2cc59dcaef",
+      "text": "Непрерывный запуск сопоставлен с рестартом из полной контрольной точки.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4bbdf34cc38b",
+      "text": "Исправлен счётчик расписания",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4215df7a10cd",
+      "text": "Учебный конфиг теперь увеличивает индекс после шага оптимизатора, а не после каждого микробатча.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a41329a77bd5",
+      "text": "Подготовлен разбор отрицательного результата",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "571f09b851d8",
+      "text": "Короткое окно осталось в истории вместе с измерениями и основанием отказа.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0842700ee357",
+      "text": "Учебный корпус Aurora",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "966bb9862112",
+      "text": "Фиксированные обучающая и валидационная выборки для сравнения расписаний.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a88912e2f8a7",
+      "text": "доступ",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e38285e07f4a",
+      "text": "Вымышленный ресурс демонстрации; внешнего адреса нет",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "20fcbcf5a25b",
+      "text": "Учебный корпус Boreal",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d0e961a695e6",
+      "text": "Второй набор для проверки переноса, не использованный при выборе исходного разогрева.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "be8a8eac3c06",
+      "text": "Учебный стенд на 48 ГБ",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3a8a44b82a61",
+      "text": "Пример ограничения по памяти для прямого батча и накопления градиента.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2b496fddb12f",
+      "text": "Таблица сравнения пяти сидов",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8e6a26a48f84",
+      "text": "Сводит итоговый лосс, время до порога и разброс по сопоставимым запускам.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f43911be0855",
+      "text": "Протокол сравнения расписаний",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "aadb4af6a1e4",
+      "text": "Учебный источник: фиксирует данные, бюджет, расписания и способ сравнения.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fb9d67717add",
+      "text": "Протокол проверки рестарта",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d9718f244ef1",
+      "text": "Учебный источник: описывает контрольную точку и допустимое расхождение следующего шага.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e46ce6a5695b",
+      "text": "Разбор короткого окна",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "987f2648c06b",
+      "text": "Учебный источник: содержит таблицу ложных остановок и основание выбора окна 100.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "215b55323afd",
+      "text": "окно стабилизации",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c00616b5c44e",
+      "text": "Отрезок из ста шагов, по которому считается норма обновления при проверке признака остановки разогрева. Ширина окна фиксирована для всех прогонов проекта: иначе признак остановки становится несравнимым между размерами модели.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "eac494baf278",
+      "text": "перенос длины",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c568baff4b85",
+      "text": "Утверждение, что длина разогрева, выбранная на меньшем размере модели, даёт на большем размере качество не хуже, чем подбор на нём же. Считается опровергнутым, если разрыв больше 0.01 по валидационному лоссу.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4dfe99167ab5",
+      "text": "бюджет разогрева",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b6f5c12b59ba",
+      "text": "Доля шагов обучения, отданная разогреву. В проекте это единственный параметр расписания, который меняется; всё остальное заморожено протоколом.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1b9845d18b52",
+      "text": "эффективный батч",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c7b7cae98530",
+      "text": "Число примеров между двумя обновлениями оптимизатора; при накоплении складывается из микробатчей.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2c58efabcd5f",
+      "text": "микробатч",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4f3ebfa4bfbf",
+      "text": "Порция примеров одного прохода вперёд и назад до накопления градиента.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "00f578507e27",
+      "text": "ложная остановка",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dc162cdce5b6",
+      "text": "Преждевременное завершение разогрева по учебному контрольному критерию.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "72b7f6ac09ee",
+      "text": "время до порога",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "58c1f39865b5",
+      "text": "Время до первого достижения заданного валидационного качества.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "96e358bc8eac",
+      "text": "полная контрольная точка",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "71d52c6ff0a9",
+      "text": "Веса, оптимизатор, генераторы случайности и позиция в последовательности данных.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "51679b285fc6",
+      "text": "парный запуск",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b42c9a15f818",
+      "text": "Запуск, сопоставленный с контролем по данным, сиду и вычислительному бюджету.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f74bfd11c756",
+      "text": "предварительное измерение",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "537592150f1d",
+      "text": "Записанный результат незавершённого набора сравнений с явным числом готовых пар.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b1d992d94902",
+      "text": "клиппинг нормы",
+      "paths": [
+        "data/base-snapshot.js:2",
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "932a930ea6ed",
+      "text": "Ограничение нормы градиента заданным порогом до шага оптимизатора.",
+      "paths": [
+        "data/base-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0fe8832008c6",
+      "text": "Препринт · arXiv",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1f7f584b7f9b",
+      "text": "LoRA-TSD переносит спектральный шаг Muon в касательное пространство матриц фиксированного ранга. Обновление возвращается в факторы LoRA без работы с полной матрицей весов.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "24718bb075e6",
+      "text": "LoRA-TSD строит шаг в касательном пространстве матрицы обновления LoRA и выбирает направление спуска в спектральной норме.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dc4dba716e84",
+      "text": "Аннотация arXiv",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e6604887128b",
+      "text": "Специальная ретракция возвращает касательный шаг в факторы LoRA, не требуя дорогих операций с полной матрицей весов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "efe1a1f5d45d",
+      "text": "Для варианта в норме Фробениуса авторы восстанавливают LoRA-Pro. Сходимость LoRA-Pro и LoRA-TSD анализируется через риманов градиент.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fbeb71a10e49",
+      "text": "На шести задачах здравого смысла и логического вывода с Llama-3.2-1B, Llama-3.1-8B и Qwen3-32B авторы сообщают преимущество LoRA-TSD над сравниваемыми оптимизаторами LoRA.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b78a794bacbd",
+      "text": "Softsign заменяет жёсткий знак градиента плавной функцией. Температура регулирует, насколько шаг сохраняет величину градиента; для матричных параметров предложен SoftMuon.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ebb81a9dcf10",
+      "text": "SoftSignum сглаживает знак градиента: температура управляет переходом от почти знакового шага к шагу, чувствительному к величине градиента.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "404ba633f7db",
+      "text": "Квантильная адаптация температуры подстраивает Softsign под распределение величин градиента и неоднородность параметров.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "20421a9539f1",
+      "text": "SoftMuon переносит идею гладкого знака на матричные обновления Muon.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4113988b7c80",
+      "text": "Авторы связывают сглаженные направления с сильно выпуклой регуляризацией и доказывают сходимость в невыпуклой стохастической постановке.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dfedd4fd471c",
+      "text": "В приведённых экспериментах, включая обучение языковых моделей, Softsign улучшает результаты сравниваемых знаковых оптимизаторов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5bb4c845d25c",
+      "text": "Работа исследует стохастическую динамику SGD с конечным шагом. Дискретное обучение моделируется через флуктуации ландшафта функции потерь, а не только непрерывное броуновское приближение.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "79d97e473d2c",
+      "text": "Дискретное уравнение Фоккера — Планка для SGD отличается от непрерывного приближения Ланжевена в членах второго порядка по шагу обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "06ccd214aa54",
+      "text": "Разложение по собственным направлениям около критической точки описывает, как кривизна влияет на флуктуации параметров SGD.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "bd6526fa3ed3",
+      "text": "В плоских направлениях рассмотренная модель предсказывает рост дисперсии с коэффициентом диффузии, зависящим от шага обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b7520efc4900",
+      "text": "Предсказания модели сопоставлены с экспериментами в компьютерном зрении и обработке языка; это проверка исследованных режимов SGD.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b5ea9fd49563",
+      "text": "LionMuon чередует спектральные шаги Muon и знаковые шаги Lion. Один общий буфер импульса позволяет сочетать направления с разной вычислительной стоимостью.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dcac0fe030e8",
+      "text": "LionMuon периодически чередует Lion и Muon, используя общий буфер импульса вместо двух независимых состояний оптимизаторов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ef4218b5f89f",
+      "text": "Период чередования регулирует долю дорогих спектральных шагов; SignMuon использует знаковое направление с одной экспоненциальной средней.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "57c545762c59",
+      "text": "Оценка сходимости учитывает усреднённые по периоду характеристики гладкости и шума, в том числе шум с тяжёлыми хвостами.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e5e39aa59021",
+      "text": "В экспериментах с языковыми моделями авторы показывают режимы LionMuon с меньшей функцией потерь и меньшими затратами вычислений по сравнению с выбранными базовыми методами.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ffbc601aafdc",
+      "text": "Проксимальное обновление LoRA решается чередующимися шагами по факторам. Метод LoRSum связывает такую итерацию подпространства с диагональным дробным K-FAC и низкоранговым импульсом.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "773727c92f35",
+      "text": "Чередующееся решение проксимальной задачи LoRA интерпретируется как неявная блочная степенная итерация и обходится без полного SVD.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "07f809cf7557",
+      "text": "Диагональные дробные предобуславливатели K-FAC задают геометрию шага при сохранении низкорангового представления обновления.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b344d325c8b1",
+      "text": "LoRSum хранит импульс в низкоранговой форме, чтобы не возвращать полное матричное состояние при дообучении.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c9e6b94da0d6",
+      "text": "В работе сравниваются качество и стоимость дообучения на CIFAR-100, GLUE, SQuAD v2 и WikiText-103.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6e567a9d4f08",
+      "text": "Направления для безградиентного дообучения LLM выбирает обучаемая политика. Она меняет распределение возмущений, по которым оценивается направление улучшения функции потерь.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5c63992352c2",
+      "text": "Вместо фиксированного случайного распределения направлений используется обучаемая политика выбора возмущений параметров.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b66656583f4e",
+      "text": "Оценка направления обновления строится по значениям функции потерь и не требует обратного распространения через языковую модель.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7d84e3b8af66",
+      "text": "Анализ связывает адаптацию распределения направлений со снижением дисперсии и ослаблением явной зависимости оценок от размерности.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "78f5e783ba98",
+      "text": "Преимущества обучаемых направлений проверены в приведённых задачах безградиентного дообучения языковых моделей.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "54483e9b0544",
+      "text": "Работа выводит разогрев и последующее снижение шага из модели меняющейся локальной кривизны. Адаптивное расписание предназначено для оптимизаторов с ограничением нормы направления.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2fe5da6de385",
+      "text": "В принятой модели обобщённой гладкости локальная кривизна уменьшается вместе с разрывом до оптимума; это даёт основание для роста шага в начале обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "58af8bb574c2",
+      "text": "Адаптивное расписание сначала увеличивает шаг, затем уменьшает его. Продолжительность разогрева определяется самим правилом обновления.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3303c3dab7b0",
+      "text": "Расписание разогрева использует стандартные параметры оптимизатора и не требует отдельного перебора длительности warm-up.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "437001eb861e",
+      "text": "В экспериментах с моделями Llama авторы получают качество на уровне лучших вручную подобранных расписаний или выше при исследованных настройках.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c5cc710ea073",
+      "text": "Марковское сжатие использует историю предыдущих шагов при передаче градиентов. Работа рассматривает QSGD и его вариант с импульсом с точки зрения стоимости коммуникации и сходимости.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "07da68dffa63",
+      "text": "Марковский компрессор учитывает предыдущие итерации, поэтому ошибки сжатия не моделируются как независимые на каждом шаге.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4677fc0a9f8a",
+      "text": "Предложенный подход применяется к квантованному SGD и его варианту с импульсом.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "01413fc5b7c8",
+      "text": "Получены оценки сходимости для невыпуклых, сильно выпуклых задач и функций с условием Поляка — Лоясиевича.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6a030c1829b4",
+      "text": "Эксперименты с ResNet-18 на CIFAR-10 и DeBERTa-v3 на GLUE проверяют, как использование истории сжатия влияет на обучение.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "00e88de49257",
+      "text": "DyKAF динамически приближает матрицу Фишера кронекеровскими факторами. Обновление факторов опирается на интеграторы с расщеплением проектора и используется для предобуславливания градиента.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b4a6341d18c7",
+      "text": "DyKAF представляет приближение матрицы Фишера через кронекеровские факторы и обновляет их по мере обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f8f5fe63df19",
+      "text": "Для динамической аппроксимации используются интеграторы с расщеплением проектора, связывающие обновление факторов с геометрией матричного многообразия.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "98f39e60a18c",
+      "text": "Авторы сравнивают точность кронекеровской аппроксимации DyKAF с альтернативами на исследованных задачах.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "626f8aa79355",
+      "text": "Предобуславливатель DyKAF проверен в предобучении и дообучении языковых моделей; результаты относятся к приведённым в работе конфигурациям.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d83570d33ac3",
+      "text": "Предобусловленные нормы объединяют выбор геометрии спуска и предобуславливателя. В этой схеме сопоставляются SGD, Adam, Muon и матричные методы второго порядка.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "11ac4eed386a",
+      "text": "Направление наискорейшего спуска определяется одновременно нормой и предобуславливателем; выбор этих двух частей объединяет несколько семейств оптимизаторов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "39e59ee4e69e",
+      "text": "В общей схеме рассматриваются условия аффинной и масштабной инвариантности методов оптимизации.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e2b4f7e47431",
+      "text": "SGD, Adam, Muon, KL-Shampoo, SOAP и SPlus интерпретируются как частные варианты выбора нормы и предобуславливания.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d0d7231b7463",
+      "text": "MuAdam и MuAdam-SANIA сочетают спектральную геометрию с адаптивным масштабированием Adam; работа проверяет эти варианты экспериментально.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "349714682f5c",
+      "text": "OPT 2025 · воркшоп",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8c99a5615a7f",
+      "text": "OPLoRA обновляет факторы адаптера чередующимся решением задач наименьших квадратов. Это позволяет приближать усечённое SVD без построения полной матрицы обновления.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7b3786743d60",
+      "text": "OPLoRA использует чередующиеся обновления факторов LoRA вместо их независимого градиентного обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c6b026769d3b",
+      "text": "Один или два шага чередующихся наименьших квадратов приближают обновление с усечённым SVD, избегая явного формирования полной матрицы.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5b59bf41aaa8",
+      "text": "Низкоранговый импульс сохраняет матричное направление в компактных факторах; рассматривается также масштабирование с помощью K-FAC.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "78e4ee6a393a",
+      "text": "OPLoRA проверен на линейных задачах, MNIST, CIFAR-100 и дообучении RoBERTa на MNLI.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "44de3bb3b41d",
+      "text": "ALSO адаптирует распределённо-робастную оптимизацию к обучению глубоких моделей. Группы данных получают меняющиеся веса, чтобы учитывать неоднородность ошибок.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "07897a1994ad",
+      "text": "Групповая распределённо-робастная постановка оптимизирует обучение с учётом групп данных, на которых модель ошибается сильнее.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e7ee55c364d1",
+      "text": "ALSO адаптивно обновляет веса групп и параметры модели на основе стохастических градиентов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1b81c48155a6",
+      "text": "Для предложенных алгоритмов получены гарантии сходимости в невыпуклой постановке.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c41f0558cc4e",
+      "text": "Работа проверяет подход на задачах от табличных данных до раздельного обучения Split Learning.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "36ddad86e626",
+      "text": "Координатная память JAGUAR используется в безградиентных вариантах SignSGD и Muon. Цель — обновлять параметры по значениям функции, сохраняя информацию о ранее оценённых координатах.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "61c40572e1b6",
+      "text": "Координатный импульс JAGUAR переиспользует информацию предыдущих оценок вместо пересчёта всех координат на каждом шаге.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a637052b67c5",
+      "text": "Безградиентная оценка с координатной памятью применяется к знаковому обновлению SignSGD и матричному обновлению Muon.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5cc2990d1c41",
+      "text": "Анализ безградиентных вариантов рассматривает сходимость при шумных вычислениях функции с постоянным числом запросов оракула на итерацию.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "61c75817be8c",
+      "text": "Методы проверены в дообучении языковых моделей с ограничениями по памяти; используются вычисления функции без хранения графа обратного распространения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fc80670163b9",
+      "text": "WeightLoRA выбирает, какие адаптеры LoRA действительно нужны для задачи. Обучаемые веса позволяют оставить значимые адаптеры и сократить число обучаемых параметров.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "76aa88296f81",
+      "text": "WeightLoRA назначает адаптерам обучаемые веса и использует их, чтобы выбирать необходимые для задачи адаптеры LoRA.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e7f923a2d077",
+      "text": "Аннотация ACL 2026",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "139730f91f4b",
+      "text": "Отбор адаптеров уменьшает число обучаемых параметров по сравнению с размещением LoRA во всех выбранных заранее слоях.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2f9f83410a9a",
+      "text": "WeightLoRA+ развивает процедуру отбора адаптеров, сохраняя задачу совместного выбора их вклада и дообучения модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3a58f5132326",
+      "text": "Авторы сравнивают число параметров и качество на задачах понимания и генерации текста с DeBERTa, BART, Llama и Qwen. Сокращение адаптеров проверяется вместе с качеством ответа.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "28621382ee40",
+      "text": "JAGUAR сохраняет координатную информацию для безградиентной оптимизации. Память позволяет строить обновления условного градиента и градиентного спуска с малым числом новых вычислений функции.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "05cbf7ecf8c1",
+      "text": "JAGUAR переиспользует ранее полученные оценки координат, снижая число новых вызовов функции на итерацию до постоянного.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0cd9ef3abab9",
+      "text": "Память координат встраивается в безградиентные варианты Frank–Wolfe и градиентного спуска.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b9e6cb638938",
+      "text": "Анализ охватывает выпуклые и невыпуклые задачи, а также условие Поляка — Лоясиевича.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0dde598271e2",
+      "text": "Рассматриваются детерминированные и стохастические шумные оракулы; для разных режимов выведены соответствующие оценки сложности.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e761a09869af",
+      "text": "Работа изучает оптимизацию с зависимыми марковскими наблюдениями в неевклидовой геометрии. Зеркальный спуск применяется к выпуклой минимизации и вариационным неравенствам.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a2833b029184",
+      "text": "Четыре варианта зеркального спуска приспособлены к стохастическим наблюдениям, связанным марковской цепью.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "cd09559d7d55",
+      "text": "Оценки сходимости учитывают зависимость наблюдений и неевклидову геометрию вместо предположения о независимом евклидовом шуме.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1e19f89859b3",
+      "text": "Рассмотрены гладкая выпуклая минимизация и вариационные неравенства с липшицевым монотонным оператором.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5f9573389911",
+      "text": "Нижние оценки сложности сопоставляются с полученными верхними оценками для обоснования оптимальности в рассмотренных постановках.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "33cb15657e59",
+      "text": "Модель скрытой обратной связи описывает цикл: данные обучают модель, её решения меняют среду, а новая среда порождает следующие данные. Исследуются долгосрочные последствия повторного обучения.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c87abe60aed0",
+      "text": "Скрытая обратная связь возникает, когда состояние среды причинно зависит от предсказаний обученной модели и тем самым меняет распределение будущих данных.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "86d7d9f8c477",
+      "text": "Динамическая модель повторного обучения задаёт достаточные условия сходимости и предельные множества распределений.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d3a1d451c10e",
+      "text": "Положительная и отрицательная обратная связь рассмотрены как разные режимы эволюции распределения данных.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b463bd842ce2",
+      "text": "Предсказания модели проверены на двух синтетических наборах данных; экспериментальная часть не является проверкой промышленной рекомендательной системы.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2313744d57ea",
+      "text": "Децентрализованная выпуклая оптимизация изучается на графе, чьи связи меняются со временем. Для негладких локальных функций используются стохастические безградиентные оценки и случайное сглаживание.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "11a3ec1df157",
+      "text": "Каждый агент хранит свою локальную функцию и обменивается информацией только с соседями по меняющемуся графу связи.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c9c22facec42",
+      "text": "Случайное сглаживание в евклидовой геометрии переводит негладкую задачу в форму, пригодную для безградиентных обновлений.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "54c1e674dbeb",
+      "text": "Получены оценки сходимости для стохастической децентрализованной выпуклой оптимизации с меняющейся связностью.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "954a8ca4eefd",
+      "text": "Численные эксперименты сопоставляют поведение предложенных методов с предсказаниями теоретического анализа.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4e794c936a78",
+      "text": "Работа связывает устойчивость к состязательным возмущениям с шириной локального минимума. Авторы исследуют, как настройки обучения помогают находить такие решения без изменения архитектуры модели.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "096424c06935",
+      "text": "Предложено подбирать параметры обучения так, чтобы направлять оптимизацию к широким локальным минимумам.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "962c316e36e9",
+      "text": "Аннотация и введение, стр. 1–2",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4c880e5da737",
+      "text": "Подход к повышению устойчивости использует настройки обучения без изменения архитектуры, функции потерь или добавления состязательных примеров в обучающую выборку.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2c1b51f5a5da",
+      "text": "В работе исследуется устойчивость к атаке FGSM на MNIST; этот результат относится к конкретной атаке и экспериментальной постановке.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8ca77dd7e620",
+      "text": "Искусственный интеллект и принятие решений · 2025",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7b25bed8def1",
+      "text": "Работа изучает, когда изменение пространства признаков сохраняет прогноз долгосрочного поведения системы с повторным обучением. Это позволяет исследовать сложную систему через более простую модель.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0a0e07d81dc3",
+      "text": "При многократном машинном обучении следующие обучающие данные зависят от поведения пользователей и уже работающей модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "301ba5e5effe",
+      "text": "Аннотация издателя",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c71867814c0d",
+      "text": "Исследованы условия переноса прогноза асимптотического поведения между исходным и преобразованным пространствами признаков.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1a96166bbd78",
+      "text": "При выполнении этих условий системы меньшей размерности могут служить моделями для изучения предельного поведения более сложных систем.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f562394e2146",
+      "text": "Доклады РАН / Doklady Mathematics · 2024",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "63d33c72186f",
+      "text": "ZO-MARINA переносит распределённую оптимизацию MARINA в постановку чёрного ящика. Устройства используют шумные значения локальных функций и обмениваются разреженными оценками обновлений.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0e43d1c645b3",
+      "text": "ZO-MARINA заменяет точные градиенты оценками по значениям функции, а обычный компрессор — разностями оценок на выбранных координатах.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0b8d65f6bbb2",
+      "text": "Безградиентное разреживание позволяет каждому устройству выполнять постоянное число вызовов оракула на итерацию.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b5ea6c19bf61",
+      "text": "Анализ сходимости охватывает невыпуклые функции и условие Поляка — Лоясиевича; полученные оценки сопоставляются с методами первого порядка.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a8dcc469da0e",
+      "text": "Вычислительные эксперименты посвящены подбору гиперпараметров ResNet-18 на CIFAR-10 и SVM на наборах mushroom и MNIST-784.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e5822579b8d5",
+      "text": "Аннотация издателя; §1.2 Main Contributions",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "868467fd2955",
+      "text": "Доклады РАН / Doklady Mathematics · 2025",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "76c0cb390d81",
+      "text": "Исследуются способы семплирования полуортогональных матриц для безградиентного Muon. Работа сравнивает, как выбор матричных направлений влияет на стоимость и качество дообучения LLM.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2f200d5da331",
+      "text": "В безградиентной постановке Muon использует оценки по прямым проходам модели, избегая обратного распространения и хранения его графа.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "980336d964ab",
+      "text": "Разные способы семплирования полуортогональных направлений учитывают матричную структуру параметров при построении обновления.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "136bad49a918",
+      "text": "В работе сравниваются стратегии семплирования по качеству дообучения языковых моделей и вычислительной эффективности.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0eb3b308a3c9",
+      "text": "LoRA дообучает небольшие низкоранговые добавки к замороженным весам модели. Это сокращает число обучаемых параметров и расход памяти при адаптации к новой задаче.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f9d62b4d79da",
+      "text": "LoRA замораживает предобученные веса и добавляет обучаемые низкоранговые матрицы в слои Transformer.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6dee945d946a",
+      "text": "В экспериментах с RoBERTa, DeBERTa, GPT-2 и GPT-3 авторы получают качество на уровне полного дообучения или выше при меньшем числе обучаемых параметров.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "584239e1f098",
+      "text": "Низкоранговую добавку можно объединить с исходными весами, поэтому подход не требует дополнительных слоёв при инференсе.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f080c243f128",
+      "text": "AdaLoRA распределяет бюджет обучаемых параметров между матрицами по их важности. Вместо одинакового ранга для всех обновлений метод сокращает менее полезные компоненты.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "eb1bf840e20e",
+      "text": "AdaLoRA адаптивно распределяет бюджет параметров между матрицами весов по оценке важности обновлений.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a8f8ddf4e224",
+      "text": "Обновления параметризованы в форме сингулярного разложения: неважные сингулярные значения отсекаются без дорогого точного SVD.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "10bc01066a11",
+      "text": "На задачах обработки языка, ответов на вопросы и генерации авторы сообщают улучшения относительно базовых методов, особенно при малом бюджете параметров.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "75ffcd13dd34",
+      "text": "MeZO реализует безградиентный SGD с изменением параметров на месте и оценивает обновление через прямые проходы модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7cdb5e53f56b",
+      "text": "Авторы проверяют метод на классификации, выборе ответа и генерации. В их реализации расход памяти при дообучении сопоставим с инференсом.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "bb614cbf8ef6",
+      "text": "Метод совместим с полным дообучением, LoRA и prefix tuning и допускает недифференцируемые цели, например accuracy или F1.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "990f35fe95d3",
+      "text": "Shampoo предобусловливает обновления с учётом тензорной структуры параметров. Набор матриц по отдельным осям заменяет одну огромную матрицу предобусловливания.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a32a1cb3b4f1",
+      "text": "Shampoo хранит отдельную матрицу предобусловливания для каждого измерения тензора параметров, сворачивая градиенты по остальным измерениям.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "19a404438d63",
+      "text": "Для стохастической выпуклой оптимизации авторы доказывают гарантии сходимости с помощью матричных следовых неравенств.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b1d88fd2385d",
+      "text": "В экспериментах авторы наблюдают более быструю сходимость, чем у сравниваемых оптимизаторов, при сопоставимом времени шага. Это результат приведённых задач, а не гарантия для любой модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "953819c69c70",
+      "text": "QSGD сжимает градиентные обновления на каждом узле через квантование и кодирование перед передачей другим участникам обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e75b27c12502",
+      "text": "При стандартных предположениях семейство схем сохраняет гарантии сходимости и позволяет управлять компромиссом между объёмом сообщений и числом итераций.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "06fe455723d6",
+      "text": "Авторы проверяют квантование на классификации изображений и распознавании речи и сообщают сокращение затрат на связь и полного времени обучения в этих экспериментах.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3992ff01c674",
+      "text": "Предсказание является перформативным, если решения, принятые на его основе, влияют на предсказываемый результат и распределение будущих данных.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4ebf7bcef1ab",
+      "text": "Перформативная устойчивость описывает равновесие: модель оптимальна для распределения, которое возникает в ответ на применение этой модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c510c854c0fb",
+      "text": "Авторы изучают условия, при которых повторное переобучение сходится к устойчивой точке с почти минимальным риском, и связывают подход со стратегической классификацией.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ad91878c660d",
+      "text": "Авторы исследуют, почему постепенное увеличение шага в начале обучения помогает SGD и Adam. Разогрев связывается с переходом в области, допускающие больший целевой шаг.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "bb5b40735640",
+      "text": "В систематических экспериментах с SGD и Adam основная польза разогрева связана с возможностью использовать больший целевой шаг обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0f8ee884b6b9",
+      "text": "Поведение в период разогрева зависит от инициализации и параметризации: резкость ландшафта может сначала расти либо снижаться.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c9b5d48312f5",
+      "text": "Авторы предлагают выбирать начальный шаг с учётом механизма loss catapult и рассматривают инициализацию дисперсии Adam, дающую сходные с разогревом преимущества.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9fe4f94bf44d",
+      "text": "SOAP применяет Adam в собственном базисе предобусловливателя Shampoo. Метод позволяет реже обновлять этот базис, продолжая накапливать статистики градиента между обновлениями.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d39b6fd888ad",
+      "text": "SOAP выполняет шаги Adam в собственном базисе предобусловливателя, связывая покоординатную адаптацию с геометрией Shampoo.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d39b2c67b468",
+      "text": "Статистика второго момента обновляется на каждом шаге в текущем базисе. Это смягчает ухудшение качества при редком пересчёте собственного разложения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5f22413354e7",
+      "text": "На предобучении языковых моделей с 360 и 660 миллионами параметров авторы сообщают выигрыш по итерациям и времени относительно AdamW и Shampoo в режиме большого батча.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f8487332f997",
+      "text": "Учебная статья. Статья разбирает разогрев как долю бюджета обучения, а не как отдельное число шагов. Основной вывод: доля, а не абсолютная длина, переносится между масштабами.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6ea651e0a728",
+      "text": "Доля разогрева 0.6% от горизонта даёт лучший лосс на трёх размерах модели.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "63815a0f18ca",
+      "text": "Нижняя граница на длину разогрева растёт как корень из размера батча.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0dd5e4c0310e",
+      "text": "Признак остановки разогрева считается по норме обновления в окне ста шагов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "30ddb75c41a9",
+      "text": "Учебная статья. Работа проверяет объяснение разогрева через кривизну и показывает, что оно не воспроизводится: разогрев помогает и там, где кривизна на старте мала.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4cd33777ac89",
+      "text": "Разогрев помогает и при малой кривизне на старте обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7bdff8e32c10",
+      "text": "Кривизна на старте измеряется как максимальное собственное значение гессиана на первых десяти шагах.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "e79658a8007d",
+      "text": "Учебная статья. Статья сравнивает постоянный шаг и косинусное затухание при равном бюджете и показывает, где разрыв закрывается удлинением горизонта.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "bbdb86621230",
+      "text": "Постоянный шаг проигрывает косинусу 0.02 по лоссу при равном бюджете.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "129b65712a98",
+      "text": "Разрыв закрывается при удвоении горизонта.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b48cd16febac",
+      "text": "Учебная статья. Заметка о том, что разброс по сидам сопоставим с разрывом между расписаниями, и о том, сколько сидов нужно, чтобы разрыв стал видимым.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d2e23bb53023",
+      "text": "Разброс по трём сидам составляет 0.003 по валидационному лоссу.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "2e2c04cb2cc9",
+      "text": "Учебная статья. Работа показывает, где оценка второго момента перестаёт отражать масштаб градиента, и предлагает диагностику этого случая.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7266bf075bc2",
+      "text": "При смене распределения данных оценка второго момента отстаёт на время своего окна усреднения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "0c5dcec705a9",
+      "text": "Учебная статья. Статья собирает случаи, где адаптивность не даёт выигрыша, и связывает их с однородностью масштабов градиента по слоям.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "f0b16ef5d748",
+      "text": "При однородных масштабах градиента адаптивность не даёт выигрыша.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "64f55a8be835",
+      "text": "Однородность масштабов проверяется отношением максимальной и медианной нормы по слоям.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ad82a2b2f3ac",
+      "text": "Учебная статья. Работа перепроверяет соотношение размера модели и объёма данных при фиксированном бюджете и уточняет показатель на длинных горизонтах.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "94900ffcca72",
+      "text": "На длинных горизонтах оптимальное отношение данных к параметрам выше классической оценки.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "8878f14f7676",
+      "text": "Показатель степени в законе масштабирования устойчив к смене расписания шага.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4c9704fa784c",
+      "text": "Учебная статья. Статья предлагает считать закон масштабирования по коротким прогонам и показывает, где такая оценка ломается.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9365ebc51bea",
+      "text": "Закон масштабирования оценивается по прогонам длиной в десятую часть горизонта.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "210a3adaf810",
+      "text": "Оценка по коротким прогонам ошибается на масштабах, где меняется расписание.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "05bc85049636",
+      "text": "Demo Methods Group (вымышленные авторы)",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "53cd50bd7b3f",
+      "text": "Учебная статья. Клиппинг и разогрев влияют на разные признаки стабильности.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c8f9e76b4160",
+      "text": "Клиппинг снижает частоту выбросов, но не задаёт длину разогрева.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3f8376c703c6",
+      "text": "Сравнение использует один порядок данных и одинаковый бюджет.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4fc18b75cdeb",
+      "text": "Выброс — превышение нормы над заранее заданным порогом.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "29d8e9bfe4e7",
+      "text": "Учебная статья. Узкое окно быстрее реагирует на шум нормы обновления.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "553067cdbd41",
+      "text": "В учебных траекториях окно 20 даёт больше ложных остановок, чем окно 100.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "053500845b86",
+      "text": "Частота ложных остановок считается на независимых контрольных траекториях.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "106b4ae554f1",
+      "text": "Ложная остановка определяется до выбора ширины окна.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "aa9d7e576d8c",
+      "text": "Учебная статья. Формат вычислений проверяется вместе с расписанием.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c39ab1eac87a",
+      "text": "Учебная пара BF16/FP32 имеет небольшой разрыв качества и разную память.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6327863a6b3f",
+      "text": "Для сравнения фиксируются данные, сид и число обновлений.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "cdc060aa0e1d",
+      "text": "Нечисловое значение учитывается как сбой, а не как плохой лосс.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "579f2e8b3cda",
+      "text": "Учебная статья. Перенос между корпусами требует нового контроля.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d0ca208bdad1",
+      "text": "На двух готовых парах виден небольшой разрыв, третья ещё выполняется.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "6954b17ca117",
+      "text": "Сравниваются перенос настройки и местный подбор на новом корпусе.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "167f2bb2b58f",
+      "text": "Предварительный результат содержит число завершённых пар.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dc3bc9e3ed6c",
+      "text": "Учебная статья. Порядок данных может скрыть эффект расписания.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "49f46ef89dab",
+      "text": "В учебном сравнении смена порядка дала разброс, сопоставимый с эффектом расписания.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "65e6b3fa78b3",
+      "text": "Парный дизайн использует один порядок данных для обоих методов.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7ed7e35fba6f",
+      "text": "Сид задаёт воспроизводимый порядок, но не заменяет описание выборки.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c9e0489d2c9f",
+      "text": "Учебная статья. Выбор настройки и итоговая оценка требуют разных данных.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1e21d9af2eaf",
+      "text": "Учебный пример показывает завышение качества при многократном подборе на одной валидации.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "930904a28d18",
+      "text": "Настройка выбирается на промежуточном наборе и оценивается на отложенном.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "64434771e7ab",
+      "text": "Утечка оценки возникает, когда итоговый набор участвует в выборе параметров.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "4f87d4162e85",
+      "text": "Учебная статья. Для рестарта одних весов недостаточно.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "618a64f953d8",
+      "text": "Полная контрольная точка воспроизводит следующий шаг в детерминированном учебном примере.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "418c7b475f69",
+      "text": "Сохраняются веса, оптимизатор, генераторы случайности и позиция данных.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fbd09268242a",
+      "text": "Проверка рестарта сопоставляет непрерывный и восстановленный запуски.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3ec980d4a674",
+      "text": "Учебная статья. Индекс расписания должен соответствовать обновлениям.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "dd1634a5a677",
+      "text": "Учебный запуск с индексом по микробатчам завершал разогрев в четыре раза раньше.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "ec03de2db58a",
+      "text": "Индекс увеличивается после шага оптимизатора.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "eeae2eb2c6f9",
+      "text": "Четыре микробатча могут составлять один эффективный батч.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "a3ba2a830b8f",
+      "text": "Учебная статья. Неудачный запуск остаётся частью истории исследования.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "1db8d850d968",
+      "text": "Отказ по памяти не дал оценки качества, но зафиксировал ограничение конфигурации.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "66ecdb3e69d6",
+      "text": "Отдельно сохраняются причина отказа, последний шаг и следующий проверяемый план.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "5a14e85c5a45",
+      "text": "Неудачный прогон и опровергнутое научное утверждение — разные записи.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d35e57f06ae5",
+      "text": "Учебная статья. Сравнение времени требует общего порога качества.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "81dfa84a07b4",
+      "text": "В учебных пяти запусках косинус достиг порога раньше постоянного шага.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "fc8be9498acb",
+      "text": "Заранее фиксируются порог, бюджет и правило учёта не достигших его запусков.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "84a457bdb52e",
+      "text": "Время до порога не равно длительности всего обучения.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "17af275ff0af",
+      "text": "Учебная статья. Один случайный запуск может выбрать другого победителя.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "7ebc6c772dde",
+      "text": "В учебной таблице лидер первого сида проиграл по среднему пяти.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "c3d47248b77c",
+      "text": "Публикуются среднее, разброс и все индивидуальные результаты.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "d2cc4490337a",
+      "text": "Парная разность сравнивает методы внутри одного и того же сида.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "44c4c4b8cc8d",
+      "text": "Учебная статья. Ограничение памяти не требует менять эффективный батч.",
+      "paths": [
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2",
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b6ea492959db",
+      "text": "Учебное накопление градиента снизило пиковую память при том же эффективном батче.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "9c357a3d01f3",
+      "text": "Сравнение фиксирует нормировку градиента и число обновлений.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "b41b9b9b286d",
+      "text": "Микробатч задаёт память прохода, эффективный батч — данные одного шага.",
+      "paths": [
+        "data/library-snapshot.js:2"
+      ]
+    },
+    {
+      "id": "3c3d66f63a6d",
+      "text": "Демо-лаборатория",
+      "paths": [
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "3561576b9f26",
+      "text": "Работы лаборатории и статьи других авторов — настоящие открытые публикации и препринты. Проект Демо-лаборатории, его прогоны, числа и учебные статьи вымышлены. Поиск работает в браузере; приватная база лаборатории не подключена.",
+      "paths": [
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "dee0c5b37a2e",
+      "text": "как дообучить модель с меньшим числом параметров",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "73d7a52e71f8",
+      "text": "как ускорить обучение языковой модели",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "5b69974c5d0f",
+      "text": "как учитывать кривизну при оптимизации",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "3bba90ad70f3",
+      "text": "зачем нужен разогрев и как выбрать его длительность",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "a4367de68ea5",
+      "text": "как дообучать модель без обратного распространения",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "a29c9901fa0a",
+      "text": "как учитывать геометрию низкорангового обновления",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "5e62cd7fe205",
+      "text": "как уменьшить обмен данными при распределённом обучении",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "b7ee62a992fa",
+      "text": "почему предсказания модели меняют будущие данные",
+      "paths": [
+        "data/demo-flag.js:2",
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "a5b9b96a2b9d",
+      "text": "Публикации · BRAIn Lab",
+      "paths": [
+        "data/demo-flag.js:2"
+      ]
+    },
+    {
+      "id": "0a5d477fd853",
+      "text": "Проверить воспроизводимость сравнения",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "59a28f1b11df",
+      "text": "В работе",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "1e66fe161ae9",
+      "text": "Собрать график зависимости от бюджета",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "9d43f4b86aa2",
+      "text": "Бэклог",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "c6185baad888",
+      "text": "Описать границы вывода",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    },
+    {
+      "id": "ef05d57959cf",
+      "text": "Готово",
+      "paths": [
+        "data/project-workspaces.js:2"
+      ]
+    }
+  ]
+}

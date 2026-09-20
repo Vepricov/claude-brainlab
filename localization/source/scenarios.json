@@ -1,0 +1,1586 @@
+{
+  "group": "scenarios",
+  "entries": [
+    {
+      "id": "400f8858f5d6",
+      "text": "Личная память исследователя",
+      "paths": [
+        "data/system-examples.js:7"
+      ]
+    },
+    {
+      "id": "0c354a0139a6",
+      "text": "Место для подробного понимания, черновиков, дневника и приватного контекста проекта.",
+      "paths": [
+        "data/system-examples.js:8"
+      ]
+    },
+    {
+      "id": "1170e00274a5",
+      "text": "Полные заметки по статьям и созвонам",
+      "paths": [
+        "data/system-examples.js:9"
+      ]
+    },
+    {
+      "id": "411ddde053e3",
+      "text": "Черновые рассуждения и планы",
+      "paths": [
+        "data/system-examples.js:9"
+      ]
+    },
+    {
+      "id": "ec2f8be3a522",
+      "text": "Карточка проекта, журнал экспериментов и ссылки на файлы результатов",
+      "paths": [
+        "data/system-examples.js:9"
+      ]
+    },
+    {
+      "id": "6fac5964cc19",
+      "text": "Общие научные записи лаборатории",
+      "paths": [
+        "data/system-examples.js:10"
+      ]
+    },
+    {
+      "id": "53cb258f80f1",
+      "text": "Задачи команды",
+      "paths": [
+        "data/system-examples.js:10"
+      ]
+    },
+    {
+      "id": "165a5cfe083c",
+      "text": "Автоматическую историю сессий агента",
+      "paths": [
+        "data/system-examples.js:10"
+      ]
+    },
+    {
+      "id": "e5e1228cd39c",
+      "text": "Рабочий материал появляется в проекте",
+      "paths": [
+        "data/system-examples.js:11"
+      ]
+    },
+    {
+      "id": "b90433b801ae",
+      "text": "Исследователь оформляет его в читаемую заметку",
+      "paths": [
+        "data/system-examples.js:11"
+      ]
+    },
+    {
+      "id": "41b2677438de",
+      "text": "Только явно выбранную часть показывают человеку перед публикацией",
+      "paths": [
+        "data/system-examples.js:11"
+      ]
+    },
+    {
+      "id": "35c5df7d4cf0",
+      "text": "После подтверждения она публикуется в Lab Knowledge как типизированная запись",
+      "paths": [
+        "data/system-examples.js:11"
+      ]
+    },
+    {
+      "id": "8188848346e7",
+      "text": "Рабочий процесс",
+      "paths": [
+        "data/system-examples.js:12",
+        "data/system-examples.js:23"
+      ]
+    },
+    {
+      "id": "20312c91de63",
+      "text": "Проекты и память",
+      "paths": [
+        "data/system-examples.js:12"
+      ]
+    },
+    {
+      "id": "3be9b4992e6f",
+      "text": "Как заводится проект, где живёт его карточка и что можно публиковать.",
+      "paths": [
+        "data/system-examples.js:12"
+      ]
+    },
+    {
+      "id": "ce883ff7b9ec",
+      "text": "Навык: память проекта",
+      "paths": [
+        "data/system-examples.js:13"
+      ]
+    },
+    {
+      "id": "745cdcc23d05",
+      "text": "Долговременная память агента",
+      "paths": [
+        "data/system-examples.js:18"
+      ]
+    },
+    {
+      "id": "fd58d412a5e6",
+      "text": "Возвращает прошлые решения, рабочую историю и контекст между сессиями, чтобы агент мог продолжать задачу осмысленно.",
+      "paths": [
+        "data/system-examples.js:19"
+      ]
+    },
+    {
+      "id": "ba717a3d28b7",
+      "text": "Эпизоды прошлой работы и их provenance",
+      "paths": [
+        "data/system-examples.js:20"
+      ]
+    },
+    {
+      "id": "6545a173b8a9",
+      "text": "Связи между задачами, решениями и проектами",
+      "paths": [
+        "data/system-examples.js:20"
+      ]
+    },
+    {
+      "id": "426696ee14e1",
+      "text": "Контекст, полезный для восстановления сессии",
+      "paths": [
+        "data/system-examples.js:20"
+      ]
+    },
+    {
+      "id": "07acdc33d8d7",
+      "text": "Научное evidence",
+      "paths": [
+        "data/system-examples.js:21"
+      ]
+    },
+    {
+      "id": "112eb0891eaa",
+      "text": "Актуальный статус сервера без live-проверки",
+      "paths": [
+        "data/system-examples.js:21"
+      ]
+    },
+    {
+      "id": "4ba401980d8b",
+      "text": "Личные заметки человека",
+      "paths": [
+        "data/system-examples.js:21"
+      ]
+    },
+    {
+      "id": "6f85a58449ac",
+      "text": "Агент сначала ищет релевантную историю",
+      "paths": [
+        "data/system-examples.js:22"
+      ]
+    },
+    {
+      "id": "c121a763a890",
+      "text": "Получает эпизоды вместе с происхождением",
+      "paths": [
+        "data/system-examples.js:22"
+      ]
+    },
+    {
+      "id": "e8ee0913e11f",
+      "text": "Перепроверяет изменчивые факты в живой системе",
+      "paths": [
+        "data/system-examples.js:22"
+      ]
+    },
+    {
+      "id": "6209855233c5",
+      "text": "Использует память как контекст, а не как доказательство",
+      "paths": [
+        "data/system-examples.js:22"
+      ]
+    },
+    {
+      "id": "0d7b42f76346",
+      "text": "Оркестрация агентов",
+      "paths": [
+        "data/system-examples.js:23"
+      ]
+    },
+    {
+      "id": "50b3760d5bbc",
+      "text": "Посмотреть, как контекст уходит Jarvis, Hermes и вахтёрам проекта.",
+      "paths": [
+        "data/system-examples.js:23"
+      ]
+    },
+    {
+      "id": "9c9ebfada5c5",
+      "text": "MemPalace на GitHub",
+      "paths": [
+        "data/system-examples.js:24"
+      ]
+    },
+    {
+      "id": "969fe2261ecf",
+      "text": "Человеческая проекция и координация",
+      "paths": [
+        "data/system-examples.js:29"
+      ]
+    },
+    {
+      "id": "01075034c133",
+      "text": "Показывает понятную страницу проекта и хранит его рабочую доску, не дублируя научную базу.",
+      "paths": [
+        "data/system-examples.js:30"
+      ]
+    },
+    {
+      "id": "223f4c1c81f6",
+      "text": "Одна человеко-читаемая карточка проекта",
+      "paths": [
+        "data/system-examples.js:31"
+      ]
+    },
+    {
+      "id": "69937e8616d7",
+      "text": "Доска задач проекта: КОД · Задачи",
+      "paths": [
+        "data/system-examples.js:31"
+      ]
+    },
+    {
+      "id": "b66836804ec4",
+      "text": "CODE · Созвоны и документы CODE · Созвон DD-MM-YYYY",
+      "paths": [
+        "data/system-examples.js:31"
+      ]
+    },
+    {
+      "id": "51faa0aad228",
+      "text": "5 живых collections",
+      "paths": [
+        "data/system-examples.js:32"
+      ]
+    },
+    {
+      "id": "55e29afecea2",
+      "text": "21 project в manifest",
+      "paths": [
+        "data/system-examples.js:32"
+      ]
+    },
+    {
+      "id": "b98b06b24d88",
+      "text": "13 bindings с explicit view IDs",
+      "paths": [
+        "data/system-examples.js:32"
+      ]
+    },
+    {
+      "id": "a7f8d14095fa",
+      "text": "op-lora пока unbound",
+      "paths": [
+        "data/system-examples.js:32"
+      ]
+    },
+    {
+      "id": "b1b8a7fd706e",
+      "text": "Полный provenance научных утверждений",
+      "paths": [
+        "data/system-examples.js:33"
+      ]
+    },
+    {
+      "id": "ec8cc0013b97",
+      "text": "Сырые логи и приватные заметки",
+      "paths": [
+        "data/system-examples.js:33"
+      ]
+    },
+    {
+      "id": "be959ab28fc8",
+      "text": "Вторую writable-копию гипотез и evidence",
+      "paths": [
+        "data/system-examples.js:33"
+      ]
+    },
+    {
+      "id": "707d838f5b4a",
+      "text": "Команда и проверенные материалы статьи",
+      "paths": [
+        "data/system-examples.js:34"
+      ]
+    },
+    {
+      "id": "0da9a7dbc1d3",
+      "text": "Краткое описание проекта и аудитория",
+      "paths": [
+        "data/system-examples.js:34"
+      ]
+    },
+    {
+      "id": "d0eb034cee4b",
+      "text": "Текущая стадия, основные гипотезы и подтвержденные результаты",
+      "paths": [
+        "data/system-examples.js:34"
+      ]
+    },
+    {
+      "id": "a133f3b09e6c",
+      "text": "Ограничения evidence и ссылка на единственную доску CODE",
+      "paths": [
+        "data/system-examples.js:34"
+      ]
+    },
+    {
+      "id": "c33afe8d1010",
+      "text": "Страница проекта",
+      "paths": [
+        "data/system-examples.js:36"
+      ]
+    },
+    {
+      "id": "3b25c1767644",
+      "text": "Структура человеческой проекции проекта и ее границы.",
+      "paths": [
+        "data/system-examples.js:36"
+      ]
+    },
+    {
+      "id": "f8a587bbf4af",
+      "text": "Рабочая доска",
+      "paths": [
+        "data/system-examples.js:37"
+      ]
+    },
+    {
+      "id": "ea72c1f0b94b",
+      "text": "Задачи, owner, issued date, status и безопасная запись.",
+      "paths": [
+        "data/system-examples.js:37"
+      ]
+    },
+    {
+      "id": "51ab5009cac3",
+      "text": "Документы созвонов",
+      "paths": [
+        "data/system-examples.js:38"
+      ]
+    },
+    {
+      "id": "47141c2a0fe5",
+      "text": "Короткий approved итог разговора отдельно от task rows.",
+      "paths": [
+        "data/system-examples.js:38"
+      ]
+    },
+    {
+      "id": "ec9c87c88bea",
+      "text": "BRAIn Lab в Yonote",
+      "paths": [
+        "data/system-examples.js:40"
+      ]
+    },
+    {
+      "id": "c724d7dcc271",
+      "text": "Lab Knowledge MCP на brain_lab",
+      "paths": [
+        "data/system-examples.js:44"
+      ]
+    },
+    {
+      "id": "7b750a8a3a56",
+      "text": "Проверенный снимок работающего сервиса. Это безопасная витрина состояния, а не административная панель.",
+      "paths": [
+        "data/system-examples.js:45"
+      ]
+    },
+    {
+      "id": "c8bf9f32b304",
+      "text": "127.0.0.1:8001 через закрытый канал",
+      "paths": [
+        "data/system-examples.js:47"
+      ]
+    },
+    {
+      "id": "ca02baef8763",
+      "text": "исходники развёрнутой версии сверены отдельно",
+      "paths": [
+        "data/system-examples.js:47"
+      ]
+    },
+    {
+      "id": "405ea911d57a",
+      "text": "работает · схема версии 34 · 58 инструментов MCP",
+      "paths": [
+        "data/system-examples.js:47"
+      ]
+    },
+    {
+      "id": "07b19505cf9f",
+      "text": "работ и тем",
+      "paths": [
+        "data/system-examples.js:49"
+      ]
+    },
+    {
+      "id": "0f48294965e5",
+      "text": "утверждений",
+      "paths": [
+        "data/system-examples.js:49"
+      ]
+    },
+    {
+      "id": "df9b4c822dde",
+      "text": "прогонов",
+      "paths": [
+        "data/system-examples.js:49"
+      ]
+    },
+    {
+      "id": "d39e8c828145",
+      "text": "измерений",
+      "paths": [
+        "data/system-examples.js:50"
+      ]
+    },
+    {
+      "id": "0b01da3a1db4",
+      "text": "доказательства · 145 завершены",
+      "paths": [
+        "data/system-examples.js:50"
+      ]
+    },
+    {
+      "id": "f90ac8101203",
+      "text": "правил",
+      "paths": [
+        "data/system-examples.js:50"
+      ]
+    },
+    {
+      "id": "1347fb28ec9e",
+      "text": "статья",
+      "paths": [
+        "data/system-examples.js:51"
+      ]
+    },
+    {
+      "id": "b928cd3e9b9e",
+      "text": "раздел статей",
+      "paths": [
+        "data/system-examples.js:51"
+      ]
+    },
+    {
+      "id": "869cb6baa55a",
+      "text": "утверждений статей · 9 056 цитат сверены",
+      "paths": [
+        "data/system-examples.js:51"
+      ]
+    },
+    {
+      "id": "a8f1b7f8b715",
+      "text": "связей статей",
+      "paths": [
+        "data/system-examples.js:52"
+      ]
+    },
+    {
+      "id": "7c4c20da4c00",
+      "text": "записей журнала",
+      "paths": [
+        "data/system-examples.js:52"
+      ]
+    },
+    {
+      "id": "7fc62bdf14b1",
+      "text": "термин · 23 ресурса",
+      "paths": [
+        "data/system-examples.js:52"
+      ]
+    },
+    {
+      "id": "6aedeac63194",
+      "text": "источников",
+      "paths": [
+        "data/system-examples.js:53"
+      ]
+    },
+    {
+      "id": "ec1db5ecb654",
+      "text": "учётных записей · 86 ролей в работах",
+      "paths": [
+        "data/system-examples.js:53"
+      ]
+    },
+    {
+      "id": "bf695cd0d8d9",
+      "text": "событий аудита",
+      "paths": [
+        "data/system-examples.js:53"
+      ]
+    },
+    {
+      "id": "76f66dcdee6c",
+      "text": "Работа и тема",
+      "paths": [
+        "data/system-examples.js:56"
+      ]
+    },
+    {
+      "id": "7c1afc4f87e3",
+      "text": "Рамка, внутри которой живут записи: участники, статус и тема сверху.",
+      "paths": [
+        "data/system-examples.js:56"
+      ]
+    },
+    {
+      "id": "26e0d0731013",
+      "text": "Утверждение",
+      "paths": [
+        "data/system-examples.js:57"
+      ]
+    },
+    {
+      "id": "b2589074b36a",
+      "text": "То, что мы считаем верным, вместе с наблюдением, которое его опровергнет.",
+      "paths": [
+        "data/system-examples.js:57"
+      ]
+    },
+    {
+      "id": "564307b4056f",
+      "text": "Прогон",
+      "paths": [
+        "data/system-examples.js:58"
+      ]
+    },
+    {
+      "id": "31ba5fc771a9",
+      "text": "Повторяемый протокол проверки, привязанный к утверждению.",
+      "paths": [
+        "data/system-examples.js:58"
+      ]
+    },
+    {
+      "id": "0c162f69ff04",
+      "text": "Измерение",
+      "paths": [
+        "data/system-examples.js:59"
+      ]
+    },
+    {
+      "id": "9132e609b0c5",
+      "text": "Что вышло из прогона: числа, артефакт или наблюдение с границами применимости.",
+      "paths": [
+        "data/system-examples.js:59"
+      ]
+    },
+    {
+      "id": "1bcb0f9c020f",
+      "text": "Правило",
+      "paths": [
+        "data/system-examples.js:60"
+      ]
+    },
+    {
+      "id": "d459b3b1e131",
+      "text": "Как лаборатория решила поступать. Статус хранится явно, и большинство правил пока в состоянии proposed.",
+      "paths": [
+        "data/system-examples.js:60"
+      ]
+    },
+    {
+      "id": "58a33e252f3c",
+      "text": "Доказательство",
+      "paths": [
+        "data/system-examples.js:61"
+      ]
+    },
+    {
+      "id": "5616d845af29",
+      "text": "Предпосылки, ход рассуждения и установленный результат вместо прогона.",
+      "paths": [
+        "data/system-examples.js:61"
+      ]
+    },
+    {
+      "id": "553ffe213cfa",
+      "text": "чужое",
+      "paths": [
+        "data/system-examples.js:62"
+      ]
+    },
+    {
+      "id": "ed0581b146cf",
+      "text": "Статья, её разделы и утверждения",
+      "paths": [
+        "data/system-examples.js:62"
+      ]
+    },
+    {
+      "id": "30190e1e8da9",
+      "text": "Чужая работа, её сохранённый текст, проверяемые утверждения и связи с нашими. Чужое утверждение нашим измерением не становится.",
+      "paths": [
+        "data/system-examples.js:62"
+      ]
+    },
+    {
+      "id": "760c214582ce",
+      "text": "контекст",
+      "paths": [
+        "data/system-examples.js:63"
+      ]
+    },
+    {
+      "id": "b449f46bca2d",
+      "text": "Наблюдение, термин, ресурс",
+      "paths": [
+        "data/system-examples.js:63"
+      ]
+    },
+    {
+      "id": "8f14bc1eea01",
+      "text": "Честные факты, словарь работы и общее железо лаборатории.",
+      "paths": [
+        "data/system-examples.js:63"
+      ]
+    },
+    {
+      "id": "5c33870ece3a",
+      "text": "служебное",
+      "paths": [
+        "data/system-examples.js:64"
+      ]
+    },
+    {
+      "id": "26d6ad2bfd99",
+      "text": "Источник, журнал изменений, доступ",
+      "paths": [
+        "data/system-examples.js:64"
+      ]
+    },
+    {
+      "id": "f4a6ef3569bc",
+      "text": "Откуда запись взялась, что с ней делали, кто участник и какие у него ключи.",
+      "paths": [
+        "data/system-examples.js:64"
+      ]
+    },
+    {
+      "id": "41c92ac2c84f",
+      "text": "Выбрать работу и тип записи",
+      "paths": [
+        "data/system-examples.js:66"
+      ]
+    },
+    {
+      "id": "93cbfa71a330",
+      "text": "Поискать дубли и то, с чем это связано",
+      "paths": [
+        "data/system-examples.js:66"
+      ]
+    },
+    {
+      "id": "4cecc393d7cb",
+      "text": "Показать человеку, что именно будет записано",
+      "paths": [
+        "data/system-examples.js:66"
+      ]
+    },
+    {
+      "id": "bc7ac1323fd6",
+      "text": "Служба проверяет права и сохраняет запись нужного типа",
+      "paths": [
+        "data/system-examples.js:66"
+      ]
+    },
+    {
+      "id": "8177c1bcea43",
+      "text": "Перечитать записанное и вернуть код записи",
+      "paths": [
+        "data/system-examples.js:66"
+      ]
+    },
+    {
+      "id": "2babf9e4d16f",
+      "text": "Проверить ключ",
+      "paths": [
+        "data/system-examples.js:67"
+      ]
+    },
+    {
+      "id": "af25a1336a7d",
+      "text": "Понять, о какой работе спрашивают",
+      "paths": [
+        "data/system-examples.js:67"
+      ]
+    },
+    {
+      "id": "9179760f5121",
+      "text": "Искать и по словам, и по связям",
+      "paths": [
+        "data/system-examples.js:67"
+      ]
+    },
+    {
+      "id": "12d2c39255ed",
+      "text": "Вернуть записи, их источники и противоречия",
+      "paths": [
+        "data/system-examples.js:67"
+      ]
+    },
+    {
+      "id": "9d01e26c19e2",
+      "text": "Поиск и граф",
+      "paths": [
+        "data/system-examples.js:69"
+      ]
+    },
+    {
+      "id": "7d6d9951084a",
+      "text": "чтение",
+      "paths": [
+        "data/system-examples.js:69"
+      ]
+    },
+    {
+      "id": "61c341fdbac0",
+      "text": "Проекты и темы",
+      "paths": [
+        "data/system-examples.js:70"
+      ]
+    },
+    {
+      "id": "8db9014b6975",
+      "text": "чтение и запись",
+      "paths": [
+        "data/system-examples.js:70",
+        "data/system-examples.js:71",
+        "data/system-examples.js:72",
+        "data/system-examples.js:73",
+        "data/system-examples.js:74",
+        "data/system-examples.js:75"
+      ]
+    },
+    {
+      "id": "d6f1691f09ef",
+      "text": "Научная цепь",
+      "paths": [
+        "data/system-examples.js:71"
+      ]
+    },
+    {
+      "id": "d659e27ebecd",
+      "text": "Библиотека",
+      "paths": [
+        "data/system-examples.js:72"
+      ]
+    },
+    {
+      "id": "17311db2de6c",
+      "text": "Контекст лаборатории",
+      "paths": [
+        "data/system-examples.js:73"
+      ]
+    },
+    {
+      "id": "8edc1dd032a6",
+      "text": "Доступ и жизненный цикл",
+      "paths": [
+        "data/system-examples.js:75"
+      ]
+    },
+    {
+      "id": "6cdade762642",
+      "text": "Пример связанной записи",
+      "paths": [
+        "data/system-examples.js:77"
+      ]
+    },
+    {
+      "id": "caf298aea319",
+      "text": "иллюстрация",
+      "paths": [
+        "data/system-examples.js:77"
+      ]
+    },
+    {
+      "id": "5f010c3dd054",
+      "text": "Утверждение → прогон → измерение → правило: у каждой записи свой код, статус и происхождение",
+      "paths": [
+        "data/system-examples.js:77"
+      ]
+    },
+    {
+      "id": "f35748d496b6",
+      "text": "Утверждение статьи и доказательство подключаются к той же цепочке связями названного типа, но измерение собой не подменяют",
+      "paths": [
+        "data/system-examples.js:77"
+      ]
+    },
+    {
+      "id": "5555d2b29c96",
+      "text": "Пример показывает форму ответа. Тексты закрытых записей и названия закрытых работ в витрину не копируются.",
+      "paths": [
+        "data/system-examples.js:77"
+      ]
+    },
+    {
+      "id": "e9c5beb912c8",
+      "text": "Obsidian хранит личный черновик",
+      "paths": [
+        "data/system-examples.js:78"
+      ]
+    },
+    {
+      "id": "325e73017f71",
+      "text": "Yonote хранит задачи и краткую человеческую проекцию",
+      "paths": [
+        "data/system-examples.js:78"
+      ]
+    },
+    {
+      "id": "64b7473d66c9",
+      "text": "MemPalace хранит историю агента",
+      "paths": [
+        "data/system-examples.js:78"
+      ]
+    },
+    {
+      "id": "4b2892fc31ce",
+      "text": "Lab Knowledge хранит общую научную историю, библиотеку, рабочий контекст, права доступа и журнал изменений",
+      "paths": [
+        "data/system-examples.js:78"
+      ]
+    },
+    {
+      "id": "837d7a7f16e5",
+      "text": "Публичная модель знания",
+      "paths": [
+        "data/system-examples.js:79"
+      ]
+    },
+    {
+      "id": "0a542603cc17",
+      "text": "Набор инструментов BRAIn Lab",
+      "paths": [
+        "data/system-examples.js:79"
+      ]
+    },
+    {
+      "id": "06127dbb383f",
+      "text": "lab-knowledge-user.service · сама служба MCP на порту 8001",
+      "paths": [
+        "data/system-examples.js:80"
+      ]
+    },
+    {
+      "id": "050348100f47",
+      "text": "lab-site.service · отдельная витрина только для чтения",
+      "paths": [
+        "data/system-examples.js:80"
+      ]
+    },
+    {
+      "id": "e9abe6b2d7f6",
+      "text": "lab-knowledge-legacy-db-bridge.service · временный мост к старой базе",
+      "paths": [
+        "data/system-examples.js:80"
+      ]
+    },
+    {
+      "id": "4e0d4af66b9b",
+      "text": "brainlab-reverse-tunnel.service · закрытый канал до порта 8001",
+      "paths": [
+        "data/system-examples.js:80"
+      ]
+    },
+    {
+      "id": "ab846a696734",
+      "text": "Работающая служба отдаёт 58 инструментов и совпадает с исходниками развёрнутой версии. Показ будущей записи человеку и перечитывание записанного обеспечивает вызывающая сторона, отдельных инструментов для этого нет. Все числа сняты 09-09-2026 прямым запросом к базе, включая строки про статьи, источники, учётные записи и журнал изменений: раньше их брали из снимка на день старше, потому что списочных инструментов для них нет.",
+      "paths": [
+        "data/system-examples.js:81"
+      ]
+    },
+    {
+      "id": "fec33282659b",
+      "text": "Написать статью",
+      "paths": [
+        "data/system-examples.js:86"
+      ]
+    },
+    {
+      "id": "bd0a3e741e64",
+      "text": "От идеи к статье",
+      "paths": [
+        "data/system-examples.js:87"
+      ]
+    },
+    {
+      "id": "1aab4e88b255",
+      "text": "Есть исследовательский вопрос. Разберите его до проверяемого результата, рукописи и ответа рецензентам.",
+      "paths": [
+        "data/system-examples.js:88"
+      ]
+    },
+    {
+      "id": "794c1c685e37",
+      "text": "Рецензия может вернуть к эксперименту или тексту. Этапы можно проходить повторно.",
+      "paths": [
+        "data/system-examples.js:90"
+      ]
+    },
+    {
+      "id": "1103b46ce909",
+      "text": "Вопрос",
+      "paths": [
+        "data/system-examples.js:124"
+      ]
+    },
+    {
+      "id": "2b6085adaa9b",
+      "text": "Контекст проекта",
+      "paths": [
+        "data/system-examples.js:125"
+      ]
+    },
+    {
+      "id": "fef6631b4cbd",
+      "text": "Сформулируйте, что хотите выяснить, и соберите рабочее пространство исследования.",
+      "paths": [
+        "data/system-examples.js:130"
+      ]
+    },
+    {
+      "id": "ee28f23d7700",
+      "text": "Идею, существующий репозиторий и заметки. Для начатой работы сначала восстановите текущие решения.",
+      "paths": [
+        "data/system-examples.js:131"
+      ]
+    },
+    {
+      "id": "510278cb2a78",
+      "text": "В карточке проекта записаны вопрос, границы задачи и ближайшая проверка.",
+      "paths": [
+        "data/system-examples.js:132"
+      ]
+    },
+    {
+      "id": "e721f71b8996",
+      "text": "Литература",
+      "paths": [
+        "data/system-examples.js:150"
+      ]
+    },
+    {
+      "id": "b5a6f413038f",
+      "text": "Ближайшие работы",
+      "paths": [
+        "data/system-examples.js:151"
+      ]
+    },
+    {
+      "id": "f16cb83405db",
+      "text": "Найдите ближайшие методы и разберите, что в них уже проверено.",
+      "paths": [
+        "data/system-examples.js:156"
+      ]
+    },
+    {
+      "id": "03faad80158c",
+      "text": "Вопрос исследования, ключевые работы и ограничения поиска. Hermes помогает с поиском, выбранные статьи переходят в библиотеку.",
+      "paths": [
+        "data/system-examples.js:157"
+      ]
+    },
+    {
+      "id": "0e944f993b12",
+      "text": "У сравниваемых методов есть первоисточники. Разница с вашей идеей сформулирована явно.",
+      "paths": [
+        "data/system-examples.js:158"
+      ]
+    },
+    {
+      "id": "bff62c4d019c",
+      "text": "Гипотеза",
+      "paths": [
+        "data/system-examples.js:176"
+      ]
+    },
+    {
+      "id": "5e12ada91d1a",
+      "text": "Критерий проверки",
+      "paths": [
+        "data/system-examples.js:177"
+      ]
+    },
+    {
+      "id": "6c35879a3e23",
+      "text": "Превратите идею в утверждение, которое эксперимент способен опровергнуть.",
+      "paths": [
+        "data/system-examples.js:182"
+      ]
+    },
+    {
+      "id": "6882ab37d0fb",
+      "text": "Выводы из литературы, предполагаемый механизм и доступный бюджет.",
+      "paths": [
+        "data/system-examples.js:183"
+      ]
+    },
+    {
+      "id": "809b9081250d",
+      "text": "Зафиксированы baseline, метрика, одинаковые условия сравнения и критерий опровержения.",
+      "paths": [
+        "data/system-examples.js:184"
+      ]
+    },
+    {
+      "id": "40a66d744b61",
+      "text": "Эксперимент",
+      "paths": [
+        "data/system-examples.js:198"
+      ]
+    },
+    {
+      "id": "7cb09714ea85",
+      "text": "Прогоны и логи",
+      "paths": [
+        "data/system-examples.js:199"
+      ]
+    },
+    {
+      "id": "6beaf3250db9",
+      "text": "Поручите Hermes реализацию и запуск согласованной проверки.",
+      "paths": [
+        "data/system-examples.js:204"
+      ]
+    },
+    {
+      "id": "20f4ef8f60ed",
+      "text": "Протокол, код, разрешённые ресурсы и условия остановки. Долгую работу можно передать вахтёру проекта.",
+      "paths": [
+        "data/system-examples.js:205"
+      ]
+    },
+    {
+      "id": "343fb8c8e55d",
+      "text": "У каждого прогона сохранены настройки и статус. Незавершённый запуск не выдан за готовый результат.",
+      "paths": [
+        "data/system-examples.js:206"
+      ]
+    },
+    {
+      "id": "24735a7161d9",
+      "text": "Результаты",
+      "paths": [
+        "data/system-examples.js:224"
+      ]
+    },
+    {
+      "id": "ec96e69f470f",
+      "text": "Таблицы и фигуры",
+      "paths": [
+        "data/system-examples.js:225"
+      ]
+    },
+    {
+      "id": "0b069dc98442",
+      "text": "Сопоставьте прогоны и соберите фигуры для статьи.",
+      "paths": [
+        "data/system-examples.js:230"
+      ]
+    },
+    {
+      "id": "7bc41b02063d",
+      "text": "Логи, конфигурации и сведения о повторах. Сначала проверьте сопоставимость, затем стройте графики.",
+      "paths": [
+        "data/system-examples.js:231"
+      ]
+    },
+    {
+      "id": "b7d763e990ef",
+      "text": "Каждая точка связана с исходными данными. Число повторов и границы вывода указаны.",
+      "paths": [
+        "data/system-examples.js:232"
+      ]
+    },
+    {
+      "id": "f1bf33b30306",
+      "text": "Рукопись",
+      "paths": [
+        "data/system-examples.js:250"
+      ]
+    },
+    {
+      "id": "da31fe69cc97",
+      "text": "Связный аргумент",
+      "paths": [
+        "data/system-examples.js:251"
+      ]
+    },
+    {
+      "id": "2b866548032d",
+      "text": "Соберите текст вокруг проверенного результата и проверьте ход аргумента.",
+      "paths": [
+        "data/system-examples.js:256"
+      ]
+    },
+    {
+      "id": "5943b83ed199",
+      "text": "Постановку задачи, метод, таблицы, фигуры и подтверждённые источники.",
+      "paths": [
+        "data/system-examples.js:257"
+      ]
+    },
+    {
+      "id": "59ef97d2d506",
+      "text": "Каждый раздел отвечает на свой вопрос, а переходы ведут читателя от проблемы к выводам.",
+      "paths": [
+        "data/system-examples.js:258"
+      ]
+    },
+    {
+      "id": "e56a412d1285",
+      "text": "Проверка",
+      "paths": [
+        "data/system-examples.js:272"
+      ]
+    },
+    {
+      "id": "c8df6ca7c934",
+      "text": "Замечания к статье",
+      "paths": [
+        "data/system-examples.js:273"
+      ]
+    },
+    {
+      "id": "931b100ecd42",
+      "text": "Проведите критический разбор текста и отдельную проверку цитат.",
+      "paths": [
+        "data/system-examples.js:278"
+      ]
+    },
+    {
+      "id": "fc1b703a0fdb",
+      "text": "Полную рукопись, приложение, библиографию и требования площадки.",
+      "paths": [
+        "data/system-examples.js:279"
+      ]
+    },
+    {
+      "id": "0d76108b2a2c",
+      "text": "Сильные утверждения подкреплены данными, ссылки проверены, существенные замечания разобраны.",
+      "paths": [
+        "data/system-examples.js:280"
+      ]
+    },
+    {
+      "id": "71af9b89b4ba",
+      "text": "Рецензии",
+      "paths": [
+        "data/system-examples.js:294"
+      ]
+    },
+    {
+      "id": "b580068416d0",
+      "text": "Ответ и доработка",
+      "paths": [
+        "data/system-examples.js:295"
+      ]
+    },
+    {
+      "id": "ca3792f12d00",
+      "text": "Разберите полученные рецензии и подготовьте ответ с проверяемыми изменениями.",
+      "paths": [
+        "data/system-examples.js:300"
+      ]
+    },
+    {
+      "id": "15e6e3082fbe",
+      "text": "Текст рецензий, отправленную версию и доступные дополнительные результаты.",
+      "paths": [
+        "data/system-examples.js:301"
+      ]
+    },
+    {
+      "id": "c8da9c59ff86",
+      "text": "На каждый пункт дан содержательный ответ. Обещанные изменения действительно внесены.",
+      "paths": [
+        "data/system-examples.js:302"
+      ]
+    },
+    {
+      "id": "ed1431a23de6",
+      "text": "Развить чужую идею",
+      "paths": [
+        "data/system-examples.js:318"
+      ]
+    },
+    {
+      "id": "a6e603ef6fc3",
+      "text": "От прочитанного к своему",
+      "paths": [
+        "data/system-examples.js:319"
+      ]
+    },
+    {
+      "id": "fd600f4aa1ef",
+      "text": "Нашли интересную работу. Выясните, что из неё следует и какую собственную гипотезу стоит проверить.",
+      "paths": [
+        "data/system-examples.js:320"
+      ]
+    },
+    {
+      "id": "76a67340868d",
+      "text": "Если первая проверка не поддержала идею, вернитесь к предположению и условиям сравнения.",
+      "paths": [
+        "data/system-examples.js:322"
+      ]
+    },
+    {
+      "id": "41025c23b8d7",
+      "text": "Разобраться",
+      "paths": [
+        "data/system-examples.js:344"
+      ]
+    },
+    {
+      "id": "851172de7e41",
+      "text": "Статья и заметка",
+      "paths": [
+        "data/system-examples.js:345"
+      ]
+    },
+    {
+      "id": "eefb05cc8450",
+      "text": "Прочитайте источник и сохраните его вместе с собственным разбором.",
+      "paths": [
+        "data/system-examples.js:350"
+      ]
+    },
+    {
+      "id": "95240aa71105",
+      "text": "DOI, arXiv-ссылку или PDF и вопрос, ради которого читаете работу.",
+      "paths": [
+        "data/system-examples.js:351"
+      ]
+    },
+    {
+      "id": "18420664380d",
+      "text": "Основной результат, допущения и ограничения отделены от вашей интерпретации.",
+      "paths": [
+        "data/system-examples.js:352"
+      ]
+    },
+    {
+      "id": "0c8cf8e24c53",
+      "text": "Сопоставить",
+      "paths": [
+        "data/system-examples.js:370"
+      ]
+    },
+    {
+      "id": "cf56ddd9974d",
+      "text": "Место среди методов",
+      "paths": [
+        "data/system-examples.js:371"
+      ]
+    },
+    {
+      "id": "efda5b47d986",
+      "text": "Найдите соседние работы и проверьте, насколько результат переносится на вашу задачу.",
+      "paths": [
+        "data/system-examples.js:376"
+      ]
+    },
+    {
+      "id": "8be3d57b254b",
+      "text": "Прочитанную статью и условия вашей задачи: данные, модель, вычислительный бюджет.",
+      "paths": [
+        "data/system-examples.js:377"
+      ]
+    },
+    {
+      "id": "e46d5b143f94",
+      "text": "Есть сравнение подходов и конкретный пробел, который пока не закрыт.",
+      "paths": [
+        "data/system-examples.js:378"
+      ]
+    },
+    {
+      "id": "da4fa284f3f4",
+      "text": "Обсудить",
+      "paths": [
+        "data/system-examples.js:396"
+      ]
+    },
+    {
+      "id": "b58fa772583c",
+      "text": "Возражения и решения",
+      "paths": [
+        "data/system-examples.js:397"
+      ]
+    },
+    {
+      "id": "de45b949c17c",
+      "text": "Обсудите идею с коллегами и сохраните решения из разговора.",
+      "paths": [
+        "data/system-examples.js:402"
+      ]
+    },
+    {
+      "id": "e62dbed4faa3",
+      "text": "Запись созвона для Brain Call или готовый транскрипт для call-notes. Этот этап можно пропустить, если обсуждения не было.",
+      "paths": [
+        "data/system-examples.js:403"
+      ]
+    },
+    {
+      "id": "561210d1a278",
+      "text": "Владелец подтвердил решения и задачи. Только согласованная часть может попасть в общую базу.",
+      "paths": [
+        "data/system-examples.js:404"
+      ]
+    },
+    {
+      "id": "4609c22d5738",
+      "text": "Сформулировать",
+      "paths": [
+        "data/system-examples.js:418"
+      ]
+    },
+    {
+      "id": "78f2ffac8eeb",
+      "text": "Своя гипотеза",
+      "paths": [
+        "data/system-examples.js:419"
+      ]
+    },
+    {
+      "id": "d9d8bbcf8b80",
+      "text": "Выберите одно изменение и спроектируйте самую короткую содержательную проверку.",
+      "paths": [
+        "data/system-examples.js:424"
+      ]
+    },
+    {
+      "id": "567d85a879d8",
+      "text": "Пробел из обзора и возражения, возникшие при обсуждении.",
+      "paths": [
+        "data/system-examples.js:425"
+      ]
+    },
+    {
+      "id": "f7132186453b",
+      "text": "Понятно, какой результат поддержит гипотезу, какой опровергнет и что сравнивается.",
+      "paths": [
+        "data/system-examples.js:426"
+      ]
+    },
+    {
+      "id": "e4424a6df6f6",
+      "text": "Проверить",
+      "paths": [
+        "data/system-examples.js:440"
+      ]
+    },
+    {
+      "id": "e162fe92b423",
+      "text": "Пилотный результат",
+      "paths": [
+        "data/system-examples.js:441"
+      ]
+    },
+    {
+      "id": "e21b5bfc1d6a",
+      "text": "Запустите пилот и решите, оправдано ли продолжение исследования.",
+      "paths": [
+        "data/system-examples.js:446"
+      ]
+    },
+    {
+      "id": "c0958ef6992e",
+      "text": "Минимальный протокол, разрешённые ресурсы и критерий остановки.",
+      "paths": [
+        "data/system-examples.js:447"
+      ]
+    },
+    {
+      "id": "646c8a52f6cc",
+      "text": "Пилот разобран вместе с настройками. Единственный прогон не представлен как устойчивый эффект.",
+      "paths": [
+        "data/system-examples.js:448"
+      ]
+    },
+    {
+      "id": "8a8290956999",
+      "text": "Подготовить доклад и пост",
+      "paths": [
+        "data/system-examples.js:468"
+      ]
+    },
+    {
+      "id": "a194bda50d27",
+      "text": "От результата к аудитории",
+      "paths": [
+        "data/system-examples.js:469"
+      ]
+    },
+    {
+      "id": "4a79ff643561",
+      "text": "Есть статья или проверенные результаты. Соберите объяснение, а затем выберите доклад, публикацию или оба формата.",
+      "paths": [
+        "data/system-examples.js:470"
+      ]
+    },
+    {
+      "id": "607cb758cfa5",
+      "text": "Доклад и пост — две самостоятельные ветки. Для поста не требуется сначала делать слайды.",
+      "paths": [
+        "data/system-examples.js:472"
+      ]
+    },
+    {
+      "id": "0e1780163f2b",
+      "text": "Смысл",
+      "paths": [
+        "data/system-examples.js:490"
+      ]
+    },
+    {
+      "id": "2f1d8c2c1586",
+      "text": "Главное для аудитории",
+      "paths": [
+        "data/system-examples.js:491"
+      ]
+    },
+    {
+      "id": "fc19e752140d",
+      "text": "Выберите, что слушатель или читатель должен понять о работе.",
+      "paths": [
+        "data/system-examples.js:496"
+      ]
+    },
+    {
+      "id": "a4af3034c605",
+      "text": "Статью или отчёт, аудиторию и формат выступления или публикации.",
+      "paths": [
+        "data/system-examples.js:497"
+      ]
+    },
+    {
+      "id": "7fda82b0712a",
+      "text": "Главный вывод можно объяснить без преувеличений. Известно, какие детали необходимы этой аудитории.",
+      "paths": [
+        "data/system-examples.js:498"
+      ]
+    },
+    {
+      "id": "3a2402d5c4f7",
+      "text": "Иллюстрации",
+      "paths": [
+        "data/system-examples.js:512"
+      ]
+    },
+    {
+      "id": "5aadb7ad35ee",
+      "text": "Доказательства на виду",
+      "paths": [
+        "data/system-examples.js:513"
+      ]
+    },
+    {
+      "id": "90f21b4e3081",
+      "text": "Подготовьте рисунки, которые помогают увидеть результат.",
+      "paths": [
+        "data/system-examples.js:518"
+      ]
+    },
+    {
+      "id": "747b9448c667",
+      "text": "Исходные данные, готовые таблицы и вывод, который должна поддерживать каждая фигура.",
+      "paths": [
+        "data/system-examples.js:519"
+      ]
+    },
+    {
+      "id": "b9e802536a50",
+      "text": "Подписи читаются в нужном размере. Масштабы и сравнения сохраняют смысл исходных данных.",
+      "paths": [
+        "data/system-examples.js:520"
+      ]
+    },
+    {
+      "id": "b66679d7f526",
+      "text": "Доклад",
+      "paths": [
+        "data/system-examples.js:530"
+      ]
+    },
+    {
+      "id": "ac23a213447b",
+      "text": "Слайды и репетиция",
+      "paths": [
+        "data/system-examples.js:531"
+      ]
+    },
+    {
+      "id": "c46aedfb9dc4",
+      "text": "Соберите научный доклад и проверьте его на прогоне.",
+      "paths": [
+        "data/system-examples.js:536"
+      ]
+    },
+    {
+      "id": "ee05ba9bd793",
+      "text": "Статью, фигуры, аудиторию и доступное время. presentation готовит структуру, LaTeX/Beamer и PDF.",
+      "paths": [
+        "data/system-examples.js:537"
+      ]
+    },
+    {
+      "id": "fcfda9c8eff1",
+      "text": "PDF собран и просмотрен. Длительность подтверждена репетицией, а не числом слайдов.",
+      "paths": [
+        "data/system-examples.js:538"
+      ]
+    },
+    {
+      "id": "27077654636d",
+      "text": "Пост",
+      "paths": [
+        "data/system-examples.js:548"
+      ]
+    },
+    {
+      "id": "650fc05b593a",
+      "text": "Текст для публикации",
+      "paths": [
+        "data/system-examples.js:549"
+      ]
+    },
+    {
+      "id": "1ed89ce04288",
+      "text": "Адаптируйте работу под Telegram, X или Хабр.",
+      "paths": [
+        "data/system-examples.js:554"
+      ]
+    },
+    {
+      "id": "84878da0d596",
+      "text": "Текст исследования, проверенные иллюстрации, площадку и ограничения на раскрытие.",
+      "paths": [
+        "data/system-examples.js:555"
+      ]
+    },
+    {
+      "id": "afda1c20089d",
+      "text": "Факты сверены с работой, источники указаны. Автор просмотрел текст перед публикацией.",
+      "paths": [
+        "data/system-examples.js:556"
+      ]
+    }
+  ]
+}

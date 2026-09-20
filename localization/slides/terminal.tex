@@ -1,0 +1,111 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\usepackage[T1]{fontenc}   % use [T1] if the deck is English-only
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}        % needed for Cyrillic with T2A
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+
+\definecolor{bg}{HTML}{0D1117}
+\definecolor{bgcard}{HTML}{161B22}
+\definecolor{accent}{HTML}{00FF88}
+\definecolor{accentblue}{HTML}{58A6FF}
+\definecolor{accentorange}{HTML}{FF7B54}
+\definecolor{accentred}{HTML}{FF6B6B}
+\definecolor{textmain}{HTML}{E6EDF3}
+\definecolor{textsub}{HTML}{8B949E}
+\definecolor{border}{HTML}{30363D}
+
+\setbeamercolor{background canvas}{bg=bg}
+\setbeamercolor{normal text}{fg=textmain,bg=bg}
+\setbeamercolor{frametitle}{fg=accent,bg=bgcard}
+\setbeamercolor{progress bar}{fg=accent,bg=bgcard}
+\setbeamercolor{title}{fg=accent}
+\setbeamercolor{subtitle}{fg=accentblue}
+\setbeamercolor{itemize item}{fg=accent}
+\setbeamercolor{itemize subitem}{fg=accentblue}
+\setbeamercolor{enumerate item}{fg=accent}
+
+\setbeamerfont{title}{family=\ttfamily,series=\bfseries,size=\Large}
+\setbeamerfont{frametitle}{family=\ttfamily,series=\bfseries,size=\large}
+\setbeamertemplate{navigation symbols}{}
+\metroset{block=fill}
+
+% Box styles: math (neutral), idea (green), thm (orange), blue (secondary),
+% prob (red), figcard (figure on a clean WHITE panel — essential on dark bg).
+\tcbset{
+  mathbox/.style={colback=bgcard,colframe=border,coltext=textmain,boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt},
+  thmbox/.style={colback=bgcard,colframe=accentorange,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  ideabox/.style={colback=bgcard,colframe=accent,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  bluebox/.style={colback=bgcard,colframe=accentblue,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  probbox/.style={colback=bgcard,colframe=accentred,coltext=textmain,boxrule=0pt,leftrule=2.5pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  figcard/.style={colback=white,colframe=border,boxrule=0.5pt,arc=2pt,left=3pt,right=3pt,top=3pt,bottom=3pt}
+}
+% Always wrap figures in a white figcard — raw PDFs look broken on the dark canvas.
+\newcommand{\figcard}[2][\linewidth]{%
+  \begin{tcolorbox}[figcard]\centering\includegraphics[width=#1]{#2}\end{tcolorbox}}
+
+\title{Presentation title}
+\subtitle{A short subtitle}
+
+% Section divider — same visual language as the title slide.
+\newcommand{\topicframe}[2]{%
+  \begin{frame}[plain]
+    \vfill
+    \begin{center}
+      {\color{accent}\texttt{\small // #1}}\\[0.25cm]
+      {\color{border}\rule{0.72\textwidth}{0.4pt}}\\[0.4cm]
+      {\color{accent}\Huge\ttfamily #2}\\[0.35cm]
+      {\color{border}\rule{0.42\textwidth}{0.3pt}}
+    \end{center}
+    \vfill
+  \end{frame}}
+
+\begin{document}
+
+% ===== Title: rules, title, subtitle, COLORED author + affiliation lines,
+%       and one or two terminal command lines ($ run / $ git clone). =====
+\begin{frame}[plain]
+  \vfill
+  \begin{center}
+    {\color{accent}\texttt{\small // short topic tag}}\\[0.22cm]
+    {\color{border}\rule{0.82\textwidth}{0.4pt}}\\[0.30cm]
+    {\color{accent}\usebeamerfont{title}\inserttitle}\\[0.14cm]
+    {\color{accentblue}\large\insertsubtitle}\\[0.34cm]
+    {\color{border}\rule{0.55\textwidth}{0.3pt}}\\[0.22cm]
+    % first/presenting author orange+bold, co-authors muted:
+    {\texttt{\small{\color{accentorange}\textbf{A.\,First}}{\color{textsub}\quad B.\,Second\quad C.\,Third}}}\\[0.12cm]
+    % home labs orange, others muted:
+    {\texttt{\small{\color{accentorange}Main Lab}{\color{textsub}\ $\cdot$\ University\ $\cdot$\ Institute}}}\\[0.32cm]
+    {\color{accent}\texttt{\small \$ run --topic curvature-aware-methods}}\\[0.16cm]
+    {\color{accentblue}\texttt{\small \$ git clone github.com/org/project}}
+  \end{center}
+  \vfill
+\end{frame}
+
+\topicframe{01}{Main topic}
+
+% ===== Content: balanced two columns, compact boxes, one idea per frame. =====
+\begin{frame}{The key idea}
+\begin{columns}[T]
+\column{0.56\textwidth}
+A short, coherent explanation. One idea per slide.
+\begin{tcolorbox}[ideabox]
+{\color{accent}\bfseries Idea.} The previous slide motivates each new concept.
+\end{tcolorbox}
+\column{0.4\textwidth}
+\begin{tcolorbox}[mathbox]
+$$x_{t+1}=x_t-\eta P_t^{-1}g_t$$
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+% ===== Figure slide: text + figure on a white figcard. =====
+
+\end{document}

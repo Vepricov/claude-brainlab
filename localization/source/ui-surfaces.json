@@ -1,0 +1,719 @@
+{
+  "group": "ui-surfaces",
+  "entries": [
+    {
+      "id": "80f05a4a3850",
+      "text": "Контекст между сессиями",
+      "paths": [
+        "surface-pages.js:10"
+      ]
+    },
+    {
+      "id": "76b66d3f401e",
+      "text": "Новый разговор.<br>Работа продолжается с того же места.",
+      "paths": [
+        "surface-pages.js:10"
+      ]
+    },
+    {
+      "id": "460b59b99f03",
+      "text": "Сейчас",
+      "paths": [
+        "surface-pages.js:13"
+      ]
+    },
+    {
+      "id": "2c72f3ddaad8",
+      "text": "Рабочий ход",
+      "paths": [
+        "surface-pages.js:13"
+      ]
+    },
+    {
+      "id": "fcc59c065b50",
+      "text": "Разговор, найденная причина ошибки, принятое решение. Агент выбирает, что пригодится дальше.",
+      "paths": [
+        "surface-pages.js:13"
+      ]
+    },
+    {
+      "id": "33df70eb0ba3",
+      "text": "Дневник агента",
+      "paths": [
+        "surface-pages.js:15"
+      ]
+    },
+    {
+      "id": "5aff2e4ba56e",
+      "text": "Короткий итог",
+      "paths": [
+        "surface-pages.js:15"
+      ]
+    },
+    {
+      "id": "b4d24ec755bc",
+      "text": "Что сделано, что осталось и откуда продолжать. Запись получает дату и тему.",
+      "paths": [
+        "surface-pages.js:15"
+      ]
+    },
+    {
+      "id": "533bad9599c3",
+      "text": "Фрагменты проекта",
+      "paths": [
+        "surface-pages.js:16"
+      ]
+    },
+    {
+      "id": "0012f1aec66e",
+      "text": "Точный контекст",
+      "paths": [
+        "surface-pages.js:16"
+      ]
+    },
+    {
+      "id": "4e0d01387e83",
+      "text": "Исходный текст решения, команды или кода. Рядом — источник и автор записи.",
+      "paths": [
+        "surface-pages.js:16"
+      ]
+    },
+    {
+      "id": "c395bb1d8c18",
+      "text": "Граф знаний",
+      "paths": [
+        "surface-pages.js:17"
+      ]
+    },
+    {
+      "id": "e1e6fc3b7a4e",
+      "text": "Связи и факты",
+      "paths": [
+        "surface-pages.js:17"
+      ]
+    },
+    {
+      "id": "b8050280c2b4",
+      "text": "Кто ведёт проект, с чем связано решение, когда факт был действителен.",
+      "paths": [
+        "surface-pages.js:17"
+      ]
+    },
+    {
+      "id": "fd1ef6d55e16",
+      "text": "Как устроен дворец",
+      "paths": [
+        "surface-pages.js:23"
+      ]
+    },
+    {
+      "id": "61d3edf6fb99",
+      "text": "У каждого фрагмента есть адрес.",
+      "paths": [
+        "surface-pages.js:23"
+      ]
+    },
+    {
+      "id": "5e1ce73f63fa",
+      "text": "Иерархия сужает поиск: сначала проект, затем аспект работы, затем конкретный источник.",
+      "paths": [
+        "surface-pages.js:23"
+      ]
+    },
+    {
+      "id": "19a633eaf0d9",
+      "text": "Как вспоминает агент",
+      "paths": [
+        "surface-pages.js:34"
+      ]
+    },
+    {
+      "id": "1af033085ee9",
+      "text": "От вопроса — к исходному контексту.",
+      "paths": [
+        "surface-pages.js:34"
+      ]
+    },
+    {
+      "id": "9021b7384105",
+      "text": "Поиск возвращает сохранённые фрагменты. Агент читает их и сопоставляет с текущим состоянием работы.",
+      "paths": [
+        "surface-pages.js:34"
+      ]
+    },
+    {
+      "id": "e9e556762339",
+      "text": "\n      <section class=\"sp-memory-map sp-map\" data-sp-map data-sp-links='[[\"session\",\"diary\"],[\"session\",\"fragment\"],[\"session\",\"relation\"],[\"diary\",\"resume\"],[\"fragment\",\"resume\"],[\"relation\",\"resume\"]]' aria-label=\"Из рабочего хода в память и следующую сессию\">\n        ",
+      "paths": [
+        "surface-pages.js:10"
+      ]
+    },
+    {
+      "id": "11e743f3f8d6",
+      "text": "\n        </div>\n        <article class=\"sp-resume\" data-sp-node=\"resume\"><span class=\"sp-label\">Следующая сессия</span><h3>«На чём мы остановились?»</h3><p>Агент читает свой дневник, ищет историю проекта и открывает нужные фрагменты.</p><div class=\"sp-resume-result\"><i class=\"sp-star\" aria-hidden=\"true\"></i><strong>Контекст восстановлен</strong><span>Решение · причина · следующий шаг</span></div></article>\n      </section>\n      <p class=\"sp-under-map\"><b>Hook напоминает сохранить итоги.</b> Содержание выбирает и записывает агент. Успешное сохранение подтверждается чтением записи обратно.</p>\n      <section class=\"sp-section\">\n        ",
+      "paths": [
+        "surface-pages.js:17"
+      ]
+    },
+    {
+      "id": "331a23dfbdbb",
+      "text": "\n        <div class=\"sp-palace-address\">\n          <article><span class=\"sp-label\">Wing · крыло</span><h3>Проект</h3><p>Общий контекст одной работы.</p><span class=\"sp-address-example\">проект-пример</span></article>\n          <span class=\"sp-arrow\" aria-hidden=\"true\">→</span>\n          <article><span class=\"sp-label\">Room · комната</span><h3>Аспект</h3><p>Решения, ошибки, встречи, технические детали.</p><span class=\"sp-address-example\">decisions</span></article>\n          <span class=\"sp-arrow\" aria-hidden=\"true\">→</span>\n          <article class=\"sp-drawer\"><span class=\"sp-label\">Drawer · фрагмент</span><blockquote>«Для сравнения фиксируем одинаковый бюджет обучения».</blockquote><p>Текст + источник + дата + ID</p></article>\n        </div>\n        <p class=\"sp-small\">Условный пример. Дневник хранится отдельно по имени агента; один агент может работать с памятью нескольких проектов.</p>\n      </section>\n      <section class=\"sp-section\">\n        ",
+      "paths": [
+        "surface-pages.js:23"
+      ]
+    },
+    {
+      "id": "38003960fa04",
+      "text": "\n        <ol class=\"sp-recall-path\"><li><span>Короткий запрос</span><p>Ключевые слова, проект и нужная тема.</p></li><li><span>Смысл и слова</span><p>Векторные кандидаты; совпадения слов уточняют порядок.</p></li><li><span>Исходный фрагмент</span><p>Текст, место в памяти и ссылка на источник.</p></li><li><span>Проверка сейчас</span><p>Статус сервера, код и результаты могли измениться.</p></li></ol>\n        <div class=\"sp-memory-foot\"><div><h3>Нужно быстро продолжить?</h3><p>Последние записи дневника дают ближайшие действия. Поиск по проекту помогает восстановить более старое решение.</p></div><div><h3>Нужно понять связь?</h3><p>Запрос к графу находит отношения сущностей и их историю. Старый факт можно завершить по времени, сохранив его происхождение.</p></div></div>\n        <details class=\"sp-fold\"><summary>Хранилище и инструменты <span>Технические детали</span></summary><div class=\"sp-fold-body\"><p>В проверенной установке тексты и векторы лежат в локальном Chroma. Поиск сначала получает кандидатов по смыслу; тематические сводки могут поднять связанные источники, а BM25 уточняет порядок по словам. Это поиск сохранённого материала, без генерации нового текста внутри поискового инструмента.</p><p>Типизированные связи с периодом действия хранятся отдельно в SQLite. Дневник может быть записан в компактном формате AAAK; исходные фрагменты сохраняют обычным текстом, чтобы их можно было прочитать и проверить.</p><dl class=\"sp-api\"><dt>Записать</dt><dd>mempalace_diary_write · mempalace_add_drawer · mempalace_kg_add</dd><dt>Вспомнить</dt><dd>mempalace_diary_read · mempalace_search · mempalace_get_drawer · mempalace_kg_query</dd></dl></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>MemPalace возвращает историю работы. Общие научные утверждения и их основания ведутся в Lab Knowledge MCP.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"https://github.com/MemPalace/mempalace\" target=\"_blank\" rel=\"noopener\">MemPalace на GitHub ↗</a></nav></footer>\n    </div>",
+      "paths": [
+        "surface-pages.js:34"
+      ]
+    },
+    {
+      "id": "eab3a5ee5a09",
+      "text": "Общее пространство команды",
+      "paths": [
+        "surface-pages.js:45"
+      ]
+    },
+    {
+      "id": "8e0c1f0e5864",
+      "text": "У каждой работы — свой дом.<br>У каждой задачи — понятный результат.",
+      "paths": [
+        "surface-pages.js:45"
+      ]
+    },
+    {
+      "id": "805531461c44",
+      "text": "Научная работа",
+      "paths": [
+        "surface-pages.js:48"
+      ]
+    },
+    {
+      "id": "882ea97b2ac5",
+      "text": "Исследования",
+      "paths": [
+        "surface-pages.js:48"
+      ]
+    },
+    {
+      "id": "d7c6b7913202",
+      "text": "Что изучаем и какой вопрос решаем.",
+      "paths": [
+        "surface-pages.js:48"
+      ]
+    },
+    {
+      "id": "2106d07f235f",
+      "text": "Внутри исследований",
+      "paths": [
+        "surface-pages.js:49"
+      ]
+    },
+    {
+      "id": "2d2e04d1104d",
+      "text": "Научная тема",
+      "paths": [
+        "surface-pages.js:49"
+      ]
+    },
+    {
+      "id": "b7bffa50b1d8",
+      "text": "Направление, которое объединяет родственные работы.",
+      "paths": [
+        "surface-pages.js:49"
+      ]
+    },
+    {
+      "id": "31e0d75287fd",
+      "text": "Внутри темы",
+      "paths": [
+        "surface-pages.js:50"
+      ]
+    },
+    {
+      "id": "41f3522b9e88",
+      "text": "Подраздел",
+      "paths": [
+        "surface-pages.js:50"
+      ]
+    },
+    {
+      "id": "0bb5942f5f49",
+      "text": "Более узкая область или семейство методов.",
+      "paths": [
+        "surface-pages.js:50"
+      ]
+    },
+    {
+      "id": "fc76bf728c91",
+      "text": "Обязательства команды",
+      "paths": [
+        "surface-pages.js:52"
+      ]
+    },
+    {
+      "id": "deb42d77cfb3",
+      "text": "Менеджмент",
+      "paths": [
+        "surface-pages.js:52"
+      ]
+    },
+    {
+      "id": "90bede3101ed",
+      "text": "Коммерческие проекты, этапы, приёмка и административная работа.",
+      "paths": [
+        "surface-pages.js:52"
+      ]
+    },
+    {
+      "id": "806fb1d1759c",
+      "text": "Внутри проекта",
+      "paths": [
+        "surface-pages.js:57"
+      ]
+    },
+    {
+      "id": "53894502f48e",
+      "text": "Из договорённости — в задачу.",
+      "paths": [
+        "surface-pages.js:57"
+      ]
+    },
+    {
+      "id": "f0508e483ce5",
+      "text": "Человек видит ожидаемый результат, ответственного и движение работы. Подробности остаются в карточке задачи.",
+      "paths": [
+        "surface-pages.js:57"
+      ]
+    },
+    {
+      "id": "01d12bf93b38",
+      "text": "Люди и агенты",
+      "paths": [
+        "surface-pages.js:61"
+      ]
+    },
+    {
+      "id": "3be80231df0c",
+      "text": "Работают с одной доской.",
+      "paths": [
+        "surface-pages.js:61"
+      ]
+    },
+    {
+      "id": "09078c806c34",
+      "text": "Запись агента попадает в тот же проект, который открывает команда. Связь задаётся заранее, по существующим ID.",
+      "paths": [
+        "surface-pages.js:61"
+      ]
+    },
+    {
+      "id": "2fe1bd43e3b3",
+      "text": "\n      <section class=\"sp-team-map sp-map\" data-sp-map data-sp-links='[[\"research\",\"theme\"],[\"theme\",\"area\"],[\"area\",\"project\"],[\"management\",\"delivery\"],[\"delivery\",\"project\"]]' aria-label=\"Исследовательская и управленческая стороны проекта\">\n        ",
+      "paths": [
+        "surface-pages.js:45"
+      ]
+    },
+    {
+      "id": "c5159dea8241",
+      "text": "\n        <article class=\"sp-project-sheet\" data-sp-node=\"project\"><span class=\"sp-label\">Исследовательский проект</span><h3>Вопрос → результат</h3><p>Цель, подход, участники, текущий статус и ссылки на знание.</p><div><b>КОД · Задачи</b><span>Одна исследовательская доска</span></div><div><b>КОД · Созвоны</b><span>Итоги обсуждений и договорённости</span></div></article>\n        ",
+      "paths": [
+        "surface-pages.js:50"
+      ]
+    },
+    {
+      "id": "e45fed8c41ad",
+      "text": "\n        <article class=\"sp-delivery\" data-sp-node=\"delivery\"><span class=\"sp-label\">Управленческая страница</span><h3>Что и когда передаём</h3><p>Заказчик или программа, обязательства, сроки, документы и критерии приёмки.</p><span class=\"sp-crosslink\">Взаимные ссылки с исследовательским проектом ↗</span></article>\n      </section>\n      <p class=\"sp-under-map\"><b>Коммерческое исследование использует обе стороны.</b> Научная работа остаётся в «Исследованиях», договорные материалы — в «Менеджменте». Исследовательская доска у проекта одна.</p>\n      <section class=\"sp-section\">\n        ",
+      "paths": [
+        "surface-pages.js:52"
+      ]
+    },
+    {
+      "id": "ff947a90dfb7",
+      "text": "\n        <div class=\"sp-task-layout\"><article class=\"sp-task-example\"><span class=\"sp-label\">Условный пример задачи</span><h3>Сравнить два метода<br>при одинаковом бюджете</h3><dl><dt>Ответственный</dt><dd>Участник проекта</dd><dt>Постановка</dt><dd>Что сравниваем и какие условия фиксируем</dd><dt>Готово, когда</dt><dd>Есть таблица результатов и ссылка на проверенный запуск</dd><dt>Результат</dt><dd>Артефакт, краткий вывод и связанные записи MCP</dd></dl></article><div class=\"sp-task-explainer\"><h3>Статус отражает ход работы.</h3><ol class=\"sp-task-path\"><li><b>Поставлена</b><span>Понятны цель и исполнитель</span></li><li><b>В работе</b><span>Есть прогресс или конкретное препятствие</span></li><li><b>На проверке</b><span>Результат приложен, его можно оценить</span></li><li><b>Завершена</b><span>Критерий готовности выполнен</span></li></ol><p class=\"sp-small\">Это схема движения задачи. Названия и набор статусов берутся из существующей доски проекта.</p></div></div>\n      </section>\n      <section class=\"sp-section\">\n        ",
+      "paths": [
+        "surface-pages.js:57"
+      ]
+    },
+    {
+      "id": "79011d4c4526",
+      "text": "\n        <div class=\"sp-team-actors\"><article><span class=\"sp-label\">Человек</span><h3>Ставит и проверяет</h3><p>Определяет результат, назначает исполнителя, обсуждает прогресс и принимает выполненную работу.</p></article><article><span class=\"sp-label\">Агент с доступом</span><h3>Готовит и обновляет</h3><p>Находит привязанную доску, проверяет будущую запись, сохраняет задачу и перечитывает результат. Повторный вызов использует тот же ключ задачи.</p></article><article><span class=\"sp-label\">Hermes</span><h3>Получает поручение</h3><p>Читает задачи этого проекта, назначенные его владельцу. Может принять поручение и дописать итог, сохраняя человека исполнителем. Личная очередь Hermes остаётся отдельно; её обзор доступен в Obsidian.</p></article></div>\n        <p class=\"sp-under-map\">Hermes проверяет поручения в своём обычном рабочем цикле. Перед изменением сверяет назначение и версию карточки; при блокировке объясняет, какая помощь нужна. Закрытие задачи и оценка научного утверждения в MCP — разные результаты.</p>\n      </section>\n      <aside class=\"sp-common\"><span class=\"sp-label\">Общая информация</span><h3>Точка входа для всех.</h3><p>Правила размещения, справочник сотрудников и ссылки на общие ресурсы. Исследовательские и управленческие страницы ссылаются на эти правила.</p></aside>\n      <footer class=\"sp-footer\"><p>Личные задачи — в Operon. Работа команды — на доске проекта в Yonote. Полные личные черновики остаются в Obsidian.</p><nav><a href=\"https://brain-lab.yonote.ru/\" target=\"_blank\" rel=\"noopener\">Открыть Yonote ↗</a><a href=\"https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi\" target=\"_blank\" rel=\"noopener\">Правила лаборатории ↗</a></nav><small>Ссылки Yonote доступны участникам с правами на пространство.</small></footer>\n    </div>",
+      "paths": [
+        "surface-pages.js:61"
+      ]
+    },
+    {
+      "id": "aac244a8b1e5",
+      "text": "Задачи и доски",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "17cabf9745a1",
+      "text": "Представления в заметках",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "02e6439aae0d",
+      "text": "Стартовый экран",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "ddc64f6eb4f1",
+      "text": "Шаблоны и запуск",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "42fc9285f7ce",
+      "text": "Ежедневные заметки",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "c26867fc7229",
+      "text": "Оглавление документа",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "f52d3f2f969d",
+      "text": "Иконки",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "2f20c3d1caad",
+      "text": "Цвета файлов",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "60f54b8c2fcf",
+      "text": "Настройки темы",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "9a69d7ce8757",
+      "text": "Колонки в заметках",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "cea037575611",
+      "text": "Баннеры",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "44ac27ff3921",
+      "text": "Список чекбоксов",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "4a916d5d70f5",
+      "text": "Запросы к задачам",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "45339c92c644",
+      "text": "Импорт из своего Zotero",
+      "paths": [
+        "obsidian-setup.js:4"
+      ]
+    },
+    {
+      "id": "a0984419f972",
+      "text": "Личное пространство исследователя",
+      "paths": [
+        "obsidian-setup.js:8"
+      ]
+    },
+    {
+      "id": "40b466efc554",
+      "text": "Проект, мысли и следующий шаг.<br>Всё связано, всё под рукой.",
+      "paths": [
+        "obsidian-setup.js:8"
+      ]
+    },
+    {
+      "id": "d0578b52b359",
+      "text": "Источники",
+      "paths": [
+        "obsidian-setup.js:11"
+      ]
+    },
+    {
+      "id": "e721f71b8996",
+      "text": "Литература",
+      "paths": [
+        "obsidian-setup.js:11"
+      ]
+    },
+    {
+      "id": "0f26a57a02e1",
+      "text": "Заметки по статьям и ссылки на свою библиотеку Zotero.",
+      "paths": [
+        "obsidian-setup.js:11"
+      ]
+    },
+    {
+      "id": "4c2f403f0908",
+      "text": "Ход исследования",
+      "paths": [
+        "obsidian-setup.js:13"
+      ]
+    },
+    {
+      "id": "a61133800a5b",
+      "text": "Заметки и дневник",
+      "paths": [
+        "obsidian-setup.js:13"
+      ]
+    },
+    {
+      "id": "483a4385ce05",
+      "text": "Гипотезы, созвоны, протоколы, графики и причины решений.",
+      "paths": [
+        "obsidian-setup.js:13"
+      ]
+    },
+    {
+      "id": "d7c0413c5cfa",
+      "text": "Личный план",
+      "paths": [
+        "obsidian-setup.js:14"
+      ]
+    },
+    {
+      "id": "afeea5c35df1",
+      "text": "Задачи и чтение",
+      "paths": [
+        "obsidian-setup.js:14"
+      ]
+    },
+    {
+      "id": "69b804085cf7",
+      "text": "Две доски Operon. Те же задачи доступны в таблице и Markdown.",
+      "paths": [
+        "obsidian-setup.js:14"
+      ]
+    },
+    {
+      "id": "34dd5606d1f1",
+      "text": "Работа агента",
+      "paths": [
+        "obsidian-setup.js:15"
+      ]
+    },
+    {
+      "id": "bd426eae074b",
+      "text": "Доска Hermes",
+      "paths": [
+        "obsidian-setup.js:15"
+      ]
+    },
+    {
+      "id": "76d92a31027a",
+      "text": "Очередь, прогресс и результаты — рядом с тем проектом, к которому относятся.",
+      "paths": [
+        "obsidian-setup.js:15"
+      ]
+    },
+    {
+      "id": "b8df5153b919",
+      "text": "Два спокойных потока.",
+      "paths": [
+        "obsidian-setup.js:19"
+      ]
+    },
+    {
+      "id": "052d7d5d7185",
+      "text": "Для личных обязательств и для чтения. Доски помогают выбрать следующий шаг, сохраняя задачи в обычных файлах.",
+      "paths": [
+        "obsidian-setup.js:19"
+      ]
+    },
+    {
+      "id": "b30ef34b57cc",
+      "text": "Hermes рядом с проектом",
+      "paths": [
+        "obsidian-setup.js:23"
+      ]
+    },
+    {
+      "id": "e492fe927e9e",
+      "text": "Агент работает. Вы видите ход.",
+      "paths": [
+        "obsidian-setup.js:23"
+      ]
+    },
+    {
+      "id": "8988ca82b199",
+      "text": "Раз в 15 минут обычный Python обновляет обзор. Статусы, исходные ID и комментарии приходят из очереди Hermes.",
+      "paths": [
+        "obsidian-setup.js:23"
+      ]
+    },
+    {
+      "id": "a68cb73bb9fe",
+      "text": "На вашем сервере",
+      "paths": [
+        "obsidian-setup.js:25"
+      ]
+    },
+    {
+      "id": "71a8d4f072a8",
+      "text": "Очередь Hermes",
+      "paths": [
+        "obsidian-setup.js:25"
+      ]
+    },
+    {
+      "id": "57084b63d895",
+      "text": "Задачи, сообщения и результаты из существующей kanban.db.",
+      "paths": [
+        "obsidian-setup.js:25"
+      ]
+    },
+    {
+      "id": "924e0e8e941b",
+      "text": "По расписанию",
+      "paths": [
+        "obsidian-setup.js:26"
+      ]
+    },
+    {
+      "id": "7a234860e650",
+      "text": "Python · без LLM",
+      "paths": [
+        "obsidian-setup.js:26"
+      ]
+    },
+    {
+      "id": "579f44f3f17a",
+      "text": "Читает SQLite через SSH и детерминированно преобразует записи.",
+      "paths": [
+        "obsidian-setup.js:26"
+      ]
+    },
+    {
+      "id": "206dc1281941",
+      "text": "В папке проекта",
+      "paths": [
+        "obsidian-setup.js:27"
+      ]
+    },
+    {
+      "id": "7c8e553fa616",
+      "text": "Активная доска и история. Обзор предназначен для чтения.",
+      "paths": [
+        "obsidian-setup.js:27"
+      ]
+    },
+    {
+      "id": "696d3a3c4293",
+      "text": "Повторить у себя",
+      "paths": [
+        "obsidian-setup.js:34"
+      ]
+    },
+    {
+      "id": "1b6517140933",
+      "text": "Один набор на GitHub.",
+      "paths": [
+        "obsidian-setup.js:34"
+      ]
+    },
+    {
+      "id": "fe47984c0fdc",
+      "text": "Настройки, тема, плагины и примеры. Свои заметки, Zotero и подключение к Hermes вы добавляете у себя.",
+      "paths": [
+        "obsidian-setup.js:34"
+      ]
+    },
+    {
+      "id": "0ed82c5e663a",
+      "text": "\n      <section class=\"sp-obsidian-map sp-map\" data-sp-map data-sp-links='[[\"reading\",\"project\"],[\"tasks\",\"project\"],[\"project\",\"diary\"],[\"project\",\"hermes\"]]' aria-label=\"Материалы вокруг вашего проекта\">\n        ",
+      "paths": [
+        "obsidian-setup.js:8"
+      ]
+    },
+    {
+      "id": "12a79464a5bc",
+      "text": "\n        <article class=\"sp-personal-project\" data-sp-node=\"project\"><span class=\"sp-label\">В папке вашей работы</span><div class=\"sp-crystal\" aria-hidden=\"true\">◇</div><h2>Ваш проект</h2><p>Главная заметка связывает идею, планы, результаты и материалы.</p><div class=\"sp-file-lines\" aria-hidden=\"true\"><i></i><i></i><i></i></div><small>Обычные Markdown-файлы<br>и ссылки между ними</small></article>\n        ",
+      "paths": [
+        "obsidian-setup.js:11"
+      ]
+    },
+    {
+      "id": "ae3deb22962a",
+      "text": "\n      </section>\n      <div class=\"sp-obsidian-note\"><p>У проекта своя папка. Статьи живут в библиотеке, а ссылки связывают их с исследованием.</p><a class=\"os-download sp-primary-link\" href=\"",
+      "paths": [
+        "obsidian-setup.js:15"
+      ]
+    },
+    {
+      "id": "3705fc3ccda5",
+      "text": "\" target=\"_blank\" rel=\"noopener\">Взять сетап на GitHub ↗</a></div>\n      <section class=\"sp-section sp-operon\">\n        ",
+      "paths": [
+        "obsidian-setup.js:17"
+      ]
+    },
+    {
+      "id": "78a4eca970b3",
+      "text": "\n        <div class=\"sp-operon-lanes\"><article><h3>Мои задачи</h3><div><span>Надо</span><i>→</i><span>Делаю</span><i>→</i><span>Проверка</span><i>→</i><span>Готово</span></div><p>Исполнитель, приоритет и комментарии — внутри задачи.</p></article><article><h3>Чтение</h3><div><span>Инбокс</span><i>→</i><span>Очередь</span><i>→</i><span>Читаю</span><i>→</i><span>Прочитано</span></div><p>Отдельные состояния для отложенных статей и ожидания публикации.</p></article></div>\n      </section>\n      <section class=\"sp-section\" data-hermes-guide>\n        ",
+      "paths": [
+        "obsidian-setup.js:19"
+      ]
+    },
+    {
+      "id": "432b18e4b27f",
+      "text": "\n        </div>\n        <div class=\"sp-hermes-preview\"><header><span>Пример обзора · вымышленные задачи</span><span>Только просмотр</span></header><div><span class=\"sp-status sp-running\">В работе</span><b>Сравнить три запуска</b><span>demo-server · GPU 0, 1</span></div><div><span class=\"sp-status sp-help\">Нужна помощь</span><b>Уточнить бюджет baseline</b><span>Нужно выбрать лимит шагов</span></div><div><span class=\"sp-status\">Далее</span><b>Собрать итоговый отчёт</b><span>Прогон ещё не начат</span></div></div>\n        <p class=\"sp-small\">В Obsidian карточки раскрываются: понятные даты, результат и последние сообщения. Сервер и GPU показываются, когда они указаны у Hermes. При недоступном сервере остаётся последний успешный снимок.</p>\n        <p class=\"sp-under-map\">Источник статусов — Hermes. Экспорт не требует Operon. У каждого проекта свой обзор; собственные заметки можно хранить рядом.</p>\n      </section>\n      <section class=\"sp-section sp-setup-details\">\n        ",
+      "paths": [
+        "obsidian-setup.js:27"
+      ]
+    },
+    {
+      "id": "ebe291b93134",
+      "text": "\n        <details class=\"sp-fold\" data-setup-install><summary>Установка из GitHub <span>В новую папку Obsidian</span></summary><div class=\"sp-fold-body\"><p>Установите Obsidian, Git и Python 3.10+. Скачайте набор и выберите новую папку:</p><pre><code>git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git\ncd claude-brainlab/obsidian-setup\npython3 install.py --vault \"$HOME/My Research\" --owner \"Researcher\"</code></pre><p>Windows PowerShell:</p><pre><code>py -3 -m pip install tzdata\npy -3 install.py --vault \"$env:USERPROFILE\\My Research\" --owner \"Researcher\"</code></pre><p>В Obsidian: <b>Open folder as vault</b> → созданная папка → разрешить community plugins → <b>START HERE</b>. Рабочее пространство «Старт» открывает обе доски.</p><p>Первая задача: палитра команд → <b>Operon: Create New Operon Task</b> → название → <b>Pick a Template → Task → File</b>. Шаблон подставит ваше имя исполнителя.</p><p>Установщик создаёт только новый vault, скачивает закреплённые версии и проверяет SHA-256. Существующее хранилище меняйте выборочно, с резервной копией и при закрытом Obsidian.</p><p class=\"sp-small\">Полный запуск набора проверен в Obsidian на macOS. Установка в приложении на Windows и Linux ещё не подтверждена.</p></div></details>\n        <details class=\"sp-fold\" data-setup-plugins><summary>Тема и 14 плагинов <span>Состав и версии</span></summary><div class=\"sp-fold-body\"><p>Border 1.13.6, три CSS-сниппета и включённый набор:</p><div class=\"sp-plugin-list\">",
+      "paths": [
+        "obsidian-setup.js:34"
+      ]
+    },
+    {
+      "id": "98abe9648605",
+      "text": "</div><p>File Tree Alternative 2.6.0 и Notebook Navigator 2.6.2 записаны как выключенные. Параметр <code>--include-disabled</code> скачает и их. Автоархиватор не включён.</p></div></details>\n        <details class=\"sp-fold\" data-setup-hermes><summary>Подключение Hermes <span>Сервер → папка проекта</span></summary><div class=\"sp-fold-body\"><p>В <code>examples/hermes-config.json</code> укажите существующие board slug, SSH alias и папку проекта. Один конфиг связывает несколько проектов.</p><pre><code>python3 sync_hermes.py --config /path/to/hermes-config.json</code></pre><p>Сначала проверьте один запуск. Затем включите интервал 15 минут: в наборе есть шаблоны launchd для Mac, systemd для Linux и инструкция Task Scheduler для Windows. Компьютер должен быть включён.</p><p>Контракт <code>kanban.db</code> относится к нашему профилю Hermes: такая очередь должна существовать на вашем сервере. Экспорт читает её и не меняет задачи Hermes или Yonote.</p></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>Личные файлы остаются в вашем Obsidian. Общие утверждения — в MCP, задачи команды — в Yonote.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"#surface/yonote\">Как устроен Yonote ↗</a></nav></footer>\n    </div>",
+      "paths": [
+        "obsidian-setup.js:39"
+      ]
+    },
+    {
+      "id": "c5b74f787347",
+      "text": "<p class=\"os-reference\"><a href=\"#surface/obsidian\" data-obsidian-surface>Obsidian: установка, плагины и доски Hermes ↗</a></p>",
+      "paths": [
+        "obsidian-setup.js:46"
+      ]
+    }
+  ]
+}

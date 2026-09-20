@@ -1,0 +1,1239 @@
+{
+  "group": "search-core",
+  "entries": [
+    {
+      "id": "9c9a1aaf46d7",
+      "text": "прогрев",
+      "paths": [
+        "search-core.js:38"
+      ]
+    },
+    {
+      "id": "5352df352b6a",
+      "text": "разогрев",
+      "paths": [
+        "search-core.js:38"
+      ]
+    },
+    {
+      "id": "d503e47d4bae",
+      "text": "затухание",
+      "paths": [
+        "search-core.js:38"
+      ]
+    },
+    {
+      "id": "651619165230",
+      "text": "дообучение",
+      "paths": [
+        "search-core.js:39"
+      ]
+    },
+    {
+      "id": "f142675f2269",
+      "text": "предобучение",
+      "paths": [
+        "search-core.js:39"
+      ]
+    },
+    {
+      "id": "e25a4d9facd9",
+      "text": "обучение",
+      "paths": [
+        "search-core.js:40"
+      ]
+    },
+    {
+      "id": "18e00bef8f3e",
+      "text": "сходимость",
+      "paths": [
+        "search-core.js:40"
+      ]
+    },
+    {
+      "id": "976a604c072f",
+      "text": "расходимость",
+      "paths": [
+        "search-core.js:40"
+      ]
+    },
+    {
+      "id": "db1a54628fff",
+      "text": "квантование",
+      "paths": [
+        "search-core.js:41"
+      ]
+    },
+    {
+      "id": "d72d947a83c5",
+      "text": "разреженность",
+      "paths": [
+        "search-core.js:41"
+      ]
+    },
+    {
+      "id": "fcae21314c78",
+      "text": "разрежённость",
+      "paths": [
+        "search-core.js:41"
+      ]
+    },
+    {
+      "id": "82508e6ac12e",
+      "text": "оптимизатор",
+      "paths": [
+        "search-core.js:42"
+      ]
+    },
+    {
+      "id": "9ec6ae83d383",
+      "text": "градиент",
+      "paths": [
+        "search-core.js:42"
+      ]
+    },
+    {
+      "id": "801babf5dfd8",
+      "text": "безградиентный",
+      "paths": [
+        "search-core.js:42"
+      ]
+    },
+    {
+      "id": "4860893317e9",
+      "text": "безградиентная",
+      "paths": [
+        "search-core.js:43"
+      ]
+    },
+    {
+      "id": "7527f363a6bd",
+      "text": "безградиентное",
+      "paths": [
+        "search-core.js:43"
+      ]
+    },
+    {
+      "id": "777323225fc8",
+      "text": "нижняя",
+      "paths": [
+        "search-core.js:44"
+      ]
+    },
+    {
+      "id": "45b9ff4df114",
+      "text": "оценка",
+      "paths": [
+        "search-core.js:44"
+      ]
+    },
+    {
+      "id": "64fbfec0bb2f",
+      "text": "оценки",
+      "paths": [
+        "search-core.js:44"
+      ]
+    },
+    {
+      "id": "f52f562b40c7",
+      "text": "теорема",
+      "paths": [
+        "search-core.js:45"
+      ]
+    },
+    {
+      "id": "4d5eb2ee4771",
+      "text": "доказательство",
+      "paths": [
+        "search-core.js:45"
+      ]
+    },
+    {
+      "id": "d1d2f948bb8f",
+      "text": "лемма",
+      "paths": [
+        "search-core.js:45"
+      ]
+    },
+    {
+      "id": "2867ab93fe16",
+      "text": "кривизна",
+      "paths": [
+        "search-core.js:46"
+      ]
+    },
+    {
+      "id": "354625988278",
+      "text": "ортогонализация",
+      "paths": [
+        "search-core.js:46"
+      ]
+    },
+    {
+      "id": "7b1cfc3ef2b6",
+      "text": "низкоранговый",
+      "paths": [
+        "search-core.js:47"
+      ]
+    },
+    {
+      "id": "8dcab1b08bb1",
+      "text": "низкоранговая",
+      "paths": [
+        "search-core.js:47"
+      ]
+    },
+    {
+      "id": "b85c909048b0",
+      "text": "низкоранговое",
+      "paths": [
+        "search-core.js:47"
+      ]
+    },
+    {
+      "id": "ed9c1cf7b81e",
+      "text": "адаптер",
+      "paths": [
+        "search-core.js:48"
+      ]
+    },
+    {
+      "id": "dfd93b22ca26",
+      "text": "адаптеры",
+      "paths": [
+        "search-core.js:48"
+      ]
+    },
+    {
+      "id": "313dbc68cdf1",
+      "text": "слияние",
+      "paths": [
+        "search-core.js:48"
+      ]
+    },
+    {
+      "id": "63e0c823d377",
+      "text": "память",
+      "paths": [
+        "search-core.js:49"
+      ]
+    },
+    {
+      "id": "d819c1ac98c8",
+      "text": "скорость",
+      "paths": [
+        "search-core.js:49"
+      ]
+    },
+    {
+      "id": "725fecd61e24",
+      "text": "точность",
+      "paths": [
+        "search-core.js:49"
+      ]
+    },
+    {
+      "id": "6c8d7118a8a4",
+      "text": "батч",
+      "paths": [
+        "search-core.js:50"
+      ]
+    },
+    {
+      "id": "7b5a510cc0d3",
+      "text": "шаг",
+      "paths": [
+        "search-core.js:50"
+      ]
+    },
+    {
+      "id": "dfe4bd9f7ed9",
+      "text": "расписание",
+      "paths": [
+        "search-core.js:50"
+      ]
+    },
+    {
+      "id": "f1ee2ddbb84d",
+      "text": "спектральный",
+      "paths": [
+        "search-core.js:50"
+      ]
+    },
+    {
+      "id": "f7cf8c538f13",
+      "text": "внимание",
+      "paths": [
+        "search-core.js:51"
+      ]
+    },
+    {
+      "id": "d760d3431815",
+      "text": "матрица",
+      "paths": [
+        "search-core.js:51"
+      ]
+    },
+    {
+      "id": "b9025ea8976e",
+      "text": "фишера",
+      "paths": [
+        "search-core.js:51"
+      ]
+    },
+    {
+      "id": "4b7065b3b023",
+      "text": "выкладка",
+      "paths": [
+        "search-core.js:52"
+      ]
+    },
+    {
+      "id": "90ec902af718",
+      "text": "прогон",
+      "paths": [
+        "search-core.js:52"
+      ]
+    },
+    {
+      "id": "dda6cc086213",
+      "text": "измерение",
+      "paths": [
+        "search-core.js:52"
+      ]
+    },
+    {
+      "id": "d7775289cb47",
+      "text": "утверждение",
+      "paths": [
+        "search-core.js:53"
+      ]
+    },
+    {
+      "id": "0dcf85a9b900",
+      "text": "гипотеза",
+      "paths": [
+        "search-core.js:53"
+      ]
+    },
+    {
+      "id": "1347fb28ec9e",
+      "text": "статья",
+      "paths": [
+        "search-core.js:54"
+      ]
+    },
+    {
+      "id": "cc48fc8c6810",
+      "text": "статьи",
+      "paths": [
+        "search-core.js:54"
+      ]
+    },
+    {
+      "id": "dfb992e6d06a",
+      "text": "проект",
+      "paths": [
+        "search-core.js:54"
+      ]
+    },
+    {
+      "id": "587175da7db8",
+      "text": "проекты",
+      "paths": [
+        "search-core.js:54",
+        "search-core.js:397",
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "2f3d51f8b74e",
+      "text": "направление",
+      "paths": [
+        "search-core.js:55",
+        "search-core.js:318",
+        "search-core.js:391",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "100fb439b615",
+      "text": "направления",
+      "paths": [
+        "search-core.js:55",
+        "search-core.js:391",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "b643068cc9cf",
+      "text": "раздел",
+      "paths": [
+        "search-core.js:56",
+        "search-core.js:393",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "dc5296deb66d",
+      "text": "разделы",
+      "paths": [
+        "search-core.js:56",
+        "search-core.js:393",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "51f38f4279e0",
+      "text": "тема",
+      "paths": [
+        "search-core.js:56",
+        "search-core.js:392",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "511422571bdc",
+      "text": "темы",
+      "paths": [
+        "search-core.js:56",
+        "search-core.js:392",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "eead37caf818",
+      "text": "и",
+      "paths": [
+        "search-core.js:61",
+        "search-core.js:84"
+      ]
+    },
+    {
+      "id": "b8012cb642c8",
+      "text": "в",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "c0f622cbe8f9",
+      "text": "во",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "284852b2c550",
+      "text": "на",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "51ad1397c225",
+      "text": "по",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "64c3fbb24895",
+      "text": "за",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "7f4adf318ef3",
+      "text": "из",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "5f201355756a",
+      "text": "от",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "102dcd5d8636",
+      "text": "до",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "66ccd407f7d5",
+      "text": "для",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "6b505d269f31",
+      "text": "при",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "b626b337acfa",
+      "text": "про",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "6847398e7186",
+      "text": "над",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "5aa03cc47262",
+      "text": "под",
+      "paths": [
+        "search-core.js:61"
+      ]
+    },
+    {
+      "id": "ff6ba2e6b01f",
+      "text": "что",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "17eebe34f431",
+      "text": "как",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "58fa8e6abd6c",
+      "text": "где",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "d6f83fafc8d6",
+      "text": "когда",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "c272323b3c9d",
+      "text": "чем",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "db33bbc7544a",
+      "text": "это",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "153c990b6210",
+      "text": "этот",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "2dc32e28b218",
+      "text": "эта",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "449895a773a3",
+      "text": "эти",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "5b078bee337f",
+      "text": "тот",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "f36941010640",
+      "text": "так",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "5fc41460262c",
+      "text": "там",
+      "paths": [
+        "search-core.js:62"
+      ]
+    },
+    {
+      "id": "bcacbff7a563",
+      "text": "или",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "babcad4ad265",
+      "text": "но",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "823c4eb3e895",
+      "text": "а",
+      "paths": [
+        "search-core.js:63",
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "13e89520f3a9",
+      "text": "же",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "628dee7c8674",
+      "text": "ли",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "7e39d4898d8c",
+      "text": "бы",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "962b65e329ec",
+      "text": "не",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "3addecf4647f",
+      "text": "ни",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "7a2d863933e1",
+      "text": "мы",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "9b21f5cf014c",
+      "text": "я",
+      "paths": [
+        "search-core.js:63",
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "484518364fdb",
+      "text": "он",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "0e338553d71f",
+      "text": "она",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "7575772fe433",
+      "text": "они",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "c3089753a246",
+      "text": "все",
+      "paths": [
+        "search-core.js:63"
+      ]
+    },
+    {
+      "id": "bc36feaf1450",
+      "text": "всё",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "747f78e5a0be",
+      "text": "есть",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "8d16c1c96bb6",
+      "text": "быть",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "aaa52eb6da84",
+      "text": "был",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "03ab1f263680",
+      "text": "была",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "3b79270b18c8",
+      "text": "было",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "0b9dc19c787d",
+      "text": "были",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "c81efca3f19a",
+      "text": "нам",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "5d3be07a0aa9",
+      "text": "мне",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "ce84ebd823a8",
+      "text": "наш",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "56e554696f40",
+      "text": "наши",
+      "paths": [
+        "search-core.js:64"
+      ]
+    },
+    {
+      "id": "e4e89e68d82e",
+      "text": "нужно",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "86017c0cb383",
+      "text": "нужен",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "d75e5604e4be",
+      "text": "можно",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "3a071903d868",
+      "text": "какие",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "6dfcd1561acb",
+      "text": "какой",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "65d4e8f50f31",
+      "text": "какая",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "50f4adfa48c6",
+      "text": "каких",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "237704dce184",
+      "text": "сколько",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "8c64ae99292b",
+      "text": "почему",
+      "paths": [
+        "search-core.js:65"
+      ]
+    },
+    {
+      "id": "afd1860e686f",
+      "text": "зачем",
+      "paths": [
+        "search-core.js:66"
+      ]
+    },
+    {
+      "id": "1911e48a6cb3",
+      "text": "иями",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "736d50b06064",
+      "text": "ями",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "2bc62a81003a",
+      "text": "ами",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "21c769e48c34",
+      "text": "иях",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "8ae8f5ced9f3",
+      "text": "ях",
+      "paths": [
+        "search-core.js:81",
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "d8ceef76ffa7",
+      "text": "ах",
+      "paths": [
+        "search-core.js:81",
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "ebdf22d42fea",
+      "text": "ого",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "59b70b85c819",
+      "text": "ему",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "2f8fc8d28889",
+      "text": "ому",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "0a447261fb39",
+      "text": "ыми",
+      "paths": [
+        "search-core.js:81"
+      ]
+    },
+    {
+      "id": "3faf8396fe6a",
+      "text": "ими",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "cd19a83e0db7",
+      "text": "ей",
+      "paths": [
+        "search-core.js:82",
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "b7f3fe1568b5",
+      "text": "ой",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "739d484fc0c6",
+      "text": "ый",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "61760b129eb1",
+      "text": "ий",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "f8b79d1e72a9",
+      "text": "ая",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "e7035fb61bbf",
+      "text": "ое",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "5628a0cb9944",
+      "text": "ые",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "dfc767fcf14d",
+      "text": "ие",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "e971e716fcf6",
+      "text": "ов",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "d98ecefb0849",
+      "text": "ев",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "7fa4a8d975c2",
+      "text": "ам",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "b10d932960f7",
+      "text": "ям",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "039b18709749",
+      "text": "ом",
+      "paths": [
+        "search-core.js:82"
+      ]
+    },
+    {
+      "id": "df14f97f55cd",
+      "text": "ем",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "1fbf98b221c6",
+      "text": "ую",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "403510772fc3",
+      "text": "юю",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "38ec451f2bc0",
+      "text": "ия",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "61cd5a476b1d",
+      "text": "ии",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "a57a0818714f",
+      "text": "ью",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "c4fb19a50f99",
+      "text": "ья",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "beee80c256b4",
+      "text": "у",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "37d43a57a463",
+      "text": "ю",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "446cdc8e3c0d",
+      "text": "ы",
+      "paths": [
+        "search-core.js:83"
+      ]
+    },
+    {
+      "id": "259f56cb715b",
+      "text": "е",
+      "paths": [
+        "search-core.js:84"
+      ]
+    },
+    {
+      "id": "50338c005c41",
+      "text": "о",
+      "paths": [
+        "search-core.js:84"
+      ]
+    },
+    {
+      "id": "b95d78565f15",
+      "text": "ь",
+      "paths": [
+        "search-core.js:84"
+      ]
+    },
+    {
+      "id": "02a79aea395d",
+      "text": "направление направления",
+      "paths": [
+        "search-core.js:321"
+      ]
+    },
+    {
+      "id": "77d77553a46c",
+      "text": "род",
+      "paths": [
+        "search-core.js:327",
+        "search-core.js:333"
+      ]
+    },
+    {
+      "id": "fb51532a1ce6",
+      "text": "слаг",
+      "paths": [
+        "search-core.js:333"
+      ]
+    },
+    {
+      "id": "e5a87a733819",
+      "text": "тема темы",
+      "paths": [
+        "search-core.js:343"
+      ]
+    },
+    {
+      "id": "1adcecf7b578",
+      "text": "проект проекты",
+      "paths": [
+        "search-core.js:343"
+      ]
+    },
+    {
+      "id": "41241dbff848",
+      "text": "направлений",
+      "paths": [
+        "search-core.js:391",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "a64fee1633b5",
+      "text": "тем",
+      "paths": [
+        "search-core.js:392",
+        "search-core.js:400"
+      ]
+    },
+    {
+      "id": "a2689c91859a",
+      "text": "разделов",
+      "paths": [
+        "search-core.js:394",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "a860edd14aff",
+      "text": "подраздел",
+      "paths": [
+        "search-core.js:395",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "e4c0f09160b1",
+      "text": "подразделы",
+      "paths": [
+        "search-core.js:395",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "474483783152",
+      "text": "подтема",
+      "paths": [
+        "search-core.js:396",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "14f59cbce68c",
+      "text": "подтемы",
+      "paths": [
+        "search-core.js:396",
+        "search-core.js:401"
+      ]
+    },
+    {
+      "id": "469cca22e1ba",
+      "text": "проектов",
+      "paths": [
+        "search-core.js:397",
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "a5c3b417bbcb",
+      "text": "обзор",
+      "paths": [
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "16240a0b8cdc",
+      "text": "структура",
+      "paths": [
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "02a06e17c1f3",
+      "text": "список",
+      "paths": [
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "7566e3f4f0a3",
+      "text": "карта",
+      "paths": [
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "4ebad788eaca",
+      "text": "области",
+      "paths": [
+        "search-core.js:402"
+      ]
+    },
+    {
+      "id": "177f676e643f",
+      "text": "область",
+      "paths": [
+        "search-core.js:402"
+      ]
+    }
+  ]
+}

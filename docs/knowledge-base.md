@@ -199,9 +199,9 @@ ones showed 127 holes where there were 52.
 Maps of code are written a line at a time, not as finished documents. `record_code_note`
 adds one seam or one quirk to a repository's card and starts the card when there is none,
 so a finding can be recorded the moment somebody makes it; `upsert_repository` replaces the
-whole card and is for composing a map in one sitting. The same finding can be recorded with
-no model involved at all: the lab hook parses `ЛАБ-КОД: <репозиторий> | шов: <что> -> <где>`
-out of a message and writes it, which is what makes the habit affordable.
+whole card and is for composing a map in one sitting. A write is one call with what happened in it: no key to
+invent, no preview, no markup. The same write repeated returns the first record instead of
+a duplicate, so retrying is safe.
 
 `search_code` takes the repository card apart into places and judges each place on its own
 short text, because the card as a whole answers "which code" and never "where in it". A place

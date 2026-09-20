@@ -177,11 +177,24 @@ the answer they need.
 | what do outside papers claim | `search_claims` | claims only, one by one, each with the place in the paper where it can be checked |
 | what exists on X at all | `browse_by_subject` | no ranking: every record naming the subject, grouped by its work, `total` against `shown` saying how much was cut. Muon alone holds four hundred records across fourteen works |
 | how do I run this, where do I edit it | `search_code` | places inside our repositories, not repositories as wholes: the command, the file, the quirk, each with the commit its map was checked against |
+| what do we do this with | `find_skill` | the laboratory's own skills: which one is meant for the job, when it applies, how to invoke it. A census on 20-09-2026 found 51 of 76 skills had never been invoked once, and part of that was simply having nowhere to ask |
 
 `browse_by_subject` resolves the subject through the vocabulary, so Muon, muon and мюон reach
 the same place, and a subject the vocabulary does not know returns empty rather than something
 merely similar. Its cut takes the tail of every kind of record, never a whole kind: the
 truncated set is a smaller version of itself, not a different set.
+
+A run names the code it ran on: `repository`, `commit_sha` and `run_command` on
+`record_experiment`, and `runs_on_repository` asks the same question backwards. Before
+that the only place to say it was prose inside the protocol, and prose ages silently —
+two commits later "we changed the step in train.py" is false and nothing says so.
+
+The chain from claim to conclusion breaks most often at the last step: on 20-09-2026 the
+base held 52 finished runs with no measurements at all, 26 of them written in a single
+month. Three things say so without costing a call — the write itself answers that the run
+it just finished has no numbers, `get_project_context` carries `open_ends` for the work
+being read, and `lab_health` counts only genuinely finished runs, because counting planned
+ones showed 127 holes where there were 52.
 
 Maps of code are written a line at a time, not as finished documents. `record_code_note`
 adds one seam or one quirk to a repository's card and starts the card when there is none,

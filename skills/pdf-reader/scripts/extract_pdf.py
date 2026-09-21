@@ -111,6 +111,14 @@ def extract(pdf_path: str, pages: str | None = None, method: str = "auto") -> di
 
 
 def main():
+    # Extracted text carries characters the console codepage cannot encode:
+    # minus signs, dashes, Greek letters. On Windows stdout defaults to the ANSI
+    # codepage and printing dies with UnicodeEncodeError partway through the
+    # paper, so pin it to UTF-8. On macOS and Linux stdout is UTF-8 already and
+    # this is a no-op.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+
     parser = argparse.ArgumentParser(description="Extract text from PDF")
     parser.add_argument("pdf_path", help="Path to the PDF file")
     parser.add_argument(

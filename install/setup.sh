@@ -84,6 +84,15 @@ for c in "${COMPONENTS[@]}"; do
   fi
 done
 
+# ── CLAUDE.md ──
+if [[ -f "$CLAUDE_HOME/CLAUDE.md" ]]; then
+  echo "  ↪ CLAUDE.md → CLAUDE.brainlab.md (sidecar — your existing CLAUDE.md kept)"
+  run "cp \"$REPO_ROOT/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.brainlab.md\""
+else
+  echo "  ↪ CLAUDE.md (new)"
+  run "cp \"$REPO_ROOT/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.md\""
+fi
+
 # ── Substitute placeholders in installed text files ──
 # Skills/scripts contain ${OBSIDIAN_VAULT}, ${VAULT_NAME}, ${UNPAYWALL_EMAIL}
 # placeholders. Markdown is read literally by the agent, not by a shell, so we
@@ -95,6 +104,7 @@ if (( ! DRY_RUN )); then
 import os, pathlib, re
 home = pathlib.Path(os.environ["CLAUDE_HOME"])
 roots = ["skills", "commands", "agents", "hooks", "scripts", "rules"]
+files = ["CLAUDE.md", "CLAUDE.brainlab.md"]
 exts = {".md", ".py", ".sh", ".js", ".json", ".yaml", ".yml", ".txt"}
 keys = ["OBSIDIAN_VAULT", "VAULT_NAME", "UNPAYWALL_EMAIL", "USER_EMAIL",
         "PAPERS_ROOT", "PROJECTS_ROOT", "STAFF_ROOT", "PYTHON_BIN"]
@@ -103,32 +113,30 @@ pattern = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
 def rep(m):
     v = subs.get(m.group(1))
     return v if v else m.group(0)
+def targets():
+    for root in roots:
+        base = home / root
+        if not base.exists(): continue
+        for p in base.rglob("*"):
+            if p.is_file() and p.suffix in exts:
+                yield p
+    for name in files:
+        p = home / name
+        if p.is_file():
+            yield p
 n_files = n_subs = 0
-for root in roots:
-    base = home / root
-    if not base.exists(): continue
-    for p in base.rglob("*"):
-        if not p.is_file() or p.suffix not in exts: continue
-        try:
-            text = p.read_text(encoding="utf-8")
-        except (UnicodeDecodeError, OSError):
-            continue
-        new, k = pattern.subn(rep, text)
-        if k:
-            p.write_text(new, encoding="utf-8")
-            n_files += 1
-            n_subs  += k
+for p in targets():
+    try:
+        text = p.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, OSError):
+        continue
+    new, k = pattern.subn(rep, text)
+    if k:
+        p.write_text(new, encoding="utf-8")
+        n_files += 1
+        n_subs  += k
 print(f"    {n_files} files, {n_subs} substitutions")
 PYEOF
-fi
-
-# ── CLAUDE.md ──
-if [[ -f "$CLAUDE_HOME/CLAUDE.md" ]]; then
-  echo "  ↪ CLAUDE.md → CLAUDE.brainlab.md (sidecar — your existing CLAUDE.md kept)"
-  run "cp \"$REPO_ROOT/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.brainlab.md\""
-else
-  echo "  ↪ CLAUDE.md (new)"
-  run "cp \"$REPO_ROOT/CLAUDE.md\" \"$CLAUDE_HOME/CLAUDE.md\""
 fi
 
 # ── settings.json (render from template) ──

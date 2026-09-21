@@ -342,6 +342,8 @@ To customize the theme: edit `skills/presentation/examples/terminal-style-mini.t
 
 ## Install
 
+### macOS / Linux
+
 ```bash
 git clone https://github.com/<you>/claude-brainlab.git
 cd claude-brainlab
@@ -349,9 +351,42 @@ bash install/bootstrap.sh   # interactive — fills .env
 bash install/setup.sh       # backup-aware copy to ~/.claude/
 ```
 
-Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`.
+### Windows (native, no WSL)
+
+```powershell
+git clone https://github.com/<you>/claude-brainlab.git
+cd claude-brainlab
+powershell -ExecutionPolicy Bypass -File install\setup-windows.ps1
+```
+
+The script creates `.env` interactively, installs everything into `~/.claude`,
+and registers the MemPalace + Zotero MCP servers via `claude mcp add`
+(that writes `~/.claude.json` — the only MCP config both the CLI and the
+desktop app actually read; `mcpServers` in `settings.json` is ignored).
+Full guide incl. prerequisites and troubleshooting: [`docs/WINDOWS.md`](docs/WINDOWS.md).
+
+Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`
+(macOS/Linux) or `powershell -ExecutionPolicy Bypass -File install\uninstall-windows.ps1`
+(Windows) — both also unregister the MCP servers.
 
 See the prerequisites table below before installing.
+
+## Moving to a new machine
+
+This repo rebuilds the harness, but not your data — MemPalace drawers,
+per-project memory, the Obsidian vault, SSH keys and the Zotero library all
+live outside it. [`docs/MIGRATION.md`](docs/MIGRATION.md) is the checklist, and
+
+```powershell
+powershell -ExecutionPolicy Bypass -File install\backup-for-migration.ps1 -Destination E:\claude-migration -AuditOnly
+```
+
+collects the laptop-only assets and reports any project with uncommitted work,
+unpushed commits, stashes, or no remote at all. Drop `-AuditOnly` to copy.
+
+One trap is worth knowing before you start: per-project memory is keyed by the
+project's full path, so a new Windows username silently orphans all of it.
+`docs/MIGRATION.md` covers the rename.
 
 ## Customize
 
@@ -364,7 +399,8 @@ Most paths and identifiers are driven by `.env`. To change a hook, skill, or rul
 | Claude Code | ✓ | |
 | Python 3.10+ | ✓ | |
 | Node.js (for hooks) | ✓ | |
-| `rsync` | ✓ | |
+| `rsync` | macOS/Linux installer only | |
+| `uv` | | Windows: installs MCP servers (`uv tool install`) |
 | Obsidian | | recommended (Obsidian-routed skills no-op without it) |
 | Zotero + zotero-mcp | | recommended for `paper-ingest` / `want-2-read` |
 | MemPalace | | recommended for cross-session memory |

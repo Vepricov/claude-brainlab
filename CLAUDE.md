@@ -6,11 +6,11 @@
 - Respond in the user's language unless asked otherwise. Use English for code, commands, file names, formulas, comments, and technical terms unless the user explicitly asks otherwise. Academic prose defaults to English.
 
 ## Memory And Tools
-- On the first substantial turn, load context with `project_context` or MemPalace search.
-- Before answering about past decisions, experiments, bugs, prior work, or project history, search MemPalace first.
-- Prefer `project_context`, `memory_search`, `memory_save`, and `memory_diary` when available.
-- For web search or URLs, use `web-search-prime_web_search_prime` and/or `web-reader_webReader`, not model memory.
-- Save important findings, quotes, decisions, and durable code context to project memory. Write a diary entry after meaningful tasks.
+- MemPalace is the memory MCP. Its tools are prefixed `mempalace_`. On the first substantial turn, load context with `mempalace_status` (wings/rooms overview) and/or `mempalace_search`.
+- Before answering about past decisions, experiments, bugs, prior work, or project history, run `mempalace_search` first.
+- Tool mapping: search -> `mempalace_search`; save a fact -> `mempalace_add_drawer` (check first with `mempalace_check_duplicate`); diary -> `mempalace_diary_write` / `mempalace_diary_read`; knowledge graph -> `mempalace_kg_query` / `mempalace_kg_add`; taxonomy/wings -> `mempalace_get_taxonomy` / `mempalace_list_wings` / `mempalace_list_rooms`.
+- For web search or URLs, use the native `WebSearch` / `WebFetch` tools (the `web-search-prime` / `web-reader` MCPs are not installed).
+- Save important findings, quotes, decisions, and durable code context with `mempalace_add_drawer`. Write a `mempalace_diary_write` entry after meaningful tasks.
 - Load and use a matching skill whenever one clearly applies.
 - Prefer a project wing when available. The legacy archive wing is `conversations`.
 

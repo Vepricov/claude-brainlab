@@ -59,6 +59,18 @@ INDEX_NOTE_REL_PATHS = (
     'Results/Figure-and-CSV-Index.md',
 )
 SECTION_LABELS = {
+    'recent_progress': {'en': 'Recent Progress', 'zh-CN': 'Recent Progress'},
+    'active_goals': {'en': 'Active Goals', 'zh-CN': 'Active Goals'},
+    'active_tasks': {'en': 'Active Tasks', 'zh-CN': 'Active Tasks'},
+    'open_questions': {'en': 'Open Questions', 'zh-CN': 'Open Questions'},
+    'focus': {'en': 'Focus', 'zh-CN': 'Focus'},
+    'planned_tasks': {'en': 'Planned Tasks', 'zh-CN': 'Planned Tasks'},
+    'notes': {'en': 'Notes', 'zh-CN': 'Notes'},
+    'current_question': {'en': 'Current Question', 'zh-CN': 'Current Question'},
+    'hypotheses': {'en': 'Hypotheses', 'zh-CN': 'Hypotheses'},
+    'open_experiments': {'en': 'Open Experiments', 'zh-CN': 'Open Experiments'},
+    'recent_results': {'en': 'Recent Results', 'zh-CN': 'Recent Results'},
+    'recent_sync_status': {'en': 'Recent Sync Status', 'zh-CN': 'Recent Sync Status'},
 }
 TEXT = {
     'suggested_target_1': {
@@ -134,6 +146,48 @@ TEXT = {
     'sync_memory_status_line': {
         'en': '{timestamp}: scope `{scope}`, git head `{head}`, changed files={count} ({summary}).',
     },
+    'hub_mission_heading': {'en': 'Mission'},
+    'hub_core_index': {'en': 'Core Index'},
+    'hub_folder_layout': {'en': 'Folder Layout'},
+    'today_daily_note': {'en': "Today's Daily Note"},
+    'plan_title_prefix': {'en': 'Plan'},
+    'plan_h1': {'en': 'Project Plan'},
+    'plan_goal_1': {'en': 'Establish and maintain a durable knowledge base for this project.'},
+    'plan_task_1': {'en': 'Fill in Knowledge notes from the codebase and docs.'},
+    'plan_task_2': {'en': 'Define the first experiment and its evaluation.'},
+    'plan_task_3': {'en': 'Link papers and related work into `Papers/`.'},
+    'plan_question_1': {'en': 'What is the core research question?'},
+    'plan_question_2': {'en': 'What are the main risks or unknowns?'},
+    'daily_title_prefix': {'en': 'Daily'},
+    'daily_h1_prefix': {'en': 'Daily Note'},
+    'daily_project_label': {'en': 'Project'},
+    'daily_task_1': {'en': 'Advance the current active task from `01-Plan.md`.'},
+    'daily_task_2': {'en': 'Capture experiment or result changes as they happen.'},
+    'project_memory_title_prefix': {'en': 'Project Memory'},
+    'project_memory_task_1': {'en': 'Fill in the current research question and hypotheses.'},
+    'project_memory_task_2': {'en': 'Record the first experiment and baseline.'},
+    'project_memory_no_experiments': {'en': 'No experiments recorded yet.'},
+    'project_memory_initialized': {'en': 'Project memory initialized.'},
+    'project_label': {'en': 'Project'},
+    'summary': {'en': 'Summary'},
+    'changed_paths': {'en': 'Changed Paths'},
+    'none': {'en': 'None'},
+    'none_detected': {'en': 'None detected'},
+    'source_inventory_title': {'en': 'Source Inventory - {repo_name}'},
+    'source_inventory_h1': {'en': 'Source Inventory'},
+    'source_inventory_imported_from': {'en': 'Imported from `{repo_root}`.'},
+    'markdown_sources': {'en': 'Markdown Sources'},
+    'code_and_config_files': {'en': 'Code and Config Files'},
+    'result_and_report_files': {'en': 'Result and Report Files'},
+    'codebase_overview_title': {'en': 'Codebase Overview - {repo_name}'},
+    'codebase_overview_h1': {'en': 'Codebase Overview'},
+    'repository_root': {'en': 'Repository root'},
+    'detected_languages': {'en': 'Detected languages'},
+    'research_project_score': {'en': 'Research project score'},
+    'matched_signals': {'en': 'Matched signals'},
+    'top_level_directories': {'en': 'Top-Level Directories'},
+    'key_entry_files': {'en': 'Key Entry Files'},
+    'suggested_knowledge_targets': {'en': 'Suggested Knowledge Targets'},
 }
 
 @dataclass(frozen=True)
@@ -453,6 +507,21 @@ def build_codebase_overview(repo_root: Path, note_language: str) -> str:
     return '\n'.join(lines) + '\n'
 
 def base_file(title: str, folder: str, note_type: str) -> str:
+    lines = [
+        'filters:',
+        '  and:',
+        f'    - file.inFolder("{folder}")',
+        f'    - type == "{note_type}"',
+        'views:',
+        '  - type: table',
+        f'    name: {title}',
+        '    order:',
+        '      - file.name',
+        '      - status',
+        '      - updated',
+    ]
+    return '\n'.join(lines) + '\n'
+
 
 def canvas_file(project_slug: str, title: str, note_language: str) -> str:
     return json.dumps(

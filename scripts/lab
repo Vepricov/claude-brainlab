@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""База знания лаборатории как обычный git.
+
+База — это репозиторий на тему. Клон лежит локально, агент правит файлы, делает ветку и
+пушит, проверки приходят в pull request. Владелец 30-09-2026: «почему агент не может
+просто сделать гит-клон… это уже придумано гитом, нахуя это усложнять».
+
+Поэтому здесь только то, чего git для Gitea не делает сам: открыть pull request и
+показать, что сказали проверки. Всё остальное — `git pull`, `git checkout -b`, правка
+файлов, `git push` — делается обычным git, и никакой прослойки для этого не нужно.
+
+    lab clone [тема…]      склонировать или обновить темы (без имён — все)
+    lab pull               обновить тему текущего каталога и показать, что изменилось
+    lab pr ["заголовок"]   запушить текущую ветку и открыть pull request
+    lab checks             что сказали проверки и что написано в обсуждении
+    lab open               напечатать адрес репозитория или своего pull request
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+BASE = Path(os.getenv("LAB_BASE_DIR", "~/brainlab-stack/git-base")).expanduser()
+URL_FILE = Path("~/.config/brainlab/git-url").expanduser()
+
+
+def сайт() -> str:
+    """Адрес базы. Из окружения, иначе из файла, иначе внятный отказ.
+
+    В коде его нет нарочно: этот репозиторий открытый, а база — нет. Адрес приходит в
+    сообщении бота доступа, и первый запуск запоминает его в файле, чтобы не передавать
+    каждый раз.
+    """
+    сказано = (os.getenv("LAB_GIT_URL") or "").strip().rstrip("/")
+    if сказано:
+        URL_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if not URL_FILE.is_file() or URL_FILE.read_text(encoding="utf-8").strip() != сказано:
+            URL_FILE.write_text(сказано + "\n", encoding="utf-8")
+        return сказано
+    if URL_FILE.is_file():
+        запомнено = URL_FILE.read_text(encoding="utf-8").strip().rstrip("/")
+        if запомнено:
+            return запомнено
+    sys.exit("не знаю адреса базы: он приходит в сообщении бота доступа.\n"
+             "Скажи его один раз: export LAB_GIT_URL=https://…")
+TOKEN_FILE = Path(os.getenv("LAB_GIT_TOKEN_FILE", "~/.config/brainlab/git-token")).expanduser()
+CREDENTIALS = Path("~/.config/brainlab/git-credentials").expanduser()
+ORG = "brainlab"
+
+
+def token() -> str:
+    if not TOKEN_FILE.is_file():
+        sys.exit(f"нет файла с ключом: {TOKEN_FILE}")
+    return TOKEN_FILE.read_text(encoding="utf-8").strip()
+
+
+def api(path: str, *, method: str = "GET", payload: dict | None = None):
+    body = json.dumps(payload).encode("utf-8") if payload is not None else None
+    request = urllib.request.Request(
+        f"{сайт()}/api/v1/{path}", data=body, method=method,
+        headers={"Authorization": f"token {token()}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as answer:
+            text = answer.read().decode("utf-8")
+    except urllib.error.HTTPError as беда:
+        sys.exit(f"Gitea ответила {беда.code}: {беда.read().decode('utf-8', 'replace')[:300]}")
+    return json.loads(text) if text.strip() else None
+
+
+#: Переменные, которыми git перебивает каталог. Если они остались от чужой работы — а у
+#: агентов это бывает, внутренние репозитории держат именно так, — то `cwd` перестаёт
+#: значить что-либо, и `lab` начинает ходить по чужому репозиторию, сообщая про права.
+СВОЙ_GIT = {"GIT_DIR": None, "GIT_WORK_TREE": None, "GIT_INDEX_FILE": None}
+
+
+def окружение() -> dict[str, str]:
+    среда = dict(os.environ)
+    for имя in СВОЙ_GIT:
+        среда.pop(имя, None)
+    return среда
+
+
+def git(*args: str, cwd: Path | None = None, quiet: bool = False) -> str:
+    итог = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True,
+                          env=окружение())
+    if итог.returncode and not quiet:
+        sys.exit(итог.stderr.strip() or f"git {' '.join(args)} не вышел")
+    return итог.stdout.strip()
+
+
+def настроить_ключ() -> None:
+    """Ключ в одном файле с правами 600, а не в .git/config каждого клона."""
+    CREDENTIALS.parent.mkdir(parents=True, exist_ok=True)
+    строка = f"https://lab-agent:{token()}@{сайт().removeprefix('https://')}"
+    было = CREDENTIALS.read_text(encoding="utf-8").splitlines() if CREDENTIALS.is_file() else []
+    if строка not in было:
+        CREDENTIALS.write_text("\n".join([*было, строка]) + "\n", encoding="utf-8")
+    CREDENTIALS.chmod(0o600)
+    помощники = git("config", "--global", "--get-all", "credential.helper", quiet=True)
+    if str(CREDENTIALS) not in помощники:
+        git("config", "--global", "--add", "credential.helper", f"store --file={CREDENTIALS}")
+
+
+def темы() -> list[str]:
+    """Список тем. Через поиск, а не через организацию: у ключа агента нет права
+    `read:organization`, и `orgs/<org>/repos` отвечает 403 на совершенно рабочем ключе."""
+    ответ = api("repos/search?q=&limit=100") or {}
+    return sorted(репо["name"] for репо in (ответ.get("data") or [])
+                  if (репо.get("owner") or {}).get("login") == ORG
+                  and not репо["name"].endswith(".wiki"))
+
+
+def тема_здесь() -> tuple[str, Path]:
+    корень = git("rev-parse", "--show-toplevel", quiet=True)
+    if not корень:
+        sys.exit(f"это не клон темы: {Path.cwd()}")
+    путь = Path(корень)
+    return путь.name, путь
+
+
+def мой_pull(тема: str, ветка: str) -> dict | None:
+    for предложение in api(f"repos/{ORG}/{тема}/pulls?state=open&limit=50") or []:
+        if (предложение.get("head") or {}).get("ref") == ветка:
+            return предложение
+    return None
+
+
+def do_clone(имена: list[str]) -> None:
+    настроить_ключ()
+    BASE.mkdir(parents=True, exist_ok=True)
+    for тема in имена or темы():
+        куда = BASE / тема
+        print(f"{тема:34}", end=" ", flush=True)
+        if (куда / ".git").is_dir():
+            git("fetch", "-q", "origin", cwd=куда)
+            итог = subprocess.run(["git", "pull", "-q", "--ff-only", "origin", "main"],
+                                  cwd=куда, capture_output=True, text=True, env=окружение())
+            print("обновлено" if итог.returncode == 0 else "есть свои правки, не трогаю")
+        else:
+            git("clone", "-q", f"{сайт()}/{ORG}/{тема}.git", str(куда))
+            print("склонировано")
+    print(f"\nБаза лежит в {BASE}. Дальше это обычный git.")
+
+
+def do_pull() -> None:
+    тема, корень = тема_здесь()
+    было = git("rev-parse", "HEAD", cwd=корень)
+    git("fetch", "-q", "origin", cwd=корень)
+    subprocess.run(["git", "pull", "-q", "--ff-only", "origin", "main"],
+                   cwd=корень, capture_output=True, text=True, env=окружение())
+    стало = git("rev-parse", "HEAD", cwd=корень)
+    if было == стало:
+        print(f"{тема}: без изменений")
+    else:
+        print(f"{тема}: изменилось с прошлого раза")
+        print(git("--no-pager", "diff", "--stat", f"{было}..{стало}", cwd=корень))
+    открытые = [f"  #{p['number']}  {(p.get('head') or {}).get('ref','')}  {p.get('title','')[:60]}"
+                for p in api(f"repos/{ORG}/{тема}/pulls?state=open&limit=50") or []]
+    if открытые:
+        print("открытые pull request этой темы:")
+        print("\n".join(открытые))
+
+
+def do_pr(аргументы: list[str]) -> None:
+    тема, корень = тема_здесь()
+    ветка = git("rev-parse", "--abbrev-ref", "HEAD", cwd=корень)
+    if ветка == "main":
+        sys.exit("ты на main: сделай ветку, например git checkout -b claim/H-WSD-001")
+    git("push", "-q", "-u", "origin", ветка, cwd=корень)
+    если_есть = мой_pull(тема, ветка)
+    if если_есть:
+        print(f"pull request уже открыт: #{если_есть['number']}  {если_есть['html_url']}")
+        print("твой push в него уже вошёл")
+        return
+    заголовок = аргументы[0] if аргументы else git("log", "-1", "--pretty=%s", cwd=корень)
+    тело = аргументы[1] if len(аргументы) > 1 else git("log", "-1", "--pretty=%b", cwd=корень)
+    открыт = api(f"repos/{ORG}/{тема}/pulls", method="POST",
+                 payload={"head": ветка, "base": "main", "title": заголовок,
+                          "body": тело or заголовок})
+    print(f"открыт pull request #{открыт['number']}  {открыт['html_url']}")
+
+
+def do_checks() -> None:
+    тема, корень = тема_здесь()
+    ветка = git("rev-parse", "--abbrev-ref", "HEAD", cwd=корень)
+    если_есть = мой_pull(тема, ветка)
+    if если_есть is None:
+        sys.exit(f"по ветке {ветка} открытого pull request нет — сделай lab pr")
+    print(f"pull request #{если_есть['number']}  {если_есть['html_url']}\n")
+    print("== проверки")
+    статусы = api(f"repos/{ORG}/{тема}/commits/{git('rev-parse', 'HEAD', cwd=корень)}/statuses")
+    if not статусы:
+        print("  ещё не проставлены, служба проверок ходит раз в минуту")
+    for статус in статусы or []:
+        print(f"  {статус.get('context','')}: {статус.get('status','')} — "
+              f"{статус.get('description','')}")
+    print("\n== обсуждение")
+    for отзыв in api(f"repos/{ORG}/{тема}/issues/{если_есть['number']}/comments?limit=20") or []:
+        кто = (отзыв.get("user") or {}).get("login", "?")
+        print(f"  [{кто}] {(отзыв.get('body') or '').strip()[:500]}")
+
+
+def main() -> None:
+    что = sys.argv[1] if len(sys.argv) > 1 else ""
+    хвост = sys.argv[2:]
+    if что == "clone":
+        do_clone(хвост)
+    elif что == "pull":
+        do_pull()
+    elif что == "pr":
+        do_pr(хвост)
+    elif что == "checks":
+        do_checks()
+    elif что == "open":
+        тема, _ = тема_здесь()
+        print(f"{сайт()}/{ORG}/{тема}")
+    else:
+        print(__doc__)
+
+
+if __name__ == "__main__":
+    main()

@@ -39,10 +39,7 @@ def сайт() -> str:
     """
     сказано = (os.getenv("LAB_GIT_URL") or "").strip().rstrip("/")
     if сказано:
-        URL_FILE.parent.mkdir(parents=True, exist_ok=True)
-        if not URL_FILE.is_file() or URL_FILE.read_text(encoding="utf-8").strip() != сказано:
-            URL_FILE.write_text(сказано + "\n", encoding="utf-8")
-        return сказано
+        return запомнить(URL_FILE, сказано)
     if URL_FILE.is_file():
         запомнено = URL_FILE.read_text(encoding="utf-8").strip().rstrip("/")
         if запомнено:
@@ -50,14 +47,44 @@ def сайт() -> str:
     sys.exit("не знаю адреса базы: он приходит в сообщении бота доступа.\n"
              "Скажи его один раз: export LAB_GIT_URL=https://…")
 TOKEN_FILE = Path(os.getenv("LAB_GIT_TOKEN_FILE", "~/.config/brainlab/git-token")).expanduser()
+LOGIN_FILE = Path("~/.config/brainlab/git-login").expanduser()
 CREDENTIALS = Path("~/.config/brainlab/git-credentials").expanduser()
 ORG = "brainlab"
 
 
+def запомнить(файл: Path, значение: str) -> str:
+    """Сохранить сказанное один раз, чтобы не передавать каждый запуск. Права 600."""
+    файл.parent.mkdir(parents=True, exist_ok=True)
+    if not файл.is_file() or файл.read_text(encoding="utf-8").strip() != значение:
+        файл.write_text(значение + "\n", encoding="utf-8")
+    файл.chmod(0o600)
+    return значение
+
+
 def token() -> str:
-    if not TOKEN_FILE.is_file():
-        sys.exit(f"нет файла с ключом: {TOKEN_FILE}")
-    return TOKEN_FILE.read_text(encoding="utf-8").strip()
+    сказано = (os.getenv("LAB_GIT_TOKEN") or "").strip()
+    if сказано:
+        return запомнить(TOKEN_FILE, сказано)
+    if TOKEN_FILE.is_file():
+        return TOKEN_FILE.read_text(encoding="utf-8").strip()
+    sys.exit("не знаю ключа для git: он приходит в сообщении бота доступа.\n"
+             "Скажи его один раз: export LAB_GIT_TOKEN=…")
+
+
+def логин() -> str:
+    """Твой логин на сайте базы. Токен Gitea предъявляется вместе с ним.
+
+    Зашитого логина здесь быть не может: ключ одного человека с логином другого Gitea не
+    принимает, и раньше сюда было вписано `lab-agent` — у всех, кроме меня, это не
+    работало бы вовсе.
+    """
+    сказано = (os.getenv("LAB_GIT_LOGIN") or "").strip()
+    if сказано:
+        return запомнить(LOGIN_FILE, сказано)
+    if LOGIN_FILE.is_file():
+        return LOGIN_FILE.read_text(encoding="utf-8").strip()
+    sys.exit("не знаю твоего логина на сайте базы: он приходит в сообщении бота.\n"
+             "Скажи его один раз: export LAB_GIT_LOGIN=…")
 
 
 def api(path: str, *, method: str = "GET", payload: dict | None = None):
@@ -97,7 +124,7 @@ def git(*args: str, cwd: Path | None = None, quiet: bool = False) -> str:
 def настроить_ключ() -> None:
     """Ключ в одном файле с правами 600, а не в .git/config каждого клона."""
     CREDENTIALS.parent.mkdir(parents=True, exist_ok=True)
-    строка = f"https://lab-agent:{token()}@{сайт().removeprefix('https://')}"
+    строка = f"https://{логин()}:{token()}@{сайт().removeprefix('https://')}"
     было = CREDENTIALS.read_text(encoding="utf-8").splitlines() if CREDENTIALS.is_file() else []
     if строка not in было:
         CREDENTIALS.write_text("\n".join([*было, строка]) + "\n", encoding="utf-8")

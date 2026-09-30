@@ -15,14 +15,23 @@
 РАЗМЕТКА
 
     ЛАБ-ГИПОТЕЗА: <утверждение> | опровергается: <критерий>
+                  | механизм: <почему это верно> | условия: <модели, масштабы, режим>
     ЛАБ-РЕШЕНИЕ: <что постановили> | потому что: <обоснование>
     ЛАБ-ЧИСЛО: <название метрики> = <значение> | где: <код прогона, E-WRM-019>
+               | проверить: <адрес числа: страница в W&B, путь к логу, файл прогона>
     ЛАБ-ВОПРОС: <что осталось непонятным>
     ЛАБ-КОД: <репозиторий> | шов: <что меняют> -> <файл или флаг>
     ЛАБ-КОД: <репозиторий> | грабли: <на чём теряют час>
+    ЛАБ-РАБОТА: <слаг>          — над какой работой идёт эта сессия
 
-К любой строке можно добавить хвосты «| тема: <слаг>» и «| статьи: a, b». Строкам про код
-тема не нужна: карта репозитория общая для всей лаборатории, как статья.
+Работа сессии объявляется один раз строкой «ЛАБ-РАБОТА: dykaf» и дальше действует до её
+конца. Если в каталоге лежит файл `.lab-work` со слагом, объявлять не нужно вовсе. К
+отдельной строке можно добавить хвост «| работа: <слаг>» — он перебивает объявленное, когда
+одна запись про соседнюю работу. Знание живёт
+под утверждением работы; если работу назвать нечем, запись откладывается, а не сваливается
+в общую полку: в полке у неё нет ни репозитория, ни pull request, и увидеть её некому.
+Работа берётся из этого хвоста, из каталога сессии (`~/Papers/<слаг>`) или из упоминания в
+самом тексте. Строкам про код работа не нужна: карта репозитория общая для всей лаборатории.
 
 ПОЧЕМУ КОД ЗАПИСЫВАЕТСЯ ПО СТРОЧКЕ
 
@@ -74,15 +83,72 @@ REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
 #: ждёт в очереди, его нет ни у кого.
 GENERAL = "lab-general"
 
+#: Объявление работы: «ЛАБ-РАБОТА: dykaf». Агент говорит это один раз, и дальше вся сессия
+#: пишет туда. Путь каталога для этого не годится: сессию запускают откуда угодно, а работа
+#: у неё одна. Владелец 25-09-2026: «он должен куда-то сказать, над чем он сейчас работает,
+#: и туда записывать».
+#: Без якорей строки: расшифровка сессии это JSON, и объявление лежит внутри строки вместе
+#: с экранированными переводами, а не отдельной строкой файла.
+WORK_MARKER = re.compile(r"ЛАБ-РАБОТА:\s*(?P<work>[\w-]+)", re.IGNORECASE)
+#: Где помнится объявленное: по файлу на сессию, рядом с очередью.
+WORKS = Path("~/.local/state/brainlab/works").expanduser()
+#: Файл привязки в каталоге: `.lab-work` со слагом работы внутри. Для постоянных проектов,
+#: где объявлять не нужно вовсе.
+PINNED = ".lab-work"
+
+
+def declared(transcript: Path, session: str) -> str | None:
+    """Работа, объявленная в этой сессии. Запоминается, чтобы объявить хватило одного раза."""
+    remembered = WORKS / f"{session}.txt"
+    said = None
+    try:
+        text = transcript.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        text = ""
+    for found in WORK_MARKER.finditer(text):
+        said = found.group("work").strip()
+    if said:
+        WORKS.mkdir(parents=True, exist_ok=True)
+        remembered.write_text(said, encoding="utf-8")
+        return said
+    if remembered.is_file():
+        return remembered.read_text(encoding="utf-8").strip() or None
+    return None
+
+
+def pinned(cwd: str) -> str | None:
+    """Работа, привязанная к каталогу файлом `.lab-work`, здесь или выше по дереву."""
+    here = Path(cwd or ".").expanduser().resolve()
+    for folder in (here, *here.parents):
+        mark = folder / PINNED
+        if mark.is_file():
+            said = mark.read_text(encoding="utf-8").strip().splitlines()
+            if said:
+                return said[0].strip()
+        if folder == folder.parent:
+            break
+    return None
+
+
 MARKERS = {
+    # Гипотеза называет ещё механизм и условия: без них предложение не проходит, и
+    # правильно не проходит. Владелец 21-09-2026: «гипотеза должна быть понята и полезна
+    # всем, она должна быть достаточно широкой». Утверждение без причинной истории и без
+    # условий верно ровно там, где его померили, и это заметка, а не знание лаборатории.
     "hypothesis": re.compile(
-        r"^\s*ЛАБ-ГИПОТЕЗА:\s*(?P<statement>.+?)\s*\|\s*опроверга\w*:\s*(?P<falsification>.+?)\s*$",
+        r"^\s*ЛАБ-ГИПОТЕЗА:\s*(?P<statement>.+?)\s*\|\s*опроверга\w*:\s*(?P<falsification>[^|]+?)"
+        r"(?:\s*\|\s*механизм:\s*(?P<mechanism>[^|]+?))?"
+        r"(?:\s*\|\s*услови\w*:\s*(?P<assumptions>[^|]+?))?\s*$",
         re.IGNORECASE),
     "decision": re.compile(
         r"^\s*ЛАБ-РЕШЕНИЕ:\s*(?P<statement>.+?)\s*\|\s*потому что:\s*(?P<rationale>.+?)\s*$",
         re.IGNORECASE),
+    # «где» это прогон, «проверить» это адрес, по которому число можно открыть глазами.
+    # Это разные вещи, и база требует обе: число без адреса проверить нечем, а значит оно
+    # не знание лаборатории. Прежняя разметка адреса не знала вовсе.
     "metric": re.compile(
-        r"^\s*ЛАБ-ЧИСЛО:\s*(?P<name>[^=]+?)\s*=\s*(?P<value>[^|]+?)\s*\|\s*где:\s*(?P<where>.+?)\s*$",
+        r"^\s*ЛАБ-ЧИСЛО:\s*(?P<name>[^=]+?)\s*=\s*(?P<value>[^|]+?)\s*\|\s*где:\s*(?P<where>[^|]+?)"
+        r"(?:\s*\|\s*провер\w*:\s*(?P<check>[^|]+?))?\s*$",
         re.IGNORECASE),
     "question": re.compile(r"^\s*ЛАБ-ВОПРОС:\s*(?P<text>.+?)\s*$", re.IGNORECASE),
     # Код отличается от остального тем, что у него нет темы: карта репозитория
@@ -95,7 +161,10 @@ MARKERS = {
         r"^\s*ЛАБ-КОД:\s*(?P<repo>[^|]+?)\s*\|\s*грабли:\s*(?P<what>.+?)\s*$",
         re.IGNORECASE),
 }
-THEME_TAIL = re.compile(r"\s*\|\s*тем[аеы]:\s*(?P<theme>[\w-]+)\s*(?=\||$)", re.IGNORECASE)
+#: Хвост «| работа: <слаг>». «тема» принимается как прежнее написание: запись, помеченная
+#: старым словом, не должна пропасть, но адресатом всё равно становится работа.
+THEME_TAIL = re.compile(
+    r"\s*\|\s*(?:работ[аеы]|тем[аеы]):\s*(?P<theme>[\w-]+)\s*(?=\||$)", re.IGNORECASE)
 #: «проект» оставлен как имя для статьи: так написана разметка в старых заметках, и ломать
 #: её из-за переименования нельзя.
 PAPERS_TAIL = re.compile(
@@ -127,15 +196,6 @@ GLOSSARY: dict[str, tuple[str, ...]] = {
                    "obsidian", "агент", "инструмент базы", "синхрониз"),
 }
 
-
-def ascii_segment(value: str, default: str = "session") -> str:
-    """Путь в источнике обязан быть только из ASCII: база отвергает остальное.
-
-    Проверяется правилом [A-Za-z0-9._~-]+ на каждый сегмент, поэтому кириллица,
-    пробелы и слеши внутри номера сессии ломают запись целиком.
-    """
-    clean = re.sub(r"[^A-Za-z0-9._~-]", "", value or "")
-    return clean or default
 
 
 def note(message: str) -> None:
@@ -266,6 +326,35 @@ def mentions(text: str, papers: dict) -> list[str]:
     return found
 
 
+def work_of(record: dict, base: dict, hint: str | None) -> str | None:
+    """Работа, к которой относится запись. `None` — работу назвать нечем.
+
+    Знание живёт под утверждением РАБОТЫ. Тема — полка, у неё нет ни репозитория, ни pull
+    request, и запись, отправленная в неё, не попадает ни в один файл: 25-09-2026 в полке
+    «Общее лабораторное» так осело одиннадцать тысяч записей, которых в git не существует.
+    Владелец: «мусорное вообще нужно скрыть».
+
+    Поэтому работа берётся только оттуда, где она названа однозначно: явным полем, каталогом
+    сессии или упоминанием в самом тексте. Угадывать по словам темы больше нельзя — это и
+    была дорога в полку.
+    """
+    papers = base["papers"]
+    # Порядок ответов, от самого точного к общему. Работа сессии — это то, что агент
+    # объявил сам («ЛАБ-РАБОТА: dykaf»), либо привязка каталога, либо карта путей; она
+    # считается один раз в `main` и приходит сюда готовой. Хвост «| работа: …» в самой
+    # строке перебивает её: одна запись может быть про соседнюю работу.
+    said = (record.get("theme") or "").strip()
+    if said in papers:
+        return said
+    if hint and hint in papers:
+        return hint
+    named = [slug for slug in (record.get("papers") or ()) if slug in papers]
+    if named:
+        return named[0]
+    mentioned = mentions(record.get("text_for_guess") or "", papers)
+    return mentioned[0] if mentioned else None
+
+
 def route(record: dict, base: dict, hint: str | None) -> tuple[str, list[str]]:
     """Тема записи и статьи-теги. Всегда возвращает существующую тему.
 
@@ -381,17 +470,6 @@ def catalogue(endpoint: str, token: str) -> dict:
     return {"themes": themes, "papers": papers}
 
 
-def next_code(context: dict, code: str) -> str:
-    """Свободный человекочитаемый код вида H-MSM-042.
-
-    Без кода на запись нельзя сослаться в разговоре и в статье: люди называют
-    гипотезу кодом, а не первой строкой утверждения.
-    """
-    used = {str(item.get("public_code") or "") for item in context.get("hypotheses") or []}
-    numbers = [int(found.group(1)) for value in used
-               if (found := re.fullmatch(rf"H-{code}-(\d+)", value))]
-    return f"H-{code}-{max(numbers, default=0) + 1:03d}"
-
 
 def short_title(statement: str) -> str:
     """Заголовок записи: то, что видно в списках и в отчётах.
@@ -411,138 +489,158 @@ def short_title(statement: str) -> str:
     return cut + "…"
 
 
-def write(record: dict, settings: dict, base: dict, hint: str | None) -> str:
-    """Записать одну помеченную вещь.
+#: Помеченное, которому в общей базе места нет: вопрос без утверждения и карта кода.
+#: База держит знание в git, страницы для них там нет, и прежний путь записи их терял.
+НЕОТПРАВЛЕННОЕ = Path("~/.local/state/brainlab/lab-hook-unsent.md").expanduser()
 
-    Исход один из трёх: «записано», «уже было», «отложить». Различать первые два важно, иначе
-    хук сообщает о записи, когда база лишь вернула прежний ответ по тому же ключу, и по его
-    словам нельзя понять, появилось ли что-то новое.
+
+def отложить_в_файл(records: list[dict], причина: str) -> None:
+    """Сложить в файл то, что база не принимает, и не держать это в очереди вечно.
+
+    Очередь для того, что уйдёт при следующей попытке. Вопрос и карта кода не уйдут
+    никогда: под git-хранилищем у них нет страницы, и прежняя запись исчезала при
+    первом же чужом слиянии. Поэтому они ложатся рядом, где их видно глазами.
+    """
+    if not records:
+        return
+    НЕОТПРАВЛЕННОЕ.parent.mkdir(parents=True, exist_ok=True)
+    сегодня = datetime.now(timezone.utc).strftime("%d-%m-%Y")
+    строки = [f"\n## {сегодня} — {причина}\n"]
+    for record in records:
+        текст = (record.get("text") or record.get("what")
+                 or record.get("statement") or "").strip()
+        куда = record.get("repo") or record.get("hint") or ""
+        строки.append(f"- {текст}" + (f"  ({куда})" if куда else ""))
+    with НЕОТПРАВЛЕННОЕ.open("a", encoding="utf-8") as файл:
+        файл.write("\n".join(строки) + "\n")
+
+
+def опора(records: list[dict]) -> str:
+    """Чем подтверждено помеченное: числа с их прогонами и числовые критерии.
+
+    Предложение без проверяемой опоры служба не примет, и это правильно: ревьюер без
+    опоры может только поверить на слово. Поэтому опора собирается из того, что в
+    разметке уже есть, а не придумывается.
+    """
+    куски = []
+    for record in records:
+        if record["kind"] == "metric":
+            где = record["where"].strip() or "прогон не назван"
+            куски.append(f"{record['name'].strip()} = {record['value'].strip()} ({где})")
+        elif record["kind"] == "hypothesis" and record.get("falsification"):
+            куски.append(f"опровергается: {record['falsification'].strip()}")
+        elif record["kind"] == "decision" and record.get("rationale"):
+            куски.append(f"потому что: {record['rationale'].strip()}")
+    return "; ".join(куски)
+
+
+def предложить(records: list[dict], slug: str, settings: dict, base: dict) -> str:
+    """Отправить помеченное за сессию ОДНИМ предложением.
+
+    Прежде хук писал каждую строку прямо в базу. Под git-хранилищем такая запись
+    принималась и исчезала при следующем чужом слиянии: знание живёт в git, а прямой
+    вызов до него не доходит. Проверено 30-09-2026, служба теперь на это и отказывает.
+
+    Поэтому путь один и тот же для человека и для агента: предложение открывает pull
+    request, и слияние есть запись. Это ровно правило владельца: «в базу информация
+    попадает в гипотезы только через меня и одобрение PR».
+
+    Одно предложение на сессию, а не на строку: предложение — это мысль вместе с
+    опорой, и двадцать отдельных строк ревьюер штампует, а одно дело читает.
     """
     endpoint = settings.get("endpoint") or "http://127.0.0.1:8000/mcp"
     token = settings.get("token") or os.environ.get("LAB_MCP_TOKEN") or ""
     author = settings.get("author") or os.environ.get("USER") or "неизвестный"
 
-    # Код уходит раньше разбора темы: темы у него нет, и попытка её найти кончилась бы
-    # отказом «тема отсутствует» на совершенно исправной записи.
-    if record["kind"] in ("code_seam", "code_quirk"):
-        arguments = {
-            "repo": record["repo"].strip(),
-            "kind": "seam" if record["kind"] == "code_seam" else "quirk",
-            "what": record["what"].strip(),
-        }
-        if record["kind"] == "code_seam":
-            arguments["where"] = record["where"].strip()
-        answer = call(endpoint, token, "record_code_note", arguments)
-        # «Уже было» видно по ответу службы: она различает дописанное и заменённое.
-        return "already" if (answer or {}).get("outcome") == "replaced" else "written"
+    # Работа названа слагом, но вызовы внутри предложения требуют её UUID: они те же
+    # самые, какими их позвали бы напрямую, и служба проверяет их по подписи.
+    project_id = ((base.get("papers") or {}).get(slug) or {}).get("id") or ""
 
-    theme_slug, papers = route(record, base, hint)
-    theme = base["themes"].get(theme_slug)
-    if theme is None:
-        note(f"тема «{theme_slug}» отсутствует в базе, запись отложена")
+    вызовы: list[dict] = []
+    неполные: list[dict] = []
+    заголовок = ""
+    мысль = ""
+    for record in records:
+        if record["kind"] == "hypothesis":
+            механизм = (record.get("mechanism") or "").strip()
+            условия = (record.get("assumptions") or "").strip()
+            if len(механизм) < 12 or len(условия) < 12:
+                # Служба откажет всему предложению целиком, поэтому такую гипотезу лучше
+                # отложить в файл с точной причиной, чем терять вместе с ней чужие числа.
+                неполные.append(record)
+                continue
+            вызовы.append({"tool": "create_hypothesis", "arguments": {
+                "project_id": project_id,
+                "statement": record["statement"],
+                "falsification_criteria": record["falsification"],
+                "mechanism": механизм,
+                "assumptions": [условия],
+                "title": short_title(record["statement"]),
+                "status_reason": f"Помечено в работе, автор {author}",
+                "idempotency_key": key(record),
+            }})
+            заголовок = заголовок or short_title(record["statement"])
+            мысль = мысль or record["statement"].strip()
+        elif record["kind"] == "decision":
+            вызовы.append({"tool": "propose_decision", "arguments": {
+                "project_id": project_id,
+                "statement": record["statement"],
+                "rationale": record["rationale"],
+                "idempotency_key": key(record),
+            }})
+            заголовок = заголовок or short_title(record["statement"])
+            мысль = мысль or record["statement"].strip()
+        elif record["kind"] == "metric":
+            имя, значение = record["name"].strip(), record["value"].strip()
+            число = None
+            try:
+                число = float(значение.replace(",", ".").split()[0])
+            except (ValueError, IndexError):
+                pass
+            адрес = (record.get("check") or "").strip()
+            if число is not None and len(адрес) < 4:
+                # Число без адреса база не принимает, и это то самое правило, ради которого
+                # она заведена: у числа в статье должно быть место, где его можно открыть.
+                неполные.append(record)
+                continue
+            вызовы.append({"tool": "record_evidence", "arguments": {
+                "where_to_check": адрес,
+                "experiment_id": record["where"].strip(),
+                "summary": f"{имя} = {значение}",
+                "kind": "metric" if число is not None else "observation",
+                "metrics": [{"name": имя, "value": число}] if число is not None else [],
+                "observations": [] if число is not None else [f"{имя} = {значение}"],
+                "title": имя[:120],
+                "idempotency_key": key(record),
+            }})
+            заголовок = заголовок or f"{имя} в работе {slug}"
+            мысль = мысль or (f"Измерение {имя} в прогоне "
+                              f"{record['where'].strip() or 'без кода'} даёт {значение}.")
+    отложить_в_файл(
+        неполные,
+        "не хватило обязательного: гипотезе — «| механизм: почему это верно» и "
+        "«| условия: модели, масштабы, режим»; числу — «| проверить: <адрес числа>». "
+        "Без этого база запись не принимает, и правильно не принимает")
+    if not вызовы:
         return "defer"
-    project_id = theme["id"]
 
-    # Ключ идемпотентности обязателен у каждого пишущего инструмента: без него
-    # повторный запуск хука создаёт вторую копию той же записи.
-    source = {
-        "project_id": project_id,
-        "uri": f"brainlab-source://{theme_slug}/hook/{ascii_segment(record.get('session'))}",
-        "title": f"Помечено в работе: {author}",
-        "kind": "note",
-        "idempotency_key": key({"источник": record.get("session"), "тема": theme_slug}),
-    }
-    tail = f", статьи: {', '.join(papers)}" if papers else ""
-    if record["kind"] in ("hypothesis", "decision"):
-        # Контекст темы читается один раз: он же говорит, нет ли уже такой записи, и он же
-        # даёт занятые коды. Проверка до записи нужна не ради экономии: при повторе гипотеза
-        # получила бы следующий свободный код, нагрузка при том же ключе изменилась бы, и база
-        # справедливо отказала бы, оставив запись в очереди навсегда.
-        context = call(endpoint, token, "get_project_context", {"project_id": project_id})
-        section = "hypotheses" if record["kind"] == "hypothesis" else "decisions"
-        said = record["statement"].strip()
-        if any((item.get("statement") or "").strip() == said
-               for item in context.get(section) or []):
-            return "already"
-    if record["kind"] == "hypothesis":
-        source_id = call(endpoint, token, "publish_source_note", source)["id"]
-        code = theme["code"] or theme_slug[:3].upper()
-        title = short_title(record["statement"])
-        call(endpoint, token, "create_hypothesis", {
-            "project_id": project_id,
-            "statement": record["statement"],
-            "falsification_criteria": record["falsification"],
-            "source_ref_id": source_id,
-            "idempotency_key": key(record),
-            "public_code": next_code(context, code),
-            "title": title,
-            "papers": papers,
-            "status_reason": f"Помечено в работе, автор {author}{tail}",
-        })
-        return "written"
-    if record["kind"] == "question":
-        # Открытые вопросы это список у темы, поэтому дописываются к нему.
-        context = call(endpoint, token, "get_project_context", {"project_id": project_id})
-        current = ((context.get("project") or {}).get("open_questions") or [])
-        line = f"{record['text']} ({author}{tail})"
-        if line in current:
-            return "already"
-        call(endpoint, token, "set_project_open_questions", {
-            "project_id": project_id, "open_questions": [*current, line],
-            "idempotency_key": key(record)})
-        return "written"
-    if record["kind"] == "decision":
-        source_id = call(endpoint, token, "publish_source_note", source)["id"]
-        call(endpoint, token, "propose_decision", {
-            "project_id": project_id,
-            "statement": record["statement"],
-            "rationale": record["rationale"],
-            "source_ref_id": source_id,
-            "papers": papers,
-            "idempotency_key": key(record),
-        })
-        return "written"
-    if record["kind"] == "metric":
-        # Число пишется ИЗМЕРЕНИЕМ, как ему и положено. Раньше хук клал его строкой в
-        # открытые вопросы с пометкой «оформить свидетельством», то есть перекладывал
-        # работу на человека, и число до базы фактически не доходило. Записывать умеет
-        # сама служба: record_evidence принимает прогон и по публичному коду, поэтому
-        # «где: E-WRM-019» — это всё, что нужно.
-        where = record["where"].strip()
-        name = record["name"].strip()
-        value = record["value"].strip()
-        number = None
-        try:
-            number = float(value.replace(",", ".").split()[0])
-        except (ValueError, IndexError):
-            pass
-        written = call(endpoint, token, "record_evidence", {
-            "experiment_id": where,
-            "summary": f"{name} = {value}",
-            "kind": "metric" if number is not None else "observation",
-            "metrics": [{"name": name, "value": number}] if number is not None else [],
-            "observations": [] if number is not None else [f"{name} = {value}"],
-            "title": name[:120],
-            "idempotency_key": key(record),
-        })
-        if isinstance(written, dict) and written.get("id"):
-            return "written"
-        # Прогон не назван или назван так, что его не нашли. Догадываться нельзя: число,
-        # приписанное чужому прогону, хуже ненаписанного. Но и терять его нельзя, поэтому
-        # оно ложится открытым вопросом — как раньше, но теперь это запасной путь, а не
-        # основной, и в нём сказано, чего не хватило.
-        context = call(endpoint, token, "get_project_context", {"project_id": project_id})
-        current = ((context.get("project") or {}).get("open_questions") or [])
-        line = (f"Число из работы: {name} = {value} ({where or 'прогон не назван'}, "
-                f"{author}{tail}) — прогон по этому имени не нашёлся, назовите его "
-                f"публичным кодом вида E-XXX-123")
-        if line in current:
-            return "already"
-        call(endpoint, token, "set_project_open_questions", {
-            "project_id": project_id, "open_questions": [*current, line],
-            "idempotency_key": key(record)})
-        return "written"
-    return "defer"
+    подпёрто = опора(records)
+    if not подпёрто or not re.search(r"\d", подпёрто):
+        note(f"{slug}: помеченное без проверяемой опоры, предложение не открыто. "
+             "Добавь ЛАБ-ЧИСЛО с «где: E-код» или числовой критерий опровержения")
+        return "defer"
+
+    ответ = call(endpoint, token, "propose", {
+        "project": slug,
+        "title": заголовок[:120] or f"Помечено в работе {slug}",
+        "claim": мысль,
+        "support": f"{подпёрто}. Помечено в работе, автор {author}",
+        "calls": вызовы,
+    })
+    адрес = (ответ or {}).get("pull_url") or (ответ or {}).get("url") or ""
+    note(f"{slug}: предложение открыто, записей {len(вызовы)}"
+         + (f", {адрес}" if адрес else ""))
+    return "written"
 
 
 def main() -> int:
@@ -562,7 +660,12 @@ def main() -> int:
     # текущего каталога и применялась ко всей очереди: отложенная из ~/Papers/sign_muon
     # запись на следующий день уезжала в тему того проекта, где человек работал сегодня, с
     # чужим тегом статьи, и журнал об этом молчал.
-    here = paper_from_cwd(payload.get("cwd") or "")
+    # Работа сессии: сперва объявленная агентом, потом привязанная к каталогу файлом
+    # `.lab-work`, и только потом угаданная по карте путей. Объявление сильнее пути, потому
+    # что сессию запускают откуда угодно, а работа у неё одна.
+    here = (declared(Path(payload.get("transcript_path") or ""), session)
+            or pinned(payload.get("cwd") or "")
+            or paper_from_cwd(payload.get("cwd") or ""))
     for record in records:
         record["session"] = session
         record["hint"] = here
@@ -582,35 +685,54 @@ def main() -> int:
                                 for item in dedupe(queue)), encoding="utf-8")
         return 0
 
-    left, done, already = [], 0, 0
+    # Вопрос и карта кода в эту базу не кладутся: страницы в git для них нет, и прежний
+    # путь их терял молча. Они ложатся в файл рядом, а не висят в очереди навсегда.
+    отложить_в_файл([r for r in queue if r["kind"] == "question"],
+                    "вопросы: в общей базе для них нет страницы")
+    отложить_в_файл([r for r in queue if r["kind"] in ("code_seam", "code_quirk")],
+                    "карта кода: эта база её не хранит")
+
+    # Группировка по РАБОТЕ. Одно предложение на работу, а не на строку: предложение это
+    # мысль вместе с опорой, и двадцать отдельных ревьюер штампует, а одно дело читает.
+    left: list[dict] = []
+    по_работам: dict[str, list[dict]] = {}
     for record in queue:
+        if record["kind"] not in ("hypothesis", "decision", "metric"):
+            continue
+        slug = work_of(record, base, record.get("hint"))
+        if slug is None:
+            note("работа не определилась: запись ЖДЁТ В ОЧЕРЕДИ и уйдёт сама, как только "
+                 "сессия пойдёт из каталога работы. Чтобы отправить сейчас, допиши в строку "
+                 "«| работа: <слаг>»")
+            left.append(record)
+            continue
+        по_работам.setdefault(slug, []).append(record)
+
+    done, предложений = 0, 0
+    for slug, группа in по_работам.items():
         try:
-            outcome = write(record, settings, base, record.get("hint"))
-            if outcome == "written":
-                done += 1
-            elif outcome == "already":
-                already += 1
+            if предложить(группа, slug, settings, base) == "written":
+                done += len(группа)
+                предложений += 1
             else:
-                left.append(record)
+                left.extend(группа)
         except RuntimeError as error:
-            # «Ключ уже использован» означает, что эта же запись уже лежит в базе: ключ
-            # считается от её текста. Отказ приходит потому, что при повторе гипотеза
-            # получает следующий свободный код, и нагрузка при том же ключе меняется. Держать
-            # такую запись в очереди значит вечно повторять её и копить ошибки в журнале.
-            if "idempotency key" in str(error) and "reus" in str(error):
-                already += 1
-                continue
-            note(f"не записалось ({str(error)[:100]}): {str(record)[:100]}")
-            left.append(record)
+            # Отказ службы это не сбой связи, а сообщение человеку: повторять его каждую
+            # сессию бессмысленно, и очередь от этого растёт. Такое ложится в файл вместе
+            # с причиной, слово в слово, — чтобы было видно, чего не хватило.
+            note(f"предложение не открылось ({str(error)[:140]}): работа {slug}")
+            отложить_в_файл(группа, f"работа {slug}: база отказала — {str(error)[:300]}")
         except (urllib.error.URLError, TimeoutError, KeyError) as error:
-            note(f"не записалось ({str(error)[:100]}): {str(record)[:100]}")
-            left.append(record)
+            note(f"предложение не открылось ({str(error)[:140]}): работа {slug}")
+            left.extend(группа)
     QUEUE.write_text("".join(json.dumps(item, ensure_ascii=False) + "\n"
                              for item in dedupe(left)), encoding="utf-8")
-    if done or already:
-        note(f"записано: {done}, уже было: {already}, осталось в очереди: {len(left)}")
+    if done or left:
+        note(f"в предложения ушло записей: {done} ({предложений} шт.), "
+             f"осталось в очереди: {len(left)}")
     if done:
-        print(f"В общую базу лаборатории записано: {done}", file=sys.stderr)
+        print(f"В базу лаборатории предложено записей: {done} "
+              f"({предложений} pull request, слить их — твой ход)", file=sys.stderr)
     return 0
 
 

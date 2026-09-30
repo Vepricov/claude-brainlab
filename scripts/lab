@@ -9,7 +9,8 @@
 показать, что сказали проверки. Всё остальное — `git pull`, `git checkout -b`, правка
 файлов, `git push` — делается обычным git, и никакой прослойки для этого не нужно.
 
-    lab clone [тема…]      склонировать или обновить темы (без имён — все)
+    lab here <тема>        склонировать тему В ПАПКУ ПРОЕКТА (lab-base) или обновить
+    lab clone [тема…]      склонировать в общую папку (для машины без проектов)
     lab pull               обновить тему текущего каталога и показать, что изменилось
     lab pr ["заголовок"]   запушить текущую ветку и открыть pull request
     lab checks             что сказали проверки и что написано в обсуждении
@@ -22,6 +23,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -144,11 +146,70 @@ def темы() -> list[str]:
 
 
 def тема_здесь() -> tuple[str, Path]:
+    """Тема и корень клона. Имя берётся из адреса origin, а не из имени каталога.
+
+    Каталог зовут как удобно — `lab-base` внутри папки проекта, например, — и по имени
+    каталога тема определялась неверно.
+    """
     корень = git("rev-parse", "--show-toplevel", quiet=True)
     if not корень:
         sys.exit(f"это не клон темы: {Path.cwd()}")
     путь = Path(корень)
-    return путь.name, путь
+    адрес = git("config", "--get", "remote.origin.url", cwd=путь, quiet=True)
+    имя = адрес.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git") if адрес else путь.name
+    return имя, путь
+
+
+def корень_проекта(откуда: Path | None = None) -> Path:
+    """Папка проекта: где лежит `.lab-work`, иначе текущая.
+
+    Клон базы живёт ВНУТРИ папки проекта. Владелец 30-09-2026: «репозиторий должен
+    клонироваться в папку проекта… он лично к себе его клонирует в папку рабочую, и там
+    уже делает с ним что надо». Общая папка на все проекты кончилась тем, что агент в
+    `~/Papers/wsd-muon` базы не видел вовсе, пока ему не сказали, где она.
+    """
+    здесь = (откуда or Path.cwd()).resolve()
+    for папка in (здесь, *здесь.parents):
+        if (папка / ".lab-work").is_file():
+            return папка
+        if папка == папка.parent:
+            break
+    return здесь
+
+
+def do_here(имена: list[str]) -> None:
+    """Склонировать тему в папку проекта, а если клон уже есть — обновить его.
+
+    Один клон на проект, в подпапке `lab-base`. Если клон смотрит не в Gitea — так уже
+    случалось, агент склонировал из чужого локального клона и push уходил в никуда, —
+    адрес origin поправляется на месте.
+    """
+    if not имена:
+        sys.exit("скажи тему: lab here <тема>")
+    тема = имена[0]
+    настроить_ключ()
+    куда = корень_проекта() / "lab-base"
+    адрес = f"{сайт()}/{ORG}/{тема}.git"
+    if not (куда / ".git").is_dir():
+        git("clone", "-q", адрес, str(куда))
+        print(f"база склонирована: {куда}")
+    else:
+        было = git("config", "--get", "remote.origin.url", cwd=куда, quiet=True)
+        if было != адрес:
+            # Клон из чужого локального клона выглядит рабочим, а push уходит в никуда.
+            git("remote", "set-url", "origin", адрес, cwd=куда, quiet=True) \
+                if было else git("remote", "add", "origin", адрес, cwd=куда, quiet=True)
+            print(f"адрес origin исправлен на {сайт()}/{ORG}/{тема}.git")
+        было_head = git("rev-parse", "HEAD", cwd=куда, quiet=True)
+        git("fetch", "-q", "origin", cwd=куда)
+        subprocess.run(["git", "pull", "-q", "--ff-only", "origin", "main"],
+                       cwd=куда, capture_output=True, text=True, env=окружение())
+        стало = git("rev-parse", "HEAD", cwd=куда, quiet=True)
+        if было_head == стало:
+            print(f"база на месте и без изменений: {куда}")
+        else:
+            print(f"база обновлена: {куда}")
+            print(git("--no-pager", "diff", "--stat", f"{было_head}..{стало}", cwd=куда))
 
 
 def мой_pull(тема: str, ветка: str) -> dict | None:
@@ -203,14 +264,57 @@ def do_pr(аргументы: list[str]) -> None:
     если_есть = мой_pull(тема, ветка)
     if если_есть:
         print(f"pull request уже открыт: #{если_есть['number']}  {если_есть['html_url']}")
-        print("твой push в него уже вошёл")
-        return
-    заголовок = аргументы[0] if аргументы else git("log", "-1", "--pretty=%s", cwd=корень)
-    тело = аргументы[1] if len(аргументы) > 1 else git("log", "-1", "--pretty=%b", cwd=корень)
-    открыт = api(f"repos/{ORG}/{тема}/pulls", method="POST",
-                 payload={"head": ветка, "base": "main", "title": заголовок,
-                          "body": тело or заголовок})
-    print(f"открыт pull request #{открыт['number']}  {открыт['html_url']}")
+        print("твой push в него вошёл\n")
+        номер = int(если_есть["number"])
+    else:
+        заголовок = аргументы[0] if аргументы else git("log", "-1", "--pretty=%s", cwd=корень)
+        тело = аргументы[1] if len(аргументы) > 1 else git("log", "-1", "--pretty=%b", cwd=корень)
+        открыт = api(f"repos/{ORG}/{тема}/pulls", method="POST",
+                     payload={"head": ветка, "base": "main", "title": заголовок,
+                              "body": тело or заголовок})
+        print(f"открыт pull request #{открыт['number']}  {открыт['html_url']}\n")
+        номер = int(открыт["number"])
+    # Вердикт печатается тем же вызовом, которым писали: иначе человек или агент уходит,
+    # не узнав, что проверка нашла, и правит это следующим ходом или не правит вовсе.
+    print("== проверки")
+    показать_проверки(тема, номер, git("rev-parse", "HEAD", cwd=корень), ждать=100)
+
+
+def показать_проверки(тема: str, номер: int, sha: str, *, ждать: int = 0) -> None:
+    """Вердикт проверок и последнее слово обсуждения.
+
+    Проверки ставит отдельная служба, и ходит она раз в минуту. Сразу после push статуса
+    ещё нет, и «проверок нет» читается как «всё хорошо» — худшее из возможных сообщений.
+    Поэтому здесь ждём появления вердикта, а не сообщаем пустоту.
+    """
+    предел = time.monotonic() + ждать
+    статусы: list = []
+    while True:
+        статусы = api(f"repos/{ORG}/{тема}/commits/{sha}/statuses") or []
+        живые = [с for с in статусы if с.get("status") != "pending"]
+        if живые or time.monotonic() >= предел:
+            статусы = живые or статусы
+            break
+        print("  ждём проверок…", flush=True)
+        time.sleep(6)
+    if not статусы:
+        print("  проверки ещё не проставлены — повтори `lab checks` через минуту")
+    for статус in статусы:
+        знак = {"success": "зелено", "failure": "есть замечания",
+                "error": "проверка упала", "pending": "идёт"}.get(
+                    статус.get("status", ""), статус.get("status", ""))
+        print(f"  {статус.get('context','')}: {знак} — {статус.get('description','')}")
+    отзывы = api(f"repos/{ORG}/{тема}/issues/{номер}/comments?limit=20") or []
+    разборы = [о for о in отзывы if "Проверка базы" in (о.get("body") or "")]
+    if разборы:
+        print("\n== что сказала проверка")
+        print((разборы[-1].get("body") or "").strip()[:1500])
+    прочие = [о for о in отзывы if о not in разборы][-3:]
+    if прочие:
+        print("\n== обсуждение")
+        for отзыв in прочие:
+            кто = (отзыв.get("user") or {}).get("login", "?")
+            print(f"  [{кто}] {(отзыв.get('body') or '').strip()[:300]}")
 
 
 def do_checks() -> None:
@@ -221,16 +325,8 @@ def do_checks() -> None:
         sys.exit(f"по ветке {ветка} открытого pull request нет — сделай lab pr")
     print(f"pull request #{если_есть['number']}  {если_есть['html_url']}\n")
     print("== проверки")
-    статусы = api(f"repos/{ORG}/{тема}/commits/{git('rev-parse', 'HEAD', cwd=корень)}/statuses")
-    if not статусы:
-        print("  ещё не проставлены, служба проверок ходит раз в минуту")
-    for статус in статусы or []:
-        print(f"  {статус.get('context','')}: {статус.get('status','')} — "
-              f"{статус.get('description','')}")
-    print("\n== обсуждение")
-    for отзыв in api(f"repos/{ORG}/{тема}/issues/{если_есть['number']}/comments?limit=20") or []:
-        кто = (отзыв.get("user") or {}).get("login", "?")
-        print(f"  [{кто}] {(отзыв.get('body') or '').strip()[:500]}")
+    показать_проверки(тема, int(если_есть["number"]),
+                      git("rev-parse", "HEAD", cwd=корень))
 
 
 def main() -> None:
@@ -238,6 +334,8 @@ def main() -> None:
     хвост = sys.argv[2:]
     if что == "clone":
         do_clone(хвост)
+    elif что == "here":
+        do_here(хвост)
     elif что == "pull":
         do_pull()
     elif что == "pr":

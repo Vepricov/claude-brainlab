@@ -1,0 +1,260 @@
+#!/usr/bin/env python3
+"""Сказать агенту в начале сессии, в какой работе он и куда писать.
+
+Иначе он выясняет это каждый раз заново: читает список проектов, гадает по словам, спорит
+сам с собой. Владелец 25-09-2026: «нужно сделать так, чтобы агент тратил минимум токенов,
+читал минимум информации… он один раз должен понять про гит и туда уже постоянно писать».
+
+Работа определяется каталогом сессии по той же карте, что и заметки: `~/Papers/dykaf` — это
+работа `dykaf`. Ни поиска, ни вызовов базы: файл карты и файл утверждений с диска.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import subprocess
+import sys
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
+#: Где искать файлы базы. На машине сотрудника рабочей копии обычно нет, и тогда список
+#: утверждений берётся из слепка: он обновляется при каждом заходе и читается мгновенно,
+#: без единого обращения к службе. Агент не должен тратить вызовы на «а где я».
+BASE = Path(os.getenv("LAB_KNOWLEDGE_BASE_DIR", "~/brainlab-stack/git-base")).expanduser()
+CACHE = Path("~/.local/state/brainlab/claims").expanduser()
+FRONT = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+
+
+#: Где спрашивать про открытые предложения. Адрес публичный: хук живёт на машине человека,
+#: и туннель до петли на ней может быть не поднят.
+БАЗА = os.getenv("BRAINLAB_GIT_URL", "https://68-183-24-188.sslip.io:9445")
+ТОКЕН = Path("~/.config/brainlab/git-token").expanduser()
+
+
+def путь_работы(слаг: str) -> str:
+    """Полный путь работы в дереве групп. Запоминается: он не меняется.
+
+    Единица базы — работа, и у неё свой проект внутри группы темы. Слаг человек помнит, а
+    полный путь нет, поэтому он ищется один раз и кладётся рядом со слепком утверждений.
+    """
+    помню = CACHE / f"{слаг}.path"
+    if помню.is_file():
+        если = помню.read_text(encoding="utf-8").strip()
+        if если:
+            return если
+    if not ТОКЕН.is_file():
+        return ""
+    try:
+        запрос = urllib.request.Request(
+            f"{БАЗА}/api/v4/groups/brainlab/projects"
+            f"?include_subgroups=true&simple=true&search={слаг}&per_page=100",
+            headers={"PRIVATE-TOKEN": ТОКЕН.read_text(encoding="utf-8").strip()})
+        with urllib.request.urlopen(запрос, timeout=4) as ответ:
+            найдено = json.loads(ответ.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
+        return ""
+    точные = [п for п in найдено if п.get("path") == слаг]
+    if not точные:
+        return ""
+    путь = str(точные[0]["path_with_namespace"])
+    try:
+        CACHE.mkdir(parents=True, exist_ok=True)
+        помню.write_text(путь + "\n", encoding="utf-8")
+    except OSError:
+        pass
+    return путь
+
+
+def открытые_предложения(работа: str) -> list[str]:
+    """Открытые предложения этой работы: номер, утверждение, заголовок.
+
+    Это самое скоропортящееся, что агенту нужно знать перед записью, и самое дорогое,
+    когда он этого не знает: 30-09-2026 агент доложил про pull request №2, давно
+    закрытый, потому что взял номер из своей прошлой памяти. Карточка работы весит под
+    двести килобайт, и блок про предложения в её конце до него не дошёл.
+
+    Стоит это ноль токенов модели и один запрос к Gitea. Не ответила — молчим: сказать
+    «я в работе такой-то» полезно и без этого.
+    """
+    полный = путь_работы(работа)
+    if not полный or not ТОКЕН.is_file():
+        return []
+    try:
+        токен = ТОКЕН.read_text(encoding="utf-8").strip()
+        запрос = urllib.request.Request(
+            f"{БАЗА}/api/v4/projects/{urllib.parse.quote(полный, safe='')}"
+            f"/merge_requests?state=opened&per_page=20",
+            headers={"PRIVATE-TOKEN": токен})
+        # Сертификат выписан на sslip.io и настоящий, но хук не имеет права падать из-за
+        # чужой связи, поэтому проверка мягкая и таймаут короткий.
+        with urllib.request.urlopen(запрос, timeout=3) as ответ:
+            открытые = json.loads(ответ.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
+        return []
+    строки = []
+    for мр in открытые:
+        ветка = str(мр.get("source_branch") or "")
+        метка = ветка.removeprefix("claim/") if ветка.startswith("claim/") else ветка
+        строки.append(f"  !{мр.get('iid')}  {метка[:14]:14} "
+                      f"{str(мр.get('title') or '')[:64]}")
+    return строки
+
+
+#: Помощник, который умеет клонировать тему в папку проекта и открывать pull request.
+ПОМОЩНИК = Path("~/.local/bin/lab").expanduser()
+
+
+def клон_проекта(cwd: str) -> Path:
+    """Куда клонируется база ДЛЯ ЭТОГО проекта: `<папка проекта>/lab-base`.
+
+    Общая папка на все проекты кончилась ровно тем, чем и должна была: агент в
+    `~/Papers/wsd-muon` базы не видел вовсе, пока ему не сказали, где она, а потом
+    склонировал её из чужого локального клона — и push уходил в никуда. Клон лежит там,
+    где агент работает, и других мест у него нет.
+    """
+    здесь = Path(cwd or ".").expanduser().resolve()
+    for папка in (здесь, *здесь.parents):
+        if (папка / ".lab-work").is_file():
+            return папка / "lab-base"
+        if папка == папка.parent:
+            break
+    return здесь / "lab-base"
+
+
+def подтянуть(работа: str, cwd: str) -> list[str]:
+    """Завести или обновить клон работы в папке проекта и сказать, что изменилось.
+
+    Это то, с чего начинается ход: агент видит чужие слияния как обычный `git pull`, а не
+    выясняет их вызовами. Нет клона — он заводится сам, спрашивать не о чем.
+
+    Свои незакоммиченные правки не трогаем: `--ff-only` откажется, и это правильно.
+    """
+    корень = клон_проекта(cwd)
+    if not (корень / ".git").is_dir():
+        if not ПОМОЩНИК.is_file():
+            return [f"  клона базы нет, и помощника нет: {ПОМОЩНИК}"]
+        итог = subprocess.run([str(ПОМОЩНИК), "here", работа], cwd=str(корень.parent),
+                              capture_output=True, text=True, timeout=120)
+        строки = (итог.stdout + итог.stderr).strip().splitlines()
+        return [f"  {с.strip()}" for с in строки[:6]] or ["  клон не вышел"]
+    def гит(*что: str) -> str:
+        итог = subprocess.run(["git", "-C", str(корень), *что],
+                              capture_output=True, text=True, timeout=25)
+        return итог.stdout.strip()
+    было = гит("rev-parse", "HEAD")
+    subprocess.run(["git", "-C", str(корень), "fetch", "-q", "origin"],
+                   capture_output=True, text=True, timeout=25)
+    subprocess.run(["git", "-C", str(корень), "pull", "-q", "--ff-only", "origin", "main"],
+                   capture_output=True, text=True, timeout=25)
+    стало = гит("rev-parse", "HEAD")
+    if было == стало:
+        return []
+    строки = гит("--no-pager", "diff", "--stat", f"{было}..{стало}").splitlines()
+    return [f"  {строка.strip()}" for строка in строки[-12:]]
+
+
+PINNED = ".lab-work"
+
+
+def pinned(cwd: str) -> str | None:
+    """Работа, привязанная к каталогу файлом `.lab-work`, здесь или выше по дереву."""
+    here = Path(cwd or ".").expanduser().resolve()
+    for folder in (here, *here.parents):
+        mark = folder / PINNED
+        if mark.is_file():
+            said = mark.read_text(encoding="utf-8").strip().splitlines()
+            if said:
+                return said[0].strip()
+    return None
+
+
+def work_of(cwd: str) -> str | None:
+    """Слаг работы: сперва привязка каталога, потом карта путей."""
+    if said := pinned(cwd):
+        return said
+    if not REGISTRY.is_file():
+        return None
+    try:
+        registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    here = Path(cwd or ".").expanduser().resolve()
+    for root in registry.get("roots") or []:
+        base = Path(root["fs"]).expanduser().resolve()
+        for folder, vault in (root.get("items") or {}).items():
+            if (base / folder) == here or (base / folder) in here.parents:
+                return vault.rsplit("/", 1)[-1]
+    return None
+
+
+def claims_of(slug: str, клон: Path | None = None) -> tuple[str, list[str]]:
+    """Репозиторий работы и её утверждения, прочитанные с диска.
+
+    Сначала клон этой работы в папке проекта: после переезда на GitLab работа — отдельный
+    репозиторий, и её утверждения лежат прямо в нём, а не в папке внутри темы.
+    """
+    места = []
+    if клон is not None and (клон / "claims").is_dir():
+        места.append((slug, клон))
+    места += [(shelf.name, shelf / slug) for shelf in sorted(BASE.glob("*"))]
+    for полка, home in места:
+        if not (home / "claims").is_dir():
+            continue
+        said = []
+        for page in sorted((home / "claims").glob("*/README.md")):
+            text = page.read_text(encoding="utf-8", errors="replace")
+            head = FRONT.match(text)
+            status = ""
+            if head:
+                for line in head.group(1).splitlines():
+                    if line.startswith("status:"):
+                        status = line.partition(":")[2].strip()
+            title = re.search(r"^#\s+(.+)$", text, re.M)
+            said.append(f"  {page.parent.name}  [{status}]  "
+                        f"{(title.group(1) if title else '').split('—', 1)[-1].strip()[:64]}")
+        return (полка if полка == slug else f"{полка}/{slug}"), said
+    # Слепок: `<работа>.txt`, по строке на утверждение, как их напечатал бы каталог.
+    snapshot = CACHE / f"{slug}.txt"
+    if snapshot.is_file():
+        lines = [line for line in snapshot.read_text(encoding="utf-8").splitlines() if line]
+        return (lines[0] if lines else ""), lines[1:]
+    return "", []
+
+
+def main() -> int:
+    try:
+        raw = sys.stdin.read()
+        payload = json.loads(raw) if raw.strip() else {}
+    except ValueError:
+        return 0
+    cwd = payload.get("cwd") or os.getcwd()
+    slug = work_of(cwd)
+    if slug is None:
+        return 0
+    место = клон_проекта(cwd)
+    repo, claims = claims_of(slug, место)
+    if not claims:
+        print(f"\nЛаборатория: работа {slug}. Утверждений в базе пока нет.\n")
+        return 0
+    print(f"\nЛаборатория: ты в работе {slug} ({repo}). Её утверждения:\n")
+    print("\n".join(claims))
+    print(f"\nРабота склонирована здесь: {место}. Правь файлы обычным git.")
+    if изменилось := подтянуть(slug, cwd):
+        print("\nС прошлого раза в main изменилось:\n")
+        print("\n".join(изменилось))
+    if ждут := открытые_предложения(slug):
+        print("\nОткрытые предложения этой работы — дописывай в них, а не заводи второе:\n")
+        print("\n".join(ждут))
+    print("\nЗапись идёт под одно из них: прогон — в серию утверждения, число — к прогону.")
+    print("Как писать: ветка, правка файлов, `lab pr` — он запушит и откроет предложение,")
+    print("`lab checks` покажет, что сказали проверки. Форму страницы выбираешь сам.")
+    print("Слить может только человек, и слияние — это и есть запись в базу.\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

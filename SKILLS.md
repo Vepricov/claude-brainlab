@@ -1,7 +1,6 @@
 # Skills catalog
 
-The public config ships 73 skills (`skills/`). This catalog also describes the two lab-access
-skills supplied by the separate Lab Knowledge repository. For the mental
+Detailed reference for every skill shipped in this config (`skills/`). For the mental
 model of *what a skill is* and *how progressive disclosure works*, see the seminar
 handbook (`docs/seminar/handbook/04-skills.md` in the Obsidian vault).
 
@@ -97,9 +96,12 @@ The core research loop: get a paper into your library with a real, audited note.
 - **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
   (SSH servers, code paths), private Obsidian hub, `obsidian-projects.json` registration,
   and a handoff to shared onboarding for Brain Lab projects. *Fires on:* "create project / new project".
-- **`lab-project-onboarding`** ⭐ — Idempotently create or reuse the Lab Knowledge project,
-  generated Yonote showcase, and private named Kanban, then store only stable links in the
-  private Obsidian hub. *Fires on:* "add this project to the lab / bind it to Brain Lab".
+- **`lab-work-to-repo`** ⭐ — Turn everything known about a work (manuscript, logs, notes,
+  calls, accumulated results) into the work's repository in the lab's GitLab base: claims as
+  folders, runs with sources, a merge request a human merges. The only skill for this since
+  02-10-2026; `project-to-lab`, `lab-submission` and `lab-project-onboarding` were removed
+  because they wrote through MCP and into Yonote, and both paths are closed.
+  *Fires on:* "add this project to the lab / занеси проект в базу / оформи как работу".
 - **`lab-knowledge`** ⭐ — Run Ask Lab in the local agent: combine permission-scoped research
   context from Lab Knowledge MCP with shared task state from the bound Yonote Kanban, publish
   private Obsidian hypotheses only after explicit confirmation, and keep hypotheses,

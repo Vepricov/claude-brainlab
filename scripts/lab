@@ -13,8 +13,10 @@
     lab clone [работа…]    склонировать в общую папку (для машины без проектов)
     lab pull               обновить работу текущего каталога и показать, что изменилось
     lab pr ["заголовок"]   запушить ветку, открыть предложение, показать вердикт
+      --задача <номер>     вписать `Closes #<номер>`: слияние закроет задачу само
     lab checks             что сказали проверки и что написано в обсуждении
-    lab tasks              открытые задачи работы: вопросы, долги, что в работе
+    lab tasks              открытые задачи работы: кому назначены, какое утверждение
+    lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
     lab open               напечатать адрес работы или своего предложения
 
 База переключена на GitLab 01-10-2026: прежний помощник для Gitea удалён.
@@ -24,6 +26,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -36,6 +39,9 @@ BASE = Path(os.getenv("LAB_BASE_DIR", "~/brainlab-stack/git-base")).expanduser()
 URL_FILE = Path("~/.config/brainlab/git-url").expanduser()
 TOKEN_FILE = Path(os.getenv("LAB_GIT_TOKEN_FILE", "~/.config/brainlab/git-token")).expanduser()
 LOGIN_FILE = Path("~/.config/brainlab/git-login").expanduser()
+#: Логин человека в GitLab, одной строкой. Кладётся руками один раз: он приходит в письме
+#: бота вместе с доступом. Нужен, чтобы `lab take` знал, на кого назначать задачу.
+МОЙ_ЛОГИН = Path("~/.config/brainlab/gitlab-login").expanduser()
 CREDENTIALS = Path("~/.config/brainlab/git-credentials").expanduser()
 #: Личный ключ GitLab принимает с любым именем пользователя; ключ группы — только со своим
 #: именем. Поэтому логин спрашивается, но по умолчанию его знать не надо.
@@ -306,6 +312,21 @@ def do_pull() -> None:
 
 
 def do_pr(аргументы: list[str]) -> None:
+    # `--задача N` вписывает в предложение `Closes #N`. Это не украшение: GitLab закрывает
+    # задачу при слиянии сам, и тогда доска не врёт — сделанное уходит с неё без ручного
+    # шага, а в задаче остаётся ссылка на то предложение, которым она закрыта.
+    задача = ""
+    остаток = []
+    пока = list(аргументы)
+    while пока:
+        это = пока.pop(0)
+        if это in ("--задача", "--task"):
+            задача = (пока.pop(0) if пока else "").lstrip("#")
+        elif это.startswith("--задача="):
+            задача = это.split("=", 1)[1].lstrip("#")
+        else:
+            остаток.append(это)
+    аргументы = остаток
     проект, корень = здесь()
     ветка = git("rev-parse", "--abbrev-ref", "HEAD", cwd=корень)
     if ветка == "main":
@@ -317,11 +338,18 @@ def do_pr(аргументы: list[str]) -> None:
         print(f"предложение уже открыто: !{если_есть['iid']}  {если_есть['web_url']}")
         print("твой push в него вошёл\n")
         номер = int(если_есть["iid"])
+        if задача and f"Closes #{задача}" not in (если_есть.get("description") or ""):
+            api(f"projects/{проект['id']}/merge_requests/{номер}", method="PUT", payload={
+                "description": (если_есть.get("description") or "").rstrip()
+                               + f"\n\nCloses #{задача}"})
+            print(f"дописал в предложение `Closes #{задача}`\n")
     else:
         заголовок = (аргументы[0] if аргументы
                      else git("log", "-1", "--pretty=%s", cwd=корень))
         тело = (аргументы[1] if len(аргументы) > 1
                 else git("log", "-1", "--pretty=%b", cwd=корень))
+        if задача:
+            тело = f"{тело}\n\nCloses #{задача}".strip()
         открыт = api(f"projects/{проект['id']}/merge_requests", method="POST", payload={
             "source_branch": ветка, "target_branch": "main", "title": заголовок,
             "description": тело or заголовок, "remove_source_branch": True})
@@ -389,18 +417,74 @@ def do_checks() -> None:
                       git("rev-parse", "HEAD", cwd=корень))
 
 
+def мой_логин() -> str:
+    try:
+        return МОЙ_ЛОГИН.read_text(encoding="utf-8").strip().splitlines()[0].strip()
+    except (OSError, IndexError):
+        return ""
+
+
+def утверждение_задачи(тело: str) -> str:
+    """Код утверждения, на которое влияет задача. Строка «Утверждение: H-XXX-001» в теле."""
+    если = re.search(r"^\s*(?:\*\*)?Утверждение:?(?:\*\*)?\s*([HDSEF]-[A-Z]{2,4}-\d+)",
+                     тело or "", re.M)
+    return если.group(1) if если else ""
+
+
 def do_tasks() -> None:
-    """Задачи работы. Этого в Gitea не было: открытые вопросы лежали списком в README."""
+    """Задачи работы: кому назначена, что за ход дела, какое утверждение затрагивает."""
     проект, _ = здесь()
     задачи = api(f"projects/{проект['id']}/issues?state=opened&per_page=100") or []
     if not задачи:
         print(f"{проект['path']}: открытых задач нет")
         return
+    я = мой_логин()
     print(f"{проект['path']}: открытых задач {len(задачи)}")
     for з in задачи:
         ярлыки = ", ".join(з.get("labels") or [])
-        print(f"  #{з['iid']:<4} [{ярлыки}] {з['title'][:96]}")
+        кто = ", ".join(и["username"] for и in (з.get("assignees") or []))
+        метка = "ТЕБЕ" if (я and я in кто.split(", ")) else (кто or "—")
+        код = утверждение_задачи(з.get("description") or "")
+        срок = f" до {з['due_date']}" if з.get("due_date") else ""
+        print(f"  #{з['iid']:<4} [{ярлыки}] {з['title'][:74]}{срок}")
+        print(f"        {метка}{('  → ' + код) if код else ''}")
     print(f"\nдоска: {проект['web_url']}/-/boards")
+    print("взять задачу: `lab take <номер>`; отвечать на неё — "
+          "`lab pr --задача <номер>`")
+
+
+def do_take(аргументы: list[str]) -> None:
+    """Взять задачу: поставить себя исполнителем и ярлык «делается».
+
+    Без этого шага двое берутся за одно: доска показывает задачу свободной, пока на ней
+    никого нет. Ярлык и исполнитель ставятся одним вызовом, чтобы не остаться на половине.
+    """
+    if not аргументы:
+        sys.exit("нужен номер задачи: lab take 7")
+    номер = аргументы[0].lstrip("#")
+    проект, _ = здесь()
+    задача = api(f"projects/{проект['id']}/issues/{номер}")
+    if задача is None:
+        sys.exit(f"задачи #{номер} в работе {проект['path']} нет")
+    данные: dict = {"add_labels": "делается"}
+    я = мой_логин()
+    if я:
+        нашлись = api(f"users?username={urllib.parse.quote(я)}") or []
+        if нашлись:
+            данные["assignee_ids"] = [нашлись[0]["id"]]
+        else:
+            print(f"учётной записи «{я}» в GitLab не нашлось: ставлю только ярлык")
+    else:
+        print(f"кто ты — неизвестно: положи свой логин GitLab в {МОЙ_ЛОГИН}")
+    стало = api(f"projects/{проект['id']}/issues/{номер}", method="PUT", payload=данные)
+    кто = ", ".join(и["username"] for и in (стало.get("assignees") or [])) or "никому"
+    print(f"#{номер} {стало['title'][:70]}")
+    print(f"  ярлыки: {', '.join(стало.get('labels') or [])} | на {кто}")
+    код = утверждение_задачи(стало.get("description") or "")
+    if код:
+        print(f"  задача про утверждение {код}: ветка `claim/{код}`, "
+              f"запись идёт под него")
+    print(f"  когда сделаешь: `lab pr --задача {номер}` — слияние закроет задачу само")
 
 
 def main() -> None:
@@ -418,6 +502,8 @@ def main() -> None:
         do_checks()
     elif что == "tasks":
         do_tasks()
+    elif что == "take":
+        do_take(хвост)
     elif что == "open":
         проект, _ = здесь()
         print(проект["web_url"])

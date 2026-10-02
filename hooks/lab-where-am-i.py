@@ -106,8 +106,7 @@ def открытые_предложения(работа: str) -> list[str]:
     for мр in открытые:
         ветка = str(мр.get("source_branch") or "")
         метка = ветка.removeprefix("claim/") if ветка.startswith("claim/") else ветка
-        строки.append(f"  !{мр.get('iid')}  {метка[:14]:14} "
-                      f"{str(мр.get('title') or '')[:64]}")
+        строки.append(f"!{мр.get('iid')} {метка[:14]} {str(мр.get('title') or '')[:48]}")
     return строки
 
 
@@ -215,7 +214,7 @@ def задачи_работы(работа: str) -> tuple[list[str], list[str]]:
             f"→{если.group(1)}" if если else "",
             f"на {кто}" if кто != "никому" else "",
         ]))
-        return f"  #{з.get('iid')}{срок}  {str(з.get('title') or '')[:64]}  {хвост}"
+        return f"#{з.get('iid')}{срок} {str(з.get('title') or '')[:60]} {хвост}"
 
     мне, идёт = [], []
     for з in задачи:
@@ -284,9 +283,11 @@ def claims_of(slug: str, клон: Path | None = None) -> tuple[str, list[str]]:
                 for line in head.group(1).splitlines():
                     if line.startswith("status:"):
                         status = line.partition(":")[2].strip()
-            title = re.search(r"^#\s+(.+)$", text, re.M)
-            said.append(f"  {page.parent.name}  [{status}]  "
-                        f"{(title.group(1) if title else '').split('—', 1)[-1].strip()[:64]}")
+            # Только код и состояние. Заголовок лежит в самом файле, а в хуке он стоил
+            # строки на каждое утверждение: у работы с двадцатью двумя это двадцать две
+            # строки в каждой сессии. Владелец 02-10-2026: «он просто постоянно одну и ту
+            # же инфу читает, это же тупизм».
+            said.append(f"{page.parent.name}{(' ' + status) if status else ''}")
         return (полка if полка == slug else f"{полка}/{slug}"), said
     # Слепок: `<работа>.txt`, по строке на утверждение, как их напечатал бы каталог.
     snapshot = CACHE / f"{slug}.txt"
@@ -309,27 +310,22 @@ def main() -> int:
     место = клон_проекта(cwd)
     repo, claims = claims_of(slug, место)
     if not claims:
-        print(f"\nЛаборатория: работа {slug}, утверждений пока нет. "
-              f"Как писать — `~/.claude/rules/lab.md`.\n")
+        print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {место}")
+        print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
         return 0
-    print(f"\nЛаборатория: работа {slug}. Утверждения:")
-    print("\n".join(claims))
-    print(f"\nКлон: {место}")
+    print(f"\nЛаборатория: {slug}, утверждений {len(claims)} — {', '.join(claims)}")
+    print(f"Клон: {место}")
     if изменилось := подтянуть(slug, cwd):
-        print("\nВ main с прошлого раза:")
-        print("\n".join(изменилось))
+        print("В main: " + "; ".join(с.strip() for с in изменилось[:4]))
     if ждут := открытые_предложения(slug):
-        print("\nОткрыто (дописывай в них, а не заводи второе):")
-        print("\n".join(ждут))
+        print("Открыто (дописывай, не заводи второе): "
+              + "; ".join(с.strip() for с in ждут))
     поручено, идёт = задачи_работы(slug)
     if поручено:
-        print("\nПоручено тебе:")
-        print("\n".join(поручено))
+        print("Поручено тебе: " + "; ".join(с.strip() for с in поручено))
     if идёт:
-        print("\nУже у кого-то в работе:")
-        print("\n".join(идёт))
-    print("\nКак писать в базу — `~/.claude/rules/lab.md`. Коротко: ветка, правка файлов,")
-    print("`lab pr`; слияние человеком и есть запись.\n")
+        print("У кого-то в работе: " + "; ".join(с.strip() for с in идёт))
+    print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
     return 0
 
 

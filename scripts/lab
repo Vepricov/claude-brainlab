@@ -9,17 +9,25 @@
 сказали проверки. Всё остальное — `git pull`, `git checkout -b`, правка файлов, `git push`
 — обычный git, и прослойки для этого не нужно.
 
-    lab here <работа>      склонировать работу В ПАПКУ ПРОЕКТА (lab-base) или обновить
-    lab clone [работа…]    склонировать в общую папку (для машины без проектов)
-    lab pull               обновить работу текущего каталога и показать, что изменилось
-    lab pr ["заголовок"]   запушить ветку, открыть предложение, показать вердикт
-      --task <номер>     вписать `Closes #<номер>`: слияние закроет задачу само
-    lab checks             что сказали проверки и что написано в обсуждении
+    lab here <работа>      склонировать работу в папку проекта (lab-base): слаг → полный путь
+    lab pull               обновить клон, положить ключ git'у, показать открытые предложения
     lab tasks              открытые задачи работы: кому назначены, какое утверждение
     lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
-    lab open               напечатать адрес работы или своего предложения
+    lab checks             что сказали проверки этому предложению
 
-База переключена на GitLab 01-10-2026: прежний помощник для Gitea удалён.
+ВСЁ ОСТАЛЬНОЕ — ОБЫЧНЫЙ GIT, и прослойки для него нет нарочно:
+
+    git checkout -b claim/H-XXX-001        ветка
+    git commit -F -                        заголовок и тело предложения прямо в коммите
+    git push -o merge_request.create       предложение откроется этим же push
+
+Тело предложения **берётся из сообщения коммита** — проверено 03-10-2026: заголовок встал из
+первой строки, три раздела из остального, без единого вызова API. `Closes #7` там же, своей
+строкой. Поэтому команд `lab clone`, `lab pr` и `lab open` больше нет: они повторяли
+`git clone`, `git push` и `echo` чужими именами, которые надо было помнить.
+
+Что здесь осталось — ровно то, чего git не умеет: найти работу по слагу (полный путь в дереве
+знает только база), положить ключ туда, где git его найдёт, и прочитать задачи и вердикт.
 """
 
 from __future__ import annotations
@@ -305,26 +313,6 @@ def do_here(names: list[str]) -> None:
         print(git("--no-pager", "diff", "--stat", f"{was}..{became}", cwd=target))
 
 
-def do_clone(names: list[str]) -> None:
-    setup_key()
-    BASE.mkdir(parents=True, exist_ok=True)
-    parser = [find_project(item) for item in names] if names else works()
-    for project in parser:
-        target = BASE / project["path"]
-        print(f"{project['path']:34}", end=" ", flush=True)
-        if (target / ".git").is_dir():
-            git("fetch", "-q", "origin", cwd=target)
-            done = subprocess.run(["git", "pull", "-q", "--ff-only", "origin", "main"],
-                                  cwd=target, capture_output=True, text=True,
-                                  env=environment())
-            print("обновлено" if done.returncode == 0 else "есть свои правки, не трогаю")
-        else:
-            git("clone", "-q", clone_url(project), str(target))
-            print("склонировано")
-        sign_clone(target)
-    print(f"\nБаза лежит в {BASE}. Дальше это обычный git.")
-
-
 def my_proposal(project: dict, branch: str) -> dict | None:
     opened = api(f"projects/{project['id']}/merge_requests?state=opened&per_page=100") or []
     for proposal in opened:
@@ -350,54 +338,6 @@ def do_pull() -> None:
         print("открытые предложения этой работы:")
         for proposal in opened:
             print(f"  !{proposal['iid']}  {proposal.get('source_branch','')}  {proposal.get('title','')[:60]}")
-
-
-def do_pr(arguments: list[str]) -> None:
-    # `--task N` вписывает в предложение `Closes #N`. Это не украшение: GitLab закрывает
-    # задачу при слиянии сам, и тогда доска не врёт — сделанное уходит с неё без ручного
-    # шага, а в задаче остаётся ссылка на то предложение, которым она закрыта.
-    issue_number = ""
-    rest = []
-    while_waiting = list(arguments)
-    while while_waiting:
-        this = while_waiting.pop(0)
-        if this in ("--task", "--task"):
-            issue_number = (while_waiting.pop(0) if while_waiting else "").lstrip("#")
-        elif this.startswith("--task="):
-            issue_number = this.split("=", 1)[1].lstrip("#")
-        else:
-            rest.append(this)
-    arguments = rest
-    project, root = here()
-    branch = git("rev-parse", "--abbrev-ref", "HEAD", cwd=root)
-    if branch == "main":
-        sys.exit("ты на main: сделай ветку, например git checkout -b claim/H-WSD-001")
-    setup_key()
-    git("push", "-q", "-u", "origin", branch, cwd=root)
-    if_present = my_proposal(project, branch)
-    if if_present:
-        print(f"предложение уже открыто: !{if_present['iid']}  {if_present['web_url']}")
-        print("твой push в него вошёл\n")
-        number = int(if_present["iid"])
-        if issue_number and f"Closes #{issue_number}" not in (if_present.get("description") or ""):
-            api(f"projects/{project['id']}/merge_requests/{number}", method="PUT", payload={
-                "description": (if_present.get("description") or "").rstrip()
-                               + f"\n\nCloses #{issue_number}"})
-            print(f"дописал в предложение `Closes #{issue_number}`\n")
-    else:
-        title = (arguments[0] if arguments
-                     else git("log", "-1", "--pretty=%s", cwd=root))
-        body = (arguments[1] if len(arguments) > 1
-                else git("log", "-1", "--pretty=%b", cwd=root))
-        if issue_number:
-            body = f"{body}\n\nCloses #{issue_number}".strip()
-        opened_one = api(f"projects/{project['id']}/merge_requests", method="POST", payload={
-            "source_branch": branch, "target_branch": "main", "title": title,
-            "description": body or title, "remove_source_branch": True})
-        print(f"открыто предложение !{opened_one['iid']}  {opened_one['web_url']}\n")
-        number = int(opened_one["iid"])
-    print("== проверки")
-    show_checks(project, number, git("rev-parse", "HEAD", cwd=root), wait_for=100)
 
 
 def show_checks(project: dict, number: int, sha: str, *, wait_for: int = 0) -> None:
@@ -451,7 +391,8 @@ def do_checks() -> None:
     branch = git("rev-parse", "--abbrev-ref", "HEAD", cwd=root)
     if_present = my_proposal(project, branch)
     if if_present is None:
-        sys.exit(f"по ветке {branch} открытого предложения нет — сделай lab pr")
+        sys.exit(f"по ветке {branch} открытого предложения нет — запушь её "
+                 f"с `-o merge_request.create`")
     print(f"предложение !{if_present['iid']}  {if_present['web_url']}\n")
     print("== проверки")
     show_checks(project, int(if_present["iid"]),
@@ -491,7 +432,7 @@ def do_tasks() -> None:
         print(f"        {label}{('  → ' + code) if code else ''}")
     print(f"\nдоска: {project['web_url']}/-/boards")
     print("взять задачу: `lab take <номер>`; отвечать на неё — "
-          "`lab pr --task <номер>`")
+          "строкой `Closes #<номер>` в сообщении коммита")
 
 
 def do_take(arguments: list[str]) -> None:
@@ -525,29 +466,23 @@ def do_take(arguments: list[str]) -> None:
     if code:
         print(f"  задача про утверждение {code}: ветка `claim/{code}`, "
               f"запись идёт под него")
-    print(f"  когда сделаешь: `lab pr --task {number}` — слияние закроет задачу само")
+    print(f"  когда сделаешь: строка `Closes #{number}` в коммите — слияние закроет "
+          "задачу само")
 
 
 def main() -> None:
     args = sys.argv[1] if len(sys.argv) > 1 else ""
     tail = sys.argv[2:]
-    if args == "clone":
-        do_clone(tail)
-    elif args == "here":
+    if args == "here":
         do_here(tail)
     elif args == "pull":
         do_pull()
-    elif args == "pr":
-        do_pr(tail)
     elif args == "checks":
         do_checks()
     elif args == "tasks":
         do_tasks()
     elif args == "take":
         do_take(tail)
-    elif args == "open":
-        project, _ = here()
-        print(project["web_url"])
     else:
         print(__doc__)
 

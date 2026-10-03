@@ -22,7 +22,6 @@ import json
 import os
 import re
 import select
-import socket
 import subprocess
 import sys
 import urllib.parse
@@ -192,44 +191,6 @@ def pull_clone(work: str, cwd: str) -> list[str]:
         return []
     lines = git_out("--no-pager", "diff", "--stat", f"{was}..{became}").splitlines()
     return [f"  {line.strip()}" for line in lines[-12:]]
-
-
-def runs_in_branch(root: Path) -> str:
-    """Черновики прогонов, лежащие в ветке этого клона и ещё не разобранные.
-
-    `lab_run.py` кладёт в `_runs/` готовый черновик страницы прогона — с шапкой, числами и
-    строкой «зачем», написанной тем, кто прогон ставил. Полка временная: разбирает её агент,
-    перенося каждый черновик в `claims/<H-код>/runs/<E-код>.md`. Без этой строки сессия
-    начинается с «а что я вчера запускал», и прогон описывается по памяти или считается
-    заново.
-
-    Читается гитом, а не вызовами: хук только что сделал fetch, значит `origin/<ветка>` уже
-    держит всё, что положил код, и сеть для этого не нужна.
-    """
-    def git_out(*args: str) -> str:
-        done = subprocess.run([*GIT, "-C", str(root), *args], capture_output=True,
-                              text=True, timeout=10, stdin=subprocess.DEVNULL,
-                              env={**os.environ, **NO_PROMPT_ENV})
-        return done.stdout.strip() if done.returncode == 0 else ""
-
-    branch = git_out("rev-parse", "--abbrev-ref", "HEAD")
-    if not branch:
-        return ""
-    refs = [f"origin/{branch}"] if branch != "main" else []
-    host = socket.gethostname().split(".")[0]
-    refs.append(f"origin/runs/{host}")
-    for ref in refs:
-        listed = git_out("ls-tree", "-r", "--name-only", ref, "--", "_runs")
-        drafts = [f for f in listed.splitlines() if f.endswith(".md")]
-        if not drafts:
-            continue
-        names = [Path(f).stem for f in drafts]
-        shown = ", ".join(names[:3]) + (f" и ещё {len(names) - 3}" if len(names) > 3 else "")
-        where = "в твоей ветке" if ref == f"origin/{branch}" else f"в `{ref[7:]}`"
-        return (f"Прогоны {where}, не разобраны: {len(drafts)} — {shown}. "
-                "Черновики лежат в `_runs/`: перенеси под утверждение в "
-                "`claims/<H>/runs/<E>.md`, числа уже внутри.")
-    return ""
 
 
 #: Логин человека, за чьей машиной идёт работа. Одна строка, кладётся руками один раз:
@@ -417,8 +378,6 @@ def main() -> int:
         print("Поручено тебе: " + "; ".join(text_line.strip() for text_line in assigned_to_me))
     if in_progress:
         print("У кого-то в работе: " + "; ".join(text_line.strip() for text_line in in_progress))
-    if runs_line := runs_in_branch(place):
-        print(runs_line)
     print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
     return 0
 

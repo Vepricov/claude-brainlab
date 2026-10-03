@@ -13,7 +13,7 @@
     lab clone [работа…]    склонировать в общую папку (для машины без проектов)
     lab pull               обновить работу текущего каталога и показать, что изменилось
     lab pr ["заголовок"]   запушить ветку, открыть предложение, показать вердикт
-      --задача <номер>     вписать `Closes #<номер>`: слияние закроет задачу само
+      --task <номер>     вписать `Closes #<номер>`: слияние закроет задачу само
     lab checks             что сказали проверки и что написано в обсуждении
     lab tasks              открытые задачи работы: кому назначены, какое утверждение
     lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
@@ -353,7 +353,7 @@ def do_pull() -> None:
 
 
 def do_pr(arguments: list[str]) -> None:
-    # `--задача N` вписывает в предложение `Closes #N`. Это не украшение: GitLab закрывает
+    # `--task N` вписывает в предложение `Closes #N`. Это не украшение: GitLab закрывает
     # задачу при слиянии сам, и тогда доска не врёт — сделанное уходит с неё без ручного
     # шага, а в задаче остаётся ссылка на то предложение, которым она закрыта.
     issue_number = ""
@@ -361,9 +361,9 @@ def do_pr(arguments: list[str]) -> None:
     while_waiting = list(arguments)
     while while_waiting:
         this = while_waiting.pop(0)
-        if this in ("--задача", "--task"):
+        if this in ("--task", "--task"):
             issue_number = (while_waiting.pop(0) if while_waiting else "").lstrip("#")
-        elif this.startswith("--задача="):
+        elif this.startswith("--task="):
             issue_number = this.split("=", 1)[1].lstrip("#")
         else:
             rest.append(this)
@@ -491,7 +491,7 @@ def do_tasks() -> None:
         print(f"        {label}{('  → ' + code) if code else ''}")
     print(f"\nдоска: {project['web_url']}/-/boards")
     print("взять задачу: `lab take <номер>`; отвечать на неё — "
-          "`lab pr --задача <номер>`")
+          "`lab pr --task <номер>`")
 
 
 def do_take(arguments: list[str]) -> None:
@@ -525,7 +525,7 @@ def do_take(arguments: list[str]) -> None:
     if code:
         print(f"  задача про утверждение {code}: ветка `claim/{code}`, "
               f"запись идёт под него")
-    print(f"  когда сделаешь: `lab pr --задача {number}` — слияние закроет задачу само")
+    print(f"  когда сделаешь: `lab pr --task {number}` — слияние закроет задачу само")
 
 
 def main() -> None:

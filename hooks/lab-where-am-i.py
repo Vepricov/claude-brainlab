@@ -22,6 +22,7 @@ import json
 import os
 import re
 import select
+import socket
 import subprocess
 import sys
 import urllib.parse
@@ -39,45 +40,45 @@ FRONT = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
 #: Где спрашивать про открытые предложения. Адрес публичный: хук живёт на машине человека,
 #: и туннель до петли на ней может быть не поднят.
-БАЗА = os.getenv("BRAINLAB_GIT_URL", "https://68-183-24-188.sslip.io:9445")
-ТОКЕН = Path("~/.config/brainlab/git-token").expanduser()
+BASE_URL = os.getenv("BRAINLAB_GIT_URL", "https://68-183-24-188.sslip.io:9445")
+TOKEN_FILE = Path("~/.config/brainlab/git-token").expanduser()
 
 
-def путь_работы(слаг: str) -> str:
+def path_of_work(slug: str) -> str:
     """Полный путь работы в дереве групп. Запоминается: он не меняется.
 
     Единица базы — работа, и у неё свой проект внутри группы темы. Слаг человек помнит, а
     полный путь нет, поэтому он ищется один раз и кладётся рядом со слепком утверждений.
     """
-    помню = CACHE / f"{слаг}.path"
-    if помню.is_file():
-        если = помню.read_text(encoding="utf-8").strip()
-        if если:
-            return если
-    if not ТОКЕН.is_file():
+    remembered = CACHE / f"{slug}.path"
+    if remembered.is_file():
+        found = remembered.read_text(encoding="utf-8").strip()
+        if found:
+            return found
+    if not TOKEN_FILE.is_file():
         return ""
     try:
-        запрос = urllib.request.Request(
-            f"{БАЗА}/api/v4/groups/brainlab/projects"
-            f"?include_subgroups=true&simple=true&search={слаг}&per_page=100",
-            headers={"PRIVATE-TOKEN": ТОКЕН.read_text(encoding="utf-8").strip()})
-        with urllib.request.urlopen(запрос, timeout=4) as ответ:
-            найдено = json.loads(ответ.read().decode("utf-8"))
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/groups/brainlab/projects"
+            f"?include_subgroups=true&simple=true&search={slug}&per_page=100",
+            headers={"PRIVATE-TOKEN": TOKEN_FILE.read_text(encoding="utf-8").strip()})
+        with urllib.request.urlopen(request, timeout=4) as answer:
+            found_items = json.loads(answer.read().decode("utf-8"))
     except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
         return ""
-    точные = [п for п in найдено if п.get("path") == слаг]
-    if not точные:
+    exact = [project for project in found_items if project.get("path") == slug]
+    if not exact:
         return ""
-    путь = str(точные[0]["path_with_namespace"])
+    path = str(exact[0]["path_with_namespace"])
     try:
         CACHE.mkdir(parents=True, exist_ok=True)
-        помню.write_text(путь + "\n", encoding="utf-8")
+        remembered.write_text(path + "\n", encoding="utf-8")
     except OSError:
         pass
-    return путь
+    return path
 
 
-def открытые_предложения(работа: str) -> list[str]:
+def open_proposals(work: str) -> list[str]:
     """Открытые предложения этой работы: номер, утверждение, заголовок.
 
     Это самое скоропортящееся, что агенту нужно знать перед записью, и самое дорогое,
@@ -88,27 +89,27 @@ def открытые_предложения(работа: str) -> list[str]:
     Стоит это ноль токенов модели и один запрос к Gitea. Не ответила — молчим: сказать
     «я в работе такой-то» полезно и без этого.
     """
-    полный = путь_работы(работа)
-    if not полный or not ТОКЕН.is_file():
+    full_path = path_of_work(work)
+    if not full_path or not TOKEN_FILE.is_file():
         return []
     try:
-        токен = ТОКЕН.read_text(encoding="utf-8").strip()
-        запрос = urllib.request.Request(
-            f"{БАЗА}/api/v4/projects/{urllib.parse.quote(полный, safe='')}"
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(full_path, safe='')}"
             f"/merge_requests?state=opened&per_page=20",
-            headers={"PRIVATE-TOKEN": токен})
+            headers={"PRIVATE-TOKEN": token})
         # Сертификат выписан на sslip.io и настоящий, но хук не имеет права падать из-за
         # чужой связи, поэтому проверка мягкая и таймаут короткий.
-        with urllib.request.urlopen(запрос, timeout=3) as ответ:
-            открытые = json.loads(ответ.read().decode("utf-8"))
+        with urllib.request.urlopen(request, timeout=3) as answer:
+            opened = json.loads(answer.read().decode("utf-8"))
     except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
         return []
-    строки = []
-    for мр in открытые:
-        ветка = str(мр.get("source_branch") or "")
-        метка = ветка.removeprefix("claim/") if ветка.startswith("claim/") else ветка
-        строки.append(f"!{мр.get('iid')} {метка[:14]} {str(мр.get('title') or '')[:48]}")
-    return строки
+    lines = []
+    for proposal in opened:
+        branch = str(proposal.get("source_branch") or "")
+        label = branch.removeprefix("claim/") if branch.startswith("claim/") else branch
+        lines.append(f"!{proposal.get('iid')} {label[:14]} {str(proposal.get('title') or '')[:48]}")
+    return lines
 
 
 #: Хранилище ключа, которое пишет сам `lab`. Хуку важно ходить ТОЛЬКО через него.
@@ -126,10 +127,10 @@ NO_PROMPT_ENV = {"GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "/usr/bin/true",
                 "SSH_ASKPASS": "/usr/bin/true", "GIT_CONFIG_NOSYSTEM": "1"}
 
 #: Помощник, который умеет клонировать тему в папку проекта и открывать pull request.
-ПОМОЩНИК = Path("~/.local/bin/lab").expanduser()
+LAB_CLI = Path("~/.local/bin/lab").expanduser()
 
 
-def клон_проекта(cwd: str) -> Path:
+def clone_of_project(cwd: str) -> Path:
     """Куда клонируется база ДЛЯ ЭТОГО проекта: `<папка проекта>/lab-base`.
 
     Общая папка на все проекты кончилась ровно тем, чем и должна была: агент в
@@ -137,16 +138,16 @@ def клон_проекта(cwd: str) -> Path:
     склонировал её из чужого локального клона — и push уходил в никуда. Клон лежит там,
     где агент работает, и других мест у него нет.
     """
-    здесь = Path(cwd or ".").expanduser().resolve()
-    for папка in (здесь, *здесь.parents):
-        if (папка / ".lab-work").is_file():
-            return папка / "lab-base"
-        if папка == папка.parent:
+    here = Path(cwd or ".").expanduser().resolve()
+    for folder in (here, *here.parents):
+        if (folder / ".lab-work").is_file():
+            return folder / "lab-base"
+        if folder == folder.parent:
             break
-    return здесь / "lab-base"
+    return here / "lab-base"
 
 
-def подтянуть(работа: str, cwd: str) -> list[str]:
+def pull_clone(work: str, cwd: str) -> list[str]:
     """Завести или обновить клон работы в папке проекта и сказать, что изменилось.
 
     Это то, с чего начинается ход: агент видит чужие слияния как обычный `git pull`, а не
@@ -154,106 +155,101 @@ def подтянуть(работа: str, cwd: str) -> list[str]:
 
     Свои незакоммиченные правки не трогаем: `--ff-only` откажется, и это правильно.
     """
-    корень = клон_проекта(cwd)
-    if not (корень / ".git").is_dir():
-        if not ПОМОЩНИК.is_file():
-            return [f"  клона базы нет, и помощника нет: {ПОМОЩНИК}"]
-        итог = subprocess.run([str(ПОМОЩНИК), "here", работа], cwd=str(корень.parent),
+    root = clone_of_project(cwd)
+    if not (root / ".git").is_dir():
+        if not LAB_CLI.is_file():
+            return [f"  клона базы нет, и помощника нет: {LAB_CLI}"]
+        done = subprocess.run([str(LAB_CLI), "here", work], cwd=str(root.parent),
                               capture_output=True, text=True, timeout=120,
                               stdin=subprocess.DEVNULL,
                               env={**os.environ, **NO_PROMPT_ENV})
-        строки = (итог.stdout + итог.stderr).strip().splitlines()
-        return [f"  {с.strip()}" for с in строки[:6]] or ["  клон не вышел"]
-    def гит(*что: str) -> str:
-        итог = subprocess.run([*GIT, "-C", str(корень), *что],
+        lines = (done.stdout + done.stderr).strip().splitlines()
+        return [f"  {text_line.strip()}" for text_line in lines[:6]] or ["  клон не вышел"]
+    def git_out(*args: str) -> str:
+        done = subprocess.run([*GIT, "-C", str(root), *args],
                               capture_output=True, text=True, timeout=25,
                               stdin=subprocess.DEVNULL,
                               env={**os.environ, **NO_PROMPT_ENV})
-        return итог.stdout.strip()
-    было = гит("rev-parse", "HEAD")
-    взято = subprocess.run([*GIT, "-C", str(корень), "fetch", "-q", "origin"],
+        return done.stdout.strip()
+    was = git_out("rev-parse", "HEAD")
+    fetched = subprocess.run([*GIT, "-C", str(root), "fetch", "-q", "origin"],
                            capture_output=True, text=True, timeout=25,
                            stdin=subprocess.DEVNULL,
                            env={**os.environ, **NO_PROMPT_ENV})
     # Молчащий отказ здесь хуже устаревшей строки: 02-10-2026 после смены ключа git
     # отвечал «Access denied», хук этого не показывал, и агент видел прошлое состояние
     # как текущее. Чинит это `lab pull` — он перезаписывает ключ помощнику.
-    if взято.returncode:
-        беда = (взято.stderr or "").strip().splitlines()
+    if fetched.returncode:
+        trouble = (fetched.stderr or "").strip().splitlines()
         return ["  база не ответила, показано прошлое состояние: "
-                + (беда[-1][:120] if беда else "git fetch не прошёл"),
+                + (trouble[-1][:120] if trouble else "git fetch не прошёл"),
                 "  починить — `lab pull`"]
-    subprocess.run([*GIT, "-C", str(корень), "pull", "-q", "--ff-only", "origin", "main"],
+    subprocess.run([*GIT, "-C", str(root), "pull", "-q", "--ff-only", "origin", "main"],
                    capture_output=True, text=True, timeout=25,
                    stdin=subprocess.DEVNULL, env={**os.environ, **NO_PROMPT_ENV})
-    стало = гит("rev-parse", "HEAD")
-    if было == стало:
+    became = git_out("rev-parse", "HEAD")
+    if was == became:
         return []
-    строки = гит("--no-pager", "diff", "--stat", f"{было}..{стало}").splitlines()
-    return [f"  {строка.strip()}" for строка in строки[-12:]]
+    lines = git_out("--no-pager", "diff", "--stat", f"{was}..{became}").splitlines()
+    return [f"  {line.strip()}" for line in lines[-12:]]
 
 
-def runs_of_work(work: str) -> str:
-    """Runs this work has already computed: files from the `runs` branch, newest first.
+def runs_in_branch(root: Path) -> str:
+    """Прогоны, лежащие в ветке этого клона и ещё не дошедшие до `main`.
 
-    `lab_run.py` uploads every run to the base right away, by itself, so a run computed on
-    a server shows up here within the minute. Without this line the agent opens a session
-    not knowing what it launched, and either recomputes or describes from memory.
+    `lab_run.py` отправляет прогон сразу в ту ветку, в которой агент потом пишет
+    предложение, поэтому прогоны — кирпичики: потянул ветку, и они уже рядом с тем, что
+    собираешься писать. Эта строка говорит, какие из них ещё не описаны, чтобы сессия не
+    начиналась с «а что я вчера запускал».
 
-    Two requests: the file list (how many) and the branch's latest commits (which are
-    fresh). The tree gives no order, the commits do, and that is cheaper than reading files.
+    Читается гитом, а не вызовами: хук только что сделал fetch, значит `origin/<ветка>`
+    уже держит всё, что положил сервер, и сеть для этого не нужна вовсе.
     """
-    full_path = путь_работы(work)
-    if not full_path or not ТОКЕН.is_file():
-        return ""
-    token = ТОКЕН.read_text(encoding="utf-8").strip()
-    project = urllib.parse.quote(full_path, safe="")
+    def git_out(*args: str) -> str:
+        done = subprocess.run([*GIT, "-C", str(root), *args], capture_output=True,
+                              text=True, timeout=10, stdin=subprocess.DEVNULL,
+                              env={**os.environ, **NO_PROMPT_ENV})
+        return done.stdout.strip() if done.returncode == 0 else ""
 
-    def ask(tail: str):
-        request = urllib.request.Request(f"{БАЗА}/api/v4/projects/{project}/{tail}",
-                                        headers={"PRIVATE-TOKEN": token})
-        with urllib.request.urlopen(request, timeout=4) as answer:
-            return json.loads(answer.read().decode("utf-8"))
-
-    try:
-        files = [f for f in ask("repository/tree?path=lab-runs&ref=runs&per_page=100")
-                 if f.get("type") == "blob"]
-    except Exception:  # noqa: BLE001 — ветки может не быть вовсе, и это норма
+    branch = git_out("rev-parse", "--abbrev-ref", "HEAD")
+    if not branch:
         return ""
-    if not files:
-        return ""
-    fresh: list[str] = []
-    try:
-        for commit in ask("repository/commits?ref_name=runs&per_page=12"):
-            title = str(commit.get("title") or "")
-            if title.startswith("run ") and title[4:] not in fresh:
-                fresh.append(title[4:])
-            if len(fresh) == 3:
-                break
-    except Exception:  # noqa: BLE001
-        fresh = [f["name"].removesuffix(".json") for f in files[:3]]
-    tail = ", ".join(fresh)
-    return f"Прогоны: {len(files)} в ветке `runs`" + (f", свежие — {tail}" if tail else "")
+    refs = [f"origin/{branch}"] if branch != "main" else []
+    host = socket.gethostname().split(".")[0]
+    refs.append(f"origin/runs/{host}")
+    in_main = set(git_out("ls-tree", "-r", "--name-only", "origin/main",
+                          "--", "lab-runs").splitlines())
+    for ref in refs:
+        listed = git_out("ls-tree", "-r", "--name-only", ref, "--", "lab-runs")
+        files = [f for f in listed.splitlines() if f.endswith(".json")]
+        fresh = [Path(f).stem for f in files if f not in in_main]
+        if not fresh:
+            continue
+        where = "в твоей ветке" if ref == f"origin/{branch}" else f"в `{ref[7:]}`"
+        shown = ", ".join(fresh[:3]) + (f" и ещё {len(fresh) - 3}" if len(fresh) > 3 else "")
+        return (f"Прогоны {where}, ещё не описаны: {len(fresh)} — {shown}. "
+                "Их и описывай: страница утверждения или серии рядом, одним предложением.")
+    return ""
 
 
 #: Логин человека, за чьей машиной идёт работа. Одна строка, кладётся руками один раз:
 #: он приходит в письме бота вместе с доступом. Без него агент всё равно видит задачи с
 #: ярлыками, но не видит, что назначено лично хозяину.
-ЛОГИН = Path("~/.config/brainlab/gitlab-login").expanduser()
+LOGIN_FILE = Path("~/.config/brainlab/gitlab-login").expanduser()
 #: Утверждение, на которое влияет задача: строка в её теле. Так задача связана со знанием,
 #: а не висит рядом с ним.
-УТВЕРЖДЕНИЕ = re.compile(r"^\s*(?:\*\*)?Утверждение:?(?:\*\*)?\s*([HDSEF]-[A-Z]{2,4}-\d+)",
+CLAIM_LINE = re.compile(r"^\s*(?:\*\*)?Утверждение:?(?:\*\*)?\s*([HDSEF]-[A-Z]{2,4}-\d+)",
                          re.M)
 
 
-def мой_логин() -> str:
+def my_login() -> str:
     try:
-        return ЛОГИН.read_text(encoding="utf-8").strip().splitlines()[0].strip()
+        return LOGIN_FILE.read_text(encoding="utf-8").strip().splitlines()[0].strip()
     except (OSError, IndexError):
         return ""
 
 
-def задачи_работы(работа: str) -> tuple[list[str], list[str]]:
+def tasks_of_work(work: str) -> tuple[list[str], list[str]]:
     """Что агенту делать в этой работе: поручено ему, назначено хозяину, уже делается.
 
     Без этого блока задача лежит на доске, а агент о ней не знает: сам он доску не
@@ -262,49 +258,49 @@ def задачи_работы(работа: str) -> tuple[list[str], list[str]]:
 
     Возвращает две пачки: что делать (поручено или назначено) и что уже в работе у других.
     """
-    полный = путь_работы(работа)
-    if not полный or not ТОКЕН.is_file():
+    full_path = path_of_work(work)
+    if not full_path or not TOKEN_FILE.is_file():
         return [], []
     try:
-        токен = ТОКЕН.read_text(encoding="utf-8").strip()
-        запрос = urllib.request.Request(
-            f"{БАЗА}/api/v4/projects/{urllib.parse.quote(полный, safe='')}"
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(full_path, safe='')}"
             f"/issues?state=opened&per_page=100",
-            headers={"PRIVATE-TOKEN": токен})
-        with urllib.request.urlopen(запрос, timeout=4) as ответ:
-            задачи = json.loads(ответ.read().decode("utf-8"))
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=4) as answer:
+            issues = json.loads(answer.read().decode("utf-8"))
     except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
         return [], []
-    я = мой_логин()
+    me = my_login()
 
-    def строка(з: dict) -> str:
-        ярлыки = [я for я in (з.get("labels") or []) if я not in ("делается", "на проверке")]
+    def line(issue: dict) -> str:
+        labels = [me for me in (issue.get("labels") or []) if me not in ("делается", "на проверке")]
         # Своё имя и имя своего агента не печатаем: строка и так про то, что поручено
         # тебе, а место в ней дорогое — хук читается в начале каждой сессии.
-        свои = {я, f"{я}-agent"} if я else set()
-        кто = ", ".join(и["username"] for и in (з.get("assignees") or [])
-                        if и["username"] not in свои) or "никому"
-        если = УТВЕРЖДЕНИЕ.search(з.get("description") or "")
-        срок = f" до {з['due_date']}" if з.get("due_date") else ""
-        хвост = " ".join(filter(None, [
-            f"[{','.join(ярлыки)}]" if ярлыки else "",
-            f"→{если.group(1)}" if если else "",
-            f"на {кто}" if кто != "никому" else "",
+        own = {me, f"{me}-agent"} if me else set()
+        assignees = ", ".join(person["username"] for person in (issue.get("assignees") or [])
+                        if person["username"] not in own) or "никому"
+        found = CLAIM_LINE.search(issue.get("description") or "")
+        due = f" до {issue['due_date']}" if issue.get("due_date") else ""
+        tail = " ".join(filter(None, [
+            f"[{','.join(labels)}]" if labels else "",
+            f"→{found.group(1)}" if found else "",
+            f"на {assignees}" if assignees != "никому" else "",
         ]))
-        return f"#{з.get('iid')}{срок} {str(з.get('title') or '')[:60]} {хвост}"
+        return f"#{issue.get('iid')}{due} {str(issue.get('title') or '')[:60]} {tail}"
 
-    мне, идёт = [], []
-    for з in задачи:
-        ярлыки = set(з.get("labels") or [])
-        мои = {и["username"] for и in (з.get("assignees") or [])}
+    mine, in_progress = [], []
+    for issue in issues:
+        labels = set(issue.get("labels") or [])
+        my_names = {person["username"] for person in (issue.get("assignees") or [])}
         # Задача, назначенная учётке агента (`<логин>-agent`), тоже его: с 02-10-2026 у
         # агента своя учётная запись, и «задача агенту» выражается назначением, а не
         # только ярлыком.
-        if "агенту" in ярлыки or (я and (я in мои or f"{я}-agent" in мои)):
-            мне.append(строка(з))
-        elif "делается" in ярлыки:
-            идёт.append(строка(з))
-    return мне, идёт
+        if "агенту" in labels or (me and (me in my_names or f"{me}-agent" in my_names)):
+            mine.append(line(issue))
+        elif "делается" in labels:
+            in_progress.append(line(issue))
+    return mine, in_progress
 
 
 PINNED = ".lab-work"
@@ -341,17 +337,17 @@ def work_of(cwd: str) -> str | None:
     return None
 
 
-def claims_of(slug: str, клон: Path | None = None) -> tuple[str, list[str]]:
+def claims_of(slug: str, clone: Path | None = None) -> tuple[str, list[str]]:
     """Репозиторий работы и её утверждения, прочитанные с диска.
 
     Сначала клон этой работы в папке проекта: после переезда на GitLab работа — отдельный
     репозиторий, и её утверждения лежат прямо в нём, а не в папке внутри темы.
     """
-    места = []
-    if клон is not None and (клон / "claims").is_dir():
-        места.append((slug, клон))
-    места += [(shelf.name, shelf / slug) for shelf in sorted(BASE.glob("*"))]
-    for полка, home in места:
+    places = []
+    if clone is not None and (clone / "claims").is_dir():
+        places.append((slug, clone))
+    places += [(shelf.name, shelf / slug) for shelf in sorted(BASE.glob("*"))]
+    for shelf, home in places:
         if not (home / "claims").is_dir():
             continue
         said = []
@@ -368,7 +364,7 @@ def claims_of(slug: str, клон: Path | None = None) -> tuple[str, list[str]]:
             # строки в каждой сессии. Владелец 02-10-2026: «он просто постоянно одну и ту
             # же инфу читает, это же тупизм».
             said.append(f"{page.parent.name}{(' ' + status) if status else ''}")
-        return (полка if полка == slug else f"{полка}/{slug}"), said
+        return (shelf if shelf == slug else f"{shelf}/{slug}"), said
     # Слепок: `<работа>.txt`, по строке на утверждение, как их напечатал бы каталог.
     snapshot = CACHE / f"{slug}.txt"
     if snapshot.is_file():
@@ -404,25 +400,25 @@ def main() -> int:
     slug = work_of(cwd)
     if slug is None:
         return 0
-    место = клон_проекта(cwd)
-    repo, claims = claims_of(slug, место)
+    place = clone_of_project(cwd)
+    repo, claims = claims_of(slug, place)
     if not claims:
-        print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {место}")
+        print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {place}")
         print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
         return 0
     print(f"\nЛаборатория: {slug}, утверждений {len(claims)} — {', '.join(claims)}")
-    print(f"Клон: {место}")
-    if изменилось := подтянуть(slug, cwd):
-        print("В main: " + "; ".join(с.strip() for с in изменилось[:4]))
-    if ждут := открытые_предложения(slug):
+    print(f"Клон: {place}")
+    if changed := pull_clone(slug, cwd):
+        print("В main: " + "; ".join(text_line.strip() for text_line in changed[:4]))
+    if waiting := open_proposals(slug):
         print("Открыто (дописывай, не заводи второе): "
-              + "; ".join(с.strip() for с in ждут))
-    поручено, идёт = задачи_работы(slug)
-    if поручено:
-        print("Поручено тебе: " + "; ".join(с.strip() for с in поручено))
-    if идёт:
-        print("У кого-то в работе: " + "; ".join(с.strip() for с in идёт))
-    if runs_line := runs_of_work(slug):
+              + "; ".join(text_line.strip() for text_line in waiting))
+    assigned_to_me, in_progress = tasks_of_work(slug)
+    if assigned_to_me:
+        print("Поручено тебе: " + "; ".join(text_line.strip() for text_line in assigned_to_me))
+    if in_progress:
+        print("У кого-то в работе: " + "; ".join(text_line.strip() for text_line in in_progress))
+    if runs_line := runs_in_branch(place):
         print(runs_line)
     print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
     return 0

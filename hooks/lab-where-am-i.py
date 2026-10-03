@@ -86,7 +86,7 @@ def open_proposals(work: str) -> list[str]:
     закрытый, потому что взял номер из своей прошлой памяти. Карточка работы весит под
     двести килобайт, и блок про предложения в её конце до него не дошёл.
 
-    Стоит это ноль токенов модели и один запрос к Gitea. Не ответила — молчим: сказать
+    Стоит это ноль токенов модели и один запрос к базе. Не ответила — молчим: сказать
     «я в работе такой-то» полезно и без этого.
     """
     full_path = path_of_work(work)
@@ -195,15 +195,16 @@ def pull_clone(work: str, cwd: str) -> list[str]:
 
 
 def runs_in_branch(root: Path) -> str:
-    """Прогоны, лежащие в ветке этого клона и ещё не дошедшие до `main`.
+    """Черновики прогонов, лежащие в ветке этого клона и ещё не разобранные.
 
-    `lab_run.py` отправляет прогон сразу в ту ветку, в которой агент потом пишет
-    предложение, поэтому прогоны — кирпичики: потянул ветку, и они уже рядом с тем, что
-    собираешься писать. Эта строка говорит, какие из них ещё не описаны, чтобы сессия не
-    начиналась с «а что я вчера запускал».
+    `lab_run.py` кладёт в `_runs/` готовый черновик страницы прогона — с шапкой, числами и
+    строкой «зачем», написанной тем, кто прогон ставил. Полка временная: разбирает её агент,
+    перенося каждый черновик в `claims/<H-код>/runs/<E-код>.md`. Без этой строки сессия
+    начинается с «а что я вчера запускал», и прогон описывается по памяти или считается
+    заново.
 
-    Читается гитом, а не вызовами: хук только что сделал fetch, значит `origin/<ветка>`
-    уже держит всё, что положил сервер, и сеть для этого не нужна вовсе.
+    Читается гитом, а не вызовами: хук только что сделал fetch, значит `origin/<ветка>` уже
+    держит всё, что положил код, и сеть для этого не нужна.
     """
     def git_out(*args: str) -> str:
         done = subprocess.run([*GIT, "-C", str(root), *args], capture_output=True,
@@ -217,18 +218,17 @@ def runs_in_branch(root: Path) -> str:
     refs = [f"origin/{branch}"] if branch != "main" else []
     host = socket.gethostname().split(".")[0]
     refs.append(f"origin/runs/{host}")
-    in_main = set(git_out("ls-tree", "-r", "--name-only", "origin/main",
-                          "--", "lab-runs").splitlines())
     for ref in refs:
-        listed = git_out("ls-tree", "-r", "--name-only", ref, "--", "lab-runs")
-        files = [f for f in listed.splitlines() if f.endswith(".json")]
-        fresh = [Path(f).stem for f in files if f not in in_main]
-        if not fresh:
+        listed = git_out("ls-tree", "-r", "--name-only", ref, "--", "_runs")
+        drafts = [f for f in listed.splitlines() if f.endswith(".md")]
+        if not drafts:
             continue
+        names = [Path(f).stem for f in drafts]
+        shown = ", ".join(names[:3]) + (f" и ещё {len(names) - 3}" if len(names) > 3 else "")
         where = "в твоей ветке" if ref == f"origin/{branch}" else f"в `{ref[7:]}`"
-        shown = ", ".join(fresh[:3]) + (f" и ещё {len(fresh) - 3}" if len(fresh) > 3 else "")
-        return (f"Прогоны {where}, ещё не описаны: {len(fresh)} — {shown}. "
-                "Их и описывай: страница утверждения или серии рядом, одним предложением.")
+        return (f"Прогоны {where}, не разобраны: {len(drafts)} — {shown}. "
+                "Черновики лежат в `_runs/`: перенеси под утверждение в "
+                "`claims/<H>/runs/<E>.md`, числа уже внутри.")
     return ""
 
 

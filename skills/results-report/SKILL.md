@@ -1,6 +1,6 @@
 ---
 name: results-report
-description: This skill should be used when the user asks to "write an experiment report", "summarize experimental results", "do experiment retrospection", "write a results report", or mentions turning completed experiment artifacts into a structured, decision-oriented research report. It assumes strict analysis should come from `results-analysis` first.
+description: "Write a project-level experiment report from verified analysis artifacts and unresolved limitations."
 version: 0.1.0
 tags: [Research, Reporting, Experiments, Obsidian]
 ---

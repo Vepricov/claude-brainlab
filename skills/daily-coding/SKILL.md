@@ -1,76 +1,27 @@
 ---
 name: daily-coding
-description: Use for everyday coding tasks that involve writing or modifying source code.
-version: 1.0.0
-tags: [Coding, Daily, Checklist]
+description: Implement a scoped code change within an existing repository and verify the resulting behavior.
+version: 1.1.0
+tags: [Coding, Daily]
 ---
 
-# Daily Coding Checklist
+# Scoped code changes
 
-A minimal coding quality assurance checklist ensuring every code modification follows best practices.
+Understand the requested behavior and the relevant existing implementation. Follow local
+architecture and conventions; do not impose a new framework or read the whole repository
+for a small edit.
 
-## When to Use
+Make the smallest change that resolves the task. Preserve unrelated edits, especially in
+shared working trees. Add or change dependencies only when the task calls for them.
 
-Use this skill for:
-- Implementing new features
-- Adding code or modifying existing code
-- User requests like "write a...", "implement...", "add...", or "modify..."
-- Any coding task that involves Edit or Write tools
+Choose verification by the failure mode: a focused regression test for a behavior bug,
+the relevant build or type check for an interface change, and rendered inspection for a
+visual change. A reversible text or configuration edit does not automatically need a new
+test. Use the project's existing tests and fixtures before inventing a parallel harness.
 
-## When Not to Use
+Continue through implementation, the relevant checks, and fixes caused by the change.
+Repeat or broaden checks when new evidence warrants it, not on a timer. Ask only when an
+unresolved requirement or consequential action falls outside the user's authorization.
 
-Do not use this skill for:
-- Pure reading or understanding tasks with no modification intent
-- Work already covered by specialized skills such as `bug-detective`, `architecture-design`, or `tdd-guide`
-- Configuration-only changes
-- Documentation-only writing
-
-## Core Checklist
-
-### Before Starting
-
-- [ ] **Read before modify** - Must read target file with Read tool before making changes
-- [ ] **Understand context** - Confirm understanding of existing code logic and design intent
-
-### During Coding
-
-- [ ] **Minimal changes** - Only change what's necessary, no over-engineering, no unrelated features
-- [ ] **Type safety** - Add type hints for Python, avoid `any` in TypeScript
-- [ ] **Security check** - Avoid command injection, XSS, SQL injection vulnerabilities
-
-### After Completion
-
-- [ ] **Verify execution** - Ensure code runs correctly with no syntax errors
-- [ ] **Clean up** - Remove print/console.log debug statements and temporary files
-- [ ] **Brief summary** - Inform user what was changed and the scope of impact
-
-## Quick Reference
-
-### Common Mistakes to Avoid
-
-```python
-# ❌ Don't
-def process(data=[]):  # Mutable default argument
-    pass
-
-# ✅ Should
-def process(data: list | None = None):
-    data = data or []
-```
-
-```python
-# ❌ Don't
-except:  # Bare except
-    pass
-
-# ✅ Should
-except ValueError as e:
-    logger.error(f"Processing failed: {e}")
-    raise
-```
-
-### Security Check Points
-
-- User input must be validated/escaped
-- Use pathlib for file paths, avoid path traversal
-- Never hardcode sensitive info (API keys, passwords)
+Report the resulting behavior, what was checked, and any remaining limitation. Do not
+claim that a mocked check demonstrates a live integration.

@@ -1,6 +1,6 @@
 ---
 name: bug-detective
-description: This skill should be used when the user asks to "debug this", "fix this error", "investigate this bug", "troubleshoot this issue", "find the problem", "something is broken", "this isn't working", "why is this failing", or reports errors/exceptions/bugs. Provides systematic debugging workflow and common error patterns.
+description: "Investigate a software failure by tracing execution, reproducing it, and testing the suspected cause."
 version: 0.1.0
 ---
 

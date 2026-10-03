@@ -1,6 +1,6 @@
 ---
 name: astar-paper-review
-description: This skill should be used when the user asks to review, referee, or critique an ML/AI paper for an A* venue or laboratory pre-review. It runs a grounded multi-agent audit of theory, prior work, experiments, and reproducibility.
+description: "Review an ML paper for correctness, novelty, evidence, and venue-calibrated weaknesses."
 metadata:
   version: 2.1.0
   author: andrey

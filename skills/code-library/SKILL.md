@@ -1,6 +1,6 @@
 ---
 name: code-library
-description: Reference for how the user runs and documents code. Use when an agent needs to understand the user's code workflow — which coding skills and rules apply, how the Obsidian Code library works, how a project hub card records the repo it uses and the project-specific edits, and how experiments are monitored (graphs + tables + loop). Trigger on "how do we work with code here", "что у меня есть для кодинга", "code workflow", before running experiments for a project, or when onboarding to a project that has code.
+description: "Find documented repositories, execution patterns, and project links in the user's Obsidian code library."
 version: 1.0.0
 tags: [Coding, Workflow, Obsidian, Reference]
 ---

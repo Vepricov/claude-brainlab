@@ -1,10 +1,17 @@
 ---
 name: want-2-read
-description: Use when the user wants to process the reading queue on the Operon Reading board. Sync the AlphaXiv "Want to read" folder into the board, take the cards in the «Очередь» column that have no library link yet, fully ingest them through paper-ingest into Zotero and Obsidian, classify them into the current Literature folders, mirror the placement to AlphaXiv, and write the final wiki-link, Zotero link, and a detailed description back into each card.
+description: "Process eligible papers on the Operon Reading board using the owner's selection and current ingestion rules."
 version: 2.1.0
 ---
 
 # Skill: want-2-read
+
+## Shared publication contract
+
+Before writing shared records, read `lab-knowledge/references/record-contract.md` from the
+installed skills directory and the live MCP schema. Use the already authorized scope,
+resolve the existing destination, and verify stored content. Keep failed publications pending.
+
 
 ## Trigger
 
@@ -315,22 +322,11 @@ For every paper filed in Step 5:
 python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
 ```
 
-`--verify` asks the base afterwards and prints the title and the number of sections. A reading with
-one section means only metadata arrived; a reading with none means nothing did. Both are failures,
-not successes — the exit code alone is not evidence.
-
-The whole batch can also go in one command, which is idempotent and matches papers by their natural
-key:
-
-```bash
-python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --all
-```
-
-The push refuses to overwrite a fuller reading someone else wrote, so repeating it is safe. If the
-base is unreachable, finish the local work and say the corpus push was skipped — never drop it
-silently. The theme of the paper is derived on the server from its `library_folder`, so nothing has
-to be passed here; a folder that is new to the map falls back to the theme of its section, which is
-coarser than it deserves (see `library_themes.py`).
+Read-back is mandatory and compares the expected metadata and section contents. Section counts
+alone do not prove publication. The sync preserves unrelated sections, tags, and themes.
+Repeat only the authorized paper or batch; `--all` requires an explicitly authorized full-library
+publication. On failure, keep the corpus publication pending and preserve the local work.
+Use the existing `Literature` folder taxonomy. Do not edit the server taxonomy as an ingest step.
 
 ## Step 7: Write the cards back
 

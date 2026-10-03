@@ -1,0 +1,14 @@
+{
+  "source": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+  "commit": "6710bc7360123bf7947374f58483879d630ace5b",
+  "path": "20-ml-paper-writing/academic-plotting",
+  "packaged": "2026-09-09",
+  "verified_against_upstream": true,
+  "files_sha256": {
+    "LICENSE": "80b5899a9ab121a2d4aae63724f0c11defba7f23da487086932bb9abfb0f2a00",
+    "SKILL.md": "6613653d8109dcae36596b37d7414d5ae394a18f81543365222286d04485fd83",
+    "references/data-visualization.md": "680791b96eb8c3d6b065171f67c00ddfcd1b183629590a5df24182295fa2f013",
+    "references/diagram-generation.md": "9d5b1bb8a91b4cc04251cc89723784ebb3db176fa674632bc640c57d66a12f59",
+    "references/style-guide.md": "4d470b7bc178583c9f2649c34600d0cda6b78d4243d449afc056b4c1034cef18"
+  }
+}

@@ -1,6 +1,6 @@
 ---
 name: paper-ingest
-description: Ingest papers from AlphaXiv/arXiv into Zotero + Obsidian. Trigger when user provides an arXiv URL or AlphaXiv folder link and wants a full literature note created. Handles BibTeX from external APIs, PDF download, tex-source figure/table extraction, creation of a proper Zotero parent paper item with child PDF attachment, duplicate prevention, an especially detailed Obsidian note with 8-section AI Explanation written by a specialised multi-agent pass (recon router, section writers, adversarial verifier), the AlphaXiv mirror write, and a strict BibTeX audit at the end.
+description: "Ingest a selected arXiv or AlphaXiv paper into Zotero and Obsidian with verified sources and a detailed reading note."
 version: 2.0.0
 ---
 
@@ -589,6 +589,11 @@ The verifier **fixes what it finds, inline**. It does not re-run the writers and
 report. If it cannot verify a number against the source, it removes the number rather than keeping an
 unsupported one.
 
+It also **writes down what it verified** into `### 9. Утверждения статьи`. This costs nothing
+extra: it has just located each claim in the source, so it already holds the statement, its kind
+and where in the paper it sits. Before 10-09-2026 that work was done and thrown away, and the
+base got papers whose sections were there while claim search found nothing in them.
+
 #### Shared writing rules (given to every writing agent)
 
 ```
@@ -697,6 +702,34 @@ Strengths. Numbered list of limitations (be specific, not generic). Distinguish 
 
 The final card must be useful as a standalone reading substitute for first-pass understanding. If a smart reader could not explain the paper's mechanism, setup, main numbers, and limitations after reading the note, the note is not detailed enough.
 
+### 9. Утверждения статьи
+Written by the **verifier**, not by a new agent, and written from what it has already checked.
+The verifier walks every numeric claim in Sections 6-7 and every stated result in Sections 3-4
+against the source; this section is where it writes down what it found instead of discarding it.
+
+One line per claim, in the paper's own terms, not the note's prose:
+
+```markdown
+- **эмпирическое** — На GPT-124M метод доходит до целевого loss на 15.0% меньших токенах. `§5.2, таблица 3`
+- **теоретическое** — Сходимость сохраняется при неточной ортогонализации с ошибкой до ε. `теорема 2`
+- **о методе** — Обновление ортогонализуется перед каждым шагом, что удерживает шаг в спектральном шаре.
+```
+
+Род: `эмпирическое` (есть величина), `теоретическое` (следует из выкладки), `о методе`
+(как устроен приём), `определение`. Он не выдумывается — он следует из того, где утверждение
+проверялось. Указатель в обратных кавычках необязателен, но с ним чужой агент найдёт место в
+статье, а не поверит на слово.
+
+Цитата не нужна. Пересказ законен, дословность не требуется и никогда не была нужна для
+записи; выдумывать цитату ради формы нельзя.
+
+Сколько их — столько, сколько статья действительно утверждает. Квоты нет: у короткой заметки
+их пять, у обстоятельного бенчмарка двадцать. Пустой раздел означает, что статья не утверждает
+ничего проверяемого, и это редкий случай, который стоит назвать словами.
+
+Этот раздел **не попадает** в разделы базы: из него получаются записи рода `paper_claim`,
+у которых свой поиск и своя связь с гипотезами лаборатории.
+
 ## Related Papers
 Written by the Связист agent from the semantic-search hits of Step 6c, not guessed from folder contents.
 Format: `[[Literature/{TopLevel}/{collection}/{Exact Paper Title}]]` — one sentence explaining the connection.
@@ -707,7 +740,8 @@ PAPER TEXT:
 ```
 
 After the crew and the verifier finish, the main model must check the assembled file itself:
-1. All 8 sections present (1. Общий обзор, 2. Посекционный разбор, 3. Прериквизиты, 4. Математика и формулы, 5. Новые архитектуры, 6. Методология и данные, 7. Графики и таблицы, 8. Критическая оценка)
+1. All 9 sections present (1. Общий обзор, 2. Посекционный разбор, 3. Прериквизиты, 4. Математика и формулы, 5. Новые архитектуры, 6. Методология и данные, 7. Графики и таблицы, 8. Критическая оценка, 9. Утверждения статьи)
+1a. Section 9 has at least one claim line, or an explicit sentence saying the paper asserts nothing checkable. A paper that reaches the base with sections and zero claims is invisible to claim search: ten such papers were found on 10-09-2026.
 2. Section 3 is substantial (not a stub) and covers at least 3 background items with formal definitions + glossaries
 3. Section 7 contains at least one `![[Literature/.../_attachments/...]]` embed OR an explicit `*(исходник недоступен)*` marker per figure
 4. Each major formula in Sections 3 and 4 is followed by a per-variable glossary (not just the formula alone)
@@ -800,36 +834,46 @@ leaves the corpus behind the vault, exactly the way the AlphaXiv mirror used to 
 python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
 ```
 
-The wrapper exists because the two halves of the job live on different machines. Parsing needs the
-vault and Zotero, which are here. Pushing needs the `mcp` package, which is installed in the
-server's environment and absent from the Mac's system Python, so calling `push_library.py` here
-fails with `ModuleNotFoundError`. The wrapper parses locally, copies the manifest and pushes there.
+The wrapper parses the local note and writes through the installation's configured caller.
+It never falls back to a server-wide lead credential. It preserves existing metadata and
+updates sections individually; another contributor's section is not removed by a note sync.
+A conflicting section from another reading note is no longer a stop. Since 10-09-2026 the
+other reading stays where it is and this one arrives beside it as `<section> — второй разбор
+(<note name>)`, with a line on stderr naming which sections diverged. Both readings land whole
+and the disagreement is visible; before that the sync raised and the whole note went nowhere.
 
-Do not filter the parser by arXiv id with its own `--only`: that flag matches the note **path**,
-which never contains the id, so the filter selects nothing and the step silently pushes an empty
-manifest. The wrapper filters on the parsed `arxiv_id` instead.
+Read-back is mandatory, including when `--verify` is omitted. Compare the sent metadata and
+section contents, not just paper existence or section count. Preserve pending publication
+when the server refuses a write or read-back differs. Do not use `--force` to hide a failure.
 
-`--verify` asks the base afterwards whether the paper is really there, by title and section count.
-The exit code of the push says only that the call went through, and this step is exactly where a
-silent no-op used to hide.
+**The claims go with the paper, in the same command.** `parse_library.py` reads
+`### 9. Утверждения статьи` into records of kind `paper_claim`, and `push_library.py` sends one
+`record_paper_claim` per line with an idempotency key derived from the statement, so re-running
+the sync never duplicates them. Nothing here asks the agent for a second pass: the section was
+written by the verifier out of what it had already checked.
 
-The research theme of the paper is derived on the server from its `library_folder`, so a paper
-filed into a known folder is immediately visible from the theme it belongs to, next to the
-laboratory's own hypotheses on the same area. Nothing to pass here. When the paper goes into a
-**new** folder, add that folder to `services/lab-knowledge/src/lab_knowledge/library_themes.py`,
-otherwise the paper falls back to the theme of its top-level section, which is coarser than it
-deserves. A folder that fits no existing theme is a signal to propose a new theme to the owner,
-not to invent one.
+A failed claim does not cancel the paper and does not stop the others — half a reading is worth
+more than none — but the count is printed, and a paper that lands with sections and zero claims
+is reported by the reconciliation:
 
-Repeating this is safe: the paper is matched by its natural key and updated, and its sections are
-replaced rather than appended. Sources already pointing at the same arXiv id get attached to it
-automatically, so a hypothesis that cites this paper starts showing the link with no extra step.
+```bash
+python3 services/lab-knowledge/scripts/library_sync/check_library.py --vault "$OBSIDIAN_VAULT"
+```
+
+It names three things: notes that never reached the base, notes whose sections arrived
+incomplete, and papers sitting there with no claim at all. The last line is the one this step
+exists to keep at zero.
+
+Use the current library taxonomy and the server's returned theme placement. Propose missing
+bindings to their owner; do not modify MCP source files or create new themes while ingesting
+one paper. Follow [the shared library contract](../lab-knowledge/references/library.md) for
+claims, optional quotations, and preservation of other contributors' material.
 
 If the Lab Knowledge MCP is unreachable, finish the local work and tell the user the library push
 was skipped. Do not drop it silently.
 
-The sync is one-way and strict: **everything in the personal library must exist in the shared
-corpus**. The reverse does not hold — other members will add their own papers there, and those do
+The sync is one-way within the owner-authorized library scope; private material is not
+automatically shared. The reverse does not hold — other members will add their own papers there, and those do
 not belong in this vault. A full reconciliation is one command and is idempotent:
 
 ```bash

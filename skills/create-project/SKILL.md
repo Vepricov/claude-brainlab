@@ -1,9 +1,16 @@
 ---
 name: create-project
-description: Create or initialize a research project when the user says "create project", "new project", "заведи проект", "setup project", or asks to set up a paper, code repository, and Obsidian hub — including when a call analysis reports that the call starts a work the catalogue does not have. Always prove first that the project does not already exist under a different name, in all five places at once. For Brain Lab projects, also invoke lab-project-onboarding so the private local project is idempotently bound to shared Lab Knowledge MCP and a Yonote project view whose Kanban is participants_only by default.
+description: "Create a research project or repair its local and shared setup after checking for an existing project."
 ---
 
 # Create Project
+
+## Shared publication contract
+
+Before writing shared records, read `lab-knowledge/references/record-contract.md` from the
+installed skills directory and the live MCP schema. Use the already authorized scope,
+resolve the existing destination, and verify stored content. Keep failed publications pending.
+
 
 Create the private working layer first. For a Brain Lab project, continue with
 `lab-project-onboarding`; do not reproduce its shared-system logic here.
@@ -144,6 +151,23 @@ The onboarding result must provide stable references for:
 
 Write those returned references into the private project card. Do not store a shared Yonote
 token, duplicate tasks, hypotheses, evidence, or decisions in Obsidian.
+
+Show the Yonote project and task-board links alongside GitHub and Overleaf. Include the
+returned board ID in the private shared-system context and point the repository's agent
+instructions to it. Verify discovery from a fresh agent's entry point; a chat-only link does
+not complete setup.
+
+For Hermes or another agent performing shared tasks, load
+`lab-knowledge/references/yonote-tasks.md` from the installed skills directory. Resolve the
+human owner's stable Yonote identity separately from the agent service account. Only tasks
+assigned to that owner are eligible. Verify task reading and preserving updates before
+declaring the capability ready. Report missing or stale bindings explicitly; do not substitute
+a similarly named project's board.
+
+An agent profile or experiment-track name is not automatically a new research project.
+Resolve the article the execution belongs to and reuse its page and board. Keep private
+execution steps separate from the team's readable milestones; do not create a Yonote board
+for Hermes itself.
 
 ## 3а. Когда проект заводится по итогам созвона
 

@@ -1,9 +1,16 @@
 ---
 name: call-notes
-description: Process research call or meeting notes when the user says "запиши звонок", "записать встречу", "call notes", "что сделать студентам", or "задачи после звонка". Keep the private narrative in Obsidian, publish approved hypotheses, experiments, evidence, and decisions to Lab Knowledge MCP, and create laboratory tasks only on the project's bound Yonote Kanban without duplicates.
+description: "Turn research meeting notes into a private project record and approved, separately routed scientific records and tasks."
 ---
 
 # Call Notes
+
+For shared destinations and scientific record types, read
+[the common record contract](../lab-knowledge/references/record-contract.md) before constructing
+write payloads. The meeting-specific protocol below remains responsible for reconstruction
+and approval. Use the live schema for supported record kinds, including derivations; do not
+force theoretical results into an experiment.
+
 
 Turn one meeting into reviewed canonical records across three layers. Load `lab-knowledge` before
 any shared knowledge write. Read [`references/analysis-contract.md`](references/analysis-contract.md)
@@ -47,11 +54,21 @@ single-agent write path.
 
 ## Canonical routing
 
+Before writing to Yonote, read the current [shared placement rules](https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi)
+in `Общая информация`. Resolve the existing research page and its bound board by stable IDs.
+Research work belongs in `Исследования / scientific theme / subsection / project`. Customer stages, acceptance,
+reporting, and administrative actions belong in the corresponding `Менеджмент` page or confirmed
+management board, linked to the research project. Classify these actions separately in the preview;
+if no management destination is confirmed, leave that action unresolved instead of sending it to
+the research Kanban. Never duplicate the research board, move pages, or create mirrors as a side
+effect of recording a call. Report stale bindings before publication.
+
 | Item | Canonical destination |
 |---|---|
 | Raw audio and transcript | Local private `~/BrainLab/Calls` storage only |
 | Curated project minutes and relevant unfinished interpretation | Private Obsidian meeting note |
-| Laboratory task, owner, issue date, deadline, dependency | Bound Yonote project Kanban plus a private Obsidian snapshot |
+| Research task, owner, issue date, deadline, dependency | Bound Yonote research-project Kanban plus a private Obsidian snapshot |
+| Customer stage, acceptance, reporting, or administrative action | Confirmed Yonote management page or board plus a private Obsidian snapshot |
 | Approved shared hypothesis | Lab Knowledge MCP hypothesis |
 | Experiment protocol or run | Lab Knowledge MCP experiment |
 | Observed result with provenance | Lab Knowledge MCP evidence |
@@ -77,7 +94,8 @@ new meeting tasks there; Yonote is the sole live task-status source.
 - **Lab Knowledge MCP:** publish approved project knowledge as typed objects. Preserve hypotheses,
   experiments, evidence, and decision proposals separately. Intermediate results may be evidence when
   their provenance and limitations are explicit; otherwise keep them as unresolved private notes.
-- **Yonote project view:** create laboratory actions only on the bound project Kanban. The human-facing
+- **Yonote project view:** create research actions only on the bound research-project Kanban. Route
+  management actions to their separately confirmed destination as described above. The human-facing
   project page may show a small curated set of high-level hypotheses that help a reader understand the
   project. Do not project raw transcripts, run-by-run intermediate results, private commentary, local
   paths, or MCP implementation details into Yonote.

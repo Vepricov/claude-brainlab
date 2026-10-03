@@ -1,6 +1,6 @@
 ---
 name: review-response
-description: This skill should be used when analyzing peer reviews, planning rebuttal evidence or experiments, drafting author responses, or handling reviewer follow-ups. It runs a grounded multi-agent workflow with theory, empirical, adversarial, and verification gates.
+description: "Resolve academic reviewer concerns through evidence review, rebuttal strategy, and verified author responses."
 metadata:
   version: 2.2.0
   author: andrey

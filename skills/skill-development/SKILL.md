@@ -1,6 +1,6 @@
 ---
 name: skill-development
-description: This skill should be used when the user asks to create a new skill, repair an existing skill, improve trigger descriptions, reorganize skill structure, or make a Claude skill more reusable and internally consistent.
+description: Create or repair Claude skills, including their triggers, workflow boundaries, and supporting files.
 version: 0.2.0
 ---
 
@@ -24,6 +24,11 @@ Produce a skill that is:
 - Move detailed catalogs, templates, and long explanations into `references/` or `examples/`.
 - Do not mention files that do not exist.
 - Do not inherit stale names, agents, or sibling skill references without verifying they exist locally.
+
+Keep project-specific facts and correctness constraints. Remove generic advice and repeated
+permission gates that add no protection. Load only references needed for the current mode.
+For Codex skills, use the current `skill-creator` when available rather than copying old
+Claude tool names or model assumptions into the workflow.
 
 ## Default workflow
 
@@ -51,16 +56,16 @@ If the skill only needs a short workflow, keep it short. Do not create `referenc
 
 The frontmatter should:
 - use the real skill identifier in `name`,
-- use a third-person trigger description,
-- include concrete phrases a user would naturally say,
-- stay short enough to scan quickly.
+- name the task for which the skill changes the agent's decisions,
+- distinguish it from neighboring skills,
+- use a short description without a required grammatical template or keyword list.
 
-Prefer descriptions of this form:
+Example:
 
 ```yaml
 ---
 name: skill-name
-description: This skill should be used when the user asks to "...", "...", or needs help with ....
+description: Extract verified experiment results into a project report.
 ---
 ```
 
@@ -88,7 +93,9 @@ Use bundled resources deliberately:
 - `scripts/` for deterministic helper logic.
 
 If a resource is mentioned in `SKILL.md`, it must exist.
-If a resource exists but is never referenced or used, delete it.
+Before removing a resource, inspect its callers, purpose, and history. An absent reference or
+usage trace is not proof that it is obsolete. Archive owner-approved retired components
+outside every skill discovery root and verify their contents before removing active entries.
 
 ### 6. Run integrity checks before closing
 

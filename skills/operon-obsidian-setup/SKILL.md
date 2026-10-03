@@ -1,11 +1,30 @@
 ---
 name: operon-obsidian-setup
-description: Use when the user wants to set up the Operon task manager in their Obsidian vault the way this lab does it, or reproduce that setup on a fresh machine — flat project tags (no parentTask hierarchy), a "my tasks" table dashboard, service-link badges on project pages, emoji task icons, and day-boundary auto-archiving. Applies plugin settings (data.json), templates, a CSS snippet, optional main.js display patches, and an optional macOS launchd archiver. Trigger on "set up Operon", "настрой Operon как у тебя", "operon setup", "воспроизведи таск-систему Obsidian", "как у тебя задачи и страницы проектов в Obsidian".
+description: "Install or repair the laboratory's Operon task boards and project views in Obsidian."
 version: 1.0.0
 tags: [Obsidian, Operon, Tasks, Setup, ProjectPages]
 ---
 
 # Operon + Project Pages setup
+
+## Current starter kit
+
+For a NEW vault use the [current repository starter](https://github.com/brain-lab-research/claude-brainlab/tree/main/obsidian-setup).
+Read its README and run its installer. It pins Operon 3.0.1, Border, fourteen enabled
+plugins, Personal and Reading boards, startup layout and checked display patches.
+The installer refuses existing folders. Never apply the legacy 2.2.1 patcher to 3.x.
+
+For an existing vault, inspect versions and compare with a separate starter vault.
+Keep the target Obsidian closed before changing its configuration, back it up and
+preserve all tasks, statuses, presets, notes and access settings. Do not enable the
+archive job as part of setup.
+
+Hermes has a deterministic, read-only board projection in each project's own
+`Knowledge/Hermes/`. A system scheduler refreshes it every 15 minutes without an LLM.
+Keep source task IDs and statuses. Private Hermes steps are not a copy of the shared
+Yonote board. SSH access and project routes are configured by the recipient.
+
+The following instructions are a legacy 2.2.1 reference, not the current starter recipe.
 
 Reproduce the lab's Operon task-manager setup and project-page conventions in an Obsidian
 vault: flat `project` tags, a "my tasks" table dashboard, service-link badges, emoji task

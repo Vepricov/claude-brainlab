@@ -1,6 +1,6 @@
 ---
 name: pdf-reader
-description: This skill should be used when the user asks to "read this PDF", "extract text from PDF", "what's in this PDF", or provides a PDF file path and wants to understand its contents. Extracts structured text from PDF files using PyMuPDF with pypdf fallback.
+description: "Read or extract a PDF with the local PyMuPDF-based workflow, including page-level inspection."
 ---
 
 # PDF Reader

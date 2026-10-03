@@ -1,6 +1,6 @@
 ---
 name: presentation
-description: This skill should be used when the user asks to create presentation slides, rewrite or polish a Beamer deck, prepare a lecture or conference talk, fix slide layout, improve mathematical slides, use the lab style or terminal style, make slides clearer, combine or split slides, or otherwise work on a presentation in LaTeX Beamer.
+description: "Create or revise LaTeX Beamer research slides using the user's mathematical and laboratory visual style."
 version: 0.1.0
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: obsidian-project-bootstrap
-description: This skill should be used when the user asks to start a new research project, import an existing code-plus-Markdown repository into Obsidian, or bind the current repository to a compact research knowledge base for future syncing.
+description: "Create or repair the Obsidian knowledge base and mappings for an existing research repository."
 ---
 
 # Obsidian Project Bootstrap

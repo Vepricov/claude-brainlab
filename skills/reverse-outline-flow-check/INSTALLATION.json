@@ -1,0 +1,22 @@
+{
+  "source": "https://github.com/Research-Equality/RE-paper-writing",
+  "commit": "4aa7e40c5e1b9780fbc5d1519df63eb3ba37ff4f",
+  "path": "skills/reverse-outline-flow-check",
+  "installed": "2026-09-07",
+  "files_sha256": {
+    "LICENSE": "97076c5e197163d84deaa0d3ea04f21adb96fb9bd0d4317b31e264c74a7c4e18",
+    "SKILL.md": "cfdcbdb4449c768a78b74f38b753f965e2485fceddc89adbff6fb03f48f72f19",
+    "references/paragraph-relations.md": "3f7f99da67dbc258fd7ba8d6debcb26d111fc54c28193f8ce61e8e1085227480",
+    "references/reverse-outline-template.md": "35d79dd9a76640d46dcad5bec3b0653e34a9074bf37634cfb8b24adb68ba5383"
+  },
+  "packaged": "2026-09-09",
+  "packaging_changes": [
+    "Keep the workflow and bundled references unchanged. Resolve five unbundled sibling-skill links to the pinned upstream revision."
+  ],
+  "packaged_files_sha256": {
+    "LICENSE": "97076c5e197163d84deaa0d3ea04f21adb96fb9bd0d4317b31e264c74a7c4e18",
+    "SKILL.md": "6ea61198edbe85b2fdb6a0e16f78d1771f437d5bd071dfa3d2196c10f36f52c2",
+    "references/paragraph-relations.md": "3f7f99da67dbc258fd7ba8d6debcb26d111fc54c28193f8ce61e8e1085227480",
+    "references/reverse-outline-template.md": "35d79dd9a76640d46dcad5bec3b0653e34a9074bf37634cfb8b24adb68ba5383"
+  }
+}

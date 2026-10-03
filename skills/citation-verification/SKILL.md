@@ -1,6 +1,6 @@
 ---
 name: citation-verification
-description: This skill provides reference guidance for citation verification in academic writing. Use when the user asks about "citation verification best practices", "how to verify references", "preventing fake citations", or needs guidance on citation accuracy. This skill supports ml-paper-writing by providing detailed verification principles and common error patterns.
+description: "Verify academic references, citation metadata, and whether cited sources support a claim."
 tags: [Research, Academic, Citation, Reference]
 version: 0.1.0
 ---

@@ -1,5 +1,27 @@
 # Operon + Project Pages — full runbook
 
+## Current starter kit (10-09-2026)
+
+For a new vault matching the current laboratory desktop, use the repository's
+`obsidian-setup/README.md` and `obsidian-setup/install.py` first.
+The Atlas Obsidian page links to the repository setup. It pins Operon **3.0.1**, Border
+1.13.6, fourteen enabled plugins, Personal and Reading boards, startup workspace,
+and hash-checked display patches. Two installed but disabled plugins are optional.
+The installer only creates a new vault and never merges over an existing one.
+
+For an existing vault, inspect its actual plugin versions, back up configuration,
+and compare against a separate starter vault with the target app closed. Preserve
+all task IDs, statuses, custom presets, notes and access settings. Do not run the
+legacy 2.2.1 patcher or enable the archive job as part of this starter setup.
+
+The kit also includes a deterministic read-only Hermes projection into each
+existing project's `Knowledge/Hermes/`. It preserves the source task ID/status;
+a system scheduler refreshes it every 60 seconds. It is not an Operon board or an
+LLM heartbeat. SSH access and project routing are configured by each recipient.
+See `obsidian-setup/README.md` for the supported `kanban.db` profile and checks.
+
+The instructions below remain a **legacy 2.2.1 reference**, not the current recipe.
+
 Detailed reference for the `operon-obsidian-setup` skill. Reproduces the lab's Operon
 task-manager configuration and project-page conventions in an Obsidian vault. Target
 Operon version **2.2.1**.

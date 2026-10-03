@@ -112,17 +112,17 @@ def открытые_предложения(работа: str) -> list[str]:
 
 
 #: Хранилище ключа, которое пишет сам `lab`. Хуку важно ходить ТОЛЬКО через него.
-ХРАНИЛИЩЕ = Path("~/.config/brainlab/git-credentials").expanduser()
+CREDENTIALS_FILE = Path("~/.config/brainlab/git-credentials").expanduser()
 #: Почему git зовётся с собственными помощниками, а не с теми, что в глобальном конфиге:
 #: на маке первым стоит связка ключей, и когда ключ в ней не подходит, её помощник может
 #: встать на запросе доступа к связке. Он грандчайлд, и `timeout` у subprocess его не
 #: снимает: родитель убит, труба открыта, `run` ждёт её вечно. 02-10-2026 так повисли три
 #: хука (11, 5 и 2 минуты), а хук выполняется в начале КАЖДОЙ сессии. Пустое значение
 #: первым сбрасывает унаследованный список, дальше остаётся файл, который пишет `lab`.
-ГИТ = ["git", "-c", "credential.helper=",
-       "-c", f"credential.helper=store --file={ХРАНИЛИЩЕ}"]
+GIT = ["git", "-c", "credential.helper=",
+       "-c", f"credential.helper=store --file={CREDENTIALS_FILE}"]
 #: И запрещаем спрашивать что-либо интерактивно: висеть хук не должен ни при каких ключах.
-БЕЗ_ВОПРОСОВ = {"GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "/usr/bin/true",
+NO_PROMPT_ENV = {"GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "/usr/bin/true",
                 "SSH_ASKPASS": "/usr/bin/true", "GIT_CONFIG_NOSYSTEM": "1"}
 
 #: Помощник, который умеет клонировать тему в папку проекта и открывать pull request.
@@ -161,20 +161,20 @@ def подтянуть(работа: str, cwd: str) -> list[str]:
         итог = subprocess.run([str(ПОМОЩНИК), "here", работа], cwd=str(корень.parent),
                               capture_output=True, text=True, timeout=120,
                               stdin=subprocess.DEVNULL,
-                              env={**os.environ, **БЕЗ_ВОПРОСОВ})
+                              env={**os.environ, **NO_PROMPT_ENV})
         строки = (итог.stdout + итог.stderr).strip().splitlines()
         return [f"  {с.strip()}" for с in строки[:6]] or ["  клон не вышел"]
     def гит(*что: str) -> str:
-        итог = subprocess.run([*ГИТ, "-C", str(корень), *что],
+        итог = subprocess.run([*GIT, "-C", str(корень), *что],
                               capture_output=True, text=True, timeout=25,
                               stdin=subprocess.DEVNULL,
-                              env={**os.environ, **БЕЗ_ВОПРОСОВ})
+                              env={**os.environ, **NO_PROMPT_ENV})
         return итог.stdout.strip()
     было = гит("rev-parse", "HEAD")
-    взято = subprocess.run([*ГИТ, "-C", str(корень), "fetch", "-q", "origin"],
+    взято = subprocess.run([*GIT, "-C", str(корень), "fetch", "-q", "origin"],
                            capture_output=True, text=True, timeout=25,
                            stdin=subprocess.DEVNULL,
-                           env={**os.environ, **БЕЗ_ВОПРОСОВ})
+                           env={**os.environ, **NO_PROMPT_ENV})
     # Молчащий отказ здесь хуже устаревшей строки: 02-10-2026 после смены ключа git
     # отвечал «Access denied», хук этого не показывал, и агент видел прошлое состояние
     # как текущее. Чинит это `lab pull` — он перезаписывает ключ помощнику.
@@ -183,9 +183,9 @@ def подтянуть(работа: str, cwd: str) -> list[str]:
         return ["  база не ответила, показано прошлое состояние: "
                 + (беда[-1][:120] if беда else "git fetch не прошёл"),
                 "  починить — `lab pull`"]
-    subprocess.run([*ГИТ, "-C", str(корень), "pull", "-q", "--ff-only", "origin", "main"],
+    subprocess.run([*GIT, "-C", str(корень), "pull", "-q", "--ff-only", "origin", "main"],
                    capture_output=True, text=True, timeout=25,
-                   stdin=subprocess.DEVNULL, env={**os.environ, **БЕЗ_ВОПРОСОВ})
+                   stdin=subprocess.DEVNULL, env={**os.environ, **NO_PROMPT_ENV})
     стало = гит("rev-parse", "HEAD")
     if было == стало:
         return []
@@ -193,47 +193,47 @@ def подтянуть(работа: str, cwd: str) -> list[str]:
     return [f"  {строка.strip()}" for строка in строки[-12:]]
 
 
-def прогоны_работы(работа: str) -> str:
-    """Что код этой работы уже посчитал: прогоны из ветки `runs`, свежие первыми.
+def runs_of_work(work: str) -> str:
+    """Runs this work has already computed: files from the `runs` branch, newest first.
 
-    `lab_run.py` отправляет каждый прогон в базу сразу, своим вызовом, поэтому прогон,
-    посчитанный на сервере, виден здесь в ту же минуту. Без этой строки агент начинает
-    сессию, не зная, что запускал, и либо считает заново, либо описывает по памяти.
+    `lab_run.py` uploads every run to the base right away, by itself, so a run computed on
+    a server shows up here within the minute. Without this line the agent opens a session
+    not knowing what it launched, and either recomputes or describes from memory.
 
-    Два запроса: список файлов (сколько их) и последние коммиты ветки (какие свежие).
-    Порядок по дереву не даётся, а по коммитам даётся, и это дешевле, чем читать файлы.
+    Two requests: the file list (how many) and the branch's latest commits (which are
+    fresh). The tree gives no order, the commits do, and that is cheaper than reading files.
     """
-    полный = путь_работы(работа)
-    if not полный or not ТОКЕН.is_file():
+    full_path = путь_работы(work)
+    if not full_path or not ТОКЕН.is_file():
         return ""
-    токен = ТОКЕН.read_text(encoding="utf-8").strip()
-    ид = urllib.parse.quote(полный, safe="")
+    token = ТОКЕН.read_text(encoding="utf-8").strip()
+    project = urllib.parse.quote(full_path, safe="")
 
-    def спросить(хвост: str):
-        запрос = urllib.request.Request(f"{БАЗА}/api/v4/projects/{ид}/{хвост}",
-                                       headers={"PRIVATE-TOKEN": токен})
-        with urllib.request.urlopen(запрос, timeout=4) as ответ:
-            return json.loads(ответ.read().decode("utf-8"))
+    def ask(tail: str):
+        request = urllib.request.Request(f"{БАЗА}/api/v4/projects/{project}/{tail}",
+                                        headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=4) as answer:
+            return json.loads(answer.read().decode("utf-8"))
 
     try:
-        файлы = [ф for ф in спросить("repository/tree?path=lab-runs&ref=runs&per_page=100")
-                 if ф.get("type") == "blob"]
+        files = [f for f in ask("repository/tree?path=lab-runs&ref=runs&per_page=100")
+                 if f.get("type") == "blob"]
     except Exception:  # noqa: BLE001 — ветки может не быть вовсе, и это норма
         return ""
-    if not файлы:
+    if not files:
         return ""
-    свежие = []
+    fresh: list[str] = []
     try:
-        for c in спросить("repository/commits?ref_name=runs&per_page=12"):
-            имя = str(c.get("title") or "")
-            if имя.startswith("прогон ") and имя[7:] not in свежие:
-                свежие.append(имя[7:])
-            if len(свежие) == 3:
+        for commit in ask("repository/commits?ref_name=runs&per_page=12"):
+            title = str(commit.get("title") or "")
+            if title.startswith("run ") and title[4:] not in fresh:
+                fresh.append(title[4:])
+            if len(fresh) == 3:
                 break
     except Exception:  # noqa: BLE001
-        свежие = [ф["name"].removesuffix(".json") for ф in файлы[:3]]
-    хвост = ", ".join(свежие)
-    return f"Прогоны: {len(файлы)} в ветке `runs`" + (f", свежие — {хвост}" if хвост else "")
+        fresh = [f["name"].removesuffix(".json") for f in files[:3]]
+    tail = ", ".join(fresh)
+    return f"Прогоны: {len(files)} в ветке `runs`" + (f", свежие — {tail}" if tail else "")
 
 
 #: Логин человека, за чьей машиной идёт работа. Одна строка, кладётся руками один раз:
@@ -377,19 +377,19 @@ def claims_of(slug: str, клон: Path | None = None) -> tuple[str, list[str]]:
     return "", []
 
 
-def прочитать_вход() -> dict:
-    """Полезная нагрузка хука со stdin, но без права повиснуть на чтении.
+def read_payload() -> dict:
+    """Hook payload from stdin, without the right to hang on the read.
 
-    Claude Code передаёт JSON и закрывает поток, и тогда `read()` возвращается сразу. Но
-    если поток остался открытым (а это бывает при любом запуске не из сессии), `read()`
-    ждёт конца файла вечно — а хук выполняется в начале КАЖДОЙ сессии. Полсекунды на
-    ожидание: пришло — читаем, не пришло — работаем по текущему каталогу.
+    Claude Code sends JSON and closes the stream, so `read()` returns at once. But if the
+    stream stays open — and it does on any launch outside a session — `read()` waits for
+    EOF forever, and this hook runs at the start of EVERY session. Half a second of
+    waiting: arrived — read it, did not — work from the current directory.
     """
     try:
-        готов = select.select([sys.stdin], [], [], 0.5)[0]
+        ready = select.select([sys.stdin], [], [], 0.5)[0]
     except (OSError, ValueError):
         return {}
-    if not готов:
+    if not ready:
         return {}
     try:
         raw = sys.stdin.read()
@@ -399,7 +399,7 @@ def прочитать_вход() -> dict:
 
 
 def main() -> int:
-    payload = прочитать_вход()
+    payload = read_payload()
     cwd = payload.get("cwd") or os.getcwd()
     slug = work_of(cwd)
     if slug is None:
@@ -422,8 +422,8 @@ def main() -> int:
         print("Поручено тебе: " + "; ".join(с.strip() for с in поручено))
     if идёт:
         print("У кого-то в работе: " + "; ".join(с.strip() for с in идёт))
-    if прогоны := прогоны_работы(slug):
-        print(прогоны)
+    if runs_line := runs_of_work(slug):
+        print(runs_line)
     print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
     return 0
 

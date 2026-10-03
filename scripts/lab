@@ -378,12 +378,48 @@ def show_checks(project: dict, number: int, sha: str, *, wait_for: int = 0) -> N
     elif reviews:
         print("\n== что сказала проверка")
         print((reviews[-1].get("body") or "").strip()[:1500])
-    others = [about for about in notes if about not in reviews and not about.get("system")][-3:]
-    if others:
-        print("\n== обсуждение")
-        for note in others:
-            assignees = (note.get("author") or {}).get("username", "?")
-            print(f"  [{assignees}] {(note.get('body') or '').strip()[:300]}")
+    print_discussions(project, number)
+
+
+def discussions(project: dict, number: int) -> tuple[list, list]:
+    """Замечания людей: неснятые и снятые, по отдельности.
+
+    Это не то же, что вердикт службы. Вердикт говорит, что сломано механически; человек в
+    обсуждении говорит, что переписать. Пока хоть одна нить не снята, предложение не готово,
+    и «зелёный вердикт» об этом ничего не сообщает — поэтому их и считают отдельно.
+    """
+    threads = api(f"projects/{project['id']}/merge_requests/{number}/discussions"
+                  f"?per_page=100") or []
+    open_threads, closed = [], []
+    for thread in threads:
+        notes = [note for note in (thread.get("notes") or []) if not note.get("system")]
+        if not notes:
+            continue
+        if "Проверка базы" in (notes[0].get("body") or ""):
+            continue
+        (closed if notes[0].get("resolved") else open_threads).append(notes)
+    return open_threads, closed
+
+
+def print_discussions(project: dict, number: int) -> None:
+    open_threads, closed = discussions(project, number)
+    if not open_threads and not closed:
+        return
+    if open_threads:
+        print(f"\n== замечания, которые надо снять: {len(open_threads)}")
+        for notes in open_threads:
+            head = notes[0]
+            where = head.get("position") or {}
+            place = (f"{where.get('new_path')}:{where.get('new_line')}"
+                     if where.get("new_path") else "ко всему предложению")
+            print(f"  [{(head.get('author') or {}).get('username', '?')}] {place}")
+            for note in notes:
+                who = (note.get("author") or {}).get("username", "?")
+                body = " ".join((note.get("body") or "").split())
+                print(f"      {who}: {body[:400]}")
+        print("  правь в той же ветке и пушь туда же: предложение обновится само.")
+    if closed:
+        print(f"\n== снятых замечаний: {len(closed)}")
 
 
 def do_checks() -> None:

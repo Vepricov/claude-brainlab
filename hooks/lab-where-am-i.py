@@ -107,8 +107,37 @@ def open_proposals(work: str) -> list[str]:
     for proposal in opened:
         branch = str(proposal.get("source_branch") or "")
         label = branch.removeprefix("claim/") if branch.startswith("claim/") else branch
-        lines.append(f"!{proposal.get('iid')} {label[:14]} {str(proposal.get('title') or '')[:48]}")
+        # Неснятое замечание — главное, что надо знать о своём предложении: зелёный вердикт
+        # про него молчит, а предложение с ним не готово. Владелец 03-10-2026: «агент должен
+        # видеть их и, если что, поправить».
+        left = unresolved_count(full_path, token, int(proposal.get("iid") or 0))
+        tail = f" — замечаний к снятию: {left}" if left else ""
+        lines.append(f"!{proposal.get('iid')} {label[:14]} "
+                     f"{str(proposal.get('title') or '')[:48]}{tail}")
     return lines
+
+
+def unresolved_count(full_path: str, token: str, number: int) -> int:
+    """Сколько нитей обсуждения ждут правки. Вердикт службы за замечание не считается."""
+    if not number:
+        return 0
+    try:
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(full_path, safe='')}"
+            f"/merge_requests/{number}/discussions?per_page=100",
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=3) as answer:
+            threads = json.loads(answer.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001 — начало сессии не роняется из-за сети
+        return 0
+    left = 0
+    for thread in threads:
+        notes = [note for note in (thread.get("notes") or []) if not note.get("system")]
+        if not notes or "Проверка базы" in (notes[0].get("body") or ""):
+            continue
+        if not notes[0].get("resolved"):
+            left += 1
+    return left
 
 
 #: Хранилище ключа, которое пишет сам `lab`. Хуку важно ходить ТОЛЬКО через него.

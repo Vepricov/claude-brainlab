@@ -94,21 +94,59 @@ if [ ! -s "$conf/git-login" ] && [ -s "$conf/gitlab-login" ]; then
   echo "записал: $conf/git-login"
 fi
 
-# Прежний хук записи по разметке `ЛАБ-ГИПОТЕЗА:` отключается. Он писал в базу вызовом MCP,
-# а с переездом знания в git такая запись отклоняется: путь один — предложение. Файл
-# остаётся на месте, снимается только включатель.
-old="$conf/lab-hook.json"
-if [ -f "$old" ] && grep -q '"enabled": *true' "$old" 2>/dev/null; then
-  "$py" - "$old" <<'PY'
+# Прежний хук записи по разметке убирается ЦЕЛИКОМ, а не выключается.
+#
+# Он разбирал в стенограмме строки вида `ЛАБ-ГИПОТЕЗА: ... | опровергается: ...` и писал в
+# базу вызовом MCP. С переездом знания в git этот путь отклоняется по построению: запись —
+# только слиянием предложения. Раньше установщик лишь снимал включатель, и вышло хуже, чем
+# ничего: файл оставался на месте, оставался зарегистрирован на Stop, и агент, прочитав его
+# шапку, продолжал уверять, что разметка работает. Поэтому теперь снимается регистрация,
+# удаляется файл и удаляется его настройка - в ней ещё и лежал ключ к мёртвой службе.
+"$py" - "$home" <<'CLEANUP'
 import json, sys
 from pathlib import Path
-файл = Path(sys.argv[1])
-данные = json.loads(файл.read_text(encoding="utf-8"))
-данные["enabled"] = False
-файл.write_text(json.dumps(данные, ensure_ascii=False, indent=2), encoding="utf-8")
-print("прежний хук записи по разметке выключен: запись идёт предложением")
-PY
-fi
+
+home = Path(sys.argv[1])
+settings = home / ".claude" / "settings.json"
+hook_file = home / ".claude" / "hooks" / "lab-knowledge-hook.py"
+config = home / ".config" / "brainlab" / "lab-hook.json"
+removed = []
+
+if settings.is_file():
+    try:
+        data = json.loads(settings.read_text(encoding="utf-8"))
+    except ValueError:
+        data = None
+    if isinstance(data, dict) and isinstance(data.get("hooks"), dict):
+        changed = 0
+        for event, groups in list(data["hooks"].items()):
+            kept_groups = []
+            for group in groups:
+                kept = [h for h in group.get("hooks", [])
+                        if "lab-knowledge-hook.py" not in (h.get("command") or "")]
+                changed += len(group.get("hooks", [])) - len(kept)
+                if kept:
+                    group["hooks"] = kept
+                    kept_groups.append(group)
+            if kept_groups:
+                data["hooks"][event] = kept_groups
+            else:
+                del data["hooks"][event]
+        if changed:
+            settings.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                                encoding="utf-8")
+            removed.append("снята регистрация хука разметки: " + str(changed))
+
+for path in (hook_file, config):
+    if path.exists():
+        path.unlink()
+        removed.append("удалён " + str(path))
+
+for line in removed:
+    print("  " + line)
+if removed:
+    print("  запись в базу идёт предложением: ветка, правка, `lab pr`")
+CLEANUP
 
 echo
 echo "проверка:"

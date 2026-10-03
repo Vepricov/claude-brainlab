@@ -365,11 +365,10 @@ def claims_of(slug: str, clone: Path | None = None) -> tuple[str, list[str]]:
             # же инфу читает, это же тупизм».
             said.append(f"{page.parent.name}{(' ' + status) if status else ''}")
         return (shelf if shelf == slug else f"{shelf}/{slug}"), said
-    # Слепок: `<работа>.txt`, по строке на утверждение, как их напечатал бы каталог.
-    snapshot = CACHE / f"{slug}.txt"
-    if snapshot.is_file():
-        lines = [line for line in snapshot.read_text(encoding="utf-8").splitlines() if line]
-        return (lines[0] if lines else ""), lines[1:]
+    # Запасного слепка здесь больше нет. Он лежал в `~/.local/state/brainlab/claims`,
+    # обновлялся отдельным скриптом, который ни в расписании, ни в настройках не был
+    # зарегистрирован, — и к 03-10-2026 показывал список утверждений восьмидневной
+    # давности как текущий. Источник один: клон работы. Нет клона — хук его заводит сам.
     return "", []
 
 

@@ -340,9 +340,9 @@ def main() -> None:
     reason = hooks_cli.STOP_BLOCK_REASON.rstrip() + OBSIDIAN_ADDENDUM
     if lab_base_configured(harness, str(data.get("cwd") or "")):
         reason = reason.rstrip() + "\n" + LAB_ADDENDUM
-    подсказка = verdict.get("подсказка") or ""
-    if подсказка:
-        reason = reason.rstrip() + "\n\n" + подсказка + "\n"
+    hint = verdict.get("подсказка") or ""
+    if hint:
+        reason = reason.rstrip() + "\n\n" + hint + "\n"
     remember_subject(session, transcript)
     print(json.dumps({"decision": "block", "reason": reason}))
 

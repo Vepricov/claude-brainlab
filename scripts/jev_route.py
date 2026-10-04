@@ -52,25 +52,25 @@ TIMEOUT = 25
 # давало 4 верных из 6 и пропускало настоящие записи (переписанный чеклист Гермеса — оценка 1.87
 # при устоялось 0.71), при 1.8 даёт 5 из 6. Сама оценка сжата в 1.0..2.6, и разделяет не она, а
 # «устоялось»: 0.05 на обсуждении против 0.55-0.71 на готовом. Поэтому главный порог — второй.
-ПОРОГ_ОЦЕНКИ = 1.8        # отделяет полученный вывод (2.40) от повтора (1.99)
-ПОРОГ_ГОТОВНОСТИ = 0.5    # 0.05 против 0.55: обсуждение в процессе не проходит
-ПОРОГ_ПОВТОРА = 0.6       # 0.89 ловится, 0.43 нет
+SCORE_THRESHOLD = 1.8        # отделяет полученный вывод (2.40) от повтора (1.99)
+READY_THRESHOLD = 0.5    # 0.05 против 0.55: обсуждение в процессе не проходит
+REPEAT_THRESHOLD = 0.6       # 0.89 ловится, 0.43 нет
 # Ось: 0.15 один прогон · 0.20 ещё запускаю · 0.27 разговор · 0.86-0.87 набор закрылся.
 # Первое живое срабатывание 03-10-2026 13:26 было ЛОЖНЫМ при 0.62 — ход про устройство хука,
 # где прогонов не было вовсе. Поэтому порог поднят выше того значения, а не поставлен между.
-ПОРОГ_ОСИ = 0.7
-МИН_ХОДОВ_МЕЖДУ = 3       # не чаще, чем раз в три хода, даже если всё созрело
-СТРАХОВКА_ХОДОВ = 25      # столько ходов тишины — и прерываем, что бы Jev ни говорил
+AXIS_THRESHOLD = 0.7
+MIN_TURNS_BETWEEN = 3       # не чаще, чем раз в три хода, даже если всё созрело
+FALLBACK_TURNS = 25      # столько ходов тишины — и прерываем, что бы Jev ни говорил
 
 #: Порог «да» для места. Тоже по наблюдённому разбросу: на ходе, где не произошло ничего,
 #: ни одно место не поднялось выше 0.31, а на содержательных они лежат в 0.60..0.80.
 #: Семьдесят отсекало бы верное `lab=0.68`.
-ПОРОГ = 0.6
+THRESHOLD = 0.6
 
 #: ВИД записи в работу. Собрано по четырём склонированным работам (dykaf, wsd-muon,
 #: lab-agents, lab-knowledge-pipeline), а не по правилу: прогонов 179, серий 51, выкладок 30,
 #: рисунков 26. Папки `notes/` нет ни в одной работе, поэтому её здесь нет тоже.
-ВИД = {
+KIND = {
     "series": "A QUESTION was answered by comparing several runs: what was varied, along "
               "which axis, and what the comparison decided. This is the record an agent "
               "writes: one question, the axis, the verdict.",
@@ -86,7 +86,7 @@ TIMEOUT = 25
 
 #: Куда это ложится. Три независимых «да», можно все три сразу: владелец 03-10-2026 —
 #: «Можно выбрать все три варианта. Можно только два».
-МЕСТА = {
+PLACES = {
     "lab": "This belongs in the shared knowledge of the laboratory, which other members "
            "read: a measured result under a claim, a derivation, or an instruction other "
            "people need in order to work.",
@@ -98,7 +98,7 @@ TIMEOUT = 25
 
 #: Внутри лаборатории: научное идёт в работу, служебное — в справочник или журнал. Разделение
 #: взято с передней страницы базы: «служебное» это отдельные репозитории БЕЗ утверждений.
-ВНУТРИ_ЛАБЫ = {
+INSIDE_LAB = {
     "handbook": "Other people need this as instruction: how a tool works, how a pipeline is "
                 "wired, a trap anyone would hit. Not a scientific result.",
     "journal": "The way the laboratory WORKS changed: a new rule, a new place, a cancelled "
@@ -109,7 +109,7 @@ TIMEOUT = 25
 #: надо; будить надо, когда НАБОР прогонов отвечает на один вопрос и по нему можно сделать
 #: вывод — вот тогда агент оформляет серию, рисует и открывает предложение. Поэтому спрашиваем
 #: не «важно ли это», а «закрылась ли ось сравнения».
-ОСЬ = {
+AXIS = {
     "closed": "Has a GROUP of runs just become complete, so that a conclusion ACROSS them "
               "can now be drawn: the comparison axis is covered and what is missing is only "
               "the write-up? False when a single run finished (the training code records that "
@@ -122,7 +122,7 @@ TIMEOUT = 25
 #: она может поменяться». Важность и готовность — разные вещи, и спрашивать надо вторую:
 #: пока обсуждение идёт, вывод ещё переедет, и запись придётся переписывать. Поэтому
 #: прерывание требует НЕ «это важно», а «это важно И уже не изменится И ещё не записано».
-ГОТОВНОСТЬ = {
+READY = {
     "settled": "Has this SETTLED? True when the thing is finished and will not be rewritten: "
                "a number was measured and exists, a decision was made and acted on, a proof "
                "closed. False while the work is still moving: a plan, a guess, 'let me "
@@ -134,52 +134,52 @@ TIMEOUT = 25
 }
 
 
-def состояние_клона(cwd: str) -> dict:
+def clone_state(cwd: str) -> dict:
     """Что известно про работу этой сессии из её клона. Считается, а не угадывается.
 
     Помощники берутся из хука начала сессии, а не переписываются: он их уже умеет и правится
     вместе с базой. Любая беда — пустое состояние, вопросы всё равно будут заданы.
     """
     try:
-        место = Path.home() / ".claude" / "hooks" / "lab-where-am-i.py"
-        if not место.is_file():
+        place = Path.home() / ".claude" / "hooks" / "lab-where-am-i.py"
+        if not place.is_file():
             return {}
-        спец = importlib.util.spec_from_file_location("lab_where_am_i", место)
-        модуль = importlib.util.module_from_spec(спец)
-        спец.loader.exec_module(модуль)
-        слаг = модуль.work_of(cwd or str(Path.cwd()))
-        if not слаг:
+        spec = importlib.util.spec_from_file_location("lab_where_am_i", place)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        slug = module.work_of(cwd or str(Path.cwd()))
+        if not slug:
             return {}
-        клон = модуль.clone_of_project(cwd or str(Path.cwd()))
-        если = {"work": слаг}
-        if not (клон and клон.is_dir()):
-            return если
-        _, утв = модуль.claims_of(слаг, клон)
-        если["claims"] = утв
-        если["series_written"] = len(list(клон.glob("claims/*/series/S-*.md")))
-        если["runs_written"] = len(list(клон.glob("claims/*/runs/E-*.md")))
+        clone = module.clone_of_project(cwd or str(Path.cwd()))
+        said = {"work": slug}
+        if not (clone and clone.is_dir()):
+            return said
+        _, claims = module.claims_of(slug, clone)
+        said["claims"] = claims
+        said["series_written"] = len(list(clone.glob("claims/*/series/S-*.md")))
+        said["runs_written"] = len(list(clone.glob("claims/*/runs/E-*.md")))
         # Прогоны, приехавшие в ветку сами и ещё не перенесённые в claims/
-        приехало = subprocess.run(
+        arrived = subprocess.run(
             ["git", "for-each-ref", "--format=%(refname)", "refs/remotes"],
-            cwd=клон, capture_output=True, text=True, timeout=10).stdout.split()
-        не_описано = 0
-        for ссылка in приехало:
-            файлы = subprocess.run(["git", "ls-tree", "-r", "--name-only", ссылка],
-                                   cwd=клон, capture_output=True, text=True,
+            cwd=clone, capture_output=True, text=True, timeout=10).stdout.split()
+        not_described = 0
+        for link in arrived:
+            files = subprocess.run(["git", "ls-tree", "-r", "--name-only", link],
+                                   cwd=clone, capture_output=True, text=True,
                                    timeout=10).stdout.splitlines()
-            не_описано = max(не_описано, sum(1 for ф in файлы if ф.startswith("lab-runs/")))
-        если["runs_arrived_not_described"] = max(0, не_описано - если["runs_written"])
-        открытые = модуль.open_proposals(слаг)
-        если["open_proposal"] = bool(открытые)
-        return если
+            not_described = max(not_described, sum(1 for f in files if f.startswith("lab-runs/")))
+        said["runs_arrived_not_described"] = max(0, not_described - said["runs_written"])
+        open = module.open_proposals(slug)
+        said["open_proposal"] = bool(open)
+        return said
     except Exception:          # noqa: BLE001 — состояние это подспорье, а не условие работы
         return {}
 
 
-def ключ() -> str:
-    из_среды = os.environ.get("OPENROUTER_API_KEY", "").strip()
-    if из_среды:
-        return из_среды
+def key() -> str:
+    from_env = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    if from_env:
+        return from_env
     try:                      # хук идёт без профиля оболочки, поэтому связка ключей
         return subprocess.run(
             ["security", "find-generic-password", "-s", "brain-call.openrouter",
@@ -193,118 +193,118 @@ def ключ() -> str:
 #: знака, поэтому прежние 50 000 знаков давали 400 Bad Request на длинном ходе. Настоящие ходы
 #: этой сессии: медиана 2026 знаков, максимум 8429 — так что 12 000 не теряет ничего живого.
 #: Берётся голова И хвост: вывод обычно в конце, и обрезать его было бы хуже всего.
-ПРЕДЕЛ_ЗНАКОВ = 12000
+CHAR_LIMIT = 12000
 
 
-def урезать(текст: str) -> str:
-    if len(текст) <= ПРЕДЕЛ_ЗНАКОВ:
-        return текст
-    половина = ПРЕДЕЛ_ЗНАКОВ // 2
-    опущено = len(текст) - ПРЕДЕЛ_ЗНАКОВ
-    return f"{текст[:половина]}\n[… опущено {опущено} знаков …]\n{текст[-половина:]}"
+def trim(text: str) -> str:
+    if len(text) <= CHAR_LIMIT:
+        return text
+    half = CHAR_LIMIT // 2
+    lowered = len(text) - CHAR_LIMIT
+    return f"{text[:half]}\n[… опущено {lowered} знаков …]\n{text[-half:]}"
 
 
-def спросить(текст: str, ключ_api: str, записанное: list[str],
-             клон: dict | None = None) -> dict:
+def ask(text: str, api_key: str, recorded: list[str],
+             clone: dict | None = None) -> dict:
     """Один запрос, все вопросы сразу: так в двенадцать раз дешевле, чем по вызову на вопрос.
 
     Тип называется `noul`, не `bool`: API отвечает 400 «Expected 'noul' | 'choice' | 'score'».
     И отдаёт он не да/нет, а вероятность — порог ставим мы.
     """
-    вопросы: dict[str, dict] = {}
-    for группа in (МЕСТА, ВНУТРИ_ЛАБЫ, ГОТОВНОСТЬ, ОСЬ):
-        for имя, описание in группа.items():
-            вопросы[имя] = {"type": "noul", "instructions": описание,
+    questions: dict[str, dict] = {}
+    for group in (PLACES, INSIDE_LAB, READY, AXIS):
+        for name, description in group.items():
+            questions[name] = {"type": "noul", "instructions": description,
                             "criteria": {"true": "yes", "false": "no"}}
-    вопросы["вид"] = {"type": "choice", "instructions":
+    questions["вид"] = {"type": "choice", "instructions":
         "If this turn produced something that belongs in a WORK of the lab base (not the "
         "handbook, not the journal), which kind of record is it? Pick `none` otherwise.",
-        "criteria": ВИД}
-    вопросы["worth"] = {
+        "criteria": KIND}
+    questions["worth"] = {
         "type": "score",
         "instructions": "How much does this turn deserve interrupting the agent to write "
                         "something down? 0 if nothing happened worth recording anywhere.",
         "criteria": ["nothing to record", "minor, can wait",
                      "worth recording", "must not be lost"],
     }
-    состояние = {"turn": урезать(текст)}
-    if записанное:
-        состояние["already_recorded"] = записанное[-12:]
-    if клон:
-        состояние["work_state"] = клон
-    тело = json.dumps({"model": MODEL, "state": состояние,
-                       "questions": вопросы}).encode()
-    запрос = urllib.request.Request(URL, data=тело, headers={
-        "Authorization": f"Bearer {ключ_api}", "Content-Type": "application/json",
+    state = {"turn": trim(text)}
+    if recorded:
+        state["already_recorded"] = recorded[-12:]
+    if clone:
+        state["work_state"] = clone
+    body = json.dumps({"model": MODEL, "state": state,
+                       "questions": questions}).encode()
+    request = urllib.request.Request(URL, data=body, headers={
+        "Authorization": f"Bearer {api_key}", "Content-Type": "application/json",
         "User-Agent": "brainlab-jev-route/1.0"})
     ctx = ssl.create_default_context()
-    начало = time.monotonic()
-    with urllib.request.urlopen(запрос, timeout=TIMEOUT, context=ctx) as ответ:
-        данные = json.load(ответ)
-    данные["_секунд"] = round(time.monotonic() - начало, 2)
-    return данные
+    start = time.monotonic()
+    with urllib.request.urlopen(request, timeout=TIMEOUT, context=ctx) as answer:
+        data = json.load(answer)
+    data["_секунд"] = round(time.monotonic() - start, 2)
+    return data
 
 
-def записать(строка: dict) -> None:
+def write(line: dict) -> None:
     LOG.parent.mkdir(parents=True, exist_ok=True)
-    with LOG.open("a", encoding="utf-8") as ф:
-        ф.write(json.dumps(строка, ensure_ascii=False) + "\n")
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(line, ensure_ascii=False) + "\n")
 
 
 
-def сводка() -> None:
+def summary() -> None:
     """Что классификатор говорил и совпадало ли это со счётчиком."""
     if not LOG.exists():
         print("журнала пока нет")
         return
-    строки = []
-    for сырая in LOG.read_text(encoding="utf-8").splitlines():
+    lines = []
+    for raw in LOG.read_text(encoding="utf-8").splitlines():
         try:
-            строки.append(json.loads(сырая))
+            lines.append(json.loads(raw))
         except ValueError:
             continue
-    удачных = [с for с in строки if "беда" not in с]
-    беды = [с for с in строки if "беда" in с]
-    print(f"ходов в журнале: {len(строки)}, с ответом {len(удачных)}, с бедой {len(беды)}")
-    if беды:
+    answered = [item for item in lines if "беда" not in item]
+    troubles = [item for item in lines if "беда" in item]
+    print(f"ходов в журнале: {len(lines)}, с ответом {len(answered)}, с бедой {len(troubles)}")
+    if troubles:
         from collections import Counter
-        for т, n in Counter(с["беда"][:60] for с in беды).most_common(5):
-            print(f"   {n:4d}  {т}")
-    if not удачных:
+        for t, n in Counter(item["беда"][:60] for item in troubles).most_common(5):
+            print(f"   {n:4d}  {t}")
+    if not answered:
         return
-    цена = sum(с.get("цена") or 0 for с in удачных)
-    сек = [с.get("секунд") or 0 for с in удачных]
-    print(f"цена всего: {цена:.4f} $   среднее время {sum(сек)/len(сек):.1f} с")
+    cost = sum(item.get("цена") or 0 for item in answered)
+    sec = [item.get("секунд") or 0 for item in answered]
+    print(f"цена всего: {cost:.4f} $   среднее время {sum(sec)/len(sec):.1f} с")
 
-    сработал = [с for с in удачных if с.get("счётчик_сработал")]
-    молчал = [с for с in удачных if not с.get("счётчик_сработал")]
-    def ср(набор, поле="оценка"):
-        значения = [с.get(поле) or 0 for с in набор]
-        return sum(значения) / len(значения) if значения else 0
-    print(f"\nсчётчик прерывал  : {len(сработал):4d} ходов, средняя оценка {ср(сработал):.2f}")
-    print(f"счётчик молчал    : {len(молчал):4d} ходов, средняя оценка {ср(молчал):.2f}")
+    fired = [item for item in answered if item.get("счётчик_сработал")]
+    silent = [item for item in answered if not item.get("счётчик_сработал")]
+    def mean(batch, field="оценка"):
+        values = [item.get(field) or 0 for item in batch]
+        return sum(values) / len(values) if values else 0
+    print(f"\nсчётчик прерывал  : {len(fired):4d} ходов, средняя оценка {mean(fired):.2f}")
+    print(f"счётчик молчал    : {len(silent):4d} ходов, средняя оценка {mean(silent):.2f}")
     print("Если во второй строке оценка не ниже, чем в первой, счётчик прерывает не по делу.")
 
-    высокие = sorted(молчал, key=lambda с: -(с.get("оценка") or 0))[:5]
-    if высокие:
+    high = sorted(silent, key=lambda item: -(item.get("оценка") or 0))[:5]
+    if high:
         print("\nсчётчик молчал, а оценка высокая — то, что терялось:")
-        for с in высокие:
-            print(f"   {с['когда'][5:16]}  оценка {с.get('оценка'):.2f}  "
-                  f"места: {', '.join(с.get('выбраны') or []) or '—'}")
+        for item in high:
+            print(f"   {item['когда'][5:16]}  оценка {item.get('оценка'):.2f}  "
+                  f"места: {', '.join(item.get('выбраны') or []) or '—'}")
 
     from collections import Counter
-    счёт = Counter()
-    for с in удачных:
-        for м in с.get("выбраны") or []:
-            счёт[м] += 1
-    if счёт:
-        print(f"\nкуда предлагал класть (порог {ПОРОГ}):")
-        for м, n in счёт.most_common():
-            print(f"   {n:4d}  {м}")
+    counter = Counter()
+    for item in answered:
+        for m in item.get("выбраны") or []:
+            counter[m] += 1
+    if counter:
+        print(f"\nкуда предлагал класть (порог {THRESHOLD}):")
+        for m, n in counter.most_common():
+            print(f"   {n:4d}  {m}")
 
 
-def решение(ответ: dict, ходов: int, прошлое: int,
-             клон: dict | None = None) -> dict:
+def decision(answer: dict, turns: int, past: int,
+             clone: dict | None = None) -> dict:
     """Прерывать или нет. Решают ТРИ условия, и это главное в замысле.
 
     Важность и готовность — разные вещи. Пока тема обсуждается, вывод ещё переедет, и запись
@@ -314,30 +314,30 @@ def решение(ответ: dict, ходов: int, прошлое: int,
     Снизу подпирает страховка: если Jev молчит слишком долго, прерываем всё равно, чтобы
     сессия не кончилась без единой записи.
     """
-    отв = ответ.get("answers") or {}
+    reply = answer.get("answers") or {}
 
-    def вер(имя: str) -> float:
-        return float((отв.get(имя) or {}).get("noul") or 0.0)
+    def verdict(name: str) -> float:
+        return float((reply.get(name) or {}).get("noul") or 0.0)
 
-    оценка = float((отв.get("worth") or {}).get("score") or 0.0)
-    устоялось, повтор, ось = вер("settled"), вер("repeat"), вер("closed")
-    с_прошлого = ходов - прошлое
+    score = float((reply.get("worth") or {}).get("score") or 0.0)
+    settled, repeat, axis = verdict("settled"), verdict("repeat"), verdict("closed")
+    since_last = turns - past
 
-    места = [и for и in МЕСТА if вер(и) >= ПОРОГ]
+    places = [one_item for one_item in PLACES if verdict(one_item) >= THRESHOLD]
     # Один кончившийся прогон агента не касается: его описывает код и сам отправляет в ветку.
     # Поэтому «в лабораторию» снимается, когда вид — прогон, а ось ещё не закрылась. Владелец
     # 03-10-2026: «это, по идее, должно делать автоматически… пока не надо».
-    вид_предв = ((отв.get("вид") or {}).get("choice")) or "none"
-    if вид_предв == "run" and вер("closed") < ПОРОГ_ОСИ and "lab" in места:
-        места.remove("lab")
-    внутри = [и for и in ВНУТРИ_ЛАБЫ if вер(и) >= ПОРОГ]
-    вид = вид_предв
+    kind_draft = ((reply.get("вид") or {}).get("choice")) or "none"
+    if kind_draft == "run" and verdict("closed") < AXIS_THRESHOLD and "lab" in places:
+        places.remove("lab")
+    inside = [one_item for one_item in INSIDE_LAB if verdict(one_item) >= THRESHOLD]
+    kind = kind_draft
 
     # Закрывшаяся ось — самостоятельный повод, даже при средней оценке: это ровно тот момент,
     # когда агента и надо будить, чтобы он оформил серию. В обратную сторону она не работает:
     # «ось не закрылась» не запрещает записать то, что созрело само по себе.
-    созрело = (оценка >= ПОРОГ_ОЦЕНКИ and устоялось >= ПОРОГ_ГОТОВНОСТИ
-               and повтор < ПОРОГ_ПОВТОРА and места)
+    ripe = (score >= SCORE_THRESHOLD and settled >= READY_THRESHOLD
+               and repeat < REPEAT_THRESHOLD and places)
     # Ось имеет смысл ТОЛЬКО когда вид — серия: закрывшийся набор прогонов и есть серия.
     # На ложном срабатывании 03-10-2026 ось дала 0.62 при виде `none`, то есть два вопроса
     # противоречили друг другу. Служба об этом предупреждает прямо: разные вопросы не обязаны
@@ -346,51 +346,51 @@ def решение(ответ: dict, ходов: int, прошлое: int,
     # никакого набора прогонов тут быть не может, и правило про ось выключается целиком.
     # На прогоне по 120 живым ходам без работы ось дала 0.71 на разговоре про настройку Pi —
     # это и есть то ложное срабатывание, которое снимается здесь.
-    при_работе = bool((клон or {}).get("work"))
-    ось_закрылась = (ось >= ПОРОГ_ОСИ and повтор < ПОРОГ_ПОВТОРА
-                     and вид_предв == "series" and при_работе)
-    рано = с_прошлого < МИН_ХОДОВ_МЕЖДУ
-    страховка = с_прошлого >= СТРАХОВКА_ХОДОВ
+    with_work = bool((clone or {}).get("work"))
+    axis_closed = (axis >= AXIS_THRESHOLD and repeat < REPEAT_THRESHOLD
+                     and kind_draft == "series" and with_work)
+    early = since_last < MIN_TURNS_BETWEEN
+    fallback = since_last >= FALLBACK_TURNS
 
     # Порядок важен: страховка проверяется ПОСЛЕДНЕЙ. Когда она стояла первой, она перебивала
     # «созрело» — прерывание происходило верно, но причина и подсказка приходили неправильные
     # («ничего зрелого не увидел» на ходе, где всё созрело), и агент получал не тот совет.
-    if ось_закрылась and not рано:
-        прерывать, почему = True, "набор прогонов закрылся — пора оформлять серию"
-    elif созрело and not рано:
-        прерывать, почему = True, "созрело"
-    elif страховка:
-        прерывать, почему = True, f"страховка: {с_прошлого} ходов без записи"
-    elif созрело and рано:
-        прерывать, почему = False, f"созрело, но прошло только {с_прошлого} ходов"
-    elif оценка < ПОРОГ_ОЦЕНКИ:
-        прерывать, почему = False, f"нечего записывать (оценка {оценка:.2f})"
-    elif устоялось < ПОРОГ_ГОТОВНОСТИ:
-        прерывать, почему = False, f"ещё не устоялось ({устоялось:.2f}), переедет"
-    elif повтор >= ПОРОГ_ПОВТОРА:
-        прерывать, почему = False, f"про это уже записано ({повтор:.2f})"
+    if axis_closed and not early:
+        interrupt, why = True, "набор прогонов закрылся — пора оформлять серию"
+    elif ripe and not early:
+        interrupt, why = True, "созрело"
+    elif fallback:
+        interrupt, why = True, f"страховка: {since_last} ходов без записи"
+    elif ripe and early:
+        interrupt, why = False, f"созрело, но прошло только {since_last} ходов"
+    elif score < SCORE_THRESHOLD:
+        interrupt, why = False, f"нечего записывать (оценка {score:.2f})"
+    elif settled < READY_THRESHOLD:
+        interrupt, why = False, f"ещё не устоялось ({settled:.2f}), переедет"
+    elif repeat >= REPEAT_THRESHOLD:
+        interrupt, why = False, f"про это уже записано ({repeat:.2f})"
     else:
-        прерывать, почему = False, "ни одно место не выбрано"
+        interrupt, why = False, "ни одно место не выбрано"
 
-    return {"прерывать": прерывать, "почему": почему, "оценка": round(оценка, 2),
-            "устоялось": round(устоялось, 2), "повтор": round(повтор, 2),
-            "ось": round(ось, 2),
-            "места": места, "внутри_лабы": внутри, "вид": вид,
-            "с_прошлого": с_прошлого}
+    return {"прерывать": interrupt, "почему": why, "оценка": round(score, 2),
+            "устоялось": round(settled, 2), "повтор": round(repeat, 2),
+            "ось": round(axis, 2),
+            "места": places, "внутри_лабы": inside, "вид": kind,
+            "с_прошлого": since_last}
 
 
-def подсказка(вер: dict) -> str:
+def hint(verdict: dict) -> str:
     """Строка для агента: куда это ложится, чтобы он не выводил это заново.
 
     При срабатывании страховки места не называются: страховка прерывает именно потому, что
     классификатор ничего зрелого не увидел, и подсказывать тут нечего — надо наоборот
     попросить проверить, не потерялось ли что-то за эти ходы.
     """
-    if вер["почему"].startswith("страховка"):
-        return (f"Классификатор за последние {вер['с_прошлого']} ходов ничего зрелого не "
+    if verdict["почему"].startswith("страховка"):
+        return (f"Классификатор за последние {verdict['с_прошлого']} ходов ничего зрелого не "
                 "увидел, и это прерывание — страховка. Посмотри сам, не осталось ли "
                 "незаписанного; если нет, так и скажи и иди дальше.")
-    if вер["почему"].startswith("набор прогонов"):
+    if verdict["почему"].startswith("набор прогонов"):
         return ("Классификатор считает, что набор прогонов закрылся и по нему пора делать "
                 "вывод: оформить серию в `claims/<H>/series/S-….md` по правилам "
                 "`series-answers-one-question` и `series-needs-verdict`, дописать абзац в "
@@ -399,93 +399,100 @@ def подсказка(вер: dict) -> str:
                 "чем каждое проверяется, — в своде `~/.claude/rules/lab-canon.md`; "
                 "пересказывать их здесь нельзя, поэтому они только названы. "
                 "Это подсказка, а не приговор: проверь сам.")
-    части = []
-    if "lab" in вер["места"]:
-        куски = []
-        if вер["вид"] != "none":
-            имена = {"series": "серией", "run": "прогоном",
+    parts = []
+    if "lab" in verdict["места"]:
+        chunks = []
+        if verdict["вид"] != "none":
+            names = {"series": "серией", "run": "прогоном",
                      "theory": "выкладкой", "claim": "правкой утверждения"}
-            куски.append(f"в работу {имена.get(вер['вид'], вер['вид'])}")
-        for к, имя in (("handbook", "в справочник"), ("journal", "в журнал лаборатории")):
-            if к in вер["внутри_лабы"]:
-                куски.append(имя)
-        части.append("в базу лаборатории" + (f" ({', '.join(куски)})" if куски else ""))
-    if "mempalace" in вер["места"]:
-        части.append("в MemPalace")
-    if "obsidian" in вер["места"]:
-        части.append("в Obsidian")
-    if not части:
+            chunks.append(f"в работу {names.get(verdict['вид'], verdict['вид'])}")
+        for one, name in (("handbook", "в справочник"), ("journal", "в журнал лаборатории")):
+            if one in verdict["внутри_лабы"]:
+                chunks.append(name)
+        parts.append("в базу лаборатории" + (f" ({', '.join(chunks)})" if chunks else ""))
+    if "mempalace" in verdict["места"]:
+        parts.append("в MemPalace")
+    if "obsidian" in verdict["места"]:
+        parts.append("в Obsidian")
+    if not parts:
         return ""
     return ("Классификатор считает, что из этого хода надо записать "
-            + ", ".join(части)
-            + f". Оценка {вер['оценка']:.1f} из 3, устоялось {вер['устоялось']:.2f}. "
+            + ", ".join(parts)
+            + f". Оценка {verdict['оценка']:.1f} из 3, устоялось {verdict['устоялось']:.2f}. "
               "Это подсказка, а не приговор: проверь сам.")
 
 
 def main() -> None:
     if len(sys.argv) > 1 and sys.argv[1] in ("--сводка", "--summary"):
-        сводка()
+        summary()
         return
     if len(sys.argv) < 2:
         return
-    путь = Path(sys.argv[-1])
+    path = Path(sys.argv[-1])
+    # Удаляется ТОЛЬКО свой временный файл, и это не придирка. Прежде здесь стояло
+    # `finally: path.unlink()` на любой аргумент, и 04-10-2026 этим был удалён транскрипт
+    # живой сессии: его передали сюда руками, проверяя классификатор. Файл восстановить
+    # было нечем — локальных снимков нет, Time Machine отключена. Признак своего файла:
+    # имя, которое пишет хук (`tempfile.mkstemp(prefix="jev-route-")`), и каталог temp.
+    own = path.name.startswith("jev-route-") and path.suffix == ".json"
     try:
-        груз = json.loads(путь.read_text(encoding="utf-8"))
-    except (OSError, ValueError) as ошибка:
-        print(json.dumps({"прерывать": None, "беда": str(ошибка)}, ensure_ascii=False))
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        print(json.dumps({"прерывать": None, "беда": str(error)}, ensure_ascii=False))
         return
     finally:
-        try:
-            путь.unlink()
-        except OSError:
-            pass
+        if own:
+            try:
+                path.unlink()
+            except OSError:
+                pass
 
-    запись = {"когда": time.strftime("%Y-%m-%dT%H:%M:%S"),
-              "сессия": груз.get("сессия", "")[:8],
-              "ходов": груз.get("ходов"),
-              "счётчик_сработал": груз.get("счётчик_сработал"),
-              "знаков": len(груз.get("текст") or "")}
+    record = {"когда": time.strftime("%Y-%m-%dT%H:%M:%S"),
+              "сессия": payload.get("сессия", "")[:8],
+              "ходов": payload.get("ходов"),
+              "счётчик_сработал": payload.get("счётчик_сработал"),
+              "знаков": len(payload.get("текст") or "")}
 
-    def сдаться(беда: str) -> None:
-        запись["беда"] = беда
-        записать(запись)
-        print(json.dumps({"прерывать": None, "беда": беда}, ensure_ascii=False))
+    def give_up(trouble: str) -> None:
+        record["беда"] = trouble
+        write(record)
+        print(json.dumps({"прерывать": None, "беда": trouble}, ensure_ascii=False))
 
-    текст = (груз.get("текст") or "").strip()
-    if not текст:
-        сдаться("пустой ход")
+    text = (payload.get("текст") or "").strip()
+    if not text:
+        give_up("пустой ход")
         return
-    k = ключ()
+    k = key()
     if not k:
-        сдаться("нет ключа OpenRouter")
+        give_up("нет ключа OpenRouter")
         return
     try:
-        клон = состояние_клона(груз.get("каталог") or "")
-        ответ = спросить(текст, k, груз.get("записанное") or [], клон)
-    except Exception as ошибка:          # сеть, ключ, разбор — любая беда в журнал
-        сдаться(f"{type(ошибка).__name__}: {ошибка}"[:200])
+        clone = clone_state(payload.get("каталог") or "")
+        answer = ask(text, k, payload.get("записанное") or [], clone)
+    except Exception as error:          # сеть, ключ, разбор — любая беда в журнал
+        give_up(f"{type(error).__name__}: {error}"[:200])
         return
 
-    вер = решение(ответ, int(груз.get("ходов") or 0),
-                  int(груз.get("прошлое") or 0), клон)
-    отв = ответ.get("answers") or {}
-    запись.update({
-        "работа": (клон or {}).get("work"),
-        "не_описано_прогонов": (клон or {}).get("runs_arrived_not_described"),
-        "ось": вер["ось"],
-        "вид": вер["вид"],
-        "места": {и: round(float((отв.get(и) or {}).get("noul") or 0), 2)
-                  for и in list(МЕСТА) + list(ВНУТРИ_ЛАБЫ)},
-        "выбраны": вер["места"] + вер["внутри_лабы"],
-        "оценка": вер["оценка"], "устоялось": вер["устоялось"], "повтор": вер["повтор"],
-        "прерывать": вер["прерывать"], "почему": вер["почему"],
-        "секунд": ответ.get("_секунд"),
-        "токенов": (ответ.get("usage") or {}).get("input_tokens"),
-        "цена": (ответ.get("usage") or {}).get("cost"),
+    verdict = decision(answer, int(payload.get("ходов") or 0),
+                  int(payload.get("прошлое") or 0), clone)
+    reply = answer.get("answers") or {}
+    record.update({
+        "работа": (clone or {}).get("work"),
+        "не_описано_прогонов": (clone or {}).get("runs_arrived_not_described"),
+        "ось": verdict["ось"],
+        "вид": verdict["вид"],
+        "места": {one_item: round(float((reply.get(one_item) or {}).get("noul") or 0), 2)
+                  for one_item in list(PLACES) + list(INSIDE_LAB)},
+        "выбраны": verdict["места"] + verdict["внутри_лабы"],
+        "оценка": verdict["оценка"], "устоялось": verdict["устоялось"], "повтор": verdict["повтор"],
+        "прерывать": verdict["прерывать"], "почему": verdict["почему"],
+        "секунд": answer.get("_секунд"),
+        "токенов": (answer.get("usage") or {}).get("input_tokens"),
+        "цена": (answer.get("usage") or {}).get("cost"),
     })
-    записать(запись)
-    вер["подсказка"] = подсказка(вер) if вер["прерывать"] else ""
-    print(json.dumps(вер, ensure_ascii=False))
+    write(record)
+    verdict["подсказка"] = hint(verdict) if verdict["прерывать"] else ""
+    print(json.dumps(verdict, ensure_ascii=False))
 
 
 if __name__ == "__main__":

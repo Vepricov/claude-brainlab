@@ -5,11 +5,17 @@
 #
 #   bash docs/lab/install.sh
 #
-# Ставит три вещи и ничего больше:
+# Ставит пять вещей и ничего больше:
 #
 #   ~/.claude/rules/lab.md              КАК писать в базу. Читается один раз за сессию.
+#   ~/.claude/rules/lab-canon.md        СВОД правил: на него ссылаются правило, навык и хуки.
+#   ~/.claude/skills/lab-knowledge/     навык: как пишется страница утверждения и серии.
 #   ~/.claude/hooks/lab-where-am-i.py   ГДЕ ты и что тебя ждёт. Печатает только состояние.
-#   ~/.local/bin/lab                    ветка, предложение, задачи, вердикт — из терминала.
+#   ~/.local/bin/lab                    ветка, задачи, вердикт — из терминала.
+#
+# Свод не копируется из этого репозитория: его источник лежит в базе,
+# `brainlab/handbook/canon.md`, и наливает его `scripts/canon_sync.py`. Поэтому шаг со сводом
+# идёт ПОСЛЕ ключа: без ключа справочник не ответит.
 #
 # Повторный запуск безопасен: он сверяет и доливает, а не переписывает твои настройки.
 set -eu
@@ -33,7 +39,13 @@ cp "$here/hooks/lab-where-am-i.py" "$hooks_dir/lab-where-am-i.py"
 chmod +x "$hooks_dir/lab-where-am-i.py"
 echo "хук:      $hooks_dir/lab-where-am-i.py"
 
-# 3. помощник
+# 3. навык: подробности по факту работы, не в контексте
+skills="$home/.claude/skills"
+mkdir -p "$skills"
+rsync -a --delete --exclude __pycache__ "$here/skills/lab-knowledge/" "$skills/lab-knowledge/"
+echo "навык:    $skills/lab-knowledge/"
+
+# 4. помощник
 ln -sf "$here/scripts/lab" "$home/.local/bin/lab"
 echo "помощник: $home/.local/bin/lab -> $here/scripts/lab"
 
@@ -43,26 +55,26 @@ echo "помощник: $home/.local/bin/lab -> $here/scripts/lab"
 import json, sys
 from pathlib import Path
 
-файл, хук = Path(sys.argv[1]), sys.argv[2]
-данные = {}
-if файл.is_file():
+settings, hook = Path(sys.argv[1]), sys.argv[2]
+data = {}
+if settings.is_file():
     try:
-        данные = json.loads(файл.read_text(encoding="utf-8"))
+        data = json.loads(settings.read_text(encoding="utf-8"))
     except ValueError:
-        sys.exit(f"не разбирается {файл}: поправь его руками и запусти снова")
-команда = f"{sys.executable} {хук}"
-события = данные.setdefault("hooks", {}).setdefault("SessionStart", [])
-for группа in события:
-    for запись in группа.get("hooks") or []:
-        if "lab-where-am-i" in str(запись.get("command", "")):
-            запись["command"] = команда
-            файл.write_text(json.dumps(данные, ensure_ascii=False, indent=2),
-                            encoding="utf-8")
+        sys.exit(f"не разбирается {settings}: поправь его руками и запусти снова")
+command = f"{sys.executable} {hook}"
+events = data.setdefault("hooks", {}).setdefault("SessionStart", [])
+for group in events:
+    for entry in group.get("hooks") or []:
+        if "lab-where-am-i" in str(entry.get("command", "")):
+            entry["command"] = command
+            settings.write_text(json.dumps(data, ensure_ascii=False, indent=2),
+                                encoding="utf-8")
             print("хук уже был зарегистрирован, путь обновлён")
             raise SystemExit
-события.append({"hooks": [{"type": "command", "command": команда}]})
-файл.parent.mkdir(parents=True, exist_ok=True)
-файл.write_text(json.dumps(данные, ensure_ascii=False, indent=2), encoding="utf-8")
+events.append({"hooks": [{"type": "command", "command": command}]})
+settings.parent.mkdir(parents=True, exist_ok=True)
+settings.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 print("хук зарегистрирован на начало сессии")
 PY
 
@@ -153,10 +165,14 @@ echo "проверка:"
 "$py" -c "import ast,sys;ast.parse(open(sys.argv[1]).read())" "$hooks_dir/lab-where-am-i.py" \
   && echo "  хук разбирается"
 if [ -s "$conf/git-token" ]; then
-  "$home/.local/bin/lab" open >/dev/null 2>&1 \
-    && echo "  ключ работает: база отвечает" \
-    || echo "  ключ есть, но база не ответила — проверь адрес в $conf/git-url"
+  # Свод наливается здесь: ключ уже есть, и ответ справочника заодно проверяет ключ.
+  if "$py" "$here/scripts/canon_sync.py"; then
+    echo "  ключ работает: справочник ответил"
+  else
+    echo "  ключ есть, но справочник не ответил — проверь адрес в $conf/git-url"
+  fi
 fi
 echo
 echo "дальше: открой свою работу — \`lab here <слаг>\` — и работай обычным git."
 echo "как писать, читается один раз: $rules/lab.md"
+echo "свод правил, на него ссылается всё: $rules/lab-canon.md"

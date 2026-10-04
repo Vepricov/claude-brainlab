@@ -301,6 +301,15 @@ def do_here(names: list[str]) -> None:
     sign_clone(target)
     old_url = git("config", "--get", "remote.origin.url", cwd=target, quiet=True)
     if old_url != address:
+        # В одной папке проекта живёт ОДНА работа. Раньше `origin` переписывался молча, и
+        # 04-10-2026 на этом встал прогон: в `lab-base` лежал клон `lab-knowledge-pipeline`,
+        # агент попросил `lora-style`, адрес поменялся, а файлы остались чужие — дальше
+        # ветка и предложение уехали бы не в ту работу.
+        here_slug = old_url.rstrip("/").removesuffix(".git").rsplit("/", 1)[-1]
+        if old_url and here_slug != project["path"]:
+            sys.exit(f"в {target} лежит работа {here_slug}, а просят {project['path']}.\n"
+                     f"Одна папка проекта — одна работа: сделай `lab here "
+                     f"{project['path']}` в папке той работы или склонируй рядом руками.")
         # Клон из чужого локального клона выглядит рабочим, а push уходит в никуда.
         action = "set-url" if old_url else "add"
         git("remote", action, "origin", address, cwd=target, quiet=True)

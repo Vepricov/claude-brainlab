@@ -14,9 +14,18 @@ DB_PATH = os.path.expanduser("~/Zotero/zotero.sqlite")
 STORAGE_DIR = os.path.expanduser("~/Zotero/storage")
 
 
+#: Алфавит ключей Zotero: латиница БЕЗ `O` и цифры только 2-9.
+#: Ни нулей, ни единиц — их нельзя спутать с `O` и `I`.
+#: Ключ вне этого алфавита сервер отвергает и ОБРЫВАЕТ СИНХРОНИЗАЦИЮ ЦЕЛИКОМ,
+#: молча, на первом же таком объекте. Так библиотека простояла без синка с
+#: 27-04 по 30-08-2026: 30 коллекций и 283 записи имели ключи вида MUON0001,
+#: SCLINV01, L5X1CY23, и 932 записи из 1070 не уехали на сервер.
+#: Не заменять на string.ascii_uppercase + string.digits.
+ZOTERO_KEY_ALPHABET = "ABCDEFGHIJKLMNPQRSTUVWXYZ23456789"
+
+
 def random_key(length=8):
-    alphabet = string.ascii_uppercase + string.digits
-    return "".join(random.choice(alphabet) for _ in range(length))
+    return "".join(random.choice(ZOTERO_KEY_ALPHABET) for _ in range(length))
 
 
 def md5sum(path):

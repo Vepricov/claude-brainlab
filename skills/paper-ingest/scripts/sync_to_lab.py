@@ -107,6 +107,11 @@ def _connection() -> tuple[str, dict]:
     """Use this installation's caller, never a server-wide lead token fallback."""
     if os.environ.get("LAB_MCP_URL") and os.environ.get("LAB_MCP_TOKEN"):
         return os.environ["LAB_MCP_URL"], {"Authorization": "Bearer " + os.environ["LAB_MCP_TOKEN"]}
+    # запасной путь этой машины: туннель к базе и собственный агентский токен
+    _cfg = Path.home() / ".config" / "brainlab"
+    if (_cfg / "lab-mcp-url").is_file() and (_cfg / "lab-mcp-token").is_file():
+        return ((_cfg / "lab-mcp-url").read_text().strip(),
+                {"Authorization": "Bearer " + (_cfg / "lab-mcp-token").read_text().strip()})
     hermes = Path(os.environ.get("HERMES_HOME", str(Path.home() / ".hermes")))
     if (hermes / "config.yaml").is_file():
         import re
@@ -181,7 +186,28 @@ def verify(arxiv: str, expected: dict | None = None) -> bool:
                for chunk in expected.get("sections", []))
 
 
+def push_claims(paper_id: str, claims: list) -> None:
+    """Утверждения статьи идут отдельным вызовом: upsert_paper их больше не принимает."""
+    ok = 0
+    for c in claims or []:
+        statement = (c.get("statement") or "").strip()
+        if not statement:
+            continue
+        payload = {"paper_id": paper_id, "statement": statement}
+        for key in ("quote", "locator", "kind"):
+            if c.get(key):
+                payload[key] = c[key]
+        try:
+            _ask("record_paper_claim", payload)
+            ok += 1
+        except Exception as exc:
+            print("утверждение не записано: " + str(exc), file=sys.stderr)
+    if claims:
+        print("утверждений записано: " + str(ok) + " из " + str(len(claims)))
+
+
 def sync_paper(paper: dict, *, force: bool = False) -> None:
+    claims = paper.pop("claims", None) or []
     arxiv = paper.get("arxiv_id")
     if not arxiv:
         # У книги и постера конференции arXiv нет вовсе, и с 10-09-2026 служба принимает их
@@ -211,6 +237,9 @@ def sync_paper(paper: dict, *, force: bool = False) -> None:
             if previous.get(chunk["section"]) != chunk.get("content", ""):
                 _ask("add_paper_section", {"paper_id": known["paper"]["id"],
                      "section": chunk["section"], "content": chunk["content"]})
+    fresh = existing(arxiv)
+    if claims and fresh:
+        push_claims(fresh["paper"]["id"], claims)
     if not verify(arxiv, outgoing):
         raise RuntimeError("Read-back differs from the published paper; publication remains pending")
     print(f"{arxiv}: metadata and {len(outgoing.get('sections', []))} sections verified")

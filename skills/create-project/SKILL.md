@@ -11,6 +11,20 @@ Before writing shared records, read `lab-knowledge/references/record-contract.md
 installed skills directory and the live MCP schema. Use the already authorized scope,
 resolve the existing destination, and verify stored content. Keep failed publications pending.
 
+The rules every write into the lab base must satisfy are in one place and are not
+restated anywhere: `~/.claude/rules/lab-canon.md`, mirrored from
+`brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
+or the journal; it also says which of the three a given thing belongs in.
+
+
+Create the private working layer first. For a Brain Lab project, continue with
+`lab-project-onboarding`; do not reproduce its shared-system logic here.
+
+Перед работой с хранилищем прочитать соглашения:
+`general/Knowledge/obsidian-conventions.md` (темы в `Papers/`, смайлики и
+цвета папок, что нельзя создавать). Папке нового проекта нужен смайлик и цвет
+своей темы.
+
 
 Create the private working layer first. For a Brain Lab project, continue with
 `lab-project-onboarding`; do not reproduce its shared-system logic here.
@@ -25,19 +39,22 @@ Create the private working layer first. For a Brain Lab project, continue with
 **Никогда не заводить проект, не убедившись, что его нет.** Проверять по СМЫСЛУ, а не по имени:
 та же работа лежит под слагом `tsd-lora`, под названием «Низкоранговая адаптация с TSD» или под
 фамилией студента, и совпадения строк не будет. Один и тот же проект в двух местах потом не
-склеить — ни доски, ни гипотезы, ни задачи.
+склеить — ни доски, ни утверждения, ни задачи.
 
 Пять мест, все пять обязательны:
 
 1. **Каталог Brain Call** — `~/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/data/projects.json`.
    Прочитать `slug`, `legacy_labels`, `display_title`, `summary` каждой записи и сравнить по теме.
-2. **Lab Knowledge MCP** — `search_lab` со `scope: lab` по двум-трём разным формулировкам темы
-   (название, метод, задача). Поиск отвечает по смыслу, поэтому спрашивать надо словами, а не слагом.
+2. **Дерево базы в GitLab** — список проектов направления и темы, `list_projects` или
+   страница группы. Искать по смыслу: названием метода, задачей, фамилией. `search_lab`
+   со `scope: lab` для этого больше не годится — эта половина поиска отвечает отказом с
+   переездом знания в git.
 3. **Хранилище Obsidian** — `Papers/**`, `Projects/**`, `Staff/**`. Смотреть не только имена папок:
    `rg` по названию метода и по фамилиям участников внутри карточек проектов.
 4. **Файловая система** — `~/Papers`, `~/Projects`, `~/Staff`. Папка без карточки в хранилище — тоже
    существующий проект, просто заброшенный.
-5. **Yonote** — страницы коллекции по названию темы, через тот же брокер, что и онбординг.
+5. **Задачи в GitLab** — открытые задачи работ темы и группы `ops`: работа часто начинается
+   задачей раньше, чем папкой. Yonote для этого больше не смотрят, он отключён 02-10-2026.
 
 Нашлось похожее — **остановиться и показать владельцу**: что нашлось, где, чем похоже и чем
 отличается. Решает он. Ни одного из пяти мест не пропускать молча: «я посмотрел по имени, не нашёл»
@@ -152,63 +169,12 @@ The onboarding result must provide stable references for:
 Write those returned references into the private project card. Do not store a shared Yonote
 token, duplicate tasks, hypotheses, evidence, or decisions in Obsidian.
 
-Show the Yonote project and task-board links alongside GitHub and Overleaf. Include the
-returned board ID in the private shared-system context and point the repository's agent
-instructions to it. Verify discovery from a fresh agent's entry point; a chat-only link does
-not complete setup.
-
-For Hermes or another agent performing shared tasks, load
-`lab-knowledge/references/yonote-tasks.md` from the installed skills directory. Resolve the
-human owner's stable Yonote identity separately from the agent service account. Only tasks
-assigned to that owner are eligible. Verify task reading and preserving updates before
-declaring the capability ready. Report missing or stale bindings explicitly; do not substitute
-a similarly named project's board.
-
-An agent profile or experiment-track name is not automatically a new research project.
-Resolve the article the execution belongs to and reuse its page and board. Keep private
-execution steps separate from the team's readable milestones; do not create a Yonote board
-for Hermes itself.
-
-## 3а. Когда проект заводится по итогам созвона
-
-Разбор созвона умеет сказать, что созвон начинает работу, которой в каталоге нет: в предложении
-о месте появляется `new_work` со слагом, названием и одной фразой о сути, а сам созвон при этом
-привязан к теме. Это готовая спецификация — не спрашивать её заново:
-
-- `new_work.slug` → слаг проекта, `new_work.title` → `display_title`, `new_work.summary` → `summary`;
-- `match_theme_slug` → тема, под которой работа живёт (`theme`, `theme_slug`);
-- участники — из состава созвона, включая гостей с плиток; человека, которого нет в каталоге
-  лаборатории, завести в `~/.config/brain-call/directory.json`, а не хардкодить в общий репозиторий;
-- корень файловой системы и репозитории созвон не знает — их спросить.
-
-Проверку из раздела 0 это НЕ отменяет: модель предлагает слаг по разговору и о соседних работах
-лаборатории не знает.
-
-После того как проект заведён, вернуться к созвону и перепривязать его к новой работе
-(`brain_call.py --rebind MANIFEST --to-slug <slug>`), иначе разбор так и останется на теме, а
-задачам будет некуда лечь: доска принадлежит работе.
-
 ## 4. Verify and report
 
 Verify the local folders, repository state, Obsidian mapping, and every returned shared ID/link.
 For lab projects, rerun the shared resolution step to prove it returns the same project, page,
-and board rather than creating duplicates.
-
-Отчёт — таблицей по местам, а не рассказом. Каждое место называет своё состояние и свой адрес:
-
-| место | состояние | адрес |
-|---|---|---|
-| Obsidian `Papers/<тема>/<slug>/` | создано / было | путь в хранилище |
-| `~/Papers/<slug>/` | создано / было | путь |
-| `obsidian-projects.json` | запись добавлена / была | — |
-| каталог Brain Call `projects.json` | запись добавлена / была | слаг и код |
-| Lab Knowledge | проект создан / найден | `project_id` |
-| Yonote страница | создана / найдена | ссылка |
-| Yonote доска | создана / найдена | ссылка |
-| участники | заведены / были | имена |
-
-Место, до которого не дошли, называется отдельной строкой «не сделано» с причиной. Молчание о
-месте читается как «сделано» и однажды оставит проект без доски.
+and board rather than creating duplicates. Report created, reused, skipped, and blocked items
+separately.
 
 ## Safety
 
@@ -217,3 +183,7 @@ and board rather than creating duplicates.
 - Never expose credentials in files, logs, previews, or chat.
 - Never create a second writable source for a task or shared research object.
 - Stop after a permission error; do not retry with broader credentials.
+
+## Project tasks assigned to the human owner
+
+Before performing Yonote project tasks, read `lab-knowledge/references/yonote-tasks.md` from the installed skills directory. Work only on tasks assigned to the confirmed human owner, preserve the human assignee and original task ID, and verify the live binding and update capabilities. Keep the project page and board links alongside GitHub/Overleaf in the private project context and link it from agent instructions.

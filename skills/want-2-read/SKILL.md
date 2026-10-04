@@ -1,7 +1,7 @@
 ---
 name: want-2-read
 description: "Process eligible papers on the Operon Reading board using the owner's selection and current ingestion rules."
-version: 2.1.0
+version: 2.4.0
 ---
 
 # Skill: want-2-read
@@ -11,6 +11,20 @@ version: 2.1.0
 Before writing shared records, read `lab-knowledge/references/record-contract.md` from the
 installed skills directory and the live MCP schema. Use the already authorized scope,
 resolve the existing destination, and verify stored content. Keep failed publications pending.
+
+The rules every write into the lab base must satisfy are in one place and are not
+restated anywhere: `~/.claude/rules/lab-canon.md`, mirrored from
+`brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
+or the journal; it also says which of the three a given thing belongs in.
+
+
+Create the private working layer first. For a Brain Lab project, continue with
+`lab-project-onboarding`; do not reproduce its shared-system logic here.
+
+Перед работой с хранилищем прочитать соглашения:
+`general/Knowledge/obsidian-conventions.md` (темы в `Papers/`, смайлики и
+цвета папок, что нельзя создавать). Папке нового проекта нужен смайлик и цвет
+своей темы.
 
 
 ## Trigger
@@ -35,7 +49,13 @@ Column ownership:
 - `Инбокс` — `paper-search` writes here. The owner decides and drags. **This skill never processes
   Инбокс** and never promotes a card out of it.
 - `Жду публикацию` — интересная работа подтверждена, но надёжной публичной версии ещё нет. The
-  skill rechecks availability, but never ingests a title-only record and never changes its status.
+  skill rechecks availability every run and marks the card `[found]` once a public version appears.
+  A `[found]` card **is** work: it has a canonical public source, so this skill ingests it in the
+  same batch as «Очередь», and **on success it moves the card to «Очередь»** — see Step 7. The
+  column means "waiting for a public version"; once the paper is published *and* fully ingested it
+  is not waiting any more, and leaving it there hides finished work behind a stale label. What this
+  skill never does is ingest a *title-only* record. `/paper-search` runs the identical availability
+  check as its step 0, but it never ingests, so it never moves anything.
 - `Очередь` — accepted papers. **This is the input of `/want-2-read`.**
 - `Читаю`, `Прочитано` — reader columns, untouched. Operon auto-archives finished cards into
   `Operon/Archives` a day later via `~/.local/bin/operon_daily_archive.py`.
@@ -62,7 +82,7 @@ datetimeModified: <ISO, локальное время>
 # <Заголовок статьи>
 
 ## Заметка
-[[Literature/<TopLevel>/<Subfolder>/<Sanitized Paper Title>]]
+[[Literature/<тема>/<Sanitized Paper Title>]]
 
 ## arXiv
 https://arxiv.org/abs/<ARXIV_ID>
@@ -74,7 +94,7 @@ https://arxiv.org/abs/<ARXIV_ID>
 <подробное описание статьи на русском, собранное из итоговой Obsidian-заметки>
 
 **Zotero**: zotero://select/library/items/<PARENT_KEY>
-**Папка**: `Literature/<TopLevel>/<Subfolder>`
+**Папка**: `Literature/<тема>`
 ```
 
 Rules for the schema:
@@ -127,7 +147,7 @@ Never `kill -9` — a corrupted DB write tail is far worse than a slow batch. Te
 Run this **before** collecting work, every time, even when the user asks only to "process the queue".
 
 ```
-mcp__claude_ai_alphaXiv__list_library(include_papers=true)
+mcp__alphaxiv__list_library(include_papers=true)
 ```
 
 The response is large; read it from the saved tool-result file rather than into context, and extract
@@ -171,18 +191,107 @@ was skipped and needs `/mcp` auth. Never silently drop it.
 
 ### Step 1b: Recheck «Жду публикацию»
 
+Identical to step 0 of `/paper-search` — both skills run the same protocol so the board looks the
+same whichever one the owner launched.
+
+```bash
+rg -l '^status: Reading\.Жду публикацию$' "$VAULT/Operon/Reading" -g '*.md'
+```
+
 For every live card with `status: Reading.Жду публикацию`, search the exact title in official
 sources (arXiv, OpenReview, DOI/Crossref, DBLP, or the venue page). Record `paperLastChecked` in
-frontmatter. If a reliable public version appears, fill `## arXiv` or add the canonical DOI/venue
-URL and append a short availability note under `## Комментарии`; tell the owner that the card is
-ready to drag to `Очередь`. Do not change the status and do not run `paper-ingest` while it remains
-in `Жду публикацию`.
+frontmatter whatever the outcome.
+
+**Still nothing public** — update `paperLastChecked` only, and add at most one line under
+`## Комментарии` if the search turned up something new. Leave the title alone.
+
+**A reliable public version appeared** — apply the `[found]` protocol below. Never change `status`
+and never run `paper-ingest` while the card sits in «Жду публикацию»: the owner decides by dragging,
+exactly as for «Инбокс».
+
+#### The `[found]` protocol
+
+1. Prefix the H1 and `taskTitle` with `[found] `, exactly once — never duplicate an existing prefix.
+   The prefix is what makes "no longer waiting" visible on the Kanban.
+2. Put the canonical URL into `## arXiv`.
+3. Set `paperSource` (`arxiv` | `openreview` | `doi` | `venue`), `paperAvailability: public`,
+   `paperLastChecked`.
+4. **Delete the stale agent report saying the paper could not be found anywhere.** This is the only
+   text the skill may erase from `## Комментарии`; the owner's own notes are never touched. Replace
+   it with the success callout.
+5. If the existing `Literature/` note was built without an accessible full text, keep
+   `paperIngestState: pending` so the eventual run does a **full re-ingest**, not a patch.
+
+```markdown
+---
+operonId: <7 символов>
+taskTitle: '[found] <Заголовок статьи>'
+status: Reading.Жду публикацию
+priority: C
+datetimeCreated: <ISO>
+datetimeModified: <ISO, обновить>
+paperSource: arxiv
+paperAvailability: public
+paperLastChecked: <YYYY-MM-DD>
+paperIngestState: pending
+---
+# [found] <Заголовок статьи>
+
+## Заметка
+
+## arXiv
+https://arxiv.org/abs/<ARXIV_ID>
+
+## Тема
+<тема>
+
+## Комментарии
+> [!success] Публичная версия нашлась DD-MM-YYYY
+> Источник: arXiv `<ARXIV_ID>`, PDF доступен — https://arxiv.org/abs/<ARXIV_ID>
+> Можно перетаскивать в «Очередь»: дальше `/want-2-read` сделает полный ingest.
+```
+
+When no arXiv version exists and only OpenReview / DOI / a venue page was found, the `## arXiv`
+section keeps its name (the card schema is fixed) but holds the canonical non-arXiv URL, and the
+callout must say so explicitly:
+
+```markdown
+## Комментарии
+> [!success] Публичная версия нашлась DD-MM-YYYY
+> Источник: OpenReview, ICML 2026 — https://openreview.net/forum?id=<ID>
+> arXiv-версии не существует, поэтому зеркалирование на AlphaXiv в Step 6 невозможно:
+> MCP умеет добавлять только arXiv-статьи. Ingest в Zotero и Obsidian при этом отработает.
+```
+
+#### Report it in chat
+
+Board changes are never silent. After Step 1b, print a separate block so the owner understands what
+happened without opening Obsidian:
+
+```text
+Проверил «Жду публикацию» (N карточек):
+- [found] <Заголовок> — нашлась arXiv-версия 2605.24956, помечена [found], осталась в «Жду публикацию»
+- <Заголовок> — публичной версии по-прежнему нет, обновил только дату проверки
+Перетащи помеченные [found] в «Очередь», если хочешь читать: ingest сделаю на следующем запуске.
+```
+
+If nothing changed, still say so in one line. The same rule covers every other board edit this skill
+makes: each one gets its own line in the chat report.
 
 ## Step 2: Collect the work
 
+The batch has **two** sources: every unresolved card in «Очередь», plus every `[found]` card in
+«Жду публикацию» — the latter is available and citable, so there is no reason to make the owner
+drag it first just to get the note built.
+
 ```bash
-VAULT="${OBSIDIAN_VAULT:?set OBSIDIAN_VAULT to the vault root}"
-rg -l '^status: Reading\.Очередь$' "$VAULT/Operon" -g '*.md' \
+VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917"
+{
+  rg -l '^status: Reading\.Очередь$' "$VAULT/Operon" -g '*.md'
+  # [found] = публичный источник подтверждён на шаге 1b, значит статью можно ингестить
+  rg -l '^status: Reading\.Жду публикацию$' "$VAULT/Operon" -g '*.md' \
+    | while IFS= read -r c; do rg -q '^taskTitle: .*\[found\]' "$c" && printf '%s\n' "$c"; done
+} | sort -u \
   | rg -v '/Operon/Archives/' \
   | while IFS= read -r card; do
       if ! rg -q '\[\[Literature/' "$card" || rg -q '^paperIngestState: pending$' "$card"; then
@@ -199,7 +308,11 @@ Interpretation:
 - card in `Очередь` without `[[Literature/...]]` → **unresolved, process it**
 - card in `Очередь` with the link → already resolved, unless `paperIngestState: pending`
 - card in `Инбокс` → the owner has not decided, **do not process, do not comment, do not promote**
-- card in `Жду публикацию` → only run the availability check from Step 1b
+- card in `Жду публикацию` **with** `[found]` and no `[[Literature/...]]` → **process it**, exactly
+  like an «Очередь» card. Full `paper-ingest`, Zotero, PDF, Obsidian note, AlphaXiv mirror, and
+  then move it to `Reading.Очередь` (Step 7) — the wait is over and the paper is now readable
+- card in `Жду публикацию` **without** `[found]` → title-only, no reliable source; run the
+  availability check from Step 1b and nothing else
 - card in `_Trash` → never ingest; use it only for dedup and AlphaXiv queue cleanup
 - cards in `Читаю` / `Прочитано` → never processed, never overwritten
 
@@ -285,7 +398,7 @@ Read `~/.claude/alphaxiv-library-map.json` for the target `folder_id`.
 
 - Paper came from "Want to read" (Step 1 imported it, or it was already there):
   ```
-  mcp__claude_ai_alphaXiv__move_papers_between_folders(
+  mcp__alphaxiv__move_papers_between_folders(
       from_folder_id=<want_to_read_folder_id>,
       to_folder_id=<mapped topic folder_id>,
       paper_ids_or_urls=[<arxiv_id>])
@@ -293,7 +406,7 @@ Read `~/.claude/alphaxiv-library-map.json` for the target `folder_id`.
   This adds to the topic folder and clears the queue entry in one call.
 - Paper was not in "Want to read":
   ```
-  mcp__claude_ai_alphaXiv__save_papers_to_folder(
+  mcp__alphaxiv__save_papers_to_folder(
       folder_id=<mapped topic folder_id>, paper_ids_or_urls=[<arxiv_id>])
   ```
 - Multiple destinations → repeat `save_papers_to_folder` for each; a paper may live in several folders.
@@ -333,20 +446,46 @@ Use the existing `Literature` folder taxonomy. Do not edit the server taxonomy a
 Fill in the card **in place**, preserving `operonId`, `status`, `priority`, the dates, the title, and
 every line the owner wrote themselves:
 
-- `## Заметка` → the permanent `[[Literature/<Top>/<Sub>/<Sanitized Title>]]` wikilink
+- `## Заметка` → the permanent `[[Literature/<тема>/<Sanitized Title>]]` wikilink
 - `## arXiv` → the canonical `https://arxiv.org/abs/<ID>` URL, if the section was empty
 - `## Тема` → the human-readable topic, if the section was empty or held a slug
 - `## Комментарии` → the detailed Russian description, then the `**Zotero**:` and `**Папка**:` lines
 
 After a successful full ingest, remove `paperIngestState: pending` (or set it to `complete`).
 
+If the card still carries the `[found] ` prefix from Step 1b, **strip it** from both the H1 and
+`taskTitle` while writing the card back — including a card that is still sitting in «Жду
+публикацию». The prefix means "the source turned up, this needs deciding"; once the note exists the
+resolved wikilink is the signal, and the availability callout in `## Комментарии` keeps the history. Per rule 11 of `~/.claude/rules/alphaxiv-sync.md` the H1 of
+a completed card is the canonical `# [[Literature/path/note|Human title]]` link and `taskTitle` is
+that same H1 without the leading `# `.
+
 The description must not be a one-line annotation. Condense it from the full `paper-ingest` note and
 keep it detailed enough that the user understands the paper without opening the PDF: the problem, the
 mechanism, the key formulas in words, the setup, and the headline numbers.
 
-**HARD RULE — the skill never changes `status`.** No promoting a card to `Читаю`, no marking anything
-`Прочитано`, no writing `dateCompleted`. Those are exclusively the owner's signals, set by dragging
-the card in Operon. This applies to per-paper agents, the merge step, and the QA review agent alike.
+### The one status change this skill is allowed to make
+
+A card that was in `Reading.Жду публикацию` and has just been **fully ingested** moves to
+`Reading.Очередь`. Set `status: Reading.Очередь` and update `datetimeModified`. Nothing else about
+the card's placement is ever touched.
+
+The reasoning: that column answers "is there a public version yet?". Once the answer is yes *and*
+the note, the Zotero item and the PDF all exist, the card is an ordinary unread paper and belongs
+with the other unread papers. Leaving it behind a "waiting" label buries finished work.
+
+Conditions, all required:
+- the ingest actually succeeded — a real `[[Literature/...]]` wikilink, a Zotero parent item, a PDF.
+  A failed or metadata-only attempt leaves the card exactly where it was;
+- the card started in `Жду публикацию`. A card in `Инбокс` is never promoted, whatever happens;
+- report the move in chat, one line per card (see below). A silent status change is the thing the
+  owner explicitly does not want.
+
+**HARD RULE — no other status change, ever.** No promoting a card to `Читаю`, no marking anything
+`Прочитано`, no writing `dateCompleted`, no touching `Инбокс` or `_Trash`. Those are exclusively the
+owner's signals, set by dragging the card in Operon. This applies to per-paper agents, the merge
+step, and the QA review agent alike — the `Жду публикацию` → `Очередь` promotion above is the single
+exception, and only under the conditions listed.
 
 If a paper cannot be resolved at all, leave the card in place, leave `## Заметка` empty, and write the
 reason into `## Комментарии` — what you searched (arXiv, DBLP, OpenReview, Semantic Scholar, Crossref,
@@ -382,6 +521,8 @@ The batch is not complete until this agent finishes.
 ```text
 Импортировано из Want to read: K статей.
 Обработано: N статей.
+Перенесено из «Жду публикацию» в «Очередь» после ingest: M
+- <Заголовок> — разобрана, публичная версия <arXiv 2605.24956 | OpenReview ...>, перенесена в «Очередь»
 
 Готовые ссылки:
 - [[Literature/.../Paper A]]
@@ -405,10 +546,17 @@ memberships on startup.
 - Both sources are read every run: the Operon board **and** the AlphaXiv "Want to read" folder
 - AlphaXiv "Want to read" maps to «Очередь», not to «Инбокс»
 - Manually created Reading cards are discovered vault-wide, normalized, and moved to `Operon/Reading/`
-- `Жду публикацию` is rechecked but never ingested until the owner moves it to `Очередь`
+- `Жду публикацию` is rechecked every run and marked `[found]` when a public version appears; a
+  `[found]` card is then ingested in the same batch as «Очередь», while a title-only card is not
+- A successfully ingested `Жду публикацию` card is moved to `Очередь` and the move is reported in
+  chat. That is the ONLY status change this skill may make; every other column is the owner's
+- The `[found] ` prefix is added by Step 1b and stripped by Step 7 once the paper is ingested
+- Every board edit — `[found]`, a rewritten availability callout, a normalized card — is reported in
+  chat line by line; the owner must never have to open Obsidian to find out what changed
 - `_Trash` is terminal, deduplicated through the archives, and removed from AlphaXiv «Want to read»
-- Processing targets are cards in «Очередь» with empty `## Заметка` or `paperIngestState: pending`
-- The skill never changes `status` and never writes `dateCompleted`
+- Processing targets: «Очередь» cards **and** `[found]` «Жду публикацию» cards, in both cases with
+  empty `## Заметка` or `paperIngestState: pending`
+- Apart from that one promotion the skill never changes `status`, and never writes `dateCompleted`
 - Owner-written text in `## Тема` and `## Комментарии` is never deleted, only extended
 - All four card sections are always present; `## Идея / комментарии` is renamed, its body kept
 - Every paper goes through the **full** `paper-ingest` pipeline and gets a complete Obsidian note.

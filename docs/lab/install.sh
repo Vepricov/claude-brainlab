@@ -157,7 +157,7 @@ for path in (hook_file, config):
 for line in removed:
     print("  " + line)
 if removed:
-    print("  запись в базу идёт предложением: ветка, правка, `lab pr`")
+    print("  запись в базу идёт предложением: ветка, правка, коммит, push")
 CLEANUP
 
 echo

@@ -1,6 +1,6 @@
 ---
 name: hook-development
-description: "Build or debug Claude Code lifecycle hooks, including their event payloads, responses, and registration."
+description: "Builds and debugs Claude Code lifecycle hooks, covering event types, input payloads, JSON responses, exit codes and registration in settings or plugins. Use when the user asks to create a PreToolUse or PostToolUse hook, block or validate tool calls, or fix a hook that does not fire."
 version: 0.1.0
 ---
 

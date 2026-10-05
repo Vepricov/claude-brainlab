@@ -1,6 +1,6 @@
 ---
 name: want-2-read
-description: "Process eligible papers on the Operon Reading board using the owner's selection and current ingestion rules."
+description: "Обрабатывает статьи с доски чтения Operon, выбранные владельцем, по текущим правилам ингеста в Zotero, Obsidian и базу лаборатории. Использовать, когда пользователь пишет 'want-2-read', 'разбери очередь чтения', 'обработай статьи из Очереди' или просит принять отмеченные карточки Reading в библиотеку."
 version: 2.4.0
 ---
 
@@ -13,7 +13,7 @@ installed skills directory and the live MCP schema. Use the already authorized s
 resolve the existing destination, and verify stored content. Keep failed publications pending.
 
 The rules every write into the lab base must satisfy are in one place and are not
-restated anywhere: `~/.claude/rules/lab-canon.md`, mirrored from
+restated anywhere: `~/.claude/skills/lab-knowledge/references/canon.md`, mirrored from
 `brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
 or the journal; it also says which of the three a given thing belongs in.
 

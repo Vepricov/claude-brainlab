@@ -1,6 +1,6 @@
 ---
 name: json-canvas
-description: "Create or edit Obsidian Canvas (.canvas) nodes, connections, groups, and layout."
+description: "Creates and edits Obsidian Canvas (.canvas) files with nodes, edges, groups, and layout following JSON Canvas Spec 1.0. Use when the user asks to make a canvas, add or connect nodes, group cards, rearrange a canvas layout, or fix a broken .canvas file."
 ---
 
 # JSON Canvas Skill

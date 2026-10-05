@@ -1,6 +1,6 @@
 ---
 name: results-report
-description: "Write a project-level experiment report from verified analysis artifacts and unresolved limitations."
+description: "Writes a complete project-level experiment report from verified analysis artifacts, with a decision-oriented narrative and unresolved limitations. Use when the user asks for an experiment wrap-up, a results report or a summary after results-analysis is done and the experiments are finished."
 version: 0.1.0
 tags: [Research, Reporting, Experiments, Obsidian]
 ---

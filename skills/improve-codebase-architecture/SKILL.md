@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: "Identify focused architecture improvements grounded in the existing codebase and domain model."
+description: "Finds architectural friction in an existing codebase and proposes deepening refactors that turn shallow modules into deep ones, improving testability and navigability. Use when the user asks to improve architecture, find refactoring opportunities, consolidate tightly coupled modules, or make the code easier to test."
 ---
 
 # Improve Codebase Architecture

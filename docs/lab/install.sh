@@ -8,7 +8,7 @@
 # Ставит пять вещей и ничего больше:
 #
 #   ~/.claude/rules/lab.md              КАК писать в базу. Читается один раз за сессию.
-#   ~/.claude/rules/lab-canon.md        СВОД правил: на него ссылаются правило, навык и хуки.
+#   ~/.claude/skills/lab-knowledge/references/canon.md        СВОД правил: на него ссылаются правило, навык и хуки.
 #   ~/.claude/skills/lab-knowledge/     навык: как пишется страница утверждения и серии.
 #   ~/.claude/hooks/lab-where-am-i.py   ГДЕ ты и что тебя ждёт. Печатает только состояние.
 #   ~/.local/bin/lab                    ветка, задачи, вердикт — из терминала.
@@ -175,4 +175,4 @@ fi
 echo
 echo "дальше: открой свою работу — \`lab here <слаг>\` — и работай обычным git."
 echo "как писать, читается один раз: $rules/lab.md"
-echo "свод правил, на него ссылается всё: $rules/lab-canon.md"
+echo "свод правил, на него ссылается всё: $skills/lab-knowledge/references/canon.md"

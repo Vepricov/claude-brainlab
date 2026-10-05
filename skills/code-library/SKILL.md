@@ -1,6 +1,6 @@
 ---
 name: code-library
-description: "Find documented repositories, execution patterns, and project links in the user's Obsidian code library."
+description: "Finds documented repositories, execution patterns, and project links in the user's Obsidian code library. Use when the user asks 'how does repo X work', 'where is the code for this project', how to run or monitor experiments, or which code skills exist."
 version: 1.0.0
 tags: [Coding, Workflow, Obsidian, Reference]
 ---

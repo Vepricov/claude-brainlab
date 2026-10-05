@@ -1,6 +1,6 @@
 ---
 name: kaggle-learner
-description: "Extract reusable ML techniques from Kaggle competition solutions and document where they apply."
+description: "Extracts reusable ML techniques, code patterns, and feature engineering ideas from Kaggle competition winning solutions and maps where they apply. Use when the user shares a Kaggle competition, asks to learn from top solutions, or wants competition tricks for their own model or pipeline."
 version: 0.1.0
 ---
 

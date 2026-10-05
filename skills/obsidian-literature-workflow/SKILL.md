@@ -1,6 +1,6 @@
 ---
 name: obsidian-literature-workflow
-description: "Develop project-linked reading notes and literature synthesis from papers in the Obsidian knowledge base."
+description: "Develops project-linked reading notes and literature synthesis from papers stored in the Obsidian knowledge base or Zotero. Use when the user says their papers are in Obsidian, asks to review notes under Papers, or wants literature notes, comparisons, or a related-work summary tied to a project."
 version: 0.5.0
 ---
 

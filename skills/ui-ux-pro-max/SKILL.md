@@ -1,6 +1,6 @@
 ---
 name: ui-ux-pro-max
-description: "Design or review a UI's layout, typography, colors, accessibility, and interaction patterns."
+description: "Turns a vague UI request into a concrete design system with palette, typography, layout and implementation guidance, and reviews existing UIs for UX problems. Use when the user asks to design a page, pick colors and fonts, review accessibility or interaction patterns, or fix a UI that looks off."
 version: 0.2.0
 ---
 

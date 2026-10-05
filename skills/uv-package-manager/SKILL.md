@@ -1,6 +1,6 @@
 ---
 name: uv-package-manager
-description: "Manage Python dependencies, environments, and project packaging with uv."
+description: "Manages Python dependencies, virtual environments, interpreters and project packaging with uv. Use when the user sets up a new Python project, asks to replace pip or venv with uv, installs or locks dependencies, runs uv sync or uv add, or wants faster dependency resolution."
 version: 0.1.0
 ---
 

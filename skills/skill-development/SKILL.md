@@ -1,6 +1,6 @@
 ---
 name: skill-development
-description: Create or repair Claude skills, including their triggers, workflow boundaries, and supporting files.
+description: This skill should be used when the user asks to create a new skill, repair an existing skill, improve trigger descriptions, reorganize skill structure, or make a Claude skill more reusable and internally consistent.
 version: 0.2.0
 ---
 
@@ -24,11 +24,6 @@ Produce a skill that is:
 - Move detailed catalogs, templates, and long explanations into `references/` or `examples/`.
 - Do not mention files that do not exist.
 - Do not inherit stale names, agents, or sibling skill references without verifying they exist locally.
-
-Keep project-specific facts and correctness constraints. Remove generic advice and repeated
-permission gates that add no protection. Load only references needed for the current mode.
-For Codex skills, use the current `skill-creator` when available rather than copying old
-Claude tool names or model assumptions into the workflow.
 
 ## Default workflow
 
@@ -56,16 +51,16 @@ If the skill only needs a short workflow, keep it short. Do not create `referenc
 
 The frontmatter should:
 - use the real skill identifier in `name`,
-- name the task for which the skill changes the agent's decisions,
-- distinguish it from neighboring skills,
-- use a short description without a required grammatical template or keyword list.
+- use a third-person trigger description,
+- include concrete phrases a user would naturally say,
+- stay short enough to scan quickly.
 
-Example:
+Prefer descriptions of this form:
 
 ```yaml
 ---
 name: skill-name
-description: Extract verified experiment results into a project report.
+description: This skill should be used when the user asks to "...", "...", or needs help with ....
 ---
 ```
 

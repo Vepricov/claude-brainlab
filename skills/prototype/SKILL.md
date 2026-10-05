@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: "Build a disposable terminal or UI prototype to test a specific design question."
+description: "Builds a disposable terminal or UI prototype that answers a specific design question about logic, state models or interface feel. Use when the user says 'prototype this', 'try a quick mock', 'does this state model feel right' or wants to compare UI variants before committing to an implementation."
 ---
 
 # Prototype

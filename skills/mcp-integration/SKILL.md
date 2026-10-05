@@ -1,6 +1,6 @@
 ---
 name: mcp-integration
-description: "Configure and debug an MCP server connection in a client or plugin."
+description: "Configures and debugs MCP server connections for Claude Code plugins, covering .mcp.json setup, server types, and tool exposure. Use when the user asks to add an MCP server to a plugin, connect an external API or database through MCP, or fix an MCP server that fails to connect or shows no tools."
 version: 0.1.0
 ---
 

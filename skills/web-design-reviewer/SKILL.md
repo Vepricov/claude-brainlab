@@ -1,6 +1,6 @@
 ---
 name: web-design-reviewer
-description: "Inspect a rendered website and fix demonstrated layout, visual, or responsive design problems."
+description: "Inspects a rendered website in a browser and fixes demonstrated layout, visual and responsive design problems in the source code. Use when the user says 'review this page's design', 'the layout is broken on mobile', 'check responsive behavior' or asks to find and fix visual issues on a running site."
 version: 0.1.0
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: ml-paper-writing
-description: "Draft or revise an ML research paper from its sources, results, and target venue requirements."
+description: "Drafts and revises ML research papers for NeurIPS, ICML, ICLR, ACL, AAAI, and COLM from sources, results, and venue requirements, with LaTeX templates and citation checks. Use when the user asks to write or restructure a paper, draft a section, polish the abstract, or prepare a submission against a venue checklist."
 version: 1.0.0
 author: Orchestra Research
 license: MIT

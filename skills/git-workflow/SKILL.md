@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: "Prepare commits, branches, and pull requests using the existing repository's Git conventions."
+description: "Prepares commits, branches and pull requests following the repository's existing Git conventions, including Conventional Commits messages and merge strategy. Use when the user asks to write a commit message, name or create a branch, open a pull request, or asks how to handle merges in this project."
 version: 1.2.0
 ---
 

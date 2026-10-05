@@ -1,6 +1,6 @@
 ---
 name: results-analysis
-description: "Analyze experiment artifacts, comparable metrics, uncertainty, and figures before writing conclusions."
+description: "Runs strict, evidence-first analysis of ML experiment artifacts and produces an analysis report, stats appendix, figure catalog and figures. Use when the user asks to analyze experiment results, compare metrics across runs, check uncertainty or significance, or build figures before writing any conclusions."
 tags: [Research, Analysis, Statistics, Visualization, Scientific Reporting]
 version: 0.2.0
 ---

@@ -2,7 +2,7 @@
 """Сторож свода: правила одни на всех, и это проверяется, а не обещается.
 
 Источник свода один и лежит в базе: `brainlab/handbook/canon.md`. У машины одна копия,
-`~/.claude/rules/lab-canon.md`. Сторож смотрит четыре вещи, и каждая из них однажды уже
+`~/.claude/skills/lab-knowledge/references/canon.md`. Сторож смотрит четыре вещи, и каждая из них однажды уже
 расходилась молча:
 
 1. копия на машине совпадает с источником в справочнике — иначе агент работает по тому
@@ -33,7 +33,7 @@ HOME = pathlib.Path.home()
 SYNC = ROOT / "scripts" / "canon_sync.py"
 
 #: Единственная законная копия на машине.
-MIRROR = HOME / ".claude" / "rules" / "lab-canon.md"
+MIRROR = HOME / ".claude" / "skills" / "lab-knowledge" / "references" / "canon.md"
 
 #: Кто обязан на свод ссылаться. Пересказывать его им нельзя, называть — нужно.
 MUST_POINT = (HOME / ".claude" / "rules" / "lab.md",
@@ -82,6 +82,14 @@ def stray_copies() -> list[pathlib.Path]:
         if not place.is_dir():
             continue
         for file in place.rglob("*.md"):
+            # Ссылка на свод — это ОДИН файл, а не копия, и ровно то, чего правило и
+            # требует. Проверять надо, куда она ведёт: ведёт к своду — всё верно.
+            if file.is_symlink():
+                try:
+                    if file.resolve() == MIRROR.resolve():
+                        continue
+                except OSError:
+                    pass
             if file == MIRROR or ".git" in file.parts:
                 continue
             try:
@@ -141,13 +149,16 @@ def main() -> int:
     for pointer in MUST_POINT:
         if not pointer.is_file():
             bad.append(f"должен ссылаться на свод, но файла нет: {pointer}")
-        elif "lab-canon.md" not in pointer.read_text(encoding="utf-8"):
+        elif not any(имя in pointer.read_text(encoding="utf-8")
+                     for имя in ("canon.md", "lab-canon.md")):
             bad.append(f"не ссылается на свод: {pointer}")
 
     for skill in ALSO_POINT:
         for root in SKILL_ROOTS:
             page = root / skill / "SKILL.md"
-            if page.is_file() and "lab-canon.md" not in page.read_text(encoding="utf-8"):
+            if page.is_file() and not any(
+                    имя in page.read_text(encoding="utf-8")
+                    for имя in ("canon.md", "lab-canon.md")):
                 bad.append(f"пишет в базу и не ссылается на свод: {page}")
 
     haystack = ""

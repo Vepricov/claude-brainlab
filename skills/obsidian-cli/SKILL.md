@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli
-description: "Use the Obsidian CLI for vault operations or for debugging a plugin in the running app."
+description: "Operates a running Obsidian instance through the obsidian command line for vault operations and plugin debugging. Use when the user asks to create, read, search, or move notes from the terminal, reload a plugin, inspect app state, or test and debug an Obsidian plugin or theme."
 ---
 
 # Obsidian CLI

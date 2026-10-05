@@ -1,6 +1,6 @@
 ---
 name: planning-with-files
-description: "Maintain durable plans and progress files for work that needs continuity across sessions."
+description: "Maintains durable plans and progress in markdown files such as task_plan.md for work that spans many steps or sessions. Use when the user starts a complex multi-phase task, asks to plan and track progress on disk, or needs to resume work after a context reset."
 version: 0.1.0
 ---
 

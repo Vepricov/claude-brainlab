@@ -1,6 +1,6 @@
 ---
 name: operon-obsidian-setup
-description: "Install or repair the laboratory's Operon task boards and project views in Obsidian."
+description: "Installs or repairs the laboratory's Operon task boards and project views in an Obsidian vault. Use when the user sets up a new vault, asks to install Operon or the Reading and Personal boards, or reports that boards, plugins, or the startup layout are broken."
 version: 1.0.0
 tags: [Obsidian, Operon, Tasks, Setup, ProjectPages]
 ---
@@ -86,6 +86,17 @@ Some steps cannot be done from the filesystem — surface exact clicks and wait:
    `--vault "<VAULT>" --dry-run`), then render `assets/com.OWNER.operon-archive.plist.template`
    (substitute `<OWNER>`, `<SCRIPT_PATH>`, `<VAULT>`) into `~/Library/LaunchAgents/` and
    `launchctl load` it. Windows/Linux: schedule the same command via Task Scheduler / cron.
+
+   Two retention windows, on purpose: **finished** statuses (`Прочитано`, `Готово`, `Finished`) are
+   archived the next day, **cancelled** ones (`Reading._Trash`, `Dropped`) only after
+   `--cancelled-grace-days` (default 1). A rejection is a decision worth revisiting and an
+   accidental drag has to be recoverable from the column itself, not from the archive. Pin an
+   individual card with `archiveHold: true` in its frontmatter.
+
+   Under launchd the script usually cannot read `.obsidian/plugins/operon/data.json` (macOS TCC on
+   the iCloud folder) and silently falls back to the hardcoded status lists — keep
+   `FALLBACK_FINISHED_STATUSES` / `FALLBACK_CANCELLED_STATUSES` in sync when a pipeline changes, or
+   grant the launchd `python3` Full Disk Access.
 
 9. **Restart & verify** (GUI restart above), then check: Task Creator writes file-tasks to `Operon/Tasks`
    with the Описание/Прогресс/Результат body and `assignees: [OWNER]`; statuses show without the

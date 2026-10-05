@@ -1,6 +1,6 @@
 ---
 name: command-development
-description: "Create or repair Claude Code slash commands and their arguments, prompts, and local file references."
+description: "Creates and repairs Claude Code slash commands, including their frontmatter, arguments, prompts, and local file references. Use when the user says 'create a slash command', 'add a command', 'fix my command arguments', or edits a markdown file under a commands directory."
 version: 0.2.0
 ---
 

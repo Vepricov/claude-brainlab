@@ -1,6 +1,6 @@
 ---
 name: pdf-reader
-description: "Read or extract a PDF with the local PyMuPDF-based workflow, including page-level inspection."
+description: "Reads and extracts text from PDF files with the local PyMuPDF workflow, including page-level inspection. Use when the user gives a .pdf path and asks to read it, summarize it, extract its text, or find out what a specific page contains."
 ---
 
 # PDF Reader

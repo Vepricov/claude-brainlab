@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Design and implement a polished frontend interface with a coherent visual direction."
+description: "Designs and implements polished, production-grade frontend interfaces with a coherent visual direction and real working code. Use when the user asks to build a component, page, landing page, dashboard or app UI, or wants a frontend that looks distinctive rather than generic."
 license: Complete terms in LICENSE.txt
 version: 0.1.0
 ---

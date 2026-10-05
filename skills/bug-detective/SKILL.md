@@ -1,6 +1,6 @@
 ---
 name: bug-detective
-description: "Investigate a software failure by tracing execution, reproducing it, and testing the suspected cause."
+description: "Investigates software failures, exceptions, and errors by tracing execution, reproducing the problem, and testing the suspected cause. Use when the user reports a crash, a traceback, an unexpected result, says 'this code throws an error', 'why does this fail', or asks to debug a failing function."
 version: 0.1.0
 ---
 

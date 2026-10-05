@@ -1,6 +1,6 @@
 ---
 name: paper-to-social
-description: "Create Telegram, X, or Habr posts from a research paper using verified figures and the user's writing style."
+description: "Creates Telegram, X, or Habr posts from a research paper using verified figures and the user's writing style. Use when the user asks to write a post about a paper, announce a publication, promote a result on Telegram or Twitter, or draft a Habr article."
 ---
 
 # Paper → social posts (Telegram · Twitter/X · Habr)
@@ -18,13 +18,13 @@ Read `references/voice-and-anti-ai.md` in full before writing anything. The non-
 - **Never invent personal content.** Professional feelings, what worked / what didn't, who to tag, behind-the-scenes story: if you don't know it, ASK the user, do not make it up. (This is a standing rule the user stated explicitly.) Documented process notes the user points you to (e.g. an "how we did it" note) are fair to summarize faithfully.
 - **Use the BRAIn Lab brand for all visuals** — palette and logo in `references/brand.md` (berry/apricot/cream/blue + the real graph-node logo). Never the old purple/lavender scheme, never a placeholder logo.
 - **Figures come from the arXiv/published version**, extracted cleanly. See `references/images.md`.
-- **Route output** to the project's Obsidian folder via `~/.claude/obsidian-projects.json` (`Papers/<theme>/<slug>/...`; resolve the theme from the mapping), never `Research/`.
+- **Route output** to the project's Obsidian folder via `~/.claude/obsidian-projects.json` (`Papers/<тема>/<slug>/...`, тема берётся из маршрута), never `Research/`.
 
 ## Workflow
 
 1. **Get the paper.** `git pull` the Overleaf/local source if present and read `main.tex` (abstract, intro/contributions, method, experiments/tables, conclusion). Prefer `.tex` over PDF. Also note the arXiv id, code URL, and conference acceptance if any.
 2. **Extract the core once** (reused across platforms): the one-sentence idea, the problem it fixes, the mechanism, the headline numbers (exact), the theory in one breath, the "free to adopt" angle, and the live debate it plugs into.
-3. **Pull figures from the arXiv version** into `Papers/<theme>/<slug>/<platform>-assets/` (or a shared `social-assets/`). See `references/images.md`. View every render before describing it.
+3. **Pull figures from the arXiv version** into `Papers/<тема>/<slug>/<platform>-assets/` (or a shared `social-assets/`). See `references/images.md`. View every render before describing it.
 4. **Write each requested platform** using its reference file. Match the user's voice from the examples, not a generic template.
    - Telegram → `references/telegram.md` (examples: `telegram-wlora.md`, `telegram-kawasaki.md`, `telegram-markovian.md`)
    - Twitter/X → `references/twitter.md` (example: `twitter-softsign-thread.md`)

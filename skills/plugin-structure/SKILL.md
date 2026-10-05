@@ -1,6 +1,6 @@
 ---
 name: plugin-structure
-description: "Organize a Claude Code plugin's manifest, commands, agents, skills, and hooks."
+description: "Organizes a Claude Code plugin's manifest, commands, agents, skills, and hooks into the standard directory layout. Use when the user asks to create a plugin, fix plugin.json, decide where a component belongs, or debug why plugin components are not discovered."
 version: 0.1.0
 ---
 

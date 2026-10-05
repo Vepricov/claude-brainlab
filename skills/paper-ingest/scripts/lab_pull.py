@@ -262,7 +262,16 @@ def sweep_trash():
     if not os.path.isdir(d):
         return []
     swept = []
-    for f in sorted(os.listdir(d)):
+    try:
+        файлы = sorted(os.listdir(d))
+    except OSError as беда:
+        # macOS отказывает службе из launchd в доступе к iCloud (TCC), и прежде это роняло
+        # ВЕСЬ проход: `sweep_trash` зовётся в начале `main`, поэтому синхронизация не
+        # начиналась вовсе. Пятнадцать отказов подряд в журнале. Корзина не настолько важна,
+        # чтобы из-за неё не приезжали новые статьи, поэтому здесь только предупреждение.
+        print(f"корзину прочитать не удалось ({беда}); остальное делаю", flush=True)
+        return []
+    for f in файлы:
         p = os.path.join(d, f)
         if not f.endswith(".md") or os.path.join(TRASH, f).replace(os.sep, "/") == REJECTED:
             continue

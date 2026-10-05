@@ -1,6 +1,6 @@
 ---
 name: call-notes
-description: "Turn research meeting notes into a private project record and approved, separately routed scientific records and tasks."
+description: "Turns research meeting notes or a call transcript into a private project record plus approved scientific records and tasks routed to their own destinations. Use when the user says 'запиши звонок', 'call notes', 'разбери митинг', or pastes a transcript or meeting summary to be filed."
 ---
 
 # Call Notes
@@ -10,7 +10,7 @@ any shared knowledge write. Read [`references/analysis-contract.md`](references/
 before analyzing a transcript.
 
 The rules every write into the lab base must satisfy are in one place and are not
-restated anywhere: `~/.claude/rules/lab-canon.md`, mirrored from
+restated anywhere: `~/.claude/skills/lab-knowledge/references/canon.md`, mirrored from
 `brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
 or the journal; it also says which of the three a given thing belongs in.
 

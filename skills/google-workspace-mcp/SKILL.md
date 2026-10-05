@@ -1,6 +1,6 @@
 ---
 name: google-workspace-mcp
-description: "Read or edit Google Workspace documents and repair this installation's MCP authentication or connection."
+description: "Reads and edits Google Docs and Drive files through the user-scope google-workspace MCP and repairs its authentication or connection. Use when the user asks to open or change a Google Doc, or when google-workspace tools report auth errors, missing tools or a failed connection."
 version: 1.0.0
 tags: [mcp, google, oauth, infrastructure]
 ---

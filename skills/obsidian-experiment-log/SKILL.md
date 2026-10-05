@@ -1,6 +1,6 @@
 ---
 name: obsidian-experiment-log
-description: "Record an experiment's protocol, progress, results, and next decision in its canonical Obsidian project log."
+description: "Records an experiment's protocol, progress snapshots, results, and next decision in its canonical Obsidian project log. Use when the user launches, monitors, or finishes a training run, asks to log an experiment, update a results table, or promote a finished result into a stable finding."
 ---
 
 # Obsidian Experiment Log

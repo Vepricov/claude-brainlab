@@ -1,6 +1,6 @@
 ---
 name: diagnose
-description: "Diagnose a difficult bug or performance regression through a reproducible case and competing causal hypotheses."
+description: "Diagnoses hard bugs and performance regressions by building a reproducible feedback loop and testing competing causal hypotheses. Use when a bug is intermittent or resists a quick fix, the user says 'it is flaky', 'performance regressed', 'I cannot reproduce it', or an earlier fix attempt failed."
 ---
 
 # Diagnose

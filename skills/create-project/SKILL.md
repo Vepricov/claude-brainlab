@@ -1,6 +1,6 @@
 ---
 name: create-project
-description: "Create a research project or repair its local and shared setup after checking for an existing project."
+description: "Creates a research project, or repairs its local and shared setup, after checking that no such project already exists. Use when the user says 'create a project', 'new project', 'заведи проект', 'set up a repo for a paper', or a project is missing its hub card, folders, or shared records."
 ---
 
 # Create Project
@@ -12,7 +12,7 @@ installed skills directory and the live MCP schema. Use the already authorized s
 resolve the existing destination, and verify stored content. Keep failed publications pending.
 
 The rules every write into the lab base must satisfy are in one place and are not
-restated anywhere: `~/.claude/rules/lab-canon.md`, mirrored from
+restated anywhere: `~/.claude/skills/lab-knowledge/references/canon.md`, mirrored from
 `brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
 or the journal; it also says which of the three a given thing belongs in.
 

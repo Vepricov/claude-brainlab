@@ -2,7 +2,7 @@
 """Налить машине свод правил базы из справочника.
 
 Источник один и лежит в GitLab: `brainlab/handbook/canon.md`. У машины одна копия,
-`~/.claude/rules/lab-canon.md`, и её читают агент, хуки и навык. Второй копии нет нарочно:
+`~/.claude/skills/lab-knowledge/references/canon.md`, и её читают агент, хуки и навык. Второй копии нет нарочно:
 копии совпадают только пока их не правят.
 
     canon_sync.py            налить (ничего не делает, если уже совпадает)
@@ -21,7 +21,12 @@ import urllib.error
 import urllib.request
 
 SOURCE = "brainlab/handbook/canon.md"
-MIRROR = pathlib.Path.home() / ".claude" / "rules" / "lab-canon.md"
+# Свод лежит У НАВЫКА, а не в правилах сессии. В `~/.claude/rules/` файлы грузятся в
+# контекст КАЖДОГО хода, и свод на 31 тысячу знаков съедал там 37% всей подложки —
+# при том что нужен он ровно тогда, когда пишут в базу. Теперь его читают по факту
+# работы, через навык `lab-knowledge`, а правило сессии только велит это сделать.
+MIRROR = (pathlib.Path.home() / ".claude" / "skills" / "lab-knowledge"
+          / "references" / "canon.md")
 CONF = pathlib.Path.home() / ".config" / "brainlab"
 TIMEOUT = 15
 

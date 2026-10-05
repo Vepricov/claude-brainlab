@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: "Challenge a proposed design against existing domain documents, terminology, and implementation choices."
+description: "Challenges a proposed plan or design against existing domain documents, terminology and implementation choices by asking one question at a time with recommended answers. Use when the user wants a design grilled against the docs or codebase, or says check this plan against our domain model."
 ---
 
 <what-to-do>

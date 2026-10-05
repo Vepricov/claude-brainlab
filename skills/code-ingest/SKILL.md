@@ -1,6 +1,6 @@
 ---
 name: code-ingest
-description: "Add a code repository to the Obsidian code library with its purpose, usage, and links to research projects."
+description: "Adds a code repository to the Obsidian code library with its purpose, usage, and links to research projects. Use when the user hands over a repo URL or path and says 'add to the code library', 'разбери репозиторий', or starts a project that uses a repo missing from Code/."
 version: 1.0.0
 tags: [Coding, Obsidian, CodeLibrary, Onboarding]
 ---
@@ -80,7 +80,7 @@ One-paragraph: what this repo is and what you use it for.
 - [[architecture]] · [[optimizers]] · [[models]] · [[data]] · ...
 
 ## Used by projects
-- [[Papers/<theme>/<slug>/<slug>|<project>]] — <fork/branch + what's changed>
+- [[Papers/<тема>/<slug>/<slug>|<project>]] — <fork/branch + what's changed>
 ```
 
 ## Module note template (`<module>.md`)

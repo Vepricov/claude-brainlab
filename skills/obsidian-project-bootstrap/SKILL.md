@@ -1,6 +1,6 @@
 ---
 name: obsidian-project-bootstrap
-description: "Create or repair the Obsidian knowledge base and mappings for an existing research repository."
+description: "Creates or repairs the Obsidian knowledge base and folder mappings for an existing research repository. Use when the user says start a new research project, asks to bind a repo to the vault, or finds that a project has no hub card or its mapping is broken."
 ---
 
 # Obsidian Project Bootstrap

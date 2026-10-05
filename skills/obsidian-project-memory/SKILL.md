@@ -1,6 +1,6 @@
 ---
 name: obsidian-project-memory
-description: "Maintain canonical project context and durable research decisions in the mapped Obsidian knowledge base."
+description: "Maintains canonical project context and durable research decisions in the mapped Obsidian knowledge base. Use when the user discusses project state, records a decision or experiment outcome, asks to update the hub card or plan notes, or wants past project context saved."
 ---
 
 # Obsidian Project Memory

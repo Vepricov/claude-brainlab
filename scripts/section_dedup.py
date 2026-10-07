@@ -22,6 +22,11 @@ from pathlib import Path
 HEAD = re.compile(r"(?m)^## .+$")
 
 
+def body_of(piece: str) -> str:
+    """Раздел без собственного заголовка."""
+    return piece.split("\n", 1)[1] if "\n" in piece else ""
+
+
 def letters(text: str) -> str:
     return re.sub(r"[^0-9a-zA-Zа-яёА-ЯЁ]+", "", text).lower()
 
@@ -59,8 +64,12 @@ def dedup(text: str) -> tuple[str, list[str]]:
                 dropped.append(title[3:] + " (второй раз, раздел формы)")
                 continue
             seen_once.add(title)
-        elif kept and kept[-1].splitlines()[0] == title and letters(kept[-1]) == letters(piece):
-            dropped.append(title[3:])
+        elif kept and letters(body_of(kept[-1])) == letters(body_of(piece)):
+            # Тот же текст может стоять под другим заголовком: у `duchi2011adaptive`
+            # «Про что работа» и «Общий обзор» совпадают дословно, 2674 байта в байт.
+            # Сравниваем тело, а не заголовок, и оставляем первое вхождение.
+            dropped.append(f"{title[3:]} (тот же текст, что и выше)"
+                           if kept[-1].splitlines()[0] != title else title[3:])
             continue
         kept.append(piece)
     return head + "".join(kept), dropped

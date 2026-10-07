@@ -56,6 +56,17 @@ def short(text: str) -> str | None:
     return found.group(0).rstrip() if found else None
 
 
+#: Порядок разделов, который требует владелец. Сверять его обязательно: содержимое может
+#: совпадать с базой дословно, а утверждения при этом стоять выше «Коротко». Именно так и
+#: вышло в 16 заметках — сверка говорила «совпадает», потому что смотрела только текст.
+ORDER = ("## BibTeX", "## Коротко", "## Что статья утверждает")
+
+
+def in_order(text: str) -> bool:
+    present = [head for head in ORDER if head in text]
+    return present == sorted(present, key=text.find)
+
+
 def same(one: str | None, two: str | None) -> bool:
     """Сравнение без оглядки на то, как расставлены пробелы и переводы строк."""
     flat = lambda text: re.sub(r"\s+", " ", text).strip() if text else text
@@ -117,11 +128,14 @@ def pick(notes: list[Path], want_title: str) -> Path | None:
 
 
 def put(note: Path, block: str, head: str | None) -> str:
-    """Вписать «Коротко» и утверждения в заметку, в требуемом порядке.
+    """Вписать «Коротко» и утверждения в заметку, всегда в требуемом порядке.
 
-    Порядок в заметке: BibTeX, «Коротко», «Что статья утверждает», затем разбор. Раздела
-    «Коротко» в заметках хранилища не было, поэтому он вставляется сразу за блоком BibTeX, а
-    утверждения — сразу за ним.
+    Порядок задан владельцем: BibTeX, «Коротко», «Что статья утверждает», затем разбор.
+    Прежняя правка меняла каждый раздел НА МЕСТЕ, если он в заметке уже был, и потому
+    сохраняла неверный порядок: в 16 заметках утверждения стояли выше «Коротко», а в
+    одной выше самого BibTeX. Поэтому оба раздела сначала вырезаются, а потом ставятся
+    заново за блоком BibTeX. Врезку Papers with Code вынимаем до правки и возвращаем
+    перед разбором: она стоит внутри участка «Коротко» и иначе стиралась.
     """
     text = note.read_text(encoding="utf-8")
     how = []
@@ -131,36 +145,31 @@ def put(note: Path, block: str, head: str | None) -> str:
     if pwc:
         text = PWC.sub("", text, count=1)
 
-    if head:
-        if SHORT.search(text):
-            text = SHORT.sub(lambda _: head, text, count=1)
-            how.append("«Коротко» заменено")
-        else:
-            bib = AFTER_BIB.search(text)
-            if bib:
-                text = text[:bib.end()] + "\n" + head + "\n" + text[bib.end():]
-                how.append("«Коротко» вставлено за BibTeX")
-            else:
-                text = head + "\n\n" + text
-                how.append("«Коротко» вставлено в начало")
+    was_short = SHORT.search(text)
+    was_claims = CLAIMS.search(text)
+    if was_short:
+        text = SHORT.sub("", text, count=1)
+    if was_claims:
+        text = CLAIMS.sub("", text, count=1)
 
-    if CLAIMS.search(text):
-        text = CLAIMS.sub(lambda _: block, text, count=1)
-        how.append("утверждения заменены")
+    wedge = "\n\n".join(part for part in (head, block) if part) + "\n"
+    bib = AFTER_BIB.search(text)
+    if bib:
+        text = text[:bib.end()].rstrip() + "\n\n" + wedge + "\n" + text[bib.end():].lstrip("\n")
+        where = "за BibTeX"
     else:
-        where = SHORT.search(text)
-        if where:
-            text = text[:where.end()] + "\n\n" + block + text[where.end():]
-            how.append("утверждения вставлены за «Коротко»")
+        for head_name in BEFORE:
+            if head_name in text:
+                text = text.replace(head_name, wedge + "\n" + head_name, 1)
+                where = f"перед «{head_name[3:]}»"
+                break
         else:
-            for head_name in BEFORE:
-                if head_name in text:
-                    text = text.replace(head_name, block + "\n\n" + head_name, 1)
-                    how.append(f"утверждения вставлены перед «{head_name[3:]}»")
-                    break
-            else:
-                text = text.rstrip() + "\n\n" + block + "\n"
-                how.append("утверждения дописаны в конец")
+            text = text.rstrip() + "\n\n" + wedge
+            where = "в конец"
+    how.append(f"«Коротко» и утверждения поставлены {where}"
+               if head else f"утверждения поставлены {where}")
+    if was_short and was_claims and was_short.start() > was_claims.start():
+        how.append("порядок исправлен: «Коротко» было ниже утверждений")
 
     if pwc:
         for head_name in BEFORE:
@@ -171,6 +180,7 @@ def put(note: Path, block: str, head: str | None) -> str:
             text = text.rstrip() + "\n\n" + pwc + "\n"
         how.append("врезка Papers with Code сохранена")
 
+    text = re.sub(r"\n{4,}", "\n\n\n", text)
     note.write_text(text, encoding="utf-8")
     return ", ".join(how)
 
@@ -205,7 +215,8 @@ def main(argv: list[str]) -> int:
         # внутри участка утверждений, и иначе каждая обогащённая заметка читается как
         # разошедшаяся с базой.
         there = PWC.sub("", note.read_text(encoding="utf-8"))
-        if same(block, claims(there)) and (head is None or same(head, short(there))):
+        if (same(block, claims(there)) and (head is None or same(head, short(there)))
+                and in_order(there)):
             agree += 1
             continue
         if note.stat().st_nlink > 1:

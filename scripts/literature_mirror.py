@@ -185,12 +185,54 @@ def put(note: Path, block: str, head: str | None) -> str:
     return ", ".join(how)
 
 
+
+FRONT = re.compile(r"\A---\n.*?\n---\n", re.S)
+
+
+def whole(note: Path, source: str) -> str:
+    """Переписать заметку целиком телом разбора из базы.
+
+    Раздельный перенос «Коротко» и утверждений оставлял тело заметки прежним, а оно у
+    хранилища своё и давно отстало: у `mcgee2026trust` в базе 76 КБ разбора по разделам,
+    написанным под статью, а в заметке висел прежний «AI Explanation», и в пятнадцати
+    заметках он к тому же оказался пустым — остался заголовок и одинокая решётка.
+    Поэтому тело берётся из базы целиком.
+
+    Сохраняется только то, чего в базе нет и быть не может: frontmatter хранилища (теги,
+    ключи Zotero, поля Papers with Code) и сама врезка Papers with Code.
+    """
+    text = note.read_text(encoding="utf-8")
+    front = FRONT.match(text)
+    keep = PWC.search(text)
+    body = source[source.index("# "):] if "# " in source else source
+    # Заметка не имеет права похудеть. Замерено на 267 разборах: при переносе целиком 191
+    # из них стала БОЛЬШЕ ОДНОГО РАЗА меньше — в хранилище лежит свой «AI Explanation» и
+    # свои «Прериквизиты», которых в базе нет вовсе. Один такой проход уже стоил 11 тысяч
+    # удалённых строк. Поэтому тело переносится только туда, где его в заметке нет.
+    if len(body.encode()) <= len(text.encode()):
+        return (f"тело НЕ перенесено: в заметке {len(text.encode())} б, в базе "
+                f"{len(body.encode())} б — перенос только дописывает, но не урезает")
+    out = (front.group(0) if front else "") + body.rstrip() + "\n"
+    if keep:
+        pwc = keep.group(0).rstrip()
+        for head_name in BEFORE + ("## Рядом в библиотеке",):
+            if head_name in out:
+                out = out.replace(head_name, pwc + "\n\n" + head_name, 1)
+                break
+        else:
+            out = out.rstrip() + "\n\n" + pwc + "\n"
+    note.write_text(out, encoding="utf-8")
+    return f"тело перенесено из базы целиком ({len(body)} б)"
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("base", type=Path, help="клон репозитория литературы темы")
     parser.add_argument("vault", type=Path, help="папка темы в хранилище Обсидиана")
     parser.add_argument("--apply", action="store_true",
                         help="перенести блок из базы в заметку")
+    parser.add_argument("--body", action="store_true",
+                        help="переносить разбор целиком, а не только «Коротко» и утверждения")
     args = parser.parse_args(argv)
 
     notes, clash = notes_by_key(args.vault)
@@ -215,7 +257,13 @@ def main(argv: list[str]) -> int:
         # внутри участка утверждений, и иначе каждая обогащённая заметка читается как
         # разошедшаяся с базой.
         there = PWC.sub("", note.read_text(encoding="utf-8"))
-        if (same(block, claims(there)) and (head is None or same(head, short(there)))
+        if args.body:
+            mine = FRONT.sub("", PWC.sub("", there)).strip()
+            theirs = source[source.index("# "):].strip() if "# " in source else source.strip()
+            if same(mine, theirs):
+                agree += 1
+                continue
+        elif (same(block, claims(there)) and (head is None or same(head, short(there)))
                 and in_order(there)):
             agree += 1
             continue
@@ -229,7 +277,8 @@ def main(argv: list[str]) -> int:
                            f"(жёсткая ссылка), выравнивать нечем, нужно решение владельца")
             continue
         if args.apply:
-            trouble.append(f"{key}: {put(note, block, head)} в «{note.name}»")
+            how = whole(note, source) if args.body else put(note, block, head)
+            trouble.append(f"{key}: {how} в «{note.name}»")
             fixed += 1
         else:
             trouble.append(f"{key}: блок в заметке «{note.name}» расходится с базой")

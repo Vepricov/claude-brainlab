@@ -27,16 +27,32 @@ import sys
 from pathlib import Path
 
 CLAIMS = re.compile(r"## Что статья утверждает(.*?)(?=\n## |\Z)", re.S)
+SHORT = re.compile(r"## Коротко(.*?)(?=\n## |\Z)", re.S)
+#: Порядок, которого требует владелец: BibTeX, «Коротко», утверждения, и только потом разбор.
+#: В заметках хранилища раздела «Коротко» не было вовсе, а утверждения стояли сразу за BibTeX.
+AFTER_BIB = re.compile(r"(## BibTeX.*?```\s*\n)", re.S)
 BIBKEY = re.compile(r"@\w+\{([^,\s}]+)\s*,")
+TITLE_FIELD = re.compile(r"(?m)^\s*title\s*=\s*\{+(.+?)\}*,?\s*$")
 #: Куда вставлять блок, если его в заметке нет: перед первым из этих разделов. Порядок
 #: важен — в хранилище тело разложено иначе, чем в базе, и «AI Explanation» встречается
 #: раньше плоских разделов.
 BEFORE = ("## AI Explanation", "## Посекционный разбор", "## 1. Общий обзор",
           "## Критическая оценка", "## Математика и формулы")
+#: Врезка Papers with Code, которую в заметки хранилища ставит pwc_batch_inject.py из навыка
+#: paper-ingest. Она стоит перед «AI Explanation», то есть после вставленного нами «Коротко»
+#: и внутри его участка: до следующего «## » её ничто не отделяет. Поэтому замена «Коротко»
+#: целиком стирала её, и 17 заметок потеряли врезку молча. Врезку вынимаем из текста до
+#: правки и возвращаем перед разбором, где её и ждёт сам навык.
+PWC = re.compile(r"(?ms)^> \[!abstract\] TL;DR \(Papers with Code\)\s*\n(?:>.*\n)*")
 
 
 def claims(text: str) -> str | None:
     found = CLAIMS.search(text)
+    return found.group(0).rstrip() if found else None
+
+
+def short(text: str) -> str | None:
+    found = SHORT.search(text)
     return found.group(0).rstrip() if found else None
 
 
@@ -46,34 +62,117 @@ def same(one: str | None, two: str | None) -> bool:
     return flat(one) == flat(two)
 
 
-def notes_by_key(folder: Path) -> dict[str, Path]:
-    found: dict[str, Path] = {}
+def letters(text: str) -> str:
+    return re.sub(r"[^0-9a-zA-Zа-яёА-ЯЁ]+", "", text).lower()
+
+
+def title_of(text: str) -> str:
+    found = TITLE_FIELD.search(text)
+    return letters(found.group(1)) if found else ""
+
+
+def notes_by_key(folder: Path) -> tuple[dict[str, list[Path]], list[str]]:
+    """Заметки по ключу цитирования; у ключа может быть больше одной заметки.
+
+    Два разных случая, и путать их нельзя. Ключ собирается как
+    `{фамилия}{год}{первое слово}`, поэтому у разных статей он совпадает: «Parametric
+    Retrieval Augmented Generation» Weihang Su и «Parametric Retrieval-Augmented
+    Generation using Latent Routing of LoRA Adapters» Zhan Su оба дают
+    `su2025parametric`. А рядом с настоящим разбором может лежать черновик с тем же
+    BibTeX: в `muon-at-scale` это «— разбор Opus» и «— разбор codex». Поэтому ключ
+    ведёт к списку, а выбирает уже `pick`, по заголовку статьи.
+    """
+    found: dict[str, list[Path]] = {}
+    clash: list[str] = []
     for note in sorted(folder.glob("*.md")):
         if note.name == "README.md":
             continue
-        key = BIBKEY.search(note.read_text(encoding="utf-8"))
-        if key:
-            found[key.group(1)] = note
-    return found
+        text = note.read_text(encoding="utf-8")
+        key = BIBKEY.search(text)
+        if not key:
+            continue
+        name = key.group(1)
+        if name in found:
+            clash.append(f"{name}: один ключ у «{found[name][0].name}» и «{note.name}»")
+        found.setdefault(name, []).append(note)
+    return found, clash
 
 
-def put(note: Path, block: str) -> str:
-    """Вписать блок в заметку: заменить прежний или вставить перед разделом разбора."""
+def pick(notes: list[Path], want_title: str) -> Path | None:
+    """Какая из заметок с одним ключом отвечает этому разбору.
+
+    Сначала по полю `title` из BibTeX: так разводятся две разные статьи с одним ключом.
+    Среди оставшихся основная та, что названа заголовком статьи, а не «— разбор Opus»:
+    двоеточие в имени файла невозможно, поэтому сверяем по буквам и цифрам. Если
+    основной нет, берётся первая, и столкновение всё равно напечатано выше.
+    """
+    same_paper = [n for n in notes if title_of(n.read_text(encoding="utf-8")) == want_title]
+    pool = same_paper or (notes if len(notes) == 1 else [])
+    if not pool:
+        return None
+    for note in pool:
+        if letters(note.stem) == want_title:
+            return note
+    return pool[0]
+
+
+def put(note: Path, block: str, head: str | None) -> str:
+    """Вписать «Коротко» и утверждения в заметку, в требуемом порядке.
+
+    Порядок в заметке: BibTeX, «Коротко», «Что статья утверждает», затем разбор. Раздела
+    «Коротко» в заметках хранилища не было, поэтому он вставляется сразу за блоком BibTeX, а
+    утверждения — сразу за ним.
+    """
     text = note.read_text(encoding="utf-8")
+    how = []
+
+    keep = PWC.search(text)
+    pwc = keep.group(0).rstrip() if keep else None
+    if pwc:
+        text = PWC.sub("", text, count=1)
+
+    if head:
+        if SHORT.search(text):
+            text = SHORT.sub(lambda _: head, text, count=1)
+            how.append("«Коротко» заменено")
+        else:
+            bib = AFTER_BIB.search(text)
+            if bib:
+                text = text[:bib.end()] + "\n" + head + "\n" + text[bib.end():]
+                how.append("«Коротко» вставлено за BibTeX")
+            else:
+                text = head + "\n\n" + text
+                how.append("«Коротко» вставлено в начало")
+
     if CLAIMS.search(text):
         text = CLAIMS.sub(lambda _: block, text, count=1)
-        how = "заменён"
+        how.append("утверждения заменены")
     else:
-        for head in BEFORE:
-            if head in text:
-                text = text.replace(head, block + "\n\n" + head, 1)
-                how = f"вставлен перед «{head[3:]}»"
+        where = SHORT.search(text)
+        if where:
+            text = text[:where.end()] + "\n\n" + block + text[where.end():]
+            how.append("утверждения вставлены за «Коротко»")
+        else:
+            for head_name in BEFORE:
+                if head_name in text:
+                    text = text.replace(head_name, block + "\n\n" + head_name, 1)
+                    how.append(f"утверждения вставлены перед «{head_name[3:]}»")
+                    break
+            else:
+                text = text.rstrip() + "\n\n" + block + "\n"
+                how.append("утверждения дописаны в конец")
+
+    if pwc:
+        for head_name in BEFORE:
+            if head_name in text:
+                text = text.replace(head_name, pwc + "\n\n" + head_name, 1)
                 break
         else:
-            text = text.rstrip() + "\n\n" + block + "\n"
-            how = "дописан в конец"
+            text = text.rstrip() + "\n\n" + pwc + "\n"
+        how.append("врезка Papers with Code сохранена")
+
     note.write_text(text, encoding="utf-8")
-    return how
+    return ", ".join(how)
 
 
 def main(argv: list[str]) -> int:
@@ -84,28 +183,42 @@ def main(argv: list[str]) -> int:
                         help="перенести блок из базы в заметку")
     args = parser.parse_args(argv)
 
-    notes = notes_by_key(args.vault)
+    notes, clash = notes_by_key(args.vault)
     papers = [p for p in sorted(args.base.glob("*.md")) if p.name != "README.md"]
     if not papers:
         sys.exit(f"в {args.base} нет разборов")
 
     agree = fixed = 0
-    trouble: list[str] = []
+    trouble: list[str] = list(clash)
     for paper in papers:
         key = paper.stem
-        block = claims(paper.read_text(encoding="utf-8"))
+        source = paper.read_text(encoding="utf-8")
+        block, head = claims(source), short(source)
         if block is None:
             trouble.append(f"{key}: в базе нет раздела «Что статья утверждает»")
             continue
-        note = notes.get(key)
+        note = pick(notes.get(key, []), title_of(source))
         if note is None:
-            trouble.append(f"{key}: заметки с таким ключом цитирования в хранилище нет")
+            trouble.append(f"{key}: в хранилище нет заметки с этим ключом и этим заголовком")
             continue
-        if same(block, claims(note.read_text(encoding="utf-8"))):
+        # Врезку Papers with Code убираем перед сверкой: она есть только в хранилище, стоит
+        # внутри участка утверждений, и иначе каждая обогащённая заметка читается как
+        # разошедшаяся с базой.
+        there = PWC.sub("", note.read_text(encoding="utf-8"))
+        if same(block, claims(there)) and (head is None or same(head, short(there))):
             agree += 1
             continue
+        if note.stat().st_nlink > 1:
+            # Статья, попавшая в две темы, по правилу хранилища лежит одной заметкой с
+            # жёсткой ссылкой. В базе же у каждой темы свой репозиторий и своя копия
+            # разбора, и копии расходятся: у `allaire2026zeroth` заголовки утверждений
+            # переписаны дважды и независимо, а «тема» в шапке по построению разная.
+            # Одна заметка не может быть равна обеим, поэтому её не трогаем и говорим вслух.
+            trouble.append(f"{key}: «{note.name}» — одна заметка на несколько тем "
+                           f"(жёсткая ссылка), выравнивать нечем, нужно решение владельца")
+            continue
         if args.apply:
-            trouble.append(f"{key}: {put(note, block)} в «{note.name}»")
+            trouble.append(f"{key}: {put(note, block, head)} в «{note.name}»")
             fixed += 1
         else:
             trouble.append(f"{key}: блок в заметке «{note.name}» расходится с базой")

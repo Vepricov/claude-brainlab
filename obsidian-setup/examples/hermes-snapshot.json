@@ -1,0 +1,78 @@
+{
+  "captured_at": "2026-09-10T09:00:00+00:00",
+  "boards": [
+    {
+      "slug": "example-project",
+      "tasks": [
+        {
+          "id": "demo_running",
+          "title": "Демо: проверить гипотезу на трёх seeds",
+          "body": "Синтетический пример. Эти данные не описывают реальный запуск.",
+          "status": "running",
+          "priority": "B",
+          "assignee": "example-agent",
+          "created_at": 1789030800,
+          "started_at": 1789031400,
+          "completed_at": null,
+          "result": "",
+          "block_kind": null,
+          "comments": [
+            {
+              "id": 1,
+              "author": "example-agent",
+              "created_at": 1789034400,
+              "body": "Демонстрация сообщения: сервер example-gpu, GPU 0 и 1. Завершён один seed из трёх; итоговую оценку делать рано."
+            }
+          ]
+        },
+        {
+          "id": "demo_blocked",
+          "title": "Демо: уточнить критерий сравнения",
+          "body": "Пример явно указанной причины ожидания.",
+          "status": "blocked",
+          "priority": "A",
+          "assignee": "example-agent",
+          "created_at": 1789030800,
+          "started_at": null,
+          "completed_at": null,
+          "result": "",
+          "block_kind": "needs_input",
+          "comments": [],
+          "block_event": {
+            "id": 2,
+            "created_at": 1789034400,
+            "payload": "{\"reason\": \"Нужен выбор baseline и допустимого бюджета. Прогон не запущен; GPU не заняты.\"}"
+          }
+        },
+        {
+          "id": "demo_ready",
+          "title": "Демо: собрать отчёт по результатам",
+          "body": "Построить графики после завершения всех seeds.",
+          "status": "ready",
+          "priority": "C",
+          "assignee": "example-agent",
+          "created_at": 1789030800,
+          "started_at": null,
+          "completed_at": null,
+          "result": "",
+          "block_kind": null,
+          "comments": []
+        },
+        {
+          "id": "demo_done",
+          "title": "Демо: подготовить протокол",
+          "body": "Определить метрики и остановку.",
+          "status": "done",
+          "priority": "B",
+          "assignee": "example-agent",
+          "created_at": 1789030800,
+          "started_at": 1789031000,
+          "completed_at": 1789032000,
+          "result": "Протокол записан. Выполнение задачи не подтверждает научное утверждение.",
+          "block_kind": null,
+          "comments": []
+        }
+      ]
+    }
+  ]
+}

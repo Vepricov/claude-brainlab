@@ -1,0 +1,187 @@
+{
+  "main": {
+    "id": "5324373015726ba8",
+    "type": "split",
+    "children": [
+      {
+        "id": "4509724f8bf84da7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e7a7b303c61786dc",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "operon-kanban-view",
+              "state": {
+                "presetId": "kanban-preset-personal",
+                "searchQuery": "",
+                "collapsedStatusIds": [],
+                "collapsedLaneKeys": [],
+                "collapsedStatusIdsByPreset": {},
+                "collapsedLaneKeysByPreset": {},
+                "collapsedStatusIdsByScope": {},
+                "collapsedLaneKeysByScope": {},
+                "expandedPreviewParentIds": []
+              },
+              "pinned": true,
+              "icon": "square-kanban",
+              "title": "Мои задачи"
+            }
+          },
+          {
+            "id": "359e68a815c11600",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "operon-kanban-view",
+              "state": {
+                "presetId": "kanban-preset-reading",
+                "searchQuery": "",
+                "collapsedStatusIds": [],
+                "collapsedLaneKeys": [],
+                "collapsedStatusIdsByPreset": {},
+                "collapsedLaneKeysByPreset": {},
+                "collapsedStatusIdsByScope": {},
+                "collapsedLaneKeysByScope": {},
+                "expandedPreviewParentIds": []
+              },
+              "pinned": true,
+              "icon": "square-kanban",
+              "title": "Чтение"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "start-left",
+    "type": "split",
+    "children": [
+      {
+        "id": "start-left-tabs",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "start-files",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "start-search",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "a2a78b4ca1dd98ad",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 358.65625
+  },
+  "right": {
+    "id": "start-right",
+    "type": "split",
+    "children": [
+      {
+        "id": "start-right-tabs",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6789e7ef20a5a831",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          }
+        ]
+      },
+      {
+        "id": "01249329cdd947e9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0be5667e6197f308",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "general/todo.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "todo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 357.7578125
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": true,
+      "daily-notes:Сегодняшняя заметка": true,
+      "templates:Вставить шаблон": true,
+      "command-palette:Открыть палитру команд": true,
+      "workspaces:Пространства": true,
+      "bases:Создать новую базу": true,
+      "homepage:Open homepage": true,
+      "templater-obsidian:Templater": true,
+      "iconic:Открыть свод правил": true,
+      "operon:Create New Operon Task": false,
+      "operon:Operon Filter View": true,
+      "operon:Task Finder": true,
+      "operon:Operon Calendar": true,
+      "operon:Operon Kanban": false,
+      "operon:Operon Table": true,
+      "operon:Open Pinned Tasks": true
+    }
+  },
+  "active": "359e68a815c11600",
+  "lastOpenFiles": []
+}

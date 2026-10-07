@@ -1,0 +1,18 @@
+{
+  "id": "obsidian-tasks-plugin",
+  "version": "7.23.1",
+  "before_sha256": "7c8df16eafe2317fa61d6dda247b4e8bc450f05de9a7cf215e955a03188f884f",
+  "after_sha256": "8abc9ae0ea9b86e94281534ddf74b05f953ce57ed7e81c34fcaf8168956b64c4",
+  "edits": [
+    {
+      "start": 255891,
+      "end": 255932,
+      "text": "DD-MM-YYYY\",ke.dateTimeFormat=\"DD-MM-YYYY"
+    },
+    {
+      "start": 503179,
+      "end": 503180,
+      "text": "1"
+    }
+  ]
+}

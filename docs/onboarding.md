@@ -96,7 +96,7 @@ $EDITOR claims/H-WSD-001/runs/E-WSD-042.md
 git add -A
 git commit -F -                           # заголовок и тело предложения — это коммит
 git push -o merge_request.create \
-         -o merge_request.assign=<кто сольёт>
+         -o merge_request.assign=veprikov   # слить может только он
 lab checks                                # что сказали проверки
 ```
 

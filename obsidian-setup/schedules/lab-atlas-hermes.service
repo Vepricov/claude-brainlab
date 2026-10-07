@@ -1,0 +1,6 @@
+[Unit]
+Description=Read-only Hermes boards in project Obsidian folders
+
+[Service]
+Type=oneshot
+ExecStart=/absolute/path/to/python3 /absolute/path/to/obsidian-setup/sync_hermes.py --config /absolute/path/to/hermes-config.json

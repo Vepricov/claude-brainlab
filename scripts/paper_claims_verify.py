@@ -69,7 +69,17 @@ def numbers_of(block: str) -> list[tuple[str, str]]:
 
 
 def present(number: str, text: str, flat: str) -> bool:
-    return number in text or number.replace(".", ",") in text or number in flat
+    """Есть ли это число в тексте статьи.
+
+    Кроме запятой как разделителя, принимаем запись без ведущего нуля: `kaya2026eggroll`
+    печатает интервал как `+2.50% [−.82, 5.82]`, и `0.82` из разбора иначе не находилось,
+    хотя число то же. В этой же статье так же напечатаны `.0081`, `.9825`, `+.04%`, так
+    что речь о стиле издания, а не об одном месте.
+    """
+    shapes = [number, number.replace(".", ",")]
+    if number.startswith("0."):
+        shapes += [number[1:], number[1:].replace(".", ",")]
+    return any(s in text for s in shapes) or any(s in flat for s in shapes)
 
 
 def main(argv: list[str]) -> int:

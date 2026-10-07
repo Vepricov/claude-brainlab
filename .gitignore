@@ -95,3 +95,6 @@ services/lab-portal/guide.md
 # адрес кабинета — этому в публичном репозитории места нет.
 scripts/invite_person.sh
 scripts/send_via_mail_app.py
+
+# Клон базы знания: он приходит из git лаборатории, а не живёт в этом репозитории.
+lab-base/

@@ -282,3 +282,11 @@ configured/enabled», Андрей не получил ни одного соо�
 нужно, сколько останется. Отказ допустим ТОЛЬКО по этим числам, «на карте чужой процесс» причиной
 отказа не является. Делить карту и гасить чужое — разные вещи: первое можно всегда, второе только
 по приказу.
+# Yonote tasks assigned to the human owner
+
+When working from a project's Yonote board, load the installed
+`lab-knowledge/references/yonote-tasks.md`. Only tasks assigned to the configured human
+owner are eligible. Keep the human assignee; link the original Yonote row to the Hermes
+execution instead of creating another shared task. Resolve the project and board from
+the project's existing context. Missing bindings or unverified task-update capabilities
+mean this integration is pending, not permission to guess a board or widen access.

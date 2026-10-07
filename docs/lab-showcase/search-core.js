@@ -15,7 +15,7 @@
  * утверждениях, и BM25 это учтёт.
  *
  * Один список слов всё же остался, и он про другое — про форму ответа, а не про тему.
- * См. wantsMap в конце файла.
+ * Развилку «карта или записи» ядро не принимает: её принимает служба.
  *
  * Русский и английский живут вместе, потому что база двуязычна: термины записаны латиницей, а
  * спрашивают по-русски. Поэтому каждое слово попадает в индекс тремя формами — как есть, без
@@ -200,7 +200,7 @@
          Замер: на запросе «какие есть подтемы в PEFT» папка Optimization/optimization_rndm
          набирала 142 балла против 111 у PEFT/lora_base, потому что слово «подтемы» есть в
          её аннотации. Человек получал подтемы про Adam вместо подтем про PEFT.
-         Убираем их из запроса — форму ответа они и так задают, в wantsMap. Если после
+         Убираем их из запроса — на ранжирование они только шумят. Если после
          этого не остаётся ничего («направления лаборатории»), ищем как есть. */
       const raw = String(query).toLowerCase().match(/[a-zа-яё0-9][a-zа-яё0-9_-]*/g) || [];
       const kept = raw.filter((w) => !MAP_WORDS.has(w));
@@ -315,7 +315,7 @@
     }
     for (const direction of tree.directions || []) {
       const directionSize = (base.records || []).filter((r) => r.k === "project" &&
-        (r.f || []).some((f) => f[0] === "направление" && (direction.raw || []).includes(f[1]))).length;
+        (r.f || []).some((f) => ["направление", "research area"].includes(f[0]) && (direction.raw || []).includes(f[1]))).length;
       add({ kind: "direction", id: direction.slug, title: direction.t, text: direction.a,
             size: directionSize },
         [[direction.t, 4], [direction.a, 1.5], ["направление направления", 2]]);
@@ -383,6 +383,11 @@
      библиотеки и подраздел, «направления» — direction. Слова вроде «обзор» или «список»
      уровня не называют и сюда не попадают: они говорят только, что ответ должен быть картой. */
   const LEVEL_WORDS = {
+    area: ["direction"], areas: ["direction"], direction: ["direction"], directions: ["direction"],
+    topic: ["theme"], topics: ["theme"], theme: ["theme"], themes: ["theme"],
+    section: ["section", "folder"], sections: ["section", "folder"],
+    folder: ["folder"], folders: ["folder"],
+    subtopic: ["subtopic"], subtopics: ["subtopic"], project: ["project"], projects: ["project"],
     "направление": ["direction"], "направления": ["direction"], "направлений": ["direction"],
     "тема": ["theme"], "темы": ["theme"], "тем": ["theme"],
     "раздел": ["section", "folder"], "разделы": ["section", "folder"],
@@ -392,39 +397,11 @@
     "проекты": ["project"], "проектов": ["project"],
   };
 
-  const MAP_WORDS = new Set(["направление", "направления", "направлений", "тема", "темы", "тем",
+  const MAP_WORDS = new Set([...Object.keys(LEVEL_WORDS), "overview", "structure", "list", "map", "направление", "направления", "направлений", "тема", "темы", "тем",
     "раздел", "разделы", "разделов", "подраздел", "подразделы", "подтема", "подтемы",
     "обзор", "структура", "список", "карта", "области", "область", "проекты", "проектов"]);
 
-  const ASK_WORDS = new Set(["ли", "почему", "зачем", "когда", "как", "какой", "какая", "какие",
-    "каких", "что", "чем", "чему", "где", "куда", "кто", "нужен", "нужна", "нужно", "нужны",
-    "можно", "стоит", "работает", "помогает", "выигрывает", "лучше", "хуже", "влияет",
-    "зависит", "сравнение", "против",
-    "why", "how", "when", "what", "which", "does", "do", "is", "are", "works", "better",
-    "worse", "vs"]);
-
   const NODE_KINDS = new Set(["section", "folder", "subtopic", "direction", "theme", "project"]);
 
-  function wantsMap(query, index) {
-    const q = String(query || "").trim();
-    if (!q) return false;
-    const words = q.toLowerCase().match(/[a-zа-яё0-9_-]+/g) || [];
-    if (words.some((w) => MAP_WORDS.has(w))) return true;
-    if (q.includes("?") || words.some((w) => ASK_WORDS.has(w))) return false;
-    if (!index) return false;
-    const top = index.search(q, 6);
-    if (!top.length) return false;
-    // Разгромная победа узла значит, что запрос — это его имя. «zero-order» поднимает папку
-    // Optimization/zero-order на 69 баллов при девяти у первой записи, но узлов в шестёрке
-    // всего два, и счётный порог их не пропускал. Считать штуки, когда разрыв семикратный,
-    // неправильно: человек набрал название раздела и ждёт раздел.
-    const best = top[0];
-    const topRecord = top.find((x) => !NODE_KINDS.has(x.kind));
-    if (NODE_KINDS.has(best.kind) && (!topRecord || best.score >= topRecord.score * 2)) return true;
-    // Иначе решает состав верхушки: половина узлов — запрос про область.
-    const nodes = top.filter((x) => NODE_KINDS.has(x.kind)).length;
-    return nodes >= Math.ceil(top.length / 2);
-  }
-
-  return { build, Index, tokenize, stem, expand, TERMS, wantsMap, MAP_WORDS, ASK_WORDS, NODE_KINDS };
+  return { build, Index, tokenize, stem, expand, TERMS, MAP_WORDS, NODE_KINDS };
 });

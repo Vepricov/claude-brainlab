@@ -816,7 +816,7 @@
   #overview .loop-map,
   #overview .loop-map:has(.overview-contour){height:628px;
     margin-bottom:calc(12px - 628px * (1 - var(--map-scale,1)))}
-  #overview .knowledge-cluster{width:392px;height:286px}
+  #overview .knowledge-cluster{width:392px;height:320px}
   #overview .knowledge-core{width:196px;height:196px}
   #overview .knowledge-core strong{font-size:24px}
   #overview .knowledge-core p{margin-top:8px;font-size:9px}
@@ -841,15 +841,25 @@
    порядок обхода сохраняется, просто орбита разворачивается в столбцы. */
 #overview.map-stacked .loop-map,
 #overview.map-stacked .loop-map:has(.overview-contour){
-  width:min(100%,1180px)!important;height:auto!important;transform:none!important;margin:18px auto 0}
+  display:flex;flex-direction:column;width:min(100%,1180px)!important;height:auto!important;transform:none!important;margin:18px auto 0}
 #overview.map-stacked .loop-map:before{display:none}
 #overview.map-stacked .loop-map>svg{display:none}
 #overview.map-stacked .knowledge-cluster{position:relative;left:auto;top:auto;transform:none;
-  width:100%;height:auto;margin:0 auto 20px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+  order:-1;flex:none;width:min(100%,500px);height:330px;margin:0 auto 20px}
 #overview.map-stacked .loop-nodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 #overview.map-stacked .loop-node,#overview.map-stacked .loop-node:nth-child(n){
   position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;transform:none;text-align:left}
 #overview.map-stacked .loop-node:before,#overview.map-stacked .loop-node:nth-child(n):before{display:none}
+
+/* Keep the orbit readable on laptop screens by reducing the heading's footprint. */
+@media (min-width:1261px) and (max-height:850px){
+  #overview{padding-top:84px}
+  #overview .overview-head{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:8px 40px;align-items:end}
+  #overview .overview-head .overline{grid-column:1/-1}
+  #overview .overview-head h1{max-width:680px;margin-top:0;font-size:38px;line-height:1.02}
+  #overview .overview-head h1 br{display:none}
+  #overview .overview-intro{position:static;max-width:390px;margin:0;font-size:12px;line-height:1.5}
+}
 
 /* Кнопка возврата наверх. Появляется только когда прокрутка уже увела от заголовка. */
 .to-top{position:fixed;right:18px;bottom:18px;z-index:60;width:42px;height:42px;border-radius:50%;
@@ -1661,3 +1671,12 @@ h1[tabindex="-1"]:focus-visible,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"
   border-left-style:dashed;font-size:11px;line-height:1.45}
 .destination-cluster .outcome-nodes button small{
   display:block;margin-bottom:3px;color:#8b9288;font:8px var(--mono);text-transform:uppercase}
+
+/* ============ Глубина поиска ============
+   Два режима, и разница между ними измерена: быстрый отвечает за секунду и попадает по теме
+   первым ответом в 21 случае из 30, тщательный — за семь секунд и в 27 из 30. Поэтому
+   переключатель стоит рядом с полем, а не спрятан в настройках: это не тонкая настройка, а
+   выбор между «сейчас» и «точнее», и человек должен видеть цену. */
+  border-radius:999px;background:transparent;color:var(--muted);font:10px var(--mono);
+  letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+  color:var(--ink)}

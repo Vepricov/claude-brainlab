@@ -86,3 +86,10 @@ Only offer to create an ADR when all three are true:
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
 
 </supporting-info>
+
+## Reference files
+
+Both are one hop from here, so each is read whole when it is needed.
+
+- [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md) — the shape of a domain CONTEXT file
+- [ADR-FORMAT.md](ADR-FORMAT.md) — the shape of an architecture decision record

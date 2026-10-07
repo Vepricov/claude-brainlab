@@ -73,21 +73,6 @@
 .way-area:hover i{background:var(--lime);opacity:1}
 .way-area em{color:var(--ink-dim);font:10px var(--mono);font-style:normal;
   font-variant-numeric:tabular-nums}
-/* Один код записи: поле в моношрифте, потому что его переписывают глазами. */
-.way-code{display:flex;gap:8px}
-.way-code input{flex:1;min-width:0;min-height:42px;padding:11px 13px;border:1px solid var(--line-strong);
-  border-radius:9px;background:#0d100d;color:var(--ink);font:12px var(--mono)}
-.way-code input:focus{border-color:var(--lime);outline:none}
-.way-code button{min-height:42px;padding:11px 15px;border:1px solid var(--lime);border-radius:9px;
-  background:rgba(185,255,102,.13);color:var(--lime);font:10px var(--mono);letter-spacing:.06em;
-  text-transform:uppercase;cursor:pointer}
-.way-code button:hover{background:var(--lime);color:#0b0e0d}
-.way-recent{display:grid;gap:2px;margin-top:12px}
-.way-recent button{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 0;border:0;
-  background:none;color:#c3cbc0;font-size:12.5px;text-align:left;cursor:pointer;
-  border-bottom:1px solid rgba(231,239,230,.07)}
-.way-recent code{color:var(--our);font:10px var(--mono)}
-.way-recent button:hover{color:var(--lime)}
 
 /* ---------- Строка для агентов внизу: не панель, а сноска ---------- */
 .for-agents{margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
@@ -112,13 +97,7 @@
 .answer-tally b{margin-right:5px;color:var(--lime);font:500 15px var(--body);letter-spacing:0}
 .answer-gist{margin:11px 0 0;color:#c3cbc0;font-size:13.5px;line-height:1.6}
 /* Остальное — под раскрытием: лента из двадцати пяти карточек не просматривается глазами. */
-.answer-rest{margin-top:8px;border-top:1px solid #2d352e}
-.answer-rest>summary{padding:15px 0;color:#8e988c;font:9.5px var(--mono);letter-spacing:.07em;
   text-transform:uppercase;cursor:pointer;list-style:none}
-.answer-rest>summary::-webkit-details-marker{display:none}
-.answer-rest>summary:before{content:"+ ";color:var(--lime)}
-.answer-rest[open]>summary:before{content:"− "}
-.answer-rest>summary:hover{color:#dfe6dc}
 /* Ожидание живого ответа: 6-14 секунд — это долго, поэтому пауза названа и посчитана. */
 .mcp-wait{display:flex;align-items:baseline;justify-content:space-between;gap:24px;
   margin:0;padding:20px 0;border-bottom:1px solid #2d352e}
@@ -414,14 +393,7 @@
   line-height:1.6}
 /* Хвост выдачи: то, что кросс-энкодер поставил вдвое ниже лучшего. Не прячем совсем — иногда
    нужное лежит там, — но и не мешаем с ответом. */
-.answer-weak{margin-top:18px;border-top:1px solid #2d352e}
-.answer-weak>summary{padding:14px 0;color:#8e988c;font:9.5px var(--mono);letter-spacing:.06em;
   text-transform:uppercase;cursor:pointer;list-style:none}
-.answer-weak>summary::-webkit-details-marker{display:none}
-.answer-weak>summary:before{content:"+ ";color:#6f7a6d}
-.answer-weak[open]>summary:before{content:"− "}
-.answer-weak>summary:hover{color:#c3cbc0}
-.answer-weak .src-claims{margin-top:0;opacity:.85}
 /* Записи под картой темы: карта отвечает «что тут есть», записи — «покажи». */
 .map-records{margin-top:36px;padding-top:22px;border-top:1px solid #2d352e}
 .map-records>.overline{margin:0 0 6px;color:#7f8a7c}

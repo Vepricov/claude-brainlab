@@ -15,7 +15,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
+CLAUDE_HOME="${CLAUDE_HOME:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"
 ENV_FILE="$REPO_ROOT/.env"
 TEMPLATE="$REPO_ROOT/settings.json.template"
 TS="$(date +%Y%m%d-%H%M%S)"
@@ -79,8 +79,8 @@ for c in "${COMPONENTS[@]}"; do
   if command -v rsync >/dev/null 2>&1; then
     run "rsync -a \"$src/\" \"$dst/\""
   else
-    run "rm -rf \"$dst\""
-    run "cp -R \"$src\" \"$dst\""
+    run "mkdir -p \"$dst\""
+    run "cp -R \"$src/.\" \"$dst/\""
   fi
 done
 
@@ -140,7 +140,7 @@ backup_if_exists "$SETTINGS_DST"
 # envsubst is not installed everywhere.
 if (( ! DRY_RUN )); then
   "${PYTHON_BIN:-python3}" - "$TEMPLATE" "$SETTINGS_DST" <<'PYEOF'
-import json, os, re, sys
+import json, os, pathlib, re, sys
 src, dst = sys.argv[1], sys.argv[2]
 with open(src) as f:
     data = json.load(f)
@@ -163,6 +163,35 @@ data = strip_comments(substitute(data))
 # Drop zotero MCP entry if no API key was provided.
 if not os.environ.get("ZOTERO_API_KEY"):
     data.get("mcpServers", {}).pop("zotero", None)
+elif "zotero" in data.get("mcpServers", {}):
+    # Inspect the installed uv runtime without importing its models. The shared
+    # adapter uses these upstream APIs; older runtimes keep their original CLI.
+    runtime = pathlib.Path.home() / ".local/share/uv/tools/zotero-mcp-server"
+    interpreter = runtime / "bin/python"
+    adapter = pathlib.Path(dst).parent / "scripts/zotero_shared.py"
+    required = {
+        "zotero_mcp/cli.py": ("def _warmup_reranker_in_background(",),
+        "zotero_mcp/client.py": ("_active_library_override",),
+        "zotero_mcp/toolsets.py": ("def apply_toolsets(",),
+        "fastmcp/server/http.py": ("class FastMCPStreamableHTTPSessionManager(",),
+        "mcp/server/streamable_http_manager.py": (
+            "session_idle_timeout", "_server_instances", "_session_owners"),
+    }
+    def supports_shared(site):
+        for relative, names in required.items():
+            path = site / relative
+            if not path.is_file():
+                return False
+            if not all(name in path.read_text(encoding="utf-8") for name in names):
+                return False
+        return True
+    if (interpreter.is_file() and os.access(interpreter, os.X_OK) and adapter.is_file()
+            and any(supports_shared(site) for site in runtime.glob("lib/python*/site-packages"))):
+        data["mcpServers"]["zotero"]["command"] = str(interpreter)
+        data["mcpServers"]["zotero"]["args"] = [str(adapter), "serve"]
+        print("  Zotero: shared runtime; independent client sessions")
+    else:
+        print("  Zotero: existing CLI kept (shared runtime prerequisites not found)")
 # Shared MCP entries are all-or-nothing so incomplete credentials never leave
 # unusable clients or unresolved secret placeholders in settings.json.
 if not (os.environ.get("LAB_MCP_URL") and os.environ.get("LAB_MCP_TOKEN")):
@@ -173,8 +202,14 @@ elif not os.environ.get("PLANE_BASE_URL"):
     data["mcpServers"]["plane"].get("env", {}).pop("PLANE_BASE_URL", None)
 with open(dst, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
+os.chmod(dst, 0o600)
 print(f"  rendered {dst}")
 PYEOF
+fi
+
+# ── Native Lab MCP registration ──
+if (( ! DRY_RUN )) && [[ -f "$REPO_ROOT/install/register-lab-mcp.py" ]]; then
+  "${PYTHON_BIN:-python3}" "$REPO_ROOT/install/register-lab-mcp.py" "$SETTINGS_DST" "$BACKUP_DIR"
 fi
 
 # ── obsidian-projects.json ──

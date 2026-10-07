@@ -56,51 +56,90 @@
   .loop-tally em{text-align:left;min-width:100%}
 }
 
-/* ============ Примеры: шесть путей ============
-   Заголовок каждого примера уже несёт структуру «от … до …», поэтому она и держит
-   раскладку: слева откуда, справа что остаётся. Нумерации нет — это не последовательность,
-   а шесть независимых маршрутов, и различает их род записи слева. */
-.examples-page{width:min(100%,1180px);margin:auto}
-.examples-head h1{margin-top:14px;font:500 clamp(38px,5vw,62px)/.95 var(--display);
-  letter-spacing:-.055em;text-wrap:balance}
-.examples-head>p:last-child{margin-top:18px;max-width:620px;color:var(--muted);
-  font-size:14px;line-height:1.7}
-.paths{list-style:none;margin:44px 0 0;padding:0}
-.path{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr);gap:26px;
-  padding:30px 0;border-top:1px solid var(--line);transition:background .18s}
-.path:last-child{border-bottom:1px solid var(--line)}
-.path:hover{background:color-mix(in srgb,var(--lime) 3%,transparent)}
-/* Левая колонка держит две подписи: род маршрута и имя инструмента, который откроется.
-   Раньше здесь стоял только род, а куда ведёт строка, человек узнавал после нажатия. */
-.path-kind{display:flex;flex-direction:column;gap:7px}
-.path-kind span{color:var(--lime);font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
-.path-kind i{color:var(--muted);font:normal 11px/1.3 var(--mono);letter-spacing:-.01em}
-.path-body h2{font-weight:400;max-width:30ch}
-/* «от …» уходит в тон подписи, «до …» несёт вес: путь читается сверху вниз, без стрелок.
-   Стрелка тут была — маленький повёрнутый уголок перед «до». На экране он читался как
-   обрубленный символ и стоял только у трёх маршрутов из шести, потому что у остальных
-   заголовок не делится на «от» и «до». Разницу в размере и тоне видно и без него. */
-.path-body h2 em{display:block;color:var(--muted);font:400 clamp(16px,1.7vw,21px)/1.25 var(--display);
-  font-style:normal;letter-spacing:-.025em}
-.path-body h2 b{display:block;margin-top:6px;color:var(--ink);
-  font:500 clamp(21px,2.5vw,31px)/1.12 var(--display);letter-spacing:-.04em;text-wrap:balance}
-/* Нажимается заголовок, а область нажатия — вся строка: одна цель, одна мишень, ни одной
-   лишней рамки. Псевдоэлемент растягивается по .path, поэтому текст под ним остаётся
-   выделяемым, а с клавиатуры это по-прежнему обычная кнопка со своим контуром. */
-.path-open{display:inline;margin:0;padding:0;border:0;background:none;color:inherit;
-  font:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
-.path-open:after{content:"";position:absolute;inset:0}
-.path:hover .path-open,.path-open:hover{color:var(--lime)}
-.path-open:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:3px}
-.path-body>p{margin-top:15px;max-width:70ch;color:#aab2a7;font-size:13.5px;line-height:1.72}
-.path-outcome{margin-top:14px;padding-left:15px;
-  border-left:2px solid color-mix(in srgb,var(--lime) 55%,transparent);
-  color:var(--ink)!important;font-size:13.5px}
-@media (max-width:760px){
-  .path{grid-template-columns:1fr;gap:12px;padding:24px 0}
-  .path-kind{flex-direction:row;align-items:baseline;gap:10px}
-  .path-body h2{grid-template-columns:1fr}
+/* Research journeys: a navigable sky with one open stage. */
+#examples-view{padding-top:90px;padding-bottom:32px}
+.examples-page{width:min(100%,1400px);margin:auto;--journey-color:var(--lime)}
+.journey-choices{display:flex;gap:32px;border-bottom:1px solid var(--line)}
+.journey-choices a{position:relative;padding:10px 0 16px;color:#939e94;font:12px/1.45 var(--body);text-decoration:none}
+.journey-choices a[aria-current]{color:var(--journey-color)}
+.journey-choices a[aria-current]:after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--journey-color)}
+.journey-choices a:hover{color:var(--ink)}
+.journey-head{display:grid;grid-template-columns:1.1fr 1fr;gap:10px 64px;align-items:end;padding:28px 0 10px}
+.journey-head .overline{grid-column:1/-1;color:var(--journey-color);font-size:9px}
+.journey-head h1{font:500 clamp(32px,3.8vw,56px)/1.06 var(--display);letter-spacing:-.05em;text-wrap:balance;outline:none}
+.journey-head>p:last-child{max-width:50ch;color:#a6b0a5;font:13px/1.7 var(--body)}
+.journey-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:30px;margin-top:22px;align-items:start}
+.journey-chart{min-width:0}
+.journey-map{position:relative;height:clamp(350px,48vh,470px);isolation:isolate;background:radial-gradient(ellipse at 48% 45%,color-mix(in srgb,var(--journey-color) 5%,transparent),transparent 64%)}
+.journey-map:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.45;pointer-events:none;
+  background-image:radial-gradient(circle,#9eb5a7 1px,transparent 1px),radial-gradient(circle,#9eb5a7 .6px,transparent .6px);background-size:127px 91px,73px 137px;background-position:17px 36px,49px 12px;
+  mask-image:radial-gradient(ellipse,black,transparent 72%)}
+.journey-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.journey-thread{fill:none;stroke:var(--journey-color);stroke-width:1;vector-effect:non-scaling-stroke;opacity:.3}
+.journey-direction{fill:none;stroke:var(--journey-color);stroke-width:2;stroke-dasharray:1 99;stroke-dashoffset:-53;vector-effect:non-scaling-stroke;opacity:.8}
+.journey-stages{list-style:none;margin:0;padding:0}
+.journey-stages>li{position:absolute;left:var(--stage-x);top:var(--stage-y);width:146px;transform:translate(-50%,-24px)}
+.journey-star{display:flex;flex-direction:column;align-items:center;width:100%;margin:0;padding:0 3px 8px;border:0;background:none;color:#c6cec3;text-align:center;cursor:pointer}
+.journey-orb{position:relative;display:grid;place-items:center;width:48px;height:48px;margin-bottom:4px}
+.journey-orb i{display:block;width:10px;height:10px;border-radius:50%;background:var(--journey-color);box-shadow:0 0 16px color-mix(in srgb,var(--journey-color) 30%,transparent);transition:width .2s,height .2s}
+.journey-orb:after{content:"";position:absolute;inset:8px;border:1px solid color-mix(in srgb,var(--journey-color) 18%,transparent);border-radius:50%;transform:rotate(-25deg) scaleY(.6)}
+.journey-star.is-endpoint .journey-orb i{width:19px;height:19px;background:radial-gradient(circle at 30% 25%,#f1f4dd,var(--journey-color) 38%,#263a30 85%)}
+.journey-star strong{font:500 clamp(13px,1.2vw,17px)/1.25 var(--display);letter-spacing:-.02em}
+.journey-star small{max-width:100%;margin-top:5px;color:#8c998c;font:10px/1.4 var(--body)}
+.journey-star[aria-pressed="true"]{color:var(--journey-color)}
+.journey-star[aria-pressed="true"] .journey-orb i{width:31px;height:31px;background:radial-gradient(circle at 30% 25%,#f8f8e8,var(--journey-color) 36%,#283c30 88%);box-shadow:0 0 30px color-mix(in srgb,var(--journey-color) 20%,transparent)}
+.journey-star[aria-pressed="true"] .journey-orb:after{inset:0;border-color:color-mix(in srgb,var(--journey-color) 55%,transparent)}
+.journey-star:hover strong,.journey-tools a:hover{color:var(--journey-color)}
+.journey-star:focus-visible,.journey-choices a:focus-visible,.journey-tools a:focus-visible{outline:1px solid var(--journey-color);outline-offset:5px;border-radius:2px}
+.journey-note{max-width:70ch;margin:8px auto 0;text-align:center;color:#8c998c;font:11px/1.6 var(--body)}
+.journey-detail{position:relative;padding:24px 0 0 26px;border-left:1px solid color-mix(in srgb,var(--journey-color) 23%,transparent);min-height:410px;scroll-margin-top:138px}
+.journey-detail:before{content:"";position:absolute;top:0;left:-1px;width:1px;height:64px;background:var(--journey-color)}
+.journey-stage-label{color:var(--journey-color);font:9px/1.5 var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.journey-detail h2{margin:10px 0 12px;font:500 28px/1.15 var(--display);letter-spacing:-.035em;outline:none}
+.journey-action{color:#d4dcd0;font:13px/1.65 var(--body)}
+.journey-detail dl{margin:21px 0}
+.journey-detail dt{margin:18px 0 5px;font:10px/1.5 var(--body);color:#8c998c}
+.journey-detail dd{margin:0;color:#bdc8b9;font:12px/1.65 var(--body)}
+.journey-tools{display:flex;flex-direction:column;gap:9px;padding-top:16px;border-top:1px solid var(--line)}
+.journey-tools a{display:flex;justify-content:space-between;gap:8px;color:#e2e9dc;text-decoration:none;font:11px/1.5 var(--mono);overflow-wrap:anywhere}
+.journey-tools a span{color:var(--journey-color)}
+@media(min-width:760px) and (max-width:1100px){
+  .journey-body{grid-template-columns:minmax(0,1fr) 260px;gap:16px}
+  .journey-stages>li{width:120px}
+  .journey-detail{padding-left:18px}
+  .journey-star small{font-size:9px}
 }
+@media(min-width:760px) and (max-width:1023px){
+  .journey-body{grid-template-columns:1fr}
+  .journey-detail{max-width:640px}
+}
+@media(max-width:759px){
+  #examples-view{padding-top:138px}
+  .journey-choices{gap:12px;justify-content:space-between}
+  .journey-choices a{flex:1;font-size:11px;padding-bottom:12px}
+  .journey-head{grid-template-columns:1fr;gap:12px;padding-top:24px}
+  .journey-head h1{font-size:36px}
+  .journey-head>p:last-child{font-size:12px}
+  .journey-body{grid-template-columns:1fr;gap:26px;margin-top:12px}
+  .journey-map{height:auto;background-position:center}
+  .journey-lines{display:none}
+  .journey-stages{position:relative;padding:8px 0}
+  .journey-stages:before{content:"";position:absolute;top:32px;bottom:45px;left:23px;width:1px;background:color-mix(in srgb,var(--journey-color) 30%,transparent)}
+  .journey-stages>li{position:relative;left:auto;top:auto;transform:none;width:100%;margin:0 0 9px}
+  .journey-star{display:grid;grid-template-columns:48px 1fr;gap:2px 16px;min-height:50px;padding:0;text-align:left;justify-items:start}
+  .journey-orb{grid-row:1/3;margin:0}
+  .journey-star strong{font-size:16px;align-self:end}
+  .journey-star small{font-size:11px;margin:0;align-self:start}
+  .journey-stages>.journey-branch{margin-left:32px;width:calc(100% - 32px)}
+  .journey-branch:before{content:"";position:absolute;left:-9px;top:24px;width:22px;height:1px;background:color-mix(in srgb,var(--journey-color) 30%,transparent)}
+  .journey-note{text-align:left;font-size:11px;margin-top:12px}
+  .journey-detail{padding:24px 0 0;border-left:0;border-top:1px solid var(--line);min-height:0}
+  .journey-detail:before{top:-1px;left:0;width:64px;height:1px}
+  .journey-detail h2{font-size:30px}
+  .journey-tools{gap:14px}
+  .journey-tools a{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.journey-orb i{transition:none}}
 
 /* ============ Досье инструментов: метка вместо пилюли ============
    В списке из двенадцати строк «можно забрать» стояло зелёной пилюлей в каждой, и столбик
@@ -262,3 +301,415 @@
   text-decoration:underline;text-underline-offset:4px;
   text-decoration-color:rgba(20,23,19,.26)}
 .spotlight-actions>a:hover{color:#181c17;text-decoration-color:var(--accent);background:none}
+
+.skill-dialog{position:fixed;inset:0;width:min(760px,calc(100vw - 36px));max-width:none;
+  max-height:calc(100dvh - 60px);margin:auto;border:1px solid #c9cdbf;border-radius:18px;
+  padding:0;background:#f7f6ed;color:#252a24;box-shadow:0 24px 100px #121a1940;
+  overscroll-behavior:contain;color-scheme:light}
+.skill-dialog::backdrop{background:#20292085;backdrop-filter:blur(5px)}
+.skill-dialog>article{padding:35px 38px}
+.skill-dialog-head{position:relative;padding-right:26px}
+.skill-dialog-head>span{display:block;color:#5c6459;font:10px/1.7 var(--mono);text-transform:uppercase;
+  letter-spacing:.05em;padding-right:14px}
+.skill-dialog-close{position:sticky;float:right;top:0;margin:-12px -12px 0 0;z-index:2;display:grid;place-items:center;width:44px;height:44px;
+  border:0;border-radius:50%;background:#f7f6ed;color:#30392b;font:30px var(--body);cursor:pointer}
+.skill-dialog-close:hover{background:#e7eadf}
+.skill-dialog-head h2{font:500 35px/1.12 var(--display);letter-spacing:-.035em;margin-top:20px;outline:none;
+  overflow-wrap:anywhere;text-wrap:balance}
+.skill-dialog-name{font:12px/1.6 var(--mono);overflow-wrap:anywhere;color:#5c6459;margin:15px 0}
+.skill-dialog-description{font:14px/1.8 var(--body);color:#50594b;margin:18px 0 24px}
+.skill-invoke{display:flex;align-items:baseline;gap:15px;flex-wrap:wrap;border-top:1px solid #d1d4c8;
+  padding:19px 0 0;font:11px/1.6 var(--body);color:#5c6459}
+.skill-invoke code{color:#303a29;font:12px/1.6 var(--mono);overflow-wrap:anywhere}
+.skill-dialog .tool{border:0;margin-top:20px;background:none;border-radius:0}
+.skill-dialog .tool>summary{display:none}
+.skill-dialog .tool-body{display:block;padding:0;border:0;background:none}
+.skill-dialog .tool-value{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:0 0 25px}
+.skill-dialog .tool-value section{padding:0;border:0;background:none;box-shadow:none}
+.skill-dialog .tool-value b{font:10px/1.6 var(--mono);letter-spacing:.03em;text-transform:uppercase;color:#5c6459}
+.skill-dialog .tool-value span{display:block;font:13px/1.7 var(--body);color:#353e2f;margin-top:10px}
+.skill-dialog .tool-mechanics{border-top:1px solid #d1d4c8;border-bottom:1px solid #d1d4c8;margin:20px 0;padding:0}
+.skill-dialog .tool-mechanics>summary{font:12px/1.6 var(--body);padding:18px 0;color:#454f3e;cursor:pointer}
+.skill-dialog .tool-spec{grid-template-columns:1fr 1fr;margin:16px 0 24px}
+.skill-dialog .tool-spec dt{font:10px/1.5 var(--mono);color:#5c6459}
+.skill-dialog .tool-spec dd{font:12px/1.7 var(--body);color:#353e2f}
+.skill-dialog .tool-take{margin:24px 0 0;padding:0;border:0;background:none}
+.skill-dialog .setup-install{max-width:100%;overflow-x:auto;font:11px/1.7 var(--mono);padding:18px;
+  border:1px solid #d1d4c8;border-radius:8px;background:#e9ecdf;color:#303a29}
+.skill-dialog .tool-take>p{font:12px/1.7 var(--body);color:#5c6459;margin-top:14px;overflow-wrap:anywhere}
+.skill-dialog .tool-links{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:18px}
+.skill-dialog .source-link{color:#35412c;font:12px/1.7 var(--body);text-transform:none;letter-spacing:0}
+
+@media(max-width:640px){
+ .skill-dialog{width:calc(100vw - 20px);max-height:calc(100dvh - 24px);border-radius:13px}
+ .skill-dialog>article{padding:26px 22px}.skill-dialog-head{padding-right:15px}
+ .skill-dialog-head h2{font-size:28px}.skill-dialog-head>span{font-size:9px;max-width:26ch}
+ .skill-dialog-description{font-size:13px}.skill-dialog .tool-value{grid-template-columns:1fr;gap:24px}
+ .skill-dialog .tool-spec{grid-template-columns:1fr;gap:18px}
+}
+/* The chapter is a constellation of systems, tools and skills, all visible. */
+.process-view:has(.sky-shell){background:#0c1418;color:#eef1e8;min-height:100vh;padding-top:104px}
+.sky-shell{--sky-ink:#eef1e8;--sky-muted:#a2afb1;--sky-line:#2a3a41;width:min(100%,1320px);color:var(--sky-ink)}
+.sky-shell .back-button{padding:8px 0;min-height:44px;color:#acb9bb;font:11px var(--mono);text-transform:none;letter-spacing:0}
+.sky-heading{display:grid;grid-template-columns:1.15fr .85fr;align-items:end;gap:70px;margin:20px 0 14px}
+.sky-eyebrow{color:var(--accent);font:9px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:15px}
+.sky-heading h1{font:500 clamp(33px,4.1vw,57px)/1.08 var(--display);letter-spacing:-.04em;outline:none;text-wrap:balance}
+.sky-heading>div>p:last-child{margin-top:12px;font:14px/1.6 var(--body);color:#b0babc}
+.sky-heading .sky-intro{font:12px/1.8 var(--body);color:#95a5aa;max-width:55ch;justify-self:end}
+.sky-map{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) 260px minmax(0,1fr);
+  grid-template-areas:"nw north ne" "west core east" "sw south se";gap:34px 46px;align-items:center;
+  min-height:650px;padding:32px 12px 38px;margin:8px 0 0;
+  background:radial-gradient(ellipse at 50% 50%,color-mix(in srgb,var(--accent) 7%,transparent),transparent 58%)}
+.sky-map[data-system="calls"],.sky-map[data-system="results"]{min-height:610px;row-gap:38px}
+.sky-dust{position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(circle,#c7ded3 0 1px,transparent 1.6px),radial-gradient(circle,#83989f 0 .7px,transparent 1.2px),radial-gradient(circle,#b0bfdb 0 1px,transparent 1.4px);
+  background-size:197px 173px,113px 139px,293px 227px;background-position:39px 20px,71px 53px,122px 80px;
+  mask-image:radial-gradient(ellipse,#000 45%,transparent 78%)}
+.sky-lines{position:absolute;inset:0;z-index:-1;width:100%;height:100%;overflow:visible;pointer-events:none;fill:none}
+.sky-ray{stroke:color-mix(in srgb,var(--accent) 28%,#23343c);stroke-width:1;stroke-dasharray:3 6;opacity:.75}
+.sky-thread{stroke:color-mix(in srgb,var(--accent) 28%,#33464d);stroke-width:1;opacity:.8}
+.sky-peer-link{stroke:color-mix(in srgb,var(--accent) 38%,#33464d);stroke-width:1;opacity:.8}
+.sky-count{position:absolute;right:8px;bottom:12px;font:10px/1 var(--mono);font-variant-numeric:tabular-nums;color:#8298a1}
+.sky-core{grid-area:core;position:relative;isolation:isolate;display:grid;place-items:center;width:252px;height:252px;
+  margin:auto;padding:32px 20px;border:1px solid color-mix(in srgb,var(--accent) 46%,#344852);border-radius:50%;
+  background:radial-gradient(circle at 32% 23%,color-mix(in srgb,var(--accent) 16%,#18252c),#101b22 65%,#081116);
+  color:var(--sky-ink);text-align:center;cursor:pointer;
+  box-shadow:inset -15px -12px 36px #0007,inset 2px 1px 18px color-mix(in srgb,var(--accent) 14%,transparent),0 0 70px color-mix(in srgb,var(--accent) 9%,transparent);
+  transition:box-shadow .2s,border-color .2s}
+.core-orbit{position:absolute;inset:-27px -19px;border:1px solid color-mix(in srgb,var(--accent) 20%,transparent);
+  border-radius:50%;transform:rotate(-27deg) scaleY(.78);z-index:-1;pointer-events:none}
+.core-orbit:after{content:"";position:absolute;inset:-20px -13px;border:1px solid color-mix(in srgb,var(--accent) 10%,transparent);border-radius:50%}
+.core-copy{display:flex;flex-direction:column;align-items:center;gap:13px;position:relative;z-index:1}
+.core-copy small{font:9px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.core-copy strong{font:500 30px/1.1 var(--display);letter-spacing:-.035em;overflow-wrap:anywhere;max-width:210px}
+.core-copy>span{font:12px/1.6 var(--body);color:#bac7c9;max-width:190px}
+.core-copy em{font:normal 9px/1.5 var(--mono);color:#90a3a9;margin-top:4px}
+.core-moons{position:absolute;inset:-28px;pointer-events:none}.core-moons i{position:absolute;width:5px;height:5px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px var(--accent)}
+.core-moons i:nth-child(1){left:22px;top:56px}.core-moons i:nth-child(2){right:5px;bottom:86px;width:3px;height:3px}.core-moons i:nth-child(3){right:72px;top:1px;width:3px;height:3px;opacity:.5}
+.sky-core:hover{border-color:var(--accent);box-shadow:inset -15px -12px 36px #0007,0 0 90px color-mix(in srgb,var(--accent) 18%,transparent)}
+.sky-map[data-system="literature"] .core-orbit{transform:rotate(35deg) scaleY(.64)}
+.sky-map[data-system="experiments"] .sky-core{background:radial-gradient(ellipse at 25% 20%,#2d304e,#151d2c 55%,#0c1418)}
+.sky-map[data-system="experiments"] .core-orbit{transform:rotate(-55deg) scaleY(.66)}
+.sky-map[data-system="calls"] .sky-core{width:276px;height:276px;background:radial-gradient(ellipse at 55% 5%,#1c3b49,#111f2b 56%,#0d151c)}
+.sky-map[data-system="calls"] .core-orbit{inset:-20px;transform:rotate(0deg) scale(1.06);border-style:dashed}
+.core-signal{position:absolute;inset:0;display:flex;gap:6px;justify-content:center;align-items:center;opacity:.14;pointer-events:none}
+.core-signal i{width:3px;background:var(--accent);box-shadow:0 0 13px var(--accent);border-radius:3px}
+.sky-map[data-system="calls"] .core-copy strong{font-size:39px}
+.sky-map[data-system="results"] .core-orbit{transform:rotate(18deg) scaleY(.6)}
+.sky-map[data-system="writing"] .core-orbit{transform:rotate(-72deg) scaleY(.62)}
+.sky-map[data-system="presentation"] .core-orbit{transform:rotate(60deg) scaleY(.8)}
+.sky-cluster{position:relative;min-width:0;align-self:center;max-width:360px;width:100%;margin:auto}
+.sky-cluster h2{font:10px/1.6 var(--mono);font-weight:400;text-transform:uppercase;letter-spacing:.08em;color:#81959d;margin:0 0 17px 28px}
+.sky-node{position:relative;display:flex;align-items:flex-start;gap:14px;min-height:36px;padding:7px 0;
+  width:100%;border:0;background:none;color:#b9c9cd;text-align:left;cursor:pointer;border-radius:4px}
+.sky-node>span{display:block;min-width:0}
+.sky-node strong{display:block;font:12px/1.6 var(--mono);font-weight:400;letter-spacing:-.025em;overflow-wrap:anywhere}
+.star-pin{display:block;flex:0 0 auto;position:relative;width:5px;height:5px;margin:6px 3px 0;
+  border:1px solid color-mix(in srgb,var(--accent) 64%,#748e99);border-radius:50%;background:#10202a}
+.sky-node[data-kind="skill"] .star-pin{border-radius:0;transform:rotate(45deg);width:4px;height:4px}
+.sky-node[data-kind="connection"] .star-pin{border-radius:0}
+.sky-node[data-kind="agent"] .star-pin{background:var(--accent);box-shadow:0 0 11px color-mix(in srgb,var(--accent) 65%,transparent)}
+.sky-node.is-anchor{padding-top:6px;margin-bottom:5px;color:#e0e9e8}
+.sky-node.is-anchor strong{font:500 17px/1.3 var(--display);letter-spacing:-.015em}
+.sky-node.is-major{color:var(--sky-ink);margin-bottom:8px;padding-top:6px}
+.sky-node.is-major strong{font:500 23px/1.2 var(--display);letter-spacing:-.025em}
+.sky-node.is-major .star-pin{width:10px;height:10px;margin:7px 0 0;background:var(--accent);border:0;border-radius:50%;transform:none;
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 9%,transparent),0 0 24px color-mix(in srgb,var(--accent) 50%,transparent)}
+.sky-node-description{display:block;margin-top:8px;font:11px/1.65 var(--body);color:#95a8b0;max-width:30ch}
+.sky-cluster .sky-node:nth-child(even){padding-left:18px}
+.sky-cluster[data-area="nw"] .sky-node:nth-child(even),.sky-cluster[data-area="se"] .sky-node:nth-child(even){padding-left:36px}
+.sky-cluster[data-area="north"],.sky-cluster[data-area="south"]{max-width:250px}
+.sky-node:hover strong{color:var(--accent)}
+.sky-node:hover .star-pin{background:var(--accent);box-shadow:0 0 15px var(--accent)}
+.sky-node:focus-visible,.sky-core:focus-visible{outline:1px solid var(--accent);outline-offset:7px}
+.sky-map.has-peers{grid-template-columns:repeat(3,minmax(0,1fr));gap:56px 64px;padding:48px 24px 58px}
+.sky-map.has-peers[data-system="writing"]{grid-template-areas:"flow write draft" "outline format review" "cite sources reply"}
+.sky-map.has-peers[data-system="results"]{grid-template-areas:"analysis evidence plot" "synthesis report visuals"}
+.sky-map.has-peers[data-system="memory"]{grid-template-areas:"personal shared agent" "notes contract recall";min-height:540px}
+.sky-map[data-system="memory"] [data-skill="obsidian-project-memory"]{--accent:#b7a1ed}
+.sky-map[data-system="memory"] [data-skill="mempalace"]{--accent:#e1ba82}
+.sky-map[data-system="memory"] .sky-cluster{max-width:270px}
+.sky-map[data-system="memory"] .core-copy strong{overflow-wrap:normal}
+.sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"talk talk design design" "testing testing share share"}
+.has-peers .sky-core{width:224px;height:224px;padding:24px 18px}
+.has-peers .core-copy{gap:12px}.has-peers .core-copy strong{font-size:26px;max-width:188px}
+.has-peers .core-copy>span{max-width:180px}
+.sky-map.has-peers .core-orbit{inset:-18px -12px;transform:rotate(var(--orbit-angle)) scaleY(.72)}
+.has-peers .core-orbit:after{inset:-13px -8px}.has-peers .core-moons{inset:-18px}
+.sky-map.has-peers[data-system="presentation"] .sky-core{width:252px;height:252px}
+.sky-map.has-peers[data-system="presentation"] .core-copy strong{font-size:30px;max-width:212px}
+.sky-shell .chapter-notes{border-top:1px solid var(--sky-line)}
+.sky-shell .chapter-note{border-bottom:1px solid var(--sky-line)}
+.sky-shell .chapter-note>summary{display:flex;justify-content:space-between;align-items:center;gap:20px;list-style:none;
+  min-height:53px;padding:16px 0;font:12px/1.5 var(--body);color:#a4b6bd;cursor:pointer}
+.sky-shell .chapter-note>summary::-webkit-details-marker{display:none}.sky-shell .chapter-note>summary>i{font:normal 20px var(--body)}
+.sky-shell .chapter-note[open]>summary>i{transform:rotate(45deg)}
+.knowledge-chapter .knowledge-map-frame>.knowledge-inspector.is-open{position:fixed!important;z-index:75;top:auto!important;right:18px!important;bottom:18px!important;width:min(440px,calc(100vw - 36px))!important;max-height:calc(100dvh - 96px);box-shadow:0 24px 90px #0008}
+.sky-shell .chapter-note>.process-section,.sky-shell .chapter-note>.implementation{margin:12px 0 30px;padding:25px;border-radius:10px;background:#ece8dc;color:#242b24}
+.sky-shell .chapter-note h2{font-size:28px;line-height:1.25}
+.sky-shell .process-nav{margin-top:35px;padding-top:0;border:0}
+.sky-shell .process-nav button{color:#d6e1e4}
+.sky-shell .process-nav button small{font-size:9px;color:#8298a1}.sky-shell .process-nav button strong{font-size:18px;line-height:1.35;color:#d6e1e4}
+.sky-shell .gallery{margin:35px 0;padding:26px;background:#ece8dc;border-radius:12px;color:#242b24}
+.sky-shell .gallery h2{font-size:28px}
+/* A dossier is a close view of the selected object, not another grid of cards. */
+.sky-shell .skill-dialog{background:#132027;border-color:#354954;color:#e4edef;box-shadow:0 24px 100px #0008}
+.sky-shell .skill-dialog::backdrop{background:#071015aa;backdrop-filter:blur(7px)}
+.sky-shell .skill-dialog-head{border-left:2px solid var(--accent);padding-left:20px}
+.sky-shell .skill-dialog-head>span{color:#9cabb2}.sky-shell .skill-dialog-head h2{color:#edf3ef}
+.sky-shell .skill-dialog-close{background:#132027;color:#d9e5e8}.sky-shell .skill-dialog-close:hover{background:#283944}
+.sky-shell .skill-dialog-name{color:var(--accent)}.sky-shell .skill-dialog-description{color:#b4c4cc}
+.sky-shell .skill-invoke{border-color:#354954;color:#8199a5}.sky-shell .skill-invoke code{color:#d8e7ed}
+.sky-shell .skill-dialog .tool-value b{color:#94acb7}.sky-shell .skill-dialog .tool-value span{color:#dae5e9;border-color:#354954!important}
+.sky-shell .skill-dialog .tool-value .tool-outcome{background:color-mix(in srgb,var(--accent) 8%,#132027)!important;padding:15px!important;border-radius:8px}
+.sky-shell .skill-dialog .tool-mechanics{border-color:#354954}.sky-shell .skill-dialog .tool-mechanics>summary{color:#a9bfc8}
+.sky-shell .skill-dialog .tool-spec dt{color:#91a8b3}.sky-shell .skill-dialog .tool-spec dd{color:#ccdce3}
+.sky-shell .skill-dialog .tool-take>p{color:#a9bdc6}.sky-shell .skill-dialog .source-link{color:var(--accent)!important}
+@media(min-width:1600px){.sky-map{column-gap:70px;padding-right:25px;padding-left:25px}.sky-node strong{font-size:13px}.sky-node.is-major strong{font-size:25px}}
+@media(max-width:1050px) and (min-width:721px){
+  .sky-heading{gap:30px}.sky-map{grid-template-columns:minmax(0,1fr) 200px minmax(0,1fr);gap:36px 26px;padding-inline:0}
+  .sky-core,.sky-map[data-system="calls"] .sky-core{width:198px;height:198px;padding:25px 12px}.core-copy{gap:9px}.core-copy strong{font-size:25px;max-width:172px}
+  .core-copy>span{font-size:10px;max-width:156px}.core-copy em{font-size:8px}.sky-node.is-major strong{font-size:19px}.sky-node strong{font-size:11px}
+  .sky-cluster h2{font-size:9px;margin-left:18px}.sky-node{gap:10px}.sky-cluster .sky-node:nth-child(even){padding-left:10px}
+  .sky-cluster[data-area="nw"] .sky-node:nth-child(even),.sky-cluster[data-area="se"] .sky-node:nth-child(even){padding-left:15px}
+  .sky-map.has-peers{gap:44px 24px;padding-inline:12px}
+  .has-peers .sky-core{width:190px;height:190px;padding:20px 14px}.has-peers .core-copy strong{font-size:22px;max-width:160px}
+  .has-peers .core-copy>span{font-size:11px}.has-peers .core-copy{gap:10px}
+}
+@media(max-width:760px){.process-view:has(.sky-shell){padding-top:142px}}
+@media(max-width:720px){
+  .sky-heading{grid-template-columns:1fr;gap:17px;margin-top:10px}.sky-heading h1{font-size:37px}.sky-heading .sky-intro{font-size:12px;justify-self:start}
+  .sky-heading>div>p:last-child{font-size:13px}.sky-eyebrow{font-size:8px}
+  .sky-map{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"core core" "nw ne" "north north" "west east" "sw se" "south south";
+    gap:28px 23px;padding:43px 0 22px;min-height:0!important}
+  .sky-core,.sky-map[data-system="calls"] .sky-core{width:236px;height:236px;margin:5px auto 25px}.core-copy strong{font-size:28px}.core-copy>span{font-size:11px}
+  .core-orbit{inset:-20px -16px}.core-orbit:after{inset:-13px -10px}
+  .sky-cluster{align-self:start}.sky-cluster h2{font-size:9px;letter-spacing:.04em;margin:0 0 11px 16px}
+  .sky-node{gap:9px;min-height:44px;padding:9px 0}.sky-node strong{font-size:12px;line-height:1.6}
+  .sky-node.is-anchor strong{font-size:15px;line-height:1.4}.sky-node.is-major strong{font-size:18px;line-height:1.25}
+  .sky-node-description{font-size:11px;line-height:1.65}.sky-node.is-major .star-pin{width:7px;height:7px;margin-top:5px}
+  .sky-node .star-pin{margin-inline:0}.sky-cluster .sky-node:nth-child(even){padding-left:7px}
+  .sky-cluster[data-area="nw"] .sky-node:nth-child(even),.sky-cluster[data-area="se"] .sky-node:nth-child(even){padding-left:12px}
+  .sky-cluster[data-area="north"],.sky-cluster[data-area="south"]{max-width:240px}
+  .sky-map.has-peers,.sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 24px;padding:32px 8px 44px}
+  .sky-map.has-peers[data-system="writing"]{grid-template-areas:"write outline" "draft flow" "review cite" "format sources" ". reply"}
+  .sky-map.has-peers[data-system="results"]{grid-template-areas:"analysis plot" "evidence visuals" "report synthesis"}
+  .sky-map.has-peers[data-system="memory"]{grid-template-areas:"shared contract" "personal notes" "agent recall"}
+  .sky-map.has-peers[data-system="presentation"]{grid-template-areas:"talk design" "testing share"}
+  .sky-map.has-peers .sky-core,.sky-map.has-peers[data-system="presentation"] .sky-core{width:100%;max-width:224px;height:auto;aspect-ratio:1;margin:10px auto;padding:12px 9px;min-width:0}
+  .sky-map.has-peers .core-copy strong,.sky-map.has-peers[data-system="presentation"] .core-copy strong{font-size:clamp(16px,4.3vw,24px);max-width:100%;line-height:1.15}
+  .has-peers .core-copy{gap:9px;min-width:0}.has-peers .core-copy small{display:none}
+  .has-peers .core-copy>span{font-size:10px;line-height:1.45;max-width:100%}
+  .sky-map.has-peers .sky-core .core-orbit{inset:-9px -5px}.sky-map.has-peers .sky-core .core-orbit:after{inset:-7px -4px}
+  .sky-map.has-peers .sky-core .core-moons{inset:-9px}
+  .sky-shell .process-nav button{max-width:46%}.sky-shell .process-nav button strong{font-size:15px}
+  .sky-shell .chapter-note>.process-section,.sky-shell .chapter-note>.implementation{padding:16px}
+  .sky-shell .gallery{padding:16px}
+}
+@media(prefers-reduced-motion:reduce){.sky-core{transition:none}}
+@media(max-width:360px){
+ .sky-map .sky-core .core-orbit{inset:-8px -4px}
+ .sky-map .sky-core .core-orbit:after{inset:-5px}
+ .sky-map .sky-core .core-moons{inset:-12px}
+ .sky-map[data-system="calls"] .core-orbit{transform:none}
+}
+.sky-shell .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sky-shell .gallery-grid figure{min-width:0}
+.sky-shell .gallery-grid img{width:100%;max-width:100%;height:auto}
+@media(max-width:720px){.sky-shell .gallery-grid{grid-template-columns:minmax(0,1fr)}}
+/* Keep the complete constellation in the desktop viewport; dossiers remain below it. */
+@media(min-width:1024px){
+ .process-view:has(.sky-shell){padding-top:78px}
+ .sky-shell .back-button{min-height:28px;padding:4px 0;font-size:10px}
+ .sky-heading{margin:6px 0 10px;gap:32px}
+ .sky-eyebrow{margin-bottom:7px;font-size:8px}
+ .sky-heading h1{font-size:clamp(30px,3vw,42px)}
+ .sky-heading>div>p:last-child{margin-top:6px;font-size:12px;line-height:1.5}
+ .sky-heading .sky-intro{font-size:11px;line-height:1.6;max-width:62ch}
+ .sky-frame{position:relative}
+ .sky-shell .sky-map{position:absolute;inset:0 0 auto;width:100%;margin:0;transform:scale(var(--sky-scale,1));transform-origin:top center}
+}
+@media(min-width:1024px) and (max-height:900px){
+ .sky-shell .sky-map{min-height:0;grid-template-columns:minmax(0,1fr) 216px minmax(0,1fr);gap:18px 32px;padding:24px 20px 30px}
+ .sky-shell .sky-map.has-peers{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 42px}
+ .sky-shell .sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .sky-shell .sky-map .sky-core{width:198px;height:198px;padding:22px 16px}
+ .sky-shell .sky-map.has-peers .sky-core{width:180px;height:180px;padding:19px 14px}
+ .sky-shell .core-copy{gap:9px}.sky-shell .core-copy strong{font-size:25px;max-width:168px}
+ .sky-shell .sky-map[data-system="calls"] .core-copy strong{font-size:29px}
+ .sky-shell .sky-map.has-peers .core-copy strong{font-size:22px;max-width:152px}
+ .sky-shell .core-copy>span{font-size:10px;line-height:1.45;max-width:160px}
+ .sky-shell .core-copy small{font-size:8px}.sky-shell .core-copy em{font-size:8px;margin-top:0}
+ .sky-shell .sky-cluster h2{font-size:9px;margin:0 0 8px 26px}
+ .sky-shell .sky-node{min-height:27px;padding-top:4px;padding-bottom:4px}
+ .sky-shell .sky-node strong{font-size:12px;line-height:1.45}
+ .sky-shell .sky-node.is-anchor{margin-bottom:2px}.sky-shell .sky-node.is-anchor strong{font-size:16px;line-height:1.25}
+ .sky-shell .sky-node.is-major{margin-bottom:3px}.sky-shell .sky-node.is-major strong{font-size:20px;line-height:1.2}
+ .sky-shell .sky-node-description{margin-top:5px;font-size:11px;line-height:1.4}
+}
+@media(min-width:1024px) and (max-height:800px){.sky-eyebrow{display:none}}
+
+/* External services branch off their lab tool, with direct links. */
+.sky-external{position:relative;margin:16px 0 8px 26px;padding:0;min-width:0}
+.sky-external h3{margin:0 0 7px;color:#8fa4ac;font:8px/1.5 var(--mono);font-weight:400;letter-spacing:.07em;text-transform:uppercase}
+.sky-external a{display:flex;align-items:flex-start;gap:10px;position:relative;min-height:28px;padding:5px 0;color:#b9c9cd;text-decoration:none;font:12px/1.5 var(--body)}
+.sky-external a>span{min-width:0;overflow-wrap:anywhere}
+.sky-external a b{font:inherit;color:var(--accent)}
+.sky-external small{display:block;font:9px/1.4 var(--body);color:#8298a1}
+.external-pin{flex:0 0 auto;width:4px;height:4px;margin-top:6px;background:var(--accent);border-radius:50%;box-shadow:0 0 7px color-mix(in srgb,var(--accent) 40%,transparent)}
+.sky-external a:hover{color:var(--accent)}
+.sky-external a:focus-visible{outline:1px solid var(--accent);outline-offset:4px}
+.sky-external-ray,.sky-external-thread{stroke:color-mix(in srgb,var(--accent) 48%,#33464d);stroke-width:1;stroke-dasharray:2 4}
+.sky-pending{display:block;margin-top:5px;color:#9ba8ad;font:10px/1.4 var(--mono)}
+@media(max-width:720px){.sky-external{margin-left:16px}.sky-external a{min-height:38px;font-size:11px}.sky-external small{font-size:10px}}
+
+.sky-cluster>.sky-external{margin-top:0;margin-bottom:22px}
+.sky-cluster>.sky-external a{flex-direction:row-reverse}
+.sky-cluster>.sky-external a>span{flex:1;text-align:right}
+.sky-cluster>.sky-external h3{text-align:right;margin-right:14px}
+.sky-shell .tool-pending{padding:0 0 12px}
+
+/* Tool dossiers: one readable document in every entry route, independent of map theme. */
+html dialog.dossier-dialog:is(.skill-dialog,.quick-tool-dialog) {
+  --dossier-bg: #12212a;
+  --dossier-text: #dce8ed;
+  --dossier-muted: #acbfca;
+  color-scheme: dark;
+  width: min(1100px, calc(100vw - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  padding: 0;
+  border: 1px solid #49616d;
+  border-radius: 20px;
+  background: var(--dossier-bg);
+  color: var(--dossier-text);
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-shadow: 0 28px 100px #0009;
+}
+html dialog.dossier-dialog:is(.skill-dialog,.quick-tool-dialog)::backdrop { background: #050b11c9; backdrop-filter: blur(7px); }
+html .dossier.dossier {
+  --dossier-text: #dce8ed;
+  --dossier-muted: #acbfca;
+  color: var(--dossier-text);
+  background: #12212a;
+  padding: 46px 52px 38px;
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+html .dossier.dossier-dialog .dossier { min-height: 0; }
+html .dossier.dossier .dossier-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  margin: -46px -52px 14px;
+  padding: 6px 20px;
+  background: #12212a;
+  border-bottom: 1px solid #405762;
+}
+html .dossier.dossier .dossier-close {
+  position: static;
+  float: none;
+  margin: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #617581;
+  border-radius: 50%;
+  background: #182c37;
+  color: #eff8fb;
+  font: 30px/1 sans-serif;
+  cursor: pointer;
+}
+html .dossier.dossier .dossier-head { padding: 0 34px 32px 0; border: 0; }
+html .dossier.dossier .dossier-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  color: #bdcdd7;
+  font: 12px/1.6 var(--mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: .11em;
+}
+html .dossier.dossier .dossier-kicker::before { content: ''; width: 9px; height: 9px; flex: 0 0 9px; border: 1px solid var(--accent, #a2d8f0); transform: rotate(45deg); box-shadow: 0 0 20px #8cd5ec44; }
+html .dossier.dossier h2 { margin: 0 0 20px; max-width: 900px; color: #f2f7fa; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.15; font-weight: 600; letter-spacing: -.03em; }
+html .dossier.dossier .dossier-lead { max-width: 810px; margin: 0; font-size: 20px; line-height: 1.6; color: #dce8ed; }
+html .dossier.dossier p { margin: 0 0 12px; color: var(--dossier-text); }
+html .dossier.dossier .dossier-section { margin: 0; padding: 0; min-width: 0; }
+html .dossier.dossier h3 { margin: 0 0 17px; color: #b6d9e8; font-size: 12px; line-height: 1.6; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+html .dossier.dossier ul, html .dossier.dossier ol { padding: 0; margin: 0; list-style: none; }
+html .dossier.dossier li { margin: 0 0 14px; padding: 0; color: var(--dossier-text); }
+html .dossier.dossier li:last-child { margin-bottom: 0; }
+html .dossier.dossier .dossier-entry { display: grid; grid-template-columns: .85fr 1.15fr; gap: 40px; padding: 26px 0 32px; border-top: 1px solid #405762; border-bottom: 1px solid #405762; }
+html .dossier.dossier .dossier-start code { display: inline-block; padding: 5px 10px; margin: 4px 0 12px; color: #ddf3fd; background: #233d4b; border: 1px solid #486270; border-radius: 5px; font-size: 14px; }
+html .dossier.dossier .dossier-flow { display: grid; grid-template-columns: 1.4fr 1fr; gap: 46px; margin: 38px 0; align-items: start; }
+html .dossier.dossier .dossier-steps li { position: relative; padding: 0 0 26px 28px; margin: 0; }
+html .dossier.dossier .dossier-steps li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 7px; height: 7px; border: 1px solid #a7cedf; border-radius: 50%; background: #12212a; z-index: 1; }
+html .dossier.dossier .dossier-steps li::after { content: ''; position: absolute; left: 6px; top: 18px; bottom: -9px; width: 1px; background: #45616f; }
+html .dossier.dossier .dossier-steps li:last-child { padding-bottom: 0; }
+html .dossier.dossier .dossier-steps li:last-child::after { display: none; }
+html .dossier.dossier .dossier-result { padding: 24px 26px; border: 1px solid #486371; border-top: 2px solid #a0cfdd; border-radius: 0 0 14px 14px; background: linear-gradient(135deg,#203842,#192c36); }
+html .dossier.dossier .dossier-result .dossier-section + .dossier-section { border-top: 1px solid #48616c; margin-top: 24px; padding-top: 22px; }
+html .dossier.dossier .dossier-storage { padding-top: 28px; border-top: 1px solid #405762; }
+html .dossier.dossier .dossier-storage li { font-size: 14px; color: #c5d4dd; }
+html .dossier.dossier .dossier-footer { margin-top: 30px; padding-top: 24px; border-top: 1px solid #405762; }
+html .dossier.dossier .dossier-footer p { color: var(--dossier-muted); font-size: 14px; }
+html .dossier.dossier .dossier-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 22px; }
+html .dossier.dossier a { color: #a5e2fa; text-underline-offset: 4px; }
+html .dossier.dossier .dossier-install { margin: 0; padding: 0; border: 0; }
+html .dossier.dossier .dossier-install[open] summary { margin-bottom: 14px; }
+html .dossier.dossier .dossier-install summary { cursor: pointer; color: #d9e9ef; font-size: 14px; }
+html .dossier.dossier pre { padding: 18px; background: #09171f; color: #dfedf3; font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 8px; }
+html .dossier.dossier :focus-visible { outline: 2px solid #addef3; outline-offset: 5px; }
+html .dossier.dossier h2:focus { outline: none; }
+html .dossier-dialog[open] { animation: dossier-appear 150ms ease-out; }
+@keyframes dossier-appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 720px) {
+  html dialog.dossier-dialog:is(.skill-dialog,.quick-tool-dialog) { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); border-radius: 14px; }
+  html .dossier.dossier { padding: 28px 22px; font-size: 15px; }
+  html .dossier.dossier .dossier-toolbar { margin: -28px -22px 0; padding: 6px 12px; }
+  html .dossier.dossier .dossier-head { padding-right: 10px; padding-top: 20px; }
+  html .dossier.dossier .dossier-kicker { padding-right: 24px; font-size: 10px; }
+  html .dossier.dossier .dossier-lead { font-size: 18px; }
+  html .dossier.dossier .dossier-entry, html .dossier.dossier .dossier-flow { grid-template-columns: minmax(0,1fr); gap: 28px; }
+  html .dossier.dossier .dossier-flow { margin: 30px 0; }
+  html .dossier.dossier .dossier-result { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) { html .dossier-dialog[open] { animation: none; } }
+
+/* Ideation has one research engine, a question helper, and an external alternative. */
+.sky-shell .sky-map[data-system="ideation"]{grid-template-columns:minmax(0,1fr) 340px minmax(0,1fr);grid-template-areas:"west core east";min-height:460px;gap:48px;padding:55px 24px}
+.sky-shell .sky-map[data-system="ideation"] .sky-core{width:320px;height:320px;padding:35px 24px}
+.sky-shell .sky-map[data-system="ideation"] .core-copy{gap:16px}
+.sky-shell .sky-map[data-system="ideation"] .core-copy strong{font-size:42px;max-width:270px}
+.sky-shell .sky-map[data-system="ideation"] .core-copy small{font-size:10px;max-width:240px}
+.sky-shell .sky-map[data-system="ideation"] .core-copy>span{font-size:14px;max-width:240px}
+.sky-map[data-system="ideation"] .sky-external{margin:0}
+.sky-map[data-system="ideation"] .sky-external a{flex-direction:row;gap:17px;min-height:64px;font:500 29px/1.25 var(--display);color:#eef1e8}
+.sky-map[data-system="ideation"] .sky-external a>span{text-align:left}
+.sky-map[data-system="ideation"] .sky-external h3{text-align:left;margin:0 0 17px 26px;font-size:10px}
+.sky-map[data-system="ideation"] .sky-external small{font:12px/1.7 var(--body);color:#b3c1c5;margin-top:11px}
+.sky-map[data-system="ideation"] .external-pin{width:9px;height:9px;flex:0 0 9px;margin-top:10px;background:var(--accent);box-shadow:0 0 22px color-mix(in srgb,var(--accent) 35%,transparent)}
+.sky-map[data-system="ideation"] [data-skill="hypothesize"]{margin-top:22px}
+.sky-shell .sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"talk design share";gap:48px}
+@media(min-width:721px) and (max-width:1100px){
+ .sky-shell .sky-map[data-system="ideation"]{grid-template-columns:minmax(0,1fr) 260px minmax(0,1fr);gap:28px;padding:40px 0}
+ .sky-shell .sky-map[data-system="ideation"] .sky-core{width:250px;height:250px}
+ .sky-shell .sky-map[data-system="ideation"] .core-copy strong{font-size:32px}
+ .sky-map[data-system="ideation"] .sky-external a{font-size:24px}
+}
+@media(max-width:720px){
+ .sky-shell .sky-map[data-system="ideation"]{display:flex;flex-direction:column;min-height:0;padding:36px 18px;gap:42px}
+ .sky-shell .sky-map[data-system="ideation"] .sky-core{width:240px;height:240px;max-width:100%;margin:10px auto}
+ .sky-shell .sky-map[data-system="ideation"] .core-copy strong{font-size:29px;white-space:nowrap}
+ .sky-shell .sky-map[data-system="ideation"] .sky-cluster{width:100%;max-width:340px}
+ .sky-shell .sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"talk share" "design design";gap:36px 18px}
+}
+
+@media(min-width:721px) and (max-width:1100px){
+ .sky-shell .sky-map.has-peers[data-system="presentation"]{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"talk share" "design design";gap:36px 18px}
+ .sky-shell .sky-map.has-peers[data-system="presentation"] .sky-core{width:220px;height:220px}
+}

@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://docs.claude.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-configuration-000?style=flat-square&logo=anthropic&logoColor=white"></a>
   <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
-  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-37-58A6FF?style=flat-square"></a>
+  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-34-58A6FF?style=flat-square"></a>
   <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-16-BC8CFF?style=flat-square"></a>
   <a href="docs/knowledge-base.md"><img alt="lab knowledge MCP" src="https://img.shields.io/badge/Lab%20Knowledge%20MCP-47%20tools-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
@@ -18,7 +18,7 @@
   <a href="#the-toolkit-skills-commands-agents-hooks">The toolkit</a> ·
   <a href="#install">Install</a> ·
   <a href="#for-brain-lab-members">For lab members</a> ·
-  <a href="SKILLS.md">All 75 skills</a>
+  <a href="SKILLS.md">All 74 skills</a>
 </p>
 
 ## Overview
@@ -111,22 +111,22 @@ together with a token for the shared knowledge base.
 | | Count | What it is | Where |
 |---|---|---|---|
 | **Skills** | 75 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
-| **Slash commands** | 37 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, `/rebuttal`, … | [`commands/`](commands/) |
+| **Slash commands** | 34 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, … | [`commands/`](commands/) |
 | **Agents** | 16 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
 | **Hooks** | 7 | security guard, citation validator, session start/stop, memory auto-save, skill activation | [`hooks/`](hooks/) |
 | **Rules** | 6 | coding style, citations, security, agent orchestration, code workflow, server hygiene | [`rules/`](rules/) |
 | **Templates** | — | `settings.json.template`, `.env.example`, project-mapping example | repo root |
 
 <details>
-<summary><b>What the 75 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
+<summary><b>What the 74 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
 
 | Area | Skills you will actually type |
 |---|---|
 | **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `obsidian-literature-workflow`, `zotero-obsidian-bridge`, `citation-verification` |
 | **Experiments** | `results-analysis`, `results-report`, `obsidian-experiment-log`, `handoff-to-jarvis`, `diagnose`, `verification-loop` |
-| **Writing** | `ml-paper-writing`, `new-paper`, `writing-anti-ai`, `presentation`, `paper-to-social` |
+| **Writing** | `ml-paper-writing`, `writing-anti-ai`, `presentation`, `paper-to-social` |
 | **Review** | `astar-paper-review`, `review-response`, `grill-me`, `grill-with-docs` |
-| **Knowledge** | `lab-knowledge`, `lab-project-onboarding`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
+| **Knowledge** | `lab-knowledge`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
 | **Engineering** | `code-ingest`, `code-library`, `code-review-excellence`, `tdd`, `bug-detective`, `git-workflow`, `uv-package-manager` |
 | **Ideas and planning** | `research-ideation`, `planning-with-files`, `zoom-out`, `architecture-design`, `improve-codebase-architecture` |
 
@@ -135,7 +135,7 @@ together with a token for the shared knowledge base.
 ## Highlights — what you won't find upstream
 
 The repository started from `claude-scholar` (see [Credits](#credits)); these are the parts that grew
-here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
+here. Per-skill detail for all 74 skills is in [`SKILLS.md`](SKILLS.md).
 
 - **`paper-ingest`** — end-to-end pipeline: arXiv URL → BibTeX (external API, never LLM-generated) → PDF → Zotero parent item with PDF child attachment → Obsidian note with 8-section AI Explanation written by Haiku → mandatory final audit.
 - **`want-2-read`** — process a Markdown reading queue with one fan-out agent per paper, each invoking `paper-ingest`, plus a final review agent for quality control.
@@ -143,8 +143,8 @@ here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 - **`astar-paper-review`** — top-venue-grade peer review: reviewer + theoretician (proofs) + literature-scout + experiments-auditor, prompt-injection-safe, one review file per paper.
 - **`paper-to-social`** — turn a paper into copy-paste-ready Telegram / X / Habr posts with arXiv figures, in your own voice.
 - **`code-ingest`** / **`code-library`** — map an external repo into Obsidian Code-library notes (`path:line`, no code copied) and document the whole code workflow.
-- **`create-project`** / **`lab-project-onboarding`** — set up the private repository and Obsidian hub, then idempotently bind a Brain Lab project to its shared MCP record, human-facing Yonote page, and named project Kanban.
-- **`lab-knowledge`** / **`publish-hypothesis`** — Ask Lab runs inside the user's local agent and reads shared research context from Lab Knowledge MCP. Private drafts stay in Obsidian until an explicit curated publication preview is approved. Yonote is the clean human-facing project view.
+- **`create-project`** — set up the private repository and the Obsidian hub. Turning the accumulated project into a work of the shared base is part of `lab-knowledge`: claims as folders in the work's own GitLab repository, entering by a merge request a human merges.
+- **`lab-knowledge`** — the one skill for the shared base. It reads research context from the local clone of a work with plain `git` and `grep` (the MCP service was removed on 05-10-2026), and a change enters by a merge request a human merges. Private drafts stay in Obsidian.
 - **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc per-project task file convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
@@ -352,6 +352,12 @@ bash install/setup.sh       # backup-aware copy to ~/.claude/
 Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`.
 
 See the prerequisites table below before installing.
+
+When Zotero is configured, the installer checks the existing uv runtime for the
+APIs used by `scripts/zotero_shared.py`. A compatible runtime gets separate stdio
+client sessions backed by one model process per configuration. Library switches
+stay within each client. Missing or older runtimes keep the existing Zotero CLI.
+This check does not import models, install packages, or replace a global launcher.
 
 ## Customize
 

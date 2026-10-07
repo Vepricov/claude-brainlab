@@ -85,6 +85,11 @@ def letters(text: str) -> str:
     return re.sub(r"[^0-9a-zA-Zа-яёА-ЯЁ]+", "", text).lower()
 
 
+def title_raw(text: str) -> str:
+    found = re.search(r"(?m)^#\s+(.+)$", text)
+    return found.group(1).strip() if found else ""
+
+
 def title_of(text: str) -> str:
     found = TITLE_FIELD.search(text)
     return letters(found.group(1)) if found else ""
@@ -128,6 +133,10 @@ def notes_by_key(folder: Path) -> tuple[dict[str, list[Path]], list[str]]:
         text = note.read_text(encoding="utf-8")
         key = BIBKEY.search(text)
         if not key:
+            # Разбор без блока BibTeX — не редкость: отчёты лабораторий, посты, книги.
+            # Таких 29, и ключа цитирования у них нет вовсе. Единственное, чем их можно
+            # сопоставить, — заголовок, поэтому они кладутся под него.
+            found.setdefault(letters(note.stem), []).append(note)
             continue
         name = key.group(1)
         if name in found:
@@ -252,12 +261,37 @@ def whole(note: Path, source: str) -> str:
     return f"тело перенесено из базы целиком ({len(body)} б)"
 
 
+
+#: Двоеточие в имени файла невозможно, а в заголовках статей оно частое. Остальное —
+#: то, что не пускает в имя файла macOS и Обсидиан.
+BAD_IN_NAME = str.maketrans({":": "", "/": "-", "\\": "-", "|": "-",
+                             "*": "", "?": "", "<": "", ">": "", '"': ""})
+
+
+def create(folder: Path, source: str, theme: str) -> str:
+    """Завести в хранилище заметку по разбору, которого там нет вовсе.
+
+    Пять разборов базы не имели заметки ни под каким именем, и сверка могла только
+    сказать «нет пары»: переносить «Коротко» и утверждения было некуда. Заметка
+    собирается из самого разбора целиком — он и есть источник, — а имя берётся из
+    заголовка, как это заведено в хранилище.
+    """
+    title = (re.search(r"(?m)^#\s+(.+)$", source) or [None, "без заголовка"])[1].strip()
+    note = folder / (title.translate(BAD_IN_NAME).strip() + ".md")
+    if note.exists():
+        return f"«{note.name}» уже есть, не трогаю"
+    note.write_text(source if source.startswith("---\n") else source, encoding="utf-8")
+    return f"заведена заметка «{note.name}» ({len(source.encode())} б)"
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("base", type=Path, help="клон репозитория литературы темы")
     parser.add_argument("vault", type=Path, help="папка темы в хранилище Обсидиана")
     parser.add_argument("--apply", action="store_true",
                         help="перенести блок из базы в заметку")
+    parser.add_argument("--завести", action="store_true", dest="create",
+                        help="заводить заметку там, где её в хранилище нет вовсе")
     parser.add_argument("--body", action="store_true",
                         help="переносить разбор целиком, а не только «Коротко» и утверждения")
     args = parser.parse_args(argv)
@@ -279,9 +313,15 @@ def main(argv: list[str]) -> int:
         if block is None:
             trouble.append(f"{key}: в базе нет раздела «Что статья утверждает»")
             continue
-        note = pick(notes.get(key, []), title_of(source))
+        by_title = notes.get(letters(re.sub(r"[:/\\|*?<>\"]", "", title_raw(source))), [])
+        note = pick(notes.get(key, []) or by_title, title_of(source))
         if note is None:
-            trouble.append(f"{key}: в хранилище нет заметки с этим ключом и этим заголовком")
+            if args.apply and args.create:
+                trouble.append(f"{key}: {create(args.vault, source, args.vault.name)}")
+                fixed += 1
+            else:
+                trouble.append(f"{key}: в хранилище нет заметки с этим ключом и этим "
+                               f"заголовком (завести: --завести)")
             continue
         # Врезку Papers with Code убираем перед сверкой: она есть только в хранилище, стоит
         # внутри участка утверждений, и иначе каждая обогащённая заметка читается как

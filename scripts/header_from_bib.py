@@ -125,19 +125,33 @@ def header_of(text: str) -> dict[str, str] | None:
 
 
 def rebuild(text: str, want: dict[str, str], theme: str) -> str:
-    line = (f"**авторы** {want['authors']} · **год** {want['year']} · "
-            f"**где** {want['venue']} · **ключ цитирования** `{want['key']}` · **тема** {theme}")
+    """Заголовок и ссылка. Строки «авторы · год · где · ключ» больше нет.
+
+    Владелец 07-10-2026: «нахуя ты пишешь авторы, год, где, ключ цитирования? У тебя же
+    просто это в биптехе написано». Блок BibTeX стоит тремя строками ниже и несёт то же
+    самое в машинном виде, а шапка повторяла его словами и при любой правке с ним
+    расходилась. Осталось то, чего в BibTeX нет в пригодном для щелчка виде: заголовок
+    статьи и ссылка на источник. Строка снята из 672 разборов и 50 заметок проходом
+    `drop_header_line.py`, а здесь просто больше не пишется.
+    """
     text = TITLE_LINE.sub(lambda m: f"# {want['title']}", text, count=1)
-    text = META_LINE.sub(lambda m: line, text, count=1)
+    text = META_LINE.sub("", text, count=1)
     if want["url"]:
         text = LINK_LINE.sub(lambda m: f"[Открыть источник]({want['url']})", text, count=1)
     return text
 
 
 def main(argv: list[str]) -> int:
+    """Сверить заголовок статьи и ссылку с BibTeX.
+
+    Прежде проход держал ещё и строку «авторы · год · где · ключ». Её больше нет, поэтому
+    и условие «есть шапка» ушло: оно отбрасывало все разборы и проход молча ничего не
+    делал, печатая «разборов: 0».
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("roots", type=Path, nargs="+")
-    parser.add_argument("--fix", action="store_true", help="переписать шапки из BibTeX")
+    parser.add_argument("--fix", action="store_true",
+                        help="переписать заголовок и ссылку из BibTeX")
     args = parser.parse_args(argv)
 
     total = differ = fixed = skipped = 0
@@ -146,27 +160,25 @@ def main(argv: list[str]) -> int:
             if paper.name == "README.md":
                 continue
             text = paper.read_text(encoding="utf-8")
-            want, meta = header_of(text), META_LINE.search(text)
-            if not want or not meta:
+            want = header_of(text)
+            if not want:
                 skipped += 1
                 continue
             total += 1
-            fresh = rebuild(text, want, meta.group(1).strip())
+            fresh = rebuild(text, want, "")
             if fresh == text:
                 continue
             differ += 1
-            was = META_LINE.search(text).group(0)
-            now = META_LINE.search(fresh).group(0)
-            if was != now:
-                print(f"  {root.name}/{paper.stem}")
-                print(f"      было:  {was[:96]}")
-                print(f"      стало: {now[:96]}")
+            was = TITLE_LINE.search(text)
+            print(f"  {root.name}/{paper.stem}")
+            print(f"      было:  {(was.group(0) if was else '(без заголовка)')[:96]}")
+            print(f"      стало: # {want['title'][:94]}")
             if args.fix:
                 paper.write_text(fresh, encoding="utf-8")
                 fixed += 1
     tail = f", переписано: {fixed}" if args.fix else ""
-    print(f"\nразборов: {total}; шапка расходится с BibTeX: {differ}; "
-          f"без BibTeX или шапки: {skipped}{tail}")
+    print(f"\nразборов: {total}; заголовок или ссылка расходятся с BibTeX: {differ}; "
+          f"без разбираемого BibTeX: {skipped}{tail}")
     return 1 if (differ and not args.fix) else 0
 
 

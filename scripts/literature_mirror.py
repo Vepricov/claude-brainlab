@@ -82,6 +82,21 @@ def title_of(text: str) -> str:
     return letters(found.group(1)) if found else ""
 
 
+#: Ярлык на статью: файл-ссылка на разбор в теме-хозяйке вместо второй копии. Разбора в
+#: нём нет, значит и сверять нечего: заметка в хранилище одна и ведётся по хозяйке.
+#: Ставится `paper_label.py`.
+LABEL_MARK = "> Разбор этой статьи ведётся в теме"
+
+
+def is_label(text: str) -> bool:
+    for line in text.splitlines():
+        if line.startswith(LABEL_MARK):
+            return True
+        if line.strip() and not line.startswith(("---", "#")):
+            return False
+    return False
+
+
 def notes_by_key(folder: Path) -> tuple[dict[str, list[Path]], list[str]]:
     """Заметки по ключу цитирования; у ключа может быть больше одной заметки.
 
@@ -240,11 +255,14 @@ def main(argv: list[str]) -> int:
     if not papers:
         sys.exit(f"в {args.base} нет разборов")
 
-    agree = fixed = 0
+    agree = fixed = labels = 0
     trouble: list[str] = list(clash)
     for paper in papers:
         key = paper.stem
         source = paper.read_text(encoding="utf-8")
+        if is_label(source):
+            labels += 1
+            continue
         block, head = claims(source), short(source)
         if block is None:
             trouble.append(f"{key}: в базе нет раздела «Что статья утверждает»")
@@ -286,7 +304,9 @@ def main(argv: list[str]) -> int:
     for line in trouble:
         print(" ", line)
     tail = f", выровнено: {fixed}" if args.apply else ""
-    print(f"разборов: {len(papers)}, совпадают: {agree}, расходятся или без пары: "
+    if labels:
+        tail += f", ярлыков (ведутся в другой теме): {labels}"
+    print(f"разборов: {len(papers) - labels}, совпадают: {agree}, расходятся или без пары: "
           f"{len(trouble) - fixed if args.apply else len(trouble)}{tail}")
     return 1 if (len(trouble) - fixed if args.apply else trouble) else 0
 

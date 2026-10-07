@@ -31,12 +31,17 @@ LABEL = re.compile(r"^> Разбор этой статьи ведётся в т�
 
 
 def is_label(text: str) -> str | None:
-    """Если файл — ярлык, вернуть слаг темы-хозяйки."""
-    for line in text.splitlines():
+    """Если файл — ярлык, вернуть слаг темы-хозяйки.
+
+    Frontmatter пропускается целиком: с 07-10-2026 свойства есть у каждого разбора, и
+    прежняя проверка спотыкалась о первое же из них.
+    """
+    body = re.sub(r"\A---\n.*?\n---\n", "", text, flags=re.S)
+    for line in body.splitlines():
         found = LABEL.match(line)
         if found:
             return found.group(1)
-        if line.strip() and not line.startswith(("---", "#")):
+        if line.strip() and not line.startswith("#"):
             return None
     return None
 

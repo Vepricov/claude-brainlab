@@ -175,6 +175,20 @@ def clone_of_project(cwd: str) -> Path:
     return here / "lab-base"
 
 
+def branch_of(root: Path) -> str:
+    """На какой ветке стоит рабочее дерево клона. Пусто, если спросить не удалось."""
+    if not (root / ".git").is_dir():
+        return ""
+    try:
+        done = subprocess.run([*GIT, "-C", str(root), "rev-parse", "--abbrev-ref", "HEAD"],
+                              capture_output=True, text=True, timeout=10,
+                              stdin=subprocess.DEVNULL,
+                              env={**os.environ, **NO_PROMPT_ENV})
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return done.stdout.strip() if not done.returncode else ""
+
+
 def pull_clone(work: str, cwd: str) -> list[str]:
     """Завести или обновить клон работы в папке проекта и сказать, что изменилось.
 
@@ -392,11 +406,27 @@ def main() -> int:
     place = clone_of_project(cwd)
     repo, claims = claims_of(slug, place)
     if not claims:
+        # Ни утверждений, ни клона — значит это и не работа базы. Каталог сопоставляется
+        # работе по карте путей, а в карте лежат ВСЕ проекты, не только научные: этот
+        # репозиторий, например, инфраструктурный, и работы в базе у него нет. Прежде
+        # здесь печаталась строка «утверждений пока нет», и 07-10-2026 выяснилось, чем
+        # это плохо: работа `lab-knowledge-pipeline` была удалена, а хук продолжал звать
+        # её каждую сессию и печатать ошибку клонирования. Строка, которая не меняется от
+        # сессии к сессии, — это ровно то, против чего хук и написан.
+        if not (place / "claims").is_dir():
+            return 0
         print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {place}")
         print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
         return 0
     print(f"\nЛаборатория: {slug}, утверждений {len(claims)} — {', '.join(claims)}")
     print(f"Клон: {place}")
+    # Утверждения прочитаны из рабочего дерева, а обновляется `origin main`. Если дерево
+    # стоит на ветке предложения, хук покажет её состояние, назвав его состоянием базы.
+    # Проверено 07-10-2026 на `wsd-muon`: клон остался на `claim/H-WSD-017-audit`, ветку
+    # при слиянии удалили, и хук печатал `H-WSD-020 confirmed` — состояние, которого в
+    # закрытом наборе свода уже нет, и которого в `main` нет полгода.
+    if (branch := branch_of(place)) and branch != "main":
+        print(f"Дерево стоит на ветке `{branch}`, и состояния выше — её, не из main.")
     if changed := pull_clone(slug, cwd):
         print("В main: " + "; ".join(text_line.strip() for text_line in changed[:4]))
     if waiting := open_proposals(slug):

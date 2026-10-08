@@ -160,6 +160,12 @@ def strip_comments(obj):
         return [strip_comments(x) for x in obj]
     return obj
 data = strip_comments(substitute(data))
+# Jev (the recording hook) asks a cheap model through OpenRouter. With no key it gives up
+# silently on every turn, which is the same as having no hook. An unresolved placeholder is
+# worse than an absent key: it reaches OpenRouter as a real string and returns 401 each turn.
+if not os.environ.get("OPENROUTER_API_KEY"):
+    data.get("env", {}).pop("OPENROUTER_API_KEY", None)
+    print("  Jev: no OPENROUTER_API_KEY, the recording hook will stay silent")
 # Drop zotero MCP entry if no API key was provided.
 if not os.environ.get("ZOTERO_API_KEY"):
     data.get("mcpServers", {}).pop("zotero", None)

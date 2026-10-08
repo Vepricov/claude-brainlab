@@ -1,7 +1,8 @@
 {
   "_comment": "settings.json.template — placeholders are filled in by install/setup.sh from .env. See docs/INSTALL.md.",
   "env": {
-    "EDITOR": "${HOME}/.claude/scripts/editor.sh"
+    "EDITOR": "${HOME}/.claude/scripts/editor.sh",
+    "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
   },
   "hooks": {
     "PreToolUse": [
@@ -11,6 +12,16 @@
           {
             "type": "command",
             "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/security-guard.js'),{stdio:'inherit'})\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/citation-validator.py",
             "timeout": 5
           }
         ]
@@ -24,6 +35,11 @@
             "type": "command",
             "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/session-start.js'),{stdio:'inherit'})\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/lab-where-am-i.py",
+            "timeout": 5
           }
         ]
       }

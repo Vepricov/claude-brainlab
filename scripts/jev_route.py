@@ -87,22 +87,67 @@ KIND = {
 #: Куда это ложится. Три независимых «да», можно все три сразу: владелец 03-10-2026 —
 #: «Можно выбрать все три варианта. Можно только два».
 PLACES = {
-    "lab": "This belongs in the shared knowledge of the laboratory, which other members "
-           "read: a measured result under a claim, a derivation, or an instruction other "
-           "people need in order to work.",
+    "lab": "This is INTERESTING TO THE LABORATORY: in a month somebody will look for it "
+           "and be annoyed not to find it. Name who and why, or it is not. It counts "
+           "whether or not it is science: a measured result, a derivation, an instruction "
+           "others need, an error found in a paper, a dead end that cost time, a rule or "
+           "tool that changed, an obligation to an outside party and its deadline, an "
+           "agreement with a person. It does NOT count as: a report of what was done this "
+           "turn, an intention, a retelling of what already sits in the repository.",
     "mempalace": "Worth keeping verbatim across sessions: the owner's own words, a decision "
                  "and its reason, a trap that cost time, a number that was measured.",
     "obsidian": "The durable state of the OWNER'S OWN project changed: a protocol, results, "
                 "a decision, an open question. Something he will reread in his own notes.",
 }
 
-#: Внутри лаборатории: научное идёт в работу, служебное — в справочник или журнал. Разделение
+#: Внутри лаборатории: научное идёт в работу, остальное — в свой репозиторий. Разделение
 #: взято с передней страницы базы: «служебное» это отдельные репозитории БЕЗ утверждений.
+#: 08-10-2026 сюда добавлены гранты, обязательства наружу, студенты и публичные тексты.
+#: До этого признаком было «научный результат», и владелец показал, чем это кончается:
+#: агент сутки вёл инженерную работу и оформлял документы, на каждом ходе честно отвечал
+#: «записывать нечего» и не написал в базу ни строки. Признак теперь — «интересно
+#: лаборатории», а не «это наука».
 INSIDE_LAB = {
-    "handbook": "Other people need this as instruction: how a tool works, how a pipeline is "
-                "wired, a trap anyone would hit. Not a scientific result.",
+    "handbook": "An instruction other people need in order to work: how a tool works, how "
+                "a pipeline is wired, a trap anyone would hit.",
     "journal": "The way the laboratory WORKS changed: a new rule, a new place, a cancelled "
                "rule, a tool switched off or replaced.",
+    "grants": "A grant: its application, its report, a commitment or deadline under it.",
+    "management": "An obligation to an OUTSIDE party: a customer, a stage, an acceptance, "
+                  "intellectual property paperwork, a report owed to someone.",
+    "education": "Students and courses: who does what, what was handed over, what was "
+                 "agreed with a student.",
+    "communications": "Public text: an announcement, a post, a talk, anything that will be "
+                      "read outside the laboratory.",
+}
+
+#: Одно правило на все вопросы сразу, а не оговорка в каждом. Владелец 08-10-2026, увидев
+#: `grants` и `management` на ходе, который правил хуки: «Джев как будто не видит то, что мы
+#: обсуждаем. Он сам без таких подсказок должен понять, что это не про грант. Это здравый
+#: смысл вообще-то.» Он прав: заплатка «False when merely mentioned» в каждом вопросе — это
+#: признание, что вопрос задан неверно. Спрашивать надо про предмет хода, один раз и для
+#: всего.
+SUBJECT_RULE = ("Judge the SUBJECT of this turn and what it actually produced, never the "
+                "words it happens to contain. A thing named as an example, as background, "
+                "as a reason for something else, or as a past mistake being explained is "
+                "not the subject. Answer yes only if removing that thing would leave the "
+                "turn without its point. ")
+
+#: Готовый адрес для клонирования. Подсказка, которая называет место, но не говорит, где
+#: оно лежит, заставляет агента искать — а он не найдёт и запишет не туда или не запишет
+#: вовсе. Владелец 08-10-2026: «пусть он в какой-то момент скажет про это, и агент сам
+#: склонирует нужные репо, если их нет».
+BASE_URL = os.getenv("BRAINLAB_GIT_URL", "https://68-183-24-188.sslip.io:9445")
+#: Хост нужен отдельно: клон узнаётся по нему в `.git/config`. Второй литерал в коде
+#: означал бы, что у студента с другим адресом базы клоны не находятся молча.
+HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
+REPO_OF = {
+    "handbook": "brainlab/handbook",
+    "journal": "brainlab/journal",
+    "grants": "grants/grants",
+    "management": "ops/management",
+    "education": "ops/education",
+    "communications": "ops/communications",
 }
 
 #: ГЛАВНЫЙ ВОПРОС ПРО РАБОТУ. Владелец 03-10-2026: прогон пишет код сам и агента будить не
@@ -123,11 +168,19 @@ AXIS = {
 #: пока обсуждение идёт, вывод ещё переедет, и запись придётся переписывать. Поэтому
 #: прерывание требует НЕ «это важно», а «это важно И уже не изменится И ещё не записано».
 READY = {
-    "settled": "Has this SETTLED? True when the thing is finished and will not be rewritten: "
-               "a number was measured and exists, a decision was made and acted on, a proof "
-               "closed. False while the work is still moving: a plan, a guess, 'let me "
-               "check', an intermediate result that the next step may overturn, or a "
-               "conclusion that already replaced an earlier one in this same conversation.",
+    # Спрашиваем про СВЕРШИВШЕЕСЯ, а не про вечное. Владелец 08-10-2026: «странно ничего
+    # не писать потому, что потом поменяется; на то у нас и оформлены PR и git, чтобы потом
+    # если что поправить информацию за собой». Он прав: запись в базе ревизуема, и цена
+    # неточной записи — ещё один коммит, а цена ненаписанного — потерянные сутки. За эту
+    # сессию 121 ход из 137 был отклонён как «ещё не устоялось», при зрелой оценке в 132 из
+    # них: удалена старая база, снята Gitea, легло 923 правки в литературу — и ни строки.
+    "settled": "Did something ALREADY HAPPEN in this turn, as a fact of the past? True when "
+               "a number was measured, a change was applied, a decision was acted on, a "
+               "file was pushed, an error was found: the event is over, even if its meaning "
+               "may later be refined. Records here are revisable through git, so possible "
+               "future refinement is NOT a reason to answer no. False only while nothing "
+               "has happened yet: a plan, a guess, 'let me check', a half-finished attempt "
+               "whose outcome is still unknown.",
     "repeat": "Is this the SAME subject as something already written down earlier in this "
               "session (listed under `already_recorded`)? True if recording it again would "
               "produce a second record of one thing.",
@@ -214,8 +267,9 @@ def ask(text: str, api_key: str, recorded: list[str],
     questions: dict[str, dict] = {}
     for group in (PLACES, INSIDE_LAB, READY, AXIS):
         for name, description in group.items():
-            questions[name] = {"type": "noul", "instructions": description,
-                            "criteria": {"true": "yes", "false": "no"}}
+            questions[name] = {"type": "noul",
+                               "instructions": SUBJECT_RULE + description,
+                               "criteria": {"true": "yes", "false": "no"}}
     questions["вид"] = {"type": "choice", "instructions":
         "If this turn produced something that belongs in a WORK of the lab base (not the "
         "handbook, not the journal), which kind of record is it? Pick `none` otherwise.",
@@ -304,7 +358,7 @@ def summary() -> None:
 
 
 def decision(answer: dict, turns: int, past: int,
-             clone: dict | None = None) -> dict:
+             clone: dict | None = None, cwd: str = "") -> dict:
     """Прерывать или нет. Решают ТРИ условия, и это главное в замысле.
 
     Важность и готовность — разные вещи. Пока тема обсуждается, вывод ещё переедет, и запись
@@ -327,10 +381,16 @@ def decision(answer: dict, turns: int, past: int,
     # Один кончившийся прогон агента не касается: его описывает код и сам отправляет в ветку.
     # Поэтому «в лабораторию» снимается, когда вид — прогон, а ось ещё не закрылась. Владелец
     # 03-10-2026: «это, по идее, должно делать автоматически… пока не надо».
+    # Подместа базы имеют смысл, ТОЛЬКО если в базу вообще пишем. Прежде они считались
+    # независимо, и 08-10-2026 на ходе про классификатор `lab` дал 0.39 (не пишем), а
+    # `grants` 0.65 — и грант попадал в подсказку при том, что база вообще не выбрана.
+    # Владелец это и ловил дважды: «нахуя тут про гранты, в чём смысл?»
+    inside = ([one_item for one_item in INSIDE_LAB if verdict(one_item) >= THRESHOLD]
+              if "lab" in places else [])
     kind_draft = ((reply.get("вид") or {}).get("choice")) or "none"
     if kind_draft == "run" and verdict("closed") < AXIS_THRESHOLD and "lab" in places:
         places.remove("lab")
-    inside = [one_item for one_item in INSIDE_LAB if verdict(one_item) >= THRESHOLD]
+
     kind = kind_draft
 
     # Закрывшаяся ось — самостоятельный повод, даже при средней оценке: это ровно тот момент,
@@ -376,7 +436,40 @@ def decision(answer: dict, turns: int, past: int,
             "устоялось": round(settled, 2), "повтор": round(repeat, 2),
             "ось": round(axis, 2),
             "места": places, "внутри_лабы": inside, "вид": kind,
-            "с_прошлого": since_last}
+            "клоны": clones_here(cwd), "с_прошлого": since_last}
+
+
+def clones_here(cwd: str) -> list[str]:
+    """Клоны репозиториев базы рядом с работой: что склонировано, туда и пишем.
+
+    Тот же признак, что у хука начала сессии: клон и есть решение о месте записи, и
+    отдельного файла с решением не нужно. Смотрим саму папку и один уровень внутрь —
+    глубже лежат чужие зависимости.
+    """
+    here = Path(cwd or ".").expanduser().resolve()
+    if not here.is_dir():
+        return []
+    found: list[str] = []
+    try:
+        folders = [here, *[child for child in here.iterdir() if child.is_dir()]]
+    except OSError:
+        return []
+    for folder in folders[:60]:
+        config = folder / ".git" / "config"
+        try:
+            if not config.is_file():
+                continue
+            text = config.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for line in text.splitlines():
+            line = line.strip()
+            if line.startswith("url = ") and HOST in line:
+                path = line.split(HOST, 1)[1].lstrip(":0123456789/")
+                path = path[:-4] if path.endswith(".git") else path
+                if path and path not in found:
+                    found.append(path)
+    return found
 
 
 def hint(verdict: dict) -> str:
@@ -406,9 +499,15 @@ def hint(verdict: dict) -> str:
             names = {"series": "серией", "run": "прогоном",
                      "theory": "выкладкой", "claim": "правкой утверждения"}
             chunks.append(f"в работу {names.get(verdict['вид'], verdict['вид'])}")
-        for one, name in (("handbook", "в справочник"), ("journal", "в журнал лаборатории")):
+        # Все места, а не только научные. До 08-10-2026 здесь стояли два: справочник и
+        # журнал, и агент с грантовой или договорной работой не слышал про свой адрес
+        # вовсе — он честно отвечал «записывать нечего» и молчал сутками.
+        names = {"handbook": "в справочник", "journal": "в журнал лаборатории",
+                 "grants": "в гранты", "management": "в обязательства наружу",
+                 "education": "в студентов и курсы", "communications": "в публичные тексты"}
+        for one in REPO_OF:
             if one in verdict["внутри_лабы"]:
-                chunks.append(name)
+                chunks.append(f"{names[one]} (`{REPO_OF[one]}`)")
         parts.append("в базу лаборатории" + (f" ({', '.join(chunks)})" if chunks else ""))
     if "mempalace" in verdict["места"]:
         parts.append("в MemPalace")
@@ -416,10 +515,21 @@ def hint(verdict: dict) -> str:
         parts.append("в Obsidian")
     if not parts:
         return ""
+    tail = ""
+    if "lab" in verdict["места"]:
+        need = [REPO_OF[one] for one in REPO_OF if one in verdict["внутри_лабы"]]
+        missing = [repo for repo in need if repo not in (verdict.get("клоны") or [])]
+        if missing:
+            cmds = "  ".join(f"`git clone {BASE_URL}/{repo}.git`" for repo in missing)
+            tail = (f" Клона рядом нет — заведи его здесь же: {cmds}. Дальше клон и будет "
+                    "адресом, и спрашивать больше не придётся.")
+        else:
+            tail = " Клон уже рядом, пиши в него предложением."
     return ("Классификатор считает, что из этого хода надо записать "
             + ", ".join(parts)
-            + f". Оценка {verdict['оценка']:.1f} из 3, устоялось {verdict['устоялось']:.2f}. "
-              "Это подсказка, а не приговор: проверь сам.")
+            + f". Оценка {verdict['оценка']:.1f} из 3, устоялось {verdict['устоялось']:.2f}."
+            + tail
+            + " Это подсказка, а не приговор: проверь сам.")
 
 
 def main() -> None:
@@ -474,7 +584,8 @@ def main() -> None:
         return
 
     verdict = decision(answer, int(payload.get("ходов") or 0),
-                  int(payload.get("прошлое") or 0), clone)
+                  int(payload.get("прошлое") or 0), clone,
+                  str(payload.get("каталог") or ""))
     reply = answer.get("answers") or {}
     record.update({
         "работа": (clone or {}).get("work"),

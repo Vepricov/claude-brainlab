@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import re
 import select
 import subprocess
@@ -397,11 +398,149 @@ def read_payload() -> dict:
         return {}
 
 
+#: Места базы, которые НЕ являются научной работой. Агент, правящий правило, инструмент
+#: или что-то наружу, обязан знать, что запись идёт не только в код. До 08-10-2026 он об
+#: этом не знал вовсе: правила жили в README самих репозиториев, то есть читались, только
+#: если репозиторий случайно склонировали. За сутки с 923 правками в базе не появилось ни
+#: одной записи в журнал.
+#:
+#: Список НЕ зашит: он собирается из самого GitLab, по описаниям групп и проектов. Иначе он
+#: протухнет ровно так же, как протухали все зашитые списки до него.
+PLACES_CACHE = Path("~/.cache/brainlab/places.json").expanduser()
+PLACES_TTL = 12 * 3600
+#: Что писать в каждое место. Ключ — путь проекта, значение — когда туда идут.
+WHEN_TO_WRITE = {
+    "brainlab/journal": "менялся СПОСОБ РАБОТЫ: правило, место, инструмент, что-то выключено",
+    "brainlab/handbook": "менялось УСТРОЙСТВО: чем работаем, что умеют навыки, как заведено",
+    "brainlab/tools": "менялся общий код, который берут себе в репозиторий с обучением",
+    "grants/grants": "менялось что-то по гранту: заявка, отчёт, обязательство",
+    "ops/management": "менялось обязательство НАРУЖУ: заказчик, этап, приёмка, отчёт",
+    "ops/education": "менялось про студентов и курсы",
+    "ops/communications": "менялось про анонсы и публичные тексты",
+}
+
+
+def _ask(path: str, token: str, seconds: int = 4):
+    """Один вызов к GitLab. Молчит при любой беде: хук не должен мешать работе."""
+    try:
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/{path}",
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=seconds) as answer:
+            return json.loads(answer.read().decode("utf-8"))
+    except Exception:
+        return None
+
+
+def places() -> list[tuple[str, str]]:
+    """Места базы вне научных работ: путь и когда туда писать.
+
+    Ответ кладётся в кеш на полсуток: хук выполняется при каждом старте, и ходить за этим
+    в сеть каждый раз незачем. Нет сети и нет кеша — остаётся список рядом: промолчать здесь хуже, чем
+    назвать место, которого у студента может не оказаться.
+    """
+    try:
+        if PLACES_CACHE.is_file() and time.time() - PLACES_CACHE.stat().st_mtime < PLACES_TTL:
+            return [tuple(row) for row in json.loads(PLACES_CACHE.read_text(encoding="utf-8"))]
+    except (OSError, ValueError):
+        pass
+    known = sorted(WHEN_TO_WRITE.items())
+    if not TOKEN_FILE.is_file():
+        return known
+    try:
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return known
+    found = []
+    for project in _ask("projects?per_page=100", token) or []:
+        path = project["path_with_namespace"]
+        # Научная работа лежит на третьем уровне (направление/тема/работа) — её не берём,
+        # как и переднюю страницу группы и литературу темы.
+        if path.count("/") >= 2 or project["path"] in ("gitlab-profile", "literature"):
+            continue
+        when = WHEN_TO_WRITE.get(path)
+        if when:
+            found.append((path, when))
+    if not found:
+        return known
+    try:
+        PLACES_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        PLACES_CACHE.write_text(json.dumps(found, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
+    return found
+
+
+#: Куда пишет ИМЕННО ЭТА работа, видно по клонам рядом с ней: склонировал `grants/grants` —
+#: значит пишешь туда. Два клона — два адреса. Отдельного файла с решением не нужно, и
+#: владелец 08-10-2026 это сказал прямо: «почему нельзя просто сделать git clone один раз,
+#: и потом агент уже будет видеть: ага, есть клон, работаю там».
+#:
+#: Решение всё равно остаётся за владельцем: клонов нет — агент спрашивает, а не выбирает
+#: сам. 07-10-2026 один агент сутки отвечал «записывать нечего», потому что его инженерная
+#: работа не подходила ни под один научный адрес; угадать было бы не лучше, владелец убрал
+#: бы её в `grants/grants` отдельной папкой.
+BASE_HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
+
+
+def clones_here(cwd: str) -> list[str]:
+    """Клоны репозиториев базы рядом с работой: что склонировано, туда и пишем.
+
+    Смотрим саму папку и один уровень внутрь: глубже лежат чужие зависимости, и принимать
+    их за адрес записи незачем.
+    """
+    here = Path(cwd or ".").expanduser().resolve()
+    found: list[str] = []
+    folders = [here, *[child for child in here.iterdir() if child.is_dir()]] \
+        if here.is_dir() else [here]
+    for folder in folders[:60]:
+        config = folder / ".git" / "config"
+        try:
+            if not config.is_file():
+                continue
+            text = config.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for line in text.splitlines():
+            line = line.strip()
+            if line.startswith("url = ") and BASE_HOST in line:
+                path = line.split(BASE_HOST, 1)[1].lstrip(":0123456789/")
+                path = path[:-4] if path.endswith(".git") else path
+                if path and path not in found:
+                    found.append(path)
+    return found
+
+
+def tell_places(cwd: str) -> None:
+    """Сказать, куда идёт запись отсюда, или что это надо спросить у владельца.
+
+    Зовётся из КАЖДОГО пути, где научной работы базы нет. Два исхода, и только два: клоны
+    базы рядом есть — печатаем их и молчим про остальное; клонов нет — печатаем список мест
+    и требуем СПРОСИТЬ, а не выбрать самому.
+    """
+    mine = clones_here(cwd)
+    if mine:
+        print("\nЗапись отсюда идёт в " + ", ".join(f"`{path}`" for path in mine)
+              + " — это клоны базы рядом с работой.")
+        print("Предложением, сливает человек. Нужен ещё адрес — склонируй его сюда же.\n")
+        return
+    known = places()
+    if not known:
+        return
+    print("\nКлонов базы рядом нет, значит адреса у записи пока нет. Выбирать его самому")
+    print("нельзя: это решает владелец. Спроси его, назвав, что именно получилось. Места:")
+    for path, when in known:
+        print(f"  `{path}` — {when}")
+    print("Его ответ — это `git clone <адрес>` сюда же: дальше клон и будет ответом, и")
+    print("вопрос не повторится. Запись идёт предложением, сливает человек.\n")
+
+
 def main() -> int:
     payload = read_payload()
     cwd = payload.get("cwd") or os.getcwd()
     slug = work_of(cwd)
     if slug is None:
+        tell_places(cwd)
         return 0
     place = clone_of_project(cwd)
     repo, claims = claims_of(slug, place)
@@ -414,6 +553,7 @@ def main() -> int:
         # её каждую сессию и печатать ошибку клонирования. Строка, которая не меняется от
         # сессии к сессии, — это ровно то, против чего хук и написан.
         if not (place / "claims").is_dir():
+            tell_places(cwd)
             return 0
         print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {place}")
         print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")

@@ -36,9 +36,15 @@ PLACEHOLDER = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
 SKIP = {".DS_Store", "__pycache__", "synced", "disabled"}
 
 
+#: Собранные файлы сравнивать незачем: PDF шаблона конференции пересобирается и побайтово
+#: не совпадает никогда, из-за чего четыре таких файла вечно висели в списке расхождений.
+BUILT = (".pdf", ".pyc", ".zip", ".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2")
+
+
 def ignored(relative: Path) -> bool:
     name = relative.name
     return (any(part in SKIP for part in relative.parts)
+            or name.endswith(BUILT)
             or ".bak" in name or name.endswith("~") or name.startswith("."))
 
 

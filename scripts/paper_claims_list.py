@@ -12,12 +12,16 @@
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 import re
 import subprocess
 import sys
 
-MIRROR = pathlib.Path("/home/shkodnik1917/brainlab-stack/mirror-gitlab")
+#: Зеркало базы на сервере. Путь настраивается, а не вписан: репозиторий публичный,
+#: и домашний каталог конкретного человека в него попадать не должен.
+MIRROR = pathlib.Path(os.environ.get("LAB_KNOWLEDGE_MIRROR",
+                                     "~/brainlab-stack/mirror-gitlab")).expanduser()
 HEAD = re.compile(r"^### Утверждение \d+ — (.+)$", re.M)
 #: Слова, которыми оценка говорит, что опираться на это нельзя.
 DOUBT = re.compile(r"верить нельзя|не установлен|в пределах шума|меньше.{0,20}шум|"

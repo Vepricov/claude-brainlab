@@ -18,12 +18,16 @@
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 import re
 import subprocess
 import sys
 
-MIRROR = pathlib.Path("/home/shkodnik1917/brainlab-stack/mirror-gitlab")
+#: Зеркало базы на сервере. Путь настраивается, а не вписан: репозиторий публичный,
+#: и домашний каталог конкретного человека в него попадать не должен.
+MIRROR = pathlib.Path(os.environ.get("LAB_KNOWLEDGE_MIRROR",
+                                     "~/brainlab-stack/mirror-gitlab")).expanduser()
 #: Что считается конкретным числом: десятичное, доля, кратность, крупное целое.
 NUMBER = re.compile(r"\d+[.,]\d+|\d+\s*%|\\%|\d+\s*[×x]\b|\d+\s*раз|\d{3,}")
 #: Признак того, что раздел есть, но числа в нём не донесены: он описывает картинку словами.

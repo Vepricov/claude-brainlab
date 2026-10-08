@@ -33,6 +33,7 @@ database, so the rules reached nobody whose install had no lab MCP entry.
 Checkpoint markers track requests only; the agent must read back writes.
 """
 
+import importlib.util
 import json
 import subprocess
 import sys
@@ -130,6 +131,106 @@ def human_turns(transcript_path: str) -> int:
                 continue
             count += 1
     return count
+
+
+#: ── Два сторожа, которые НЕ ходят к модели ────────────────────────────────────
+#: Владелец 08-10-2026: «по 2 по идее просто детерминированный код может ходить по всем PR,
+#: которые есть у этого агента в этой сессии, и присылать ему правки… тут вообще можно без
+#: траты токенов». То же верно и про прогон: запуск виден в самой стенограмме, и спрашивать
+#: про него модель незачем.
+
+#: Чем запускают обучение. Одного этого мало: `python` зовут и для двух строк разбора,
+#: поэтому рядом обязателен признак обучения из `TRAINING`.
+LAUNCHERS = ("torchrun", "accelerate launch", "deepspeed", "sbatch", "srun",
+             "python train", "python -m torch.distributed", "nohup python", "python main.py")
+TRAINING = ("--lr", "--learning-rate", "--epochs", "--batch", "--steps", "wandb",
+            "train.py", "pretrain", "finetune", "--config")
+#: Признак обёртки: рекордер зовут из обучающего кода, а не из командной строки, поэтому
+#: ищется он В ФАЙЛЕ точки входа, а не в команде.
+WRAPPED = ("LabRun", "lab_run")
+
+
+def _entrypoints(command: str) -> list[str]:
+    return [piece.strip("\"'") for piece in command.split()
+            if piece.strip("\"'").endswith(".py")]
+
+
+def unwrapped_runs(transcript: str, cwd: str) -> list[str]:
+    """Запуски обучения этой сессии, которые не обёрнуты рекордером.
+
+    Проверяется файл точки входа, а не команда: рекордер подключают импортом, и в командной
+    строке его не видно. Нет файла рядом — ответ «не обёрнут», потому что доказать обратное
+    нечем, а цена ошибки несимметрична: необёрнутый прогон приходится переносить руками, что
+    запрещено и красится воротами.
+    """
+    found: list[str] = []
+    seen: set[str] = set()
+    try:
+        with Path(transcript).expanduser().open(encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                # Строка стенограммы бывает не объектом: `null`, `[]`, `42`. Это поймал
+                # тест `test_non_object_json_lines_are_ignored`, и поймал сразу.
+                if not isinstance(entry, dict):
+                    continue
+                content = (entry.get("message") or {}).get("content")
+                if not isinstance(content, list):
+                    continue
+                for block in content:
+                    if not isinstance(block, dict) or block.get("type") != "tool_use":
+                        continue
+                    command = str((block.get("input") or {}).get("command") or "")
+                    if not command or command in seen:
+                        continue
+                    seen.add(command)
+                    low = command.lower()
+                    if not any(one in low for one in LAUNCHERS):
+                        continue
+                    if not any(one in low for one in TRAINING):
+                        continue
+                    if any(one in command for one in WRAPPED):
+                        continue
+                    wrapped = False
+                    for name in _entrypoints(command):
+                        place = (Path(cwd or ".") / name).expanduser()
+                        try:
+                            if place.is_file() and any(
+                                    one in place.read_text(encoding="utf-8", errors="ignore")
+                                    for one in WRAPPED):
+                                wrapped = True
+                        except OSError:
+                            pass
+                    if not wrapped:
+                        found.append(" ".join(command.split())[:160])
+    except OSError:
+        return []
+    return found
+
+
+def red_proposals(cwd: str) -> list[str]:
+    """Открытые предложения с красными воротами. Один запрос на клон, без модели."""
+    try:
+        place = Path.home() / ".claude" / "hooks" / "lab-where-am-i.py"
+        if not place.is_file():
+            return []
+        spec = importlib.util.spec_from_file_location("lab_where_am_i_mr", place)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        repos = module.clones_here(cwd or str(Path.cwd()))
+        if not repos or not module.TOKEN_FILE.is_file():
+            return []
+        token = module.TOKEN_FILE.read_text(encoding="utf-8").strip()
+        bad = []
+        for repo in repos[:6]:
+            for row in module._open_with_verdict(repo, token):  # noqa: SLF001
+                if "ЕСТЬ ЗАМЕЧАНИЯ" in row:
+                    bad.append(row.strip())
+        return bad
+    except Exception:          # noqa: BLE001 — сторож не вправе ронять ход
+        return []
 
 
 ROUTER = Path.home() / ".claude" / "scripts" / "jev_route.py"
@@ -279,6 +380,36 @@ def main() -> None:
 
     session = str(parsed["session_id"])
     transcript = str(parsed["transcript_path"])
+    here = str(data.get("cwd") or "")
+
+    # Сначала то, что видно без модели: необёрнутый прогон и красные ворота. Это факты, а
+    # не суждение, поэтому они прерывают сами и не ждут классификатора — и ход на них не
+    # тратится. Каждый докладывается ОДИН раз: повторять одно и то же каждым ходом значит
+    # ровно то, за что хук уже ругали.
+    state_file = state_dir / f"{session}_seen_facts.json"
+    try:
+        told = set(json.loads(state_file.read_text(encoding="utf-8")))
+    except (OSError, ValueError):
+        told = set()
+    facts: list[str] = []
+    for command in unwrapped_runs(transcript, here):
+        if f"run:{command}" not in told:
+            told.add(f"run:{command}")
+            facts.append(f"Запуск без рекордера: `{command}`")
+    for row in red_proposals(here):
+        if f"mr:{row}" not in told:
+            told.add(f"mr:{row}")
+            facts.append(f"Красные ворота: {row}")
+    if facts:
+        try:
+            state_file.write_text(json.dumps(sorted(told), ensure_ascii=False),
+                                  encoding="utf-8")
+        except OSError:
+            pass
+        lines = "\n".join(f"  {one}" for one in facts)
+        print(json.dumps({"decision": "block", "reason":
+                          f"{lines}\nЧто делать — `{RULE}`."}, ensure_ascii=False))
+        return
     fired = turns > 0 and turns - last >= SAVE_INTERVAL
     verdict = (ask_router(session, transcript, turns, last, fired,
                           str(data.get("cwd") or "")) if JEV_DECIDES else {})

@@ -496,13 +496,19 @@ def clones_here(cwd: str) -> list[str]:
     # клон, сделанный по инструкции, лежит на втором уровне и не виден. 08-10-2026
     # проверено: склонировал `brainlab/handbook` и `brainlab/journal` ровно туда, куда
     # велено, и оба детектора вернули пусто — хук спрашивал бы адрес вечно.
+    #
+    # Коробка ищется и вверх тоже: каталог сессии гуляет, и из `lab-base/handbook` сосед
+    # `lab-base/journal` иначе не виден — подсказка говорила «клона рядом нет», хотя он
+    # лежал уровнем выше. Адрес записи не должен зависеть от того, куда агент зашёл.
     nested: list[Path] = []
     if here.is_dir():
+        boxes = [here / "lab-base"]
+        boxes += [parent for parent in (here, *here.parents) if parent.name == "lab-base"]
         try:
             nested = [child for child in here.iterdir() if child.is_dir()]
-            box = here / "lab-base"
-            if box.is_dir():
-                nested += [child for child in box.iterdir() if child.is_dir()]
+            for box in boxes:
+                if box.is_dir():
+                    nested += [child for child in box.iterdir() if child.is_dir()]
         except OSError:
             nested = []
     folders = [here, *nested]

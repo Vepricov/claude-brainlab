@@ -293,6 +293,44 @@ def structure_of_clones(cwd: str) -> dict:
     return seen
 
 
+#: Строка записи выглядит так: врезка жирным или заголовок. По ним и видно, что в
+#: предложении уже сказано.
+LEAD = ("**", "#", "- **")
+
+
+def _written_in(repo: str, iid: int, token: str, left: float) -> list[str]:
+    """Что уже сказано в этом предложении: его врезки и заголовки.
+
+    Описание создаётся ОДИН раз и про дописанное потом в нём ничего нет: 08-10-2026 у
+    `journal!10` в описании стоял первый коммит, а их было четыре. Заголовков коммитов тоже
+    мало: они кратки, и повтор выходил 0.50 против 0.38 у постороннего текста, то есть
+    решение почти вслепую. Поэтому берутся добавленные строки, которые ведут абзац, — у нас
+    запись именно так и устроена, и они дословно говорят, о чём уже написано.
+    """
+    try:
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(repo, safe='')}"
+            f"/merge_requests/{iid}/changes",
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=max(0.5, left)) as answer:
+            body = json.loads(answer.read().decode("utf-8"))
+    except Exception:          # noqa: BLE001
+        return []
+    said: list[str] = []
+    for one in (body.get("changes") or [])[:6]:
+        for line in str(one.get("diff") or "").splitlines():
+            if not line.startswith("+") or line.startswith("+++"):
+                continue
+            text = line[1:].strip()
+            if text.startswith(LEAD) and len(text) > 12:
+                said.append(" ".join(text.lstrip("#-* ").split())[:160])
+            # Двенадцати не хватало: у записи за день врезок больше, и обрезались
+            # как раз последние, то есть самое свежее — именно то, про что ход.
+            if len(said) >= 24:
+                return said
+    return said
+
+
 def recorded_in_base(cwd: str) -> list[str]:
     """Что про это уже лежит в базе, а не только в памяти сессии.
 
@@ -325,6 +363,8 @@ def recorded_in_base(cwd: str) -> list[str]:
             for state, query in (("открыто", "state=opened"),
                                  ("слито", f"state=merged&updated_after={since}"))]
     lines: list[str] = []
+    opened: list[tuple[str, int]] = []
+    until = time.monotonic() + RECORDS_DEADLINE
     with futures.ThreadPoolExecutor(max_workers=min(8, len(plan))) as pool:
         asked = {pool.submit(_merge_requests, repo, query, token, RECORDS_DEADLINE):
                  (repo, state) for repo, state, query in plan}
@@ -338,6 +378,24 @@ def recorded_in_base(cwd: str) -> list[str]:
                 head = " ".join(str(one.get("description") or "").split())[:200]
                 lines.append(f"{repo}!{one.get('iid')} ({state}): "
                              f"{one.get('title')}" + (f" — {head}" if head else ""))
+                if state == "открыто":
+                    opened.append((repo, int(one.get("iid") or 0)))
+    # Коммиты берутся только у открытых: у слитых заголовок уже описывает вошедшее, а
+    # открытое дописывается, и описание за ним не поспевает.
+    if opened:
+        left = until - time.monotonic()
+        if left > 0:
+            with futures.ThreadPoolExecutor(max_workers=min(8, len(opened))) as pool:
+                asked = {pool.submit(_written_in, repo, iid, token, left): (repo, iid)
+                         for repo, iid in opened[:8]}
+                for task in futures.as_completed(asked, timeout=left + 1):
+                    repo, iid = asked[task]
+                    try:
+                        titles = task.result()
+                    except Exception:          # noqa: BLE001
+                        continue
+                    for title in titles:
+                        lines.append(f"{repo}!{iid} (уже сказано там): {title}")
     lines.sort()
     try:
         RECORDS_CACHE.parent.mkdir(parents=True, exist_ok=True)
@@ -461,7 +519,7 @@ def ask(text: str, api_key: str, recorded: list[str],
     if recorded:
         state["already_recorded"] = recorded[-12:]
     if in_base:
-        state["already_in_base"] = in_base[:24]
+        state["already_in_base"] = in_base[:120]
     if structure:
         state["base_contents"] = structure
     if clone:

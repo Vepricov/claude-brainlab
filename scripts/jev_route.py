@@ -629,7 +629,9 @@ def decision(answer: dict, turns: int, past: int,
     else:
         interrupt, why = False, "ни одно место не выбрано"
 
-    return {"прерывать": interrupt, "почему": why, "оценка": round(score, 2),
+    wing, vault = addresses(cwd)
+    return {"крыло": wing, "хранилище": vault,
+            "прерывать": interrupt, "почему": why, "оценка": round(score, 2),
             "устоялось": round(settled, 2), "повтор": round(repeat, 2),
             "ось": round(axis, 2),
             "места": places, "внутри_лабы": inside, "вид": kind,
@@ -699,6 +701,39 @@ def clones_here(cwd: str) -> list[str]:
     return found
 
 
+#: Куда именно в хранилище и в какое крыло памяти — зависит от проекта, значит это динамика
+#: и место ей в строке хука, а не в правиле. Владелец 08-10-2026: «где инфа, куда в MCP /
+#: Obsidian и мем-палас записывать, там же разные папки есть и так далее, почему этого нет?»
+REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
+
+
+def addresses(cwd: str) -> tuple[str, str]:
+    """Крыло MemPalace и папка Obsidian для этого проекта. Пусто — значит не нашли."""
+    here = Path(cwd or ".").expanduser().resolve()
+    try:
+        book = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return "", ""
+    for root in book.get("roots") or []:
+        base = Path(str(root.get("fs") or "")).expanduser().resolve()
+        if base == here or base in here.parents:
+            if here == base:
+                return "", ""
+            # Ключ может быть и в несколько сегментов: под `~/Staff` проект лежит как
+            # `BRAIn Lab/claude-brainlab`. Поэтому берётся САМОЕ ДЛИННОЕ совпадение
+            # префикса, а не первая папка под корнем: по первой папке выходило крыло
+            # «BRAIn Lab» вместо «claude-brainlab».
+            parts = here.relative_to(base).parts
+            items = root.get("items") or {}
+            for depth in range(len(parts), 0, -1):
+                key = "/".join(parts[:depth])
+                if key in items:
+                    where = items[key]
+                    return where.rsplit("/", 1)[-1], f"{root.get('obsidian')}/{where}"
+            return parts[0], f"{root.get('obsidian')}/{parts[0]}"
+    return "", ""
+
+
 def hint(verdict: dict) -> str:
     """Строка для агента: куда это ложится, чтобы он не выводил это заново.
 
@@ -729,10 +764,11 @@ def hint(verdict: dict) -> str:
             if one in verdict["внутри_лабы"]:
                 chunks.append(f"{names[one]} (`{REPO_OF[one]}`)")
         parts.append("в базу лаборатории" + (f" ({', '.join(chunks)})" if chunks else ""))
+    wing, vault = verdict.get("крыло") or "", verdict.get("хранилище") or ""
     if "mempalace" in verdict["места"]:
-        parts.append("в MemPalace")
+        parts.append(f"в MemPalace (крыло `{wing}`)" if wing else "в MemPalace")
     if "obsidian" in verdict["места"]:
-        parts.append("в Obsidian")
+        parts.append(f"в Obsidian (`{vault}/`)" if vault else "в Obsidian")
     if not parts:
         return ""
     # Ни команд клонирования, ни оговорок про «совет, а не приговор»: адрес назван, а всё

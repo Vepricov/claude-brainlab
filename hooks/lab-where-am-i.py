@@ -545,6 +545,79 @@ def clones_here(cwd: str) -> list[str]:
     return found
 
 
+def _open_with_verdict(repo: str, token: str) -> list[str]:
+    """Открытые предложения репозитория и что сказали о них ворота."""
+    said: list[str] = []
+    try:
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(repo, safe='')}"
+            f"/merge_requests?state=opened&per_page=10",
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=4) as answer:
+            opened = json.loads(answer.read().decode("utf-8"))
+    except Exception:          # noqa: BLE001 — начало сессии не роняется из-за сети
+        return said
+    for one in opened if isinstance(opened, list) else []:
+        # Список предложений `head_pipeline` НЕ отдаёт — он есть только у одиночного
+        # запроса. Поэтому вердикт берётся там, где его и ставят ворота: в состояниях
+        # коммита, тем же путём, что у `lab checks`. Иначе зелёное предложение
+        # показывалось как «ворота пока молчат».
+        marks = []
+        try:
+            request = urllib.request.Request(
+                f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(repo, safe='')}"
+                f"/repository/commits/{one.get('sha')}/statuses",
+                headers={"PRIVATE-TOKEN": token})
+            with urllib.request.urlopen(request, timeout=4) as answer:
+                marks = json.loads(answer.read().decode("utf-8"))
+        except Exception:          # noqa: BLE001
+            marks = []
+        states = {str(m.get("status")) for m in marks if isinstance(m, dict)}
+        if not states:
+            mark = "ворота ещё не отвечали"
+        elif states & {"failed", "failure", "canceled"}:
+            bad = [m for m in marks if m.get("status") in ("failed", "failure", "canceled")]
+            mark = "ЕСТЬ ЗАМЕЧАНИЯ: " + ", ".join(str(m.get("name")) for m in bad)
+        elif states & {"running", "pending", "created"}:
+            mark = "ещё идут"
+        else:
+            mark = "зелено"
+        said.append(f"  `{repo}!{one.get('iid')}` — {mark} — {one.get('title')}")
+    return said
+
+
+def tell_proposals(cwd: str) -> None:
+    """Что открыто и не слито, и что об этом сказали ворота.
+
+    Самое скоропортящееся знание агента о своей работе. Отправив предложение, он узнаёт
+    вердикт только если сам спросит `lab checks`, а ворота отвечают не сразу: служба
+    опрашивает базу раз в пять минут. Поэтому 08-10-2026 можно было уйти, оставив красное,
+    и никто бы не заметил. Владелец: «агент видит и ждёт, и ему приходит инфа про то, что у
+    него PR принялся или нет, то есть что нет красного крестика».
+
+    Прежде это печаталось только для НАУЧНОЙ работы: `open_proposals()` берёт слаг работы, а
+    в журнале, справочнике и гранте работы нет, и начало сессии про их предложения молчало.
+    Здесь адрес берётся по клонам, то есть по тому же признаку, что и место записи.
+    """
+    repos = clones_here(cwd)
+    if not repos or not TOKEN_FILE.is_file():
+        return
+    try:
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return
+    rows: list[str] = []
+    for repo in repos[:6]:
+        rows += _open_with_verdict(repo, token)
+    if not rows:
+        return
+    print("\nОткрытые предложения и что сказали ворота:")
+    for row in rows:
+        print(row)
+    print("Красное или молчащее — `lab checks` в клоне; ворота отвечают примерно через")
+    print("пять минут после отправки. Предложение с замечаниями записью не является.\n")
+
+
 def tell_places(cwd: str) -> None:
     """Сказать, куда идёт запись отсюда, или что это надо спросить у владельца.
 
@@ -576,6 +649,7 @@ def main() -> int:
     slug = work_of(cwd)
     if slug is None:
         tell_places(cwd)
+        tell_proposals(cwd)
         return 0
     place = clone_of_project(cwd)
     repo, claims = claims_of(slug, place)
@@ -589,6 +663,7 @@ def main() -> int:
         # сессии к сессии, — это ровно то, против чего хук и написан.
         if not (place / "claims").is_dir():
             tell_places(cwd)
+            tell_proposals(cwd)
             return 0
         print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {place}")
         print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")

@@ -15,7 +15,17 @@ The user delegates code execution to agents and reads the logs. For that to work
 3. **Experiments are monitored, never lost.**
    Per experiment series, in the project folder: `Experiments/<name>.md` (log + timestamped `## Progress snapshots` table) and `Results/<name>-table.md` (final tables + embedded loss-curve plot). Long runs go in `tmux` on the server; a `/loop` checks liveness, appends snapshots, and refreshes a versioned plot PNG. House-style plotting + the iCloud/cache gotchas: see `general/Knowledge/warmup-loss-plot-tool.md`.
 
-4. **Coding standards still apply** — `~/.claude/rules/coding-style.md`, `agents.md`, `security.md`, and the Karpathy principles in `CLAUDE.md` (surgical changes, frozen-dataclass config, type hints, no globals, factory/registry, files 200-400 lines).
+4. **Every training run is wrapped in the lab recorder, before it starts.**
+   `lab_run.py` from `brainlab/tools` writes the run's own page — hyperparameters, metrics,
+   environment, commit, hardware — into one folder per run and pushes it to a branch, from
+   which the agent later moves it under a claim and builds a series. Copy it into the repo
+   that holds the training code; no dependencies, stdlib only.
+   A run that finished without the recorder has to be transcribed by hand, which the base
+   forbids and its gates fail: a number absent from the corpus turns the verdict red.
+   The named rules are `run-is-written-by-code`, `run-says-what-is-seen` and
+   `shelf-must-be-empty` in `~/.claude/skills/lab-knowledge/references/canon.md`.
+
+5. **Coding standards still apply** — `~/.claude/rules/coding-style.md`, `agents.md`, `security.md`, and the Karpathy principles in `CLAUDE.md` (surgical changes, frozen-dataclass config, type hints, no globals, factory/registry, files 200-400 lines).
 
 ## Quick map
 - "how does repo X work?" → `Code/X/X.md`

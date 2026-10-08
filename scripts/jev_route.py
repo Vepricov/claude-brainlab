@@ -27,12 +27,14 @@
 from __future__ import annotations
 
 import importlib.util
+from concurrent import futures
 import json
 import os
 import ssl
 import subprocess
 import sys
 import time
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -181,10 +183,163 @@ READY = {
                "future refinement is NOT a reason to answer no. False only while nothing "
                "has happened yet: a plan, a guess, 'let me check', a half-finished attempt "
                "whose outcome is still unknown.",
-    "repeat": "Is this the SAME subject as something already written down earlier in this "
-              "session (listed under `already_recorded`)? True if recording it again would "
-              "produce a second record of one thing.",
+    "repeat": "Would writing this turn down produce a SECOND record of one thing? Judge "
+              "against BOTH lists in the state: `already_recorded` is what this session "
+              "already stopped to record, and `already_in_base` is the merge requests of "
+              "the base repositories cloned here, open or merged within a day, with their "
+              "titles and summaries. `base_contents` holds what those repositories already "
+              "contain: their pages and the headings of their records, so a day or a page "
+              "already written is visible even when its merge request was merged long ago. "
+              "True when the subject of this turn is already covered there, however "
+              "differently worded. False when this turn carries a fact that is in none of "
+              "them.",
 }
+
+
+#: Что уже записано в самой базе: открытые предложения и слитые за последние сутки.
+#: Кешируется, потому что хук выполняется каждым ходом, а предложения так часто не меняются.
+#: Тот же ключ, что у хука начала сессии: читается, но никогда не печатается.
+TOKEN_FILE = Path("~/.config/brainlab/git-token").expanduser()
+RECORDS_CACHE = Path("~/.cache/brainlab/jev-base-records.json").expanduser()
+RECORDS_TTL = 90
+#: Потолок на сбор: решение нужно здесь и сейчас, а у вызывающего всего JEV_TIMEOUT секунд.
+#: Запросы идут разом, а не по очереди: последовательно шесть вызовов занимали 4.06 с и
+#: упирались в этот потолок, то есть последний клон молча терялся.
+RECORDS_DEADLINE = 4.0
+
+
+def _merge_requests(repo: str, query: str, token: str, left: float) -> list[dict]:
+    try:
+        request = urllib.request.Request(
+            f"{BASE_URL}/api/v4/projects/{urllib.parse.quote(repo, safe='')}"
+            f"/merge_requests?{query}&per_page=20",
+            headers={"PRIVATE-TOKEN": token})
+        with urllib.request.urlopen(request, timeout=max(0.5, left)) as answer:
+            found = json.loads(answer.read().decode("utf-8"))
+        return found if isinstance(found, list) else []
+    except Exception:          # noqa: BLE001 — сеть не условие работы хука
+        return []
+
+
+def _repo_of_folder(folder: Path) -> str:
+    """Какой репозиторий базы лежит ИМЕННО в этой папке, по её собственному .git/config."""
+    try:
+        text = (folder / ".git" / "config").read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith("url = ") and HOST in line:
+            path = line.split(HOST, 1)[1].lstrip(":0123456789/")
+            return path[:-4] if path.endswith(".git") else path
+    return ""
+
+
+def structure_of_clones(cwd: str) -> dict:
+    """Что уже лежит в склонированных репозиториях базы: страницы и заголовки записей.
+
+    Предложений мало недостаточно: слитое в них уже не видно, а именно слитое и есть база.
+    Поэтому Jev получает ещё и содержимое клонов — оно локальное, читается мгновенно и
+    отвечает на главный вопрос «про это уже написано?» не по памяти сессии, а по файлам.
+    Для журнала это даты записей, для справочника имена страниц, для гранта папки.
+
+    Владелец 08-10-2026: «Джев должен видеть полную структуру репо и что есть в PR, чтобы
+    не дёргать тебя просто так».
+    """
+    here = Path(cwd or ".").expanduser().resolve()
+    boxes = [here, here / "lab-base"]
+    boxes += [parent for parent in (here, *here.parents) if parent.name == "lab-base"]
+    seen: dict[str, dict] = {}
+    for box in boxes:
+        if not box.is_dir():
+            continue
+        try:
+            folders = [box, *[child for child in box.iterdir() if child.is_dir()]]
+        except OSError:
+            continue
+        for folder in folders:
+            if not (folder / ".git").exists():
+                continue
+            # Имя берётся из .git/config ЭТОЙ папки. `clones_here` возвращает все клоны
+            # вокруг, и первый из них к этой папке отношения не имеет: из-за этого журнал
+            # сперва получил 775 файлов и чужие заголовки.
+            name = _repo_of_folder(folder)
+            if not name or name in seen:
+                continue
+            repo = [name]
+            try:
+                files = subprocess.run(["git", "ls-files"], cwd=folder, capture_output=True,
+                                       text=True, timeout=5).stdout.split()
+            except (OSError, subprocess.SubprocessError):
+                continue
+            card: dict = {"файлов": len(files), "страницы": sorted(files)[:40]}
+            # Заголовки верхнего уровня: в журнале это даты уже сделанных записей, и по ним
+            # видно, что день уже описан, даже если предложение давно слито.
+            page = folder / "README.md"
+            try:
+                card["разделы"] = [line.strip("# ").strip() for line
+                                   in page.read_text(encoding="utf-8").splitlines()
+                                   if line.startswith("## ")][:30]
+            except OSError:
+                pass
+            seen[repo[0]] = card
+    return seen
+
+
+def recorded_in_base(cwd: str) -> list[str]:
+    """Что про это уже лежит в базе, а не только в памяти сессии.
+
+    Прежде вопрос «повтор» сверялся ТОЛЬКО со списком собственных прошлых прерываний этой
+    сессии. Поэтому хук дёргал агента на том, что уже оформлено предложением: заголовки
+    предложений он не видел, а `clone_state` отдавал пусто, если сессия не привязана к
+    научной работе. Владелец 08-10-2026: «если уже всё записано, то что было в PR, то
+    нахуя тебя дёргать? Джев должен видеть полную структуру репо и что есть в PR».
+
+    Берутся открытые предложения любого возраста и слитые за сутки: первые означают, что
+    запись уже идёт и её надо дополнять, вторые — что она уже вошла.
+    """
+    repos = clones_here(cwd)
+    if not repos:
+        return []
+    key = "|".join(sorted(repos))
+    try:
+        kept = json.loads(RECORDS_CACHE.read_text(encoding="utf-8"))
+        if kept.get("ключ") == key and time.time() - kept.get("когда", 0) < RECORDS_TTL:
+            return kept.get("строки") or []
+    except (OSError, ValueError):
+        pass
+    try:
+        token = TOKEN_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return []
+    since = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 86400))
+    plan = [(repo, state, query)
+            for repo in repos
+            for state, query in (("открыто", "state=opened"),
+                                 ("слито", f"state=merged&updated_after={since}"))]
+    lines: list[str] = []
+    with futures.ThreadPoolExecutor(max_workers=min(8, len(plan))) as pool:
+        asked = {pool.submit(_merge_requests, repo, query, token, RECORDS_DEADLINE):
+                 (repo, state) for repo, state, query in plan}
+        for task in futures.as_completed(asked, timeout=RECORDS_DEADLINE + 1):
+            repo, state = asked[task]
+            try:
+                found = task.result()
+            except Exception:          # noqa: BLE001 — один клон не роняет остальные
+                continue
+            for one in found:
+                head = " ".join(str(one.get("description") or "").split())[:200]
+                lines.append(f"{repo}!{one.get('iid')} ({state}): "
+                             f"{one.get('title')}" + (f" — {head}" if head else ""))
+    lines.sort()
+    try:
+        RECORDS_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        RECORDS_CACHE.write_text(json.dumps(
+            {"ключ": key, "когда": time.time(), "строки": lines}, ensure_ascii=False),
+            encoding="utf-8")
+    except OSError:
+        pass
+    return lines
 
 
 def clone_state(cwd: str) -> dict:
@@ -271,7 +426,8 @@ def trim(text: str) -> str:
 
 
 def ask(text: str, api_key: str, recorded: list[str],
-             clone: dict | None = None) -> dict:
+             clone: dict | None = None, in_base: list[str] | None = None,
+             structure: dict | None = None) -> dict:
     """Один запрос, все вопросы сразу: так в двенадцать раз дешевле, чем по вызову на вопрос.
 
     Тип называется `noul`, не `bool`: API отвечает 400 «Expected 'noul' | 'choice' | 'score'».
@@ -297,6 +453,10 @@ def ask(text: str, api_key: str, recorded: list[str],
     state = {"turn": trim(text)}
     if recorded:
         state["already_recorded"] = recorded[-12:]
+    if in_base:
+        state["already_in_base"] = in_base[:24]
+    if structure:
+        state["base_contents"] = structure
     if clone:
         state["work_state"] = clone
     body = json.dumps({"model": MODEL, "state": state,
@@ -476,6 +636,19 @@ def decision(answer: dict, turns: int, past: int,
             "клоны": clones_here(cwd), "с_прошлого": since_last}
 
 
+#: Клон в системной времянке решением не является: такие делают на один раз и удаляют.
+#: 08-10-2026 из `/tmp` детектор нашёл четыре чужих клона литературы и объявил их адресом
+#: записи. Документированное место клона — `<папка проекта>/lab-base`, а `/tmp` и
+#: `/var/folders` чистятся по расписанию.
+TEMP_ROOTS = ("/tmp/", "/private/tmp/", "/var/tmp/", "/private/var/tmp/", "/var/folders/",
+              "/private/var/folders/")
+
+
+def _is_temp(folder) -> bool:
+    place = str(folder)
+    return any(place == root.rstrip("/") or place.startswith(root) for root in TEMP_ROOTS)
+
+
 def clones_here(cwd: str) -> list[str]:
     """Клоны репозиториев базы рядом с работой: что склонировано, туда и пишем.
 
@@ -507,6 +680,8 @@ def clones_here(cwd: str) -> list[str]:
         return []
     folders = [here, *nested]
     for folder in folders[:60]:
+        if _is_temp(folder):
+            continue
         config = folder / ".git" / "config"
         try:
             if not config.is_file():
@@ -532,18 +707,11 @@ def hint(verdict: dict) -> str:
     попросить проверить, не потерялось ли что-то за эти ходы.
     """
     if verdict["почему"].startswith("страховка"):
-        return (f"Классификатор за последние {verdict['с_прошлого']} ходов ничего зрелого не "
-                "увидел, и это прерывание — страховка. Посмотри сам, не осталось ли "
-                "незаписанного; если нет, так и скажи и иди дальше.")
+        return (f"Страховка: {verdict['с_прошлого']} ходов без записи, зрелого классификатор "
+                "не видел. Посмотри сам; нечего — скажи одной строкой.")
     if verdict["почему"].startswith("набор прогонов"):
-        return ("Классификатор считает, что набор прогонов закрылся и по нему пора делать "
-                "вывод: оформить серию в `claims/<H>/series/S-….md` по правилам "
-                "`series-answers-one-question` и `series-needs-verdict`, дописать абзац в "
-                "страницу утверждения (`claim-gets-a-paragraph`) и открыть одно предложение "
-                "на это утверждение (`one-proposal-per-claim`). Правила с именами и с тем, "
-                "чем каждое проверяется, — в своде `~/.claude/rules/lab-canon.md`; "
-                "пересказывать их здесь нельзя, поэтому они только названы. "
-                "Это подсказка, а не приговор: проверь сам.")
+        return ("Набор прогонов закрылся — пора серией: `series-answers-one-question`, "
+                "`series-needs-verdict`, `claim-gets-a-paragraph`, `one-proposal-per-claim`.")
     parts = []
     if "lab" in verdict["места"]:
         chunks = []
@@ -567,21 +735,17 @@ def hint(verdict: dict) -> str:
         parts.append("в Obsidian")
     if not parts:
         return ""
+    # Ни команд клонирования, ни оговорок про «совет, а не приговор»: адрес назван, а всё
+    # постоянное лежит в правиле. Владелец про команды прямо: «можно наверное даже без
+    # вот этого». Остаётся ровно то, что меняется от хода к ходу.
     tail = ""
     if "lab" in verdict["места"]:
         need = [REPO_OF[one] for one in REPO_OF if one in verdict["внутри_лабы"]]
-        missing = [repo for repo in need if repo not in (verdict.get("клоны") or [])]
-        if missing:
-            cmds = "  ".join(f"`git clone {BASE_URL}/{repo}.git`" for repo in missing)
-            tail = (f" Клона рядом нет — заведи его здесь же: {cmds}. Дальше клон и будет "
-                    "адресом, и спрашивать больше не придётся.")
-        else:
-            tail = " Клон уже рядом, пиши в него предложением."
-    return ("Классификатор считает, что из этого хода надо записать "
-            + ", ".join(parts)
-            + f". Оценка {verdict['оценка']:.1f} из 3, устоялось {verdict['устоялось']:.2f}."
-            + tail
-            + " Это подсказка, а не приговор: проверь сам.")
+        if [repo for repo in need if repo not in (verdict.get("клоны") or [])]:
+            tail = " Клона рядом нет — склонируй."
+    return ("Записать: " + ", ".join(parts)
+            + f". Оценка {verdict['оценка']:.1f}/3, устоялось {verdict['устоялось']:.2f}."
+            + tail)
 
 
 def main() -> None:
@@ -630,7 +794,9 @@ def main() -> None:
         return
     try:
         clone = clone_state(payload.get("каталог") or "")
-        answer = ask(text, k, payload.get("записанное") or [], clone)
+        in_base = recorded_in_base(payload.get("каталог") or "")
+        structure = structure_of_clones(payload.get("каталог") or "")
+        answer = ask(text, k, payload.get("записанное") or [], clone, in_base, structure)
     except Exception as error:          # сеть, ключ, разбор — любая беда в журнал
         give_up(f"{type(error).__name__}: {error}"[:200])
         return

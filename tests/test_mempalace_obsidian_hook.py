@@ -178,28 +178,34 @@ class StopHookTest(unittest.TestCase):
 
     # ── что печатается, когда прерываем ───────────────────────────────────────
 
-    def test_lab_rules_are_always_printed(self):
-        """База — это git-клоны, а не служба, поэтому правила не за чем прятать.
+    def test_nothing_static_is_printed_beyond_the_rule_pointer(self):
+        """Хук печатает только меняющееся. Постоянное лежит в правиле и читается раз.
 
-        До 08-10-2026 раздел печатался только при настроенной MCP-службе `lab-knowledge`,
-        удалённой вместе со своей базой, и у установки без неё правил базы не было никогда.
+        До 08-10-2026 в каждый ответ входили порядок вызовов MemPalace, правила Obsidian и
+        правила базы — 1988 знаков, одинаковых ходом за ходом.
         """
         self.write_turns(2)
+        self.says(прерывать=True, подсказка="Записать: в журнал. Оценка 2.8/3.")
+        reason = self.invoke()["reason"]
+        self.assertEqual(reason,
+                         f"Записать: в журнал. Оценка 2.8/3. Как записывать — `{HOOK.RULE}`.")
+        for gone in ("mempalace_diary_write", "obsidian", "не мусорить", "AUTO-SAVE"):
+            self.assertNotIn(gone, reason)
+
+    def test_hint_from_the_classifier_is_the_answer(self):
+        self.write_turns(2)
+        self.says(прерывать=True, подсказка="Записать: в журнал (`brainlab/journal`).")
+        reason = self.invoke()["reason"]
+        self.assertTrue(reason.startswith("Записать: в журнал (`brainlab/journal`)."))
+
+    def test_silent_classifier_still_gets_one_line(self):
+        """Прерывание от страховки: подсказки нет, но ответ не должен быть пустым."""
+        self.write_turns(2)
         self.says(прерывать=True)
         reason = self.invoke()["reason"]
-        self.assertIn(HOOK.LAB_ADDENDUM.strip(), reason)
-        self.assertIn(HOOK.OBSIDIAN_ADDENDUM.strip(), reason)
-
-    def test_hint_from_the_classifier_is_appended(self):
-        self.write_turns(2)
-        self.says(прерывать=True, подсказка="Запись отсюда идёт в `brainlab/journal`.")
-        self.assertIn("brainlab/journal", self.invoke()["reason"])
-
-    def test_absent_hint_leaves_the_reason_ending_on_the_lab_rules(self):
-        self.write_turns(2)
-        self.says(прерывать=True)
-        reason = self.invoke()["reason"]
-        self.assertTrue(reason.rstrip().endswith(HOOK.LAB_ADDENDUM.strip()))
+        self.assertIn("Остановка на запись", reason)
+        self.assertIn(HOOK.RULE, reason)
+        self.assertLess(len(reason), 300)
 
     # ── метка и кадры ─────────────────────────────────────────────────────────
 

@@ -483,6 +483,19 @@ def places() -> list[tuple[str, str]]:
 BASE_HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
 
 
+#: Клон в системной времянке решением не является: такие делают на один раз и удаляют.
+#: 08-10-2026 из `/tmp` детектор нашёл четыре чужих клона литературы и объявил их адресом
+#: записи. Документированное место клона — `<папка проекта>/lab-base`, а `/tmp` и
+#: `/var/folders` чистятся по расписанию.
+TEMP_ROOTS = ("/tmp/", "/private/tmp/", "/var/tmp/", "/private/var/tmp/", "/var/folders/",
+              "/private/var/folders/")
+
+
+def _is_temp(folder) -> bool:
+    place = str(folder)
+    return any(place == root.rstrip("/") or place.startswith(root) for root in TEMP_ROOTS)
+
+
 def clones_here(cwd: str) -> list[str]:
     """Клоны репозиториев базы рядом с работой: что склонировано, туда и пишем.
 
@@ -513,6 +526,8 @@ def clones_here(cwd: str) -> list[str]:
             nested = []
     folders = [here, *nested]
     for folder in folders[:60]:
+        if _is_temp(folder):
+            continue
         config = folder / ".git" / "config"
         try:
             if not config.is_file():
@@ -546,12 +561,13 @@ def tell_places(cwd: str) -> None:
     known = places()
     if not known:
         return
-    print("\nКлонов базы рядом нет, значит адреса у записи пока нет. Выбирать его самому")
-    print("нельзя: это решает владелец. Спроси его, назвав, что именно получилось. Места:")
+    print("\nКлонов базы рядом нет. Выбери адрес сам по таблице, склонируй его сюда же —")
+    print("дальше клон и будет адресом, и выбирать больше не придётся. Места:")
     for path, when in known:
         print(f"  `{path}` — {when}")
-    print("Его ответ — это `git clone <адрес>` сюда же: дальше клон и будет ответом, и")
-    print("вопрос не повторится. Запись идёт предложением, сливает человек.\n")
+    print("Сделал — скажи одной строкой, куда положил. Спрашивать стоит, только если ни одно")
+    print("место не подходит: тогда назови, что получилось, и предложи, куда это положить,")
+    print("вплоть до отдельного репозитория. Запись идёт предложением, сливает человек.\n")
 
 
 def main() -> int:

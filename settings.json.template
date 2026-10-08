@@ -1,8 +1,7 @@
 {
   "_comment": "settings.json.template — placeholders are filled in by install/setup.sh from .env. See docs/INSTALL.md.",
   "env": {
-    "EDITOR": "${HOME}/.claude/scripts/editor.sh",
-    "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+    "EDITOR": "${HOME}/.claude/scripts/editor.sh"
   },
   "hooks": {
     "PreToolUse": [

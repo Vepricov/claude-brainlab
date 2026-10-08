@@ -229,16 +229,29 @@ def clone_state(cwd: str) -> dict:
         return {}
 
 
+#: Ключ в `settings.json` — это секрет открытым текстом в настройках, чего `security.md`
+#: прямо не разрешает. Поэтому порядок такой: переменная окружения, потом связка ключей
+#: macOS, потом файл с правами 600. Файл нужен ради тех, у кого связки нет: на Linux и на
+#: do-vpn ключ и так лежит в `~/.config/brainlab/openrouter-key`.
+KEY_FILE = Path("~/.config/brainlab/openrouter-key").expanduser()
+
+
 def key() -> str:
     from_env = os.environ.get("OPENROUTER_API_KEY", "").strip()
     if from_env:
         return from_env
     try:                      # хук идёт без профиля оболочки, поэтому связка ключей
-        return subprocess.run(
+        found = subprocess.run(
             ["security", "find-generic-password", "-s", "brain-call.openrouter",
              "-a", "asr", "-w"],
             capture_output=True, text=True, timeout=10, check=True).stdout.strip()
+        if found:
+            return found
     except (OSError, subprocess.SubprocessError):
+        pass
+    try:
+        return KEY_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
         return ""
 
 

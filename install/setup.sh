@@ -160,12 +160,6 @@ def strip_comments(obj):
         return [strip_comments(x) for x in obj]
     return obj
 data = strip_comments(substitute(data))
-# Jev (the recording hook) asks a cheap model through OpenRouter. With no key it gives up
-# silently on every turn, which is the same as having no hook. An unresolved placeholder is
-# worse than an absent key: it reaches OpenRouter as a real string and returns 401 each turn.
-if not os.environ.get("OPENROUTER_API_KEY"):
-    data.get("env", {}).pop("OPENROUTER_API_KEY", None)
-    print("  Jev: no OPENROUTER_API_KEY, the recording hook will stay silent")
 # Drop zotero MCP entry if no API key was provided.
 if not os.environ.get("ZOTERO_API_KEY"):
     data.get("mcpServers", {}).pop("zotero", None)
@@ -211,6 +205,22 @@ with open(dst, "w") as f:
 os.chmod(dst, 0o600)
 print(f"  rendered {dst}")
 PYEOF
+fi
+
+# ── OpenRouter key for the recording hook ──
+# Jev (the Stop hook) asks a cheap model whether the turn produced something the laboratory
+# should keep. With no key it gives up silently on every turn, which is the same as having
+# no hook at all. The key goes in a 0600 file, never in settings.json: that file is read by
+# eye, pasted into issues and copied between machines. The hook looks for the key in
+# $OPENROUTER_API_KEY, then the macOS keychain, then this file.
+if (( ! DRY_RUN )) && [[ -n "${OPENROUTER_API_KEY:-}" ]]; then
+  KEY_FILE="$HOME/.config/brainlab/openrouter-key"
+  mkdir -p "$(dirname "$KEY_FILE")"
+  printf '%s' "$OPENROUTER_API_KEY" > "$KEY_FILE"
+  chmod 600 "$KEY_FILE"
+  echo "  ↪ $KEY_FILE (chmod 600)"
+elif [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
+  echo "  Jev: no OPENROUTER_API_KEY, the recording hook will stay silent"
 fi
 
 # ── Native Lab MCP registration ──

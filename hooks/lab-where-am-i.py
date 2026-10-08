@@ -486,13 +486,26 @@ BASE_HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
 def clones_here(cwd: str) -> list[str]:
     """Клоны репозиториев базы рядом с работой: что склонировано, туда и пишем.
 
-    Смотрим саму папку и один уровень внутрь: глубже лежат чужие зависимости, и принимать
-    их за адрес записи незачем.
+    Смотрим саму папку, один уровень внутрь и `lab-base`, куда клонировать и велено:
+    глубже лежат чужие зависимости, и принимать их за адрес записи незачем.
     """
     here = Path(cwd or ".").expanduser().resolve()
     found: list[str] = []
-    folders = [here, *[child for child in here.iterdir() if child.is_dir()]] \
-        if here.is_dir() else [here]
+    # `lab-base` — это документированное место клона («клон работы лежит в
+    # `<папка проекта>/lab-base`»), поэтому внутрь него надо заглянуть отдельно: иначе
+    # клон, сделанный по инструкции, лежит на втором уровне и не виден. 08-10-2026
+    # проверено: склонировал `brainlab/handbook` и `brainlab/journal` ровно туда, куда
+    # велено, и оба детектора вернули пусто — хук спрашивал бы адрес вечно.
+    nested: list[Path] = []
+    if here.is_dir():
+        try:
+            nested = [child for child in here.iterdir() if child.is_dir()]
+            box = here / "lab-base"
+            if box.is_dir():
+                nested += [child for child in box.iterdir() if child.is_dir()]
+        except OSError:
+            nested = []
+    folders = [here, *nested]
     for folder in folders[:60]:
         config = folder / ".git" / "config"
         try:

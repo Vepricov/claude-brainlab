@@ -68,6 +68,13 @@ FALLBACK_TURNS = 25      # столько ходов тишины — и пре�
 #: ни одно место не поднялось выше 0.31, а на содержательных они лежат в 0.60..0.80.
 #: Семьдесят отсекало бы верное `lab=0.68`.
 THRESHOLD = 0.6
+#: Полоса удержания. Место, выбранное на прошлом прерывании, не снимается, пока держится в
+#: THRESHOLD - HOLD: иначе решение висит на сотых. Замер 08-10-2026 по 415 решениям: у 96 из
+#: них `lab` лежал в 0.50..0.59, а в 18 парах подряд идущих ходов одной сессии решение
+#: переворачивалось при разнице оценки не больше 0.15 — то есть на одном и том же предмете
+#: ответ менялся от шума. В тот день это и поймал владелец: «а че без гитлаба лабы?» Два
+#: хода до того база называлась (0.53 и 0.60), а на третьем выпала при 0.59.
+HOLD = 0.1
 
 #: ВИД записи в работу. Собрано по четырём склонированным работам (dykaf, wsd-muon,
 #: lab-agents, lab-knowledge-pipeline), а не по правилу: прогонов 179, серий 51, выкладок 30,
@@ -531,7 +538,8 @@ def summary() -> None:
 
 
 def decision(answer: dict, turns: int, past: int,
-             clone: dict | None = None, cwd: str = "") -> dict:
+             clone: dict | None = None, cwd: str = "",
+             held: list[str] | None = None) -> dict:
     """Прерывать или нет. Решают ТРИ условия, и это главное в замысле.
 
     Важность и готовность — разные вещи. Пока тема обсуждается, вывод ещё переедет, и запись
@@ -550,7 +558,14 @@ def decision(answer: dict, turns: int, past: int,
     settled, repeat, axis = verdict("settled"), verdict("repeat"), verdict("closed")
     since_last = turns - past
 
-    places = [one_item for one_item in PLACES if verdict(one_item) >= THRESHOLD]
+    kept = set(held or [])
+
+    def chosen(name: str) -> bool:
+        """Выбрано ли место: по порогу, либо удержано с прошлого прерывания."""
+        value = verdict(name)
+        return value >= THRESHOLD or (name in kept and value >= THRESHOLD - HOLD)
+
+    places = [one_item for one_item in PLACES if chosen(one_item)]
     # Один кончившийся прогон агента не касается: его описывает код и сам отправляет в ветку.
     # Поэтому «в лабораторию» снимается, когда вид — прогон, а ось ещё не закрылась. Владелец
     # 03-10-2026: «это, по идее, должно делать автоматически… пока не надо».
@@ -567,7 +582,7 @@ def decision(answer: dict, turns: int, past: int,
     # при невыбранной базе; потом зависели целиком и журнал при 0.89 терялся.
     ALONE = 0.7
     inside = [one_item for one_item in INSIDE_LAB
-              if verdict(one_item) >= (THRESHOLD if "lab" in places else ALONE)]
+              if (chosen(one_item) if "lab" in places else verdict(one_item) >= ALONE)]
     if inside and "lab" not in places:
         places.append("lab")
     kind_draft = ((reply.get("вид") or {}).get("choice")) or "none"
@@ -839,7 +854,8 @@ def main() -> None:
 
     verdict = decision(answer, int(payload.get("ходов") or 0),
                   int(payload.get("прошлое") or 0), clone,
-                  str(payload.get("каталог") or ""))
+                  str(payload.get("каталог") or ""),
+                  payload.get("удержанное") or [])
     reply = answer.get("answers") or {}
     record.update({
         "работа": (clone or {}).get("work"),

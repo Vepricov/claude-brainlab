@@ -178,6 +178,21 @@ def recorded_subjects(session: str) -> tuple[Path, list[str]]:
         return path, []
 
 
+def held_places(session: str) -> tuple[Path, list[str]]:
+    """Места, выбранные на прошлом прерывании этой сессии.
+
+    Нужны, чтобы решение не висело на сотых: место, однажды выбранное, не снимается, пока
+    его оценка держится в полосе. Без этого на одном и том же предмете база то выбиралась,
+    то нет — замерено 18 таких переворотов на 149 парах подряд идущих ходов.
+    """
+    path = hooks_cli.STATE_DIR / f"{session}_jev_places.json"
+    try:
+        kept = json.loads(path.read_text(encoding="utf-8"))
+        return path, [str(one) for one in kept][:12]
+    except (OSError, ValueError):
+        return path, []
+
+
 def ask_router(session: str, transcript: str, turns: int, last: int,
                fired: bool, cwd: str = "") -> dict:
     """Спросить классификатор, прерывать ли этот ход и куда это ложится.
@@ -192,11 +207,13 @@ def ask_router(session: str, transcript: str, turns: int, last: int,
         if not text.strip():
             return {}
         _, already = recorded_subjects(session)
+        _, kept = held_places(session)
         handle, path = tempfile.mkstemp(suffix=".json", prefix="jev-route-")
         with open(handle, "w", encoding="utf-8") as payload:
             json.dump({"сессия": session, "ходов": turns, "прошлое": last,
                        "счётчик_сработал": fired, "текст": text,
-                       "каталог": cwd, "записанное": already},
+                       "каталог": cwd, "записанное": already,
+                       "удержанное": kept},
                       payload, ensure_ascii=False)
         done = subprocess.run([sys.executable, str(ROUTER), path],
                               capture_output=True, text=True, timeout=JEV_TIMEOUT)
@@ -295,6 +312,13 @@ def main() -> None:
                       "последние ходы. Если нет, скажи это одной строкой и иди дальше.")
     reason += f" Как записывать — `{RULE}`."
     remember_subject(session, transcript)
+    # Запомнить выбранные места: на следующем ходе они удерживаются полосой.
+    try:
+        path, _ = held_places(session)
+        chosen = (verdict.get("места") or []) + (verdict.get("внутри_лабы") or [])
+        path.write_text(json.dumps(chosen, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
     print(json.dumps({"decision": "block", "reason": reason}))
 
 

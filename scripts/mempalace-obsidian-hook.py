@@ -26,9 +26,11 @@ turns only, and the interval means what it says.
 Saving before compaction is the other obvious idea and it does not work: a blocking
 PreCompact hook cancels the compaction instead of deferring it. The cadence stays on Stop.
 
-The lab section appears only when a lab-knowledge MCP server is configured, so an install
-without lab access is not nagged about an unconfigured base. Configuration is not a
-reachability check. Checkpoint markers track requests only; the agent must read back writes.
+The lab section is always printed: the base is a set of git clones, not a service, and the
+section itself says what to do when no clone sits next to the work. Until 08-10-2026 it was
+gated on a lab-knowledge MCP server being configured, and that server was deleted with its
+database, so the rules reached nobody whose install had no lab MCP entry.
+Checkpoint markers track requests only; the agent must read back writes.
 """
 
 import json
@@ -39,8 +41,6 @@ from pathlib import Path
 
 import mempalace.hooks_cli as hooks_cli
 
-SETTINGS = Path.home() / ".claude" / "settings.json"
-CODEX_CONFIG = Path.home() / ".codex" / "config.toml"
 
 #: Настоящих сообщений человека между сохранениями.
 SAVE_INTERVAL = 10
@@ -102,52 +102,6 @@ LAB_ADDENDUM = """
    записью не являются — отложенное назвать вслух. Предложение не закончено, пока у него
    есть неснятые замечания: `lab checks` печатает их отдельно.
 """
-
-
-def lab_base_configured(harness: str = "claude-code", cwd: str = "") -> bool:
-    """Check this client's configuration, without reading or printing credentials."""
-    if harness == "codex":
-        try:
-            try:
-                import tomllib
-            except ImportError:
-                import tomli as tomllib
-            config = tomllib.loads(CODEX_CONFIG.read_text(encoding="utf-8"))
-        except (ImportError, OSError, ValueError):
-            return False
-        server = config.get("mcp_servers", {}).get("lab-knowledge")
-        return isinstance(server, dict) and server.get("enabled", True) is not False
-    paths = [SETTINGS, Path.home() / ".claude.json"]
-    if cwd:
-        paths.append(Path(cwd) / ".mcp.json")
-    for path in paths:
-        try:
-            config = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            continue
-        if not isinstance(config, dict):
-            continue
-        server = config.get("mcpServers", {}).get("lab-knowledge")
-        if isinstance(server, dict) and server.get("disabled", False) is not True:
-            return True
-    return False
-
-
-def transcript_harness(transcript_path: str) -> str:
-    path = Path(transcript_path).expanduser()
-    if path.is_file():
-        with path.open(encoding="utf-8", errors="replace") as handle:
-            for line in handle:
-                try:
-                    entry = json.loads(line)
-                except ValueError:
-                    continue
-                if isinstance(entry, dict):
-                    if entry.get("type") in ("session_meta", "response_item"):
-                        return "codex"
-                    if isinstance(entry.get("message"), dict):
-                        return "claude-code"
-    return "claude-code"
 
 
 def _text_of(content: object) -> str:
@@ -322,7 +276,6 @@ def main() -> None:
         print(json.dumps({}))
         return
 
-    harness = transcript_harness(parsed["transcript_path"])
     turns = human_turns(parsed["transcript_path"])
     state_dir = hooks_cli.STATE_DIR
     state_dir.mkdir(parents=True, exist_ok=True)
@@ -374,9 +327,14 @@ def main() -> None:
         pass
     hooks_cli._maybe_auto_ingest()  # noqa: SLF001 — сохраняем поведение обёртки
 
-    reason = hooks_cli.STOP_BLOCK_REASON.rstrip() + OBSIDIAN_ADDENDUM
-    if lab_base_configured(harness, str(data.get("cwd") or "")):
-        reason = reason.rstrip() + "\n" + LAB_ADDENDUM
+    # Правила записи в базу печатаются всегда. Прежде они стояли за проверкой того, что в
+    # настройках клиента прописана MCP-служба `lab-knowledge`, — а служба удалена
+    # 07-10-2026 вместе со своей базой. У студента `setup.sh` эту запись выбрасывает,
+    # когда нет LAB_MCP_URL, так что правила базы ему не печатались никогда. База теперь
+    # это git-клоны, они есть у всех, и сам текст ниже объясняет, что делать, когда клона
+    # рядом нет: спросить владельца.
+    reason = (hooks_cli.STOP_BLOCK_REASON.rstrip() + OBSIDIAN_ADDENDUM).rstrip() \
+        + "\n" + LAB_ADDENDUM
     hint = verdict.get("подсказка") or ""
     if hint:
         reason = reason.rstrip() + "\n\n" + hint + "\n"

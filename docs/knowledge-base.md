@@ -1,5 +1,14 @@
 # Feeding the shared knowledge base
 
+> [!IMPORTANT]
+> **Этот документ описывает снятую службу.** 07-10-2026 Lab Knowledge MCP удалён вместе со своей
+> базой: ни адреса, ни инструментов, ни токена больше нет. Вызовы вида `create_hypothesis`,
+> `record_evidence`, `get_theme_context` не существуют. Текст оставлен как описание модели знания —
+> утверждение, его опровержение, прогон, серия, выкладка, — потому что модель та же. Механика теперь
+> простая: база это git, запись входит слиянием предложения человеком. Как именно —
+> `rules/lab.md` и `skills/lab-knowledge/references/canon.md`.
+
+
 The lab runs a shared knowledge service (Lab Knowledge MCP, 59 tools) that holds two corpora side by
 side: the lab's own records — hypotheses, experiments, evidence, derivations, decisions — and the
 library of read papers with the claims those papers make. Search answers over both.

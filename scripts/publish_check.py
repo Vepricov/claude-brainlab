@@ -35,6 +35,10 @@ SECRETS = (
 #: Личные данные: чужая почта и домашние пути. Почта владельца исключена: она и так стоит
 #: автором в каждом коммите, и считать её утечкой бессмысленно.
 OWN_MAIL = ("andrei.veprikov@mbzuai.ac.ae", "veprikov.ad@phystech.edu", "Zeyka666@gmail.com")
+#: Свои же учётки на своих машинах. 10-10-2026 сторож остановил отправку из-за
+#: `/home/shkodnik1917/` — это путь владельца на сервере базы, он стоит в десятках
+#: описаний и давно опубликован. Сторож, краснеющий на своём, учит себя обходить.
+OWN_PATHS = ("/home/shkodnik1917/", "/Users/andrey/", "/home/shkodnik/")
 PERSONAL = (
     ("чужая почта", re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.]{2,}\b")),
     ("домашний путь человека", re.compile(r"/(?:Users|home)/(?!\$|<)[A-Za-z][\w.-]*/")),
@@ -56,10 +60,23 @@ def changed(remote: str, branch: str) -> str:
 
 
 def already(remote: str, branch: str, needle: str) -> bool:
-    """Это уже лежит на удалённом? Тогда отправка ничего не публикует заново."""
-    done = subprocess.run(["git", "grep", "-q", needle, f"{remote}/{branch}"],
-                          capture_output=True, timeout=60)
-    return done.returncode == 0
+    """Это уже лежит на удалённом? Тогда отправка ничего не публикует заново.
+
+    Смотреть только одноимённую ветку мало: репозиторий публичный целиком, и то, что
+    лежит в любой его ветке, уже опубликовано. 10-10-2026 на этом сторож остановил
+    сведение рабочей линии в `main`, хотя все находки полгода лежали в ветке рядом.
+    """
+    refs = subprocess.run(
+        ["git", "for-each-ref", "--format=%(refname)", f"refs/remotes/{remote}/"],
+        capture_output=True, text=True, timeout=30).stdout.split()
+    head = f"refs/remotes/{remote}/{branch}"
+    order = ([head] if head in refs else []) + [r for r in refs if r != head]
+    for ref in order[:20]:
+        done = subprocess.run(["git", "grep", "-q", needle, ref],
+                              capture_output=True, timeout=60)
+        if done.returncode == 0:
+            return True
+    return False
 
 
 def main() -> int:
@@ -83,7 +100,7 @@ def main() -> int:
                 found.append(f"{remote}: {name} — {hit[:12]}…")
         for name, shape in PERSONAL:
             for hit in set(shape.findall(text)):
-                if any(mine in hit for mine in OWN_MAIL):
+                if any(mine in hit for mine in OWN_MAIL + OWN_PATHS):
                     continue
                 if already(remote, branch, hit):
                     continue

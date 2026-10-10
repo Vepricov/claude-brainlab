@@ -1,0 +1,1386 @@
+{
+  "checked_on": "2026-09-16",
+  "author": "Андрей Веприков",
+  "inventory_sources": [
+    "https://arxiv.org/search/?searchtype=author&query=Veprikov%2C+A&abstracts=show&size=200&order=-announced_date_first",
+    "https://orcid.org/0009-0001-9126-572X",
+    "https://openreview.net/forum?id=oZ8j2xSWVg",
+    "https://journals.rcsi.science/2071-8594/article/view/293493",
+    "https://link.springer.com/article/10.1134/S1064562424602336",
+    "https://link.springer.com/article/10.1134/S1064562425700565"
+  ],
+  "folder": "Публикации Андрея/Статьи и препринты",
+  "topics": [
+    {
+      "slug": "lora",
+      "title": "LoRA и выбор адаптеров",
+      "summary": "WeightLoRA, OPLoRA, LoRSum и LoRA-TSD: какие адаптеры обучать и как обновлять их факторы."
+    },
+    {
+      "slug": "optimizers",
+      "title": "Оптимизаторы и разогрев",
+      "summary": "Softsign, LionMuon, DyKAF, предобусловленные нормы и адаптивный warm-up."
+    },
+    {
+      "slug": "zero-order",
+      "title": "Безградиентное обучение",
+      "summary": "Координатная память JAGUAR, SignSGD, Muon и обучаемое распределение направлений."
+    },
+    {
+      "slug": "distributed",
+      "title": "Марковский шум и распределённое обучение",
+      "summary": "Зависимые наблюдения, сжатие градиентов и оптимизация на меняющихся графах."
+    },
+    {
+      "slug": "dynamics",
+      "title": "Динамика и устойчивость моделей",
+      "summary": "Динамика SGD, групповая робастность, скрытая обратная связь и состязательные возмущения."
+    }
+  ],
+  "questions": [
+    {
+      "text": "как дообучить модель с меньшим числом параметров",
+      "paper": "pub00014",
+      "related": [
+        "ref00001",
+        "ref00002"
+      ]
+    },
+    {
+      "text": "как ускорить обучение языковой модели",
+      "paper": "pub00004",
+      "related": [
+        "ref00008",
+        "ref00004"
+      ]
+    },
+    {
+      "text": "как учитывать кривизну при оптимизации",
+      "paper": "pub00009",
+      "related": [
+        "ref00004",
+        "ref00008"
+      ]
+    },
+    {
+      "text": "зачем нужен разогрев и как выбрать его длительность",
+      "paper": "pub00007",
+      "related": [
+        "ref00007",
+        "pub00010"
+      ]
+    },
+    {
+      "text": "как дообучать модель без обратного распространения",
+      "paper": "pub00006",
+      "related": [
+        "ref00003",
+        "pub00013"
+      ]
+    },
+    {
+      "text": "как учитывать геометрию низкорангового обновления",
+      "paper": "pub00001",
+      "related": [
+        "ref00001",
+        "ref00002"
+      ]
+    },
+    {
+      "text": "как уменьшить обмен данными при распределённом обучении",
+      "paper": "pub00008",
+      "related": [
+        "ref00005",
+        "pub00021"
+      ]
+    },
+    {
+      "text": "почему предсказания модели меняют будущие данные",
+      "paper": "pub00017",
+      "related": [
+        "ref00006",
+        "pub00020"
+      ]
+    }
+  ],
+  "papers": [
+    {
+      "id": "pub00001",
+      "arxiv": "2609.02734",
+      "title": "LoRA-TSD: Tangent-Space Spectral Descent for LoRA via Muon-Style Updates",
+      "authors": [
+        "Dmitrii Andriianov",
+        "Andrey Veprikov",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2609.02734",
+      "source_url": "https://arxiv.org/abs/2609.02734",
+      "topic": "lora",
+      "summary": "LoRA-TSD переносит спектральный шаг Muon в касательное пространство матриц фиксированного ранга. Обновление возвращается в факторы LoRA без работы с полной матрицей весов.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "LoRA-TSD строит шаг в касательном пространстве матрицы обновления LoRA и выбирает направление спуска в спектральной норме.",
+          "source_url": "https://arxiv.org/abs/2609.02734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Специальная ретракция возвращает касательный шаг в факторы LoRA, не требуя дорогих операций с полной матрицей весов.",
+          "source_url": "https://arxiv.org/abs/2609.02734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Для варианта в норме Фробениуса авторы восстанавливают LoRA-Pro. Сходимость LoRA-Pro и LoRA-TSD анализируется через риманов градиент.",
+          "source_url": "https://arxiv.org/abs/2609.02734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "На шести задачах здравого смысла и логического вывода с Llama-3.2-1B, Llama-3.1-8B и Qwen3-32B авторы сообщают преимущество LoRA-TSD над сравниваемыми оптимизаторами LoRA.",
+          "source_url": "https://arxiv.org/abs/2609.02734",
+          "locator": "Аннотация arXiv"
+        }
+      ],
+      "code_url": "https://github.com/brain-lab-research/LoRA-TSD"
+    },
+    {
+      "id": "pub00002",
+      "arxiv": "2605.31371",
+      "title": "Softsign: Smooth Sign in Your Optimizer For Better Parameter Heterogeneity Handling",
+      "authors": [
+        "Dmitrii Feoktistov",
+        "Timofey Belinsky",
+        "Andrey Veprikov",
+        "Amir Zainullin",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "ICML 2026",
+      "venue_url": "https://icml.cc/Downloads/2026",
+      "source_url": "https://arxiv.org/abs/2605.31371",
+      "topic": "optimizers",
+      "summary": "Softsign заменяет жёсткий знак градиента плавной функцией. Температура регулирует, насколько шаг сохраняет величину градиента; для матричных параметров предложен SoftMuon.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "SoftSignum сглаживает знак градиента: температура управляет переходом от почти знакового шага к шагу, чувствительному к величине градиента.",
+          "source_url": "https://arxiv.org/abs/2605.31371",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Квантильная адаптация температуры подстраивает Softsign под распределение величин градиента и неоднородность параметров.",
+          "source_url": "https://arxiv.org/abs/2605.31371",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "SoftMuon переносит идею гладкого знака на матричные обновления Muon.",
+          "source_url": "https://arxiv.org/abs/2605.31371",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Авторы связывают сглаженные направления с сильно выпуклой регуляризацией и доказывают сходимость в невыпуклой стохастической постановке.",
+          "source_url": "https://arxiv.org/abs/2605.31371",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В приведённых экспериментах, включая обучение языковых моделей, Softsign улучшает результаты сравниваемых знаковых оптимизаторов.",
+          "source_url": "https://arxiv.org/abs/2605.31371",
+          "locator": "Аннотация arXiv"
+        }
+      ],
+      "code_url": "https://github.com/brain-lab-research/softsign"
+    },
+    {
+      "id": "pub00003",
+      "arxiv": "2605.22644",
+      "title": "Why SGD is not Brownian Motion: A New Perspective on Stochastic Dynamics",
+      "authors": [
+        "Igor Ignashin",
+        "Anna Radovskaya",
+        "Andrew Semenov",
+        "Egor Lopatin",
+        "Stanislav Potapov",
+        "Aleksandr Kovalenko",
+        "Andrey Veprikov",
+        "Aleksandr Shestakov",
+        "Andrey Leonidov",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2605.22644",
+      "source_url": "https://arxiv.org/abs/2605.22644",
+      "topic": "dynamics",
+      "summary": "Работа исследует стохастическую динамику SGD с конечным шагом. Дискретное обучение моделируется через флуктуации ландшафта функции потерь, а не только непрерывное броуновское приближение.",
+      "claims": [
+        {
+          "kind": "theoretical",
+          "text": "Дискретное уравнение Фоккера — Планка для SGD отличается от непрерывного приближения Ланжевена в членах второго порядка по шагу обучения.",
+          "source_url": "https://arxiv.org/abs/2605.22644",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Разложение по собственным направлениям около критической точки описывает, как кривизна влияет на флуктуации параметров SGD.",
+          "source_url": "https://arxiv.org/abs/2605.22644",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "В плоских направлениях рассмотренная модель предсказывает рост дисперсии с коэффициентом диффузии, зависящим от шага обучения.",
+          "source_url": "https://arxiv.org/abs/2605.22644",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Предсказания модели сопоставлены с экспериментами в компьютерном зрении и обработке языка; это проверка исследованных режимов SGD.",
+          "source_url": "https://arxiv.org/abs/2605.22644",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00004",
+      "arxiv": "2605.19811",
+      "title": "LionMuon: Alternating Spectral and Sign Descent for Efficient Training",
+      "authors": [
+        "Arman Bolatov",
+        "Artem Riabinin",
+        "Nikita Kornilov",
+        "Andrey Veprikov",
+        "Samuel Horváth",
+        "Martin Takáč",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2605.19811",
+      "source_url": "https://arxiv.org/abs/2605.19811",
+      "topic": "optimizers",
+      "summary": "LionMuon чередует спектральные шаги Muon и знаковые шаги Lion. Один общий буфер импульса позволяет сочетать направления с разной вычислительной стоимостью.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "LionMuon периодически чередует Lion и Muon, используя общий буфер импульса вместо двух независимых состояний оптимизаторов.",
+          "source_url": "https://arxiv.org/abs/2605.19811",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Период чередования регулирует долю дорогих спектральных шагов; SignMuon использует знаковое направление с одной экспоненциальной средней.",
+          "source_url": "https://arxiv.org/abs/2605.19811",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Оценка сходимости учитывает усреднённые по периоду характеристики гладкости и шума, в том числе шум с тяжёлыми хвостами.",
+          "source_url": "https://arxiv.org/abs/2605.19811",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В экспериментах с языковыми моделями авторы показывают режимы LionMuon с меньшей функцией потерь и меньшими затратами вычислений по сравнению с выбранными базовыми методами.",
+          "source_url": "https://arxiv.org/abs/2605.19811",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00005",
+      "arxiv": "2602.16456",
+      "title": "Beyond SGD, Without SVD: Proximal Subspace Iteration LoRA with Diagonal Fractional K-FAC",
+      "authors": [
+        "Abdulla Jasem Almansoori",
+        "Maria Ivanova",
+        "Andrey Veprikov",
+        "Aleksandr Beznosikov",
+        "Samuel Horváth",
+        "Martin Takáč"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2602.16456",
+      "source_url": "https://arxiv.org/abs/2602.16456",
+      "topic": "lora",
+      "summary": "Проксимальное обновление LoRA решается чередующимися шагами по факторам. Метод LoRSum связывает такую итерацию подпространства с диагональным дробным K-FAC и низкоранговым импульсом.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Чередующееся решение проксимальной задачи LoRA интерпретируется как неявная блочная степенная итерация и обходится без полного SVD.",
+          "source_url": "https://arxiv.org/abs/2602.16456",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Диагональные дробные предобуславливатели K-FAC задают геометрию шага при сохранении низкорангового представления обновления.",
+          "source_url": "https://arxiv.org/abs/2602.16456",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "LoRSum хранит импульс в низкоранговой форме, чтобы не возвращать полное матричное состояние при дообучении.",
+          "source_url": "https://arxiv.org/abs/2602.16456",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В работе сравниваются качество и стоимость дообучения на CIFAR-100, GLUE, SQuAD v2 и WikiText-103.",
+          "source_url": "https://arxiv.org/abs/2602.16456",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00006",
+      "arxiv": "2602.13659",
+      "title": "Zero-Order Optimization for LLM Fine-Tuning via Learnable Direction Sampling",
+      "authors": [
+        "Valery Parfenov",
+        "Grigoriy Evseev",
+        "Andrey Veprikov",
+        "Nikolay Bushkov",
+        "Stanislav Moiseev",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2602.13659",
+      "source_url": "https://arxiv.org/abs/2602.13659",
+      "topic": "zero-order",
+      "summary": "Направления для безградиентного дообучения LLM выбирает обучаемая политика. Она меняет распределение возмущений, по которым оценивается направление улучшения функции потерь.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Вместо фиксированного случайного распределения направлений используется обучаемая политика выбора возмущений параметров.",
+          "source_url": "https://arxiv.org/abs/2602.13659",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Оценка направления обновления строится по значениям функции потерь и не требует обратного распространения через языковую модель.",
+          "source_url": "https://arxiv.org/abs/2602.13659",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Анализ связывает адаптацию распределения направлений со снижением дисперсии и ослаблением явной зависимости оценок от размерности.",
+          "source_url": "https://arxiv.org/abs/2602.13659",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Преимущества обучаемых направлений проверены в приведённых задачах безградиентного дообучения языковых моделей.",
+          "source_url": "https://arxiv.org/abs/2602.13659",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00007",
+      "arxiv": "2602.05813",
+      "title": "Where Does Warm-Up Come From? Adaptive Scheduling for Norm-Constrained Optimizers",
+      "authors": [
+        "Artem Riabinin",
+        "Andrey Veprikov",
+        "Arman Bolatov",
+        "Martin Takáč",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2602.05813",
+      "source_url": "https://arxiv.org/abs/2602.05813",
+      "topic": "optimizers",
+      "summary": "Работа выводит разогрев и последующее снижение шага из модели меняющейся локальной кривизны. Адаптивное расписание предназначено для оптимизаторов с ограничением нормы направления.",
+      "claims": [
+        {
+          "kind": "theoretical",
+          "text": "В принятой модели обобщённой гладкости локальная кривизна уменьшается вместе с разрывом до оптимума; это даёт основание для роста шага в начале обучения.",
+          "source_url": "https://arxiv.org/abs/2602.05813",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Адаптивное расписание сначала увеличивает шаг, затем уменьшает его. Продолжительность разогрева определяется самим правилом обновления.",
+          "source_url": "https://arxiv.org/abs/2602.05813",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Расписание разогрева использует стандартные параметры оптимизатора и не требует отдельного перебора длительности warm-up.",
+          "source_url": "https://arxiv.org/abs/2602.05813",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В экспериментах с моделями Llama авторы получают качество на уровне лучших вручную подобранных расписаний или выше при исследованных настройках.",
+          "source_url": "https://arxiv.org/abs/2602.05813",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00008",
+      "arxiv": "2601.05398",
+      "title": "Markovian Compression: Looking to the Past Helps Accelerate the Future",
+      "authors": [
+        "Andrey Veprikov",
+        "Vladimir Solodkin",
+        "Mikhail Rudakov",
+        "Petr Babkin",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "UAI 2026",
+      "venue_url": "https://proceedings.mlr.press/v337/veprikov26a.html",
+      "source_url": "https://arxiv.org/abs/2601.05398",
+      "topic": "distributed",
+      "summary": "Марковское сжатие использует историю предыдущих шагов при передаче градиентов. Работа рассматривает QSGD и его вариант с импульсом с точки зрения стоимости коммуникации и сходимости.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Марковский компрессор учитывает предыдущие итерации, поэтому ошибки сжатия не моделируются как независимые на каждом шаге.",
+          "source_url": "https://arxiv.org/abs/2601.05398",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Предложенный подход применяется к квантованному SGD и его варианту с импульсом.",
+          "source_url": "https://arxiv.org/abs/2601.05398",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Получены оценки сходимости для невыпуклых, сильно выпуклых задач и функций с условием Поляка — Лоясиевича.",
+          "source_url": "https://arxiv.org/abs/2601.05398",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Эксперименты с ResNet-18 на CIFAR-10 и DeBERTa-v3 на GLUE проверяют, как использование истории сжатия влияет на обучение.",
+          "source_url": "https://arxiv.org/abs/2601.05398",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00009",
+      "arxiv": "2511.06477",
+      "title": "DyKAF: Dynamical Kronecker Approximation of the Fisher Information Matrix for Gradient Preconditioning",
+      "authors": [
+        "Nikolay Yudin",
+        "Ekaterina Grishina",
+        "Andrey Veprikov",
+        "Alexandr Beznosikov",
+        "Maxim Rakhuba"
+      ],
+      "year": 2025,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2511.06477",
+      "source_url": "https://arxiv.org/abs/2511.06477",
+      "topic": "optimizers",
+      "summary": "DyKAF динамически приближает матрицу Фишера кронекеровскими факторами. Обновление факторов опирается на интеграторы с расщеплением проектора и используется для предобуславливания градиента.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "DyKAF представляет приближение матрицы Фишера через кронекеровские факторы и обновляет их по мере обучения.",
+          "source_url": "https://arxiv.org/abs/2511.06477",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Для динамической аппроксимации используются интеграторы с расщеплением проектора, связывающие обновление факторов с геометрией матричного многообразия.",
+          "source_url": "https://arxiv.org/abs/2511.06477",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Авторы сравнивают точность кронекеровской аппроксимации DyKAF с альтернативами на исследованных задачах.",
+          "source_url": "https://arxiv.org/abs/2511.06477",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Предобуславливатель DyKAF проверен в предобучении и дообучении языковых моделей; результаты относятся к приведённым в работе конфигурациям.",
+          "source_url": "https://arxiv.org/abs/2511.06477",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00010",
+      "arxiv": "2510.10777",
+      "title": "Preconditioned Norms: A Unified Framework for Steepest Descent, Quasi-Newton and Adaptive Methods",
+      "authors": [
+        "Andrey Veprikov",
+        "Arman Bolatov",
+        "Aleksandr Bogdanov",
+        "Samuel Horváth",
+        "Aleksandr Beznosikov",
+        "Martin Takáč",
+        "Slavomir Hanzely"
+      ],
+      "year": 2025,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2510.10777",
+      "source_url": "https://arxiv.org/abs/2510.10777",
+      "topic": "optimizers",
+      "summary": "Предобусловленные нормы объединяют выбор геометрии спуска и предобуславливателя. В этой схеме сопоставляются SGD, Adam, Muon и матричные методы второго порядка.",
+      "claims": [
+        {
+          "kind": "theoretical",
+          "text": "Направление наискорейшего спуска определяется одновременно нормой и предобуславливателем; выбор этих двух частей объединяет несколько семейств оптимизаторов.",
+          "source_url": "https://arxiv.org/abs/2510.10777",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "В общей схеме рассматриваются условия аффинной и масштабной инвариантности методов оптимизации.",
+          "source_url": "https://arxiv.org/abs/2510.10777",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "SGD, Adam, Muon, KL-Shampoo, SOAP и SPlus интерпретируются как частные варианты выбора нормы и предобуславливания.",
+          "source_url": "https://arxiv.org/abs/2510.10777",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "MuAdam и MuAdam-SANIA сочетают спектральную геометрию с адаптивным масштабированием Adam; работа проверяет эти варианты экспериментально.",
+          "source_url": "https://arxiv.org/abs/2510.10777",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00011",
+      "arxiv": "2509.19977",
+      "title": "Faster Than SVD, Smarter Than SGD: The OPLoRA Alternating Update",
+      "authors": [
+        "Abdulla Jasem Almansoori",
+        "Maria Ivanova",
+        "Andrey Veprikov",
+        "Aleksandr Beznosikov",
+        "Samuel Horváth",
+        "Martin Takáč"
+      ],
+      "year": 2025,
+      "venue": "OPT 2025 · воркшоп",
+      "venue_url": "https://arxiv.org/abs/2509.19977",
+      "source_url": "https://arxiv.org/abs/2509.19977",
+      "topic": "lora",
+      "summary": "OPLoRA обновляет факторы адаптера чередующимся решением задач наименьших квадратов. Это позволяет приближать усечённое SVD без построения полной матрицы обновления.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "OPLoRA использует чередующиеся обновления факторов LoRA вместо их независимого градиентного обучения.",
+          "source_url": "https://arxiv.org/abs/2509.19977",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Один или два шага чередующихся наименьших квадратов приближают обновление с усечённым SVD, избегая явного формирования полной матрицы.",
+          "source_url": "https://arxiv.org/abs/2509.19977",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Низкоранговый импульс сохраняет матричное направление в компактных факторах; рассматривается также масштабирование с помощью K-FAC.",
+          "source_url": "https://arxiv.org/abs/2509.19977",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "OPLoRA проверен на линейных задачах, MNIST, CIFAR-100 и дообучении RoBERTa на MNLI.",
+          "source_url": "https://arxiv.org/abs/2509.19977",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00012",
+      "arxiv": "2508.16734",
+      "title": "Aligning Distributionally Robust Optimization with Practical Deep Learning Needs",
+      "authors": [
+        "Dmitrii Feoktistov",
+        "Igor Ignashin",
+        "Andrey Veprikov",
+        "Nikita Borovko",
+        "Alexander Bogdanov",
+        "Savelii Chezhegov",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2025,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2508.16734",
+      "source_url": "https://arxiv.org/abs/2508.16734",
+      "topic": "dynamics",
+      "summary": "ALSO адаптирует распределённо-робастную оптимизацию к обучению глубоких моделей. Группы данных получают меняющиеся веса, чтобы учитывать неоднородность ошибок.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Групповая распределённо-робастная постановка оптимизирует обучение с учётом групп данных, на которых модель ошибается сильнее.",
+          "source_url": "https://arxiv.org/abs/2508.16734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "ALSO адаптивно обновляет веса групп и параметры модели на основе стохастических градиентов.",
+          "source_url": "https://arxiv.org/abs/2508.16734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Для предложенных алгоритмов получены гарантии сходимости в невыпуклой постановке.",
+          "source_url": "https://arxiv.org/abs/2508.16734",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Работа проверяет подход на задачах от табличных данных до раздельного обучения Split Learning.",
+          "source_url": "https://arxiv.org/abs/2508.16734",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00013",
+      "arxiv": "2506.04430",
+      "title": "Leveraging Coordinate Momentum in SignSGD and Muon: Memory-Optimized Zero-Order",
+      "authors": [
+        "Egor Petrov",
+        "Grigoriy Evseev",
+        "Aleksey Antonov",
+        "Andrey Veprikov",
+        "Nikolay Bushkov",
+        "Stanislav Moiseev",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2025,
+      "venue": "Препринт · arXiv",
+      "venue_url": "https://arxiv.org/abs/2506.04430",
+      "source_url": "https://arxiv.org/abs/2506.04430",
+      "topic": "zero-order",
+      "summary": "Координатная память JAGUAR используется в безградиентных вариантах SignSGD и Muon. Цель — обновлять параметры по значениям функции, сохраняя информацию о ранее оценённых координатах.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Координатный импульс JAGUAR переиспользует информацию предыдущих оценок вместо пересчёта всех координат на каждом шаге.",
+          "source_url": "https://arxiv.org/abs/2506.04430",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Безградиентная оценка с координатной памятью применяется к знаковому обновлению SignSGD и матричному обновлению Muon.",
+          "source_url": "https://arxiv.org/abs/2506.04430",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Анализ безградиентных вариантов рассматривает сходимость при шумных вычислениях функции с постоянным числом запросов оракула на итерацию.",
+          "source_url": "https://arxiv.org/abs/2506.04430",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Методы проверены в дообучении языковых моделей с ограничениями по памяти; используются вычисления функции без хранения графа обратного распространения.",
+          "source_url": "https://arxiv.org/abs/2506.04430",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00014",
+      "arxiv": "2506.02724",
+      "title": "WeightLoRA: Keep Only Necessary Adapters",
+      "authors": [
+        "Andrey Veprikov",
+        "Vladimir Solodkin",
+        "Alexander Zyl",
+        "Andrey Savchenko",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "ACL 2026",
+      "venue_url": "https://aclanthology.org/2026.acl-long.566/",
+      "source_url": "https://arxiv.org/abs/2506.02724",
+      "topic": "lora",
+      "summary": "WeightLoRA выбирает, какие адаптеры LoRA действительно нужны для задачи. Обучаемые веса позволяют оставить значимые адаптеры и сократить число обучаемых параметров.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "WeightLoRA назначает адаптерам обучаемые веса и использует их, чтобы выбирать необходимые для задачи адаптеры LoRA.",
+          "source_url": "https://aclanthology.org/2026.acl-long.566/",
+          "locator": "Аннотация ACL 2026"
+        },
+        {
+          "kind": "method",
+          "text": "Отбор адаптеров уменьшает число обучаемых параметров по сравнению с размещением LoRA во всех выбранных заранее слоях.",
+          "source_url": "https://aclanthology.org/2026.acl-long.566/",
+          "locator": "Аннотация ACL 2026"
+        },
+        {
+          "kind": "method",
+          "text": "WeightLoRA+ развивает процедуру отбора адаптеров, сохраняя задачу совместного выбора их вклада и дообучения модели.",
+          "source_url": "https://aclanthology.org/2026.acl-long.566/",
+          "locator": "Аннотация ACL 2026"
+        },
+        {
+          "kind": "empirical",
+          "text": "Авторы сравнивают число параметров и качество на задачах понимания и генерации текста с DeBERTa, BART, Llama и Qwen. Сокращение адаптеров проверяется вместе с качеством ответа.",
+          "source_url": "https://aclanthology.org/2026.acl-long.566/",
+          "locator": "Аннотация ACL 2026"
+        }
+      ],
+      "code_url": "https://github.com/brain-lab-research/WLoRA"
+    },
+    {
+      "id": "pub00015",
+      "arxiv": "2409.10442",
+      "title": "New Aspects of Black Box Conditional Gradient: Variance Reduction and One Point Feedback",
+      "authors": [
+        "Andrey Veprikov",
+        "Aleksandr Bogdanov",
+        "Vladislav Minashkin",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2024,
+      "venue": "Chaos, Solitons & Fractals · 2024",
+      "venue_url": "https://doi.org/10.1016/j.chaos.2024.115654",
+      "source_url": "https://arxiv.org/abs/2409.10442",
+      "topic": "zero-order",
+      "summary": "JAGUAR сохраняет координатную информацию для безградиентной оптимизации. Память позволяет строить обновления условного градиента и градиентного спуска с малым числом новых вычислений функции.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "JAGUAR переиспользует ранее полученные оценки координат, снижая число новых вызовов функции на итерацию до постоянного.",
+          "source_url": "https://arxiv.org/abs/2409.10442",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Память координат встраивается в безградиентные варианты Frank–Wolfe и градиентного спуска.",
+          "source_url": "https://arxiv.org/abs/2409.10442",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Анализ охватывает выпуклые и невыпуклые задачи, а также условие Поляка — Лоясиевича.",
+          "source_url": "https://arxiv.org/abs/2409.10442",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Рассматриваются детерминированные и стохастические шумные оракулы; для разных режимов выведены соответствующие оценки сложности.",
+          "source_url": "https://arxiv.org/abs/2409.10442",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00016",
+      "arxiv": "2408.01848",
+      "title": "Methods for Optimization Problems with Markovian Stochasticity and Non-Euclidean Geometry",
+      "authors": [
+        "Vladimir Solodkin",
+        "Andrey Veprikov",
+        "Alexander Chernyavskiy",
+        "Aleksandr Beznosikov"
+      ],
+      "year": 2026,
+      "venue": "AAAI 2026",
+      "venue_url": "https://ojs.aaai.org/index.php/AAAI/article/view/39746",
+      "source_url": "https://arxiv.org/abs/2408.01848",
+      "topic": "distributed",
+      "summary": "Работа изучает оптимизацию с зависимыми марковскими наблюдениями в неевклидовой геометрии. Зеркальный спуск применяется к выпуклой минимизации и вариационным неравенствам.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Четыре варианта зеркального спуска приспособлены к стохастическим наблюдениям, связанным марковской цепью.",
+          "source_url": "https://arxiv.org/abs/2408.01848",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Оценки сходимости учитывают зависимость наблюдений и неевклидову геометрию вместо предположения о независимом евклидовом шуме.",
+          "source_url": "https://arxiv.org/abs/2408.01848",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Рассмотрены гладкая выпуклая минимизация и вариационные неравенства с липшицевым монотонным оператором.",
+          "source_url": "https://arxiv.org/abs/2408.01848",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Нижние оценки сложности сопоставляются с полученными верхними оценками для обоснования оптимальности в рассмотренных постановках.",
+          "source_url": "https://arxiv.org/abs/2408.01848",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00017",
+      "arxiv": "2405.02726",
+      "title": "A Mathematical Model of the Hidden Feedback Loop Effect in Machine Learning Systems",
+      "authors": [
+        "Andrey Veprikov",
+        "Alexander Afanasyev",
+        "Anton Khritankov"
+      ],
+      "year": 2025,
+      "venue": "Knowledge and Information Systems · 2025",
+      "venue_url": "https://doi.org/10.1007/s10115-025-02560-w",
+      "source_url": "https://arxiv.org/abs/2405.02726",
+      "topic": "dynamics",
+      "summary": "Модель скрытой обратной связи описывает цикл: данные обучают модель, её решения меняют среду, а новая среда порождает следующие данные. Исследуются долгосрочные последствия повторного обучения.",
+      "claims": [
+        {
+          "kind": "definition",
+          "text": "Скрытая обратная связь возникает, когда состояние среды причинно зависит от предсказаний обученной модели и тем самым меняет распределение будущих данных.",
+          "source_url": "https://arxiv.org/abs/2405.02726",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Динамическая модель повторного обучения задаёт достаточные условия сходимости и предельные множества распределений.",
+          "source_url": "https://arxiv.org/abs/2405.02726",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Положительная и отрицательная обратная связь рассмотрены как разные режимы эволюции распределения данных.",
+          "source_url": "https://arxiv.org/abs/2405.02726",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Предсказания модели проверены на двух синтетических наборах данных; экспериментальная часть не является проверкой промышленной рекомендательной системы.",
+          "source_url": "https://arxiv.org/abs/2405.02726",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00018",
+      "arxiv": "2307.00392",
+      "title": "Non-Smooth Setting of Stochastic Decentralized Convex Optimization Problem Over Time-Varying Graphs",
+      "authors": [
+        "Aleksandr Lobanov",
+        "Andrew Veprikov",
+        "Georgiy Konin",
+        "Aleksandr Beznosikov",
+        "Alexander Gasnikov",
+        "Dmitry Kovalev"
+      ],
+      "year": 2023,
+      "venue": "Computational Management Science · 2023",
+      "venue_url": "https://doi.org/10.1007/s10287-023-00479-7",
+      "source_url": "https://arxiv.org/abs/2307.00392",
+      "topic": "distributed",
+      "summary": "Децентрализованная выпуклая оптимизация изучается на графе, чьи связи меняются со временем. Для негладких локальных функций используются стохастические безградиентные оценки и случайное сглаживание.",
+      "claims": [
+        {
+          "kind": "definition",
+          "text": "Каждый агент хранит свою локальную функцию и обменивается информацией только с соседями по меняющемуся графу связи.",
+          "source_url": "https://arxiv.org/abs/2307.00392",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Случайное сглаживание в евклидовой геометрии переводит негладкую задачу в форму, пригодную для безградиентных обновлений.",
+          "source_url": "https://arxiv.org/abs/2307.00392",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Получены оценки сходимости для стохастической децентрализованной выпуклой оптимизации с меняющейся связностью.",
+          "source_url": "https://arxiv.org/abs/2307.00392",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Численные эксперименты сопоставляют поведение предложенных методов с предсказаниями теоретического анализа.",
+          "source_url": "https://arxiv.org/abs/2307.00392",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "pub00019",
+      "arxiv": null,
+      "title": "Adversarial Robustness through Wide Local Minima: A Simple Training Technique",
+      "authors": [
+        "Andrey S. Veprikov",
+        "Anton S. Khritankov",
+        "Sergey A. Smirnov"
+      ],
+      "year": 2024,
+      "venue": "ICOMP 2024",
+      "venue_url": "https://openreview.net/forum?id=oZ8j2xSWVg",
+      "source_url": "https://openreview.net/pdf?id=oZ8j2xSWVg",
+      "topic": "dynamics",
+      "summary": "Работа связывает устойчивость к состязательным возмущениям с шириной локального минимума. Авторы исследуют, как настройки обучения помогают находить такие решения без изменения архитектуры модели.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Предложено подбирать параметры обучения так, чтобы направлять оптимизацию к широким локальным минимумам.",
+          "source_url": "https://openreview.net/pdf?id=oZ8j2xSWVg",
+          "locator": "Аннотация и введение, стр. 1–2"
+        },
+        {
+          "kind": "method",
+          "text": "Подход к повышению устойчивости использует настройки обучения без изменения архитектуры, функции потерь или добавления состязательных примеров в обучающую выборку.",
+          "source_url": "https://openreview.net/pdf?id=oZ8j2xSWVg",
+          "locator": "Аннотация и введение, стр. 1–2"
+        },
+        {
+          "kind": "empirical",
+          "text": "В работе исследуется устойчивость к атаке FGSM на MNIST; этот результат относится к конкретной атаке и экспериментальной постановке.",
+          "source_url": "https://openreview.net/pdf?id=oZ8j2xSWVg",
+          "locator": "Аннотация и введение, стр. 1–2"
+        }
+      ]
+    },
+    {
+      "id": "pub00020",
+      "title": "On the Properties of the Limit Set of a Repeated Machine Learning Process under Feature Space Transformations",
+      "arxiv": null,
+      "authors": [
+        "Andrey S. Veprikov",
+        "Anton S. Khritankov"
+      ],
+      "year": 2025,
+      "venue": "Искусственный интеллект и принятие решений · 2025",
+      "source_url": "https://journals.rcsi.science/2071-8594/article/view/293493",
+      "venue_url": "https://journals.rcsi.science/2071-8594/article/view/293493",
+      "topic": "dynamics",
+      "summary": "Работа изучает, когда изменение пространства признаков сохраняет прогноз долгосрочного поведения системы с повторным обучением. Это позволяет исследовать сложную систему через более простую модель.",
+      "claims": [
+        {
+          "kind": "definition",
+          "text": "При многократном машинном обучении следующие обучающие данные зависят от поведения пользователей и уже работающей модели.",
+          "source_url": "https://journals.rcsi.science/2071-8594/article/view/293493",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Исследованы условия переноса прогноза асимптотического поведения между исходным и преобразованным пространствами признаков.",
+          "source_url": "https://journals.rcsi.science/2071-8594/article/view/293493",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "theoretical",
+          "text": "При выполнении этих условий системы меньшей размерности могут служить моделями для изучения предельного поведения более сложных систем.",
+          "source_url": "https://journals.rcsi.science/2071-8594/article/view/293493",
+          "locator": "Аннотация издателя"
+        }
+      ]
+    },
+    {
+      "id": "pub00021",
+      "title": "Zero Order Algorithm for Decentralized Optimization Problems",
+      "arxiv": null,
+      "authors": [
+        "A. S. Veprikov",
+        "E. D. Petrov",
+        "G. V. Evseev",
+        "A. N. Beznosikov"
+      ],
+      "year": 2024,
+      "venue": "Доклады РАН / Doklady Mathematics · 2024",
+      "source_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+      "venue_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+      "topic": "distributed",
+      "summary": "ZO-MARINA переносит распределённую оптимизацию MARINA в постановку чёрного ящика. Устройства используют шумные значения локальных функций и обмениваются разреженными оценками обновлений.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "ZO-MARINA заменяет точные градиенты оценками по значениям функции, а обычный компрессор — разностями оценок на выбранных координатах.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "method",
+          "text": "Безградиентное разреживание позволяет каждому устройству выполнять постоянное число вызовов оракула на итерацию.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+          "locator": "§1.2 Main Contributions"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Анализ сходимости охватывает невыпуклые функции и условие Поляка — Лоясиевича; полученные оценки сопоставляются с методами первого порядка.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "empirical",
+          "text": "Вычислительные эксперименты посвящены подбору гиперпараметров ResNet-18 на CIFAR-10 и SVM на наборах mushroom и MNIST-784.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562424602336",
+          "locator": "§1.2 Main Contributions"
+        }
+      ]
+    },
+    {
+      "id": "pub00022",
+      "title": "Sampling of Semiorthogonal Matrices for the Muon Algorithm",
+      "arxiv": null,
+      "authors": [
+        "E. D. Petrov",
+        "G. V. Evseev",
+        "A. V. Antonov",
+        "A. S. Veprikov",
+        "N. A. Bushkov",
+        "S. V. Moiseev",
+        "A. N. Beznosikov"
+      ],
+      "year": 2025,
+      "venue": "Доклады РАН / Doklady Mathematics · 2025",
+      "source_url": "https://link.springer.com/article/10.1134/S1064562425700565",
+      "venue_url": "https://link.springer.com/article/10.1134/S1064562425700565",
+      "topic": "zero-order",
+      "summary": "Исследуются способы семплирования полуортогональных матриц для безградиентного Muon. Работа сравнивает, как выбор матричных направлений влияет на стоимость и качество дообучения LLM.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "В безградиентной постановке Muon использует оценки по прямым проходам модели, избегая обратного распространения и хранения его графа.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562425700565",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "method",
+          "text": "Разные способы семплирования полуортогональных направлений учитывают матричную структуру параметров при построении обновления.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562425700565",
+          "locator": "Аннотация издателя"
+        },
+        {
+          "kind": "empirical",
+          "text": "В работе сравниваются стратегии семплирования по качеству дообучения языковых моделей и вычислительной эффективности.",
+          "source_url": "https://link.springer.com/article/10.1134/S1064562425700565",
+          "locator": "Аннотация издателя"
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "ref00001",
+      "arxiv": "2106.09685",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "authors": [
+        "Edward J. Hu",
+        "Yelong Shen",
+        "Phillip Wallis",
+        "Zeyuan Allen-Zhu",
+        "Yuanzhi Li",
+        "Shean Wang",
+        "Lu Wang",
+        "Weizhu Chen"
+      ],
+      "year": 2021,
+      "venue": "arXiv · 2021",
+      "venue_url": "https://arxiv.org/abs/2106.09685",
+      "source_url": "https://arxiv.org/abs/2106.09685",
+      "topic": "lora",
+      "summary": "LoRA дообучает небольшие низкоранговые добавки к замороженным весам модели. Это сокращает число обучаемых параметров и расход памяти при адаптации к новой задаче.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "LoRA замораживает предобученные веса и добавляет обучаемые низкоранговые матрицы в слои Transformer.",
+          "source_url": "https://arxiv.org/abs/2106.09685",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В экспериментах с RoBERTa, DeBERTa, GPT-2 и GPT-3 авторы получают качество на уровне полного дообучения или выше при меньшем числе обучаемых параметров.",
+          "source_url": "https://arxiv.org/abs/2106.09685",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Низкоранговую добавку можно объединить с исходными весами, поэтому подход не требует дополнительных слоёв при инференсе.",
+          "source_url": "https://arxiv.org/abs/2106.09685",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00002",
+      "arxiv": "2303.10512",
+      "title": "AdaLoRA: Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning",
+      "authors": [
+        "Qingru Zhang",
+        "Minshuo Chen",
+        "Alexander Bukharin",
+        "Nikos Karampatziakis",
+        "Pengcheng He",
+        "Yu Cheng",
+        "Weizhu Chen",
+        "Tuo Zhao"
+      ],
+      "year": 2023,
+      "venue": "arXiv · 2023",
+      "venue_url": "https://arxiv.org/abs/2303.10512",
+      "source_url": "https://arxiv.org/abs/2303.10512",
+      "topic": "lora",
+      "summary": "AdaLoRA распределяет бюджет обучаемых параметров между матрицами по их важности. Вместо одинакового ранга для всех обновлений метод сокращает менее полезные компоненты.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "AdaLoRA адаптивно распределяет бюджет параметров между матрицами весов по оценке важности обновлений.",
+          "source_url": "https://arxiv.org/abs/2303.10512",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Обновления параметризованы в форме сингулярного разложения: неважные сингулярные значения отсекаются без дорогого точного SVD.",
+          "source_url": "https://arxiv.org/abs/2303.10512",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "На задачах обработки языка, ответов на вопросы и генерации авторы сообщают улучшения относительно базовых методов, особенно при малом бюджете параметров.",
+          "source_url": "https://arxiv.org/abs/2303.10512",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00003",
+      "arxiv": "2305.17333",
+      "title": "Fine-Tuning Language Models with Just Forward Passes",
+      "authors": [
+        "Sadhika Malladi",
+        "Tianyu Gao",
+        "Eshaan Nichani",
+        "Alex Damian",
+        "Jason D. Lee",
+        "Danqi Chen",
+        "Sanjeev Arora"
+      ],
+      "year": 2023,
+      "venue": "arXiv · 2023",
+      "venue_url": "https://arxiv.org/abs/2305.17333",
+      "source_url": "https://arxiv.org/abs/2305.17333",
+      "topic": "zero-order",
+      "summary": "MeZO дообучает языковую модель только прямыми проходами, оценивая направление обновления по значениям целевой функции. Основная цель — экономия памяти без обратного распространения.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "MeZO реализует безградиентный SGD с изменением параметров на месте и оценивает обновление через прямые проходы модели.",
+          "source_url": "https://arxiv.org/abs/2305.17333",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Авторы проверяют метод на классификации, выборе ответа и генерации. В их реализации расход памяти при дообучении сопоставим с инференсом.",
+          "source_url": "https://arxiv.org/abs/2305.17333",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Метод совместим с полным дообучением, LoRA и prefix tuning и допускает недифференцируемые цели, например accuracy или F1.",
+          "source_url": "https://arxiv.org/abs/2305.17333",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00004",
+      "arxiv": "1802.09568",
+      "title": "Shampoo: Preconditioned Stochastic Tensor Optimization",
+      "authors": [
+        "Vineet Gupta",
+        "Tomer Koren",
+        "Yoram Singer"
+      ],
+      "year": 2018,
+      "venue": "arXiv · 2018",
+      "venue_url": "https://arxiv.org/abs/1802.09568",
+      "source_url": "https://arxiv.org/abs/1802.09568",
+      "topic": "optimizers",
+      "summary": "Shampoo предобусловливает обновления с учётом тензорной структуры параметров. Набор матриц по отдельным осям заменяет одну огромную матрицу предобусловливания.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "Shampoo хранит отдельную матрицу предобусловливания для каждого измерения тензора параметров, сворачивая градиенты по остальным измерениям.",
+          "source_url": "https://arxiv.org/abs/1802.09568",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Для стохастической выпуклой оптимизации авторы доказывают гарантии сходимости с помощью матричных следовых неравенств.",
+          "source_url": "https://arxiv.org/abs/1802.09568",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "В экспериментах авторы наблюдают более быструю сходимость, чем у сравниваемых оптимизаторов, при сопоставимом времени шага. Это результат приведённых задач, а не гарантия для любой модели.",
+          "source_url": "https://arxiv.org/abs/1802.09568",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00005",
+      "arxiv": "1610.02132",
+      "title": "QSGD: Communication-Efficient SGD via Gradient Quantization and Encoding",
+      "authors": [
+        "Dan Alistarh",
+        "Demjan Grubic",
+        "Jerry Li",
+        "Ryota Tomioka",
+        "Milan Vojnovic"
+      ],
+      "year": 2016,
+      "venue": "arXiv · 2016",
+      "venue_url": "https://arxiv.org/abs/1610.02132",
+      "source_url": "https://arxiv.org/abs/1610.02132",
+      "topic": "distributed",
+      "summary": "QSGD уменьшает объём передаваемых градиентов с помощью квантования и кодирования. Уровень сжатия задаёт компромисс между стоимостью связи и временем сходимости.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "QSGD сжимает градиентные обновления на каждом узле через квантование и кодирование перед передачей другим участникам обучения.",
+          "source_url": "https://arxiv.org/abs/1610.02132",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "При стандартных предположениях семейство схем сохраняет гарантии сходимости и позволяет управлять компромиссом между объёмом сообщений и числом итераций.",
+          "source_url": "https://arxiv.org/abs/1610.02132",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Авторы проверяют квантование на классификации изображений и распознавании речи и сообщают сокращение затрат на связь и полного времени обучения в этих экспериментах.",
+          "source_url": "https://arxiv.org/abs/1610.02132",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00006",
+      "arxiv": "2002.06673",
+      "title": "Performative Prediction",
+      "authors": [
+        "Juan C. Perdomo",
+        "Tijana Zrnic",
+        "Celestine Mendler-Dünner",
+        "Moritz Hardt"
+      ],
+      "year": 2020,
+      "venue": "arXiv · 2020",
+      "venue_url": "https://arxiv.org/abs/2002.06673",
+      "source_url": "https://arxiv.org/abs/2002.06673",
+      "topic": "dynamics",
+      "summary": "Работа рассматривает модели, чьи предсказания меняют будущие данные. Она вводит понятие устойчивости повторного обучения в среде, которая реагирует на предсказатель.",
+      "claims": [
+        {
+          "kind": "definition",
+          "text": "Предсказание является перформативным, если решения, принятые на его основе, влияют на предсказываемый результат и распределение будущих данных.",
+          "source_url": "https://arxiv.org/abs/2002.06673",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "definition",
+          "text": "Перформативная устойчивость описывает равновесие: модель оптимальна для распределения, которое возникает в ответ на применение этой модели.",
+          "source_url": "https://arxiv.org/abs/2002.06673",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "theoretical",
+          "text": "Авторы изучают условия, при которых повторное переобучение сходится к устойчивой точке с почти минимальным риском, и связывают подход со стратегической классификацией.",
+          "source_url": "https://arxiv.org/abs/2002.06673",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00007",
+      "arxiv": "2406.09405",
+      "title": "Why Warmup the Learning Rate? Underlying Mechanisms and Improvements",
+      "authors": [
+        "Dayal Singh Kalra",
+        "Maissam Barkeshli"
+      ],
+      "year": 2024,
+      "venue": "arXiv · 2024",
+      "venue_url": "https://arxiv.org/abs/2406.09405",
+      "source_url": "https://arxiv.org/abs/2406.09405",
+      "topic": "optimizers",
+      "summary": "Авторы исследуют, почему постепенное увеличение шага в начале обучения помогает SGD и Adam. Разогрев связывается с переходом в области, допускающие больший целевой шаг.",
+      "claims": [
+        {
+          "kind": "empirical",
+          "text": "В систематических экспериментах с SGD и Adam основная польза разогрева связана с возможностью использовать больший целевой шаг обучения.",
+          "source_url": "https://arxiv.org/abs/2406.09405",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "Поведение в период разогрева зависит от инициализации и параметризации: резкость ландшафта может сначала расти либо снижаться.",
+          "source_url": "https://arxiv.org/abs/2406.09405",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Авторы предлагают выбирать начальный шаг с учётом механизма loss catapult и рассматривают инициализацию дисперсии Adam, дающую сходные с разогревом преимущества.",
+          "source_url": "https://arxiv.org/abs/2406.09405",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    },
+    {
+      "id": "ref00008",
+      "arxiv": "2409.11321",
+      "title": "SOAP: Improving and Stabilizing Shampoo using Adam",
+      "authors": [
+        "Nikhil Vyas",
+        "Depen Morwani",
+        "Rosie Zhao",
+        "Mujin Kwun",
+        "Itai Shapira",
+        "David Brandfonbrener",
+        "Lucas Janson",
+        "Sham Kakade"
+      ],
+      "year": 2024,
+      "venue": "arXiv · 2024",
+      "venue_url": "https://arxiv.org/abs/2409.11321",
+      "source_url": "https://arxiv.org/abs/2409.11321",
+      "topic": "optimizers",
+      "summary": "SOAP применяет Adam в собственном базисе предобусловливателя Shampoo. Метод позволяет реже обновлять этот базис, продолжая накапливать статистики градиента между обновлениями.",
+      "claims": [
+        {
+          "kind": "method",
+          "text": "SOAP выполняет шаги Adam в собственном базисе предобусловливателя, связывая покоординатную адаптацию с геометрией Shampoo.",
+          "source_url": "https://arxiv.org/abs/2409.11321",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "method",
+          "text": "Статистика второго момента обновляется на каждом шаге в текущем базисе. Это смягчает ухудшение качества при редком пересчёте собственного разложения.",
+          "source_url": "https://arxiv.org/abs/2409.11321",
+          "locator": "Аннотация arXiv"
+        },
+        {
+          "kind": "empirical",
+          "text": "На предобучении языковых моделей с 360 и 660 миллионами параметров авторы сообщают выигрыш по итерациям и времени относительно AdamW и Shampoo в режиме большого батча.",
+          "source_url": "https://arxiv.org/abs/2409.11321",
+          "locator": "Аннотация arXiv"
+        }
+      ]
+    }
+  ],
+  "reference_folder": "Другие исследования/Статьи по теме"
+}

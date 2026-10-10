@@ -98,6 +98,19 @@ PATCHES = [
         'if(i!=="taskIcon")return e;let t=Fe(n);'
         'return t&&(0,Dd.getIcon)(t)?t:(t&&/[^a-z0-9-]/.test(t)?t:e)}',
     ),
+    # 5. доска «Чтение»: не сворачивать _Trash принудительно
+    #
+    # Operon хардкодит для одного пресета:
+    #     return e.preset.id==="kanban-preset-reading"&&a.add("st_reading_skip"),a
+    # то есть колонка _Trash на доске «Чтение» СВЁРНУТА ВСЕГДА, что бы ни стояло в
+    # настройках и сколько бы раз владелец ни кликнул по её шапке. Видно только число
+    # карточек, названий нет, а `collapsedStatusIds` при этом пуст — из-за чего причину
+    # долго ищут в CSS и в настройках, где её нет.
+    (
+        'return a}resolveSkippedStatusMaterializationIds',
+        'return e.preset.id==="kanban-preset-reading"&&a.add("st_reading_skip"),a',
+        'return a',
+    ),
 ]
 
 def main():

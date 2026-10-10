@@ -1,0 +1,144 @@
+/* Задача Operon внутри заметки — одна узкая строка.
+ *
+ * Плагин рисует под каждой задачей «хвост»: чипы со статусом и кнопку с шестерёнкой
+ * (`operon-live-preview-edit`, иконка settings-2). Кнопка создаётся в коде безусловно,
+ * настройки на неё нет, поэтому она убирается стилем. Остаётся только иконка слева:
+ * по ней открывается меню, где задача переносится по столбцам, и больше ничего не нужно.
+ */
+
+.operon-live-preview-tail,
+.operon-live-preview-tail-row,
+.operon-live-preview-tail-actions,
+.operon-live-preview-edit,
+.operon-live-preview-note-action,
+.operon-live-preview-chip,
+.operon-inline-compact-chip {
+  display: none !important;
+}
+
+/* Пустой хвост не должен оставлять после себя высоту и отступы. */
+.operon-live-preview-tail:empty,
+.operon-live-preview-tail-row:empty {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+
+/* Иконка слева остаётся: это вход в меню задачи. */
+.operon-live-preview-status-icon {
+  display: inline-flex !important;
+}
+
+/* Плотные Kanban-колонки.
+ *
+ * Ширину раскрытой колонки задаёт Operon (`kanbanExpandedColumnWidthPx`), сейчас 232 px.
+ * Плагин также сам сжимает пустые/свёрнутые колонки до 56 px. Мы не привязываем ширину
+ * к viewport: на большом экране помещается больше колонок, а не растут существующие.
+ */
+.operon-kanban-grid-viewport {
+  scroll-snap-type: x proximity;
+}
+
+.operon-kanban-column-header,
+.operon-kanban-cell {
+  scroll-snap-align: start;
+}
+
+/* Reading keeps Inbox first in taxonomy because Operon uses statuses[0] for create/reopen.
+ * Presentation only: Trash -> Waiting -> Inbox -> Queue -> Doing -> Done. Widths stay under
+ * the shared adaptive Kanban template; only the visual order is Reading-specific here.
+ */
+.operon-kanban-board.is-no-swimlanes:has([data-kanban-status-id="st_reading_inbox"])
+  :is(.operon-kanban-header-row, .operon-kanban-row)
+  > [data-kanban-status-id="st_reading_skip"] {
+  order: -3;
+}
+
+.operon-kanban-board.is-no-swimlanes:has([data-kanban-status-id="st_reading_inbox"])
+  :is(.operon-kanban-header-row, .operon-kanban-row)
+  > [data-kanban-status-id="st_reading_waiting"] {
+  order: -2;
+}
+
+.operon-kanban-board.is-no-swimlanes:has([data-kanban-status-id="st_reading_inbox"])
+  :is(.operon-kanban-header-row, .operon-kanban-row)
+  > [data-kanban-status-id="st_reading_inbox"] {
+  order: -1;
+}
+
+/* A collapsed Trash header uses a Lucide-style trash glyph instead of a number.
+ * The numeric label remains in the button for screen readers.
+ */
+.operon-kanban-column-header.is-collapsed[data-kanban-status-id="st_reading_skip"]
+  button.operon-kanban-column-count-button {
+  color: transparent !important;
+  font-size: 0 !important;
+}
+
+.operon-kanban-column-header.is-collapsed[data-kanban-status-id="st_reading_skip"]
+  button.operon-kanban-column-count-button::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: var(--text-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M8 6V4h8v2'/%3E%3Cpath d='M19 6l-1 14H6L5 6'/%3E%3Cpath d='M10 11v5M14 11v5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M8 6V4h8v2'/%3E%3Cpath d='M19 6l-1 14H6L5 6'/%3E%3Cpath d='M10 11v5M14 11v5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Operon's embedded file editor reserves too little left inset with Border theme.
+ * The captured failure clipped the first 1-3 characters of every body line. Keep a
+ * stable content gutter and contain active-line paint without horizontal clipping.
+ */
+.operon-task-editor-file-panel-editor {
+  padding-left: 10px !important;
+}
+
+.operon-task-editor-file-source-editor {
+  --operon-file-content-inset: 18px !important;
+}
+
+.operon-task-editor-file-source-editor .cm-scroller {
+  padding-left: 12px !important;
+  overflow-x: hidden !important;
+}
+
+.operon-task-editor-file-source-editor .cm-content {
+  margin-left: 0 !important;
+  transform: none !important;
+}
+
+/* Compact Operon Calendar when it lives in Obsidian's right sidebar. Keep only
+ * previous day / today / next day plus the small preset picker.
+ */
+.mod-right-split .operon-calendar-root {
+  gap: 6px;
+  padding: 6px;
+}
+
+.mod-right-split .operon-calendar-toolbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "center end";
+  gap: 4px;
+}
+
+.mod-right-split .operon-calendar-toolbar-start,
+.mod-right-split .operon-calendar-quick-actions.is-toolbar {
+  display: none !important;
+}
+
+.mod-right-split .operon-calendar-toolbar-center {
+  gap: 4px;
+  justify-content: flex-start;
+}
+
+.mod-right-split .operon-calendar-toolbar-center > button:first-child,
+.mod-right-split .operon-calendar-toolbar-center > button:last-child {
+  display: none !important;
+}
+
+.mod-right-split .operon-calendar-toolbar-button {
+  height: 26px;
+  min-width: 26px;
+  padding-inline: 7px;
+  border-radius: 6px;
+}

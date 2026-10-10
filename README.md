@@ -5,9 +5,9 @@
 <p align="center">
   <a href="https://docs.claude.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-configuration-000?style=flat-square&logo=anthropic&logoColor=white"></a>
   <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
-  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-37-58A6FF?style=flat-square"></a>
-  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-16-BC8CFF?style=flat-square"></a>
-  <a href="docs/knowledge-base.md"><img alt="lab knowledge MCP" src="https://img.shields.io/badge/Lab%20Knowledge%20MCP-47%20tools-D29922?style=flat-square"></a>
+  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-34-58A6FF?style=flat-square"></a>
+  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-15-BC8CFF?style=flat-square"></a>
+  <a href="docs/knowledge-base.md"><img alt="lab knowledge" src="https://img.shields.io/badge/Lab%20Knowledge-git%20%2B%20merge%20requests-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
   <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
 </p>
@@ -34,9 +34,9 @@ What it actually gives you:
   its PDF, a vault note with an eight-section analysis, an AlphaXiv mirror entry and a bibliography
   entry. BibTeX comes from external APIs, never from a model, and a hook blocks any `\cite{}` key that
   is missing from `references.bib`.
-- **A shared research base over MCP.** Hypotheses with falsifiers, experiments with status, evidence tied
-  to its artifact, decisions with their grounds, and 490+ read papers — one search over all of it. See
-  [Lab Knowledge](#lab-knowledge-the-shared-research-base).
+- **A shared research base that is plain git.** One repository per work, claims in `claims/<CODE>/` with
+  the runs and series under them, one `literature` repository per research theme. A change enters by a
+  merge request a human merges. See [Lab Knowledge](#lab-knowledge-the-shared-research-base).
 - **Experiment work that survives the night.** Per-project SSH and GPU routing, long runs in `tmux`,
   loops that append timestamped progress to an experiment note and refresh the plot, and a queue with a
   circuit breaker instead of a job list that burns down silently.
@@ -50,48 +50,52 @@ What it actually gives you:
   what the last one decided.
 
 > [!TIP]
-> Everything works without lab access. The installer skips the Lab Knowledge server when
-> `LAB_MCP_URL` and `LAB_MCP_TOKEN` are unset, and Obsidian-routed skills no-op without a vault.
+> Everything works without lab access. The base is read and written with ordinary `git`, so without a
+> clone the base-facing skills simply have nothing to act on, and Obsidian-routed skills no-op without
+> a vault.
 
 ## Lab Knowledge: the shared research base
 
-The lab runs a knowledge service that this toolkit talks to over MCP. It answers the question a lab
-loses most often: *has anyone here already tried this, and what came out of it?*
+The base answers the question a lab loses most often: *has anyone here already tried this, and what
+came out of it?* It is a GitLab group, and everything in it is ordinary git. The knowledge service that
+used to sit in front of it was removed on 07-10-2026 together with its database; there is nothing to
+connect to and nothing to configure.
 
-It holds two corpora side by side and searches both at once:
+Two halves, measured on 09-10-2026:
 
-- **What the lab knows** — hypotheses with their falsifiers, experiments with their status, evidence
-  tied to the artifact it came from, derivations for the claims that are closed by a proof rather than
-  a run, decisions and the evidence they rest on. Every record has a stable code such as `H-DYC-001`,
-  so it can be cited in a paper, a call or a message and still resolve a year later.
-- **What the lab has read** — 490+ papers with their full reading notes, split into sections, plus
-  authors, venue, BibTeX key and code links, and the claims those papers make: each one quoted from
-  the paper's text, so "this paper contradicts us" points at a sentence instead of at twenty pages.
+- **What the lab knows** — one repository per work, 29 of them with claims. A claim is a folder,
+  `claims/<CODE>/`, holding the claim itself and the runs, series and derivations under it. Codes such
+  as `H-DYC-007` are stable, so they can be cited in a paper, a call or a message and still resolve a
+  year later.
+- **What the lab has read** — one `literature` repository per research theme, 24 themes and 688 paper
+  pages, each named by its BibTeX key and holding the reading notes plus what the paper claims, quoted
+  from its text.
 
-What makes it useful rather than another database:
+What makes it work rather than rot:
 
 | | |
 |---|---|
-| **Research themes, not folders** | A theme is the entry point: `get_theme_context` returns the hypotheses, experiments, decisions **and** the literature of one research area together. Papers belong to several themes when they honestly do. |
-| **Hybrid search over both corpora** | Word search and semantic search fused by reciprocal rank, one ordering for lab records and literature, with lab knowledge weighted slightly above papers and a floor kept for literature so "what do the papers say" always gets an answer. Embeddings run locally, so search costs no tokens. |
-| **A computed bridge, not hand-made links** | Subject tags come from a term dictionary matched against the text, so a hypothesis about spectral norms finds the papers about spectral norms, and every tag can be traced to the sentence it was found in. |
-| **A record that outsiders can read** | Reads are lab-wide, so every project keeps a registry of its internal names — build nicknames, run ids, local protocol names. Defining a name is retroactive: one definition made seventy existing records readable without editing any of them, and the definition itself is findable by search. |
-| **Support that can be checked** | A theoretical claim is closed by a derivation with its assumptions and completeness, never by a run with a proof stuffed into its protocol. A decision names the evidence under it. A quote from an outside paper is verified against that paper's stored text, and one that is not in it is refused. |
-| **Contributions need nothing but an id** | `upsert_paper(title=…, arxiv_id=…)` is a complete contribution: no vault, no Zotero, no folder. Fields you leave empty never erase stored ones, sections are replaced only when you send some, and every write names its author in the audit log. |
-| **Human-facing views stay in sync** | Approved records are published to Yonote project pages and named project boards; the raw private notes stay in Obsidian. |
-| **Nothing is written by accident** | A stop hook interrupts the end of a turn every few exchanges and asks the agent to save what happened, so records are written deliberately, by something that has the whole context, and reported back in one line. |
+| **A clone is the address** | `lab here <work>` puts the clone in `lab-base/`. From then on the clone is the answer to "where does this get written", and there is no second place that records the decision. |
+| **A merge is the write** | `push` to `main` is forbidden for everyone. A change enters as a merge request that a human merges, so nothing lands unread. |
+| **Two gates, one of them reads** | `база` counts what code can count: tree shape, numbers, codes, deletions, vanished records. `lab/проза` judges the text of the change and blocks the merge when it is a diary entry rather than a record. |
+| **Runs are written by code, not retyped** | `lab_run.py` writes the run's own page — hyperparameters, metrics, environment, commit, hardware — and pushes it to a branch. A number that is not in the corpus turns the verdict red, so transcribing by hand does not pass. |
+| **Names before records** | Every work keeps a registry of its internal names: build nicknames, run ids, local protocol names. A record that needs a dictionary nobody wrote is unreadable in a month. |
+| **Nothing is written by accident** | A stop hook ends a turn with one line: what is worth recording and where. The rules it points at live in `rules/checkpoint.md` and `rules/lab.md`, not in the line itself. |
 
-Read [`docs/knowledge-base.md`](docs/knowledge-base.md) for the four ways in and the rules that hold
-for everybody, and [`docs/llm-providers.md`](docs/llm-providers.md) for which model does which job.
+Read [`docs/knowledge-base.md`](docs/knowledge-base.md) for the rules that hold for everybody, and
+[`docs/llm-providers.md`](docs/llm-providers.md) for which model does which job.
 
 ## For BRAIn Lab members
 
 This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
-knowledge service with its data, the meeting pipeline, and the tests that carry real names — stays in a
-private repository inside the [brain-lab-research](https://github.com/brain-lab-research) organisation.
-Access comes with team membership: if you work at BRAIn Lab, join the
-[GitHub team](https://github.com/orgs/brain-lab-research/teams) and you get the internal repository
-together with a token for the shared knowledge base.
+gate service, the meeting pipeline, and the tests that carry real names — stays in a private repository
+inside the [brain-lab-research](https://github.com/brain-lab-research) organisation. Access comes with
+team membership: if you work at BRAIn Lab, join the
+[GitHub team](https://github.com/orgs/brain-lab-research/teams) for the internal repository.
+
+The base itself lives in the lab's GitLab, and access there is granted per research theme, not per
+lab: the theme tree and the literature are open to everyone with an account, the works are not. Ask
+the lead of the theme you work on.
 
 | | Where |
 |---|---|
@@ -111,10 +115,10 @@ together with a token for the shared knowledge base.
 | | Count | What it is | Where |
 |---|---|---|---|
 | **Skills** | 75 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
-| **Slash commands** | 37 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, `/rebuttal`, … | [`commands/`](commands/) |
-| **Agents** | 16 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
-| **Hooks** | 7 | security guard, citation validator, session start/stop, memory auto-save, skill activation | [`hooks/`](hooks/) |
-| **Rules** | 6 | coding style, citations, security, agent orchestration, code workflow, server hygiene | [`rules/`](rules/) |
+| **Slash commands** | 34 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, … | [`commands/`](commands/) |
+| **Agents** | 15 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
+| **Hooks** | 10 | security guard, citation validator, session start (plus lab state), session end, two stop hooks for memory and Obsidian, skill activation | [`hooks/`](hooks/) |
+| **Rules** | 11 | coding style, security, agent orchestration, code workflow, server hygiene, lab base, checkpoint, autoresearch, Obsidian frontmatter, Hermes team, scholar core | [`rules/`](rules/) |
 | **Templates** | — | `settings.json.template`, `.env.example`, project-mapping example | repo root |
 
 <details>
@@ -124,9 +128,9 @@ together with a token for the shared knowledge base.
 |---|---|
 | **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `obsidian-literature-workflow`, `zotero-obsidian-bridge`, `citation-verification` |
 | **Experiments** | `results-analysis`, `results-report`, `obsidian-experiment-log`, `handoff-to-jarvis`, `diagnose`, `verification-loop` |
-| **Writing** | `ml-paper-writing`, `new-paper`, `writing-anti-ai`, `presentation`, `paper-to-social` |
+| **Writing** | `ml-paper-writing`, `writing-anti-ai`, `presentation`, `paper-to-social` |
 | **Review** | `astar-paper-review`, `review-response`, `grill-me`, `grill-with-docs` |
-| **Knowledge** | `lab-knowledge`, `lab-project-onboarding`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
+| **Knowledge** | `lab-knowledge`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
 | **Engineering** | `code-ingest`, `code-library`, `code-review-excellence`, `tdd`, `bug-detective`, `git-workflow`, `uv-package-manager` |
 | **Ideas and planning** | `research-ideation`, `planning-with-files`, `zoom-out`, `architecture-design`, `improve-codebase-architecture` |
 
@@ -143,8 +147,8 @@ here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 - **`astar-paper-review`** — top-venue-grade peer review: reviewer + theoretician (proofs) + literature-scout + experiments-auditor, prompt-injection-safe, one review file per paper.
 - **`paper-to-social`** — turn a paper into copy-paste-ready Telegram / X / Habr posts with arXiv figures, in your own voice.
 - **`code-ingest`** / **`code-library`** — map an external repo into Obsidian Code-library notes (`path:line`, no code copied) and document the whole code workflow.
-- **`create-project`** / **`lab-project-onboarding`** — set up the private repository and Obsidian hub, then idempotently bind a Brain Lab project to its shared MCP record, human-facing Yonote page, and named project Kanban.
-- **`lab-knowledge`** / **`publish-hypothesis`** — Ask Lab runs inside the user's local agent and reads shared research context from Lab Knowledge MCP. Private drafts stay in Obsidian until an explicit curated publication preview is approved. Yonote is the clean human-facing project view.
+- **`create-project`** — set up the private repository and the Obsidian hub. Turning the accumulated project into a work of the shared base is part of `lab-knowledge`: claims as folders in the work's own GitLab repository, entering by a merge request a human merges.
+- **`lab-knowledge`** — the one skill for the shared base. It reads research context from the local clone of a work with plain `git` and `grep` (the service in front of it was removed on 07-10-2026), and a change enters by a merge request a human merges. Private drafts stay in Obsidian.
 - **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc per-project task file convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
@@ -353,6 +357,12 @@ Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`.
 
 See the prerequisites table below before installing.
 
+When Zotero is configured, the installer checks the existing uv runtime for the
+APIs used by `scripts/zotero_shared.py`. A compatible runtime gets separate stdio
+client sessions backed by one model process per configuration. Library switches
+stay within each client. Missing or older runtimes keep the existing Zotero CLI.
+This check does not import models, install packages, or replace a global launcher.
+
 ## Customize
 
 Most paths and identifiers are driven by `.env`. To change a hook, skill, or rule, edit it in this repo and re-run `bash install/setup.sh` — your existing `~/.claude` is backed up first. Per-skill customization (Zotero parent keys, vault folder taxonomy, MemPalace wing names) lives in each skill's `SKILL.md`.
@@ -369,7 +379,7 @@ Most paths and identifiers are driven by `.env`. To change a hook, skill, or rul
 | Zotero + zotero-mcp | | recommended for `paper-ingest` / `want-2-read` |
 | MemPalace | | recommended for cross-session memory |
 | Yonote API | | recommended for shared project tasks and project views |
-| Lab Knowledge MCP | | recommended for shared hypotheses and evidence |
+| Access to the lab GitLab | | needed only to clone a work; the toolkit installs and runs without it |
 
 ## Credits
 

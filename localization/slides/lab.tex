@@ -1,0 +1,135 @@
+% ============================================================================
+%  BRAIn Lab style — компактный референс для Beamer-деки.
+%  Палитра: постер (kawasaki/poster/brainposter.sty) + лабовая дека
+%  Talk3_Efficient_Pretraining (сливовый фон на титуле и разделах, кремовый
+%  на контенте, янтарный текст на сливовом).
+%  Build:  latexmk -pdf lab-style-mini.tex
+%  Проверка вылезаний:  python ../scripts/check_overflow.py lab-style-mini.pdf
+% ============================================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\usepackage[T1]{fontenc}   % [T1] если дека только на английском
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+% ---- BRAIn Lab palette -----------------------------------------------------
+% Источники: kawasaki/poster/brainposter.sty (постер) + Talk3_Efficient_Pretraining
+% (лабовая дека: сливовый фон на титуле/разделах, кремовый на контенте, янтарный текст).
+\definecolor{plum}{HTML}{854C65}       % фон титула и разделов; заголовки на креме
+\definecolor{cream}{HTML}{FAF8F1}      % фон контентных слайдов; текст на сливовом
+\definecolor{amber}{HTML}{FFD183}      % заголовки на сливовом фоне
+\definecolor{amberink}{HTML}{A9741A}   % янтарный, читаемый на креме
+\definecolor{ink}{HTML}{1F1B18}
+\definecolor{red}{HTML}{B0453F}        % проблемы, ограничения
+\definecolor{teal}{HTML}{4E7E8C}       % boxcolor постера, затемнённый до читаемого
+\definecolor{muted}{HTML}{8C8078}
+
+\setbeamercolor{background canvas}{bg=cream}
+\setbeamercolor{normal text}{fg=ink,bg=cream}
+\setbeamercolor{frametitle}{fg=plum,bg=cream}
+\setbeamercolor{progress bar}{fg=plum,bg=plum!18}
+\setbeamercolor{title}{fg=amber}
+\setbeamercolor{subtitle}{fg=cream}
+\setbeamercolor{itemize item}{fg=plum}
+\setbeamercolor{enumerate item}{fg=plum}
+\setbeamercolor{alerted text}{fg=plum}
+\setbeamercolor{structure}{fg=plum}
+
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamertemplate{navigation symbols}{}
+\metroset{block=fill,progressbar=none,numbering=none}
+% тонкая сливовая линия под заголовком, по ширине текста (не во всю страницу)
+\addtobeamertemplate{frametitle}{}{%
+  \vspace{-4pt}\par{\color{plum!35}\rule{\textwidth}{0.6pt}}\par\vspace{2pt}}
+
+% полностраничный сливовой фрейм (титул, разделы, финал)
+\newenvironment{plumframe}{%
+  \setbeamercolor{background canvas}{bg=plum}%
+  \setbeamercolor{normal text}{fg=cream}%
+  \usebeamercolor[fg]{normal text}%
+  \begin{frame}[plain]}{\end{frame}}
+
+% ---- boxes -----------------------------------------------------------------
+% fontupper=\small обязателен: иначе три бокса не влезают в колонку.
+\tcbset{
+  mathbox/.style={fontupper=\small,colback=white,colframe=plum!30,coltext=ink,
+    boxrule=0.5pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt},
+  ideabox/.style={fontupper=\small,colback=plum!7,colframe=plum,coltext=ink,
+    boxrule=0pt,leftrule=2.8pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  thmbox/.style={fontupper=\small,colback=amber!30,colframe=amberink,coltext=ink,
+    boxrule=0pt,leftrule=2.8pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  probbox/.style={fontupper=\small,colback=red!6,colframe=red,coltext=ink,
+    boxrule=0pt,leftrule=2.8pt,arc=0pt,left=6pt,right=5pt,top=4pt,bottom=4pt},
+  figcard/.style={colback=white,colframe=plum!22,boxrule=0.5pt,arc=2pt,
+    left=3pt,right=3pt,top=3pt,bottom=3pt},
+}
+\newcommand{\figcard}[2][\linewidth]{%
+  \begin{tcolorbox}[figcard]\centering\includegraphics[width=#1]{#2}\end{tcolorbox}}
+
+\newcommand{\bad}[1]{{\color{red}\bfseries #1}}
+\newcommand{\good}[1]{{\color{plum}\bfseries #1}}
+\newcommand{\amb}[1]{{\color{amberink}\bfseries #1}}
+\newcommand{\ax}[1]{{\color{muted}\scriptsize\rmfamily [arXiv:#1]}}
+\newcommand{\fcap}[1]{\par{\color{muted}\scriptsize #1\par}}
+
+% раздел-разделитель: сливовой фон, крупный янтарный заголовок
+\newcommand{\topicframe}[2]{%
+  \begin{plumframe}
+    \vfill
+    \begin{center}
+      {\color{cream!55}\small #1}\\[0.22cm]
+      {\color{amber!50}\rule{0.26\textwidth}{0.7pt}}\\[0.5cm]
+      {\color{amber}\fontsize{28}{34}\selectfont\bfseries #2}
+    \end{center}
+    \vfill
+  \end{plumframe}}
+
+\title{Title}
+\subtitle{A short subtitle}
+
+\begin{document}
+
+% ===== Титул: только типографика. Логотипа и авторов нет, как в лабовой деке. =
+\begin{plumframe}
+  \vfill
+  \begin{center}
+    {\color{amber}\fontsize{40}{46}\selectfont\bfseries Title}\\[0.45cm]
+    {\color{amber!50}\rule{0.40\textwidth}{0.7pt}}\\[0.45cm]
+    {\color{cream}\large A subtitle in one or two lines}
+  \end{center}
+  \vfill
+  {\color{amber!85}\small Month Year}\hfill{\color{amber!85}\small BRAIn Lab}
+  \vspace{0.3cm}
+\end{plumframe}
+
+\topicframe{01}{Section title}
+
+% ===== Разбор работы: фигура из статьи + «что предложили» + «что не так» ======
+\begin{frame}{A paper: one message in the title}
+\begin{columns}[T]
+\column{0.45\textwidth}
+\figcard{figure.pdf}
+\fcap{Illustrative comparison. State the figure's main message.}
+\column{0.52\textwidth}
+\begin{tcolorbox}[mathbox]
+\good{The contribution.} Place the equation inside the box:
+\[ z_{i+1}=f_\theta(z_i,x) \]
+\end{tcolorbox}
+\vspace{0.2cm}
+\begin{tcolorbox}[probbox]
+\bad{The limitation.} State the limitation plainly in your own words.
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+% ===== Широкая фигура сверху + максимум два бокса снизу =====================
+
+\end{document}

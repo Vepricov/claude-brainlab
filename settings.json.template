@@ -14,6 +14,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/citation-validator.py",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -24,6 +34,11 @@
             "type": "command",
             "command": "node -e \"const{execSync}=require('child_process'),p=require('path'),h=require('os').homedir();execSync(\\\"node \\\"+p.join(h,'.claude/hooks/session-start.js'),{stdio:'inherit'})\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/lab-where-am-i.py",
+            "timeout": 5
           }
         ]
       }

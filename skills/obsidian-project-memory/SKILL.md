@@ -1,6 +1,6 @@
 ---
 name: obsidian-project-memory
-description: This skill should be used when the user asks to maintain an Obsidian knowledge base for a research project, import an existing research repository into Obsidian, keep project memory or daily notes synchronized, summarize project context into durable notes, or update experiments, results, papers, writing, and plans in an Obsidian vault without requiring MCP.
+description: "Maintains canonical project context and durable research decisions in the mapped Obsidian knowledge base. Use when the user discusses project state, records a decision or experiment outcome, asks to update the hub card or plan notes, or wants past project context saved."
 ---
 
 # Obsidian Project Memory

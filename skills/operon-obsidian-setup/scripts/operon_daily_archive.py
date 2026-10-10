@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
-"""Archive Operon file-tasks that were finished/cancelled on a previous day.
+"""Archive Operon file-tasks that were finished/cancelled a while ago.
 
 Moves each matching `.md` file-task into <vault>/<archive_subdir>/, preserving
 Obsidian wikilinks (they resolve by basename, independent of folder).
 Only file-tasks (frontmatter has `operonId`) are touched; inline `- [x]` stay.
-A task is archived only if its completion date is strictly before *today*.
+
+Two different retention windows, because the two kinds of "done" are not alike:
+
+* **finished** (`Прочитано`, `Готово`, `Finished`) — archived the next day. The card
+  has served its purpose, the reading journal is the archive.
+* **cancelled** (`Reading._Trash`, `Dropped`, `Cancelled`) — kept on the board for
+  `--cancelled-grace-days` days (default 1). A rejection is a decision you may want
+  to revisit, and an accidental drag must be recoverable by looking at the column
+  rather than by digging through the archive.
+
+`archiveHold: true` in a card's frontmatter pins it in place regardless of dates.
+
 Idempotent, collision-safe, supports --dry-run.
 """
 from __future__ import annotations
@@ -22,26 +33,34 @@ logger = logging.getLogger("operon_archive")
 #: Запасной список, если конфиг плагина недоступен. Настоящий берётся из самого Operon:
 #: архивируется всё, что помечено там как завершённое или отменённое, поэтому новая
 #: колонка вроде «Передал на проверку» не ломает архив и не требует правки скрипта.
-FALLBACK_ARCHIVE_STATUSES = {"Project.Finished", "Project.Dropped", "Project.Cancelled",
-                             "Personal.Готово", "Reading.Прочитано"}
+#: Запуск из launchd обычно упирается в TCC на папке iCloud и работает по фолбэку —
+#: держать его в актуальном виде обязательно.
+FALLBACK_FINISHED_STATUSES = {"Project.Finished", "Personal.Готово", "Reading.Прочитано"}
+FALLBACK_CANCELLED_STATUSES = {"Project.Dropped", "Project.Cancelled", "Reading._Trash"}
+DEFAULT_CANCELLED_GRACE_DAYS = 1
 
 
-def archive_statuses(vault: Path) -> set[str]:
-    """Финальные статусы всех конвейеров, в виде «Конвейер.Статус»."""
+def archive_statuses(vault: Path) -> tuple[set[str], set[str]]:
+    """Финальные статусы всех конвейеров: (завершённые, отменённые)."""
     config = vault / ".obsidian/plugins/operon/data.json"
     try:
         data = json.loads(config.read_text(encoding="utf-8"))
         pipelines = data["taxonomy"]["pipelines"]["pipelines"]
     except (OSError, KeyError, json.JSONDecodeError) as error:
         logger.warning("cannot read Operon config (%s); using fallback statuses", error)
-        return set(FALLBACK_ARCHIVE_STATUSES)
-    found = {
-        f"{pipeline['name']}.{status['label']}"
-        for pipeline in pipelines
-        for status in pipeline.get("statuses", [])
-        if status.get("isFinished") or status.get("isCancelled")
-    }
-    return found or set(FALLBACK_ARCHIVE_STATUSES)
+        return set(FALLBACK_FINISHED_STATUSES), set(FALLBACK_CANCELLED_STATUSES)
+    finished, cancelled = set(), set()
+    for pipeline in pipelines:
+        for status in pipeline.get("statuses", []):
+            name = f"{pipeline['name']}.{status['label']}"
+            # isCancelled выигрывает: отменённое держим дольше, даже если помечено обоими.
+            if status.get("isCancelled"):
+                cancelled.add(name)
+            elif status.get("isFinished"):
+                finished.add(name)
+    if not finished and not cancelled:
+        return set(FALLBACK_FINISHED_STATUSES), set(FALLBACK_CANCELLED_STATUSES)
+    return finished, cancelled
 FM_RE = re.compile(r"^---\n(.*?)\n---", re.S)
 SKIP_DIRS = {".obsidian", ".git", ".trash"}
 
@@ -59,7 +78,7 @@ def parse_frontmatter(text: str) -> dict[str, str]:
 
 
 def completion_date(fm: dict[str, str], path: Path) -> dt.date | None:
-    for key in ("dateCompleted", "datetimeModified"):
+    for key in ("dateCancelled", "dateCompleted", "datetimeModified"):
         raw = fm.get(key, "")
         if raw:
             try:
@@ -94,10 +113,13 @@ def iter_task_files(vault: Path, archive_dir: Path):
         yield p
 
 
-def run(vault: Path, archive_subdir: str, today: dt.date, dry_run: bool) -> int:
+def run(vault: Path, archive_subdir: str, today: dt.date, dry_run: bool,
+        cancelled_grace_days: int = DEFAULT_CANCELLED_GRACE_DAYS) -> int:
     archive_dir = (vault / archive_subdir).resolve()
-    statuses = archive_statuses(vault)
-    logger.info("archiving statuses: %s", ", ".join(sorted(statuses)))
+    finished, cancelled = archive_statuses(vault)
+    logger.info("finished (archive next day): %s", ", ".join(sorted(finished)))
+    logger.info("cancelled (archive after %d days): %s",
+                cancelled_grace_days, ", ".join(sorted(cancelled)))
     moved = 0
     for path in iter_task_files(vault, archive_dir):
         try:
@@ -108,10 +130,17 @@ def run(vault: Path, archive_subdir: str, today: dt.date, dry_run: bool) -> int:
         if "operonId" not in fm:
             continue
         status = fm.get("status", "")
-        if status not in statuses:
+        if status in cancelled:
+            cutoff = today - dt.timedelta(days=cancelled_grace_days)
+        elif status in finished:
+            cutoff = today
+        else:
+            continue
+        if fm.get("archiveHold", "").lower() in ("true", "yes", "1"):
+            logger.info("hold: %s (archiveHold set)", path.relative_to(vault))
             continue
         cdate = completion_date(fm, path)
-        if cdate is None or cdate >= today:
+        if cdate is None or cdate >= cutoff:
             continue
         # Архив разложен по конвейеру и месяцу: иначе через полгода это одна папка на
         # тысячу файлов, в которой ничего не найти. Прочитанные статьи так сами собой
@@ -134,11 +163,16 @@ def main() -> None:
     ap.add_argument("--vault", required=True, type=Path)
     ap.add_argument("--archive-subdir", default="Operon/Archives")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--cancelled-grace-days", type=int, default=DEFAULT_CANCELLED_GRACE_DAYS,
+                    help="сколько дней отменённые/выброшенные карточки остаются на доске "
+                         f"(по умолчанию {DEFAULT_CANCELLED_GRACE_DAYS}); "
+                         "завершённые всегда уходят на следующий день")
     ap.add_argument("--today", default=None, help="override today (YYYY-MM-DD), for testing")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     today = dt.date.fromisoformat(args.today) if args.today else dt.date.today()
-    run(args.vault.resolve(), args.archive_subdir, today, args.dry_run)
+    run(args.vault.resolve(), args.archive_subdir, today, args.dry_run,
+        max(0, args.cancelled_grace_days))
 
 
 if __name__ == "__main__":

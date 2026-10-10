@@ -1,0 +1,16 @@
+/* A quiet, keyboard-accessible language choice within the existing navigation. */
+.language-switch{display:flex;align-items:center;flex-shrink:0;gap:2px;padding:3px;border:1px solid var(--line);border-radius:5px}
+.language-switch a{padding:7px 8px;border-radius:2px;color:var(--muted);font:10px/1 var(--mono);letter-spacing:.05em;text-decoration:none}
+.language-switch a[aria-current]{background:var(--ink);color:var(--bg,#0c110d)}
+.language-switch a:hover:not([aria-current]){color:var(--ink);background:#ffffff0b}
+.language-switch a:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+@media(max-width:620px){.topbar{gap:10px}.language-switch a{padding:8px 6px}.search-open{margin-left:auto}}
+.topbar{grid-template-columns:1fr auto 1fr auto;column-gap:18px}
+@media(max-width:1100px){.search-open{min-width:0;gap:10px}.search-open>span{display:none}}
+@media(min-width:561px) and (max-width:820px){.topbar{grid-template-columns:auto 1fr auto auto;column-gap:12px}.brand>span:last-child{display:none}.view-switch{max-width:none}.view-switch button{font-size:11px;padding-inline:9px}}
+@media(max-width:560px){.topbar{grid-template-columns:1fr auto auto;column-gap:10px}.language-switch{justify-self:end}}
+html[lang="en"] .loop-node-quality .loop-node-main:after{content:"required check"}
+html[lang="en"] .knowledge-canvas-v2 .personal-boundaries:before{content:"Personal working memory · not synchronized automatically"}
+html[lang="en"] .live-operations article:after{content:"Expand all"}
+html[lang="en"] .live-operations article.is-open:after{content:"Collapse"}
+@media(min-width:561px) and (max-width:760px){html[lang="en"] .search-open:before{content:"Search"}}

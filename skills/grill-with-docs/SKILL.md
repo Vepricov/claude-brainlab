@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
+description: "Challenges a proposed plan or design against existing domain documents, terminology and implementation choices by asking one question at a time with recommended answers. Use when the user wants a design grilled against the docs or codebase, or says check this plan against our domain model."
 ---
 
 <what-to-do>
@@ -86,3 +86,10 @@ Only offer to create an ADR when all three are true:
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
 
 </supporting-info>
+
+## Reference files
+
+Both are one hop from here, so each is read whole when it is needed.
+
+- [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md) — the shape of a domain CONTEXT file
+- [ADR-FORMAT.md](ADR-FORMAT.md) — the shape of an architecture decision record

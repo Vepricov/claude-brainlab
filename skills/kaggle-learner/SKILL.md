@@ -1,6 +1,6 @@
 ---
 name: kaggle-learner
-description: This skill should be used when the user asks to "learn from Kaggle", "study Kaggle solutions", "analyze Kaggle competitions", or mentions Kaggle competition URLs. Provides access to extracted knowledge from winning Kaggle solutions across NLP, CV, time series, tabular, and multimodal domains.
+description: "Extracts reusable ML techniques, code patterns, and feature engineering ideas from Kaggle competition winning solutions and maps where they apply. Use when the user shares a Kaggle competition, asks to learn from top solutions, or wants competition tricks for their own model or pipeline."
 version: 0.1.0
 ---
 

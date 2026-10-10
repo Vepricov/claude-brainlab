@@ -1,6 +1,6 @@
 ---
 name: web-design-reviewer
-description: 'This skill enables visual inspection of websites running locally or remotely to identify and fix design issues. Triggers on requests like "review website design", "check the UI", "fix the layout", "find design problems". Detects issues with responsive design, accessibility, visual consistency, and layout breakage, then performs fixes at the source code level.'
+description: "Inspects a rendered website in a browser and fixes demonstrated layout, visual and responsive design problems in the source code. Use when the user says 'review this page's design', 'the layout is broken on mobile', 'check responsive behavior' or asks to find and fix visual issues on a running site."
 version: 0.1.0
 ---
 

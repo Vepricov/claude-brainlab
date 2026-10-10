@@ -1,6 +1,6 @@
 ---
 name: obsidian-literature-workflow
-description: Use this skill when the user keeps paper notes inside an Obsidian project knowledge base and wants filesystem-first literature review, explicit agent-first Zotero ingestion, `Papers/` plus `Knowledge/` synthesis, collection-wide normalization, and a default literature canvas without Obsidian MCP.
+description: "Develops project-linked reading notes and literature synthesis from papers stored in the Obsidian knowledge base or Zotero. Use when the user says their papers are in Obsidian, asks to review notes under Papers, or wants literature notes, comparisons, or a related-work summary tied to a project."
 version: 0.5.0
 ---
 

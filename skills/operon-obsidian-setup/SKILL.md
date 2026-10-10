@@ -1,11 +1,30 @@
 ---
 name: operon-obsidian-setup
-description: Use when the user wants to set up the Operon task manager in their Obsidian vault the way this lab does it, or reproduce that setup on a fresh machine — flat project tags (no parentTask hierarchy), a "my tasks" table dashboard, service-link badges on project pages, emoji task icons, and day-boundary auto-archiving. Applies plugin settings (data.json), templates, a CSS snippet, optional main.js display patches, and an optional macOS launchd archiver. Trigger on "set up Operon", "настрой Operon как у тебя", "operon setup", "воспроизведи таск-систему Obsidian", "как у тебя задачи и страницы проектов в Obsidian".
+description: "Installs or repairs the laboratory's Operon task boards and project views in an Obsidian vault. Use when the user sets up a new vault, asks to install Operon or the Reading and Personal boards, or reports that boards, plugins, or the startup layout are broken."
 version: 1.0.0
 tags: [Obsidian, Operon, Tasks, Setup, ProjectPages]
 ---
 
 # Operon + Project Pages setup
+
+## Current starter kit
+
+For a NEW vault use the [current repository starter](https://github.com/brain-lab-research/claude-brainlab/tree/main/obsidian-setup).
+Read its README and run its installer. It pins Operon 3.0.1, Border, fourteen enabled
+plugins, Personal and Reading boards, startup layout and checked display patches.
+The installer refuses existing folders. Never apply the legacy 2.2.1 patcher to 3.x.
+
+For an existing vault, inspect versions and compare with a separate starter vault.
+Keep the target Obsidian closed before changing its configuration, back it up and
+preserve all tasks, statuses, presets, notes and access settings. Do not enable the
+archive job as part of setup.
+
+Hermes has a deterministic, read-only board projection in each project's own
+`Knowledge/Hermes/`. A system scheduler refreshes it every 15 minutes without an LLM.
+Keep source task IDs and statuses. Private Hermes steps are not a copy of the shared
+Yonote board. SSH access and project routes are configured by the recipient.
+
+The following instructions are a legacy 2.2.1 reference, not the current starter recipe.
 
 Reproduce the lab's Operon task-manager setup and project-page conventions in an Obsidian
 vault: flat `project` tags, a "my tasks" table dashboard, service-link badges, emoji task
@@ -67,6 +86,17 @@ Some steps cannot be done from the filesystem — surface exact clicks and wait:
    `--vault "<VAULT>" --dry-run`), then render `assets/com.OWNER.operon-archive.plist.template`
    (substitute `<OWNER>`, `<SCRIPT_PATH>`, `<VAULT>`) into `~/Library/LaunchAgents/` and
    `launchctl load` it. Windows/Linux: schedule the same command via Task Scheduler / cron.
+
+   Two retention windows, on purpose: **finished** statuses (`Прочитано`, `Готово`, `Finished`) are
+   archived the next day, **cancelled** ones (`Reading._Trash`, `Dropped`) only after
+   `--cancelled-grace-days` (default 1). A rejection is a decision worth revisiting and an
+   accidental drag has to be recoverable from the column itself, not from the archive. Pin an
+   individual card with `archiveHold: true` in its frontmatter.
+
+   Under launchd the script usually cannot read `.obsidian/plugins/operon/data.json` (macOS TCC on
+   the iCloud folder) and silently falls back to the hardcoded status lists — keep
+   `FALLBACK_FINISHED_STATUSES` / `FALLBACK_CANCELLED_STATUSES` in sync when a pipeline changes, or
+   grant the launchd `python3` Full Disk Access.
 
 9. **Restart & verify** (GUI restart above), then check: Task Creator writes file-tasks to `Operon/Tasks`
    with the Описание/Прогресс/Результат body and `assignees: [OWNER]`; statuses show without the

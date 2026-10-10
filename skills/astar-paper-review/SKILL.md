@@ -136,9 +136,24 @@ After the user approves the skeleton, write:
 
 Refer to external work by exact title plus authors at first mention, for example `"Rotational Equilibrium" (Kosson et al.)`. Do not put arXiv identifiers, URLs, venue, or year into the review body. Verify titles and bibliographic facts before use.
 
+Keep the whole review under about 4000 words, and shorter when the paper allows it. Each weakness gets the space its evidence needs and no more. If a weakness runs past four paragraphs, either it is really two weaknesses or it is padded. Do not restate a point in the Summary, again in the Weaknesses, and a third time in the Justification. State it once, in the place where it carries the most weight, and refer back to it by its `Wk.` label.
+
 ### Step 6: Final language and rendering pass
 
 Apply `writing-anti-ai`. Use dry scientific English, short direct sentences, no em dashes, no semicolons, no inflated vocabulary, and no invented quotations.
+
+**Write at B2 level. This is a hard requirement, not a preference.** A review that reads as dense or ornate gets dismissed as machine-written, whatever its content is worth. Technical terms stay technical. Everything around them is plain.
+
+- One idea per sentence. Target a mean of 15 to 18 words per sentence, and keep almost every sentence under 30 words. Split any sentence that runs past 35 words unless the excess is a paper title.
+- Use the common word. Write `honesty` not `candour`, `makes this worse` not `compounds this`, `an arbitrary mix` not `an ad hoc interpolation`, `equal accuracy` not `iso-accuracy`, `shows` not `demonstrates`, `uses` not `leverages`, `so` not `thereby`, `also` not `furthermore`.
+- Ban the AI register outright: `nuanced`, `delve`, `leverage`, `underscore`, `crucial`, `pivotal`, `comprehensive`, `furthermore`, `moreover`, `notably`, `it is worth noting`, `holistic`, `seamless`, `multifaceted`, `realm`, `landscape`, `testament`, `cornerstone`, `showcases`, `highlights`.
+- No stacked subordinate clauses, no long appositive chains, no sentence that needs a second reading to parse.
+- Prefer the active voice and a named subject. `The paper reports X`, not `X is reported`.
+- Say the finding first, then the evidence. Do not build up to it.
+- Cut every sentence that adds no fact. Length is not thoroughness. A short review that names four real problems beats a long one that names four real problems and restates them.
+- When a point needs a chain of reasoning, write it as consecutive short sentences, not as one long sentence with connectors.
+
+Verify this mechanically before delivery, do not eyeball it. Strip the math and markdown, split into sentences, and print the mean and maximum sentence length, the count over 30 and over 35 words, and any hits from the banned-word list. Fix what the check reports, then re-run it.
 
 Formatting rules:
 

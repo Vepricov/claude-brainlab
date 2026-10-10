@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli
-description: Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+description: "Operates a running Obsidian instance through the obsidian command line for vault operations and plugin debugging. Use when the user asks to create, read, search, or move notes from the terminal, reload a plugin, inspect app state, or test and debug an Obsidian plugin or theme."
 ---
 
 # Obsidian CLI

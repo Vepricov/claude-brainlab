@@ -1,6 +1,6 @@
 ---
 name: code-ingest
-description: Use when the user gives a code repository (a GitHub URL or a local/server path) and wants it added to the Obsidian Code library — a one-time deep analysis that produces a structured set of Markdown notes mapping how the repo works (entrypoint, modules, where to look to change X), without copying the code. Trigger on "add this repo to the code library", "разбери этот репозиторий", "code-ingest <url>", "задокументируй код", or when a project starts using an external repo that is not yet in Code/.
+description: "Adds a code repository to the Obsidian code library with its purpose, usage, and links to research projects. Use when the user hands over a repo URL or path and says 'add to the code library', 'разбери репозиторий', or starts a project that uses a repo missing from Code/."
 version: 1.0.0
 tags: [Coding, Obsidian, CodeLibrary, Onboarding]
 ---
@@ -80,7 +80,7 @@ One-paragraph: what this repo is and what you use it for.
 - [[architecture]] · [[optimizers]] · [[models]] · [[data]] · ...
 
 ## Used by projects
-- [[Papers/<slug>/<slug>|<project>]] — <fork/branch + what's changed>
+- [[Papers/<тема>/<slug>/<slug>|<project>]] — <fork/branch + what's changed>
 ```
 
 ## Module note template (`<module>.md`)

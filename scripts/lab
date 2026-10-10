@@ -1,0 +1,536 @@
+#!/usr/bin/env python3
+"""База знания лаборатории в GitLab как обычный git.
+
+Единица в GitLab — работа: у неё свой проект, свои члены, своя доска и свои задачи. Тема
+стала группой, направление — группой над ней. Поэтому клонируется работа, а не тема, и
+полный путь искать не нужно: скажи слаг работы, остальное найдётся само.
+
+Здесь только то, чего git не делает сам: открыть предложение о слиянии и показать, что
+сказали проверки. Всё остальное — `git pull`, `git checkout -b`, правка файлов, `git push`
+— обычный git, и прослойки для этого не нужно.
+
+    lab here <работа>      склонировать работу в папку проекта (lab-base): слаг → полный путь
+    lab pull               обновить клон, положить ключ git'у, показать открытые предложения
+    lab tasks              открытые задачи работы: кому назначены, какое утверждение
+    lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
+    lab checks             что сказали проверки этому предложению
+
+ВСЁ ОСТАЛЬНОЕ — ОБЫЧНЫЙ GIT, и прослойки для него нет нарочно:
+
+    git checkout -b claim/H-XXX-001        ветка
+    git commit -F -                        заголовок и тело предложения прямо в коммите
+    git push -o merge_request.create       предложение откроется этим же push
+
+Тело предложения **берётся из сообщения коммита** — проверено 03-10-2026: заголовок встал из
+первой строки, три раздела из остального, без единого вызова API. `Closes #7` там же, своей
+строкой. Поэтому команд `lab clone`, `lab pr` и `lab open` больше нет: они повторяли
+`git clone`, `git push` и `echo` чужими именами, которые надо было помнить.
+
+Что здесь осталось — ровно то, чего git не умеет: найти работу по слагу (полный путь в дереве
+знает только база), положить ключ туда, где git его найдёт, и прочитать задачи и вердикт.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+BASE = Path(os.getenv("LAB_BASE_DIR", "~/brainlab-stack/git-base")).expanduser()
+URL_FILE = Path("~/.config/brainlab/git-url").expanduser()
+TOKEN_FILE = Path(os.getenv("LAB_GIT_TOKEN_FILE", "~/.config/brainlab/git-token")).expanduser()
+LOGIN_FILE = Path("~/.config/brainlab/git-login").expanduser()
+#: Логин человека в GitLab, одной строкой. Кладётся руками один раз: он приходит в письме
+#: бота вместе с доступом. Нужен, чтобы `lab take` знал, на кого назначать задачу.
+MY_LOGIN_FILE = Path("~/.config/brainlab/gitlab-login").expanduser()
+CREDENTIALS = Path("~/.config/brainlab/git-credentials").expanduser()
+#: Личный ключ GitLab принимает с любым именем пользователя; ключ группы — только со своим
+#: именем. Поэтому логин спрашивается, но по умолчанию его знать не надо.
+DEFAULT_LOGIN = "oauth2"
+
+
+def remember(file_path: Path, value: str) -> str:
+    """Сохранить сказанное один раз, чтобы не передавать каждый запуск. Права 600."""
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    if not file_path.is_file() or file_path.read_text(encoding="utf-8").strip() != value:
+        file_path.write_text(value + "\n", encoding="utf-8")
+    file_path.chmod(0o600)
+    return value
+
+
+def site() -> str:
+    """Адрес базы. Из окружения, иначе из файла, иначе внятный отказ.
+
+    В коде его нет нарочно: этот репозиторий открытый, а база — нет. Адрес приходит в
+    сообщении бота доступа, и первый запуск запоминает его в файле.
+    """
+    said = (os.getenv("LAB_GIT_URL") or "").strip().rstrip("/")
+    if said:
+        return remember(URL_FILE, said)
+    if URL_FILE.is_file():
+        stored = URL_FILE.read_text(encoding="utf-8").strip().rstrip("/")
+        if stored:
+            return stored
+    sys.exit("не знаю адреса базы: он приходит в сообщении бота доступа.\n"
+             "Скажи его один раз: export LAB_GIT_URL=https://…")
+
+
+def token() -> str:
+    said = (os.getenv("LAB_GIT_TOKEN") or "").strip()
+    if said:
+        return remember(TOKEN_FILE, said)
+    if TOKEN_FILE.is_file():
+        return TOKEN_FILE.read_text(encoding="utf-8").strip()
+    sys.exit("не знаю ключа для git: он приходит в сообщении бота доступа.\n"
+             "Скажи его один раз: export LAB_GIT_TOKEN=…")
+
+
+def login() -> str:
+    said = (os.getenv("LAB_GIT_LOGIN") or "").strip()
+    if said:
+        return remember(LOGIN_FILE, said)
+    if LOGIN_FILE.is_file():
+        return LOGIN_FILE.read_text(encoding="utf-8").strip()
+    return DEFAULT_LOGIN
+
+
+def api(path: str, *, method: str = "GET", payload: dict | None = None,
+        quiet: bool = False):
+    body = json.dumps(payload).encode("utf-8") if payload is not None else None
+    address = urllib.parse.quote(path, safe="/?&=%#:+,.~*!$'()[]@-_")
+    request = urllib.request.Request(
+        f"{site()}/api/v4/{address}", data=body, method=method,
+        headers={"PRIVATE-TOKEN": token(), "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(request, timeout=60) as answer:
+            text = answer.read().decode("utf-8")
+    except urllib.error.HTTPError as trouble:
+        if quiet:
+            return None
+        sys.exit(f"GitLab ответил {trouble.code}: "
+                 f"{trouble.read().decode('utf-8', 'replace')[:300]}")
+    return json.loads(text) if text.strip() else None
+
+
+def ident(path: str) -> str:
+    return urllib.parse.quote(path, safe="")
+
+
+#: Переменные, которыми git перебивает каталог. Если они остались от чужой работы — а у
+#: агентов это бывает, внутренние репозитории держат именно так, — то `cwd` перестаёт
+#: значить что-либо, и `lab` начинает ходить по чужому репозиторию.
+OWN_GIT_ENV = ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE")
+
+
+def environment() -> dict[str, str]:
+    env = dict(os.environ)
+    for name in OWN_GIT_ENV:
+        env.pop(name, None)
+    # Ничего интерактивного: ни запроса пароля в терминале, ни графического. Иначе при
+    # неподходящем ключе вызов ждёт человека, а зовут его и из хука, и из крона.
+    env.update({"GIT_TERMINAL_PROMPT": "0", "GIT_ASKPASS": "/usr/bin/true",
+                  "SSH_ASKPASS": "/usr/bin/true"})
+    return env
+
+
+#: Ключ берётся ТОЛЬКО из файла, который пишет этот же помощник. Связку ключей macOS из
+#: списка помощников убираем нарочно: 02-10-2026 после смены ключа её помощник встал на
+#: запросе доступа к связке, и три хука повисли по десять минут — `timeout` у subprocess
+#: такой грандчайлд не снимает. Пустое значение сбрасывает унаследованный список.
+def helpers() -> list[str]:
+    return ["-c", "credential.helper=",
+            "-c", f"credential.helper=store --file={CREDENTIALS}"]
+
+
+def git(*args: str, cwd: Path | None = None, quiet: bool = False) -> str:
+    done = subprocess.run(["git", *helpers(), *args], cwd=cwd, capture_output=True,
+                          text=True, stdin=subprocess.DEVNULL, env=environment())
+    if done.returncode and not quiet:
+        sys.exit(done.stderr.strip() or f"git {' '.join(args)} не вышел")
+    return done.stdout.strip()
+
+
+def setup_key() -> None:
+    """Отдать ключ git'у его же способом, а не писать файл руками.
+
+    Файл хранилища git пишет сам и в своём виде: порт в нём закодирован (`host%3a9445`).
+    Строка, написанная руками в очевидном виде, не совпадает с тем, что git ищет, и
+    первый же `clone` отвечает «Access denied» при верном ключе. Проверено при
+    переключении на GitLab.
+    """
+    CREDENTIALS.parent.mkdir(parents=True, exist_ok=True)
+    CREDENTIALS.touch(mode=0o600, exist_ok=True)
+    CREDENTIALS.chmod(0o600)
+    helpers = git("config", "--global", "--get-all", "credential.helper", quiet=True)
+    if str(CREDENTIALS) not in helpers:
+        git("config", "--global", "--add", "credential.helper",
+            f"store --file={CREDENTIALS}")
+    host_part = site().split("://", 1)[-1]
+    scheme = site().split("://", 1)[0] if "://" in site() else "https"
+    # Сначала СТЕРЕТЬ чужие имена для этого адреса, потом записать своё. Иначе после
+    # смены ключа git продолжает брать прежнее: у адреса без имени пользователя он
+    # спрашивает помощника по хосту, и первый подошедший ответ выигрывает — а связка
+    # macOS стоит в списке помощников раньше файла. 02-10-2026 так и вышло: ключ сменили,
+    # в связке остался ключ разовой учётки с проверки, и `lab here` отвечал «Access
+    # denied» при верном ключе на диске. Своё имя не стираем: иначе пропадёт только что
+    # записанное.
+    # `git credential fill` отдаёт ОДИН ответ — первого помощника, который откликнулся,
+    # поэтому стирать приходится по кругу, пока не всплывёт своё имя. Предел на случай,
+    # если помощник отвечает одним и тем же: лучше выйти, чем крутиться.
+    for _ in range(5):
+        current = subprocess.run(["git", "credential", "fill"],
+                                 input=f"protocol={scheme}\nhost={host_part}\n\n",
+                                 text=True, capture_output=True, env=environment())
+        names = [line.split("=", 1)[1] for line in current.stdout.splitlines()
+                 if line.startswith("username=")]
+        foreign = [item for item in names if item != login()]
+        if not foreign:
+            break
+        for name in foreign:
+            subprocess.run(["git", "credential", "reject"], text=True,
+                           capture_output=True, env=environment(),
+                           input=f"protocol={scheme}\nhost={host_part}\n"
+                                 f"username={name}\n\n")
+    request = (f"protocol={scheme}\nhost={host_part}\n"
+              f"username={login()}\npassword={token()}\n\n")
+    subprocess.run(["git", "credential", "approve"], input=request, text=True,
+                   capture_output=True, env=environment())
+
+
+def find_project(slug: str) -> dict:
+    """Проект работы по её слагу. Полный путь знать не надо, он ищется."""
+    similar = api(f"projects?search={slug}&simple=true&per_page=100") or []
+    exact = [project_item for project_item in similar if project_item["path"] == slug]
+    if not exact:
+        # «Не видно» у работы почти всегда значит «нет доступа», а не «нет такой»: работы
+        # закрыты, и у не-участника они не отличаются от несуществующих. Сказать это надо
+        # прямо, иначе первая же команда из инструкции выглядит как поломка базы.
+        hint = ", ".join(sorted(project_item["path"] for project_item in similar)[:8])
+        sys.exit(f"работы {slug} не видно. Либо такой нет, либо у тебя нет к ней доступа: "
+                 "работы закрыты, и доступ даётся на тему — кнопка Request access на "
+                 "странице темы, решает её ведущий."
+                 + (f"\nРядом видно: {hint}" if hint else ""))
+    if len(exact) > 1:
+        paths = ", ".join(project_item["path_with_namespace"] for project_item in exact)
+        sys.exit(f"таких несколько, скажи полный путь: {paths}")
+    return exact[0]
+
+
+def works() -> list[dict]:
+    """Все работы, какие видно. Литература и передние страницы групп — не работы."""
+    found_items = api("projects?simple=true&per_page=100&archived=false") or []
+    return sorted((project_item for project_item in found_items
+                   if project_item["path"] not in ("literature", "gitlab-profile")),
+                  key=lambda project_item: project_item["path_with_namespace"])
+
+
+def here() -> tuple[dict, Path]:
+    """Работа и корень клона. Слаг берётся из адреса origin, а не из имени каталога."""
+    root = git("rev-parse", "--show-toplevel", quiet=True)
+    if not root:
+        sys.exit(f"это не клон работы: {Path.cwd()}")
+    path = Path(root)
+    address = git("config", "--get", "remote.origin.url", cwd=path, quiet=True)
+    slug = (address.rstrip("/").rsplit("/", 1)[-1].removesuffix(".git")
+            if address else path.name)
+    return find_project(slug), path
+
+
+def project_root(start_from: Path | None = None) -> Path:
+    """Папка проекта: где лежит `.lab-work`, иначе текущая."""
+    this = (start_from or Path.cwd()).resolve()
+    for folder in (this, *this.parents):
+        if (folder / ".lab-work").is_file():
+            return folder
+        if folder == folder.parent:
+            break
+    return this
+
+
+def clone_url(project: dict) -> str:
+    """Адрес для git. Берётся у GitLab, но хостом с той стороны, куда мы ходим сами."""
+    own = project.get("http_url_to_repo") or ""
+    if not own:
+        return f"{site()}/{project['path_with_namespace']}.git"
+    path = own.split("://", 1)[-1].split("/", 1)[-1]
+    return f"{site()}/{path}"
+
+
+def refresh(target: Path) -> tuple[str, str]:
+    was = git("rev-parse", "HEAD", cwd=target, quiet=True)
+    git("fetch", "-q", "origin", cwd=target)
+    subprocess.run(["git", "pull", "-q", "--ff-only", "origin", "main"],
+                   cwd=target, capture_output=True, text=True, env=environment())
+    return was, git("rev-parse", "HEAD", cwd=target, quiet=True)
+
+
+#: Кем подписывается то, что написал агент. Имя не косметика: по нему в истории и во
+#: вкладке активности видно, кто что сделал. 02-10-2026 выяснилось, что семь коммитов
+#: подписаны именем и почтой владельца, хотя писал их агент, — и разобрать, кто автор,
+#: стало нельзя. Личный `git config` человека для клона базы не годится по той же причине.
+AGENT_SUFFIX = ("lab-agent", "agent@brainlab-ai.com")
+
+
+def sign_clone(target: Path) -> None:
+    """Поставить клону имя автора, чтобы его не приходилось помнить каждый раз."""
+    name, email = AGENT_SUFFIX
+    git("config", "user.name", name, cwd=target, quiet=True)
+    git("config", "user.email", email, cwd=target, quiet=True)
+
+
+def do_here(names: list[str]) -> None:
+    """Склонировать работу в папку проекта, а если клон уже есть — обновить его."""
+    if not names:
+        sys.exit("скажи работу: lab here <работа>")
+    setup_key()
+    project = find_project(names[0])
+    target = project_root() / "lab-base"
+    address = clone_url(project)
+    if not (target / ".git").is_dir():
+        git("clone", "-q", address, str(target))
+        sign_clone(target)
+        print(f"работа склонирована: {target}")
+        return
+    sign_clone(target)
+    old_url = git("config", "--get", "remote.origin.url", cwd=target, quiet=True)
+    if old_url != address:
+        # В одной папке проекта живёт ОДНА работа. Раньше `origin` переписывался молча, и
+        # 04-10-2026 на этом встал прогон: в `lab-base` лежал клон `lab-knowledge-pipeline`,
+        # агент попросил `lora-style`, адрес поменялся, а файлы остались чужие — дальше
+        # ветка и предложение уехали бы не в ту работу.
+        here_slug = old_url.rstrip("/").removesuffix(".git").rsplit("/", 1)[-1]
+        if old_url and here_slug != project["path"]:
+            sys.exit(f"в {target} лежит работа {here_slug}, а просят {project['path']}.\n"
+                     f"Одна папка проекта — одна работа: сделай `lab here "
+                     f"{project['path']}` в папке той работы или склонируй рядом руками.")
+        # Клон из чужого локального клона выглядит рабочим, а push уходит в никуда.
+        action = "set-url" if old_url else "add"
+        git("remote", action, "origin", address, cwd=target, quiet=True)
+        print(f"адрес origin исправлен на {address}")
+    was, became = refresh(target)
+    if was == became:
+        print(f"работа на месте и без изменений: {target}")
+    else:
+        print(f"работа обновлена: {target}")
+        print(git("--no-pager", "diff", "--stat", f"{was}..{became}", cwd=target))
+
+
+def my_proposal(project: dict, branch: str) -> dict | None:
+    opened = api(f"projects/{project['id']}/merge_requests?state=opened&per_page=100") or []
+    for proposal in opened:
+        if proposal.get("source_branch") == branch:
+            return proposal
+    return None
+
+
+def do_pull() -> None:
+    # Ключ настраивается и здесь, а не только при клоне и предложении. 02-10-2026 после
+    # смены ключа `lab pull` упал на «Access denied» и сам себя не починил: он делал
+    # обычный `git fetch` тем, что лежало у помощника, а помощник держал прежнее.
+    setup_key()
+    project, root = here()
+    was, became = refresh(root)
+    if was == became:
+        print(f"{project['path']}: без изменений")
+    else:
+        print(f"{project['path']}: изменилось с прошлого раза")
+        print(git("--no-pager", "diff", "--stat", f"{was}..{became}", cwd=root))
+    opened = api(f"projects/{project['id']}/merge_requests?state=opened&per_page=100") or []
+    if opened:
+        print("открытые предложения этой работы:")
+        for proposal in opened:
+            print(f"  !{proposal['iid']}  {proposal.get('source_branch','')}  {proposal.get('title','')[:60]}")
+
+
+def show_checks(project: dict, number: int, sha: str, *, wait_for: int = 0) -> None:
+    """Вердикт проверок и последнее слово обсуждения.
+
+    Проверки ставит отдельная служба, и ходит она раз в минуту. Сразу после push статуса
+    ещё нет, и «проверок нет» читается как «всё хорошо» — худшее из возможных сообщений.
+    Поэтому здесь ждём появления вердикта, а не сообщаем пустоту.
+    """
+    limit = time.monotonic() + wait_for
+    statuses: list = []
+    while True:
+        statuses = api(f"projects/{project['id']}/repository/commits/{sha}/statuses") or []
+        alive = [line for line in statuses if line.get("status") not in ("pending", "running")]
+        if alive or time.monotonic() >= limit:
+            statuses = alive or statuses
+            break
+        print("  ждём проверок…", flush=True)
+        time.sleep(6)
+    if not statuses:
+        print("  проверки ещё не проставлены — повтори `lab checks` через минуту")
+    for status in statuses:
+        sep = {"success": "зелено", "failed": "есть замечания", "failure": "есть замечания",
+                "canceled": "отменена", "running": "идёт", "pending": "идёт"}.get(
+                    status.get("status", ""), status.get("status", ""))
+        print(f"  {status.get('name') or status.get('context','')}: {sep}"
+              f" — {status.get('description','')}")
+    green = bool(statuses) and all(line.get("status") == "success" for line in statuses)
+    notes = api(f"projects/{project['id']}/merge_requests/{number}/notes"
+                 f"?per_page=20&sort=asc") or []
+    reviews = [about for about in notes if "Проверка базы" in (about.get("body") or "")]
+    if green:
+        # Разбор служба пишет только когда есть что сказать. Значит при зелёном статусе
+        # самый свежий разбор — прошлый, и печатать его значит показывать снятые
+        # замечания как действующие.
+        if reviews:
+            print("  прежние замечания снялись")
+    elif reviews:
+        print("\n== что сказала проверка")
+        print((reviews[-1].get("body") or "").strip()[:1500])
+    print_discussions(project, number)
+
+
+def discussions(project: dict, number: int) -> tuple[list, list]:
+    """Замечания людей: неснятые и снятые, по отдельности.
+
+    Это не то же, что вердикт службы. Вердикт говорит, что сломано механически; человек в
+    обсуждении говорит, что переписать. Пока хоть одна нить не снята, предложение не готово,
+    и «зелёный вердикт» об этом ничего не сообщает — поэтому их и считают отдельно.
+    """
+    threads = api(f"projects/{project['id']}/merge_requests/{number}/discussions"
+                  f"?per_page=100") or []
+    open_threads, closed = [], []
+    for thread in threads:
+        notes = [note for note in (thread.get("notes") or []) if not note.get("system")]
+        if not notes:
+            continue
+        if "Проверка базы" in (notes[0].get("body") or ""):
+            continue
+        (closed if notes[0].get("resolved") else open_threads).append(notes)
+    return open_threads, closed
+
+
+def print_discussions(project: dict, number: int) -> None:
+    open_threads, closed = discussions(project, number)
+    if not open_threads and not closed:
+        return
+    if open_threads:
+        print(f"\n== замечания, которые надо снять: {len(open_threads)}")
+        for notes in open_threads:
+            head = notes[0]
+            where = head.get("position") or {}
+            place = (f"{where.get('new_path')}:{where.get('new_line')}"
+                     if where.get("new_path") else "ко всему предложению")
+            print(f"  [{(head.get('author') or {}).get('username', '?')}] {place}")
+            for note in notes:
+                who = (note.get("author") or {}).get("username", "?")
+                body = " ".join((note.get("body") or "").split())
+                print(f"      {who}: {body[:400]}")
+        print("  правь в той же ветке и пушь туда же: предложение обновится само.")
+    if closed:
+        print(f"\n== снятых замечаний: {len(closed)}")
+
+
+def do_checks() -> None:
+    project, root = here()
+    branch = git("rev-parse", "--abbrev-ref", "HEAD", cwd=root)
+    if_present = my_proposal(project, branch)
+    if if_present is None:
+        sys.exit(f"по ветке {branch} открытого предложения нет — запушь её "
+                 f"с `-o merge_request.create`")
+    print(f"предложение !{if_present['iid']}  {if_present['web_url']}\n")
+    print("== проверки")
+    show_checks(project, int(if_present["iid"]),
+                      git("rev-parse", "HEAD", cwd=root))
+
+
+def my_login() -> str:
+    try:
+        return MY_LOGIN_FILE.read_text(encoding="utf-8").strip().splitlines()[0].strip()
+    except (OSError, IndexError):
+        return ""
+
+
+def claim_of_issue(body: str) -> str:
+    """Код утверждения, на которое влияет задача. Строка «Утверждение: H-XXX-001» в теле."""
+    found = re.search(r"^\s*(?:\*\*)?Утверждение:?(?:\*\*)?\s*([HDSEF]-[A-Z]{2,4}-\d+)",
+                     body or "", re.M)
+    return found.group(1) if found else ""
+
+
+def do_tasks() -> None:
+    """Задачи работы: кому назначена, что за ход дела, какое утверждение затрагивает."""
+    project, _ = here()
+    issues = api(f"projects/{project['id']}/issues?state=opened&per_page=100") or []
+    if not issues:
+        print(f"{project['path']}: открытых задач нет")
+        return
+    me = my_login()
+    print(f"{project['path']}: открытых задач {len(issues)}")
+    for issue in issues:
+        labels = ", ".join(issue.get("labels") or [])
+        assignees = ", ".join(item["username"] for item in (issue.get("assignees") or []))
+        label = "ТЕБЕ" if (me and me in assignees.split(", ")) else (assignees or "—")
+        code = claim_of_issue(issue.get("description") or "")
+        due = f" до {issue['due_date']}" if issue.get("due_date") else ""
+        print(f"  #{issue['iid']:<4} [{labels}] {issue['title'][:74]}{due}")
+        print(f"        {label}{('  → ' + code) if code else ''}")
+    print(f"\nдоска: {project['web_url']}/-/boards")
+    print("взять задачу: `lab take <номер>`; отвечать на неё — "
+          "строкой `Closes #<номер>` в сообщении коммита")
+
+
+def do_take(arguments: list[str]) -> None:
+    """Взять задачу: поставить себя исполнителем и ярлык «делается».
+
+    Без этого шага двое берутся за одно: доска показывает задачу свободной, пока на ней
+    никого нет. Ярлык и исполнитель ставятся одним вызовом, чтобы не остаться на половине.
+    """
+    if not arguments:
+        sys.exit("нужен номер задачи: lab take 7")
+    number = arguments[0].lstrip("#")
+    project, _ = here()
+    issue_number = api(f"projects/{project['id']}/issues/{number}")
+    if issue_number is None:
+        sys.exit(f"задачи #{number} в работе {project['path']} нет")
+    payload: dict = {"add_labels": "делается"}
+    me = my_login()
+    if me:
+        matched = api(f"users?username={urllib.parse.quote(me)}") or []
+        if matched:
+            payload["assignee_ids"] = [matched[0]["id"]]
+        else:
+            print(f"учётной записи «{me}» в GitLab не нашлось: ставлю только ярлык")
+    else:
+        print(f"кто ты — неизвестно: положи свой логин GitLab в {MY_LOGIN_FILE}")
+    became = api(f"projects/{project['id']}/issues/{number}", method="PUT", payload=payload)
+    assignees = ", ".join(item["username"] for item in (became.get("assignees") or [])) or "никому"
+    print(f"#{number} {became['title'][:70]}")
+    print(f"  ярлыки: {', '.join(became.get('labels') or [])} | на {assignees}")
+    code = claim_of_issue(became.get("description") or "")
+    if code:
+        print(f"  задача про утверждение {code}: ветка `claim/{code}`, "
+              f"запись идёт под него")
+    print(f"  когда сделаешь: строка `Closes #{number}` в коммите — слияние закроет "
+          "задачу само")
+
+
+def main() -> None:
+    args = sys.argv[1] if len(sys.argv) > 1 else ""
+    tail = sys.argv[2:]
+    if args == "here":
+        do_here(tail)
+    elif args == "pull":
+        do_pull()
+    elif args == "checks":
+        do_checks()
+    elif args == "tasks":
+        do_tasks()
+    elif args == "take":
+        do_take(tail)
+    else:
+        print(__doc__)
+
+
+if __name__ == "__main__":
+    main()

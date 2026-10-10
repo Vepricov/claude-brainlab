@@ -64,6 +64,11 @@ ask STAFF_ROOT       "Staff folder (people work)"        "$HOME/Staff"
 default_py="$(command -v python3 || echo python3)"
 ask PYTHON_BIN       "Python interpreter (absolute path recommended)" "$default_py"
 
+# ── OpenRouter ──
+echo
+echo "OpenRouter (needed by the recording hook: it decides what belongs in the lab base):"
+ask_secret OPENROUTER_API_KEY "OPENROUTER_API_KEY"
+
 # ── Zotero ──
 echo
 echo "Zotero (optional — leave blank to skip Zotero MCP):"
@@ -95,6 +100,7 @@ PAPERS_ROOT="$PAPERS_ROOT"
 PROJECTS_ROOT="$PROJECTS_ROOT"
 STAFF_ROOT="$STAFF_ROOT"
 PYTHON_BIN="$PYTHON_BIN"
+OPENROUTER_API_KEY="$OPENROUTER_API_KEY"
 ZOTERO_API_KEY="$ZOTERO_API_KEY"
 ZOTERO_LIBRARY_ID="$ZOTERO_LIBRARY_ID"
 UNPAYWALL_EMAIL="$UNPAYWALL_EMAIL"

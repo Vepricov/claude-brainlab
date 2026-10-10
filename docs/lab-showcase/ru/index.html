@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <base href="../">
+  <script src="language.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Карта исследовательской работы BRAIn Lab">
+  <title>BRAIn Lab · Research Loop</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="refinements.css?v=overview-fit-20260911">
+  <link rel="stylesheet" href="map-shapes.css">
+  <link rel="stylesheet" href="mcp-design.css?v=simple-search-20260917">
+  <link rel="stylesheet" href="front-design.css?v=ideation-20260917">
+  <link rel="stylesheet" href="memory-map.css">
+  <link rel="stylesheet" href="obsidian-setup.css?v=workspaces-20260911">
+  <link rel="stylesheet" href="surface-pages.css?v=workspaces-20260911">
+  <link rel="stylesheet" href="search-workspace.css?v=search-footer-20260917">
+  <link rel="stylesheet" href="language.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" aria-label="BRAIn Lab" id="home" type="button"><span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span></button>
+    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Система</button><button data-view="mcp-live" type="button">Демобаза</button><button data-view="examples" type="button">Маршруты</button></nav>
+    <button class="search-open" id="search-open" type="button"><span>Найти процесс или инструмент</span><kbd>⌘ K</kbd></button>
+    <nav class="language-switch" aria-label="Язык"><a data-language="en" lang="en" href="?lang=en">EN</a><a data-language="ru" lang="ru" href="ru/index.html?lang=ru">RU</a></nav>
+  </header>
+
+  <main>
+    <section class="overview" id="overview">
+      <header class="overview-head">
+        <p class="overline">Исследовательская система · <span id="verified-date"></span></p>
+        <h1>Как лаборатория<br> превращает вопрос<br> в <span>знание</span></h1>
+        <p class="overview-intro">Один цикл связывает литературу, обсуждения, гипотезы, эксперименты, результаты и публикации. Выберите этап, чтобы увидеть весь путь и инструменты.</p>
+      </header>
+
+      <div class="loop-map" id="loop-map" aria-label="Карта исследовательской работы">
+        <div class="loop-nodes" id="loop-nodes"></div>
+        <section class="knowledge-cluster" aria-label="Четыре слоя памяти и координации">
+          <button class="knowledge-core" id="knowledge-core" type="button">
+            <span>Общее проверяемое знание</span><strong>Lab Knowledge<br>MCP</strong><p>утверждения · прогоны · измерения · правила</p><i>Открыть карту →</i>
+          </button>
+          <div class="memory-surfaces">
+            <button data-surface="obsidian" type="button"><b>Obsidian</b><span>личные заметки и дневник</span></button>
+            <button data-surface="mempalace" type="button"><b>MemPalace</b><span>память и история агента</span></button>
+            <button data-surface="yonote" type="button"><b>Yonote</b><span>страницы проектов и задачи команды</span></button>
+          </div>
+        </section>
+      </div>
+
+
+      <p class="loop-tally" id="loop-tally"></p>
+
+      <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title"></section>
+    </section>
+
+    <article class="process-view" id="process-view" hidden></article>
+    <article class="dykaf-view" id="dykaf-view" hidden></article>
+    <article class="mcp-live-view" id="mcp-live-view" hidden></article>
+    <article class="examples-view" id="examples-view" hidden></article>
+  </main>
+
+  <dialog class="search-dialog" id="search-dialog">
+    <form method="dialog" class="search-head"><label><span aria-hidden="true">⌕</span><span class="sr-only">Поиск по процессам и инструментам</span><input id="search-input" type="search" placeholder="Например: разобрать созвон, Hermes, rebuttal…" autocomplete="off"></label><button value="close" aria-label="Закрыть">×</button></form>
+    <div class="search-results" id="search-results"></div>
+  </dialog>
+
+  <script src="data/demo-flag.js?v=general-questions-20260916"></script>
+  <script src="data/atlas-public.js?v=ideation-20260917"></script>
+  <script src="data/research-loop-data.js?v=ideation-20260917"></script>
+  <script src="data/system-examples.js?v=ideation-20260917"></script>
+  <!-- Scientific snapshots load on demand when the search workspace opens. -->
+  <!-- Ядро поиска: один индекс на узлы дерева, записи базы и статьи, ранжирование BM25.
+       Отдельный файл, потому что его гоняет набор проверок tests/test_search.mjs без
+       браузера — 38 запросов за секунду, поэтому качество меряется, а не обсуждается. -->
+  <script src="search-core.js"></script>
+  <script src="memory-map.js"></script>
+  <script src="surface-pages.js?v=concise-dossiers-20260911"></script>
+  <script src="obsidian-setup.js?v=workspaces-20260911"></script>
+  <script src="app.js?v=ideation-20260917"></script>
+</body>
+</html>

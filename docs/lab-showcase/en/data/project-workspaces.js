@@ -1,0 +1,2 @@
+/* Демонстрационные данные публичной витрины. Выдуманная лаборатория. */
+window.LAB_PROJECT_WORKSPACES={"projects": {"warmup-budget": {"example_tasks": [{"title": "Check the comparison's reproducibility", "status": "In progress", "assignee": "Ivanova-Maria"}, {"title": "Plot performance against budget", "status": "Backlog", "assignee": "Sokolov-Petr"}, {"title": "Describe the limits of the conclusion", "status": "Done", "assignee": "Ivanova-Maria"}]}}};

@@ -1,0 +1,400 @@
+/* ============ Страница общей базы: дизайн для человека ============
+   Владелец: «тебе надо сделать отдельный красивый дизайн для человека… там надо прям
+   красиво разные случаи пользования этим MCP: от поиска отдельной гипотезы до изучения
+   какого-то раздела оптимизации».
+   И отдельно про панель сырых вызовов: «это всё кринж».
+
+   Поэтому страница больше не поле поиска со списком. Сверху счёт: что вообще лежит в базе
+   и в какой форме. Дальше три настоящих входа — спросить словами, изучить целую область,
+   открыть одну запись по коду, — и у каждого сразу видно содержимое базы, а не пустая
+   форма. Сырые вызовы службы уехали в одну тихую сноску внизу: они для агента.
+
+   Цвет несёт смысл, а не украшает: тёплый белый — наше знание, холодный синий — чужие
+   работы, янтарь — то, что ещё не закрыто. Лайм остаётся только за действиями. */
+
+.mcp-page{
+  --our:#eaf2e2;      /* наше знание */
+  --their:#7fa8c9;    /* чужие работы */
+  --open:#f0b67f;     /* не закрыто */
+  --ink-dim:#8e968b}
+
+/* ---------- Что лежит в базе: счёт, а не картинка ---------- */
+.tally{margin-top:24px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(127,168,201,.05),transparent 70%)}
+.tally-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(132px,100%),1fr))}
+.tally-row>div{padding:17px 18px}
+.tally-row>div+div{border-left:1px solid var(--line)}
+.tally-row b{display:block;font:500 clamp(24px,2.9vw,34px)/1 var(--display);letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums}
+.tally-row span{display:block;margin-top:7px;color:var(--ink-dim);font:9px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase}
+.tally-row .is-our b{color:var(--our)}
+.tally-row .is-their b{color:var(--their)}
+.tally-note{margin:0;padding:14px 18px 16px;border-top:1px solid var(--line);
+  color:var(--ink-dim);font-size:12.5px;line-height:1.65}
+.tally-note b{font-variant-numeric:tabular-nums}
+.tally-note b.is-our{color:var(--our)}
+.tally-note b.is-open{color:var(--open)}
+
+/* Счётчик ответов стоит над результатами, а не в шапке поля. */
+.mcp-found{display:block;margin-top:22px;color:var(--ink-dim);font:10px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase}
+.mcp-found:empty{display:none}
+
+/* ---------- Три входа: не кнопки, а три открытые дороги ---------- */
+.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
+  gap:1px;margin-top:26px;background:var(--line)}
+.way{padding:22px 22px 24px;background:#0b0e0d}
+.way>span{color:var(--ink-dim);font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.way h3{margin-top:12px;font:500 20px/1.2 var(--display);letter-spacing:-.03em;text-wrap:balance}
+.way>p{margin-top:9px;color:#aab2a7;font-size:12.5px;line-height:1.65}
+.way-body{margin-top:16px}
+.way-form{display:flex;gap:8px}
+.way-form input{flex:1;min-width:0;min-height:42px;padding:11px 13px;border:1px solid var(--line-strong);
+  border-radius:9px;background:#0d100d;color:var(--ink);font-size:13px}
+.way-form input:focus{border-color:var(--lime);outline:none}
+.way-form button{min-height:42px;padding:11px 15px;border:1px solid var(--lime);border-radius:9px;
+  background:rgba(185,255,102,.13);color:var(--lime);font:10px var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer}
+.way-form button:hover{background:var(--lime);color:#0b0e0d}
+/* Примеры вопросов — текстом, а не рядом кнопок. */
+.way-examples{display:grid;gap:2px;margin-top:12px}
+.way-examples button{padding:6px 0;border:0;background:none;color:#c3cbc0;font-size:12.5px;
+  text-align:left;cursor:pointer;border-bottom:1px solid transparent}
+.way-examples button:before{content:"→ ";color:var(--ink-dim)}
+.way-examples button:hover{color:var(--lime)}
+/* Области: имя, полоска объёма, число. Полоска и есть шкала. */
+.way-areas{display:grid;gap:1px}
+.way-area{display:grid;grid-template-columns:1fr 64px auto;align-items:center;gap:12px;
+  padding:8px 0;border:0;background:none;color:#dbe2d8;font-size:12.5px;text-align:left;
+  cursor:pointer;border-bottom:1px solid rgba(231,239,230,.07)}
+.way-area:hover{color:var(--lime)}
+.way-area i{height:3px;border-radius:2px;background:var(--their);opacity:.65}
+.way-area:hover i{background:var(--lime);opacity:1}
+.way-area em{color:var(--ink-dim);font:10px var(--mono);font-style:normal;
+  font-variant-numeric:tabular-nums}
+
+/* ---------- Строка для агентов внизу: не панель, а сноска ---------- */
+.for-agents{margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
+.for-agents>summary{cursor:pointer;color:var(--ink-dim);font:10px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;list-style:none}
+.for-agents>summary::-webkit-details-marker{display:none}
+.for-agents>summary:before{content:"⌥ ";color:var(--lime)}
+.for-agents>summary:hover{color:var(--ink)}
+.for-agents[open]>summary{margin-bottom:14px}
+
+@media (max-width:760px){
+  .tally-row>div+div{border-left:0;border-top:1px solid var(--line)}
+}
+
+/* ============ Шапка ответа ============
+   Служба отдаёт до двадцати пяти записей одной лентой. Сверху теперь сказано, из чего
+   состоит ответ, и одной строкой — отвечает ли на вопрос своя работа или только статьи.
+   Это первое, что видит человек, и часто этого достаточно. */
+.answer-head{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid #2d352e}
+.answer-tally{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0;
+  color:#8e988c;font:9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.answer-tally b{margin-right:5px;color:var(--lime);font:500 15px var(--body);letter-spacing:0}
+.answer-gist{margin:11px 0 0;color:#c3cbc0;font-size:13.5px;line-height:1.6}
+/* Остальное — под раскрытием: лента из двадцати пяти карточек не просматривается глазами. */
+  text-transform:uppercase;cursor:pointer;list-style:none}
+/* Ожидание живого ответа: 6-14 секунд — это долго, поэтому пауза названа и посчитана. */
+.mcp-wait{display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+  margin:0;padding:20px 0;border-bottom:1px solid #2d352e}
+.mcp-wait b{max-width:52ch;color:#c3cbc0;font:400 13.5px/1.6 var(--body)}
+.mcp-wait span{color:var(--lime);font:11px var(--mono);font-variant-numeric:tabular-nums}
+
+/* ============ Переходы внутри карточки ============
+   «Все утверждения этой статьи» и ссылка на arXiv стояли двумя рамками, и на странице из
+   десяти карточек это давало двадцать одинаковых коробок. Оба действия — переходы, поэтому
+   они читаются как ссылки: подчёркивание вместо рамки. */
+.claim-links{gap:6px 22px!important;margin-top:14px!important}
+.claim-links button,.claim-links a{padding:0!important;border:0!important;border-radius:0!important;
+  background:none!important;color:#93a08f;font:9px var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;
+  text-decoration-color:rgba(147,160,143,.32);width:auto!important;text-align:left!important}
+.claim-links button:hover,.claim-links a:hover{color:var(--lime);
+  text-decoration-color:var(--lime);background:none!important}
+
+/* ============================================================================
+   Карта темы: ответ на широкий запрос
+   ============================================================================
+   Владелец: «по запросу просто muon никак не понятно, в каком виде ранжировать… нужно, чтобы
+   пользователь сначала изучил что-то базовое, а потом уже смотрел какие-то клеймы».
+
+   Узел здесь — не плитка в сетке, а разворот: название, объём, аннотация, вход внутрь.
+   Аннотация набрана крупнее служебных строк, потому что она и есть ответ на широкий запрос;
+   всё остальное на карточке — навигация. */
+.map-answer{display:grid;gap:34px}
+.map-head{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;
+  padding-bottom:18px;border-bottom:1px solid #2d352e}
+.map-lead{margin:0;max-width:62ch;color:#c3cbc0;font-size:13.5px;line-height:1.65}
+.map-lead b{color:#edf2eb;font-weight:500}
+.map-force{flex:none;padding:0;border:0;background:none;color:#93a08f;font:9px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:4px;text-decoration-color:rgba(147,160,143,.3);cursor:pointer}
+.map-force:hover{color:var(--lime);text-decoration-color:var(--lime)}
+
+.map-group{display:grid;gap:0}
+.map-group>.overline{margin:0 0 4px;color:#7f8a7c}
+.map-node{padding:24px 0;border-top:1px solid #262e27}
+.map-node>header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:10px}
+.map-node-kind{color:var(--lime);font:8.5px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.map-node>header>code{padding:2px 7px;border-radius:3px;background:rgba(231,239,230,.06);
+  color:#c9d2c6;font:10px var(--mono)}
+.map-node-count{color:#828d80;font:9px var(--mono);letter-spacing:.04em}
+.map-node>h3{margin:0 0 8px;font:500 clamp(19px,2vw,25px)/1.2 var(--display);letter-spacing:-.03em;
+  color:#f0f4ee;text-wrap:balance}
+/* Аннотация — главный текст на карточке узла, а не подпись под заголовком. */
+.map-node-abstract{margin:0;max-width:74ch;color:#b6bfb3;font-size:14px;line-height:1.7}
+.map-node-team{margin:12px 0 0;color:#9aa497;font-size:12px;line-height:1.6}
+.map-node-team b{color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.map-node-where{margin:8px 0 0;color:#828d80;font:9.5px var(--mono);letter-spacing:.04em}
+/* Подтемы и проекты внутри узла: строки со счётчиком, не пилюли. */
+.map-node-subs{margin-top:16px;display:grid;gap:0}
+.map-node-subs>b{margin-bottom:4px;color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;
+  text-transform:uppercase}
+.map-node-subs>button{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:9px 0;border:0;border-bottom:1px solid rgba(231,239,230,.07);background:none;
+  color:#d3dbd0;font:13px var(--body);text-align:left;cursor:pointer}
+.map-node-subs>button:hover{color:var(--lime)}
+.map-node-subs>button>span{flex:none;color:#798376;font:10px var(--mono);
+  font-variant-numeric:tabular-nums}
+.map-node-go{margin-top:16px}
+.map-node-go>button{padding:0;border:0;background:none;color:var(--lime);font:9px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:4px;text-decoration-color:rgba(163,213,92,.35);cursor:pointer}
+.map-node-go>button:hover{text-decoration-color:var(--lime)}
+.map-node.is-dir>h3,.map-node.is-project>h3{font-size:clamp(18px,1.8vw,22px)}
+
+/* ============================================================================
+   Ответ группируется по источнику
+   ============================================================================
+   Владелец: «логичнее было бы, чтобы в поиске выскакивал сразу проект / статья, с которым
+   находилось нужное утверждение, а не просто оно оторванное».
+
+   Источник сверху с аннотацией и составом, его утверждения — нумерованным списком внутри.
+   Номер сохраняется тот, что дала служба: по нему видно, насколько высоко она поставила
+   именно это утверждение. */
+.src-group{padding:26px 0;border-top:1px solid #262e27}
+.src-group>header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:9px}
+.src-kind{color:var(--lime);font:8.5px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.src-group.is-paper .src-kind{color:#8fb8d8}
+.src-group>header>code{padding:2px 7px;border-radius:3px;background:rgba(231,239,230,.06);
+  color:#c9d2c6;font:10px var(--mono)}
+.src-count{color:#828d80;font:9px var(--mono);letter-spacing:.04em}
+.src-group>h3{margin:0 0 7px;font:500 clamp(18px,1.9vw,23px)/1.25 var(--display);
+  letter-spacing:-.03em;color:#f0f4ee;text-wrap:balance}
+.src-meta{margin:0 0 10px;color:#828d80;font:9.5px var(--mono);letter-spacing:.04em}
+.src-abstract{margin:0;max-width:74ch;color:#b0b9ad;font-size:13.5px;line-height:1.7}
+.src-team{margin:11px 0 0;color:#9aa497;font-size:12px;line-height:1.6}
+.src-team b{color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.src-claims{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:0}
+.claim-row{display:grid;grid-template-columns:30px 1fr;gap:14px;padding:13px 0;
+  border-top:1px solid rgba(231,239,230,.07)}
+.claim-place{color:#5f6a5d;font:9.5px var(--mono);font-variant-numeric:tabular-nums;padding-top:3px}
+.claim-text{margin:0;color:#e2e9df;font-size:14px;line-height:1.55}
+.claim-body{margin:6px 0 0;max-width:78ch;color:#98a295;font-size:12.5px;line-height:1.65}
+.claim-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:8px 0 0}
+.claim-kind,.claim-section{color:#798376;font:8.5px var(--mono);letter-spacing:.06em;
+  text-transform:uppercase}
+.claim-code{padding:0;border:0;background:none;color:#93a08f;font:9.5px var(--mono);
+  text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:rgba(147,160,143,.3);cursor:pointer}
+.claim-code:hover{color:var(--lime);text-decoration-color:var(--lime)}
+/* Важное утверждение — то, что закрыто и выкладкой, и числами. Это единственная подсветка,
+   которая здесь осталась, и она про содержание записи, а не про совпадение слов. */
+.claim-row.is-key{padding-left:14px;margin-left:-14px;
+  border-left:2px solid color-mix(in srgb,var(--lime) 70%,transparent)}
+.claim-row.is-key .claim-text{color:#f2f7f0;font-weight:500}
+.src-go{margin-top:18px}
+.src-go>button{padding:0;border:0;background:none;color:var(--lime);font:9px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:4px;text-decoration-color:rgba(163,213,92,.35);cursor:pointer}
+.src-go>button:hover{text-decoration-color:var(--lime)}
+
+/* ============================================================================
+   Что ещё ничем не закрыто
+   ============================================================================
+   Строка «110 пока ничем» смешивала архив, черновики и то, что реально в проверке, и потому
+   читалась как «110 недоделок». Теперь число разложено по состояниям, а сами утверждения
+   открываются списком: видно, какому чего не хватает. */
+.open-claims{margin-top:14px;border-top:1px solid #2d352e}
+.open-claims>summary{padding:14px 0;color:#8e988c;font:9.5px var(--mono);letter-spacing:.05em;
+  text-transform:uppercase;cursor:pointer;list-style:none}
+.open-claims>summary::-webkit-details-marker{display:none}
+.open-claims>summary:before{content:"+ ";color:var(--lime)}
+.open-claims[open]>summary:before{content:"− "}
+.open-claims>summary b{color:#dfe6dc;font:500 13px var(--body);letter-spacing:0}
+.open-claims>summary:hover{color:#dfe6dc}
+.open-claims section{padding:16px 0;border-top:1px solid rgba(231,239,230,.07)}
+.open-claims h4{display:flex;align-items:baseline;gap:10px;margin:0 0 4px;
+  color:#e2e9df;font:500 14px var(--body)}
+.open-claims h4>span{color:#798376;font:10px var(--mono);font-variant-numeric:tabular-nums}
+.open-claims section>p{margin:0 0 10px;color:#8e988c;font-size:12.5px;line-height:1.6}
+.open-claims ol{margin:0;padding:0;list-style:none;display:grid;gap:0}
+.open-claims li>button{display:grid;grid-template-columns:92px minmax(0,1fr) minmax(0,.5fr);
+  gap:14px;align-items:baseline;width:100%;padding:8px 0;border:0;
+  border-top:1px solid rgba(231,239,230,.05);background:none;text-align:left;cursor:pointer}
+.open-claims li>button:hover strong{color:var(--lime)}
+.open-claims li>button>code{color:#798376;font:9.5px var(--mono)}
+.open-claims li>button>strong{color:#d3dbd0;font:400 13px var(--body)}
+.open-claims li>button>span{color:#798376;font-size:11.5px}
+@media (max-width:760px){
+  .map-head{flex-direction:column;gap:14px}
+  .claim-row{grid-template-columns:22px 1fr;gap:10px}
+  .open-claims li>button{grid-template-columns:1fr;gap:3px}
+}
+
+/* Страница узла: подтема со своей аннотацией. */
+.paper-page.is-node .node-abstract{margin:10px 0 0;max-width:74ch;color:#b6bfb3;
+  font-size:14px;line-height:1.7}
+.node-siblings{margin-top:30px;padding-top:16px;border-top:1px solid #2d352e;display:grid;gap:0}
+.node-siblings>b{margin-bottom:4px;color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;
+  text-transform:uppercase}
+.node-siblings>button{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:9px 0;border:0;border-bottom:1px solid rgba(231,239,230,.07);background:none;
+  color:#d3dbd0;font:13px var(--body);text-align:left;cursor:pointer}
+.node-siblings>button:hover{color:var(--lime)}
+.node-siblings>button>span{flex:none;color:#798376;font:10px var(--mono)}
+
+/* Состав проекта и его терминология на карточке. Люди — не пилюли-кнопки: это факт о
+   проекте, к кому идти с вопросом, а не действие. */
+.project-team{display:grid;gap:8px 20px;margin:18px 0 0;padding:14px 0;
+  border-top:1px solid #2d352e;border-bottom:1px solid #2d352e}
+.project-team>div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;
+  align-items:baseline}
+.project-team dt{color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.project-team dd{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.project-team .person{color:#dfe6dc;font-size:13px}
+.project-terms{margin-top:20px;border-top:1px solid #2d352e}
+.project-terms>summary{padding:14px 0;color:#8e988c;font:9.5px var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;cursor:pointer;list-style:none}
+.project-terms>summary::-webkit-details-marker{display:none}
+.project-terms>summary:before{content:"+ ";color:var(--lime)}
+.project-terms[open]>summary:before{content:"− "}
+.project-terms>summary span{color:#798376;font-size:10px}
+.project-terms dl{margin:0 0 8px;display:grid;gap:0}
+.project-terms dl>div{display:grid;grid-template-columns:minmax(140px,.28fr) minmax(0,1fr);
+  gap:18px;padding:11px 0;border-top:1px solid rgba(231,239,230,.07)}
+.project-terms dt{color:#e2e9df;font:500 13px var(--body)}
+.project-terms dd{margin:0;color:#98a295;font-size:12.5px;line-height:1.65}
+@media (max-width:760px){
+  .project-team>div,.project-terms dl>div{grid-template-columns:1fr;gap:4px}
+}
+
+/* ============================================================================
+   Обзор по разделам: дерево, а не сорок пилюль в ряд
+   ============================================================================
+   Владелец: «в MCP я бы хотел большее дробление… аналогично надо помещать проекты. Можно
+   подсмотреть, как всё организовано в Yonote».
+
+   Три оси, каждая начинается сверху: направление → тема → проект; раздел → подраздел →
+   подтема; термины поперёк. Узлы свёрнуты, потому что сорок открытых папок никто не читает,
+   и у каждого узла своя аннотация — иначе непонятно, стоит ли туда заходить. */
+.browse-tree{display:grid;gap:0;margin-top:10px}
+.browse-node{border-top:1px solid rgba(231,239,230,.08)}
+/* Три элемента в строке (знак раскрытия, название, счётчик) при space-between растаскивало
+   название в середину. Название прижато влево, счётчик уходит вправо сам. */
+.browse-node>summary{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;
+  gap:8px 18px;padding:12px 0;cursor:pointer;list-style:none}
+.browse-node>summary>span{margin-left:auto}
+.browse-node>summary::-webkit-details-marker{display:none}
+.browse-node>summary>b{color:#dfe6dc;font:500 14px var(--body)}
+.browse-node>summary>span{color:#798376;font:9px var(--mono);letter-spacing:.04em;
+  font-variant-numeric:tabular-nums}
+.browse-node>summary:hover>b{color:var(--lime)}
+.browse-node>summary:before{content:"+";margin-right:10px;color:#5f6a5d;font:10px var(--mono)}
+.browse-node[open]>summary:before{content:"−";color:var(--lime)}
+.browse-node.is-section>summary>b{font-size:16px;letter-spacing:-.01em}
+/* Подраздел лежит внутри раздела, поэтому его строка сдвинута: вложенность читается
+   отступом, а не рамкой. */
+.browse-node.is-folder{margin-left:18px}
+.browse-abstract{margin:2px 0 12px;max-width:76ch;color:#a7afa4;font-size:13px;line-height:1.7}
+.browse-node.is-folder .browse-abstract,.browse-node.is-folder .browse-list{margin-left:0}
+.browse-list{display:grid;gap:0;margin:0 0 12px}
+.browse-list>em{margin-bottom:2px;color:#7f8a7c;font:8.5px var(--mono);letter-spacing:.07em;
+  text-transform:uppercase;font-style:normal}
+.browse-list>button{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding:8px 0;border:0;border-bottom:1px solid rgba(231,239,230,.06);background:none;
+  color:#cdd5ca;font:12.5px var(--body);text-align:left;cursor:pointer}
+.browse-list>button:hover{color:var(--lime)}
+.browse-list>button>span{flex:none;color:#798376;font:9.5px var(--mono);
+  font-variant-numeric:tabular-nums}
+.browse-go{margin:0 0 14px}
+.browse-go>button{padding:0;border:0;background:none;color:var(--lime);font:8.5px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:4px;text-decoration-color:rgba(163,213,92,.3);cursor:pointer}
+.browse-go>button:hover{text-decoration-color:var(--lime)}
+@media (max-width:620px){.browse-node.is-folder{margin-left:10px}}
+/* Оценка кросс-энкодера в строке утверждения: она объясняет место в ответе. Уводится вправо,
+   чтобы не разрывать метки о содержании записи. */
+.claim-meta .base-score{margin-left:auto;color:#6f7a6d;font:9px var(--mono);
+  font-variant-numeric:tabular-nums}
+/* Аннотация подтемы внутри страницы подраздела: она объясняет группу, поэтому стоит между
+   заголовком группы и её статьями, а не под всем списком. */
+.node-abstract.is-sub{margin:6px 0 12px;max-width:76ch;color:#98a295;font-size:12.5px;
+  line-height:1.7}
+/* Карта темы собирается локально: строка вызова говорит это прямо, вместо кода вызова. */
+.mcp-call.is-local{margin:0;padding:14px 16px;border:1px dashed #3a443b;border-radius:6px;
+  color:#98a295;font-size:12.5px;line-height:1.6;background:none}
+/* Карта базы файлом — для агента это точка входа, поэтому строка стоит в его панели. */
+.for-agents .agent-map{margin:8px 0 14px;color:#8e988c;font-size:12.5px;line-height:1.65}
+.for-agents .agent-map code{padding:1px 5px;border-radius:3px;background:rgba(231,239,230,.07);
+  color:#c9d2c6;font-size:11px}
+/* Прогоны, измерения и правила проекта свёрнуты: карточка большого проекта иначе уходит на
+   двадцать восемь тысяч пикселей, и утверждения в ней теряются. */
+.paper-claims.is-folded{border-top:1px solid #2d352e}
+.paper-claims.is-folded>summary{display:flex;align-items:baseline;gap:10px;padding:14px 0;
+  color:#dfe6dc;font:500 14px var(--body);cursor:pointer;list-style:none}
+.paper-claims.is-folded>summary::-webkit-details-marker{display:none}
+.paper-claims.is-folded>summary:before{content:"+";color:#5f6a5d;font:10px var(--mono)}
+.paper-claims.is-folded[open]>summary:before{content:"−";color:var(--lime)}
+.paper-claims.is-folded>summary:hover{color:var(--lime)}
+.paper-claims.is-folded>summary>span{color:#798376;font:10px var(--mono);
+  font-variant-numeric:tabular-nums}
+/* Поле проекта, которое в базе хранится массивом, читается списком, а не строкой JSON. */
+.project-about .field-list{margin:0;padding-left:16px;display:grid;gap:6px}
+.project-about .field-list li{color:inherit;font-size:inherit;line-height:1.6}
+
+/* ============================================================================
+   Оглавление ответа на широкий запрос
+   ============================================================================
+   Владелец искал «muon» и не увидел списка подтем: подраздел с шестью подтемами стоял за
+   шестью проектами, ниже трёх тысяч пикселей прокрутки. Оглавление ставит его на первый
+   экран — и это не украшение, а сам ответ: по имени темы человек спрашивает «что тут есть».
+   Подтемы даны строками с аннотацией, потому что выбирают по смыслу, а не по названию. */
+.map-index{margin:0 0 8px;padding:18px 0 4px}
+.map-index-counts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0 0 20px;
+  color:#8e988c;font:9.5px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.map-index-counts b{margin-right:5px;color:var(--lime);font:500 14px var(--body);letter-spacing:0}
+.map-index-topics>.overline{margin:0 0 6px;color:#7f8a7c}
+.map-index-topics ol{margin:0;padding:0;list-style:none;display:grid;gap:0;
+  counter-reset:topic}
+.map-index-topics li{counter-increment:topic}
+.map-index-topics button{display:grid;grid-template-columns:1fr auto;gap:2px 18px;width:100%;
+  padding:13px 0 13px 30px;border:0;border-top:1px solid rgba(231,239,230,.08);
+  background:none;text-align:left;cursor:pointer;position:relative}
+.map-index-topics button:before{content:counter(topic);position:absolute;left:0;top:15px;
+  color:#5f6a5d;font:9.5px var(--mono);font-variant-numeric:tabular-nums}
+.map-index-topics strong{color:#e6ede3;font:500 14.5px/1.35 var(--body);letter-spacing:-.005em}
+.map-index-topics span{color:#798376;font:9.5px var(--mono);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.map-index-topics em{grid-column:1/-1;color:#8e988c;font-style:normal;font-size:12.5px;
+  line-height:1.6;max-width:82ch}
+.map-index-topics button:hover strong{color:var(--lime)}
+@media (max-width:620px){
+  .map-index-topics button{grid-template-columns:1fr;padding-left:24px}
+  .map-index-topics span{grid-row:3}
+}
+/* Служба не ответила: говорим это прямо над ответом по снимку, а не подменяем молча. */
+.mcp-warn{margin:0 0 20px;padding:14px 16px;border:1px solid rgba(212,160,80,.4);
+  border-radius:6px;background:rgba(212,160,80,.06);color:#d8bd8c;font-size:12.5px;
+  line-height:1.6}
+/* Хвост выдачи: то, что кросс-энкодер поставил вдвое ниже лучшего. Не прячем совсем — иногда
+   нужное лежит там, — но и не мешаем с ответом. */
+  text-transform:uppercase;cursor:pointer;list-style:none}
+/* Записи под картой темы: карта отвечает «что тут есть», записи — «покажи». */
+.map-records{margin-top:36px;padding-top:22px;border-top:1px solid #2d352e}
+.map-records>.overline{margin:0 0 6px;color:#7f8a7c}
+.map-records-wait{margin:0;color:#8e988c;font-size:12.5px;line-height:1.6}

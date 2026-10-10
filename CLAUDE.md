@@ -1,5 +1,12 @@
 # Unified Agent Rules
 
+## Прежде всего
+
+Перед любой работой с базой знаний лаборатории прочитай **`ЗАЧЕМ.md`** в корне этого
+репозитория. Там записано, что мы строим и почему, словами владельца. Без этого агент
+чинит форму вместо сути и повторяет то, что уже было сказано много раз.
+
+
 ## Core
 - The user is an LLM researcher who mostly works in existing repos, research code, and third-party libraries. Do not assume greenfield work.
 - Be concise. No filler. If uncertain, say so. If a task is ambiguous, ask one focused question.
@@ -15,8 +22,11 @@
 - Prefer a project wing when available. The legacy archive wing is `conversations`.
 
 ## Changes
+- For Lab Atlas work, first read `${OBSIDIAN_VAULT}/Staff/claude-brainlab/Knowledge/lab-atlas-release-plan.md`: it records completed work, remaining checks, and current file ownership. Do not repeat completed Yonote moves or overwrite another agent's in-progress component changes.
+- Lab Atlas item 7 (`c84ded2`) means a team of people for testing, not a CLI command. The owner explicitly deferred it on 2026-09-08: no agent may take it until the owner resumes it. `scripts/lab_check.py` was created from a misunderstanding; preserve its files, but do not develop or ship it as completion of this item.
 - Read and understand relevant code first. Explain your understanding in 2 to 3 sentences before changing it.
 - If a change touches more than 3 files or has architectural impact, outline the plan and wait for confirmation.
+- Use focused checks that establish the requested behavior. Local tests with disposable fixtures and no production access may be run and repaired within scope without repeated approval. Broaden testing when a failure, changed dependency, or unresolved risk warrants it.
 - Do not refactor outside scope or add new dependencies without asking.
 - Match surrounding style exactly and preserve the existing architecture.
 - After changes, say exactly what changed and why. State uncertainty explicitly.
@@ -28,6 +38,7 @@
 - When reading a paper or article, first look for local `.tex` sources before using PDFs or external extraction.
 
 ## Obsidian And Local Workflow
+- **Read shared Yonote placement rules before writing.** Use [the laboratory's current rules](https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi) in `Общая информация`. Resolve the existing project page and board by stable IDs. Research belongs in `Исследования / scientific theme / subsection / project`; customer obligations, stages, acceptance, and administrative tasks belong in `Менеджмент` with a link to the research project. Keep one research board. Preserve existing pages, tasks, history, links, and access when moving objects. Do not delete `Менеджмент`, create independent project copies, or deploy mirrors without explicit authorization. A stale integration binding must be reported before writing, not bypassed by creating another project.
 - Obsidian vault root: `${OBSIDIAN_VAULT}/`.
 - **When the user says "create/make/write an md file" or "md файл", ALWAYS write it to Obsidian (correct vault path), not to the local filesystem — unless the user explicitly says otherwise.**
 - Treat `.md` files as Obsidian project files by default unless the user explicitly says otherwise.
@@ -36,9 +47,20 @@
 - In human-facing Obsidian notes, use `DD-MM-YYYY` for dates by default.
 - Check `${OBSIDIAN_VAULT}/general/servers.md` before choosing remote GPU indices, and update it when server configuration changes.
 - **Route tasks by scope.** Personal reminders and private self-management use Operon file-tasks (`Operon/Tasks/<title>.md`) with a flat `project` tag, never `parentTask`. Shared project work, assignees, deadlines, and milestones use the project's private Yonote board. Never mirror one writable task in both systems and never create ad-hoc `Задачи.md` files. Use `call-notes` to classify meeting actions before writing.
-- **Route hypotheses by visibility.** Private and unfinished hypotheses stay in Obsidian. Shared hypotheses, experiments, evidence, and proposed decisions use Lab Knowledge MCP after an explicit publication preview and human confirmation. A completed task is not evidence that a hypothesis is confirmed.
-- **Ask Lab is a local-agent workflow.** Read research context from Lab Knowledge MCP. Read task state from Yonote only when an authorized Yonote integration is configured for the caller. Do not implement or assume a website chat. Read-only questions must not cause writes; include shared IDs and links, never local filesystem paths.
-- Before any Yonote or Lab Knowledge mutation, show the target project, object, owner when applicable, and source; obtain explicit approval. Never upload a local Obsidian path, repository path, or raw private note. Never broaden credentials after denial or expose tokens.
+- **Route hypotheses by visibility.** Private and unfinished hypotheses stay in Obsidian. Shared hypotheses, experiments, evidence, and proposed decisions go into Lab Knowledge through `propose`: the pull request IS the preview, and the human merging it IS the confirmation. Do not ask for permission before proposing and do not print a preview in chat instead. A completed task is not evidence that a hypothesis is confirmed.
+- **Ask Lab is a local-agent workflow.** Read research context from the local clone of the work (`grep`, `git log`), not from a server. Read task state from Yonote only when an authorized Yonote integration is configured for the caller. Do not implement or assume a website chat. Read-only questions must not cause writes; include shared IDs and links, never local filesystem paths.
+- **База знания — это git-клон, и работай с ним как с любым репозиторием.** Клон работы лежит в `<папка проекта>/lab-base`, внутри `claims/<H-код>/` страницы утверждения, прогонов, серий и выкладок. Работа — отдельный репозиторий в GitLab. Начало сессии само делает `git pull` и печатает, что изменилось и какие pull request открыты. Дальше обычный порядок: ветка (`claim/<H-код>` для правки одного утверждения), правка файлов, `git commit -F -`, `git push -o merge_request.create -o merge_request.assign=veprikov` (исполнителем всегда владелец: слить может только он, а ворота всё равно переназначат на него), `lab checks` — что сказали проверки. Форму страницы выбираешь сам, смотри соседние файлы. Слить может только человек, и слияние — это и есть запись в базу. Нет клона — `lab here <работа>`. **Старой базы больше нет.** 07-10-2026 удалены её Postgres (331 МБ), служба MCP, витрина над ней, портал выдачи доступа и весь код, который в неё ходил. Знание живёт только в git, и ничего другого нет. Читай из клона обычными `grep`, `git log`, `git show`. Если агент заговорил про `create_hypothesis`, `record_evidence` или адрес `127.0.0.1:8001` — он читает мёртвый файл, и этот файл надо удалить.
+- **Куда писать — решаешь ты, и твоё решение это клон рядом с работой.** Склонирован `grants/grants` — пишешь туда, два клона — два адреса. Клонов нет — выбери адрес по таблице в `~/.claude/rules/lab.md`, склонируй его в `lab-base` и пиши; дальше клон и будет адресом. Сделал — скажи одной строкой, куда положил, и не спрашивай разрешения заранее. Файла `.lab-mesto` больше нет: решение держит клон, а не отдельная запись о решении. Спрашивать стоит в одном случае: ни одно место не подходит. Тогда назови, что получилось, и предложи, куда это положить, вплоть до отдельного репозитория. Подсказка хука это совет: следовать ей буквально ты не обязан. Два соседних провала показывают оба края: 07-10-2026 агент сутки отвечал «записывать нечего», потому что его инженерная работа не подходила ни под один научный адрес, а 08-10-2026 владелец сказал «пусть он сделает и сообщит мне об этом, заебало им отвечать». Ненаписанное не существует, но и записанное не туда ищут потом месяцами.
+
+- Разрешения спрашивай в трёх случаях, и только в них: запись про **чужой** проект; она публикует то, что пользователь назвал приватным; она меняет вывод, сделанный другим человеком. Тогда покажи проект, объект, владельца и источник и дождись явного согласия. Прежнее правило требовало согласия на **каждую** запись, и 10-09-2026 живая проверка показала, чем это кончилось: агент разобрал результаты, сформулировал три проверяемых утверждения и не записал ни одного.
+- **Сначала имя, потом запись.** Если в записи есть внутреннее имя, которого нет в словаре,
+  `define_term` идёт первым вызовом, а не после. Внутреннее имя — всё, что человек со стороны
+  не расшифрует: имя прогона, метода, метрики, внутреннее сокращение. Общий для области термин
+  (LoRA, warmup, Muon) кладётся в работу «Общее лабораторное» — это словарь всей базы; жаргон
+  работы остаётся у работы. Другие написания, включая прежние, идут в `aliases`. Запись без
+  определения нечитаема уже через месяц, и поправить её будет некому.
+- Перед записью в Yonote — по-прежнему предпросмотр и явное согласие: там задачи людей, а не научные записи.
+- Никогда не выгружай локальный путь Obsidian, путь репозитория или сырую приватную заметку. Никогда не расширяй права после отказа и не показывай ключи.
 
 - **Соглашения по хранилищу лежат в самом хранилище.** Перед созданием статьи, проекта или
   папки, а также перед правкой иконок, цветов, досок Operon и стартовой раскладки читать

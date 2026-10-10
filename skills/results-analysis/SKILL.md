@@ -1,6 +1,6 @@
 ---
 name: results-analysis
-description: This skill should be used when the user asks to "analyze experimental results", "run strict statistical analysis", "compare model performance", "generate scientific figures", "check significance", "do ablation analysis", or mentions interpreting experiment data with rigorous statistics and visualization. It focuses on strict analysis bundles, not Results-section prose.
+description: "Runs strict, evidence-first analysis of ML experiment artifacts and produces an analysis report, stats appendix, figure catalog and figures. Use when the user asks to analyze experiment results, compare metrics across runs, check uncertainty or significance, or build figures before writing any conclusions."
 tags: [Research, Analysis, Statistics, Visualization, Scientific Reporting]
 version: 0.2.0
 ---

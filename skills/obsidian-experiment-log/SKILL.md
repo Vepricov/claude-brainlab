@@ -1,6 +1,6 @@
 ---
 name: obsidian-experiment-log
-description: Use this skill when the user discusses experiment design, ablations, training runs, evaluation, baselines, metrics, failures, or result interpretation that should be logged into Obsidian experiment and result notes. Covers both the note structure and the operational workflow for launching, monitoring, and post-mortem of multi-hour ML runs on shared servers.
+description: "Records an experiment's protocol, progress snapshots, results, and next decision in its canonical Obsidian project log. Use when the user launches, monitors, or finishes a training run, asks to log an experiment, update a results table, or promote a finished result into a stable finding."
 ---
 
 # Obsidian Experiment Log

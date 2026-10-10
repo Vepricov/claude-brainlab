@@ -1,6 +1,6 @@
 ---
 name: restore-session
-description: Use when the user asks to "restore session", "continue previous conversation", "recall what we discussed", "load past context", or wants to resume work from a prior Claude session. Lists saved conversations and loads selected one as context.
+description: "Recovers a prior agent session and loads its conversation as context for the current one. Use when the user says 'restore session', 'continue from last time', 'recall previous context' or wants to resume work on a topic discussed in an earlier session."
 version: 1.0.0
 tags: [Session, Context, Memory, Restore]
 ---

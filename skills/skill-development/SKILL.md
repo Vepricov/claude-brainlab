@@ -88,7 +88,9 @@ Use bundled resources deliberately:
 - `scripts/` for deterministic helper logic.
 
 If a resource is mentioned in `SKILL.md`, it must exist.
-If a resource exists but is never referenced or used, delete it.
+Before removing a resource, inspect its callers, purpose, and history. An absent reference or
+usage trace is not proof that it is obsolete. Archive owner-approved retired components
+outside every skill discovery root and verify their contents before removing active entries.
 
 ### 6. Run integrity checks before closing
 

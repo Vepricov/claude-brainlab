@@ -1,6 +1,6 @@
 ---
 name: google-workspace-mcp
-description: Use when the user wants to read/edit Google Docs from Claude, refresh expired Google Workspace MCP tokens, troubleshoot google-workspace MCP errors, change OAuth scopes, or says "переавторизуй google", "google docs не работает", "fix google mcp", "re-auth google", "обнови токены google". Knows the OAuth gotchas (Web vs Desktop client, restricted scope, browser cache, Test users) and the operational recipes.
+description: "Reads and edits Google Docs and Drive files through the user-scope google-workspace MCP and repairs its authentication or connection. Use when the user asks to open or change a Google Doc, or when google-workspace tools report auth errors, missing tools or a failed connection."
 version: 1.0.0
 tags: [mcp, google, oauth, infrastructure]
 ---

@@ -93,18 +93,17 @@ The core research loop: get a paper into your library with a real, audited note.
 
 ## E. Obsidian knowledge base & project setup
 
-- **`new-paper`** ⭐ — Track a new idea/paper project in Obsidian (hub card + people
-  cards) without creating a filesystem folder. *Fires on:* "new paper / new idea".
 - **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
   (SSH servers, code paths), private Obsidian hub, `obsidian-projects.json` registration,
   and a handoff to shared onboarding for Brain Lab projects. *Fires on:* "create project / new project".
-- **`lab-project-onboarding`** ⭐ — Idempotently create or reuse the Lab Knowledge project,
-  generated Yonote showcase, and private named Kanban, then store only stable links in the
-  private Obsidian hub. *Fires on:* "add this project to the lab / bind it to Brain Lab".
-- **`lab-knowledge`** ⭐ — Run Ask Lab in the local agent: combine permission-scoped research
-  context from Lab Knowledge MCP with shared task state from the bound Yonote Kanban, publish
-  private Obsidian hypotheses only after explicit confirmation, and keep hypotheses,
-  experiments, evidence, decisions, and tasks distinct. *Fires on:* "Ask Lab / has anyone tested this hypothesis / publish this hypothesis".
+- **`lab-knowledge`** ⭐ — The one skill for the lab's shared base, which is a plain git
+  repository per work. It covers both directions: reading research context out of the local
+  clone with `git` and `grep`, and turning an accumulated project into a work of the base
+  (claims as folders, runs carrying their sources, a merge request a human merges). The MCP
+  service it used to read through was removed on 05-10-2026, and `project-to-lab`,
+  `lab-submission`, `lab-project-onboarding` and `lab-work-to-repo` were folded into this one
+  skill. Private and unfinished hypotheses stay in Obsidian.
+  *Fires on:* "Ask Lab / has anyone tested this / занеси проект в базу / оформи как работу".
 - **`call-notes`** ⭐ — Turn meeting notes into canonical records: personal actions go to
   the private note, shared project actions to Yonote, and approved research objects to Lab
   Knowledge. It records stable links without task or hypothesis mirrors. *Fires on:* "write up this call / tasks from the call".

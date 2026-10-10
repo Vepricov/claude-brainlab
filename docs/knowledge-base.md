@@ -1,5 +1,14 @@
 # Feeding the shared knowledge base
 
+> [!IMPORTANT]
+> **Этот документ описывает снятую службу.** 07-10-2026 Lab Knowledge MCP удалён вместе со своей
+> базой: ни адреса, ни инструментов, ни токена больше нет. Вызовы вида `create_hypothesis`,
+> `record_evidence`, `get_theme_context` не существуют. Текст оставлен как описание модели знания —
+> утверждение, его опровержение, прогон, серия, выкладка, — потому что модель та же. Механика теперь
+> простая: база это git, запись входит слиянием предложения человеком. Как именно —
+> `rules/lab.md` и `skills/lab-knowledge/references/canon.md`.
+
+
 The lab runs a shared knowledge service (Lab Knowledge MCP, 59 tools) that holds two corpora side by
 side: the lab's own records — hypotheses, experiments, evidence, derivations, decisions — and the
 library of read papers with the claims those papers make. Search answers over both.
@@ -72,23 +81,21 @@ waits for a proof. Of 670 hypotheses in the base, 141 are theorems, and `list_hy
 separates the two, so a theory project is no longer read as a stalled experimental one. The
 falsifier has to be reachable: "worse in every setting" never arrives and therefore closes nothing.
 
-An outside paper carries claims of its own, each on a sentence quoted from the text stored for that
-paper. The quote is checked against that text and a quote absent from it is refused, so
-"this paper contradicts us" points at a sentence a reader can check instead of at twenty pages. Such
-a claim never concludes a claim of ours: it can be prior art, a baseline, the reason we asked, or a
-contradiction.
+An outside paper carries separate claims with a statement, a kind, and a locator such as a
+section, table, or theorem. Statements may be paraphrased. Quotations are optional, and the
+service imposes no minimum character count or quota on the mix of claim kinds.
 
-A quote check is not a quality check, and this cost us a third of the library before we noticed.
-A table row, an entry from a notation list and half a formula are all present in the paper, so they
-pass verification and then sit there as claims nobody can use. `record_paper_claim` therefore also
-looks at the shape of the statement and refuses a fragment: shorter than 80 characters, cut
-mid-sentence, a row of pipe-separated numbers, an item from a numbered list, a formula with no text
-around it, or an empirical claim with no magnitude — where a figure or theorem number counts as a
-pointer, not a measurement. The refusal names the defect, so rewriting is cheaper than arguing.
+When a quote is supplied, the service checks it against the stored text, if that text exists.
+`quote_verified` means only that this stored-text check passed. The stored text can be a reading
+note, so the flag does not establish that the quote occurs in the original publication. The
+locator must identify the actual source. A claim without a quote remains unquoted and does not
+receive this flag. Replacing paper sections rechecks explicit quotes without treating a
+paraphrase as a missing or verified quote.
 
-The library currently holds 509 papers decomposed into 7906 claims: 2733 empirical, 2535 about a
-method, 2170 theoretical, 468 definitions. Every quote is verified against the stored text and
-every empirical claim carries a value.
+A paper claim can motivate our hypothesis, supply prior art or a baseline, or contradict a
+claim. It does not conclude our hypothesis in place of our evidence or derivation. Repeated
+quoted claims preserve identity by paper and quote; unquoted claims by paper, statement and
+kind. Existing quoted claims and their links survive the optional-quote migration unchanged.
 
 Records live inside a project and follow its access rules, so you need to be a member of that
 project. Papers are shared: the library has no per-project walls.
@@ -166,9 +173,59 @@ Adding a term is a code change, and a deliberate one.
 
 ## Reading
 
-`search_lab` (scope `lab`, `library` or `all`), `list_themes` and `get_theme_context` for the map,
-`get_paper` for one paper with its sections, `find_related_papers` and `related_by_terms` for the
-bridge between the two corpora, `who_works_on_what` and `recent_changes` for people and movement.
+### Five searches, because there are five shapes of question
+
+One ranked list cannot answer every question, and trying to make it do so is what made the
+ranking bad at all of them. So the searches are separate, and the caller picks by the shape of
+the answer they need.
+
+| the question | the call | the answer |
+|---|---|---|
+| what do we know about X | `search_grouped` | works and papers as wholes, each with how many of its records answer. A project with eight answering records comes out above a paper with one, which is the honest ordering and the one a flat list cannot express |
+| give me the record | `search_lab` | one flat ranked list over everything, scope `lab`, `library` or `all`. The original search, and still the right one when the answer is a single record |
+| what do outside papers claim | `search_claims` | claims only, one by one, each with the place in the paper where it can be checked |
+| what exists on X at all | `browse_by_subject` | no ranking: every record naming the subject, grouped by its work, `total` against `shown` saying how much was cut. Muon alone holds four hundred records across fourteen works |
+| how do I run this, where do I edit it | `search_code` | places inside our repositories, not repositories as wholes: the command, the file, the quirk, each with the commit its map was checked against |
+| what do we do this with | `find_skill` | the laboratory's own skills: which one is meant for the job, when it applies, how to invoke it. A census on 20-09-2026 found 51 of 76 skills had never been invoked once, and part of that was simply having nowhere to ask |
+
+`browse_by_subject` resolves the subject through the vocabulary, so Muon, muon and мюон reach
+the same place, and a subject the vocabulary does not know returns empty rather than something
+merely similar. Its cut takes the tail of every kind of record, never a whole kind: the
+truncated set is a smaller version of itself, not a different set.
+
+A run names the code it ran on: `repository`, `commit_sha` and `run_command` on
+`record_experiment`, and `runs_on_repository` asks the same question backwards. Before
+that the only place to say it was prose inside the protocol, and prose ages silently —
+two commits later "we changed the step in train.py" is false and nothing says so.
+
+The chain from claim to conclusion breaks most often at the last step: on 20-09-2026 the
+base held 52 finished runs with no measurements at all, 26 of them written in a single
+month. Three things say so without costing a call — the write itself answers that the run
+it just finished has no numbers, `get_project_context` carries `open_ends` for the work
+being read, and `lab_health` counts only genuinely finished runs, because counting planned
+ones showed 127 holes where there were 52.
+
+Maps of code are written a line at a time, not as finished documents. `record_code_note`
+adds one seam or one quirk to a repository's card and starts the card when there is none,
+so a finding can be recorded the moment somebody makes it; `upsert_repository` replaces the
+whole card and is for composing a map in one sitting. A write is one call with what happened in it: no key to
+invent, no preview, no markup. The same write repeated returns the first record instead of
+a duplicate, so retrying is safe.
+
+`search_code` takes the repository card apart into places and judges each place on its own
+short text, because the card as a whole answers "which code" and never "where in it". A place
+carries the commit its map was checked at: nothing here is read out of a working tree at query
+time, so the commit says when to doubt the pointer.
+
+Agents receive this same routing in the server's `instructions`, returned on connect, so the
+choice does not depend on anybody having read this file.
+
+### The rest of the reading surface
+
+`list_themes` and `get_theme_context` for the map, `get_paper` for one paper with its sections,
+`find_related_papers` and `related_by_terms` for the bridge between the two corpora,
+`who_works_on_what` and `recent_changes` for people and movement, `list_repositories` for the
+inventory of code when the list itself is what you want.
 
 Semantic search is optional and off unless the service enables it. After a large library sync, run the
 warm-up (`scripts/warm_all.py` in the private repository) instead of letting the first query compute

@@ -6,7 +6,7 @@
   <a href="https://docs.claude.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-configuration-000?style=flat-square&logo=anthropic&logoColor=white"></a>
   <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
   <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-34-58A6FF?style=flat-square"></a>
-  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-16-BC8CFF?style=flat-square"></a>
+  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-15-BC8CFF?style=flat-square"></a>
   <a href="docs/knowledge-base.md"><img alt="lab knowledge" src="https://img.shields.io/badge/Lab%20Knowledge-git%20%2B%20merge%20requests-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
   <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
@@ -18,7 +18,7 @@
   <a href="#the-toolkit-skills-commands-agents-hooks">The toolkit</a> ·
   <a href="#install">Install</a> ·
   <a href="#for-brain-lab-members">For lab members</a> ·
-  <a href="SKILLS.md">All 74 skills</a>
+  <a href="SKILLS.md">All 75 skills</a>
 </p>
 
 ## Overview
@@ -116,13 +116,13 @@ the lead of the theme you work on.
 |---|---|---|---|
 | **Skills** | 75 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
 | **Slash commands** | 34 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, … | [`commands/`](commands/) |
-| **Agents** | 16 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
-| **Hooks** | 7 | security guard, citation validator, session start/stop, memory auto-save, skill activation | [`hooks/`](hooks/) |
-| **Rules** | 6 | coding style, citations, security, agent orchestration, code workflow, server hygiene | [`rules/`](rules/) |
+| **Agents** | 15 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
+| **Hooks** | 10 | security guard, citation validator, session start (plus lab state), session end, two stop hooks for memory and Obsidian, skill activation | [`hooks/`](hooks/) |
+| **Rules** | 11 | coding style, security, agent orchestration, code workflow, server hygiene, lab base, checkpoint, autoresearch, Obsidian frontmatter, Hermes team, scholar core | [`rules/`](rules/) |
 | **Templates** | — | `settings.json.template`, `.env.example`, project-mapping example | repo root |
 
 <details>
-<summary><b>What the 74 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
+<summary><b>What the 75 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
 
 | Area | Skills you will actually type |
 |---|---|
@@ -139,7 +139,7 @@ the lead of the theme you work on.
 ## Highlights — what you won't find upstream
 
 The repository started from `claude-scholar` (see [Credits](#credits)); these are the parts that grew
-here. Per-skill detail for all 74 skills is in [`SKILLS.md`](SKILLS.md).
+here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 
 - **`paper-ingest`** — end-to-end pipeline: arXiv URL → BibTeX (external API, never LLM-generated) → PDF → Zotero parent item with PDF child attachment → Obsidian note with 8-section AI Explanation written by Haiku → mandatory final audit.
 - **`want-2-read`** — process a Markdown reading queue with one fan-out agent per paper, each invoking `paper-ingest`, plus a final review agent for quality control.

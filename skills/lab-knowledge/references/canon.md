@@ -1,0 +1,1 @@
+/Users/andrey/.claude/skills/lab-knowledge/references/canon.md

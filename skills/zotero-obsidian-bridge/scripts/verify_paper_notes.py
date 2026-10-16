@@ -27,7 +27,11 @@ REQUIRED_FRONTMATTER_FIELDS = (
     "updated",
 )
 
-ZOTERO_KEY_RE = re.compile(r'^zotero_key:\s*"?([A-Z0-9]+)"?', re.MULTILINE)
+# Ключ читается и из ссылки: с 16-10-2026 в шапке стоит `zotero_link`, а голый `zotero_key`
+# остался только в старых заметках.
+ZOTERO_KEY_RE = re.compile(
+    r'^zotero_(?:key:\s*"?|link:\s*"?zotero://select/library/items/)([A-Z0-9]+)"?',
+    re.MULTILINE)
 FRONTMATTER_RE = re.compile(r'^---\n(.*?)\n---\n', re.DOTALL)
 FIELD_RE_TEMPLATE = r'^{}:\s*'
 INVENTORY_ROW_RE = re.compile(r'^\|\s*([A-Z0-9]+)\s*\|\s*(.*?)\|\s*(.*?)\|\s*(.*?)\|\s*$')

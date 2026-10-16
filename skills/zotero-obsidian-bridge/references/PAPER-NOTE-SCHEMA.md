@@ -16,7 +16,7 @@ venue: "NeurIPS"
 doi: "10.xxxx/xxxxx"
 url: "https://doi.org/..."
 citekey: "author2026paper"
-zotero_key: "ABCDEFGH"
+zotero_link: "zotero://select/library/items/ABCDEFGH"
 status: read
 keywords:
   - subject-invariance

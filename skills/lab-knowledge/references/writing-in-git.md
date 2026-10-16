@@ -87,8 +87,9 @@ caution but **style**: the page must read the way the others read.
   it came from: our log with its address, our run with a thin protocol, or a number taken
   from the paper. Never dress up a foreign number as our measurement.
 - **Russian prose.** Metric names, flags, method and library names stay English.
-- **Formulas**: `$…$` inline, and a display formula in a ```math fence — GitLab reads `$$…$$`
-  only on one line.
+- **Formulas**: `$…$ inline, $$…$$` for a display formula, on as many lines as it
+  needs. Checked on GitLab 17.11 and in Obsidian: both render this. A ```math fence
+  renders in GitLab only, and in Obsidian it shows up as a code block — do not use it.
 
 ## What not to do
 

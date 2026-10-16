@@ -54,5 +54,5 @@ linked_knowledge:
 
 - Prefer one canonical note per paper and keep the schema aligned across the whole covered set.
 - When the user asks to check **all** papers, perform a coverage pass rather than stopping at a representative subset.
-- Use `zotero_key` as the durable join key between Zotero items and Obsidian notes.
+- Use the key inside `zotero_link` as the durable join key between Zotero items and Obsidian notes: since 16-10-2026 the bare `zotero_key` is gone, because a code that opens nothing is of no use to the reader.
 - Keep `Direct relevance to repo` concrete enough to drive experiments, writing, or review prioritization.

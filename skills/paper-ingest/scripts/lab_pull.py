@@ -200,10 +200,10 @@ def pages_in_git(theme, tok):
         # обход всех тем занимает полчаса вместо минуты.
         ключ_кеша = f"{theme}/{p}"
         запись = кеш.get(ключ_кеша)
-        if запись and запись.get("sha") == x.get("id"):
-            out.append({"theme": theme, "key": p[:-3], "title": запись["title"],
-                        "arxiv": запись["arxiv"], "url": запись["url"], "text": None,
-                        "pid": pid})
+        if запись and запись.get("sha") == x.get("id") and "citation" in запись:
+            out.append({"theme": theme, "key": запись["citation"] or p[:-3], "file": p,
+                        "title": запись["title"], "arxiv": запись["arxiv"],
+                        "url": запись["url"], "text": None, "pid": pid})
             continue
         сырое = файл(pid, p, tok)
         if not сырое:
@@ -214,9 +214,15 @@ def pages_in_git(theme, tok):
         url = m.group(1) if m else ""
         ax = re.search(r"arxiv\.org/abs/([^)\s]+)", url)
         ax_id = ax.group(1) if ax else ""
-        кеш[ключ_кеша] = {"sha": x.get("id"), "title": title, "arxiv": ax_id, "url": url}
-        out.append({"theme": theme, "key": os.path.basename(p)[:-3], "title": title,
-                    "arxiv": ax_id, "url": url, "text": txt, "pid": pid})
+        # С 16-10-2026 имя файла — название статьи, поэтому ключ цитирования читается из
+        # блока BibTeX внутри страницы. Записи кеша без поля `citation` считаются
+        # устаревшими: иначе ключом осталось бы название файла.
+        bib = re.search(r"@[a-zA-Z]+\{([^,]+),", txt)
+        citation = bib.group(1).strip() if bib else ""
+        кеш[ключ_кеша] = {"sha": x.get("id"), "title": title, "arxiv": ax_id, "url": url,
+                          "citation": citation}
+        out.append({"theme": theme, "key": citation or os.path.basename(p)[:-3], "file": p,
+                    "title": title, "arxiv": ax_id, "url": url, "text": txt, "pid": pid})
     _сохранить_кеш(кеш)
     return out
 
@@ -304,10 +310,15 @@ def pull_one(found, tok, into_theme=False):
     dst = os.path.join(target, f"{name}.md")
     текст = found.get("text")
     if текст is None:                      # страница пришла из кеша, тела нет
-        текст = (файл(found["pid"], f"{found['key']}.md", tok) or b"").decode()
+        текст = (файл(found["pid"], found.get("file") or f"{found['key']}.md", tok) or b"").decode()
     body = to_obsidian(текст, found["theme"], found["key"], tok, target)
+    # Адрес страницы в базе берётся у самой страницы: его пишет туда `front_matter.py`, и
+    # собирать его здесь второй раз значило бы держать в двух местах полный путь темы.
+    адрес = re.search(r'(?m)^lab_url:\s*"?([^"\n]+)"?\s*$', текст)
     front = (f"---\ntitle: \"{found['title']}\"\n"
-             f"url: \"{found['url']}\"\ntags:\n  - {found['theme']}\n"
+             f"url: \"{found['url']}\"\n"
+             + (f"lab_url: \"{адрес.group(1).strip()}\"\n" if адрес else "")
+             + f"tags:\n  - {found['theme']}\n"
              f"предложенная тема: {found['theme']}\n"
              f"источник: база лаборатории, {found['theme']}/{found['key']}\n---\n\n")
     if not into_theme:
@@ -559,7 +570,7 @@ def main():
     found = None
     for t in themes:
         for p in pages_in_git(t, tok):
-            if a.pull in (p["key"], p["arxiv"]):
+            if a.pull in (p["key"], p["arxiv"], (p.get("file") or "")[:-3]):
                 found = p
                 break
         if found:

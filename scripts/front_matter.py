@@ -14,9 +14,20 @@ project_url. Давайте всё вот это так хранить, и на 
 - `title`, `url`, `publication` — из блока BibTeX разбора, детерминированно. `url` при его
   отсутствии собирается из `eprint`, `publication` — из `booktitle`/`journal`/`publisher`/
   `howpublished`/`organization`, а у `@misc` с `eprint` это «Unpublished (arXiv preprint)».
-- `zotero_key`, `zotero_link`, `code_url`, `project_url` — из заметки хранилища: в BibTeX их
-  нет и быть не может. Нет заметки — поля ставятся пустыми, но ставятся: пустое свойство
-  видно в панели и его заполняют, а отсутствующее не видно никому.
+- `zotero_key`, `code_url`, `project_url` — из заметки хранилища: в BibTeX их нет и быть
+  не может. Нет заметки — поля ставятся пустыми, но ставятся: пустое свойство видно в
+  панели и его заполняют, а отсутствующее не видно никому.
+- `lab_url` — адрес этой же страницы в базе, собирается из `origin` клона и имени файла.
+  Нужен он не в самой базе, а в хранилище и всюду, куда разбор попадает копией: оттуда по
+  нему открывается страница в GitLab одним щелчком. Владелец 16-10-2026: «нужно вставить
+  brain lab knowledge link, то есть ссылку именно в гитлабе, чтобы я мог тыкнуть и прям
+  открыть эту ссылку в GitLab, тоже это сделай во всех статьях».
+- `zotero_link` в базе больше не пишется. Это адрес вида `zotero://select/library/items/…`,
+  и ведёт он в личную библиотеку владельца: у любого другого читателя базы он открывает
+  либо чужой элемент, либо ничего. Владелец 16-10-2026: «ZoteroLink, я думаю, в базе лучше
+  не писать, потому что этот Zotero он же мой личный». В заметках хранилища он остаётся:
+  там он и щёлкается. Если библиотеку темы когда-нибудь сделают публичной, вернётся не это
+  поле, а публичный адрес.
 - `tags` — слаг темы. Ключ `tags` по-английски и значение в английском kebab-case: Обсидиан
   распознаёт только английское имя, переведённое молча становится обычным свойством.
 - `updated` — в формате ДД-ММ-ГГГГ. Уже стоящее значение не трогается.
@@ -29,6 +40,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -40,10 +52,13 @@ TITLE = re.compile(r"(?m)^#\s+(.+)$")
 LINK_LINE = re.compile(r"(?m)^\[Открыть источник\]\([^)]*\)[^\S\n]*\n\n?")
 BIBKEY = re.compile(r"@\w+\{([^,\s}]+)\s*,")
 #: Порядок полей ровно такой, как в панели свойств у владельца.
-ORDER = ("title", "zotero_key", "zotero_link", "url", "code_url", "project_url",
+ORDER = ("title", "zotero_key", "url", "lab_url", "code_url", "project_url",
          "publication", "tags", "updated")
-#: Эти четыре в BibTeX не живут: их знает только хранилище.
-FROM_VAULT = ("zotero_key", "zotero_link", "code_url", "project_url")
+#: Эти три в BibTeX не живут: их знает только хранилище.
+FROM_VAULT = ("zotero_key", "code_url", "project_url")
+#: Это поле не из BibTeX и не из хранилища: оно считается по клону, поэтому перезаписывается
+#: всегда. Переехал репозиторий — следующий проход поправит адрес сам.
+DERIVED = ("lab_url",)
 
 
 def read_front(text: str) -> dict[str, str]:
@@ -96,6 +111,19 @@ def render(fields: dict[str, str], theme: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def lab_address(root: Path) -> str:
+    """Адрес репозитория литературы в GitLab: из `origin` клона, а не из списка в коде.
+
+    Полный путь у каждой темы свой (`brainlab/zero-order/zo-estimators/literature`), и
+    собрать его из слага нельзя: направления разные. Зато он уже лежит в клоне, которым
+    этот проход и запущен, — значит таблицы соответствия заводить не нужно.
+    """
+    done = subprocess.run(["git", "-C", str(root), "remote", "get-url", "origin"],
+                          capture_output=True, text=True)
+    url = done.stdout.strip()
+    return url[:-len(".git")] if url.endswith(".git") else url
+
+
 def notes_by_key(folder: Path | None) -> dict[str, Path]:
     if folder is None or not folder.is_dir():
         return {}
@@ -122,6 +150,7 @@ def main(argv: list[str]) -> int:
     no_bib: list[str] = []
     for root in sorted(args.roots):
         notes = notes_by_key(args.vault)
+        address = lab_address(root)
         for paper in sorted(root.glob("*.md")):
             if paper.name == "README.md":
                 continue
@@ -154,6 +183,7 @@ def main(argv: list[str]) -> int:
                     fields.setdefault(key, theirs.get(key, ""))
             for key in FROM_VAULT:
                 fields.setdefault(key, "")
+            fields["lab_url"] = (f"{address}/-/blob/main/{paper.name}" if address else "")
             body = FRONT.sub("", text)
             body = LINK_LINE.sub("", body, count=1)
             fresh = render(fields, root.name) + body.lstrip("\n")

@@ -229,7 +229,7 @@ So do this instead, and do not invent a folder for it:
 | jargon of this work | defined in place, in the page that first uses it — one sentence, not a glossary file |
 | a machine, a dataset, a volume | the owner's own notes; a resource card has no file in the repository |
 | something operational that was learned | the owner's own notes, and said out loud in the answer |
-| a paper | `literature/<citation_key>.md`, which the ingest pipeline writes |
+| a paper | `literature/<Paper title>.md`, which the ingest pipeline writes; the citation key lives inside, in the BibTeX block |
 
 Do not open a `terms/` directory in a theme repository to hold these. Two descriptions of one
 machine diverge: on nodes `ali117196` and `ali117197` they already did, and the divergence cost

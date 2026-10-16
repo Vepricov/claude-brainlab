@@ -2,7 +2,7 @@
 
 Это чистый стартовый набор. Все задачи и результаты внутри вымышленные.
 
-[[Dashboard|Таблица задач]] · [[general/todo|Мои задачи]] · [[Papers/example-project/Project|Пример проекта]] · [[Papers/example-project/Knowledge/Hermes/Доска|Пример доски Hermes]]
+[[Dashboard|Таблица задач]] · [[personal/general/todo|Мои задачи]] · [[agents/claude-brainlab/obsidian-setup/vault/Papers/example-project/Project.md|Пример проекта]] · [[Papers/example-project/Knowledge/Hermes/Доска|Пример доски Hermes]]
 
 ## Рабочий стол
 

@@ -30,7 +30,7 @@ Language: **Russian**, conversational, like explaining your paper to a smart fri
 - Bold (`**…**`) for the title, section headers, and the occasional key phrase ("Часть из них почти ничего не делает").
 - Bullets use the middle dot `·`, not `-`.
 - Numbers are exact and attached to a named benchmark. Bold the headline one.
-- Math: light. `$\omega_i$`, `$\ell_0$` render in Obsidian but **not in native Telegram** — keep formulas minimal and phrase them in words where possible. Note in the deliverable that LaTeX needs a plain-text fallback when pasted into Telegram.
+- Math: light. `$\omega_i$, $\ell_0$` render in Obsidian but **not in native Telegram** — keep formulas minimal and phrase them in words where possible. Note in the deliverable that LaTeX needs a plain-text fallback when pasted into Telegram.
 - Length: ~300–500 words of body. Tight, no filler.
 - Tone: confident, warm, a bit playful ("Жалко.", "Всё."). Never markety.
 

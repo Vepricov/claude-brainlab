@@ -21,8 +21,8 @@ Use `terminal-style-mini.tex` as the compact visual anchor.
 - Large central title (monospace bold).
 - Short subtitle in secondary accent (blue).
 - Author line: presenting/first author in `accentorange` bold, co-authors in muted `textsub`, all `\texttt`.
-- Affiliation line: home lab(s) in `accentorange`, the rest in muted `textsub`, all `\texttt`, separated by `$\cdot$`.
-- One or two terminal command lines at the bottom: a green `$ run --...` line and optionally a blue `$ git clone github.com/...` line. Keep them short — no long command dumps.
+- Affiliation line: home lab(s) in `accentorange`, the rest in muted `textsub`, all `\texttt`, separated by `$\cdot$.
+- One or two terminal command lines at the bottom: a green $ run --...` line and optionally a blue `$ git clone github.com/...` line. Keep them short — no long command dumps.
 - Optional: a row of QR codes (GitHub / Telegram / X) under the commands when links exist.
 
 ## Figures

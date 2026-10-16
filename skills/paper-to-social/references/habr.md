@@ -19,7 +19,7 @@ How Habr ML paper-writeups actually read (from Yandex/Sber/AIRI posts, e.g. the 
 
 - **Connected paragraphs**, not bullet dumps. Bullets only for a genuine list (results, settings covered).
 - Accessible: define jargon the first time. A practitioner outside your exact subfield should follow it.
-- Formulas: **write them in LaTeX** — Habr renders math (inline `$...$`, display `$$...$$`). Use real LaTeX, not unicode, for anything beyond a single symbol. Still surround each formula with a sentence of intuition. More math is fine here than on other platforms, but never a wall of it.
+- Formulas: **write them in LaTeX** — Habr renders math (inline `$...$, display $$...$$`). Use real LaTeX, not unicode, for anything beyond a single symbol. Still surround each formula with a sentence of intuition. More math is fine here than on other platforms, but never a wall of it.
 - **Theory can go deep.** Habr is the place to actually expand the theory: state the framework, the assumptions in words, the main theorem, the conjugate interpretation, the spectral derivation. This is the long-form channel, so give the interesting theory real room (the user explicitly wants more theory here than in the TG/LinkedIn versions).
 - Figures: 2–5 is normal. Concept figure, the framework/definition, the theorem, results plot, a regime plot. Caption each.
 - Length: ~1200–3000 words. The longest, most narrative version. Longer is fine if the theory earns it.

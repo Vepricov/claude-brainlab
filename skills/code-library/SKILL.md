@@ -23,7 +23,7 @@ If a project has code, all three must exist. An agent picking up the project rea
 - One folder per repo; canonical overview is `Code/<repo>/<repo>.md` (always read this first), plus module notes.
 - It maps the **upstream** repo (entrypoint, modules, dispatch points, "where to edit X"). It does NOT hold project-specific edits — those live in the project card.
 - To add a repo: invoke **code-ingest** with the URL/path.
-- First repo in the library: [[Code/llm-baselines/llm-baselines|llm-baselines]] (EPFL; base for several optimizer/pretraining projects).
+- First repo in the library: [[personal/code-library/llm-baselines/llm-baselines|llm-baselines]] (EPFL; base for several optimizer/pretraining projects).
 
 ## 2. Project hub card — `## Код` section
 Every project that uses code adds this to its hub card:

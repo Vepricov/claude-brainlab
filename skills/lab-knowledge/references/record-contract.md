@@ -7,10 +7,10 @@ describes what belongs where, not an API.
 
 ## Everything an agent writes goes through git
 
-The base is a git repository per work. An agent never writes into it directly: every call
-goes into the clone as files and reaches review with `lab pr`, one pull request per claim on the branch
-`claim/<CODE>`, and a human merges it. A direct call is refused. The full mechanics are in
-[publishing.md](publishing.md).
+The base is a git repository per work, and writing into it is ordinary git: a branch
+`claim/<CODE>`, files, `git commit -F -`, and `git push -o merge_request.create` which opens
+the proposal in the same push. One proposal per claim. There is no wrapper command for this
+and no service to call. The full mechanics are in [publishing.md](publishing.md).
 
 Two things follow, and both bite in practice:
 
@@ -27,11 +27,8 @@ when the identity is unclear. A missing local binding does not mean the project 
 Report conflicting bindings before creating a replacement.
 
 Tasks live in GitLab: a work's own issues for its science, the group `ops` for everything
-else. Yonote is retired as of 02-10-2026 and nothing reads it. The research home is
-`Исследования / scientific theme / subsection / project`. Keep its one research Kanban.
-Customer stages, acceptance, and administrative obligations belong in the linked
-`Менеджмент` page or its separately confirmed board. Preserve existing IDs, history,
-access, and links. References to the same project are not independent writable copies.
+else. Customer stages, acceptance and administrative obligations go to `ops/management`.
+Preserve existing IDs, history, access and links.
 
 Resolve Obsidian paths from the client's project mapping and current vault conventions.
 Research-paper projects can have a theme between `Papers` and the slug. Literature notes
@@ -46,13 +43,14 @@ Do not change the library's taxonomy as a side effect of ingesting one paper.
 | Personal reminder | Personal Operon task |
 | Shared action, executor, deadline | the work's own issues, or the group `ops` |
 | Personal Hermes task | Hermes board is authoritative; a private Obsidian view keeps its original task ID and source timestamp |
-| Falsifiable scientific assertion | Lab Knowledge hypothesis |
-| Protocol and actual execution state | Lab Knowledge experiment |
-| Observed outcome and its artifact | Lab Knowledge evidence |
-| Assumptions, argument, and mathematical result | Lab Knowledge derivation |
+| Falsifiable scientific assertion | `claims/<CODE>/README.md` in the work, with its falsification criterion |
+| A finished run: hyperparameters, metrics, environment, commit, hardware | `claims/<CODE>/runs/<E-code>.md`, written by the recorder `lab_run.py`, not by hand |
+| A group of runs that answers one question | `claims/<CODE>/series/<S-code>.md`, with the runs listed in its table |
+| Assumptions, argument, and mathematical result | `claims/<CODE>/theory/<D-code>.md` |
 | Reviewed rule or choice | Not a record of its own. What was decided about the method goes into the claim's `decided`; a rule of one series' protocol goes into that series |
 | External paper and what it asserts | Library paper, paper claims, and typed links |
-| Operational observation or resource | Journal or resource, when that is what occurred |
+| A changed way of working: a rule, a place, a tool, something switched off | `brainlab/journal` |
+| An instruction other people need | `brainlab/handbook` |
 
 Do not copy a personal Hermes queue into the laboratory's issues or personal Operon tasks. A shared
 task may be linked to a Hermes task only through its confirmed project and original task ID.

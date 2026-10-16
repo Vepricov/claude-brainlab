@@ -233,10 +233,9 @@ contract. An unavailable integration limits that destination, not unrelated read
 For meeting extraction, `call-notes` supplies the meeting-specific workflow. Brain Call has
 its own pipeline; it does not require running `call-notes` afterwards.
 
-## Tasks live in GitLab, not in Yonote
+## Tasks live in GitLab
 
-Yonote is retired: its boards were moved into GitLab on 02-10-2026, and nothing reads it any
-more. Tasks of a work are its own issues; tasks that are not about science live in the group
+Tasks of a work are its own issues; tasks that are not about science live in the group
 `ops`. `lab tasks` lists them, `lab take <number>` takes one, and `Closes #<number>` in a
 commit message closes it on merge. A task names the claim it affects in its body; open
 questions are not filed as tasks at all — they live on the page of their claim.

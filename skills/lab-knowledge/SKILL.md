@@ -27,6 +27,41 @@ before reporting them as current. A read-only question must not cause writes.
 Return the supporting public codes, shared links, and any uncertainty. Do not publish local
 paths, private transcripts, or credentials as provenance.
 
+## Start with the manuscript and the code, not with the claims
+
+A work that has a paper and a training repository brings them **into the work itself**, as
+submodules, before a single claim is written:
+
+```bash
+git submodule add https://git.overleaf.com/<id> paper/<work>
+git submodule add <git url of the training code> code/<name>
+git commit -F -        # say what was connected and where it came from
+```
+
+The repository then stores a pointer, `lab pull` brings the text, and both are named in the
+README in backticks. They are not gitignored and not pasted as a link in prose: a reader, a
+gate and an agent all need to open them, not to be told they exist.
+
+**Why this comes first.** Claims, runs and series are then derived from material that is in
+hand. Every number copied out of the paper carries the address it came from — the table or
+figure label, not the word «рукопись» — and that address can be opened and checked on the
+spot. Measured 13-10-2026 on `spectral-wd`: with the manuscript pulled, four of its numbers
+turned out not to be in the paper's tables at all, one was attributed to a 124M model where
+the paper's caption says 257M, and the claim «the manuscript has no experiments» proved
+false — it had been written from an older version someone had sent. None of that is visible
+while `paper/` is an empty folder.
+
+**Before writing anything, check they are actually there**, because an unpulled submodule
+looks exactly like an absent one:
+
+```bash
+git submodule update --init --recursive
+find paper -name '*.tex' | head        # empty output means not pulled, not «no manuscript»
+```
+
+If the work has no paper or no code yet, say so in the README in one line and name who has
+them. That is a debt with an owner, not a silence.
+
 ## What you are writing into: a git repository
 
 The shared knowledge of the laboratory is a git repository, one per work, and nothing else.
@@ -239,6 +274,34 @@ Tasks of a work are its own issues; tasks that are not about science live in the
 `ops`. `lab tasks` lists them, `lab take <number>` takes one, and `Closes #<number>` in a
 commit message closes it on merge. A task names the claim it affects in its body; open
 questions are not filed as tasks at all — they live on the page of their claim.
+
+## The judge reads the work before the person does
+
+Two gates run on every proposal — the base check (mechanics) and the prose judge — and
+neither of them reads the work as a whole. For that there is a judge: an agent that reads
+the fourteen rules the owner judges by and the work laid out the way a person sees it. Those
+fourteen rules are the single list — `scripts/claims/sudya-task.md` in `brainlab/tools` — and
+they are not restated anywhere else: a second copy of a rule list diverges from the first
+within a week, and then nobody knows which one is being judged by.
+
+```bash
+python3 scripts/claims/sudya.py <clone> <where to put it>   # lays the work out
+# then an agent reads scripts/claims/sudya-task.md and that folder, and returns
+# JSON: rabota, verdikt, zamechaniya[{pravilo, gde, chto, kak_pochinit, kem}], chto_horosho
+```
+
+The loop is judge → the work's own agent fixes by reading and rewriting → judge again, until
+the verdict is clean. Measured 13-10-2026: two to three rounds per work, and the second round
+finds smaller things than the first. The judge is worth running even when the gates are green,
+because it catches what mechanics cannot: a claim that restates a definition, a page that
+cannot be read on its own, a state that disagrees with its own text, a number presented as
+the manuscript's when it is our own recount.
+
+**A pass over the tree only counts and shows; the text is edited by whoever read it.** A
+regular expression finds a class of defect well and ruins pages reliably: it cannot see that
+the machine is named three words later, that backticks hold a command, or that a filename
+contains a space. On 13-10-2026 one such pass broke twelve places out of a hundred and twenty
+edited lines, every one of them in text that had been correct.
 
 ## The canon of rules
 

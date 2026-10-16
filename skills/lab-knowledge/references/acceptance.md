@@ -90,7 +90,7 @@
 ## Страница утверждения (`claims/<КОД>/README.md`)
 
 Полный стандарт: [claim-page.md](claim-page.md) рядом с этим файлом, правила — свод
-`~/.claude/skills/lab-knowledge/references/canon.md`. Коротко условия приёмки:
+`brainlab/handbook/canon.md`. Коротко условия приёмки:
 
 | условие | как проверить |
 |---|---|

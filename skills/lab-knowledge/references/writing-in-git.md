@@ -80,7 +80,7 @@ caution but **style**: the page must read the way the others read.
 - **The standard is [claim-page.md](claim-page.md), next to this file.** Read it before
   writing a page: section order, what belongs in each, how a title is built, how results and
   the conclusion differ. What the page must satisfy is the canon,
-  `~/.claude/skills/lab-knowledge/references/canon.md`; this is how it is done.
+  `brainlab/handbook/canon.md`; this is how it is done.
 - **No water.** Tables for numbers, one bold sentence per finding, prose only where it
   explains. A paragraph that says nothing is worse than no paragraph.
 - **Every number next to the code of the run it came from**, and every run file says where

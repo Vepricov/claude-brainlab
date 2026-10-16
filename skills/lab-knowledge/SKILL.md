@@ -238,8 +238,7 @@ five failed runs.
 ## Choose the needed writing guidance
 
 - **The rules themselves live in one place, and this skill does not restate them:**
-  `~/.claude/skills/lab-knowledge/references/canon.md`, which is a mirror of `brainlab/handbook/canon.md` on
-  GitLab, refreshed by `canon_sync.py`. Named rules, each with the line that says what
+  `brainlab/handbook/canon.md` in GitLab. Named rules, each with the line that says what
   enforces it. Everything in this skill is how to do the work; the canon is what the work
   must satisfy, and a disagreement between the two is settled by the canon. It is edited in
   the handbook by a proposal, never in a copy: a second copy of the canon is a check failure
@@ -305,7 +304,7 @@ edited lines, every one of them in text that had been correct.
 
 ## The canon of rules
 
-[references/canon.md](references/canon.md) — the forty-two named rules of the base, each with
-the line that says what enforces it. It is mirrored from `brainlab/handbook/canon.md` and is the
-one place the rules live; nothing here restates them. Read it before writing into a work, the
-handbook or the journal.
+`brainlab/handbook/canon.md` in GitLab — the named rules of the base, each with the line that
+says what enforces it. That file is the one place the rules live, and nothing here restates
+them. `canon_sync.py` puts a readable copy on the machine next to this skill. Read the canon
+before writing into a work, the handbook or the journal.

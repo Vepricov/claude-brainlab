@@ -51,4 +51,4 @@ claude-autoresearch, ResearchOS), адаптированных под theory-т�
   выбирать вслепую). Это автоматизирует «не воскрешай дубль = слив токенов».
 
 Полное описание архитектуры лупа (на примере wsd-muon): в Obsidian
-`Papers/wsd-muon/Knowledge/autonomous-research-process.md`.
+`matrix-optimization/training-dynamics/wsd-muon/notes/autonomous-research-process.md`.

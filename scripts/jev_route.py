@@ -790,34 +790,43 @@ def clones_here(cwd: str) -> list[str]:
 #: Куда именно в хранилище и в какое крыло памяти — зависит от проекта, значит это динамика
 #: и место ей в строке хука, а не в правиле. Владелец 08-10-2026: «где инфа, куда в MCP /
 #: Obsidian и мем-палас записывать, там же разные папки есть и так далее, почему этого нет?»
-REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
+#: Дерево лаборатории: оно же и хранилище Obsidian с 16-10-2026. Отдельного сопоставления
+#: «проект → папка хранилища» больше нет и не нужно: заметки проекта лежат в самом проекте.
+#: Прежний файл `~/.claude/obsidian-projects.json` описывал корни `~/Papers`, `~/Projects`
+#: и `~/Staff`, которых больше не существует, и из-за него хук подсказывал писать в
+#: `Staff/claude-brainlab/` ещё сутки после переезда.
+DEREVO = Path("~/brainlab").expanduser()
+
+#: Направления: под ними `<тема>/<работа>`.
+NAPRAVLENIYA = ("large-models", "low-rank", "matrix-optimization", "optimization-foundations",
+                "reasoning-rl", "zero-order", "applications")
 
 
 def addresses(cwd: str) -> tuple[str, str]:
-    """Крыло MemPalace и папка Obsidian для этого проекта. Пусто — значит не нашли."""
-    here = Path(cwd or ".").expanduser().resolve()
+    """Крыло MemPalace и папка хранилища для этого места. Пусто — значит не нашли.
+
+    Работа: `<направление>/<тема>/<работа>` — крыло по имени работы, заметки в её `notes/`.
+    Агентские репозитории: `agents/<что-то>` — заметки в `agents/notes/<что-то>/`.
+    Остальное (операционка, личное, рецензии) — само себе папка.
+    """
     try:
-        book = json.loads(REGISTRY.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        here = Path(cwd or ".").expanduser().resolve()
+        base = DEREVO.resolve()
+    except OSError:
         return "", ""
-    for root in book.get("roots") or []:
-        base = Path(str(root.get("fs") or "")).expanduser().resolve()
-        if base == here or base in here.parents:
-            if here == base:
-                return "", ""
-            # Ключ может быть и в несколько сегментов: под `~/Staff` проект лежит как
-            # `BRAIn Lab/claude-brainlab`. Поэтому берётся САМОЕ ДЛИННОЕ совпадение
-            # префикса, а не первая папка под корнем: по первой папке выходило крыло
-            # «BRAIn Lab» вместо «claude-brainlab».
-            parts = here.relative_to(base).parts
-            items = root.get("items") or {}
-            for depth in range(len(parts), 0, -1):
-                key = "/".join(parts[:depth])
-                if key in items:
-                    where = items[key]
-                    return where.rsplit("/", 1)[-1], f"{root.get('obsidian')}/{where}"
-            return parts[0], f"{root.get('obsidian')}/{parts[0]}"
-    return "", ""
+    if here != base and base not in here.parents:
+        return "", ""
+    parts = here.relative_to(base).parts if here != base else ()
+    if not parts:
+        return "", ""
+    if parts[0] in NAPRAVLENIYA and len(parts) >= 3:
+        work = parts[2]
+        if work == "literature":
+            return "", f"{parts[0]}/{parts[1]}/literature"
+        return work, f"{parts[0]}/{parts[1]}/{work}/notes"
+    if parts[0] == "agents" and len(parts) >= 2:
+        return parts[1], f"agents/notes/{parts[1]}"
+    return parts[0], parts[0]
 
 
 def hint(verdict: dict) -> str:

@@ -29,7 +29,6 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
 #: Где искать файлы базы. На машине сотрудника рабочей копии обычно нет, и тогда список
 #: утверждений берётся из слепка: он обновляется при каждом заходе и читается мгновенно,
 #: без единого обращения к службе. Агент не должен тратить вызовы на «а где я».
@@ -327,21 +326,25 @@ def pinned(cwd: str) -> str | None:
 
 
 def work_of(cwd: str) -> str | None:
-    """Слаг работы: сперва привязка каталога, потом карта путей."""
+    """Слаг работы: сперва привязка каталога, потом само дерево.
+
+    Карты путей `obsidian-projects.json` больше нет: с 16-10-2026 дерево лаборатории и
+    есть хранилище, работа лежит в `~/brainlab/<направление>/<тема>/<работа>`, и её слаг
+    виден прямо в пути. Прежняя карта описывала корни `~/Papers`, `~/Projects` и `~/Staff`,
+    которых больше не существует.
+    """
     if said := pinned(cwd):
         return said
-    if not REGISTRY.is_file():
-        return None
     try:
-        registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-    except ValueError:
+        here = Path(cwd or ".").expanduser().resolve()
+        base = BASE.resolve()
+    except OSError:
         return None
-    here = Path(cwd or ".").expanduser().resolve()
-    for root in registry.get("roots") or []:
-        base = Path(root["fs"]).expanduser().resolve()
-        for folder, vault in (root.get("items") or {}).items():
-            if (base / folder) == here or (base / folder) in here.parents:
-                return vault.rsplit("/", 1)[-1]
+    if here == base or base not in here.parents:
+        return None
+    parts = here.relative_to(base).parts
+    if len(parts) >= 3 and (base / parts[0] / parts[1] / parts[2] / "claims").is_dir():
+        return parts[2]
     return None
 
 

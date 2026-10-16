@@ -22,7 +22,7 @@
 - Prefer a project wing when available. The legacy archive wing is `conversations`.
 
 ## Changes
-- For Lab Atlas work, first read `${OBSIDIAN_VAULT}/Staff/claude-brainlab/Knowledge/lab-atlas-release-plan.md`: it records completed work, remaining checks, and current file ownership. Do not repeat completed Yonote moves or overwrite another agent's in-progress component changes.
+- Витрина `lab-atlas` удалена 15-10-2026 вместе со своей службой; её план выпуска лежит в архиве на машине владельца. Работы по ней нет.
 - Lab Atlas item 7 (`c84ded2`) means a team of people for testing, not a CLI command. The owner explicitly deferred it on 2026-09-08: no agent may take it until the owner resumes it. `scripts/lab_check.py` was created from a misunderstanding; preserve its files, but do not develop or ship it as completion of this item.
 - Read and understand relevant code first. Explain your understanding in 2 to 3 sentences before changing it.
 - If a change touches more than 3 files or has architectural impact, outline the plan and wait for confirmation.
@@ -39,11 +39,11 @@
 
 ## Obsidian And Local Workflow
 - **Read shared Yonote placement rules before writing.** Use [the laboratory's current rules](https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi) in `Общая информация`. Resolve the existing project page and board by stable IDs. Research belongs in `Исследования / scientific theme / subsection / project`; customer obligations, stages, acceptance, and administrative tasks belong in `Менеджмент` with a link to the research project. Keep one research board. Preserve existing pages, tasks, history, links, and access when moving objects. Do not delete `Менеджмент`, create independent project copies, or deploy mirrors without explicit authorization. A stale integration binding must be reported before writing, not bypassed by creating another project.
-- Obsidian vault root: `${OBSIDIAN_VAULT}/`.
+- Obsidian vault root: `~/brainlab` — это и есть дерево лаборатории.
 - **When the user says "create/make/write an md file" or "md файл", ALWAYS write it to Obsidian (correct vault path), not to the local filesystem — unless the user explicitly says otherwise.**
 - Treat `.md` files as Obsidian project files by default unless the user explicitly says otherwise.
 - Prefer filesystem-first workflows. Do not require Obsidian MCP when direct file work is enough.
-- Maintain durable notes only when the task materially changes research state. Use `~/.claude/obsidian-projects.json` when you need project-to-vault routing.
+- Maintain durable notes only when the task materially changes research state. Заметка лежит в самом проекте (`<работа>/notes/`), сопоставления путей больше нет.
 - In human-facing Obsidian notes, use `DD-MM-YYYY` for dates by default.
 - Check `${OBSIDIAN_VAULT}/general/servers.md` before choosing remote GPU indices, and update it when server configuration changes.
 - **Route tasks by scope.** Personal reminders and private self-management use Operon file-tasks (`Operon/Tasks/<title>.md`) with a flat `project` tag, never `parentTask`. Shared project work, assignees, deadlines, and milestones use the project's private Yonote board. Never mirror one writable task in both systems and never create ad-hoc `Задачи.md` files. Use `call-notes` to classify meeting actions before writing.
@@ -68,17 +68,21 @@
   Держать эти правила в контексте не нужно: они меняются редко, читать по факту работы.
 
 ### HARD ROUTING RULE (applies to ALL agents, ALL sessions)
-- When the user asks to create, make, write, or update a `.md` file, the default destination is Obsidian, not the local repository, unless the user explicitly says otherwise.
-- Project notes MUST be routed by the project's filesystem location. NEVER write to `Research/`.
-- Mapping (authoritative source: `~/.claude/obsidian-projects.json`):
-  - Project in `~/Papers/<slug>/`  → vault `Papers/<тема>/<slug>/`. Статьи разложены
-    по темам (Матричная оптимизация, LoRA и PEFT, ZO, Теория и методы, RL, Прочее),
-    поэтому тему нельзя угадывать: она берётся из `~/.claude/obsidian-projects.json`,
-    а если слага там нет — поиском `Papers/**/<slug>` по хранилищу.
-  - Project in `~/Projects/<slug>/` → vault `Projects/<slug>/`
-  - Project in `~/Staff/<slug>/`    → vault `Staff/<slug>/`
-- Before writing a note, resolve the target path via `obsidian-projects.json` (look up the `fs` root matching the project's location, then use the mapped `obsidian` root + slug). Do not rely on per-project `.claude/CLAUDE.md` alone and do not guess.
+- **Хранилище Obsidian — это само дерево лаборатории `~/brainlab`.** Отдельных корней
+  `~/Papers`, `~/Projects` и `~/Staff` больше нет: 16-10-2026 всё перенесено, и писать по
+  этим путям нельзя — сторож `no-old-paths.py` отказывает на запись в них.
+- Заметка проекта лежит В САМОМ ПРОЕКТЕ, а не в параллельном дереве:
 
+  | где работаешь | куда заметка |
+  |---|---|
+  | `~/brainlab/<направление>/<тема>/<работа>` | `<работа>/notes/` (дневник — `daily/`, логи — `runs/`) |
+  | `~/brainlab/agents/<репозиторий>` | `agents/notes/<репозиторий>/` |
+  | операционка, личное, рецензии | своя же папка |
+
+- `notes/`, `daily/`, `runs/` закрыты от git в каждом клоне, поэтому заметка остаётся на
+  машине; в GitLab едут `claims/`, `paper/`, `code/`, `socials/`, `calls/`.
+- Файла сопоставления `~/.claude/obsidian-projects.json` БОЛЬШЕ НЕТ. Путь виден из самого
+  пути, и угадывать тему не надо.
 ## Shell And Completion
 - If a command needs `brew` and Homebrew is not on `PATH`, use `export PATH=/opt/homebrew/bin:$PATH` first.
 - End meaningful tasks with a short operational summary: what changed, which files changed, current status, and natural next steps.

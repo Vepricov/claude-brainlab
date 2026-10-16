@@ -3,13 +3,14 @@
 Apply [the shared record contract](record-contract.md), especially its distinction between
 a paraphrased `statement` and a literal source `quote`.
 
-The library corpus is independent of project membership. Use `get_paper` and existing claims
-before writing; use related-paper search when it helps answer the research question. A paper
-may link to several laboratory projects without becoming several independent papers.
+The library corpus is independent of project membership. Read the existing page before
+writing: `<theme>/literature/<citation-key>.md` in the clone, found with `grep` over the
+theme's `literature/`. A paper may link to several laboratory projects without becoming
+several independent papers.
 
 For the owner's library, follow the current Obsidian and Zotero taxonomy and the configured
-library sync. Other members may contribute through the live MCP without owning that vault.
-Do not require a private filesystem note from every contributor.
+library sync. Other members contribute by proposal into the theme's `literature/` without
+owning that vault. Do not require a private filesystem note from every contributor.
 
 An upsert's behavior depends on the current schema. Read the stored paper first and preserve
 metadata and sections that the update does not intend to replace. Use additive section writes

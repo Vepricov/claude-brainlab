@@ -10,15 +10,16 @@ and the laboratory's shared records have different owners and purposes.
 
 ## Find what the laboratory knows
 
-`search_lab` is split, and the two halves behave differently. **`scope: library` works** and
-is the way to find a paper: it returns the citation key, the arXiv id and the library folder.
-**`scope: lab` is dead** — it answers with a refusal, because it lived on Postgres embeddings
-and the knowledge moved to git. Do not call it and do not read its refusal as "nothing found".
+**Search the clone, with `grep` and `git log`.** There is no search service: the one that
+existed lived on Postgres embeddings and was deleted on 07-10-2026 together with its base.
+A work is a git repository, so `grep -rn "<term>" <work>/claims/` and `git log -S"<number>"`
+answer faster than any index, and they never return a stale snapshot. Papers of the library
+are files too: `<theme>/literature/` holds one page per paper, named by its citation key.
 
 For the laboratory's own knowledge, **read the clone**: `grep` and `git log` over
 `<work>/claims/`, which is checked out locally. That is faster than any search call and it is
-the same bytes the reviewer sees. `list_hypotheses` and the claim pages still work as reads if
-you want a typed index, but they are a convenience, not the source.
+the same bytes the reviewer sees. There is no typed index and no read API: the directory
+listing of `claims/` is the index, and the first line of each `README.md` is the claim.
 
 A closed task is not a confirmed claim. Verify changeable facts against their current source
 before reporting them as current. A read-only question must not cause writes.
@@ -57,8 +58,8 @@ repository; they are not a second store standing beside it.
    name the work, say so and stop; do not park it somewhere general.
 1. **Which claim** does this work test? A work carries a handful of them; yours is one.
    New runs at a new scale are almost never a new claim — they are corpus under one that
-   already exists. Read `<work>/claims/` in the clone, or `list_hypotheses`; not
-   `search_lab`, whose lab half is dead.
+   already exists. Read `<work>/claims/` in the clone: the directory listing IS the list of
+   claims, and each `README.md` starts with the claim's own sentence.
 2. **Which series** inside it? A claim's runs are grouped into series, one per question the
    runs answer together. The claim page names them with what each was checking.
 3. **Is there an open pull request** for that claim already? There is one per claim, on the
@@ -78,13 +79,17 @@ number, start a series. What is asked is style, not caution — no water, number
 every number next to the code of the run it came from, and the provenance of every run said
 out loud.
 
-**There is no MCP for agents any more**, and its write calls were refused anyway. They existed for people and for the service.
-A direct call answers with the path back to git.
+**There is no service to write through: the base is git and nothing else.** The MCP service
+and its Postgres were deleted on 07-10-2026. Every write is a file in a clone, a branch, a
+commit and a merge request.
 
-**Check that in every answer, do not assume it.** A write answer carries a field `записал`:
-who you are (`человек` or `агент`) and how the write landed. An agent that sees
-`прямая запись в базу` is running under a person's token — the session was started before the
-agent token was configured, and the gate is protecting nothing. Say so; do not keep writing.
+**Who merges, and on whose word.** Push to `main` is closed for everyone, so a record enters
+only by merge. A human merges — or an agent by that human's word, said in the same session.
+An agent that merges writes into the proposal, before merging, whose word it acts on and
+when, quoting the person. Permission covers what was agreed and nothing else: "merge these
+two" is not "merge whatever you like from now on". An agent never merges another person's
+work, a proposal with a red verdict, one with open remarks, or its own proposal that the
+person does not know about. (Owner, 16-10-2026.)
 
 **Take a free code from the clone, not from the base.** The old rule said the opposite —
 check codes against the database, never the files — and it was right while the base was
@@ -178,9 +183,9 @@ definition of DyKAF is a line nobody can act on.
 
 **But the repository has no place for a definition.** The tree is only
 `<work>/claims/<CODE>/{runs,series,theory,figures}` and `literature/`. There is no `terms/`,
-no `resources/`, no journal. `define_term`, `upsert_resource` and `record_journal` are MCP
-writes, so they are refused like every other direct write, and the refusal is correct: git
-is the base and those have no file in it.
+no `resources/`, no journal in a work. A term goes to the theme's glossary (`literature/glossary/`,
+and the same pages are published as that project's wiki); the way of working goes to
+`brainlab/journal`; an instruction others need goes to `brainlab/handbook`.
 
 So do this instead, and do not invent a folder for it:
 

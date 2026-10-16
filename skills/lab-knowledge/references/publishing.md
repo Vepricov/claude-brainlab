@@ -25,16 +25,15 @@ the tree: the wiki is editable in place by whoever reads it.
 claim, on the branch `claim/<CODE>`. A human merges it, and merging is what lands the change.
 A direct call is refused with a message naming this path.
 
-**Check your own identity before you trust a success.** Every write answer carries a field
-`записал` with who you are (`человек` or `агент`) and how the write landed. If you are an
-agent and it says `прямая запись в базу`, your session is running under a person's token: the
-gate is not protecting anything. Say so instead of carrying on.
+**A green verdict is not a record: the merge is.** Push to `main` is closed for everyone,
+so nothing enters except through a proposal. A human merges, or an agent on that human's word
+said in the same session, and the agent writes that word into the proposal before merging.
 
 ## Work out where you are, by reading, before you write anything
 
-1. **Which claim** does this test? Read `<work>/claims/` in the clone, or `list_hypotheses`;
-   not `search_lab`, whose lab half is dead and answers with a refusal. A work
-   carries a handful of claims — dykaf has seven. New runs at a new scale are almost never a
+1. **Which claim** does this test? Read `<work>/claims/` in the clone: that listing is the
+   list of claims, and each `README.md` opens with the claim's own sentence. A work
+   carries a handful of them — dykaf has seven. New runs at a new scale are almost never a
    new claim: they are corpus under one that already exists.
 2. **Which series** inside it? A claim's runs are grouped into series, one per question the
    runs answer together, and the claim page names them with what each was checking.
@@ -71,8 +70,9 @@ confirms it, and every write that follows, so the reviewer judges a case and not
 - numbers came out — a table in that same run file, each number beside the code it came from;
 - a proof was worked out — `claims/<CODE>/theory/<D-code>.md` with assumptions, statement,
   argument and a «Чего не хватает» section;
-- an internal name appeared — define it in place, in the page that first uses it. There is no
-  `terms/` directory in a theme repository and `define_term` is refused; do not create one;
+- an internal name appeared — define it in place, in the page that first uses it, and if it
+  is a term of the theme, add it to `<theme>/literature/glossary/`, whose pages are also
+  published as that project's wiki. A work itself has no `terms/` directory; do not create one;
 - a decision was made — it is not a record of its own. What was decided about the method
   goes into the claim's `decided`; a rule of one series' protocol goes into that series.
 

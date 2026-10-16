@@ -2,8 +2,8 @@
 
 Apply this contract when a workflow publishes research, literature, or meeting outcomes.
 Client-specific paths, credentials, and permissions remain in the local installation.
-Read the live MCP schema before constructing a payload; this document describes meaning,
-not a frozen list of tool signatures or status transitions.
+There is no service and no payload: every record is a file in a git clone. This document
+describes what belongs where, not an API.
 
 ## Everything an agent writes goes through git
 
@@ -14,9 +14,9 @@ goes into the clone as files and reaches review with `lab pr`, one pull request 
 
 Two things follow, and both bite in practice:
 
-- **Check the `записал` field of every write answer.** It says who you are and whether the
-  write landed directly. An agent seeing `прямая запись в базу` is running under a person's
-  token, and the gate is protecting nothing.
+- **A record exists when it is merged into `main`.** A checkpoint, a local file and a
+  proposal with open remarks are not records. Merging is done by a human, or by an agent on
+  that human's word said in the same session, and the agent leaves that word in the proposal.
 - **Public codes are labels, not addresses.** They are renumbered when a work is tidied:
   `H-DYC-035` became `H-DYC-007` in a quarter of an hour on 23-09-2026. Quote UUIDs.
 

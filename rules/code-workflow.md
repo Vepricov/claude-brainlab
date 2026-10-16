@@ -16,7 +16,8 @@ The user delegates code execution to agents and reads the logs. For that to work
    Per experiment series, in the project folder: `Experiments/<name>.md` (log + timestamped `## Progress snapshots` table) and `Results/<name>-table.md` (final tables + embedded loss-curve plot). Long runs go in `tmux` on the server; a `/loop` checks liveness, appends snapshots, and refreshes a versioned plot PNG. House-style plotting + the iCloud/cache gotchas: see `general/Knowledge/warmup-loss-plot-tool.md`.
 
 4. **Every training run is wrapped in the lab recorder, before it starts.**
-   `lab_run.py` from `brainlab/tools` writes the run's own page — hyperparameters, metrics,
+   `lab_run.py` from the `lab-knowledge` skill (`~/.claude/skills/lab-knowledge/scripts/lab_run.py`)
+   writes the run's own page — hyperparameters, metrics,
    environment, commit, hardware — into one folder per run and pushes it to a branch, from
    which the agent later moves it under a claim and builds a series. Copy it into the repo
    that holds the training code; no dependencies, stdlib only.

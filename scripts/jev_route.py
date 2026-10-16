@@ -166,7 +166,7 @@ HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
 REPO_OF = {
     "handbook": "brainlab/handbook",
     "journal": "brainlab/journal",
-    "grants": "grants/grants",
+    "grants": "ops/grants/a2-pro",
     "management": "ops/management",
     "education": "ops/education",
     "communications": "ops/communications",

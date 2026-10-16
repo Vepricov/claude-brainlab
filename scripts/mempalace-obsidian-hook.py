@@ -35,6 +35,7 @@ Checkpoint markers track requests only; the agent must read back writes.
 
 import importlib.util
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -150,6 +151,18 @@ TRAINING = ("--lr", "--learning-rate", "--epochs", "--batch", "--steps", "wandb"
 WRAPPED = ("LabRun", "lab_run")
 
 
+def _golova(command: str) -> str:
+    """Сама команда, без тела heredoc и без строки, переданной через `-c`.
+
+    Признаки запуска ищутся только в ней. 14-10-2026 сторож трижды прервал ход на правке
+    файлов: в теле heredoc стояли слова `sbatch`, `wandb`, `train.py` и имя правимого
+    `.py`-файла — то есть и признак запуска, и признак обучения, и «файл точки входа»,
+    все три из перечней самого сторожа. Тело heredoc это данные, а не команда.
+    """
+    golova = re.split(r"<<-?\s*['\"]?\w+", command, maxsplit=1)[0]
+    return re.split(r"\s-c\s", golova, maxsplit=1)[0]
+
+
 def _entrypoints(command: str) -> list[str]:
     return [piece.strip("\"'") for piece in command.split()
             if piece.strip("\"'").endswith(".py")]
@@ -186,15 +199,22 @@ def unwrapped_runs(transcript: str, cwd: str) -> list[str]:
                     if not command or command in seen:
                         continue
                     seen.add(command)
-                    low = command.lower()
+                    # Признаки ищутся в самой команде, а не в теле heredoc: иначе сторож
+                    # ловит слова из текста, который команда всего лишь пишет в файл.
+                    # Скрипт, переданный на stdin, обучения не запускает — у него нет
+                    # файла точки входа, и тогда проверять нечего.
+                    golova = _golova(command)
+                    low = golova.lower()
                     if not any(one in low for one in LAUNCHERS):
                         continue
                     if not any(one in low for one in TRAINING):
                         continue
-                    if any(one in command for one in WRAPPED):
+                    if any(one in golova for one in WRAPPED):
+                        continue
+                    if not _entrypoints(golova):
                         continue
                     wrapped = False
-                    for name in _entrypoints(command):
+                    for name in _entrypoints(golova):
                         place = (Path(cwd or ".") / name).expanduser()
                         try:
                             if place.is_file() and any(

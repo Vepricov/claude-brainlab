@@ -279,7 +279,7 @@ questions are not filed as tasks at all — they live on the page of their claim
 Two gates run on every proposal — the base check (mechanics) and the prose judge — and
 neither of them reads the work as a whole. For that there is a judge: an agent that reads
 the fourteen rules the owner judges by and the work laid out the way a person sees it. Those
-fourteen rules are the single list — `scripts/claims/sudya-task.md` in `brainlab/tools` — and
+fourteen rules are the single list — `scripts/claims/sudya-task.md` in `brainlab/agents` — and
 they are not restated anywhere else: a second copy of a rule list diverges from the first
 within a week, and then nobody knows which one is being judged by.
 

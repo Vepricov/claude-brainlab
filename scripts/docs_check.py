@@ -56,8 +56,7 @@ ABOUT_REMOVAL = ("больше нет", "уже нет", "снят", "снята
 PAGES = [("brainlab/handbook", None),
          ("brainlab/gitlab-profile", "README.md"),
          ("people/gitlab-profile", "README.md"),
-         ("ops/gitlab-profile", "README.md"),
-         ("brainlab/tools", "README.md")]
+         ("ops/gitlab-profile", "README.md")]
 SKIP = {"CHANGELOG.md", "canon.md"}
 #: Страницы этого репозитория. 07-10-2026 выяснилось, зачем они здесь нужны: в
 #: `docs/architecture.md` целый раздел описывал службу MCP как живую через два дня после её

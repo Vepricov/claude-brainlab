@@ -333,7 +333,7 @@ def convert_figs(text, repo_dir, idx, stats):
 #: Каркас проверки литературной правки живёт в репозитории службы, а не в скилле:
 #: правило там одно на всех и меняется вместе со службой.
 CHECKS_PATHS = (
-    os.path.expanduser("~/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/src"),
+    os.path.expanduser("~/brainlab/agents/claude-brainlab/services/lab-knowledge/src"),
     "/srv/jarvis-local/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/src",
 )
 

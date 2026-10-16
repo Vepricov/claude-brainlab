@@ -33,7 +33,10 @@ REGISTRY = Path("~/.claude/obsidian-projects.json").expanduser()
 #: Где искать файлы базы. На машине сотрудника рабочей копии обычно нет, и тогда список
 #: утверждений берётся из слепка: он обновляется при каждом заходе и читается мгновенно,
 #: без единого обращения к службе. Агент не должен тратить вызовы на «а где я».
-BASE = Path(os.getenv("LAB_KNOWLEDGE_BASE_DIR", "~/brainlab-stack/git-base")).expanduser()
+#: Дерево работ на машине: `~/brainlab/<направление>/<тема>/<работа>`. Прежний адрес
+#: (`~/brainlab-stack/git-base`) был полкой времён Gitea и после переезда 16-10-2026 не
+#: существует вовсе, то есть запас молча не работал.
+BASE = Path(os.getenv("LAB_KNOWLEDGE_BASE_DIR", "~/brainlab")).expanduser()
 CACHE = Path("~/.local/state/brainlab/claims").expanduser()
 FRONT = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 
@@ -351,7 +354,7 @@ def claims_of(slug: str, clone: Path | None = None) -> tuple[str, list[str]]:
     places = []
     if clone is not None and (clone / "claims").is_dir():
         places.append((slug, clone))
-    places += [(shelf.name, shelf / slug) for shelf in sorted(BASE.glob("*"))]
+    places += [(found.parent.name, found) for found in sorted(BASE.glob(f"*/*/{slug}"))]
     for shelf, home in places:
         if not (home / "claims").is_dir():
             continue

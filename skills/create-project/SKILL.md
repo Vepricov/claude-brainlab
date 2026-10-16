@@ -43,7 +43,7 @@ Create the private working layer first. For a Brain Lab project, continue with
 
 Пять мест, все пять обязательны:
 
-1. **Каталог Brain Call** — `~/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/data/projects.json`.
+1. **Каталог Brain Call** — `~/brainlab/agents/claude-brainlab/services/lab-knowledge/data/projects.json`.
    Прочитать `slug`, `legacy_labels`, `display_title`, `summary` каждой записи и сравнить по теме.
 2. **Дерево базы в GitLab** — список проектов направления и темы, `list_projects` или
    страница группы. Искать по смыслу: названием метода, задачей, фамилией. `search_lab`
@@ -129,7 +129,7 @@ Obsidian caches plugin settings in memory, so tell the user to reload the app fo
 colour to appear, and write both files while Obsidian is idle.
 
 Register the project in the Brain Call catalogue so it can be picked when recording a call:
-append one entry to `~/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/data/projects.json`
+append one entry to `~/brainlab/agents/claude-brainlab/services/lab-knowledge/data/projects.json`
 with `slug`, unique `public_code`, `legacy_labels` (the filesystem folder name), `display_title`,
 an existing `direction`, `summary`, `problem`, `approach`, `status`, `leads`, `members`. Omit the
 `lab_knowledge_project_id`, `lab_knowledge_url`, and `yonote` keys until provisioning returns

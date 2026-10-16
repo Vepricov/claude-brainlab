@@ -25,7 +25,7 @@ VAULT = Path(os.environ.get(
     "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917",
 )).expanduser()
 ZOTERO = Path(os.environ.get("ZOTERO_SQLITE", "~/Zotero/zotero.sqlite")).expanduser()
-REPO = Path(os.environ.get("BRAINLAB_REPO", "~/Staff/BRAIn Lab/claude-brainlab")).expanduser()
+REPO = Path(os.environ.get("BRAINLAB_REPO", "~/brainlab/agents/claude-brainlab")).expanduser()
 LIBRARY_SYNC = REPO / "services" / "lab-knowledge" / "scripts" / "library_sync"
 
 

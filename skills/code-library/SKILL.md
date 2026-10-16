@@ -30,7 +30,7 @@ Every project that uses code adds this to its hub card:
 ```markdown
 ## Код
 - Репозиторий: [[Code/<repo>/<repo>|<repo>]] — <fork? branch?>
-- Локально: `~/Papers/<slug>/<dir>/` · сервер: `~/<dir>` (<host>)
+- Локально: `~/brainlab/<направление>/<тема>/<работа>/code/` · сервер: `~/<dir>` (<host>)
 - Правки этого проекта (диф от upstream):
   - new:    <files added>
   - patched:<files changed + why>

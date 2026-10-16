@@ -38,23 +38,29 @@ KUDA = ("Дерево лаборатории живёт в `~/brainlab`: раб�
 
 
 def celi(command: str) -> list[str]:
-    """Куда эта команда пишет: аргументы пишущих команд и цели перенаправления."""
-    slova = [s.strip("'\"`,:") for s in re.split(r"[\s;|&()]+", HEREDOC.sub(" ", command)) if s]
+    """Куда эта команда пишет: аргументы пишущих команд и цели перенаправления.
+
+    Команда разбирается по частям: `&&`, `||`, `|`, `;` и перевод строки начинают новую, и
+    признак «сейчас пишем» на границе сбрасывается. Без этого `rm x && grep "~/Staff" .`
+    читалось как «удаляем ~/Staff», и сторож останавливал поиск.
+    """
     out: list[str] = []
-    pishem = False
-    for i, slovo in enumerate(slova):
-        goloe = slovo.lstrip("0123456789")
-        if goloe.startswith(">"):                      # `>файл`, `2>файл`, `>>файл`
-            hvost = goloe.lstrip(">")
-            out.append(hvost if hvost else (slova[i + 1] if i + 1 < len(slova) else ""))
-            continue
-        imya = slovo.rsplit("/", 1)[-1]
-        if imya in PISHUSHIE or (imya == "git" and i + 1 < len(slova)
-                                 and slova[i + 1] in ("clone", "init")):
-            pishem = True
-            continue
-        if pishem and not slovo.startswith("-"):
-            out.append(slovo)
+    for kusok in re.split(r"(?:&&|\|\||[;|\n])", HEREDOC.sub(" ", command)):
+        slova = [s.strip("'\"`,:") for s in re.split(r"[\s()]+", kusok) if s]
+        pishem = False
+        for i, slovo in enumerate(slova):
+            goloe = slovo.lstrip("0123456789")
+            if goloe.startswith(">"):                      # `>файл`, `2>файл`, `>>файл`
+                hvost = goloe.lstrip(">")
+                out.append(hvost if hvost else (slova[i + 1] if i + 1 < len(slova) else ""))
+                continue
+            imya = slovo.rsplit("/", 1)[-1]
+            if imya in PISHUSHIE or (imya == "git" and i + 1 < len(slova)
+                                     and slova[i + 1] in ("clone", "init")):
+                pishem = True
+                continue
+            if pishem and not slovo.startswith("-"):
+                out.append(slovo)
     return [x for x in out if x]
 
 

@@ -24,7 +24,7 @@ description: Разбор одной статьи в Zotero и Obsidian по к�
 |---|---|
 | `python3 /root/paper-agent/ingest_prep.py` заводит Zotero, PDF, текст, рисунки и каркас | шаги 1-5 делаются скриптами из `scripts/`: `bibtex_fetch.py`, `zotero_attach_pdf.py`, `zotero_check_dup.py`, выгрузка исходника с arXiv |
 | правка только инструментом `patch`, `execute_code` запрещён | правка обычная, `python3 -c` работает |
-| `/root/paper-agent/state/...` | `~/Papers/Library/<arxiv_id>...`, временное убирается после импорта в Zotero |
+| `/root/paper-agent/state/...` | `~/Zotero/pdfs-from-vault/<arxiv_id>...`, временное убирается после импорта в Zotero |
 | заметка кладётся по `note_file` | `Literature/<слаг-темы>/<Название>.md`, темы берутся из корпуса, см. `~/.claude/rules/lab-git-literature.md` |
 | `ingest_finish.py` закрывает разбор | `scripts/sync_to_lab.py --arxiv <id> --verify`, затем `scripts/lab_page_sync.py --arxiv <id>` для страницы в git |
 

@@ -9,7 +9,7 @@ description: Передать запущенные прогоны серверн
 поэтому долгие прогоны стережёт он. Канал передачи — **файл JSON в
 `/root/jarvis4shkodnik/state/inbox/`**, а не HTTP: на боксе 443/8443 заняты xray, а Мак→do-vpn
 рвётся с RST, и файл либо доезжает целиком, либо видно, что не доехал. Схема — единственный
-источник истины: `~/Staff/jarvis4shkodnik/jarvis/inbox.py` (`TEMPLATE` внизу — канонический
+источник истины: `~/brainlab/agents/hermes/jarvis/inbox.py` (`TEMPLATE` внизу — канонический
 пример, `RunSpec` — поля прогона, `Handoff.validation_problems()` — за что отклонят). Не
 изобретай имена полей, читай файл.
 

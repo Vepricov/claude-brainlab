@@ -112,8 +112,8 @@ something else. Authoritative compact reference: `examples/lab-style-mini.tex`, 
 `examples/lab-style-notes.md` for the mandatory traits.
 
 - Palette comes from two sources: the poster template
-  `~/Papers/finished papers/kawasaki/poster/brainposter.sty` and, decisive for slides, the lab deck
-  `~/Projects/huawei_optimizers/Talk3_Efficient_Pretraining_30min.pptx`:
+  `~/brainlab/ops/communications/posters/lora-duo/brainposter.sty` and, decisive for slides, the lab deck
+  `~/brainlab/large-models/optimizer-state-compression/huawei-optimizers/notes/talks/Talk3_Efficient_Pretraining_30min.pptx`:
   `plum` `#854C65` (full-bleed background of title / section / closing frames, and heading colour on
   content frames), `cream` `#FAF8F1` (content background, and text on plum), `amber` `#FFD183`
   (headings on plum), `amberink` `#A9741A` (amber readable on cream), `ink` `#1F1B18`,

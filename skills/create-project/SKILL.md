@@ -8,8 +8,8 @@ description: "Creates a research project, or repairs its local and shared setup,
 ## Shared publication contract
 
 Before writing shared records, read `lab-knowledge/references/record-contract.md` from the
-installed skills directory and the live MCP schema. Use the already authorized scope,
-resolve the existing destination, and verify stored content. Keep failed publications pending.
+installed skills directory. Resolve the existing destination in the tree, verify what is already
+written there, and keep failed publications pending.
 
 The rules every write into the lab base must satisfy are in one place and are not
 restated anywhere: `~/.claude/skills/lab-knowledge/references/canon.md`, mirrored from
@@ -54,7 +54,7 @@ Create the private working layer first. For a Brain Lab project, continue with
 4. **Файловая система** — `~/brainlab/<направление>/<тема>/`. Папка без README — тоже
    существующий проект, просто заброшенный.
 5. **Задачи в GitLab** — открытые задачи работ темы и группы `ops`: работа часто начинается
-   задачей раньше, чем папкой. Yonote для этого больше не смотрят, он отключён 02-10-2026.
+   задачей раньше, чем папкой.
 
 Нашлось похожее — **остановиться и показать владельцу**: что нашлось, где, чем похоже и чем
 отличается. Решает он. Ни одного из пяти мест не пропускать молча: «я посмотрел по имени, не нашёл»
@@ -93,7 +93,7 @@ Write the project card to the vault path resolved from `obsidian-projects.json`.
 - linked participant cards already confirmed by the user;
 - local repository paths for private use;
 - literature links already present in the vault;
-- a `Shared systems` section reserved for stable Lab Knowledge and Yonote links.
+- a `Shared systems` section with the work's GitLab repository and its Overleaf manuscript.
 
 The vault owner is the default project lead. Do not name him in the card, do not link a person
 card for him, and do not list him under `участники` — write only the other participants. Name a
@@ -110,9 +110,8 @@ finished, and everything before it — `статус/идея`, `статус/п
 `статус/активный`, `статус/почти-готово`, `статус/подано` — is an active project.
 
 Register the project in the Codex `obsidian-projects.json` without replacing unrelated entries.
-Any optional Claude registry is a compatibility mirror, never the canonical mapping. Local
-paths belong only in the private Obsidian card and agent config. Never publish them to Lab
-Knowledge or Yonote.
+Local paths belong only in the private card and the agent config: the tree is the same on no
+other machine, so a path published into the base is noise for everyone who reads it.
 
 Give the vault folder its icon and colour, the way every other project folder has one. Both
 plugins live in `<vault>/.obsidian/plugins`:
@@ -131,12 +130,10 @@ colour to appear, and write both files while Obsidian is idle.
 Register the project in the Brain Call catalogue so it can be picked when recording a call:
 append one entry to `~/brainlab/agents/claude-brainlab/services/lab-knowledge/data/projects.json`
 with `slug`, unique `public_code`, `legacy_labels` (the filesystem folder name), `display_title`,
-an existing `direction`, `summary`, `problem`, `approach`, `status`, `leads`, `members`. Omit the
-`lab_knowledge_project_id`, `lab_knowledge_url`, and `yonote` keys until provisioning returns
-them.
+an existing `direction`, `summary`, `problem`, `approach`, `status`, `leads`, `members`.
 
-A paper also needs a research theme: `theme` and `theme_slug`, taken from an existing theme
-(`list_themes` on the Lab Knowledge MCP shows the ten of them). The theme is the home of
+A paper also needs a research theme: `theme` and `theme_slug`, taken from an existing theme —
+the themes are the directories of the tree, `~/brainlab/<area>/<theme>/`. The theme is the home of
 knowledge in the shared base, so a paper without one leaves its hypotheses invisible to every
 question asked at the level of a research area. When no theme fits, use the `Прочее` theme of
 the matching direction (`misc-matrix`, `misc-lora`) rather than inventing a new one, and say so
@@ -144,37 +141,36 @@ to the owner: a new theme is his call. The onboarding scripts pass the theme int
 entry, so nothing has to be remembered here; a project without a theme makes provisioning say
 so out loud.
 
-Provisioning then puts the project page **inside its theme card** in Yonote: the collection
-root holds theme cards, and a page created there stands next to them and has to be moved by
-hand. The card is found by the theme name, and its address is remembered on the theme row. When
-the theme is declared but its card does not exist in that collection, provisioning refuses and
-names the remedy rather than dropping the page at the root; create the card, or pass
-`allow_root_page` when the root is what you actually want. Participants missing from the catalogue go into the owner's own
+Participants missing from the catalogue go into the owner's own
 `~/.config/brain-call/directory.json` under `people` (and `aliases` when the first name is
 unambiguous), never hardcoded into the shared repository. Verify with
 `brain_call_directory.offered_projects` that the new slug is actually offered.
 
-## 3. Bind Brain Lab projects
+## 3. Create the work in the base
 
-For a Brain Lab project, load and execute `lab-project-onboarding` after the private workspace
-exists. Pass it the confirmed title, slug, project code, collection, leads, members, status,
-paper/repository sources, description inputs, and the private hub location.
+A work of the base is one GitLab repository inside its theme group, and the local clone lives in
+the tree at `~/brainlab/<area>/<theme>/<work>`. Nothing else binds them: the path is the binding.
 
-The onboarding result must provide stable references for:
+1. Create the project in the theme group of `brainlab` (the lead and the lab get access by the
+   group, so no per-repository grant is needed).
+2. Clone it into the tree at its path, next to the other works of that theme.
+3. Write the root `README.md`: the title, one paragraph of what the work is about, the line
+   `**Ведёт** [Name](<GitLab profile>)` — the lead's login is what every proposal is assigned to
+   — and the participants.
+4. Configure the clone so a push opens a proposal:
+   `git config --add push.pushOption merge_request.create` and
+   `git config --add push.pushOption merge_request.assign=<lead login>`.
+5. The first claims are folders: `claims/<CODE>/README.md`. For a work that already exists on
+   disk with a manuscript, `services/scripts/claims/new_work.py` builds the skeleton from the
+   paper instead of writing it by hand.
 
-- the shared Lab Knowledge project;
-- the human-facing Yonote project page;
-- the named Yonote Kanban, provisioned `participants_only`.
-
-Write those returned references into the private project card. Do not store a shared Yonote
-token, duplicate tasks, hypotheses, evidence, or decisions in Obsidian.
+Tasks live as issues in that same repository, and the session-start hook reads them back.
 
 ## 4. Verify and report
 
-Verify the local folders, repository state, Obsidian mapping, and every returned shared ID/link.
-For lab projects, rerun the shared resolution step to prove it returns the same project, page,
-and board rather than creating duplicates. Report created, reused, skipped, and blocked items
-separately.
+Verify the local folders, the repository state and the clone's remote. For a lab work, check that
+the path in the tree matches the GitLab path, that the README names the lead, and that a push
+opens a proposal assigned to them. Report created, reused, skipped, and blocked items separately.
 
 ## Safety
 
@@ -184,6 +180,9 @@ separately.
 - Never create a second writable source for a task or shared research object.
 - Stop after a permission error; do not retry with broader credentials.
 
-## Project tasks assigned to the human owner
+## Tasks assigned to the human owner
 
-Before performing Yonote project tasks, read `lab-knowledge/references/yonote-tasks.md` from the installed skills directory. Work only on tasks assigned to the confirmed human owner, preserve the human assignee and original task ID, and verify the live binding and update capabilities. Keep the project page and board links alongside GitHub/Overleaf in the private project context and link it from agent instructions.
+Tasks are issues in the work's own GitLab repository. Work only on issues assigned to the
+confirmed human owner, keep the assignee and the issue number, and name in the issue body the
+claim it affects — that is what ties a task to knowledge. Keep the repository link alongside
+GitHub and Overleaf in the private project context.

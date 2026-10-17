@@ -95,7 +95,6 @@ Muon хуже». Голова отвечает, но только пока че�
 | Что | Инструменты | Зачем существует |
 |---|---|---|
 | люди и ключи | `invite_member`, `issue_agent_token`, `list_agent_tokens`, `revoke_agent_token` | по ключу видно, кто записал; ключей у человека может быть несколько |
-| привязки к Yonote | `upsert_yonote_task`, `list_yonote_tasks`, `preview_yonote_task`, `provision_project_workspace` | задачи лаборатории живут в Yonote, база держит только ссылку |
 | внешние проекции | `upsert_projection_ref` | стабильная публичная ссылка на запись во внешней системе |
 | жизненный цикл работы | `set_project_status`, `delete_project`, `set_project_links`, `set_project_theme`, `set_project_open_questions` | состояние и обвязка работы, а не её содержание |
 | источники | `publish_source_note`, `upsert_call_note` | откуда запись взялась: созвон, заметка, статья |

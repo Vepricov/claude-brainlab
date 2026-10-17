@@ -198,7 +198,6 @@ def main(argv: list[str] | None = None) -> int:
         "source_sha256": {path: hashlib.sha256((root / path).read_bytes()).hexdigest()
                           for check in checks for path in check.files if (root / path).is_file()},
         "not_covered": [
-            "Live MCP and Yonote integration; waiting for the component owner's stable contract",
             "Actual Brain Call recording, analysis and publication",
             "Browser interaction and the published website",
             "Successful durable memory writes; hook tests stub automatic ingestion",

@@ -105,7 +105,7 @@ The core research loop: get a paper into your library with a real, audited note.
   skill. Private and unfinished hypotheses stay in Obsidian.
   *Fires on:* "Ask Lab / has anyone tested this / занеси проект в базу / оформи как работу".
 - **`call-notes`** ⭐ — Turn meeting notes into canonical records: personal actions go to
-  the private note, shared project actions to Yonote, and approved research objects to Lab
+  the private note, shared project actions to the work's GitLab issues, and approved research objects to the
   Knowledge. It records stable links without task or hypothesis mirrors. *Fires on:* "write up this call / tasks from the call".
 - **`code-ingest`** ⭐ — One-time deep analysis of an external repo (GitHub URL or path)
   into a structured set of Obsidian Code-library notes mapping how it works (entrypoint,

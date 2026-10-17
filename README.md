@@ -173,7 +173,7 @@ here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 - **`create-project`** — set up the private repository and the Obsidian hub. Turning the accumulated project into a work of the shared base is part of `lab-knowledge`: claims as folders in the work's own GitLab repository, entering by a merge request a human merges.
 - **`lab-knowledge`** — the one skill for the shared base. It reads research context from the local clone of a work with plain `git` and `grep` (the service in front of it was removed on 07-10-2026), and a change enters by a merge request a human merges. Private drafts stay in the work's
   git-excluded `notes/`.
-- **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc per-project task file convention.
+- **`call-notes`** — keeps the raw meeting narrative in the work's git-excluded `calls/raw/`, publishes approved research records to the base, and files laboratory tasks as issues in the work's own GitLab repository. This replaces the old ad-hoc per-project task file convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
 - **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for talks, posters and promotion content.
@@ -402,7 +402,6 @@ Most paths and identifiers are driven by `.env`. To change a hook, skill, or rul
 | Obsidian | | recommended (Obsidian-routed skills no-op without it) |
 | Zotero + zotero-mcp | | recommended for `paper-ingest` / `want-2-read` |
 | MemPalace | | recommended for cross-session memory |
-| Yonote API | | recommended for shared project tasks and project views |
 | Access to the lab GitLab | | needed only to clone a work; the toolkit installs and runs without it |
 
 ## Credits

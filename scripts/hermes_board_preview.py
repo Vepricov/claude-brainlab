@@ -2,7 +2,7 @@
 """Render a private, offline preview of a read-only Hermes board snapshot.
 
 Input: {captured_at, boards: [{slug, tasks: [{id, title, status, ...}]}]}.
-This renderer does not connect to Hermes, publish to Yonote, or mutate task state.
+This renderer does not connect to Hermes, publish anywhere, or mutate task state.
 """
 import argparse
 import html

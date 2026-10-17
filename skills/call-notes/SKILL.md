@@ -28,15 +28,17 @@ independent extraction lanes, adjudicate their output, and run a skeptical revie
 
 | Item | Canonical destination |
 |---|---|
-| Raw transcript, personal context, unfinished interpretation | Private Obsidian meeting note |
-| Laboratory task, owner, deadline, dependency | Bound Yonote project Kanban |
-| Approved shared hypothesis | Lab Knowledge MCP hypothesis |
-| Experiment protocol or run | Lab Knowledge MCP experiment |
-| Observed result with provenance | Lab Knowledge MCP evidence |
-| Proposed conclusion | Lab Knowledge MCP decision proposal |
+| Raw transcript, personal context, unfinished interpretation | `<work>/calls/raw/`, excluded from git |
+| Agreed narrative of the call | `<work>/calls/<DD-MM-YYYY>.md`, merged like anything else |
+| Laboratory task, owner, deadline, dependency | an issue in the work's GitLab repository |
+| Approved shared claim | `claims/<CODE>/README.md` in the work |
+| Experiment protocol or run | `claims/<CODE>/runs/<E-CODE>.md`, written by `lab_run.py` |
+| Observed result with provenance | under its claim, with the run it came from |
+| Proposed conclusion | the claim's verdict, merged by a human |
 
-Do not create project task checkboxes in Obsidian. Do not mirror a Yonote task as another task
-file. A hypothesis and a task to test it are distinct objects linked by stable IDs.
+Do not create project task checkboxes in notes, and do not mirror an issue as a task file. A claim
+and the task to test it are distinct objects: the issue names the claim it affects, and that is the
+whole link.
 
 ## Accepted inputs and transcription
 
@@ -69,28 +71,25 @@ python3 scripts/normalize_transcript.py /path/to/call.txt \
   --speaker "Confirmed Name" > "$normalized"
 ```
 
-The source audio, raw transcript, and normalized transcript remain private. Do not upload them to
-Lab Knowledge or Yonote.
+The source audio, raw transcript, and normalized transcript remain private: they live in
+`<work>/calls/raw/`, which every clone excludes from git. Do not push them anywhere.
 
 ## Workflow
 
-### 1. Resolve the bound project
+### 1. Resolve the work
 
-Resolve the current project through `~/.Codex/obsidian-projects.json` and the private hub card.
-If the registry is absent, follow the active `AGENTS.md` filesystem-to-vault routing rules; do
-not silently substitute a Claude registry as the source of truth.
-Read its stable Lab Knowledge project reference and Yonote page/board links. Confirm that the
-named board belongs to the same project. If the binding is absent, use `lab-project-onboarding`
-before preparing shared writes.
+The work is the directory you are in: `~/brainlab/<area>/<theme>/<work>`. There is no registry to
+consult and no binding to verify — the vault is the lab tree, so the path is the project. Read the
+work's `README.md` for who leads it and `claims/` for what it claims.
 
 Resolve participants only against confirmed project members. Ask one focused question when a
 project or person is ambiguous. Never search globally and guess.
 
 ### 2. Hydrate a bounded context packet
 
-Read the current project context, hypotheses, related Lab Knowledge search results, confirmed roster,
-and the relevant paper sections. Read Yonote task state only through an authorized integration. Give the
-same bounded packet to every analysis lane. Do not expose unrelated private notes.
+Read the work's `README.md`, its claims, the relevant paper sections and the open issues of its
+GitLab repository. Give the same bounded packet to every analysis lane. Do not expose unrelated
+private notes.
 
 For long calls, segment at topic or project boundaries with a short overlap and retain global segment
 IDs. Do not split blindly by token count or lose cross-segment decisions.
@@ -114,10 +113,9 @@ one typed `CallBundle` with private minutes, shared candidates, blocked items, a
 
 ### 5. Check duplicates and permissions
 
-Use Lab Knowledge search and project context to find semantically related shared records before
-creating any hypothesis, experiment, evidence, or decision. Use the configured server-side
-Yonote broker to resolve existing board items. The client must never read or store a shared
-Yonote API token.
+Before writing a claim, a run or a task, look for what is already there: `grep` the work's
+`claims/`, read its open issues, and check the open merge requests. A second claim about the same
+thing is the usual way this skill makes a mess.
 
 Treat access denial as final. Do not infer hidden records from result counts, timing, IDs, or
 different error messages.
@@ -127,9 +125,9 @@ different error messages.
 Show one compact batch preview:
 
 ```text
-Obsidian private: meeting summary and private context
-Yonote tasks: title, project, assignee, due date, related Lab Knowledge ID
-Lab Knowledge: type, claim/result, project, provenance, duplicate candidate
+private: meeting summary and private context → <work>/calls/
+issues: title, assignee, due date, the claim each one affects
+base: type, claim/result, work, provenance, duplicate candidate
 ```
 
 Mark unresolved fields, source spans, confidence, and suspected duplicates. Obtain explicit approval
@@ -141,16 +139,15 @@ individual items without re-approving unchanged items.
 Write a newest-first `DD-MM-YYYY` block to the private project meeting note. Store only concise
 narrative and stable references to shared objects.
 
-Create laboratory tasks only if the live MCP schema advertises a server-side Yonote task
-operation for the bound Kanban. The current project provisioning operation creates bindings but
-does not provide task CRUD. If task CRUD is absent, mark the task batch `blocked/manual`, give the
-exact board link, and do not claim that tasks were created. Never use a client-side shared token.
+Laboratory tasks are issues in the work's own GitLab repository: title, the claim they affect, the
+assignee, the due date. The session-start hook reads them back, so a task written there is a task
+the next session sees.
 
-For Lab Knowledge, do not call anything: the base is a git repository of the work, cloned
-locally. A claim is the folder `claims/<CODE>/`; a series, a run, a derivation and a figure are
-files inside it. Edit the files, then `lab pr` and `lab checks`; a person merges, and the merge
-is the write. Direct MCP writes are refused by design. Preserve source provenance in the page
-itself, and do not change a claim's status just because a number was added under it.
+For the base itself there is nothing to call: it is the git repository of the work, cloned locally.
+A claim is the folder `claims/<CODE>/`; a series, a run, a derivation and a figure are files inside
+it. Edit the files in place, commit, and `git push` — in a work that opens the merge request itself.
+A person merges, and the merge is the write. Preserve source provenance in the page itself, and do
+not change a claim's status just because a number was added under it.
 
 Call a shared create/update only when the destination can persist and query the normalized source hash
 and candidate idempotency key, or exposes an equivalent server-side idempotency parameter. Otherwise

@@ -22,7 +22,7 @@ archive job as part of setup.
 Hermes has a deterministic, read-only board projection in each project's own
 `Knowledge/Hermes/`. A system scheduler refreshes it every 15 minutes without an LLM.
 Keep source task IDs and statuses. Private Hermes steps are not a copy of the shared
-Yonote board. SSH access and project routes are configured by the recipient.
+GitLab issues of the work. SSH access and project routes are configured by the recipient.
 
 The following instructions are a legacy 2.2.1 reference, not the current starter recipe.
 

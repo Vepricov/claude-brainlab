@@ -122,9 +122,9 @@ PLACES = {
 #: «записывать нечего» и не написал в базу ни строки. Признак теперь — «интересно
 #: лаборатории», а не «это наука».
 INSIDE_LAB = {
-    "handbook": "An instruction other people need in order to work: how a tool works, how "
+    "brainlab/handbook": "An instruction other people need in order to work: how a tool works, how "
                 "a pipeline is wired, a trap anyone would hit.",
-    "journal": "The way the laboratory WORKS changed: a new rule, a new place, a cancelled "
+    "brainlab/journal": "The way the laboratory WORKS changed: a new rule, a new place, a cancelled "
                "rule, a tool switched off or replaced.",
     #: Отсечка «чем это НЕ является» добавлена 13-10-2026 и не угадана, а замерена. Вопрос
     #: говорил, что грант такое, и ни слова о том, чем он не является, поэтому классификатор
@@ -134,17 +134,21 @@ INSIDE_LAB = {
     #: замер, починка): 0.71/0.59/0.53 при старой формулировке и 0.12/0.10/0.10 при этой.
     #: Отдельно проверено, что убрать из текста слова про обязательство и срок НЕ помогает
     #: (0.69/0.67/0.61): помогает только явный запрет.
-    "grants": ("A grant: its application, its report, or an obligation owed to the FUNDING "
+    "ops/grants/a2-pro": ("A grant: its application, its report, or an obligation owed to the FUNDING "
                "BODY under a specific named grant. An internal deadline, a run that must "
                "finish, a gate that must pass or a promise inside the team is NOT a grant."),
-    "management": "An obligation to an OUTSIDE party: a customer, a stage, an acceptance, "
-                  "intellectual property paperwork, a report owed to someone.",
+    #: Отсечка добавлена 17-10-2026: рецензия владельца для ICLR дала 0.72 при `lab` 0.28,
+    #: потому что «a report owed to someone» читалось как любая работа со сроком.
+    "ops/management": ("An obligation of the LABORATORY to an OUTSIDE party: a customer, a "
+                   "stage, an acceptance, intellectual property paperwork, a report owed "
+                   "under a contract. A peer review a lab member writes for a conference or "
+                   "a journal, or any other personal service with a deadline, is NOT this."),
     #: Та же отсечка и по той же причине: на теоретическом ходе вопрос давал 0.51, то есть
     #: попадал в полосу, которую пропускает удержание. С запретом 0.36.
-    "education": ("Students and courses: who does what, what was handed over, what was agreed "
+    "ops/education": ("Students and courses: who does what, what was handed over, what was agreed "
                   "WITH A NAMED STUDENT. Explaining something to the owner or to another agent "
                   "is NOT this."),
-    "communications": "Public text: an announcement, a post, a talk, anything that will be "
+    "ops/communications": "Public text: an announcement, a post, a talk, anything that will be "
                       "read outside the laboratory.",
 }
 
@@ -168,14 +172,70 @@ BASE_URL = os.getenv("BRAINLAB_GIT_URL", "https://68-183-24-188.sslip.io:9445")
 #: Хост нужен отдельно: клон узнаётся по нему в `.git/config`. Второй литерал в коде
 #: означал бы, что у студента с другим адресом базы клоны не находятся молча.
 HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
-REPO_OF = {
-    "handbook": "brainlab/handbook",
-    "journal": "brainlab/journal",
-    "grants": "ops/grants/a2-pro",
-    "management": "ops/management",
-    "education": "ops/education",
-    "communications": "ops/communications",
-}
+
+#: Служебные репозитории описывают себя сами. Владелец 17-10-2026, после того как рецензия
+#: для ICLR ушла в `ops/management`: «мы во всех таких репо опишем про что они (коротко) и
+#: потом джев уже будет оттуда читать и понимать про что это». Описание лежит в поле
+#: `description:` во frontmatter README и говорит, что туда кладут и что НЕ кладут: вторая
+#: половина и лечит ложные места, это замерено на `grants` и `management`. Тексты в
+#: `INSIDE_LAB` выше остаются запасными, для клона без описания и для несклонированного.
+SLUZHEBNYE_KORNI = ("brainlab/handbook", "brainlab/journal", "brainlab/servers")
+
+
+def _opisanie(papka: Path) -> str:
+    """Поле `description:` из frontmatter README, или пусто."""
+    try:
+        lines = (papka / "README.md").read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return ""
+    if not lines or lines[0].strip() != "---":
+        return ""
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        if line.startswith("description:"):
+            return line.split(":", 1)[1].strip().strip("\"'")
+    return ""
+
+
+def mesta_vnutri() -> dict[str, str]:
+    """Служебные места базы: адрес → чем это место считают его хозяева."""
+    out: dict[str, str] = {}
+    for adres, put in sorted(v_dereve().items()):
+        if adres.startswith("ops/") or adres in SLUZHEBNYE_KORNI:
+            text = _opisanie(Path(put).expanduser()) or INSIDE_LAB.get(adres, "")
+            if text:
+                out[adres] = text
+    for adres, text in INSIDE_LAB.items():
+        out.setdefault(adres, text)
+    return out
+
+
+def gde(cwd: str) -> dict:
+    """Где идёт сессия, и о чём текущая работа: её абзац «Коротко.» из README.
+
+    До 17-10-2026 классификатор каталога не видел и судил по одному тексту хода, поэтому
+    рецензия, которую писали в `review/`, выглядела для него как отчёт лаборатории.
+    """
+    try:
+        here = Path(cwd or ".").expanduser().resolve()
+        base = DEREVO.resolve()
+    except OSError:
+        return {}
+    if here != base and base not in here.parents:
+        return {"folder": "outside the laboratory tree"}
+    parts = here.relative_to(base).parts if here != base else ()
+    out = {"folder": "/".join(parts) or "(root of the laboratory tree)"}
+    if len(parts) >= 3 and parts[0] in NAPRAVLENIYA and parts[2] != "literature":
+        try:
+            text = (base.joinpath(*parts[:3]) / "README.md").read_text(encoding="utf-8")
+        except OSError:
+            return out
+        for para in text.split("\n\n"):
+            if para.startswith("**Коротко.**"):
+                out["current_work"] = " ".join(para.split())[:700]
+                break
+    return out
 
 #: ГЛАВНЫЙ ВОПРОС ПРО РАБОТУ. Владелец 03-10-2026: прогон пишет код сам и агента будить не
 #: надо; будить надо, когда НАБОР прогонов отвечает на один вопрос и по нему можно сделать
@@ -510,18 +570,25 @@ def trim(text: str) -> str:
 
 def ask(text: str, api_key: str, recorded: list[str],
              clone: dict | None = None, in_base: list[str] | None = None,
-             structure: dict | None = None) -> dict:
+             structure: dict | None = None, inside: dict | None = None,
+             where: dict | None = None) -> dict:
     """Один запрос, все вопросы сразу: так в двенадцать раз дешевле, чем по вызову на вопрос.
 
     Тип называется `noul`, не `bool`: API отвечает 400 «Expected 'noul' | 'choice' | 'score'».
     И отдаёт он не да/нет, а вероятность — порог ставим мы.
     """
     questions: dict[str, dict] = {}
-    for group in (PLACES, INSIDE_LAB, READY, AXIS):
+    for group in (PLACES, READY, AXIS):
         for name, description in group.items():
             questions[name] = {"type": "noul",
                                "instructions": SUBJECT_RULE + description,
                                "criteria": {"true": "yes", "false": "no"}}
+    for name, description in (inside or INSIDE_LAB).items():
+        questions[name] = {"type": "noul", "instructions": SUBJECT_RULE
+                           + f"Something from this turn belongs in the laboratory repository "
+                           f"`{name}`. What its owners keep there, and what they do not: "
+                           + description,
+                           "criteria": {"true": "yes", "false": "no"}}
     questions["вид"] = {"type": "choice", "instructions":
         "If this turn produced something that belongs in a WORK of the lab base (not the "
         "handbook, not the journal), which kind of record is it? Pick `none` otherwise.",
@@ -542,6 +609,8 @@ def ask(text: str, api_key: str, recorded: list[str],
         state["base_contents"] = structure
     if clone:
         state["work_state"] = clone
+    if where:
+        state["session_place"] = where
     body = json.dumps({"model": MODEL, "state": state,
                        "questions": questions}).encode()
     request = urllib.request.Request(URL, data=body, headers={
@@ -615,7 +684,7 @@ def summary() -> None:
 
 def decision(answer: dict, turns: int, past: int,
              clone: dict | None = None, cwd: str = "",
-             held: list[str] | None = None) -> dict:
+             held: list[str] | None = None, inside_places: dict | None = None) -> dict:
     """Прерывать или нет. Решают ТРИ условия, и это главное в замысле.
 
     Важность и готовность — разные вещи. Пока тема обсуждается, вывод ещё переедет, и запись
@@ -657,7 +726,7 @@ def decision(answer: dict, turns: int, past: int,
     # Прежде подместа считались совсем независимо и грант при 0.65 попадал в подсказку
     # при невыбранной базе; потом зависели целиком и журнал при 0.89 терялся.
     ALONE = 0.7
-    inside = [one_item for one_item in INSIDE_LAB
+    inside = [one_item for one_item in (inside_places or INSIDE_LAB)
               if (chosen(one_item) if "lab" in places else verdict(one_item) >= ALONE)]
     if inside and "lab" not in places:
         places.append("lab")
@@ -882,12 +951,9 @@ def hint(verdict: dict) -> str:
         # Все места, а не только научные. До 08-10-2026 здесь стояли два: справочник и
         # журнал, и агент с грантовой или договорной работой не слышал про свой адрес
         # вовсе — он честно отвечал «записывать нечего» и молчал сутками.
-        names = {"handbook": "в справочник", "journal": "в журнал лаборатории",
-                 "grants": "в гранты", "management": "в обязательства наружу",
-                 "education": "в студентов и курсы", "communications": "в публичные тексты"}
-        for one in REPO_OF:
-            if one in verdict["внутри_лабы"]:
-                chunks.append(f"{names[one]} (`{REPO_OF[one]}`)")
+        # С 17-10-2026 место называется своим адресом: что в нём лежит, агент прочтёт в
+        # его README, а перевод «в обязательства наружу» был нашим пересказом этого README.
+        chunks += [f"`{one}`" for one in verdict["внутри_лабы"]]
         parts.append("в базу лаборатории" + (f" ({', '.join(chunks)})" if chunks else ""))
     wing = verdict.get("крыло") or ""
     if "mempalace" in verdict["места"]:
@@ -904,10 +970,8 @@ def hint(verdict: dict) -> str:
     tail = ""
     if "lab" in verdict["места"]:
         est = v_dereve()
-        puti = [est[REPO_OF[one]] for one in REPO_OF
-                if one in verdict["внутри_лабы"] and REPO_OF[one] in est]
-        net = [REPO_OF[one] for one in REPO_OF
-               if one in verdict["внутри_лабы"] and REPO_OF[one] not in est]
+        puti = [est[one] for one in verdict["внутри_лабы"] if one in est]
+        net = [one for one in verdict["внутри_лабы"] if one not in est]
         if puti:
             tail = " Пиши в " + ", ".join(f"`{put}`" for put in puti) + "."
         if net:
@@ -965,7 +1029,9 @@ def main() -> None:
         clone = clone_state(payload.get("каталог") or "")
         in_base = recorded_in_base(payload.get("каталог") or "")
         structure = structure_of_clones(payload.get("каталог") or "")
-        answer = ask(text, k, payload.get("записанное") or [], clone, in_base, structure)
+        inside = mesta_vnutri()
+        answer = ask(text, k, payload.get("записанное") or [], clone, in_base, structure,
+                     inside, gde(payload.get("каталог") or ""))
     except Exception as error:          # сеть, ключ, разбор — любая беда в журнал
         give_up(f"{type(error).__name__}: {error}"[:200])
         return
@@ -973,7 +1039,7 @@ def main() -> None:
     verdict = decision(answer, int(payload.get("ходов") or 0),
                   int(payload.get("прошлое") or 0), clone,
                   str(payload.get("каталог") or ""),
-                  payload.get("удержанное") or [])
+                  payload.get("удержанное") or [], inside)
     reply = answer.get("answers") or {}
     record.update({
         "работа": (clone or {}).get("work"),
@@ -981,7 +1047,7 @@ def main() -> None:
         "ось": verdict["ось"],
         "вид": verdict["вид"],
         "места": {one_item: round(float((reply.get(one_item) or {}).get("noul") or 0), 2)
-                  for one_item in list(PLACES) + list(INSIDE_LAB)},
+                  for one_item in list(PLACES) + list(inside)},
         "выбраны": verdict["места"] + verdict["внутри_лабы"],
         "оценка": verdict["оценка"], "устоялось": verdict["устоялось"], "повтор": verdict["повтор"],
         "прерывать": verdict["прерывать"], "почему": verdict["почему"],

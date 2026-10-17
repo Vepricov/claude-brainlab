@@ -17,13 +17,22 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
 import sys
 
-#: Корни, которых больше нет. Хранилище в iCloud сюда не входит: пока владелец не перевёл
-#: Obsidian целиком, читать и писать туда законно.
+#: Корни, которых больше нет.
 KORNI = ("/Users/andrey/Staff", "/Users/andrey/Papers", "/Users/andrey/Projects",
          "~/Staff", "~/Papers", "~/Projects",
          "$HOME/Staff", "$HOME/Papers", "$HOME/Projects")
+
+#: Прежнее хранилище в iCloud. 17-10-2026 владелец перевёл Obsidian целиком на дерево
+#: лаборатории: «старый, который в iCloud, вообще менять не надо», «все должно работать
+#: только на моем сетапе». ЧИТАТЬ оттуда можно и нужно — там лежат заметки, которые ещё не
+#: перенесены, — а писать нельзя: запись в хранилище, которое владелец не открывает, это
+#: работа, сделанная в стол. Один вход оставлен нарочно: `.stignore` — служебный файл
+#: синхронизации, им как раз и останавливают обмен с этим хранилищем.
+ARHIV = "/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917"
+ARHIV_MOZNO = (f"{ARHIV}/.stignore",)
 
 #: Команды, которые создают или меняют файлы. `ls`, `cat`, `grep`, `find` сюда не входят.
 PISHUSHIE = {"mkdir", "touch", "cp", "mv", "rsync", "tee", "install", "dd",
@@ -46,7 +55,15 @@ def celi(command: str) -> list[str]:
     """
     out: list[str] = []
     for kusok in re.split(r"(?:&&|\|\||[;|\n])", HEREDOC.sub(" ", command)):
-        slova = [s.strip("'\"`,:") for s in re.split(r"[\s()]+", kusok) if s]
+        # Разбор кавычками, а не пробелами: в прежнем хранилище путь содержит пробелы
+        # («Mobile Documents»), и дробление по пробелу превращало его в четыре обрывка,
+        # ни один из которых не начинался с корня. 17-10-2026 на этом `cp` в хранилище
+        # проходил мимо сторожа. Если кавычки в команде не сходятся, остаётся прежний
+        # разбор: пропустить команду хуже, чем разобрать её грубо.
+        try:
+            slova = [s.strip("'\"`,:") for s in shlex.split(kusok, posix=True) if s]
+        except ValueError:
+            slova = [s.strip("'\"`,:") for s in re.split(r"[\s()]+", kusok) if s]
         pishem = False
         for i, slovo in enumerate(slova):
             goloe = slovo.lstrip("0123456789")
@@ -87,6 +104,15 @@ def main() -> int:
                       f"{KUDA} Если это чтение архива — читай, но не пиши: архивы лежат "
                       f"в `~/archive`.", file=sys.stderr)
                 return 2
+        tochnyj = put.replace("~", "/Users/andrey", 1) if put.startswith("~") else put
+        if (tochnyj == ARHIV or tochnyj.startswith(ARHIV + "/")) \
+                and tochnyj not in ARHIV_MOZNO:
+            print("Прежнее хранилище в iCloud — читальня, писать в него нельзя: владелец "
+                  f"его не открывает, и запись уедет в стол. {KUDA} Литература темы — "
+                  "`~/brainlab/<направление>/<тема>/literature`, доска чтения — "
+                  "`~/brainlab/personal/operon`, общие заметки — "
+                  "`~/brainlab/personal/general`.", file=sys.stderr)
+            return 2
     return 0
 
 

@@ -154,9 +154,18 @@ the tree at `~/brainlab/<area>/<theme>/<work>`. Nothing else binds them: the pat
 1. Create the project in the theme group of `brainlab` (the lead and the lab get access by the
    group, so no per-repository grant is needed).
 2. Clone it into the tree at its path, next to the other works of that theme.
-3. Write the root `README.md`: the title, one paragraph of what the work is about, the line
-   `**Ведёт** [Name](<GitLab profile>)` — the lead's login is what every proposal is assigned to
-   — and the participants.
+3. Write the root `README.md`: the title, one paragraph of what the work is about, and two
+   people lines. **Ask the owner who leads the work before writing them** — do not guess from
+   who asked for the project:
+
+   ```
+   **Ведут** [Name](/login), [Name](/login)
+   **Команда** [Name](/login), [Name](/login)
+   ```
+
+   `Ведут` carries the leads; there may be two, and every proposal is assigned to the first.
+   `Команда` lists the students who work on it. Nobody else goes in either line: other leads
+   and people who only read have access, and that is all there is to say about them.
 4. Configure the clone so a push opens a proposal:
    `git config --add push.pushOption merge_request.create` and
    `git config --add push.pushOption merge_request.assign=<lead login>`.
@@ -165,6 +174,26 @@ the tree at `~/brainlab/<area>/<theme>/<work>`. Nothing else binds them: the pat
    paper instead of writing it by hand.
 
 Tasks live as issues in that same repository, and the session-start hook reads them back.
+
+## 3b. Create a theme, if the work needs a new one
+
+A theme is a GitLab group inside an area, and **a theme without an owner is a theme whose
+access requests nobody can answer**: in GitLab only an owner may manage a group's members, and
+a maintainer gets `403` on its access requests. So ask the same question before creating it,
+and never create a theme without an answer:
+
+> Кто ведёт эту тему? Их может быть несколько. Главный по теме — владелец её группы: ему
+> приходят заявки на доступ в тему, и он решает, кого в неё принять.
+
+Then set them, and the generated theme page will name them:
+
+```bash
+gitlab_people.py главные --тема <area>/<theme> --отвечает <login>,<login>
+```
+
+Requests go to the leads of the place they were sent to: a request into a work reaches the
+work's leads, into a theme reaches the theme's owners, and into the base itself reaches the lab
+owners. If a place has no leads, the request climbs to the theme above it.
 
 ## 4. Verify and report
 

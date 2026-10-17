@@ -42,10 +42,17 @@ def safe_json_loads(raw):
     return json.loads(raw)
 
 
+# The Zotero local API always lives on localhost. urllib picks up HTTP(S)_PROXY
+# from the environment (and, on Windows, the system proxy settings) and applies it
+# to 127.0.0.1 too, which fails with RemoteDisconnected behind a VPN or TUN proxy.
+# An opener with proxies disabled avoids that; it is a no-op when none are set.
+_LOCAL_OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
 def api_get(url: str):
     req = urllib.request.Request(url)
     req.add_header("User-Agent", "Mozilla/5.0 (paper-ingest)")
-    with urllib.request.urlopen(req, timeout=10) as resp:
+    with _LOCAL_OPENER.open(req, timeout=10) as resp:
         return safe_json_loads(resp.read())
 
 

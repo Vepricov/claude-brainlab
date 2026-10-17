@@ -1,0 +1,6 @@
+# Shell and Python sources must keep LF in the working tree on every platform.
+# On Windows with core.autocrlf=true they are checked out with CRLF, and a CRLF
+# shebang (carriage return after "#!/bin/bash") makes the script unrunnable
+# under git-bash and WSL.
+*.sh text eol=lf
+*.py text eol=lf

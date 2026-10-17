@@ -35,6 +35,13 @@ PLACEHOLDER = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
 #: ~/.claude» вырастал до 454 строк и в нём терялось главное.
 SKIP = {".DS_Store", "__pycache__", "synced", "disabled"}
 
+#: Файлы, которых в репозитории НЕТ НАРОЧНО. Свод правил базы — знание лаборатории: источник
+#: лежит в `brainlab/handbook/canon.md`, на машину его наливает `canon_sync.py --pull`, и в
+#: открытый репозиторий обвязки он не едет. Без этой строки проверка вечно показывала бы его
+#: как «есть только в ~/.claude», и настоящая находка тонула бы в шуме.
+TOLKO_DOMA = {Path("skills/lab-knowledge/references/canon.md"),
+              Path("rules/lab-canon.md")}
+
 
 #: Собранные файлы сравнивать незачем: PDF шаблона конференции пересобирается и побайтово
 #: не совпадает никогда, из-за чего четыре таких файла вечно висели в списке расхождений.
@@ -89,14 +96,41 @@ def walk(repo: Path):
             yield relative
 
 
+#: Где лежит САМ репозиторий. Это не папка над скриптом: `install/setup.sh` копирует его в
+#: `~/.claude/scripts/`, и оттуда `parents[1]` — это `~/.claude`, то есть проверка сравнивала
+#: установленную копию сама с собой и печатала «расхождений нет» всегда. Замерено 17-10-2026:
+#: молча пропущены три разошедшихся файла (`rules/lab.md`, `rules/checkpoint.md`,
+#: `scripts/jev_route.py`), причём свежее были копии в `~/.claude`.
+MESTA = (
+    Path(os.getenv("CLAUDE_BRAINLAB_REPO", "")).expanduser() if os.getenv("CLAUDE_BRAINLAB_REPO")
+    else None,
+    Path("~/brainlab/agents/claude-brainlab").expanduser(),
+    Path("~/claude-brainlab").expanduser(),
+)
+
+
+def repo_by_default() -> Path:
+    """Репозиторий, а не установленная копия. Своя папка в ответ не годится."""
+    svoya = Path(__file__).resolve().parents[1]
+    for mesto in MESTA:
+        if mesto and (mesto / "install" / "setup.sh").is_file() and mesto != HOME:
+            return mesto
+    return svoya
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true",
                         help="перенести расходящиеся файлы из репозитория в ~/.claude")
-    parser.add_argument("--repo", default=str(Path(__file__).resolve().parents[1]))
+    parser.add_argument("--repo", default=str(repo_by_default()),
+                        help="корень репозитория claude-brainlab")
     parser.add_argument("--verbose", action="store_true", help="перечислить отсутствующие")
     asked = parser.parse_args()
     repo = Path(asked.repo).resolve()
+    if repo == HOME.resolve():
+        print("нечего сравнивать: указана сама установленная копия `~/.claude`. "
+              "Укажи репозиторий через --repo или CLAUDE_BRAINLAB_REPO.")
+        return 2
     values = env_of(repo)
 
     differs: list[Path] = []
@@ -117,7 +151,7 @@ def main() -> int:
             relative = item.relative_to(HOME)
             if not item.is_file() or ignored(relative):
                 continue
-            if not (repo / relative).exists():
+            if not (repo / relative).exists() and relative not in TOLKO_DOMA:
                 only_home.append(relative)
 
     # Расходящиеся печатаются поимённо: только они означают, что две копии живут своей

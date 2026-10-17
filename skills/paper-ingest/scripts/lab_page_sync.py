@@ -13,6 +13,11 @@ import ssl
 import argparse, base64, json, os, re, shlex, shutil, subprocess, sys, tempfile
 from urllib.parse import quote
 import urllib.request, urllib.error
+import pathlib
+
+# Корень хранилища знает один модуль, см. `vault_paths`.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT as _VAULT  # noqa: E402
 
 # pdftoppm ставится из Homebrew и в PATH неинтерактивной оболочки его нет
 os.environ["PATH"] = os.environ.get("PATH", "") + ":/opt/homebrew/bin:/usr/local/bin"
@@ -31,24 +36,18 @@ def base():
     return open(URL_FILE).read().strip().rstrip("/")
 TOKEN_FILE = os.path.expanduser("~/.config/brainlab/git-token")
 def _vault():
-    """Хранилище лежит по-разному: у владельца в iCloud, на сервере копией в корне.
+    """Корень хранилища. С 16-10-2026 он один и тот же везде: дерево лаборатории.
 
-    Зашитый путь под Мак на do-vpn не существует, и всё, что опирается на заметки,
-    там молча не работает: 30-09-2026 из-за этого страница статьи не создавалась, а
-    сообщение винило корпус.
+    Прежде путей было три (iCloud на маке, `/root/shkodnik1917` на do-vpn, домашняя
+    копия), и выбирался тот, внутри которого лежала папка `Literature`. Такой папки
+    больше нет: разборы лежат в репозитории своей темы, `<направление>/<тема>/literature`.
     """
-    for путь in (os.path.expanduser(
-                     "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917"),
-                 "/root/shkodnik1917",
-                 os.path.expanduser("~/shkodnik1917")):
-        if os.path.isdir(os.path.join(путь, "Literature")):
-            return путь
-    return os.path.expanduser(
-        "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917")
+    return str(_VAULT)
 
 
 VAULT = os.environ.get("BRAINLAB_VAULT") or _vault()
-LIB = os.path.join(VAULT, "Literature")
+#: Единой папки разборов нет: темы собирает `vault_paths.temy()`.
+LIB = VAULT
 CACHE = os.path.expanduser("~/.cache/brainlab/fig-png")
 def lit_dir(repo):
     """Где внутри репозитория лежат страницы.

@@ -58,7 +58,12 @@ def build(destination: Path, owner: str, cache: Path | None = None,
     with tempfile.TemporaryDirectory(prefix='.obsidian-setup-', dir=destination.parent) as temp:
         staging = Path(temp) / 'vault'
         shutil.copytree(HERE / 'vault', staging)
-        for folder in ['personal/daily','Literature/_inbox','Projects','Staff','Operon/Archives','Operon/Projects','Operon/Tasks']:
+        # Раскладка та же, что в дереве лаборатории: личное лежит в `personal/`, а работы —
+        # в `<направление>/<тема>/<работа>`, и отдельных корней `Papers`/`Projects`/`Staff`
+        # больше нет (переезд 16-10-2026).
+        for folder in ['personal/daily', 'personal/literature/_inbox',
+                       'personal/operon/Archives', 'personal/operon/Projects',
+                       'personal/operon/Tasks']:
             (staging / folder).mkdir(parents=True, exist_ok=True)
         for path in staging.rglob('*'):
             if path.is_file():
@@ -86,7 +91,9 @@ def build(destination: Path, owner: str, cache: Path | None = None,
         try:
             from hermes_project_notes import write_project_notes
             snapshot = json.loads((HERE / 'examples/hermes-snapshot.json').read_text(encoding='utf-8'))
-            write_project_notes(staging, snapshot, {'example-project':'Papers/example-project'})
+            write_project_notes(staging, snapshot,
+                                {'example-project':
+                                 'example-area/example-theme/example-work'})
         finally:
             sys.path.pop(0)
         receipt = {'setup':'lab-atlas-2026-09-10','owner':owner,'enabled_plugins':14,

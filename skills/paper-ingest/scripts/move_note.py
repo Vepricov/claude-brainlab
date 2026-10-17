@@ -3,9 +3,16 @@
 
     move_note.py 2609.38095 zo-estimators [--dry-run]
 """
+import pathlib
+import sys
 import os, re, shutil, sys
 
-V = os.path.expanduser("~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917")
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
+
+V = str(VAULT)
 LIB = os.path.join(V, "Literature")
 
 

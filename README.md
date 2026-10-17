@@ -43,9 +43,10 @@ What it actually gives you:
 - **Writing and review with teeth.** Beamer decks in a terminal-style theme, A\*-grade internal review
   (reviewer + theoretician + literature scout + experiments auditor), and a rebuttal workflow where
   every claim must point at the submitted paper or a verified artifact.
-- **Obsidian as the personal half.** Project hub cards, daily research logs, experiment logs, hard-link
-  de-duplication for a paper that belongs in two folders, and routing rules so notes land where they
-  belong instead of a `Research/` dump.
+- **Obsidian opens the base itself.** Since 16-10-2026 the vault *is* the lab tree: every repository of
+  the base is cloned under one root, so a note, a claim and a manuscript are the same files seen from
+  two sides. Drafts stay on the machine because `notes/`, `daily/` and `runs/` are excluded from git in
+  every clone, and nothing maps a project to a separate vault folder any more — the path is the map.
 - **Memory across sessions.** MemPalace integration with auto-save, so the next session starts knowing
   what the last one decided.
 
@@ -53,6 +54,28 @@ What it actually gives you:
 > Everything works without lab access. The base is read and written with ordinary `git`, so without a
 > clone the base-facing skills simply have nothing to act on, and Obsidian-routed skills no-op without
 > a vault.
+
+### The vault is the tree
+
+```
+~/brainlab/                                  ← the Obsidian vault root
+├── <area>/<theme>/<work>/                   one GitLab repository per work
+│   ├── claims/<CODE>/{runs,series,theory}/  what goes to the base
+│   ├── paper/  code/  socials/              manuscript, code, public posts
+│   └── notes/  daily/  runs/                local only (git-excluded)
+├── <area>/<theme>/literature/               one repository per theme, one file per paper
+├── journal/  handbook/  servers/            service repositories: direct push to main
+├── ops/<grant|management|education|…>/      obligations, grants, teaching
+├── agents/                                  this toolkit and notes about it
+└── personal/                                operon boards, knowledge, code-library
+```
+
+Two consequences the toolkit relies on. Links are written as relative markdown
+(`[Name](Name.md)`): Obsidian and GitLab both render them and both land on the same file, while
+`[[Name]]` works in Obsidian only and is kept for notes that never leave the machine. And a change
+is written by merging: edit the clone in place, then a work takes a merge request (a plain
+`git push` opens it) while the service repositories take a direct push to `main`. The end-of-turn
+hook reports anything still sitting uncommitted in a clone.
 
 ## Lab Knowledge: the shared research base
 
@@ -148,7 +171,8 @@ here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 - **`paper-to-social`** — turn a paper into copy-paste-ready Telegram / X / Habr posts with arXiv figures, in your own voice.
 - **`code-ingest`** / **`code-library`** — map an external repo into Obsidian Code-library notes (`path:line`, no code copied) and document the whole code workflow.
 - **`create-project`** — set up the private repository and the Obsidian hub. Turning the accumulated project into a work of the shared base is part of `lab-knowledge`: claims as folders in the work's own GitLab repository, entering by a merge request a human merges.
-- **`lab-knowledge`** — the one skill for the shared base. It reads research context from the local clone of a work with plain `git` and `grep` (the service in front of it was removed on 07-10-2026), and a change enters by a merge request a human merges. Private drafts stay in Obsidian.
+- **`lab-knowledge`** — the one skill for the shared base. It reads research context from the local clone of a work with plain `git` and `grep` (the service in front of it was removed on 07-10-2026), and a change enters by a merge request a human merges. Private drafts stay in the work's
+  git-excluded `notes/`.
 - **`call-notes`** — keeps the raw meeting narrative private in Obsidian, publishes approved research records to Lab Knowledge, and creates laboratory tasks only on the bound Yonote project board. This replaces the old ad-hoc per-project task file convention.
 - **Obsidian integration** — hard-link rule for the same paper in multiple folders, project-memory bootstrap, experiment log, daily research log, link-graph repair, synthesis maps.
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).

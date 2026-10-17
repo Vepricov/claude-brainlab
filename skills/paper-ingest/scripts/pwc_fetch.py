@@ -23,6 +23,7 @@ The injector places the section between `## BibTeX` and `## AI Explanation`.
 Re-running on the same note replaces the old section in place (idempotent).
 """
 
+import pathlib
 from __future__ import annotations
 
 import argparse
@@ -37,15 +38,18 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
+
 logger = logging.getLogger(__name__)
 
 API_URL = "https://paperswithcode.co/api/v1/papers/{arxiv_id}"
 PAPER_URL = "https://paperswithcode.co/papers/{arxiv_id}"
 CACHE_DIR = Path.home() / ".cache" / "pwc"
-VAULT_LITERATURE = Path(
-    "/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/"
-    "Documents/shkodnik1917/Literature"
-)
+#: Единой папки литературы больше нет: разборы лежат по темам. Здесь нужен обход всех.
+VAULT_LITERATURE = VAULT
 USER_AGENT = "paper-ingest/1.0 (+claude-scholar)"
 REQUEST_TIMEOUT = 15
 ARXIV_ID_RE = re.compile(r"\b(\d{4}\.\d{4,5})\b")

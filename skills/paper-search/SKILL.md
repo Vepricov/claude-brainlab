@@ -37,8 +37,8 @@ version: 1.7.0
 До любого поиска пройти по живым карточкам со `status: Reading.Жду публикацию`:
 
 ```bash
-VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917"
-rg -l '^status: Reading\.Жду публикацию$' "$VAULT/Operon/Reading" -g '*.md'
+VAULT="${OBSIDIAN_VAULT:-$HOME/brainlab}"
+rg -l '^status: Reading\.Жду публикацию$' "$VAULT/personal/operon/Reading" -g '*.md'
 ```
 
 Для каждой карточки поискать точное название в официальных источниках: arXiv, OpenReview,
@@ -130,11 +130,12 @@ Obsidian. После шага 0 написать отдельным блоком
 Работать от текущей структуры:
 
 ```bash
-VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
+# Разборы лежат по темам: один репозиторий `literature` на тему дерева.
+LIT=("${OBSIDIAN_VAULT:-$HOME/brainlab}"/*/*/literature)
 ```
 
 Извлечь сигналы из:
-- подпапок `Literature/<тема>/`
+- папок `<направление>/<тема>/literature/`
 - заголовков заметок
 - тегов во frontmatter
 - проектных карточек в `Papers/`, `Projects/`, `Staff/`

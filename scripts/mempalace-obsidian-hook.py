@@ -253,6 +253,95 @@ def red_proposals(cwd: str) -> list[str]:
         return []
 
 
+def _lab_hook():
+    """Хук начала сессии как библиотека: он уже умеет находить клоны, и дублировать нечего."""
+    place = Path.home() / ".claude" / "hooks" / "lab-where-am-i.py"
+    if not place.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("lab_where_am_i_git", place)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _git(folder: Path, *args: str) -> str:
+    done = subprocess.run(["git", "-C", str(folder), *args], capture_output=True,
+                          text=True, timeout=15)
+    return done.stdout.strip() if not done.returncode else ""
+
+
+def _mestnye_klony(cwd: str, module) -> list[Path]:
+    """Папки клонов базы на машине. `clones_here` отдаёт адреса НА СЕРВЕРЕ
+    (`brainlab/handbook`), и принять их за пути — значит смотреть в несуществующие папки.
+
+    Смотрим то же, что и остальные: саму папку, её родителей до дерева и один уровень
+    внутрь, а признак тот же — `origin` указывает на базу.
+    """
+    here = Path(cwd or ".").expanduser().resolve()
+    kandidaty: list[Path] = []
+    for folder in (here, *here.parents):
+        kandidaty.append(folder)
+        if folder == Path.home() or folder == folder.parent:
+            break
+    if here.is_dir():
+        try:
+            kandidaty += [c for c in here.iterdir() if c.is_dir()]
+            box = here / "lab-base"
+            if box.is_dir():
+                kandidaty += [c for c in box.iterdir() if c.is_dir()]
+        except OSError:
+            pass
+    nashlos: list[Path] = []
+    for folder in kandidaty[:60]:
+        config = folder / ".git" / "config"
+        try:
+            if config.is_file() and module.BASE_HOST in config.read_text(
+                    encoding="utf-8", errors="replace"):
+                if folder not in nashlos:
+                    nashlos.append(folder)
+        except OSError:
+            continue
+    return nashlos
+
+
+def nesohranennoe(cwd: str) -> list[str]:
+    """Правка лежит в клоне, но в базу не ушла. Факт, а не суждение: спрашивается git.
+
+    Владелец 17-10-2026: «он щас должен делать так: локально менять что-то у меня и потом в
+    хуке пушить то, что у меня локально поменяно… или пусть сразу пишет туда, где гитигнор».
+    Второе работает само (`notes/`, `daily/`, `runs/` закрыты от git и в статусе не видны),
+    а первое до сих пор держалось на памяти агента: правка оставалась в рабочем дереве, ход
+    кончался, и назавтра её никто не находил.
+
+    Считаются обе беды: не закоммиченное (`git status`, игнорируемое туда не попадает) и
+    закоммиченное, но не отправленное (`origin/main..HEAD`). Говорится один раз на клон.
+    """
+    module = _lab_hook()
+    if module is None:
+        return []
+    try:
+        papki = _mestnye_klony(cwd or str(Path.cwd()), module)
+    except Exception:          # noqa: BLE001 — сторож не вправе ронять ход
+        return []
+    out: list[str] = []
+    for folder in papki[:8]:
+        gryaz = [s for s in _git(folder, "status", "--porcelain").splitlines() if s.strip()]
+        vetka = _git(folder, "rev-parse", "--abbrev-ref", "HEAD")
+        vperedi = _git(folder, "rev-list", "--count", "origin/main..HEAD")
+        rabota = (folder / "claims").is_dir()
+        # Имя берётся отрезанием ровно двух знаков состояния и пробелов: срез по трём
+        # знакам съедал первую букву у `M  CHANGELOG.md` (состояние в первой колонке).
+        imena = ", ".join(s[2:].strip()[:48] for s in gryaz[:3])
+        if gryaz:
+            kak = ("ветка, `git commit -F -`, `git push` — предложение откроется само"
+                   if rabota else "`git pull --rebase` и `git push` прямо в `main`")
+            out.append(f"{folder.name}: не отправлено {len(gryaz)} файлов ({imena}) — {kak}")
+        elif vperedi.isdigit() and int(vperedi) > 0 and vetka != "main":
+            out.append(f"{folder.name}: коммитов на ветке `{vetka}` без отправки "
+                       f"{vperedi} — `git push`")
+    return out
+
+
 ROUTER = Path.home() / ".claude" / "scripts" / "jev_route.py"
 
 
@@ -420,6 +509,13 @@ def main() -> None:
         if f"mr:{row}" not in told:
             told.add(f"mr:{row}")
             facts.append(f"Красные ворота: {row}")
+    for row in nesohranennoe(here):
+        # Ключ без числа файлов: иначе каждая следующая правка в том же клоне считалась бы
+        # новым случаем, и строка повторялась бы ходами.
+        klyuch = f"git:{row.split(':')[0]}"
+        if klyuch not in told:
+            told.add(klyuch)
+            facts.append(f"Лежит в клоне, но не в базе — {row}")
     if facts:
         try:
             state_file.write_text(json.dumps(sorted(told), ensure_ascii=False),

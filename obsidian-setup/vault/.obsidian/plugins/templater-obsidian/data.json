@@ -1,6 +1,6 @@
 {
   "command_timeout": 5,
-  "templates_folder": "_System/Templates",
+  "templates_folder": "personal/general/Templates",
   "templates_pairs": [
     [
       "",
@@ -25,7 +25,7 @@
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [],
   "startup_templates": [
-    "general/Startup.md"
+    "personal/general/Startup.md"
   ],
   "intellisense_render": 1,
   "auto_pair_syntax": true

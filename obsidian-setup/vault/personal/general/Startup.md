@@ -36,7 +36,7 @@ app.workspace.requestSaveLayout();
 });
 
 // Open shared TODO note in right sidebar
-const filePath = "general/todo.md";
+const filePath = "personal/general/todo.md";
 
 let file = app.vault.getAbstractFileByPath(filePath);
 if (!file) {

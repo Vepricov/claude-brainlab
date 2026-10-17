@@ -19,8 +19,8 @@ This skill is the index to that system.
 If a project has code, all three must exist. An agent picking up the project reads the project card → follows the link into the Code library → knows what to run.
 
 ## 1. Code library  →  see [[code-ingest]]
-- Location: `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Code/`.
-- One folder per repo; canonical overview is `Code/<repo>/<repo>.md` (always read this first), plus module notes.
+- Location: `${OBSIDIAN_VAULT}/personal/code-library/`.
+- One folder per repo; canonical overview is `personal/code-library/<repo>/<repo>.md` (always read this first), plus module notes.
 - It maps the **upstream** repo (entrypoint, modules, dispatch points, "where to edit X"). It does NOT hold project-specific edits — those live in the project card.
 - To add a repo: invoke **code-ingest** with the URL/path.
 - First repo in the library: [[personal/code-library/llm-baselines/llm-baselines|llm-baselines]] (EPFL; base for several optimizer/pretraining projects).

@@ -1,0 +1,206 @@
+#!/usr/bin/env python3
+"""Свойства разбора — во frontmatter, как в хранилище владельца.
+
+Владелец 07-10-2026, глядя на панель свойств Обсидиана: «давай делать, как у меня в
+обсидиане… убирать этот „Открыть источник“, это хуйня. Вот видишь, там url, code_url,
+project_url. Давайте всё вот это так хранить, и на GitLab тоже».
+
+Поэтому строка `[Открыть источник](…)` из тела уходит: адрес живёт в свойстве `url`, где
+его видно панелью и где по нему можно щёлкнуть. А у разборов в базе появляется тот же
+набор свойств, что у заметок, и в том же порядке.
+
+Откуда что берётся:
+
+- `title`, `url`, `publication` — из блока BibTeX разбора, детерминированно. `url` при его
+  отсутствии собирается из `eprint`, `publication` — из `booktitle`/`journal`/`publisher`/
+  `howpublished`/`organization`, а у `@misc` с `eprint` это «Unpublished (arXiv preprint)».
+- `zotero_link`, `code_url`, `project_url` — из заметки хранилища: в BibTeX их нет и быть
+  не может. Нет заметки — поля ставятся пустыми, но ставятся: пустое свойство видно в
+  панели и его заполняют, а отсутствующее не видно никому.
+- `lab_url` — адрес этой же страницы в базе, собирается из `origin` клона и имени файла.
+  Нужен он не в самой базе, а в хранилище и всюду, куда разбор попадает копией: оттуда по
+  нему открывается страница в GitLab одним щелчком. Владелец 16-10-2026: «нужно вставить
+  brain lab knowledge link, то есть ссылку именно в гитлабе, чтобы я мог тыкнуть и прям
+  открыть эту ссылку в GitLab, тоже это сделай во всех статьях».
+- `zotero_key` не пишется: голый восьмизначный код ни о чём не говорит и никуда не ведёт.
+  Вместо него стоит `zotero_link` — тот же код, но адресом, по которому открывается
+  карточка в Zotero. Владелец 16-10-2026, глядя на панель свойств: «какого чёрта ты
+  zotero_key теперь не ссылкой печатаешь? Нужно, чтобы он был со ссылкой, а без неё просто
+  ключ не нужен». Нового в базу это не выносит: код в ней и так лежал, адрес лишь делает
+  его щёлкаемым. Утром того же дня поле снимали как личное, и правильным ответом оказалось
+  не снять, а признать: раз код публикуется, ссылка на него ничего не добавляет.
+- `tags` — слаг темы. Ключ `tags` по-английски и значение в английском kebab-case: Обсидиан
+  распознаёт только английское имя, переведённое молча становится обычным свойством.
+- `updated` — в формате ДД-ММ-ГГГГ. Уже стоящее значение не трогается.
+
+    front_matter.py <клон литературы>... [--хранилище <папка темы>] [--fix]
+"""
+
+from __future__ import annotations
+
+import argparse
+import datetime
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from header_from_bib import header_of  # noqa: E402
+
+FRONT = re.compile(r"\A---\n(.*?)\n---\n", re.S)
+TITLE = re.compile(r"(?m)^#\s+(.+)$")
+LINK_LINE = re.compile(r"(?m)^\[Открыть источник\]\([^)]*\)[^\S\n]*\n\n?")
+BIBKEY = re.compile(r"@\w+\{([^,\s}]+)\s*,")
+#: Порядок полей ровно такой, как в панели свойств у владельца.
+ORDER = ("title", "zotero_link", "url", "lab_url", "code_url", "project_url",
+         "publication", "tags", "updated")
+#: Эти три в BibTeX не живут: их знает только хранилище.
+FROM_VAULT = ("zotero_link", "code_url", "project_url")
+#: Это поле не из BibTeX и не из хранилища: оно считается по клону, поэтому перезаписывается
+#: всегда. Переехал репозиторий — следующий проход поправит адрес сам.
+DERIVED = ("lab_url",)
+
+
+def read_front(text: str) -> dict[str, str]:
+    """Плоское чтение frontmatter. Список `tags` сводится к одной строке через запятую."""
+    found = FRONT.match(text)
+    if not found:
+        return {}
+    out: dict[str, str] = {}
+    key = None
+    for line in found.group(1).splitlines():
+        if line.startswith("  - ") and key:
+            out[key] = (out[key] + "," if out[key] else "") + line[4:].strip()
+            continue
+        if ":" not in line:
+            continue
+        key, _, value = line.partition(":")
+        key = key.strip()
+        out[key] = value.strip().strip('"')
+    return out
+
+
+def quoted(value: str) -> str:
+    """YAML-безопасная запись, но без кавычек там, где их нет у владельца.
+
+    Двоеточие само по себе строку не ломает: в YAML разделителем его делает ПРОБЕЛ после
+    него. Поэтому `url: https://arxiv.org/abs/2610.07497` и
+    `zotero_link: zotero://select/...` пишутся без кавычек — именно так они стоят в
+    хранилище, и панель свойств Обсидиана показывает их ссылками. Кавычки остаются там,
+    где без них YAML читается неверно: пусто, двоеточие с пробелом, ведущий спецсимвол,
+    краевые пробелы, решётка после пробела (комментарий).
+    """
+    if value == "":
+        return '""'
+    if (re.search(r":\s", value) or re.search(r"\s#", value)
+            or value[0] in "#&*!|>%@`[]{}-?," or value != value.strip()):
+        return '"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"'
+    return value
+
+
+def render(fields: dict[str, str], theme: str) -> str:
+    lines = ["---"]
+    for key in ORDER:
+        if key == "tags":
+            tags = [tag for tag in (fields.get("tags") or theme).split(",") if tag.strip()]
+            lines.append("tags:")
+            lines += [f"  - {tag.strip()}" for tag in tags]
+            continue
+        lines.append(f"{key}: {quoted(fields.get(key, ''))}")
+    lines.append("---")
+    return "\n".join(lines) + "\n"
+
+
+def lab_address(root: Path) -> str:
+    """Адрес репозитория литературы в GitLab: из `origin` клона, а не из списка в коде.
+
+    Полный путь у каждой темы свой (`brainlab/zero-order/zo-estimators/literature`), и
+    собрать его из слага нельзя: направления разные. Зато он уже лежит в клоне, которым
+    этот проход и запущен, — значит таблицы соответствия заводить не нужно.
+    """
+    done = subprocess.run(["git", "-C", str(root), "remote", "get-url", "origin"],
+                          capture_output=True, text=True)
+    url = done.stdout.strip()
+    return url[:-len(".git")] if url.endswith(".git") else url
+
+
+def notes_by_key(folder: Path | None) -> dict[str, Path]:
+    if folder is None or not folder.is_dir():
+        return {}
+    found: dict[str, Path] = {}
+    for note in sorted(folder.glob("*.md")):
+        if note.name == "README.md":
+            continue
+        key = BIBKEY.search(note.read_text(encoding="utf-8", errors="replace"))
+        if key:
+            found[key.group(1)] = note
+    return found
+
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("roots", type=Path, nargs="+")
+    parser.add_argument("--хранилище", type=Path, dest="vault", default=None)
+    parser.add_argument("--fix", action="store_true")
+    args = parser.parse_args(argv)
+
+    today = datetime.date.today().strftime("%d-%m-%Y")
+    total = touched = 0
+    no_bib: list[str] = []
+    for root in sorted(args.roots):
+        notes = notes_by_key(args.vault)
+        address = lab_address(root)
+        for paper in sorted(root.glob("*.md")):
+            if paper.name == "README.md":
+                continue
+            total += 1
+            text = paper.read_text(encoding="utf-8")
+            want = header_of(text)
+            fields = read_front(text)
+            if want:
+                fields["title"] = want["title"]
+                fields["url"] = want["url"]
+                fields["publication"] = want["venue"]
+            else:
+                # Разбор без блока BibTeX. Таких 30, и все в непройденных темах: отчёты
+                # лабораторий, посты и старые статьи, у которых ключа цитирования нет
+                # вовсе. Бросать их нельзя — тогда у них не будет и свойств, — поэтому
+                # заголовок берётся из строки `# `, а адрес из `[Открыть источник]`,
+                # которую мы как раз и убираем из тела.
+                head = TITLE.search(text)
+                link = LINK_LINE.search(text)
+                fields.setdefault("title", head.group(1).strip() if head else paper.stem)
+                fields.setdefault("url", re.search(r"\(([^)]*)\)", link.group(0)).group(1)
+                               if link else "")
+                fields.setdefault("publication", "")
+                no_bib.append(f"{root.name}/{paper.stem}")
+            fields.setdefault("updated", today)
+            note = notes.get(paper.stem)
+            if note is not None:
+                theirs = read_front(note.read_text(encoding="utf-8", errors="replace"))
+                for key in FROM_VAULT:
+                    fields.setdefault(key, theirs.get(key, ""))
+            for key in FROM_VAULT:
+                fields.setdefault(key, "")
+            fields["lab_url"] = (f"{address}/-/blob/main/{paper.name}" if address else "")
+            body = FRONT.sub("", text)
+            body = LINK_LINE.sub("", body, count=1)
+            fresh = render(fields, root.name) + body.lstrip("\n")
+            if fresh == text:
+                continue
+            touched += 1
+            if args.fix:
+                paper.write_text(fresh, encoding="utf-8")
+    tail = f", переписано: {touched}" if args.fix else ""
+    print(f"разборов: {total}, со свойствами не как надо: {touched}{tail}")
+    if no_bib:
+        print(f"без блока BibTeX (свойства собраны из заголовка и ссылки): {len(no_bib)}")
+        for name in no_bib:
+            print(f"   {name}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

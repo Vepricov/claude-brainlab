@@ -14,6 +14,7 @@ Modes:
        --expect-title "Paper Title" --expect-zotero-key ABCD1234
 """
 
+import pathlib
 from __future__ import annotations
 
 import argparse
@@ -28,11 +29,15 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
+
 
 ZOTERO_API_BASE = "http://localhost:23119/api/users/0"
-VAULT_LITERATURE = Path(
-    "/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature"
-)
+#: Единой папки литературы больше нет: разборы лежат по темам. Здесь нужен обход всех.
+VAULT_LITERATURE = VAULT
 DB_PATH = Path("~/Zotero/zotero.sqlite").expanduser()
 
 

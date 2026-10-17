@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
+import pathlib
+import sys
 from __future__ import annotations
 
 import re
 from pathlib import Path
+
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
 
 SURNAME_PREFIXES = {
     "da", "de", "del", "della", "der", "di", "du", "dos", "la", "le",
@@ -131,9 +138,8 @@ def process_file(path: Path) -> bool:
 
 
 def main():
-    root = Path('/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature')
     changed = []
-    for path in sorted(root.rglob('*.md')):
+    for path in sorted(p for mesto in vse_papki() for p in mesto.rglob('*.md')):
         try:
             if process_file(path):
                 changed.append(str(path))

@@ -28,10 +28,17 @@
 AlphaXiv и заводится в коллекции `Literature/<тема>` в Zotero. Заметку, перенесённую
 руками, следующий `--sync` доводит до того же состояния сам.
 """
+import pathlib
+import sys
 import argparse, base64, json, os, re, shutil, ssl, subprocess, sys
 from datetime import datetime as _dt
 from urllib.parse import quote, unquote
 import urllib.request, urllib.error
+
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT as _VAULT, temy, tema_put, vse_papki  # noqa: E402
 
 #: База знания переехала с Gitea на GitLab 01-10-2026. Отличий три, и каждое
 #: ломает старый код молча: авторизация заголовком `PRIVATE-TOKEN`, а не
@@ -145,8 +152,7 @@ def файл(pid, путь, tok):
     return api(f"/api/v4/projects/{pid}/repository/files/{quote(путь, safe='')}/raw?ref=main",
                tok, raw=True)
 
-VAULT = os.path.expanduser(
-    "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917")
+VAULT = str(_VAULT)
 LIB = os.path.join(VAULT, "Literature")
 IMG = (".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp")
 INBOX = "_inbox"

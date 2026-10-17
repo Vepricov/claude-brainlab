@@ -166,8 +166,8 @@
     ],
     "taskFinderVisibleResultCount": 5,
     "excludedFolders": [
-      "Operon/Archives",
-      "Operon/Projects"
+      "personal/operon/Archives",
+      "personal/operon/Projects"
     ],
     "demoWorkspacePromptDismissed": true,
     "releaseNotesShowOnUpdate": false,
@@ -1191,7 +1191,7 @@
       "fileBindings": [
         {
           "id": "table-preset-my-first-table",
-          "path": "Operon/Tables/Default table.table"
+          "path": "personal/operon/Tables/Default table.table"
         }
       ],
       "initialized": true,
@@ -2163,10 +2163,10 @@
       "version": 1,
       "taskDescriptionRequired": true,
       "assigneesRequired": false,
-      "fileTasksFolder": "Operon/Tasks",
+      "fileTasksFolder": "personal/operon/Tasks",
       "inlineTaskSaveMode": "daily-notes",
       "inlineTaskUseDailyNote": true,
-      "inlineTaskTargetFile": "general/todo.md",
+      "inlineTaskTargetFile": "personal/general/todo.md",
       "inlineTaskHeading": "",
       "fileTaskParentInlineTargetMode": "same-folder",
       "fileTaskParentFileTargetMode": "same-folder",
@@ -2187,8 +2187,8 @@
       ],
       "childTaskInheritanceStatusPipelineSource": "parent",
       "taskCreatorDefaultToFileTask": true,
-      "taskCreatorDefaultFileTemplateId": "folder-file-task-template:Operon/Templates/Task.md",
-      "fileTaskTemplateFolder": "Operon/Templates",
+      "taskCreatorDefaultFileTemplateId": "folder-file-task-template:personal/operon/Templates/Task.md",
+      "fileTaskTemplateFolder": "personal/operon/Templates",
       "createDailyNotesAsOperonTask": false,
       "defaultEstimateMinutes": 30
     },

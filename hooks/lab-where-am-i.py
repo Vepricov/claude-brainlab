@@ -178,6 +178,50 @@ def clone_of_project(cwd: str) -> Path:
     return here / "lab-base"
 
 
+def klon_bazy(folder: Path) -> bool:
+    """Это клон репозитория базы? Решает адрес `origin`, а не имя папки."""
+    if not (folder / ".git").exists():
+        return False
+    try:
+        done = subprocess.run([*GIT, "-C", str(folder), "remote", "get-url", "origin"],
+                              capture_output=True, text=True, timeout=10,
+                              stdin=subprocess.DEVNULL,
+                              env={**os.environ, **NO_PROMPT_ENV})
+    except (OSError, subprocess.SubprocessError):
+        return False
+    adres = done.stdout.strip()
+    return bool(adres) and (urllib.parse.urlparse(BASE_URL).netloc in adres)
+
+
+def mesto_raboty(cwd: str) -> tuple[str, Path]:
+    """ГДЕ агент работает прямо сейчас. Три случая, и порядок у них не случайный.
+
+    Владелец 17-10-2026: «щас у нас получается иногда агент работает сразу под гитом лабы,
+    а раньше он говорил что надо куда-то сделать гит клон. Надо оставить обе возможности,
+    но в приоритете как у меня щас».
+
+      `здесь`  — сессия идёт ВНУТРИ клона базы: правим файлы там, где они лежат, и ничего
+                 клонировать не надо. С переезда 16-10-2026 это обычный случай: дерево
+                 `~/brainlab` целиком состоит из клонов, и хранилище Obsidian — оно же.
+      `рядом`  — клон лежит в папке проекта (`<проект>/lab-base`). Так работают на чужой
+                 машине и в репозиториях с кодом, где дерева лаборатории нет.
+      `завести` — клона нет ни там, ни там; путь в ответе — куда его класть.
+
+    Первым спрашивается рабочий каталог, а не карта: карта может ошибаться, а `origin`
+    клона — нет.
+    """
+    here = Path(cwd or ".").expanduser().resolve()
+    for folder in (here, *here.parents):
+        if klon_bazy(folder):
+            return "здесь", folder
+        if folder == folder.parent:
+            break
+    ryadom = clone_of_project(cwd)
+    if (ryadom / ".git").is_dir():
+        return "рядом", ryadom
+    return "завести", ryadom
+
+
 def branch_of(root: Path) -> str:
     """На какой ветке стоит рабочее дерево клона. Пусто, если спросить не удалось."""
     if not (root / ".git").is_dir():
@@ -192,7 +236,7 @@ def branch_of(root: Path) -> str:
     return done.stdout.strip() if not done.returncode else ""
 
 
-def pull_clone(work: str, cwd: str) -> list[str]:
+def pull_clone(work: str, cwd: str, root: Path | None = None) -> list[str]:
     """Завести или обновить клон работы в папке проекта и сказать, что изменилось.
 
     Это то, с чего начинается ход: агент видит чужие слияния как обычный `git pull`, а не
@@ -200,7 +244,7 @@ def pull_clone(work: str, cwd: str) -> list[str]:
 
     Свои незакоммиченные правки не трогаем: `--ff-only` откажется, и это правильно.
     """
-    root = clone_of_project(cwd)
+    root = root or clone_of_project(cwd)
     if not (root / ".git").is_dir():
         if not LAB_CLI.is_file():
             return [f"  клона базы нет, и помощника нет: {LAB_CLI}"]
@@ -657,7 +701,7 @@ def main() -> int:
         tell_places(cwd)
         tell_proposals(cwd)
         return 0
-    place = clone_of_project(cwd)
+    rezhim, place = mesto_raboty(cwd)
     repo, claims = claims_of(slug, place)
     if not claims:
         # Ни утверждений, ни клона — значит это и не работа базы. Каталог сопоставляется
@@ -671,11 +715,14 @@ def main() -> int:
             tell_places(cwd)
             tell_proposals(cwd)
             return 0
-        print(f"\nЛаборатория: {slug}, утверждений пока нет. Клон: {place}")
+        print(f"\nЛаборатория: {slug}, утверждений пока нет. "
+              + ("пишешь прямо здесь" if rezhim == "здесь" else f"клон: {place}"))
         print("Как писать — `~/.claude/rules/lab.md`; главное: не мусорить.\n")
         return 0
     print(f"\nЛаборатория: {slug}, утверждений {len(claims)} — {', '.join(claims)}")
-    print(f"Клон: {place}")
+    print({"здесь": f"Пишешь прямо здесь, это клон работы: {place}",
+           "рядом": f"Клон рядом: {place}",
+           "завести": f"Клона нет, завожу: {place}"}[rezhim])
     # Утверждения прочитаны из рабочего дерева, а обновляется `origin main`. Если дерево
     # стоит на ветке предложения, хук покажет её состояние, назвав его состоянием базы.
     # Проверено 07-10-2026 на `wsd-muon`: клон остался на `claim/H-WSD-017-audit`, ветку
@@ -683,7 +730,7 @@ def main() -> int:
     # закрытом наборе свода уже нет, и которого в `main` нет полгода.
     if (branch := branch_of(place)) and branch != "main":
         print(f"Дерево стоит на ветке `{branch}`, и состояния выше — её, не из main.")
-    if changed := pull_clone(slug, cwd):
+    if changed := pull_clone(slug, cwd, place):
         print("В main: " + "; ".join(text_line.strip() for text_line in changed[:4]))
     if waiting := open_proposals(slug):
         print("Открыто (дописывай, не заводи второе): "

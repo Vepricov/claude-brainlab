@@ -28,13 +28,13 @@ from __future__ import annotations
 
 import pathlib
 import random
+import os
 import re
 import sqlite3
 import sys
 
 DB = pathlib.Path.home() / "Zotero" / "zotero.sqlite"
-VAULT = (pathlib.Path.home() / "Library/Mobile Documents"
-         / "iCloud~md~obsidian/Documents/shkodnik1917")
+VAULT = pathlib.Path(os.environ.get("OBSIDIAN_VAULT", "~/brainlab")).expanduser()
 ZOTERO_LINK = re.compile(r"zotero://select/library/items/([A-Z0-9]{8})")
 KEY_ALPHABET = "ABCDEFGHIJKLMNPQRSTUVWXYZ23456789"
 VALID_KEY = re.compile(rf"^[{KEY_ALPHABET}]{{8}}$")

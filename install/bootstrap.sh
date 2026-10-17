@@ -51,8 +51,9 @@ ask_secret() {
 }
 
 # ── Obsidian ──
-ask VAULT_NAME       "Obsidian vault folder name"        "my-vault"
-default_vault_path="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/$VAULT_NAME"
+ask VAULT_NAME       "Obsidian vault folder name"        "brainlab"
+# Умолчание — дерево лаборатории: хранилище и есть дерево клонов, см. .env.example.
+default_vault_path="$HOME/$VAULT_NAME"
 ask OBSIDIAN_VAULT   "Full path to vault root"           "$default_vault_path"
 
 # ── Project roots ──

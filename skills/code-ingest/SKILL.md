@@ -21,8 +21,8 @@ the source. The code itself stays in git / on the server; these notes are the in
 - For per-project edits/diffs → those go in the **project hub card** `## Код` section, not here (see [[code-library]]).
 
 ## Where it lives
-Obsidian vault: `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Code/`
-One folder per repo: `Code/<repo-slug>/`. The slug is the repo name, kebab-case.
+Vault (the lab tree): `${OBSIDIAN_VAULT}/personal/code-library/`
+One folder per repo: `personal/code-library/<repo-slug>/`. The slug is the repo name, kebab-case.
 
 ## Output structure (always)
 ```

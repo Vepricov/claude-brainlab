@@ -16,14 +16,9 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-#: Пути задаются окружением, потому что скрипт живёт на двух машинах: на маке
-#: хранилище лежит в iCloud, на сервере (do-vpn) его раскладывает Syncthing в
-#: /root/shkodnik1917. Захардкоженный маковский путь ронял серверный ingest с
-#: невнятным `returned non-zero exit status 2` внутри parse_library.py.
-VAULT = Path(os.environ.get(
-    "OBSIDIAN_VAULT",
-    "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917",
-)).expanduser()
+#: Путь задаётся окружением: скрипт живёт на двух машинах, и на сервере дерево лежит
+#: не там, где на маке. Умолчание — дерево лаборатории, оно же хранилище Obsidian.
+VAULT = Path(os.environ.get("OBSIDIAN_VAULT", "~/brainlab")).expanduser()
 ZOTERO = Path(os.environ.get("ZOTERO_SQLITE", "~/Zotero/zotero.sqlite")).expanduser()
 REPO = Path(os.environ.get("BRAINLAB_REPO", "~/brainlab/agents/claude-brainlab")).expanduser()
 LIBRARY_SYNC = REPO / "services" / "lab-knowledge" / "scripts" / "library_sync"

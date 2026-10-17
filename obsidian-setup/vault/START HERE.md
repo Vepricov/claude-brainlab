@@ -2,7 +2,7 @@
 
 Это чистый стартовый набор. Все задачи и результаты внутри вымышленные.
 
-[[Dashboard|Таблица задач]] · [[personal/general/todo|Мои задачи]] · [[agents/claude-brainlab/obsidian-setup/vault/Papers/example-project/Project.md|Пример проекта]] · [[Papers/example-project/Knowledge/Hermes/Доска|Пример доски Hermes]]
+[[Dashboard|Таблица задач]] · [[personal/general/todo|Мои задачи]] · [[agents/claude-brainlab/obsidian-setup/vault/example-area/example-theme/example-work/Project.md|Пример проекта]] · [[example-area/example-theme/example-work/Knowledge/Hermes/Доска|Пример доски Hermes]]
 
 ## Рабочий стол
 
@@ -12,11 +12,11 @@
 
 ## Первая задача
 
-Палитра команд → Operon: Create New Operon Task. Введите название, нажмите **Pick a Template** и выберите **Task** из `Operon/Templates/Task.md`, затем **File**. Этот шаблон подставляет ваше имя исполнителя; задача появится в `Operon/Tasks` со статусом «Надо».
+Палитра команд → Operon: Create New Operon Task. Введите название, нажмите **Pick a Template** и выберите **Task** из `personal/operon/Templates/Task.md`, затем **File**. Этот шаблон подставляет ваше имя исполнителя; задача появится в `personal/operon/Tasks` со статусом «Надо».
 
 ## Проекты и статьи
 
-Создавайте папки проектов в Papers, Projects или Staff. Храните разборы, протоколы, результаты и решения рядом с проектом. Общая библиотека располагается в Literature; импорт Zotero по умолчанию идёт в Literature/_inbox. Шаблоны находятся в _System/Templates и Operon/Templates.
+Создавайте папки проектов в Papers, Projects или Staff. Храните разборы, протоколы, результаты и решения рядом с проектом. Общая библиотека располагается в Literature; импорт Zotero по умолчанию идёт в personal/literature/_inbox. Шаблоны находятся в personal/general/Templates и personal/operon/Templates.
 
 ## Hermes
 

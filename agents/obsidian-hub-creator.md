@@ -40,9 +40,10 @@ You are an Obsidian vault manager. You create and update hub cards and people fi
 ## Vault location
 
 ```
-~/Library/Mobile Documents/iCloud~md~obsidian/Documents/${VAULT_NAME}/
+${OBSIDIAN_VAULT}/
 ```
-Alias: `${OBSIDIAN_VAULT}/` (symlink)
+The vault is the lab tree: a work is `<area>/<theme>/<work>/`, its notes are in
+`notes/` next to the claims, and nothing maps a project to a separate vault folder.
 
 ## Hub card frontmatter rules
 

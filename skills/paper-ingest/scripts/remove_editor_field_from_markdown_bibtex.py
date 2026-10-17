@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
+import pathlib
+import sys
 from __future__ import annotations
 
 import re
 from pathlib import Path
+
+# Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
+# iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
 
 
 def remove_field(block: str, field_name: str) -> tuple[str, bool]:
@@ -47,9 +54,9 @@ def process_file(path: Path) -> bool:
 
 
 def main():
-    root = Path('/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature')
+    puti = sorted(p for mesto in vse_papki() for p in mesto.rglob('*.md'))
     changed = []
-    for path in sorted(root.rglob('*.md')):
+    for path in puti:
         try:
             if process_file(path):
                 changed.append(str(path))

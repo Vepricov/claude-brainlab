@@ -1,6 +1,6 @@
 # Мой исследовательский стол
 
-[[START HERE|Установка и устройство]] · [[agents/claude-brainlab/obsidian-setup/vault/Papers/example-project/Project.md|Пример проекта]] · [[Papers/example-project/Knowledge/Hermes/Доска|Доска Hermes]]
+[[START HERE|Установка и устройство]] · [[agents/claude-brainlab/obsidian-setup/vault/example-area/example-theme/example-work/Project.md|Пример проекта]] · [[example-area/example-theme/example-work/Knowledge/Hermes/Доска|Доска Hermes]]
 
 ## Все задачи
 

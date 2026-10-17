@@ -105,9 +105,14 @@ PLACES = {
            "turn, an intention, a retelling of what already sits in the repository.",
     "mempalace": "Worth keeping verbatim across sessions: the owner's own words, a decision "
                  "and its reason, a trap that cost time, a number that was measured.",
-    "obsidian": "The durable state of the OWNER'S OWN project changed: a protocol, results, "
-                "a decision, an open question. Something he will reread in his own notes.",
 }
+
+#: Третьего адреса — «в Obsidian» — здесь больше нет. Владелец 16-10-2026: «давай нахер
+#: удалим этот третий хук, он по идее бесполезный. У нас в MemPalace есть личная память, а
+#: внешняя память это GitLab, который по идее сейчас равен Obsidian». Так и есть: с
+#: переезда хранилище Obsidian — это само дерево `~/brainlab`, то есть запись «в Obsidian»
+#: и запись «в базу» указывали на одни и те же файлы, а третья строка в подсказке стоила
+#: места в каждом прерывании.
 
 #: Внутри лаборатории: научное идёт в работу, остальное — в свой репозиторий. Разделение
 #: взято с передней страницы базы: «служебное» это отдельные репозитории БЕЗ утверждений.
@@ -802,8 +807,33 @@ NAPRAVLENIYA = ("large-models", "low-rank", "matrix-optimization", "optimization
                 "reasoning-rl", "zero-order", "applications")
 
 
+def v_dereve() -> dict[str, str]:
+    """Репозитории базы, уже лежащие в дереве: адрес в GitLab → путь на машине.
+
+    Смотрим три уровня: корень (`handbook`, `journal`, `servers`, `agents`), операционку
+    (`ops/<что-то>`) и гранты (`ops/grants/<грант>`). Работы сюда не попадают нарочно:
+    про них агент и так знает, он в них и сидит.
+    """
+    out: dict[str, str] = {}
+    for obrazec in ("*/.git/config", "*/*/.git/config", "*/*/*/.git/config"):
+        for config in DEREVO.glob(obrazec):
+            papka = config.parent.parent
+            try:
+                text = config.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            for line in text.splitlines():
+                line = line.strip()
+                if line.startswith("url = ") and HOST in line:
+                    adres = line.split(HOST, 1)[1].lstrip(":0123456789/")
+                    adres = adres[:-4] if adres.endswith(".git") else adres
+                    if adres:
+                        out.setdefault(adres, f"~/brainlab/{papka.relative_to(DEREVO)}")
+    return out
+
+
 def addresses(cwd: str) -> tuple[str, str]:
-    """Крыло MemPalace и папка хранилища для этого места. Пусто — значит не нашли.
+    """Крыло MemPalace для этого места; вторым значением — путь в дереве, для него же.
 
     Работа: `<направление>/<тема>/<работа>` — крыло по имени работы, заметки в её `notes/`.
     Агентские репозитории: `agents/<что-то>` — заметки в `agents/notes/<что-то>/`.
@@ -859,21 +889,29 @@ def hint(verdict: dict) -> str:
             if one in verdict["внутри_лабы"]:
                 chunks.append(f"{names[one]} (`{REPO_OF[one]}`)")
         parts.append("в базу лаборатории" + (f" ({', '.join(chunks)})" if chunks else ""))
-    wing, vault = verdict.get("крыло") or "", verdict.get("хранилище") or ""
+    wing = verdict.get("крыло") or ""
     if "mempalace" in verdict["места"]:
         parts.append(f"в MemPalace (крыло `{wing}`)" if wing else "в MemPalace")
-    if "obsidian" in verdict["места"]:
-        parts.append(f"в Obsidian (`{vault}/`)" if vault else "в Obsidian")
     if not parts:
         return ""
     # Ни команд клонирования, ни оговорок про «совет, а не приговор»: адрес назван, а всё
     # постоянное лежит в правиле. Владелец про команды прямо: «можно наверное даже без
     # вот этого». Остаётся ровно то, что меняется от хода к ходу.
+    # Раньше здесь стояло «Клона рядом нет — склонируй»: это был порядок времён, когда
+    # клон делали в папку работы. С 16-10-2026 все репозитории базы уже лежат в дереве
+    # `~/brainlab`, и подсказка «склонируй» отправляла агента делать второй клон рядом с
+    # первым. Теперь называется путь, по которому он и так есть.
     tail = ""
     if "lab" in verdict["места"]:
-        need = [REPO_OF[one] for one in REPO_OF if one in verdict["внутри_лабы"]]
-        if [repo for repo in need if repo not in (verdict.get("клоны") or [])]:
-            tail = " Клона рядом нет — склонируй."
+        est = v_dereve()
+        puti = [est[REPO_OF[one]] for one in REPO_OF
+                if one in verdict["внутри_лабы"] and REPO_OF[one] in est]
+        net = [REPO_OF[one] for one in REPO_OF
+               if one in verdict["внутри_лабы"] and REPO_OF[one] not in est]
+        if puti:
+            tail = " Пиши в " + ", ".join(f"`{put}`" for put in puti) + "."
+        if net:
+            tail += " Клона нет — склонируй: " + ", ".join(f"`{r}`" for r in net) + "."
     return ("Записать: " + ", ".join(parts)
             + f". Оценка {verdict['оценка']:.1f}/3, устоялось {verdict['устоялось']:.2f}."
             + tail)

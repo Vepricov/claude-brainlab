@@ -285,7 +285,7 @@ The batch has **two** sources: every unresolved card in «Очередь», plus
 drag it first just to get the note built.
 
 ```bash
-VAULT="/Users/andrey/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917"
+VAULT="${OBSIDIAN_VAULT:-$HOME/brainlab}"
 {
   rg -l '^status: Reading\.Очередь$' "$VAULT/Operon" -g '*.md'
   # [found] = публичный источник подтверждён на шаге 1b, значит статью можно ингестить

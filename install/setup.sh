@@ -199,6 +199,22 @@ if not (os.environ.get("PLANE_API_KEY") and os.environ.get("PLANE_WORKSPACE_SLUG
     data.get("mcpServers", {}).pop("plane", None)
 elif not os.environ.get("PLANE_BASE_URL"):
     data["mcpServers"]["plane"].get("env", {}).pop("PLANE_BASE_URL", None)
+# The template does not own everything in settings.json. 18-10-2026 a re-render dropped
+# enabledPlugins and extraKnownMarketplaces, which silently switched off every plugin,
+# context compaction included. Keys the template does not know are carried over, and the
+# plugin maps are merged with the installed choice winning.
+if os.path.exists(dst):
+    try:
+        with open(dst) as f:
+            previous = json.load(f)
+    except ValueError:
+        previous = {}
+    for key, value in previous.items():
+        if key not in data:
+            data[key] = value
+    for key in ("enabledPlugins", "extraKnownMarketplaces"):
+        if isinstance(previous.get(key), dict):
+            data[key] = {**data.get(key, {}), **previous[key]}
 with open(dst, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 os.chmod(dst, 0o600)

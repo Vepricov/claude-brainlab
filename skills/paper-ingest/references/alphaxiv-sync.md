@@ -5,7 +5,7 @@
 > рисунки рядом. Правила git-стороны лежат отдельно, в `~/.claude/skills/paper-ingest/references/lab-git-literature.md`,
 > и шаг туда обязателен в `paper-ingest` и `want-2-read` так же, как шаг на AlphaXiv.
 
-The user's **local Obsidian `Literature/` is the master** paper library. The **AlphaXiv account**
+The user's **local Obsidian library (`~/brainlab/*/*/literature/`, one folder per theme) is the master** paper library. The **AlphaXiv account**
 (Codex MCP server `alphaxiv`, folder view = `alphaxiv.org/bookmarks`) is a **mirror** of it. Any
 skill that changes the local library MUST propagate the change to AlphaXiv in the same run, so the
 two never drift.
@@ -64,7 +64,7 @@ ssh do-vpn 'python3 /root/paper-agent/ax_call.py save_papers_to_folder \
 **Устройство AlphaXiv с 29-09-2026.** В корне ровно две папки владельца: `personal` и
 `Want to read`. Плюс служебные `My publications` и `Private Papers` — их не трогать никогда. Все
 темы лежат внутри `personal`, и **имена совпадают буквально** со слагами тем в git и с папками
-`Literature/<тема>` в хранилище. Поэтому перевода имён нет: `folders[<слаг темы>]` и всё.
+`<направление>/<тема>/literature` в хранилище. Поэтому перевода имён нет: `folders[<слаг темы>]` и всё.
 Прежняя двухуровневая таксономия (`Applied`, `LLM`, `Optimization`, `PEFT`, `RL`, `Reference`)
 удалена, 588 статей разложены по 25 темам. Копия карты живёт на do-vpn в
 `/root/paper-agent/alphaxiv-library-map.json` — обновлять обе.
@@ -76,14 +76,14 @@ folder (`0196244b-7b41-79ff-9c0a-e01fe749c0c5`). Papers sit there until processe
 filed into a topic folder locally, it must also be filed (and removed from "Want to read") on AlphaXiv.
 
 ## Hard rules
-1. **Ingest / file a paper into a topic folder** (`paper-ingest`, `want-2-read`, `paper-search` acceptance, manual add): after the local note lands in `Literature/<тема>/`, call `save_papers_to_folder(folder_id=<mapped id>, [arxiv_id])`. If the paper was in "Want to read", use `move_papers_between_folders(from=want_to_read_folder_id, to=<topic folder_id>, [arxiv_id])` instead (adds to topic + removes from Want to read atomically).
+1. **Ingest / file a paper into a topic folder** (`paper-ingest`, `want-2-read`, `paper-search` acceptance, manual add): after the local note lands in `<направление>/<тема>/literature/`, call `save_papers_to_folder(folder_id=<mapped id>, [arxiv_id])`. If the paper was in "Want to read", use `move_papers_between_folders(from=want_to_read_folder_id, to=<topic folder_id>, [arxiv_id])` instead (adds to topic + removes from Want to read atomically).
 2. **New reading-queue item** the user drops only on AlphaXiv "Want to read": treat it as a card in the «Очередь» column — `/want-2-read` reads BOTH sources.
 3. **Move / reclassify a paper between local folders** → mirror with `move_papers_between_folders`.
 4. **Delete a paper from the local library** → `remove_papers_from_folder` on the matching AlphaXiv folder.
 5. **New local folder** → first propose the folder and wait for explicit user confirmation. Only
    after confirmation call `create_folder(name=<слаг темы>, parent_folder_id=<personal_folder_id>)`
    and add its id to `folders` в обеих копиях карты. Статья, для которой темы ещё нет, уезжает в
-   `personal/_inbox` — ровно как в `Literature/_inbox` локально, и это не требует подтверждения.
+   `personal/_inbox` — ровно как в `personal/literature/_inbox` локально, и это не требует подтверждения.
 6. **arXiv-only via MCP**: the MCP can only add arXiv papers (`save_papers_to_folder` fetches from arXiv; there is NO upload/private-paper tool). For a paper without an arXiv id (e.g. ICML-poster-only), file it locally, skip the MCP sync, and tell the user they can upload the PDF manually as a **Private Paper** on the alphaxiv.org site if they want it there.
 7. Never touch AlphaXiv system folders (`My publications`, `Private Papers`). "Want to read" is managed only via the queue flow above.
 8. If the AlphaXiv MCP is not connected/authenticated, do the local work, then tell the user the AlphaXiv sync was skipped and needs `/mcp` auth — do not silently drop it.
@@ -91,7 +91,7 @@ filed into a topic folder locally, it must also be filed (and removed from "Want
 10. **Waiting for publication**: `Reading.Жду публикацию` has no AlphaXiv mirror until a real arXiv ID exists. Recheck official sources; never invent or substitute an ID. A card whose only public source is OpenReview, a DOI, or a venue page is still marked `[found]` and is still fully ingestable into Zotero and Obsidian — it simply never reaches AlphaXiv (rule 6), and its callout must say so.
 11. **Canonical Reading card**: file tasks use `Operon/Reading/operon-<operonId>.md`, never the paper
     title as basename. A completed report remains in `Reading.Очередь` and is marked by H1
-    `# [[Literature/path/note|Human title]]` plus the exact canonical link in `## Заметка`. YAML
+    `# [[<направление>/<тема>/literature/<note>.md|Human title]]` plus the exact canonical link in `## Заметка`. YAML
     `taskTitle` equals the H1 content without `# ` so Operon never displays the technical basename.
 12. **All Reading task representations count**: every queue scan must collect YAML file tasks and
     inline tasks with `{{status:: Reading.*}}`. Normalize inline tasks without losing owner text.

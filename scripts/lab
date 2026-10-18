@@ -401,6 +401,9 @@ def nastroit(project: dict, target: Path) -> None:
     exclude.write_text("\n".join(lines) + "\n", encoding="utf-8")
     if kind != "работа":
         return
+    # Личные папки работы — как у владельца: лежат рядом со знанием и в git не едут.
+    for folder in ("notes", "daily", "runs"):
+        (target / folder).mkdir(exist_ok=True)
     options = git("config", "--get-all", "push.pushOption", cwd=target, quiet=True).splitlines()
     if "merge_request.create" not in options:
         git("config", "--add", "push.pushOption", "merge_request.create", cwd=target, quiet=True)

@@ -7,9 +7,10 @@ describes what belongs where, not an API.
 
 ## Everything an agent writes goes through git
 
-The base is a git repository per work, and writing into it is ordinary git: a branch
-`claim/<CODE>`, files, `git commit -F -`, and `git push -o merge_request.create` which opens
-the proposal in the same push. One proposal per claim. There is no wrapper command for this
+The base is a git repository per work, and writing into it is ordinary git in the work's
+clone in the tree (`lab here <work>`): a branch `claim/<CODE>`, files, `git commit -F -`, and
+a plain `git push`, which opens the proposal in the same push and assigns it to the lead from
+the README's `Ведут` line. One proposal per claim. There is no wrapper command for this
 and no service to call. The full mechanics are in [publishing.md](publishing.md).
 
 Two things follow, and both bite in practice:
@@ -18,28 +19,32 @@ Two things follow, and both bite in practice:
   proposal with open remarks are not records. Merging is done by a human, or by an agent on
   that human's word said in the same session, and the agent leaves that word in the proposal.
 - **Public codes are labels, not addresses.** They are renumbered when a work is tidied:
-  `H-DYC-035` became `H-DYC-007` in a quarter of an hour on 23-09-2026. Quote UUIDs.
+  `H-DYC-035` became `H-DYC-007` in a quarter of an hour on 23-09-2026. Quote the path of
+  the file in the repository.
 
 ## Resolve the destination
 
-Reuse an existing project and its stable identifiers. Search by subject and known aliases
-when the identity is unclear. A missing local binding does not mean the project is absent.
-Report conflicting bindings before creating a replacement.
+Reuse an existing work. Look in the tree (`ls ~/brainlab/*/*/`) and search by subject and
+known aliases when the identity is unclear. A work missing from the tree is not necessarily
+absent: `lab sync` brings what your key can see. Report two candidates before creating a
+replacement.
 
 Tasks live in GitLab: a work's own issues for its science, the group `ops` for everything
 else. Customer stages, acceptance and administrative obligations go to `ops/management`.
 Preserve existing IDs, history, access and links.
 
-Resolve Obsidian paths from the client's project mapping and current vault conventions.
-Research-paper projects can have a theme between `Papers` and the slug. Literature notes
-use the live `Literature` taxonomy, not a remembered conference folder or a hard-coded path.
-Do not change the library's taxonomy as a side effect of ingesting one paper.
+Paths follow the tree, and nothing maps them: the vault is `~/brainlab` itself, a work is
+`~/brainlab/<direction>/<theme>/<work>`, and its private material lies in its own local-only
+folders (`notes/`, `daily/`, `runs/`, `paper/drafts/`, `code/local/`, `calls/raw/`). A
+literature page is `~/brainlab/<direction>/<theme>/literature/<Title>.md`, in the theme the
+paper actually answers. Do not change the set of themes as a side effect of ingesting one
+paper.
 
 ## Classify by meaning
 
 | Information | Canonical destination |
 |---|---|
-| Private transcript, draft, unfinished interpretation | Mapped Obsidian project |
+| Private transcript, draft, unfinished interpretation | the work's local-only folders: `calls/raw/`, `notes/`, `paper/drafts/` |
 | Personal reminder | Personal Operon task |
 | Shared action, executor, deadline | the work's own issues, or the group `ops` |
 | Personal Hermes task | Hermes board is authoritative; a private Obsidian view keeps its original task ID and source timestamp |
@@ -47,8 +52,8 @@ Do not change the library's taxonomy as a side effect of ingesting one paper.
 | A finished run: hyperparameters, metrics, environment, commit, hardware | `claims/<CODE>/runs/<E-code>.md`, written by the recorder `lab_run.py`, not by hand |
 | A group of runs that answers one question | `claims/<CODE>/series/<S-code>.md`, with the runs listed in its table |
 | Assumptions, argument, and mathematical result | `claims/<CODE>/theory/<D-code>.md` |
-| Reviewed rule or choice | Not a record of its own. What was decided about the method goes into the claim's `decided`; a rule of one series' protocol goes into that series |
-| External paper and what it asserts | Library paper, paper claims, and typed links |
+| Reviewed rule or choice | Not a record of its own. What was decided about the method is a paragraph in the claim's README; a rule of one series' protocol goes into that series |
+| External paper and what it asserts | its page in the theme's `literature/`, and a sentence in the claim page that cites it by citation key |
 | A changed way of working: a rule, a place, a tool, something switched off | `brainlab/journal` |
 | An instruction other people need | `brainlab/handbook` |
 
@@ -65,12 +70,11 @@ of claims, characters, tasks, or proofs. Keep assumptions and scope with the cla
 
 A completed task does not establish a scientific result. An experiment request is not a
 measurement, and a theorem is not a training run. Preserve the actual status, configuration,
-metrics, units, seeds when applicable, artifacts, and limits of each result. Use structured
-metrics when the live evidence schema supports or requires them.
+metrics, units, seeds when applicable, artifacts, and limits of each result. Numbers go into
+tables, each beside the code of the run it came from.
 
 Do not invent a hypothesis to accommodate an operational note. An administrative decision
-does not need a fabricated experiment. Do not force a proof into empirical evidence when
-the caller lacks a derivation adapter; report that missing capability.
+does not need a fabricated experiment. A proof is a `theory/` page, not a run.
 
 ## Literature and quotations
 
@@ -80,18 +84,15 @@ sentence from the paper.
 
 A quotation is optional. The claim needs a source and location, not a copied sentence.
 If a quote is deliberately included, label its actual origin and do not call a translated
-reading note the author's words. Do not impose minimum lengths or quotas by claim kind.
-If an older server still requires `quote`, retain the prepared claim as pending and report
-that contract mismatch. Do not invent a quotation, pad the statement, or edit source text
-to satisfy that requirement. Existing quoted material need not be deleted.
+reading note the author's words. Do not impose minimum lengths or quotas by claim kind. Do
+not invent a quotation, pad the statement, or edit source text.
 
 An outside paper supports a literature relation; it is not evidence that our own experiment
-ran. Use an appropriate typed link such as `prior_art`, `baseline`, `inspired`, `supports`,
-`contradicts`, or `reproduces` only when the relation is established.
+ran. Say the relation in words on the page that uses the paper — prior art, baseline,
+inspired by, supports, contradicts, reproduces — and only when it is established.
 
-Search before inserting papers or claims. Preserve existing metadata, sections, and links;
-do not replace a full reading note with a short card. Follow the current tool's merge rules
-and the library sync's ownership rather than assuming every upsert is harmless.
+Search the theme's `literature/` before adding a page. Preserve existing metadata, sections
+and links; do not replace a full reading note with a short card.
 
 ## Publication and read-back
 
@@ -101,7 +102,7 @@ already approved operation. A watcher's authority is limited to its assigned pro
 publication scope. A private note, a search hit, or `visibility: lab` alone is not permission
 to publish.
 
-Publish each approved object once using the destination's supported deduplication and
-idempotency mechanism. Preserve returned IDs and verify the stored content. Report partial
-success per destination. Do not retry with broader credentials, fabricate missing fields,
-or turn a failed write into a completed checkbox.
+Publish each approved object once: one proposal per claim, and a new edit is a new commit
+in the same branch. After the merge, read the files back from `main` in the clone. Report
+partial success per destination. Do not retry with broader credentials, fabricate missing
+fields, or turn a failed push into a completed checkbox.

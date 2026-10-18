@@ -62,6 +62,67 @@ find paper -name '*.tex' | head        # empty output means not pulled, not «no
 If the work has no paper or no code yet, say so in the README in one line and name who has
 them. That is a debt with an owner, not a silence.
 
+## Существующий проект → работа
+
+A project that already lives as a folder — manuscript, logs, notes, code, call transcripts —
+becomes a work in two halves. **Knowledge goes to GitLab as `claims/` by merge request.
+Personal material stays on the machine, copied into the local-only folders of the work's own
+clone in the tree**, so the owner's `~/brainlab` looks the same for this work as for every
+other one. One clone, in the tree; never a clone in `~/.cache`, never a token in a URL.
+
+The layout of a work (handbook `tools/gitlab.md`, «Как разложена работа»): what lies in a
+folder itself is shared and goes to GitLab; its `drafts/`, `local/` or `raw/` subfolder stays
+on the machine.
+
+| from the old project | into the work | in GitLab |
+|---|---|---|
+| claims, runs, series, derivations, figures | `claims/H-…/` | yes, by merge request |
+| manuscript (Overleaf) | `paper/<work>` submodule | yes |
+| training code | `code/<name>` submodule | yes |
+| poster, posts | `socials/` | yes |
+| what a call decided | `calls/<DD-MM-YYYY>.md` | yes |
+| notes, plans, hypotheses, tool settings | `notes/` | no |
+| diary | `daily/` | no |
+| raw logs, dumps, notebooks, result pictures | `runs/` (root shelf) | no |
+| old manuscripts and editions | `paper/drafts/` | no |
+| working code, local clones | `code/local/` | no |
+| recordings and transcripts | `calls/raw/` | no |
+
+The flow:
+
+1. **The work exists in GitLab**, created empty and `internal` in its theme's group (the
+   `create-project` skill), with a README whose `**Ведут**` line names the lead.
+2. **`lab here <work>`** puts the clone at `~/brainlab/<direction>/<theme>/<work>`, closes
+   `notes/`, `daily/`, `/runs/`, `paper/drafts/`, `code/local/`, `calls/raw/` in
+   `.git/info/exclude`, and sets the push options: `merge_request.create` and
+   `merge_request.assign=<lead from Ведут>`. Run it again after the README with `Ведут` is on
+   `main` if the assignee was missing.
+3. **Connect the manuscript and the code** as submodules (the section above).
+4. **Copy the personal material** into the local-only folders. Look at the plan first:
+
+   ```bash
+   python3 ~/brainlab/agents/services/scripts/claims/copy_personal.py <project folder> <clone>
+   python3 ~/brainlab/agents/services/scripts/claims/copy_personal.py <project folder> <clone> --apply
+   ```
+
+   It copies and never deletes the source, never overwrites a file already in the clone,
+   refuses to run while any destination is not excluded from git, and lists what it could
+   not classify — that is decided by hand, not guessed.
+5. **Knowledge into `claims/` by merge request.** By hand: branch, claim pages, `git commit -F
+   -`, `git push`. Or the runner, which does steps 2 and 4 itself and then builds claims,
+   series, runs, proofs and figures from the manuscript (it spends model calls):
+
+   ```bash
+   ~/brainlab/agents/services/scripts/claims/work-to-repo-git.sh <work> <theme> \
+       "<project folder>" ["<manuscript .tex>"]
+   ```
+
+   It works on the branch `work/razbor` of the tree clone, starts only from a clean `main`
+   (or resumes its own branch), pushes only when `sweep.py` finds zero remarks, and exits
+   non-zero when the push or the merge request fails.
+6. **Check** that nothing personal is staged (`git status` lists none of the local-only
+   folders) and read `lab checks`.
+
 ## What you are writing into: a git repository
 
 The shared knowledge of the laboratory is a git repository, one per work, and nothing else.
@@ -75,17 +136,17 @@ Every claim is a folder, every run is a file inside it:
 <work>/claims/H-DYC-035/figures/            pictures, as SVG text
 ```
 
-You do not write into any other place. The calls below are how you put files into that
-repository; they are not a second store standing beside it.
+You do not write into any other place. The git commands below are how you put files into
+that repository; there is no second store standing beside it.
 
 **Work out where you are before writing anything.** Three questions, answered by reading:
 
 0. **Which work?** The session-start hook has already worked it out and printed it: the
    work's slug, the path to its clone, its claims, what is open and what is assigned to you.
-   It reads a `.lab-work` file in the project folder, here or higher up the tree. Nothing is
+   Inside the tree the path says it: `~/brainlab/<direction>/<theme>/<work>`. A `.lab-work`
+   file matters only outside the tree, for a folder that is not the work's clone. Nothing is
    typed into a message to declare this: the `ЛАБ-РАБОТА:` line is gone, together with the
-   markup hook that used to parse it (disabled, then removed 03-10-2026). Working somewhere
-   else? Put a `.lab-work` file there, or say the slug in plain words.
+   markup hook that used to parse it (disabled, then removed 03-10-2026).
    `dykaf`, `rl-muon`, `warmup` are works and have repositories.
    `lab-general` or `preconditioning-curvature` are shelves above them: no repository, no
    pull request, and a record sent there reaches no file and no review — eleven thousand
@@ -102,10 +163,11 @@ repository; they are not a second store standing beside it.
    into the same claim again adds a commit to that same request rather than opening a
    second one — so a long check accumulates where its reviewer reads it.
 
-**You write by editing files, not by filling a form.** Clone the work's repository, check
-out the branch `claim/<CODE>`, edit the markdown, push, open or extend the pull request. A
+**You write by editing files, not by filling a form.** Use the work's clone in the tree —
+`lab here <work>` places or updates it; never make a second clone — check out the branch
+`claim/<CODE>`, edit the markdown, push, and the push opens or extends the pull request. A
 person reads the diff and merges. Everything under `claims/` belongs to you and the reviewer:
-the service creates a file once and never rewrites it. The mechanics, with commands, are in
+nothing rewrites it behind your back. The mechanics, with commands, are in
 [writing in git](references/writing-in-git.md); how each kind of page is written and read is
 [claim-page.md](references/claim-page.md).
 
@@ -179,10 +241,13 @@ Then push, and the pull request opens from the push itself:
 
 ```bash
 git commit -F -                      # first line is the title, the rest is the body
-git push -o merge_request.create \
-         -o merge_request.assign=veprikov   # and lands on whoever merges it
+git push                             # opens the request, assigned to the lead from «Ведут»
 lab checks                           # what the checks said
 ```
+
+A plain `git push` is enough because `lab here` configured the clone: `push.default current`
+and the push options `merge_request.create` and `merge_request.assign=<lead>`, the lead taken
+from the `**Ведут**` line of the work's README. Never write a login in by hand.
 
 **A proposal is not done while a remark is unresolved.** Two sources, and a green verdict is
 silent about the second: the service says what is mechanically broken, a person in the
@@ -193,7 +258,9 @@ remarks are waiting, so acting on them does not depend on remembering to look.
 
 **Assign it to whoever will merge it.** GitLab assigns a merge request to its author, and the
 author is the agent's account; the person then sees zero in «Merge requests → Assigned» and
-never finds your proposal. The hourly pass fixes a forgotten one, but set it yourself.
+never finds your proposal. The tree clone sets the assignee on push; check it with
+`git config --get-all push.pushOption`, and if `merge_request.assign=` is missing, the README
+has no `Ведут` line yet — run `lab here <work>` again once it has.
 
 **The body of the proposal is taken from the commit message** — measured 03-10-2026: title
 from the first line, body from the rest, `Closes #12` works from there too. There is no `lab
@@ -218,8 +285,8 @@ definition of DyKAF is a line nobody can act on.
 
 **But the repository has no place for a definition.** The tree is only
 `<work>/claims/<CODE>/{runs,series,theory,figures}` and `literature/`. There is no `terms/`,
-no `resources/`, no journal in a work. A term goes to the theme's glossary (`literature/glossary/`,
-and the same pages are published as that project's wiki); the way of working goes to
+no `resources/`, no journal in a work. A term goes to the theme's glossary (`literature/glossary/`
+in the theme's literature clone); the way of working goes to
 `brainlab/journal`; an instruction others need goes to `brainlab/handbook`.
 
 So do this instead, and do not invent a folder for it:
@@ -260,9 +327,10 @@ five failed runs.
 - To ingest, quote, or connect an external paper, read
   [library workflow](references/library.md).
 
-Load only the guidance needed for the operation. Use the live tool schema for required
-fields, supported types, relations, and lifecycle values; a remembered signature is not a
-contract. An unavailable integration limits that destination, not unrelated read-only work.
+Load only the guidance needed for the operation. The form of a page is taken from its
+neighbours in the clone and from `claim-page.md`, not from a remembered schema: there is no
+tool schema to consult, only files. A missing clone limits that destination, not unrelated
+read-only work.
 
 For meeting extraction, `call-notes` supplies the meeting-specific workflow. Brain Call has
 its own pipeline; it does not require running `call-notes` afterwards.

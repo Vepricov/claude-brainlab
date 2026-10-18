@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 import pathlib
 import sys
-from __future__ import annotations
 
 import re
 from pathlib import Path

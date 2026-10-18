@@ -14,8 +14,8 @@ Modes:
        --expect-title "Paper Title" --expect-zotero-key ABCD1234
 """
 
-import pathlib
 from __future__ import annotations
+import pathlib
 
 import argparse
 import json

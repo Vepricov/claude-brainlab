@@ -12,22 +12,22 @@ For the owner's library, follow the current Obsidian and Zotero taxonomy and the
 library sync. Other members contribute by proposal into the theme's `literature/` without
 owning that vault. Do not require a private filesystem note from every contributor.
 
-An upsert's behavior depends on the current schema. Read the stored paper first and preserve
-metadata and sections that the update does not intend to replace. Use additive section writes
-for additional verified source passages when supported. Do not invent titles, strip tags, or
-replace a full reading note with a short metadata card.
+A page is a file, and a change to it is a commit like any other. Read the existing page
+first and keep the metadata and sections the change does not intend to replace. Add a new
+verified source passage as its own section. Do not invent titles, strip tags, or replace a
+full reading note with a short metadata card.
 
-Record claims that are useful to cite or assess, with their assumptions and source location.
-Split independently supported assertions. Choose their number and kind from the paper.
-Statements may be paraphrased or translated. Quotations are optional; a source reference and
-locator keep the assertion traceable without copying prose. Do not pad claims to a character
-minimum. If the current server refuses a claim without a quote, preserve the prepared payload
-as pending and report the mismatch. Do not fabricate a quote or silently mark the paper fully
-published. A reading note and a verified original passage are different source types.
+Record the paper's claims that are useful to cite or assess, with their assumptions and
+source location. Split independently supported assertions. Choose their number and kind
+from the paper. Statements may be paraphrased or translated. Quotations are optional; a
+source reference and locator keep the assertion traceable without copying prose. Do not pad
+claims to a character minimum and do not fabricate a quote. A reading note and a verified
+original passage are different source types.
 
-Use `link_paper` with the appropriate relation and, when relevant, a specific paper claim.
+The connection between a paper and a work is a sentence on the work's page — the claim it
+bears on, the relation (baseline, prior art, supports, contradicts) and the citation key.
 A whole-paper relation may be enough for a baseline. Do not manufacture a connection because
-another project shares a keyword. Preserve returned identifiers and verify the resulting link.
+another project shares a keyword.
 
 ## Куда положить статью — решение, а не формальность
 
@@ -48,10 +48,10 @@ optimization-basics почему-то есть про LMO методы. Тако
 | Тема названа предметом, а не свойством | «адаптивные методы и их сходимость», а не «теория», «важное», «новое», «прочее» |
 | Статья попадает ровно в одну тему | статья в трёх темах — признак того, что тема выбрана по ключевому слову |
 
-**Перед записью статьи:** посмотри существующие темы (`list_themes`) и выбери ту, чей
+**Перед записью статьи:** посмотри существующие темы (`ls -d ~/brainlab/*/*/literature`) и выбери ту, чей
 вопрос статья действительно отвечает. Подходящей нет — предложи новую владельцу и скажи,
 чем она отличается от соседних. Не клади «пока сюда, потом разберём»: разбирать это потом
-придётся целым проходом, и `scripts/claims/shelf.sh` именно для этого и написан.
+придётся целым проходом.
 
 **Если тема, куда ты кладёшь, уже у границы** — скажи об этом вслух в ответе. Лучше
 остановиться на двадцать шестой статье, чем на восемьдесят шестой.

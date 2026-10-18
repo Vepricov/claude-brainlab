@@ -9,22 +9,14 @@ version: 2.4.0
 ## Shared publication contract
 
 Before writing shared records, read `lab-knowledge/references/record-contract.md` from the
-installed skills directory and the live MCP schema. Use the already authorized scope,
-resolve the existing destination, and verify stored content. Keep failed publications pending.
+installed skills directory. Use the already authorized scope, resolve the existing
+destination, and verify stored content. Keep failed publications pending.
 
 The rules every write into the lab base must satisfy are in one place and are not
 restated anywhere: `~/.claude/skills/lab-knowledge/references/canon.md`, mirrored from
 `brainlab/handbook/canon.md`. Read it when the write goes into a work, the handbook
 or the journal; it also says which of the three a given thing belongs in.
 
-
-Create the private working layer first. For a Brain Lab project, continue with
-`lab-project-onboarding`; do not reproduce its shared-system logic here.
-
-Перед работой с хранилищем прочитать соглашения:
-`general/Knowledge/obsidian-conventions.md` (темы в `Papers/`, смайлики и
-цвета папок, что нельзя создавать). Папке нового проекта нужен смайлик и цвет
-своей темы.
 
 
 ## Trigger
@@ -35,7 +27,7 @@ Use when the user writes `/want-2-read` or asks to "обработай мой с
 
 The reading queue has **two** entry points and they must be reconciled every run:
 
-1. **Operon Reading board** (master) — `Operon/Reading/<Заголовок статьи>.md`, one file per card,
+1. **Operon Reading board** (master) — `personal/operon/Reading/<Заголовок статьи>.md`, one file per card,
    columns are statuses: `_Trash` → `Инбокс` → `Жду публикацию` → `Очередь` → `Читаю` → `Прочитано`.
 2. **AlphaXiv "Want to read"** folder (`folder_id` = `want_to_read_folder_id` in
    `~/.claude/alphaxiv-library-map.json`) — where the owner drops papers from the phone or the
@@ -58,7 +50,7 @@ Column ownership:
   check as its step 0, but it never ingests, so it never moves anything.
 - `Очередь` — accepted papers. **This is the input of `/want-2-read`.**
 - `Читаю`, `Прочитано` — reader columns, untouched. Operon auto-archives finished cards into
-  `Operon/Archives` a day later via `~/.local/bin/operon_daily_archive.py`.
+  `personal/operon/Archives` a day later via `~/.local/bin/operon_daily_archive.py`.
 - `_Trash` — explicit rejection. It is terminal (`isCancelled`) and is archived by the same
   nightly script. A rejected arXiv ID must also be removed from AlphaXiv «Want to read».
 
@@ -73,7 +65,7 @@ it, never overwrite it.
 
 ```markdown
 ---
-operonId: <7 символов [a-z0-9], уникально по всей Operon/Reading/>
+operonId: <7 символов [a-z0-9], уникально по всей personal/operon/Reading/>
 status: Reading.<_Trash|Инбокс|Жду публикацию|Очередь|Читаю|Прочитано>
 priority: C
 datetimeCreated: <ISO, локальное время>
@@ -82,7 +74,7 @@ datetimeModified: <ISO, локальное время>
 # <Заголовок статьи>
 
 ## Заметка
-[[Literature/<тема>/<Sanitized Paper Title>]]
+[[<направление>/<тема>/literature/<Sanitized Paper Title>.md|<Sanitized Paper Title>]]
 
 ## arXiv
 https://arxiv.org/abs/<ARXIV_ID>
@@ -94,7 +86,7 @@ https://arxiv.org/abs/<ARXIV_ID>
 <подробное описание статьи на русском, собранное из итоговой Obsidian-заметки>
 
 **Zotero**: zotero://select/library/items/<PARENT_KEY>
-**Папка**: `Literature/<тема>`
+**Папка**: `<направление>/<тема>/literature`
 ```
 
 Rules for the schema:
@@ -110,17 +102,17 @@ Rules for the schema:
   deleted**. Append the generated description below whatever is already there.
 - `## Идея / комментарии` is a legacy alias for `## Комментарии`. Rename the heading, keep the body.
 - The `**Zotero**:` link must point at the **parent paper item**, never at the PDF attachment.
-- Titles in `[[Literature/...]]` use the sanitized title from `paper-ingest` (no `$`, no `\`).
+- Titles in `[[<направление>/<тема>/literature/...]]` use the sanitized title from `paper-ingest` (no `$`, no `\`).
 - A card created manually from the Kanban may initially contain only Operon frontmatter and a title,
-  and may physically land outside `Operon/Reading/`. On every run, normalize such a Reading card:
+  and may physically land outside `personal/operon/Reading/`. On every run, normalize such a Reading card:
   preserve its status and owner text, add the four missing sections, and move the file into
-  `Operon/Reading/` before processing it. Never require the owner to fill metadata by hand.
+  `personal/operon/Reading/` before processing it. Never require the owner to fill metadata by hand.
 - The supported manual path is: column `Очередь` → `+` → `FI Create File Task` → title →
   `Pick a Template` → `Reading Paper` → `File`. Do not recommend `Minimal File Task — Reading`:
   Operon 3.0.1 resets that template to the pipeline's first status (`Reading.Инбокс`) even when the
   creator was opened from another column.
 
-A card is **resolved** when `## Заметка` holds a real `[[Literature/...]]` wikilink and
+A card is **resolved** when `## Заметка` holds a real `[[.../literature/...]]` wikilink and
 `## Комментарии` holds the description plus the Zotero link. Resolved is not the same as read:
 "read" is `status: Reading.Прочитано`, set by the owner in Operon.
 
@@ -165,7 +157,7 @@ for f in d["folders"]:
 PY
 ```
 
-Before importing, scan live Reading cards and `Operon/Archives/Reading/` for
+Before importing, scan live Reading cards and `personal/operon/Archives/Reading/` for
 `status: Reading._Trash`. For every rejected card with an arXiv ID that is present in AlphaXiv
 «Want to read», call `remove_papers_from_folder` on the Want-to-read folder. This is queue cleanup,
 not deletion from thematic AlphaXiv folders. It prevents a rejected paper from being resurrected.
@@ -176,10 +168,10 @@ For each paper in "Want to read":
    matches. A rejected match is removed from AlphaXiv «Want to read» and never imported. Any other
    match is not duplicated. If it is not in `Очередь`, report the status conflict and leave the
    AlphaXiv queue item in place for the owner to decide.
-2. If no card exists, create one in `Operon/Reading/` with `status: Reading.Очередь`, an empty
+2. If no card exists, create one in `personal/operon/Reading/` with `status: Reading.Очередь`, an empty
    `## Заметка`, the arXiv URL, a topic guess, and one line in `## Комментарии` recording where it
    came from and when. Filename is the sanitized paper title, never the arXiv ID: a human reads it.
-3. `operonId` must be unique across `Operon/Reading/` **and** `Operon/Archives/` — check before writing.
+3. `operonId` must be unique across `personal/operon/Reading/` **and** `personal/operon/Archives/` — check before writing.
 
 Do **not** remove anything from "Want to read" at this step. Removal happens in Step 6, atomically
 with filing the paper into its topic folder, so a crash mid-batch never loses a queue item.
@@ -195,7 +187,7 @@ Identical to step 0 of `/paper-search` — both skills run the same protocol so 
 same whichever one the owner launched.
 
 ```bash
-rg -l '^status: Reading\.Жду публикацию$' "$VAULT/Operon/Reading" -g '*.md'
+rg -l '^status: Reading\.Жду публикацию$' "$VAULT/personal/operon/Reading" -g '*.md'
 ```
 
 For every live card with `status: Reading.Жду публикацию`, search the exact title in official
@@ -219,7 +211,7 @@ exactly as for «Инбокс».
 4. **Delete the stale agent report saying the paper could not be found anywhere.** This is the only
    text the skill may erase from `## Комментарии`; the owner's own notes are never touched. Replace
    it with the success callout.
-5. If the existing `Literature/` note was built without an accessible full text, keep
+5. If the existing `literature/` note was built without an accessible full text, keep
    `paperIngestState: pending` so the eventual run does a **full re-ingest**, not a patch.
 
 ```markdown
@@ -287,14 +279,14 @@ drag it first just to get the note built.
 ```bash
 VAULT="${OBSIDIAN_VAULT:-$HOME/brainlab}"
 {
-  rg -l '^status: Reading\.Очередь$' "$VAULT/Operon" -g '*.md'
+  rg -l '^status: Reading\.Очередь$' "$VAULT/personal/operon" -g '*.md'
   # [found] = публичный источник подтверждён на шаге 1b, значит статью можно ингестить
-  rg -l '^status: Reading\.Жду публикацию$' "$VAULT/Operon" -g '*.md' \
+  rg -l '^status: Reading\.Жду публикацию$' "$VAULT/personal/operon" -g '*.md' \
     | while IFS= read -r c; do rg -q '^taskTitle: .*\[found\]' "$c" && printf '%s\n' "$c"; done
 } | sort -u \
-  | rg -v '/Operon/Archives/' \
+  | rg -v '/personal/operon/Archives/' \
   | while IFS= read -r card; do
-      if ! rg -q '\[\[Literature/' "$card" || rg -q '^paperIngestState: pending$' "$card"; then
+      if ! rg -q '\[\[[^]]*/literature/' "$card" || rg -q '^paperIngestState: pending$' "$card"; then
         printf '%s\n' "$card"
       fi
     done
@@ -302,13 +294,13 @@ VAULT="${OBSIDIAN_VAULT:-$HOME/brainlab}"
 
 This vault-wide scan is intentional: Operon's native `+` creator may save a new Reading card in
 the global File Tasks folder. Before collecting work, normalize every live `status: Reading.*`
-file outside `Operon/Reading/` and move it there with a collision-safe filename.
+file outside `personal/operon/Reading/` and move it there with a collision-safe filename.
 
 Interpretation:
-- card in `Очередь` without `[[Literature/...]]` → **unresolved, process it**
+- card in `Очередь` without `[[.../literature/...]]` → **unresolved, process it**
 - card in `Очередь` with the link → already resolved, unless `paperIngestState: pending`
 - card in `Инбокс` → the owner has not decided, **do not process, do not comment, do not promote**
-- card in `Жду публикацию` **with** `[found]` and no `[[Literature/...]]` → **process it**, exactly
+- card in `Жду публикацию` **with** `[found]` and no `[[.../literature/...]]` → **process it**, exactly
   like an «Очередь» card. Full `paper-ingest`, Zotero, PDF, Obsidian note, AlphaXiv mirror, and
   then move it to `Reading.Очередь` (Step 7) — the wait is over and the paper is now readable
 - card in `Жду публикацию` **without** `[found]` → title-only, no reliable source; run the
@@ -326,19 +318,18 @@ Obsidian note.
 Do not use a hardcoded ontology. Inspect the live tree every run:
 
 ```bash
-LIB="$VAULT/Literature"
-find "$LIB" -mindepth 2 -maxdepth 2 -type d | sort
-find "$LIB" -name "*.md" | xargs grep -h "^tags:" -A 20 | grep "  - " | sed 's/^  - //' | sort | uniq -c | sort -rn
+ls -d "$VAULT"/*/*/literature | sort                  # одна тема — одна папка literature
+find "$VAULT"/*/*/literature -maxdepth 1 -name "*.md" | xargs grep -h "^tags:" -A 20 | grep "  - " | sed 's/^  - //' | sort | uniq -c | sort -rn
 ```
 
 Collect every arXiv ID already seen so nothing gets re-ingested or re-suggested:
 
 ```bash
-find "$LIB" -name "*.md" | xargs grep -h "arxiv.org/abs/" | grep -oE "[0-9]{4}\.[0-9]{4,5}" | sort -u > /tmp/all_seen_arxiv_ids.txt
+find "$VAULT"/*/*/literature "$VAULT"/personal/literature -name "*.md" 2>/dev/null | xargs grep -h "arxiv.org/abs/" | grep -oE "[0-9]{4}\.[0-9]{4,5}" | sort -u > /tmp/all_seen_arxiv_ids.txt
 ```
 
-Relevance signals: existing folder names, note titles, note tags, and the project cards under
-`Papers/`, `Projects/`, `Staff/`.
+Relevance signals: existing theme folders, note titles, note tags, and the work cards
+`~/brainlab/*/*/*/README.md`.
 
 When the Zotero MCP is available, `mcp__zotero__zotero_semantic_search` over the library is a better
 classifier than folder-name matching — use it to find the nearest existing papers and place the new
@@ -430,8 +421,10 @@ repository in GitLab is what other members read. For every paper filed in Step 5
 python3 ~/.claude/skills/paper-ingest/scripts/lab_page_sync.py --arxiv {ARXIV_ID}
 ```
 
-It pushes the page to `main` of the theme's literature repository in GitLab (through a temporary
-clone); `lab sync` then brings it into `~/brainlab/<direction>/<theme>/literature/`.
+It takes the note from `~/brainlab/<direction>/<theme>/literature/`, finds the page by the
+citation key in the note's BibTeX block, and pushes it to `main` of the theme's literature
+repository in GitLab (through a temporary clone). No key in the note — the paper is skipped with
+a message; fix the BibTeX block and rerun.
 Repeat only the authorized paper or batch. On failure, keep the card's ingest pending and preserve
 the local work. Use the existing theme taxonomy; do not invent a new theme as an ingest step.
 
@@ -440,7 +433,7 @@ the local work. Use the existing theme taxonomy; do not invent a new theme as an
 Fill in the card **in place**, preserving `operonId`, `status`, `priority`, the dates, the title, and
 every line the owner wrote themselves:
 
-- `## Заметка` → the permanent `[[Literature/<тема>/<Sanitized Title>]]` wikilink
+- `## Заметка` → the permanent `[[<направление>/<тема>/literature/<Sanitized Title>.md|<Sanitized Title>]]` wikilink
 - `## arXiv` → the canonical `https://arxiv.org/abs/<ID>` URL, if the section was empty
 - `## Тема` → the human-readable topic, if the section was empty or held a slug
 - `## Комментарии` → the detailed Russian description, then the `**Zotero**:` and `**Папка**:` lines
@@ -451,7 +444,7 @@ If the card still carries the `[found] ` prefix from Step 1b, **strip it** from 
 `taskTitle` while writing the card back — including a card that is still sitting in «Жду
 публикацию». The prefix means "the source turned up, this needs deciding"; once the note exists the
 resolved wikilink is the signal, and the availability callout in `## Комментарии` keeps the history. Per rule 11 of `~/.claude/skills/paper-ingest/references/alphaxiv-sync.md` the H1 of
-a completed card is the canonical `# [[Literature/path/note|Human title]]` link and `taskTitle` is
+a completed card is the canonical `# [[<направление>/<тема>/literature/<note>.md|Human title]]` link and `taskTitle` is
 that same H1 without the leading `# `.
 
 The description must not be a one-line annotation. Condense it from the full `paper-ingest` note and
@@ -469,7 +462,7 @@ the note, the Zotero item and the PDF all exist, the card is an ordinary unread 
 with the other unread papers. Leaving it behind a "waiting" label buries finished work.
 
 Conditions, all required:
-- the ingest actually succeeded — a real `[[Literature/...]]` wikilink, a Zotero parent item, a PDF.
+- the ingest actually succeeded — a real `[[.../literature/...]]` wikilink, a Zotero parent item, a PDF.
   A failed or metadata-only attempt leaves the card exactly where it was;
 - the card started in `Жду публикацию`. A card in `Инбокс` is never promoted, whatever happens;
 - report the move in chat, one line per card (see below). A silent status change is the thing the
@@ -519,8 +512,8 @@ The batch is not complete until this agent finishes.
 - <Заголовок> — разобрана, публичная версия <arXiv 2605.24956 | OpenReview ...>, перенесена в «Очередь»
 
 Готовые ссылки:
-- [[Literature/.../Paper A]]
-- [[Literature/.../Paper B]]
+- [[<направление>/<тема>/literature/Paper A.md|Paper A]]
+- [[<направление>/<тема>/literature/Paper B.md|Paper B]]
 
 AlphaXiv: перенесено в тематические папки N, очередь Want to read очищена.
 ```
@@ -539,7 +532,7 @@ memberships on startup.
 
 - Both sources are read every run: the Operon board **and** the AlphaXiv "Want to read" folder
 - AlphaXiv "Want to read" maps to «Очередь», not to «Инбокс»
-- Manually created Reading cards are discovered vault-wide, normalized, and moved to `Operon/Reading/`
+- Manually created Reading cards are discovered vault-wide, normalized, and moved to `personal/operon/Reading/`
 - `Жду публикацию` is rechecked every run and marked `[found]` when a public version appears; a
   `[found]` card is then ingested in the same batch as «Очередь», while a title-only card is not
 - A successfully ingested `Жду публикацию` card is moved to `Очередь` and the move is reported in
@@ -561,7 +554,7 @@ memberships on startup.
 - New local folder → `create_folder` on AlphaXiv **and** a new entry in `alphaxiv-library-map.json`
 - Never create duplicates — check Zotero, SQLite, and Obsidian first
 - `**Zotero**:` always points at the parent paper item, never at the PDF attachment
-- Do not assume a fixed Literature taxonomy; inspect the current tree every run
+- Do not assume a fixed theme taxonomy; inspect `~/brainlab/*/*/literature` every run
 - Do not propose papers already present in the library, inbox, or trash
 - ALWAYS quit Zotero at Step 0 and relaunch at Step 9. Use
   `osascript -e 'tell application "Zotero" to quit'`, never `kill -9`; verify with `pgrep -lf Zotero`

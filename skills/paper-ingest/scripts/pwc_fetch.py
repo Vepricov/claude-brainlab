@@ -23,8 +23,8 @@ The injector places the section between `## BibTeX` and `## AI Explanation`.
 Re-running on the same note replaces the old section in place (idempotent).
 """
 
-import pathlib
 from __future__ import annotations
+import pathlib
 
 import argparse
 import json

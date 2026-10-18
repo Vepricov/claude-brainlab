@@ -125,7 +125,8 @@ different error messages.
 Show one compact batch preview:
 
 ```text
-private: meeting summary and private context → <work>/calls/
+private: raw transcript and private context → <work>/calls/raw/ (excluded from git)
+shared: agreed call summary → <work>/calls/<DD-MM-YYYY>.md, by merge request
 issues: title, assignee, due date, the claim each one affects
 base: type, claim/result, work, provenance, duplicate candidate
 ```

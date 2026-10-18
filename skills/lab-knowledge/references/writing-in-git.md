@@ -1,35 +1,36 @@
 # Write your work into the base with git
 
-The base is a git repository per work. You do not fill a form and hope: you clone it, edit
-the markdown, push a branch and open a pull request. A human reads the diff and merges.
+The base is a git repository per work. You do not fill a form and hope: you take its clone in
+the tree, edit the markdown, push a branch, and the push opens a pull request. A human reads
+the diff and merges.
 
-## Your credentials
+## Your clone and your credentials
 
-The machine's key is on this machine, at `~/.config/brainlab/git-token`, with the base
-address in `git-url` and the login in `git-login`. Read them and use them; do not ask, and
-never use a person's token. The key is a group key at developer level: it pushes branches
-and opens merge requests, and it cannot merge anywhere.
+The work's clone lies in the tree, at the same path as in GitLab without the `brainlab/`
+root. One command places it, or updates it if it is already there:
 
+```bash
+lab here <работа>      # → ~/brainlab/<направление>/<тема>/<работа>
 ```
-TOKEN=$(cat ~/.config/brainlab/git-token)
-URL=$(cat ~/.config/brainlab/git-url)
-git clone ${URL/https:\/\//https://oauth2:$TOKEN@}/brainlab/<направление>/<тема>/<работа>.git
-```
+
+Do not `git clone` by hand and never put the key into a URL: a key in `remote.origin.url`
+lies in the open in `.git/config` and leaks into every log that prints the remote. `lab here`
+hands the key to git through a credential helper (`~/.config/brainlab/git-credentials`),
+finds the full path of the work by its slug, closes the local-only folders in
+`.git/info/exclude` and sets the push options. The key itself is on this machine, at
+`~/.config/brainlab/git-token`, with the base address in `git-url`; do not ask for it, and
+never use a person's token. A second clone «somewhere for myself» is not made: `lab here
+<работа> --рядом` (a clone in `<project folder>/lab-base`) is only for a machine without the
+tree.
 
 **The base is GitLab since 01-10-2026, reachable over the network.** The old path through
 `127.0.0.1:3080` and Gitea is dead; if you find it anywhere, that is leftover, not a
-fallback. The certificate is self-signed, so certificate checking is turned off
-deliberately — the address comes from a file on disk, not from the network.
-
-The work lives inside the group of its theme, and the theme inside a direction:
-`brainlab/preconditioning-curvature/dykaf` style paths vary, so take the full path from the
-project list rather than assembling it from the slug. `list_projects` gives the work and
-its theme.
+fallback.
 
 ## Where things live
 
 ```
-README.md                          what the paper is about; generated, do not hand-edit
+README.md                          what the paper is about, Ведут and Команда lines
 claims/H-DYC-007/README.md         the claim, as a person reads it
 claims/H-DYC-007/series/S-DYC-022.md   a group of runs answering one question
 claims/H-DYC-007/runs/E-DYC-126.md     one run: settings, how it was checked, numbers
@@ -37,9 +38,11 @@ claims/H-DYC-007/theory/D-DYC-002.md   a theorem with its proof
 claims/H-DYC-007/figures/F-DYC-001.svg pictures, SVG text only
 ```
 
-**Everything under `claims/` belongs to you and to the reviewer.** The service creates a
-file once and never rewrites it, so your edit survives. Outside `claims/` the tree is
-generated: the work README and the index are rebuilt, and editing them is pointless.
+**Everything under `claims/` belongs to you and to the reviewer**, and nothing rewrites it
+behind you. The work README is written by people too and changes by proposal like anything
+else; keep its `**Ведут**` and `**Команда**` lines intact — the push options take the
+assignee of every proposal from `Ведут`. Next to these, the clone has folders that never
+leave the machine: `notes/`, `daily/`, `runs/`, `paper/drafts/`, `code/local/`, `calls/raw/`.
 
 ## The loop
 
@@ -57,14 +60,14 @@ git fetch origin && git checkout claim/H-DYC-007 || git checkout -b claim/H-DYC-
 # правь файлы, клади рисунки, дописывай таблицы
 git merge --no-edit main && git diff --stat main..HEAD    # посмотреть ГЛАЗАМИ
 git add -A && git commit -F -      # заголовок и тело предложения прямо здесь
-git push -o merge_request.create origin claim/H-DYC-007
+git push                           # клон настроен: push сам открывает предложение
 ```
 
-4. **The pull request opens from that push.** Its title is the first line of the commit
-   message and its body is the rest — measured 03-10-2026, no API call needed. Pushing again
-   into the same branch adds to the open request; `-o merge_request.create` on a branch that
-   already has one is simply ignored. `Closes #12` in the commit message closes that task on
-   merge.
+4. **The pull request opens from that push**, assigned to the lead named in the README's
+   `Ведут` line. Its title is the first line of the commit message and its body is the rest —
+   measured 03-10-2026, no API call needed. Pushing again into the same branch adds to the
+   open request; the create option on a branch that already has one is simply ignored.
+   `Closes #12` in the commit message closes that task on merge.
 
    The body must carry three things, and none of them can be skipped: **what changed and
    why**, **what disappeared and why**, **how it was checked**. The third exists because once,
@@ -94,8 +97,7 @@ caution but **style**: the page must read the way the others read.
 ## What not to do
 
 - Do not edit `main` — it is protected and you cannot push there anyway.
-- Do not invent a public code for a new record. Leave the code out of the filename and say
-  in the pull request that it needs one; codes are handed out by the service.
+- Do not guess a public code for a new record. Take the next free one from the clone: the
+  largest number per prefix, not the count (see [publishing](publishing.md)).
 - Do not cite public codes as stable addresses in messages: they are renumbered when a work
   is tidied. **The stable address is the path of the file in the repository** — quote that.
-  A record that has not been merged yet has no UUID at all, so there is nothing else to quote.

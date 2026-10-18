@@ -63,18 +63,21 @@ python3 "$HOME/brainlab/services/scripts/literature_readme.py" <клон лит�
 
 ## Ингест статьи не закончен, пока страница в git неполная
 
-`paper-ingest` и `want-2-read` доводят статью до Zotero, хранилища и корпуса. Этого мало:
-страница `литература/<ключ>.md` создаётся службой из корпуса и печатает **только краткое
-изложение**, а разделы разбора остаются в базе невидимыми. Поэтому после шага синхронизации
-с корпусом обязателен ещё один:
+`paper-ingest` и `want-2-read` доводят статью до Zotero и до заметки в дереве
+`~/brainlab/<направление>/<тема>/literature/<Название>.md`. Служба корпуса, из которой
+страницы раньше собирались, удалена 07-10-2026, поэтому страницу в GitLab доводит до заметки
+отдельный шаг:
 
 ```bash
-python3 ~/.agents/skills/paper-ingest/scripts/lab_page_sync.py --arxiv <ARXIV_ID>
+python3 ~/.claude/skills/paper-ingest/scripts/lab_page_sync.py --arxiv <ARXIV_ID>
 ```
 
-Скрипт дописывает в страницу разделы из корпуса, переносит рядом рисунки, на которые они
-ссылаются, и переводит рисунки из PDF в PNG: иначе GitLab их не показывает. Проверить можно
-`--dry-run`. Одной командой чинится и вся тема: `--theme <слаг>`.
+Скрипт находит заметку в дереве по номеру arXiv, а страницу в репозитории — по ключу
+цитирования из её блока BibTeX (или `citation_key` в шапке); без ключа статья пропускается с
+сообщением. Он переносит текст, кладёт рядом рисунки, на которые заметка ссылается, и
+переводит рисунки из PDF в PNG: иначе GitLab их не показывает. Страницу, которая в базе
+вдвое полнее заметки, не трогает. Проверить можно `--dry-run`: он ничего не пишет и не
+отправляет. Одной командой чинится и вся тема: `--theme <слаг>`.
 
 Признак невыполненного шага: на странице статьи один заголовок `## Про что работа` и больше
 ничего, при размере около трёх килобайт.
@@ -109,18 +112,17 @@ python3 ~/.agents/skills/paper-ingest/scripts/lab_page_sync.py --arxiv <ARXIV_ID
 переменной `BRAINLAB_FIG_ROOTS`. Если вложений на машине нет вовсе, вики-вставка остаётся как
 была, чтобы её перевёл прогон оттуда, где рисунки есть.
 
-Серверный конвейер закрывает шаг сам: `ingest_finish.py` вызывает `lab_page_sync.py` сразу после
-отправки в корпус. Шаг необязателен для закрытия очереди — git это зеркало, и при лежащем туннеле
-статья всё равно уже в корпусе, но в журнал уходит строка о неудаче.
+Серверный конвейер закрывает шаг сам: `ingest_finish.py` кладёт страницу статьи в репозиторий
+литературы темы при закрытии разбора.
 
 Подмести всё, что накопилось, можно одной командой:
 
 ```bash
-python3 ~/.agents/skills/paper-ingest/scripts/lab_page_sync.py --fill-thin
+python3 ~/.claude/skills/paper-ingest/scripts/lab_page_sync.py --fill-thin
 ```
 
-Она проходит все темы и дополняет страницы, где напечатано только краткое изложение. Безопасна
-для повторного запуска: страницу, которая уже полная, она не трогает.
+Она проходит все темы дерева и переносит в базу заметки, страница которых отстала. Безопасна
+для повторного запуска: страницу, совпавшую с заметкой, она не трогает.
 
 ## Правки README темы переживают проходы, но только README
 
@@ -135,9 +137,9 @@ python3 ~/.agents/skills/paper-ingest/scripts/lab_page_sync.py --fill-thin
 Владелец решает, брать ли их. Инструмент показывает разницу и приносит выбранное:
 
 ```bash
-python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --list
-python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --list --theme latent-reasoning
-python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --pull <citation_key>
+python3 ~/.claude/skills/paper-ingest/scripts/lab_pull.py --list
+python3 ~/.claude/skills/paper-ingest/scripts/lab_pull.py --list --theme latent-reasoning
+python3 ~/.claude/skills/paper-ingest/scripts/lab_pull.py --pull <citation_key>
 ```
 
 `--pull` кладёт разбор в `Literature/_inbox` с вики-ссылками и скачанными рисунками, и на этом
@@ -176,7 +178,7 @@ python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --pull <citation_key>
 Разошлось — значит часть нарисована в коде.
 
 ```bash
-python3 ~/.agents/skills/paper-ingest/scripts/tikz_render.py <каталог исходников> <куда> fig:метка ...
+python3 ~/.claude/skills/paper-ingest/scripts/tikz_render.py <каталог исходников> <куда> fig:метка ...
 ```
 
 Скрипт берёт преамбулу статьи целиком (построчная выборка ломает многострочные
@@ -196,7 +198,7 @@ python3 ~/.agents/skills/paper-ingest/scripts/tikz_render.py <каталог и�
 С 30-09-2026 Zotero больше не исключение. Прежняя вложенная таксономия
 (`Optimization/zero-order`, `PEFT/lora_base`, `LLM/scaling_laws`) снесена, вместо неё одна
 коллекция `Literature` и в ней двадцать четыре коллекции с теми же слагами, что репозитории
-тем в базе, папки `Literature/<тема>` в хранилище и папки `personal/<тема>` на AlphaXiv.
+тем в базе, папки `<направление>/<тема>/literature` в хранилище и папки `personal/<тема>` на AlphaXiv.
 620 статей разложены по теме их страницы в базе, а не по имени прежней коллекции. Проектные
 коллекции `Research-*` и партии `_inbox/w2r_*` не тронуты: они не про литературу.
 
@@ -218,8 +220,8 @@ python3 ~/.agents/skills/paper-ingest/scripts/tikz_render.py <каталог и�
 принимается одним движением:
 
 ```bash
-python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --accept        # всё
-python3 ~/.agents/skills/paper-ingest/scripts/lab_pull.py --accept zheng2025soft
+python3 ~/.claude/skills/paper-ingest/scripts/lab_pull.py --accept        # всё
+python3 ~/.claude/skills/paper-ingest/scripts/lab_pull.py --accept zheng2025soft
 ```
 
 Приёмка переносит заметку в `Literature/<тема>/` вместе с рисунками, правит вики-вставки,

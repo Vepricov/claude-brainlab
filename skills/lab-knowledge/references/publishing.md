@@ -4,12 +4,13 @@ Apply [the shared record contract](record-contract.md).
 
 ## You are writing into a repository, through a pull request
 
-The shared knowledge of the laboratory is a git repository per work, inside an organisation
-named after its research theme:
+The shared knowledge of the laboratory is a git repository per work, inside the group of its
+theme, inside the group of its direction. The same path is where its clone lies in the tree:
 
 ```
-brainlab-preconditioning-curvature/dykaf
-  README.md                       what the paper is about
+brainlab/matrix-optimization/preconditioning-curvature/dykaf      in GitLab
+~/brainlab/matrix-optimization/preconditioning-curvature/dykaf    on the machine
+  README.md                       what the paper is about, who leads it (Ведут, Команда)
   claims/H-DYC-007/README.md      the claim itself, as a person reads it
   claims/H-DYC-007/series/S-DYC-022.md   a group of runs answering one question
   claims/H-DYC-007/runs/E-DYC-126.md     one run: commit, config, command, logs, numbers
@@ -17,13 +18,14 @@ brainlab-preconditioning-curvature/dykaf
   claims/H-DYC-007/figures/F-DYC-004.svg a figure, shown inline where it explains a result
 ```
 
-The work's internal names live in the repository wiki, one page per name, not in a file in
-the tree: the wiki is editable in place by whoever reads it.
+The work's own jargon is defined in place, in the page that first uses it. A term of the
+theme goes to the theme's glossary, `<theme>/literature/glossary/`, not to a file in the work.
 
-**An agent never writes into it directly.** Every write goes into a submission with
-`propose`, which turns the calls into files and opens — or extends — one pull request per
-claim, on the branch `claim/<CODE>`. A human merges it, and merging is what lands the change.
-A direct call is refused with a message naming this path.
+**An agent never writes into `main`.** Every write is a branch `claim/<CODE>` in the tree
+clone (`lab here <work>` places it), a commit, and a plain `git push`: the clone is
+configured so that the push opens — or extends — one merge request per claim and assigns it
+to the lead from the README's `Ведут` line. A human merges it, and merging is what lands the
+change. A push to `main` is refused for everyone.
 
 **A green verdict is not a record: the merge is.** Push to `main` is closed for everyone,
 so nothing enters except through a proposal. A human merges, or an agent on that human's word
@@ -71,10 +73,10 @@ confirms it, and every write that follows, so the reviewer judges a case and not
 - a proof was worked out — `claims/<CODE>/theory/<D-code>.md` with assumptions, statement,
   argument and a «Чего не хватает» section;
 - an internal name appeared — define it in place, in the page that first uses it, and if it
-  is a term of the theme, add it to `<theme>/literature/glossary/`, whose pages are also
-  published as that project's wiki. A work itself has no `terms/` directory; do not create one;
+  is a term of the theme, add it to `<theme>/literature/glossary/`. A work itself has no
+  `terms/` directory; do not create one;
 - a decision was made — it is not a record of its own. What was decided about the method
-  goes into the claim's `decided`; a rule of one series' protocol goes into that series.
+  is a paragraph in the claim's README; a rule of one series' protocol goes into that series.
 
 Ask before writing only when the record belongs to somebody else's project, publishes what
 the user called private, or changes a conclusion another person reached. Then show the

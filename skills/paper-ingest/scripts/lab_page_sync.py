@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
-"""Полная страница статьи в репозитории темы лаборатории.
+"""Полная страница статьи в репозитории литературы темы лаборатории.
 
-Корпус хранит разборы, но страница `literature/<ключ>.md` печатает из них только
-краткое изложение. Этот скрипт дописывает туда разделы и кладёт рядом рисунки,
-на которые они ссылаются, переводя PDF-рисунки в PNG: Gitea их иначе не покажет.
+Источник — заметка в дереве `~/brainlab/<направление>/<тема>/literature/<Название>.md`.
+Скрипт переносит её в GitLab целиком: чинит формулы, кладёт рядом рисунки, на которые
+она ссылается, и переводит PDF-рисунки в PNG, иначе GitLab их не покажет. Страница в
+репозитории ищется по ключу цитирования из блока BibTeX заметки (или `citation_key`
+в шапке); ключа нет — статья пропускается с сообщением. Служба корпуса (`get_paper`,
+`labcall.py`) удалена 07-10-2026, и скрипт к ней не обращается.
 
     lab_page_sync.py --arxiv 2604.18264            одна статья
     lab_page_sync.py --theme zo-estimators         вся тема
     lab_page_sync.py --arxiv 2604.18264 --dry-run  показать, ничего не записывая
 """
 import ssl
-import argparse, base64, json, os, re, shlex, shutil, subprocess, sys, tempfile
-from urllib.parse import quote
+import argparse, json, os, re, shutil, subprocess, sys, tempfile
+from urllib.parse import quote, unquote
 import urllib.request, urllib.error
 import pathlib
 
 # Корень хранилища знает один модуль, см. `vault_paths`.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from vault_paths import VAULT as _VAULT  # noqa: E402
+from vault_paths import VAULT as _VAULT, temy, vse_papki  # noqa: E402
 
 # pdftoppm ставится из Homebrew и в PATH неинтерактивной оболочки его нет
 os.environ["PATH"] = os.environ.get("PATH", "") + ":/opt/homebrew/bin:/usr/local/bin"
@@ -47,7 +50,6 @@ def _vault():
 
 VAULT = os.environ.get("BRAINLAB_VAULT") or _vault()
 #: Единой папки разборов нет: темы собирает `vault_paths.temy()`.
-LIB = VAULT
 CACHE = os.path.expanduser("~/.cache/brainlab/fig-png")
 def lit_dir(repo):
     """Где внутри репозитория лежат страницы.
@@ -73,7 +75,7 @@ def token():
     return open(TOKEN_FILE).read().strip()
 
 
-def gitea(path, tok):
+def gitlab(path, tok):
     url = quote(f"{base()}{path}", safe=":/?=&")
     req = urllib.request.Request(url, headers={"PRIVATE-TOKEN": tok})
     try:
@@ -84,29 +86,13 @@ def gitea(path, tok):
         raise
 
 
-def lab_call(name, args):
-    """Корпус доступен с сервера; локально идём тем же путём, что и Гермес."""
-    local = "/root/.hermes/scripts/labcall.py"
-    payload = json.dumps(args, ensure_ascii=False)
-    if os.path.exists(local):                       # мы уже на сервере лаборатории
-        cmd = [local, name, payload]
-    else:                                           # ssh склеивает аргументы, кавычим сами
-        cmd = ["ssh", "do-vpn", " ".join(shlex.quote(x) for x in [local, name, payload])]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-    if r.returncode:
-        return None
-    try:
-        return json.loads(r.stdout)
-    except json.JSONDecodeError:
-        return None
-
-
 def fig_roots():
     """Вложения лежат по-разному: у владельца в хранилище, на сервере у конвейера."""
     env = os.environ.get("BRAINLAB_FIG_ROOTS")
     if env:
         return [x for x in env.split(":") if x]
-    return [p for p in (LIB, "/root/paper-agent/state/_attachments") if os.path.isdir(p)]
+    return [str(p) for p in (*vse_papki(), "/root/paper-agent/state/_attachments")
+            if os.path.isdir(p)]
 
 
 def fig_index():
@@ -302,9 +288,18 @@ def head_of(old):
 
 
 def convert_figs(text, repo_dir, idx, stats):
+    """Вики-вставки `![[...]]` и относительные `![](_attachments/...)` — в файлы клона.
+
+    Относительную вставку, файл которой в клоне уже есть, не трогаем; остальные
+    находим среди вложений машины, копируем в клон и, если это PDF, переводим в PNG.
+    """
     text = re.sub(r"!\[\[\s*\]\]\s*", "", text)
     def sub(m):
-        target = m.group(1).strip()
+        target = (m.group(1) or unquote(m.group(2))).strip()
+        if m.group(2) and not target.lower().endswith(".pdf") and os.path.exists(
+                os.path.join(repo_dir, lit_dir(repo_dir), target)):
+            stats["рисунков"] += 1
+            return m.group(0)
         tail = "/".join(target.split("/")[-2:])
         src = idx.get(tail)
         if not src:
@@ -326,95 +321,63 @@ def convert_figs(text, repo_dir, idx, stats):
             shutil.copy2(src, dst)
         stats["рисунков"] += 1
         return f"![{name}](_attachments/{sub_dir}/{name})"
-    return re.sub(r"!\[\[([^\]]+)\]\]", sub, text)
+    return re.sub(r"!\[\[([^\]]+)\]\]|!\[[^\]]*\]\((_attachments/[^)\s]+)\)", sub, text)
 
 
-#: Каркас проверки литературной правки живёт в репозитории службы, а не в скилле:
-#: правило там одно на всех и меняется вместе со службой.
-CHECKS_PATHS = (
-    os.path.expanduser("~/brainlab/agents/claude-brainlab/services/lab-knowledge/src"),
-    "/srv/jarvis-local/Staff/BRAIn Lab/claude-brainlab/services/lab-knowledge/src",
-)
+def note_key(text):
+    """Ключ цитирования заметки: из блока BibTeX, иначе из `citation_key` в шапке."""
+    m = re.search(r"```bibtex\s*@\w+\s*\{\s*([^,\s]+)\s*,", text)
+    if m:
+        return m.group(1)
+    m = re.search(r"(?m)^citation_key:\s*[\"']?([^\"'\s]+)", text)
+    return m.group(1) if m else None
 
 
-def library_checks():
-    """Модуль проверок или None, если репозитория службы на этой машине нет.
-
-    Грузим файлом, а не пакетом: `lab_knowledge/__init__` тянет всю службу, а ей нужен
-    Python 3.11, которого на машине может не быть. Модуль кладём в `sys.modules` до
-    исполнения — иначе dataclass внутри не находит своего модуля.
-    """
-    import importlib.util
-    for base in CHECKS_PATHS:
-        f = os.path.join(base, "lab_knowledge", "library_checks.py")
-        if not os.path.exists(f):
-            continue
-        spec = importlib.util.spec_from_file_location("_library_checks", f)
-        mod = importlib.util.module_from_spec(spec)
-        sys.modules["_library_checks"] = mod
-        try:
-            spec.loader.exec_module(mod)
-            return mod
-        except Exception:
-            return None
-    return None
-
-
-def check_page(path, text=None):
-    """Замечания к странице перед записью. Пустой список — можно писать.
-
-    Проверку зовём ДО записи: отказать дешевле, чем потом искать, кто испортил страницу.
-    Если каркас недоступен, молчим — проверка не обязана быть на каждой машине.
-    """
-    mod = library_checks()
-    if mod is None:
+def local_notes(theme, arxiv=None):
+    """Заметки темы в дереве; с `arxiv` — только те, где стоит этот номер."""
+    d = temy().get(theme)
+    if not d:
         return []
-    page = mod.Страница(__import__("pathlib").Path(path),
-                        text if text is not None else open(path, encoding="utf-8").read())
-    return mod.проверить_страницу(page)
+    out = []
+    for f in sorted(d.glob("*.md")):
+        if f.name == "README.md":
+            continue
+        if arxiv:
+            try:
+                текст = f.read_text(encoding="utf-8")
+            except OSError:
+                continue
+            if not re.search(r"(arxiv\.org/abs/|eprint\s*=\s*\{)" + re.escape(arxiv) + r"\b", текст):
+                continue
+        out.append(f)
+    return out
 
 
-def make_page(paper, theme_name, key):
-    """Страницы ещё нет: служба её не выгрузила. Собираем шапку в том же виде, что и она."""
-    au = ", ".join(paper.get("authors") or [])
-    bits = [f"**авторы** {au}" if au else "",
-            f"**год** {paper['year']}" if paper.get("year") else "",
-            f"**где** {paper['venue']}" if paper.get("venue") else "",
-            f"**ключ цитирования** `{key}`",
-            f"**тема** {theme_name}" if theme_name else ""]
-    meta = " · ".join(b for b in bits if b)
-    head = [f"# {paper.get('title','')}", "", meta, ""]
-    if paper.get("url"):
-        head += [f"[Открыть источник]({paper['url']})", ""]
-    head += ["## Про что работа", "", (paper.get("summary_ru") or "").strip()]
-    return "\n".join(head).rstrip()
-
-
-def page_key(theme, arxiv, tok):
-    """Ключ цитирования берём из README темы: там ссылки вида literature/<ключ>.md."""
-    путь = проекты(tok).get(theme)
-    if not путь:
-        return None
-    data = gitea(f"/api/v4/projects/{quote(путь, safe='')}/repository/files/README.md?ref=main", tok)
-    if not data:
-        return None
-    txt = base64.b64decode(data["content"]).decode()
-    # Ссылки в README теперь без префикса `literature/`: страницы в корне проекта.
-    for m in re.finditer(r"\]\((?:literature/)?([^)/]+)\.md\)[^\n]*?\[источник\]\((https?://[^)]+)\)", txt):
-        if arxiv and arxiv in m.group(2):
-            return m.group(1)
+def page_for(repo, key):
+    """Страница клона с тем же ключом цитирования: имя файла — название, а не ключ."""
+    root = os.path.join(repo, lit_dir(repo))
+    for f in sorted(os.listdir(root)):
+        if f.endswith(".md") and f != "README.md":
+            with open(os.path.join(root, f), encoding="utf-8") as fh:
+                if note_key(fh.read()) == key:
+                    return os.path.join(root, f)
     return None
 
 
 def sync(themes, arxivs, dry, tok):
+    global CACHE
     idx = fig_index()
     stats = {"страниц": 0, "рисунков": 0, "pdf->png": 0, "не нашлось": 0}
     work = tempfile.mkdtemp(prefix="labpage-")
+    if dry:                                  # сухой прогон не пишет и в кеш рисунков
+        CACHE = os.path.join(work, "fig-png")
     try:
         for theme in themes:
             путь = проекты(tok).get(theme)
             if not путь:
                 print(f"  {theme}: проекта литературы в базе нет"); continue
+            if theme not in temy():
+                print(f"  {theme}: темы нет в дереве ~/brainlab/*/*/literature"); continue
             адрес = base().replace("https://", f"https://oauth2:{tok}@")
             url = f"{адрес}/{путь}.git"
             d = os.path.join(work, theme)
@@ -424,39 +387,31 @@ def sync(themes, arxivs, dry, tok):
             subprocess.run(["git", "config", "core.quotepath", "false"], cwd=d)
             changed = 0
             for ax in (arxivs or [None]):
-                key = page_key(theme, ax, tok) if ax else None
-                if ax and not key:
-                    meta = ((lab_call("get_paper", {"arxiv_id": ax}) or {}).get("paper") or {})
-                    key = meta.get("citation_key") or None
-                pages = ([key] if key else
-                         [f[:-3] for f in os.listdir(os.path.join(d, lit_dir(d)))
-                          if f.endswith(".md")] if not ax else [])
-                if ax and not key:
-                    print(f"  {theme}: ни страницы, ни ключа цитирования для {ax}"); continue
-                for k in pages:
-                    p = os.path.join(d, lit_dir(d), f"{k}.md")
-                    paper = lab_call("get_paper", {"arxiv_id": ax} if ax else {"arxiv_id": k})
-                    if not os.path.exists(p):
-                        meta = (paper or {}).get("paper") or {}
-                        if not meta:
-                            print(f"  {theme}: страницы {k} нет и статьи в корпусе тоже"); continue
-                        theme_name = ""
-                        rd = os.path.join(d, "README.md")
-                        if os.path.exists(rd):
-                            theme_name = open(rd, encoding="utf-8").readline().lstrip("# ").strip()
-                        os.makedirs(os.path.dirname(p), exist_ok=True)
-                        open(p, "w", encoding="utf-8").write(make_page(meta, theme_name, k) + "\n")
-                        print(f"  {theme}: страница {k} создана")
-                    secs = [(c.get("section"), c.get("content") or "")
-                            for c in ((paper or {}).get("chunks") or [])]
-                    if not secs:
-                        continue
-                    old = open(p, encoding="utf-8").read()
-                    head = convert_figs(balance_math(tex(head_of(old))), d, idx, stats)
+                notes = local_notes(theme, ax)
+                if ax and not notes:
+                    print(f"  {theme}: в {temy()[theme]} нет заметки с arXiv {ax}"); continue
+                for src in notes:
+                    txt = src.read_text(encoding="utf-8").rstrip()
+                    key = note_key(txt)
+                    if not key:
+                        print(f"  {theme}: у заметки нет ключа цитирования (ни блока BibTeX, "
+                              f"ни citation_key в шапке), пропускаю: {src}"); continue
+                    p = page_for(d, key) or os.path.join(d, lit_dir(d), src.name)
+                    old = open(p, encoding="utf-8").read() if os.path.exists(p) else ""
+                    if txt.endswith(FOOT):
+                        txt = txt[:-len(FOOT)].rstrip()
+                    while txt.endswith("---"):
+                        txt = txt[:-3].rstrip()
+                    head_raw = head_of(txt)
+                    secs = re.findall(r"(?ms)^## (.+?)\n(.*?)(?=^## |\Z)", txt[len(head_raw):])
+                    head = convert_figs(balance_math(tex(head_raw)), d, idx, stats)
                     body = "\n\n".join(
                         f"## {tex(n)}\n\n{convert_figs(balance_math(tex(t)).strip(), d, idx, stats)}"
-                        for n, t in secs if t.strip())
-                    new = f"{head}\n\n{body}\n\n---\n\n{FOOT}\n"
+                        for n, t in secs if t.strip().strip("-").strip())
+                    new = f"{head}\n\n{body}\n\n---\n\n{FOOT}\n" if body else f"{head}\n\n---\n\n{FOOT}\n"
+                    if old and len(new) < len(old) // 2:
+                        print(f"  {theme}: страница {os.path.basename(p)} в базе вдвое полнее "
+                              "заметки, не трогаю"); continue
                     if new != old:
                         if not dry:
                             open(p, "w", encoding="utf-8").write(new)
@@ -466,7 +421,7 @@ def sync(themes, arxivs, dry, tok):
                 subprocess.run(["git", "add", "-A"], cwd=d)
                 subprocess.run(["git", "-c", "user.name=lab-agent",
                                 "-c", "user.email=lab-agent@brainlab", "commit", "-q", "-m",
-                                "Литература: полный разбор и рисунки из корпуса"], cwd=d)
+                                "Литература: полный разбор и рисунки из заметки"], cwd=d)
                 r = subprocess.run(["git", "push", "-q", "origin", "HEAD"], cwd=d, capture_output=True)
                 if not r.returncode:
                     print(f"  {theme}: страниц {changed}, залито")
@@ -494,7 +449,7 @@ def проекты(tok):
         return _ПРОЕКТЫ
     стр = 1
     while True:
-        кусок = gitea(f"/api/v4/projects?simple=true&per_page=100&page={стр}", tok) or []
+        кусок = gitlab(f"/api/v4/projects?simple=true&per_page=100&page={стр}", tok) or []
         for пр in кусок:
             путь = пр.get("path_with_namespace", "")
             части = путь.split("/")
@@ -506,68 +461,35 @@ def проекты(tok):
     return _ПРОЕКТЫ
 
 
-def repo_names(tok):
-    """Слаги тем, как они называются в базе."""
-    return set(проекты(tok))
-
-
-def theme_slug(arxiv, поле, tok):
-    """Слаг репозитория темы для статьи.
-
-    Полю `library_folder` из корпуса верить нельзя: там встречается и слаг
-    (`training-dynamics`), и человекочитаемое имя темы («Динамика обучения»), и
-    прежний путь таксономии. По имени репозиторий не находится, и статья молча
-    остаётся без страницы. Поэтому проверяем по списку репозиториев, а если не
-    сошлось — смотрим, в какой папке хранилища заметка лежит на самом деле.
-    """
-    известные = repo_names(tok)
-    if поле in известные:
-        return поле
-    if os.path.isdir(LIB):
-        for тема in sorted(os.listdir(LIB)):
-            d = os.path.join(LIB, тема)
-            if not os.path.isdir(d) or тема not in известные:
-                continue
-            for f in os.listdir(d):
-                if not f.endswith(".md") or f == "README.md":
-                    continue
-                try:
-                    текст = open(os.path.join(d, f), encoding="utf-8").read(4000)
-                except OSError:
-                    continue
-                if re.search(r"arxiv\.org/abs/" + re.escape(arxiv) + r"\b", текст):
-                    return тема
+def theme_of(arxiv):
+    """Тема статьи — папка дерева, в `literature/` которой лежит её заметка."""
+    for тема in temy():
+        if local_notes(тема, arxiv):
+            return тема
     return None
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--arxiv", action="append", help="номер arXiv статьи")
-    ap.add_argument("--theme", action="append", help="слаг темы; без него тема ищется по статье")
+    ap.add_argument("--theme", action="append", help="слаг темы; без него тема ищется по заметке в дереве")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fill-thin", action="store_true",
-                    help="пройти все темы и дополнить страницы, где напечатано только краткое изложение")
+                    help="пройти все темы и перенести в базу заметки дерева, где страница отстала")
     a = ap.parse_args()
     tok = token()
     themes = a.theme
     if a.fill_thin:
-        sync(themes or [x for x in os.listdir(LIB)
-                        if os.path.isdir(os.path.join(LIB, x)) and not x.startswith(("_", "."))],
-             None, a.dry_run, tok)
+        sync(themes or sorted(temy()), None, a.dry_run, tok)
         return
     if not themes:
         if not a.arxiv:
             sys.exit("нужен --arxiv или --theme")
         themes = []
         for ax in a.arxiv:
-            paper = lab_call("get_paper", {"arxiv_id": ax})
-            поле = ((paper or {}).get("paper") or {}).get("library_folder")
-            if not поле:
-                print(f"  {ax}: в корпусе не нашёлся"); continue
-            слаг = theme_slug(ax, поле, tok)
+            слаг = theme_of(ax)
             if not слаг:
-                print(f"  {ax}: тема «{поле}» не отвечает ни одному репозиторию, "
-                      "и заметки в хранилище нет"); continue
+                print(f"  {ax}: заметки с этим номером нет ни в одной ~/brainlab/*/*/literature"); continue
             themes.append(слаг)
         themes = sorted(set(themes))
     sync(themes, a.arxiv, a.dry_run, tok)

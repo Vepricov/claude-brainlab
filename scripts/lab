@@ -460,7 +460,10 @@ def v_derevo(project: dict, *, obnovit: bool = True) -> tuple[str, Path, str]:
     if not obnovit:
         return "на месте", target, ""
     branch = git("rev-parse", "--abbrev-ref", "HEAD", cwd=target, quiet=True)
-    dirty = git("status", "--porcelain", "--untracked-files=no", cwd=target, quiet=True)
+    # Сдвинутый указатель рукописи или кода (подмодуль) правкой не считается: подтягивание
+    # README и claims/ его не задевает, а у владельца так стоит половина работ.
+    dirty = git("status", "--porcelain", "--untracked-files=no", "--ignore-submodules=all",
+                cwd=target, quiet=True)
     git("fetch", "-q", "origin", cwd=target, quiet=True)
     if branch != "main" or dirty:
         return "не обновлено: " + ("правки" if dirty else f"ветка {branch}"), target, ""

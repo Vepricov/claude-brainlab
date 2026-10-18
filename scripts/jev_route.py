@@ -188,8 +188,9 @@ SLUZHEBNYE_KORNI = ("brainlab/handbook", "brainlab/journal", "brainlab/servers")
 #: не предлагается, а предложить его и значит сказать «склонируй сюда». Описание на сайте —
 #: отражение поля `description:` из frontmatter README, его переносит `opisaniya.py`.
 MESTA_CACHE = Path("~/.cache/brainlab/jev-mesta.json").expanduser()
-#: Шесть часов: состав мест меняется от силы раз в недели, а хук выполняется каждым ходом.
-MESTA_TTL = 6 * 3600
+#: Час: описание правится на сайте и должно подхватываться само, без правки кода и без
+#: перезапуска чего-либо. Чаще незачем — хук выполняется каждым ходом, а запрос стоит 4 с.
+MESTA_TTL = 3600
 #: Признак места записи — оборот «Не сюда:». Место, которое не сказало, чего в него НЕ кладут,
 #: даёт ложные срабатывания: 17-10-2026 описание `ops/management` без этой половины подошло к
 #: любой работе со сроком, и рецензия на чужую статью получила за него 0.72. Поэтому репозиторий
@@ -228,7 +229,11 @@ def _s_sayta() -> dict[str, str]:
                 f"{BASE_URL}/api/v4/groups/{gruppa}/projects"
                 f"?include_subgroups={podgruppy}&per_page=100",
                 headers={"PRIVATE-TOKEN": tok})
-            with urllib.request.urlopen(request, timeout=5) as answer:
+            # Двенадцать секунд, а не пять: сайт за туннелем отвечает 2-4 с, а под нагрузкой
+            # и вовсе рвёт соединение. Короткий потолок давал молчаливый откат на зашитые
+            # тексты — проверено 18-10-2026, когда проба сорвалась именно так. Процесс
+            # фоновый, хук его не ждёт, поэтому платить секундами здесь нечем.
+            with urllib.request.urlopen(request, timeout=12) as answer:
                 for proekt in json.loads(answer.read().decode("utf-8")):
                     text = " ".join(str(proekt.get("description") or "").split())
                     if PRIZNAK_MESTA in text:

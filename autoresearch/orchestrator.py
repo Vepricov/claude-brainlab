@@ -2090,7 +2090,7 @@ def main() -> None:
     p_g = sub.add_parser("gate", help="прогнать ревью-гейт на diff-файле (ручной тест)")
     p_g.add_argument("diff_file")
     p_us = sub.add_parser("ui-sync", help="наполнить UI: Knowledge (курир. доки) + Related Work (library.csv из Obsidian)")
-    p_us.add_argument("--lit-dir", default=None, help="папка Obsidian Literature/")
+    p_us.add_argument("--lit-dir", default=None, help="папка literature темы или корень ~/brainlab (тогда все темы)")
     p_tm = sub.add_parser("team", help="Фаза 3: команда живых агентов ведёт узлы фронтира → гейт")
     p_tm.add_argument("-k", type=int, default=2, help="узлов за раунд")
     p_tm.add_argument("--rounds", type=int, default=1)

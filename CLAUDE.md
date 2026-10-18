@@ -91,13 +91,13 @@ Before citing any paper in Related Work, background, or inline references:
 
 ### Library structure
 
-The literature hierarchy is not fixed. Agents must inspect the current `Literature/` directory tree and infer the active top-level and subfolder structure at run time.
+The literature hierarchy is not fixed. Agents must inspect the theme literature repos (`~/brainlab/<direction>/<theme>/literature/`) and infer the active top-level and subfolder structure at run time.
 
 ### Add & Classify workflow (when paper not in library)
 
 1. Search arXiv for the paper; get its arXiv ID.
 2. Run `paper-ingest` skill → add to `_inbox/{temp_collection}` (create dated folder).
-3. Report: "Добавил [[Literature/_inbox/.../Title]] → предлагаю переместить в `{dynamic-target-folder}`. Подтверди?"
+3. Report: "Добавил [[personal/literature/_inbox/.../Title]] → предлагаю переместить в `{dynamic-target-folder}`. Подтверди?"
 4. Wait for user confirmation. After confirmation: move Obsidian file + Zotero item to target collection.
 5. Only cite from the confirmed final location.
 

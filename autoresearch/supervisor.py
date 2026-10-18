@@ -1701,7 +1701,7 @@ def run_continuous(cfg: ARConfig, gate_repo: str, k: int = 1, max_workers: int =
 
     def _librarian():
         """Фоновый БИБЛИОТЕКАРЬ: обогащает узлы фронтира Related Work (обязательно у каждого).
-        Источники: локальный индекс Literature/_index.jsonl + живой веб-поиск (движок cfg.engines.librarian).
+        Источники: локальный индекс <тема>/literature/_index.jsonl + живой веб-поиск (движок cfg.engines.librarian).
         Медленный (web+LLM) → по одному узлу с троттлом; пишет node.related_work под glock (без клоббера)."""
         idx = None
         while not S["stop"]:

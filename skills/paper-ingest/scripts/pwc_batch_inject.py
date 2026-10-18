@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Batch-enrich every Obsidian paper note in Literature/ with Papers with Code metadata.
+"""Batch-enrich every Obsidian paper note in the theme literature repos with Papers with Code metadata.
 
-Walks the vault Literature tree, extracts each note's arXiv ID from frontmatter
+Walks every ~/brainlab/<direction>/<theme>/literature folder, extracts each note's arXiv ID from frontmatter
 `url:`, and runs the same injection that paper-ingest's Step 6b does — frontmatter
 patch (`pwc_url`, `citations`, `citations_updated`, `pwc_tasks`) plus the standalone
 TL;DR callout. Idempotent: re-running only updates fields that changed.
@@ -11,8 +11,8 @@ in ~/.cache/pwc/ so subsequent runs are mostly hits.
 
 Usage
 -----
-    pwc_batch_inject.py                 # walk full Literature/ tree
-    pwc_batch_inject.py --root PEFT     # limit to one top-level folder
+    pwc_batch_inject.py                 # walk all theme literature folders
+    pwc_batch_inject.py --root lora-basics   # limit to one theme
     pwc_batch_inject.py --workers 4     # throttle concurrency
     pwc_batch_inject.py --no-cache      # force refetch (bypasses ~/.cache/pwc/)
     pwc_batch_inject.py --dry-run       # print what would change, write nothing
@@ -39,6 +39,7 @@ from pwc_fetch import (  # noqa: E402
     fetch,
     inject_into_note,
 )
+from vault_paths import tema_put, temy  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +95,7 @@ def _process(note: Path, use_cache: bool, dry_run: bool) -> Outcome:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--root", default=None, help="restrict to a sub-tree (e.g. PEFT or PEFT/lora_base)")
+    parser.add_argument("--root", default=None, help="restrict to one theme (e.g. lora-basics)")
     parser.add_argument("--workers", type=int, default=8, help="thread pool size (default 8)")
     parser.add_argument("--no-cache", action="store_true", help="bypass ~/.cache/pwc/")
     parser.add_argument("--dry-run", action="store_true", help="report only, do not write")
@@ -106,13 +107,18 @@ def main(argv: list[str] | None = None) -> int:
         format="%(levelname)s %(name)s: %(message)s",
     )
 
-    base = VAULT_LITERATURE / args.root if args.root else VAULT_LITERATURE
-    if not base.exists():
-        raise SystemExit(f"path does not exist: {base}")
+    if args.root:
+        base = tema_put(args.root)
+        if base is None or not base.exists():
+            raise SystemExit(f"theme not found in the tree: {args.root}")
+        bases = [base]
+    else:
+        bases = list(temy().values())
 
-    notes = sorted(p for p in base.rglob("*.md") if p.is_file())
+    notes = sorted(p for b in bases for p in b.rglob("*.md") if p.is_file())
     total = len(notes)
-    print(f"scanning {total} .md files under {base.relative_to(VAULT_LITERATURE.parent)}", file=sys.stderr)
+    where = bases[0].relative_to(VAULT_LITERATURE) if args.root else f"{len(bases)} theme literature folders"
+    print(f"scanning {total} .md files under {where}", file=sys.stderr)
 
     started = time.monotonic()
     outcomes: list[Outcome] = []

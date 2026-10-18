@@ -73,7 +73,7 @@ find <id> -type f \( -iname '*.pdf' -o -iname '*.png' \)      # что вооб�
 grep -rhoE 'includegraphics\[[^]]*\]\{[^}]*\}' <id>/*.tex     # что реально используется в статье
 ```
 
-Ещё до этого проверить `Literature/**/_attachments/<arxiv-id>/` — у части статей фигуры уже
+Ещё до этого проверить `~/brainlab/*/*/literature/_attachments/<arxiv-id>/` — у части статей фигуры уже
 извлечены скиллом `paper-ingest`.
 
 Обрезать **только** `pdfcrop`, не самодельным `set_cropbox`: pdfTeX и pymupdf по-разному понимают

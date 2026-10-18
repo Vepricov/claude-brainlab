@@ -22,13 +22,13 @@ logger = logging.getLogger(__name__)
 # ---------------- расположение библиотеки и индекса ----------------
 
 def lit_dir(cfg: Any) -> str:
-    """Каталог Obsidian-библиотеки на машине лупа. Порядок: cfg.lit_dir → <root>/../../Literature."""
+    """Каталог разборов темы на машине лупа. Порядок: cfg.lit_dir → <root>/../literature."""
     d = str(getattr(cfg, "lit_dir", "") or "").strip()
     if d:
         return os.path.abspath(os.path.expanduser(d))
-    # project_root = <vault>/Papers/<slug>; библиотека = <vault>/Literature
+    # project_root = ~/brainlab/<направление>/<тема>/<работа>; разборы темы = <тема>/literature
     root = os.path.abspath(getattr(cfg, "project_root", "."))
-    guess = os.path.abspath(os.path.join(root, "..", "..", "Literature"))
+    guess = os.path.abspath(os.path.join(root, "..", "literature"))
     return guess
 
 
@@ -88,7 +88,7 @@ def _tldr(text: str, limit: int = 420) -> str:
 
 
 def build_index(cfg: Any) -> Dict[str, int]:
-    """Сканирует Literature/*.md → пишет _index.jsonl (по строке на статью). Возвращает статистику."""
+    """Сканирует <тема>/literature/*.md → пишет _index.jsonl (по строке на статью). Возвращает статистику."""
     root = lit_dir(cfg)
     if not os.path.isdir(root):
         logger.warning("[lit] нет каталога библиотеки: %s", root)

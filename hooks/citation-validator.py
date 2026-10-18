@@ -154,7 +154,7 @@ def main() -> int:
         f"Missing cite keys: {', '.join(missing)}\n\n"
         "Hard rule (from ~/.claude/CLAUDE.md, Literature & Citation Rules):\n"
         "  Never invent placeholder citation keys. Before writing \\cite{X}:\n"
-        "    1. Search ~/Obsidian/shkodnik1917/Literature/ for the paper.\n"
+        "    1. Search ~/brainlab/<direction>/<theme>/literature/ for the paper.\n"
         "    2. If found, copy the exact key from its `## BibTeX` block and\n"
         "       append the bibtex entry to references.bib first.\n"
         "    3. If not found, run the paper-ingest skill to add it, then cite.\n"

@@ -109,7 +109,7 @@ class ARConfig:
     report_min_score: int = 8                # порог публикации отчёта И порог pressure-петли (единый)
     exp_env: Dict[str, str] = field(default_factory=dict)  # проектные env-оверрайды экспа (размер модели/шаги/LR); имеют приоритет над дефолтами empirical
     max_concurrent_exp: int = 0  # 0 = дефолт (число GPU-серверов); иначе потолок параллельных экспов (реально ограничен свободными GPU)
-    lit_dir: str = ""            # каталог Obsidian-библиотеки на машине лупа (для Related Work); "" → <vault>/Literature
+    lit_dir: str = ""            # каталог разборов темы на машине лупа (для Related Work); "" → <работа>/../literature
     research_cycle_path: Optional[str] = None   # абс. путь к research_cycle.py (если есть)
     engines: Engines = field(default_factory=Engines)
     dedup: Dedup = field(default_factory=Dedup)

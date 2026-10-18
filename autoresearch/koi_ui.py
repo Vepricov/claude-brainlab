@@ -2,7 +2,7 @@
 
 #1 split_into_projects — большой граф → маленькие деревья (проекты-соседи на тему).
 #2 build_knowledge_docs — кнопка Knowledge: курируемые документы (не свалка инсайтов).
-#3 library_from_obsidian — Related Work: library.csv из Obsidian Literature/.
+#3 library_from_obsidian — Related Work: library.csv из разборов тем ~/brainlab/*/*/literature.
 #4 paper_to_koi — кнопка Статья: финальная статья в koi-structure/paper/.
 
 Всё детерминированно (без LLM). Пишет ровно в контракты, которые читает koi-движок.
@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import csv
+import glob
 import json
 import logging
 import os
@@ -25,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 _WINS = ("proven", "confirmed_emp")
 _SURV = ("proven", "confirmed_emp", "conditional")
-DEFAULT_LIT = os.path.expanduser(
-    "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/shkodnik1917/Literature")
+# Корень хранилища: разборы лежат по темам в <направление>/<тема>/literature.
+DEFAULT_LIT = os.path.expanduser("~/brainlab")
 
 
 # ---------------- #4 Paper → koi (кнопка «Статья») ----------------
@@ -147,7 +148,9 @@ def _extract_paper(md: str, fname: str) -> Optional[Dict[str, str]]:
 def library_from_obsidian(cfg: ARConfig, lit_dir: str = DEFAULT_LIT, limit: int = 2000) -> str:
     rows: List[Dict[str, str]] = []
     seen = set()
-    for root, dirs, files in os.walk(lit_dir):
+    # Корень хранилища → все папки literature тем; конкретная папка → только она.
+    tops = sorted(glob.glob(os.path.join(lit_dir, "*", "*", "literature"))) or [lit_dir]
+    for root, dirs, files in (x for t in tops for x in os.walk(t)):
         dirs[:] = [d for d in dirs if d not in _SKIP_DIRS]
         for fn in files:
             if not fn.endswith(".md") or fn.startswith(("want_2_read", "_")):

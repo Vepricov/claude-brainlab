@@ -142,7 +142,7 @@
       "y": 0,
       "width": 250,
       "height": 150,
-      "file": "Literature/Paper A.pdf"
+      "file": "papers/Paper A.pdf"
     },
     {
       "id": "3a4b5c6d7e8f9a0b",

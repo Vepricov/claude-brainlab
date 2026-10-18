@@ -133,7 +133,7 @@ If the vault is not Russian, translate the section headers; keep the frontmatter
 A project = folder `Papers/<project>/` (or `Projects/<project>/`) with:
 - `<Project> (проект).md` — the project page (template above). Order: **links block → description →
   link to literature → Work history → Problems → Reports**.
-- `<Project> — литература.md` — a MOC of the project's papers, linking into the global `Literature/`.
+- `<Project> — литература.md` — a MOC of the project's papers, linking into the theme's `<direction>/<theme>/literature/`.
 - `Reports/` — weekly reports. `Проблемы/` — problem / inconsistency notes.
 - work/analysis notes live in the folder root, linked from Work history.
 

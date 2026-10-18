@@ -136,7 +136,7 @@ something else. Authoritative compact reference: `examples/lab-style-mini.tex`, 
 ### 9. Figures — Find Before You Draw
 
 - **A figure from the paper always beats a hand-rolled schematic.** Before generating anything in
-  matplotlib, pull the original: check `Literature/**/_attachments/<arxiv-id>/` first (the
+  matplotlib, pull the original: check `~/brainlab/*/*/literature/_attachments/<arxiv-id>/` first (the
   `paper-ingest` skill already extracted figures for some papers), then
   `curl -sL https://arxiv.org/e-print/<id>` and untar. `grep -rhoE 'includegraphics\[[^]]*\]\{[^}]*\}' *.tex`
   shows which figures the paper itself actually uses.

@@ -3,7 +3,7 @@
 
 Статьи появляются в базе и без владельца: их добавляют другие участники. Сами по себе
 они локально не возникают — и не должны. Этот скрипт показывает, чего в хранилище нет,
-и по отдельной команде кладёт выбранную статью в `Literature/_inbox`, откуда владелец
+и по отдельной команде кладёт выбранную статью в приёмник `personal/literature/_inbox`, откуда владелец
 сам решает, переносить ли её в папку темы.
 
     lab_pull.py --list                        что есть в базе, но нет локально
@@ -24,8 +24,8 @@
 У каждой привезённой статьи в шапке стоит `предложенная тема` — та, в которой её страница
 лежит в базе, то есть не догадка. Принять предложение можно двумя способами, и оба ведут в
 одно место: перетащить заметку в папку темы руками или сказать `--accept`. После приёмки
-статья уезжает в `Literature/<тема>/` вместе с рисунками, добавляется в ту же тему на
-AlphaXiv и заводится в коллекции `Literature/<тема>` в Zotero. Заметку, перенесённую
+статья уезжает в `<направление>/<тема>/literature/` вместе с рисунками, добавляется в ту же
+тему на AlphaXiv и заводится в коллекции Zotero `Literature/<тема>`. Заметку, перенесённую
 руками, следующий `--sync` доводит до того же состояния сам.
 """
 import pathlib
@@ -38,7 +38,8 @@ import urllib.request, urllib.error
 # Где лежат разборы, знает один модуль: `vault_paths`. Захардкоженный путь к хранилищу
 # iCloud после переезда 16-10-2026 вёл в несуществующую папку, и запись уходила в пустоту.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from vault_paths import VAULT as _VAULT, temy, tema_put, vse_papki  # noqa: E402
+from vault_paths import (VAULT as _VAULT, INBOX as _INBOX, TRASH as _TRASH,  # noqa: E402
+                         REJECTED as _REJECTED, temy, tema_put, vse_papki)
 
 #: База знания переехала с Gitea на GitLab 01-10-2026. Отличий три, и каждое
 #: ломает старый код молча: авторизация заголовком `PRIVATE-TOKEN`, а не
@@ -153,25 +154,36 @@ def файл(pid, путь, tok):
                tok, raw=True)
 
 VAULT = str(_VAULT)
-LIB = os.path.join(VAULT, "Literature")
 IMG = (".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp")
-INBOX = "_inbox"
-TRASH = "_trash"
-REJECTED = "_trash/paper-search_rejected.md"
+# Единой папки `Literature` больше нет: разборы лежат в репозитории каждой темы, а приёмник
+# и корзина общие и остаются на машине. Все три пути знает `vault_paths`.
+INBOX = str(_INBOX)
+TRASH = str(_TRASH)
+REJECTED = str(_REJECTED)
 NOT_A_THEME = {"grants"}          # репозиторий лаборатории, но не тема литературы
 
 
 
 
 def themes_local():
-    return sorted(x for x in os.listdir(LIB)
-                  if os.path.isdir(os.path.join(LIB, x)) and not x.startswith(("_", ".")))
+    return sorted(temy())
+
+
+def адрес(путь):
+    """Путь от корня хранилища: так его пишут вики-ссылки."""
+    return os.path.relpath(str(путь), VAULT).replace(os.sep, "/")
+
+
+def адрес_темы(theme):
+    """Папка разборов темы от корня хранилища; тему, которой нет в дереве, не выдумываем."""
+    mesto = tema_put(theme)
+    return адрес(mesto) if mesto else f"<направление>/{theme}/literature"
 
 
 def local_arxivs():
     """Все номера arXiv, уже лежащие в хранилище."""
     out = set()
-    for root, dirs, files in os.walk(LIB):
+    for root, dirs, files in (x for p in vse_papki() for x in os.walk(p)):
         dirs[:] = [d for d in dirs if d != "_attachments"]
         for f in files:
             if not f.endswith(".md"):
@@ -247,7 +259,7 @@ def local_titles():
     и сравнение по номеру их не находит — статья приезжала бы в _inbox каждый проход.
     """
     out = set()
-    for root, dirs, files in os.walk(LIB):
+    for root, dirs, files in (x for p in vse_papki() for x in os.walk(p)):
         dirs[:] = [d for d in dirs if d != "_attachments"]
         for f in files:
             if f.endswith(".md") and f != "README.md":
@@ -262,7 +274,7 @@ def themes_git(tok):
 
 def rejected_arxivs():
     """Номера, которые владелец уже отверг: обратно их не приносим."""
-    p = os.path.join(LIB, REJECTED)
+    p = REJECTED
     if not os.path.exists(p):
         return set()
     return set(re.findall(r"arxiv\.org/abs/([^\s\")\]]+)", open(p, encoding="utf-8").read()))
@@ -270,7 +282,7 @@ def rejected_arxivs():
 
 def sweep_trash():
     """Статья, перетащенная в _trash, уходит в журнал отказов и удаляется с вложениями."""
-    d = os.path.join(LIB, TRASH)
+    d = TRASH
     if not os.path.isdir(d):
         return []
     swept = []
@@ -285,7 +297,7 @@ def sweep_trash():
         return []
     for f in файлы:
         p = os.path.join(d, f)
-        if not f.endswith(".md") or os.path.join(TRASH, f).replace(os.sep, "/") == REJECTED:
+        if not f.endswith(".md") or p == REJECTED:
             continue
         txt = open(p, encoding="utf-8").read()
         ax = re.search(r"arxiv\.org/abs/([^\s\")\]]+)", txt)
@@ -294,7 +306,7 @@ def sweep_trash():
         url = f"https://arxiv.org/abs/{ax.group(1)}" if ax else "—"
         line = (f"- {_dt.now().strftime('%d-%m-%Y')} — {title} — {url} — "
                 f"выброшено из _inbox владельцем\n")
-        led = os.path.join(LIB, REJECTED)
+        led = REJECTED
         os.makedirs(os.path.dirname(led), exist_ok=True)
         if not os.path.exists(led):
             open(led, "w", encoding="utf-8").write("# paper-search rejected\n\n")
@@ -310,7 +322,9 @@ def sweep_trash():
 
 
 def pull_one(found, tok, into_theme=False):
-    target = os.path.join(LIB, found["theme"]) if into_theme else os.path.join(LIB, INBOX)
+    if into_theme and tema_put(found["theme"]) is None:
+        sys.exit(f"темы {found['theme']} нет в дереве: сначала склонируй её literature")
+    target = str(tema_put(found["theme"])) if into_theme else INBOX
     os.makedirs(target, exist_ok=True)
     name = re.sub(r'[\\/:*?"<>|]', " ", found["title"]).strip() or found["key"]
     dst = os.path.join(target, f"{name}.md")
@@ -330,9 +344,9 @@ def pull_one(found, tok, into_theme=False):
     if not into_theme:
         front += (f"> [!note] Предложенная тема — `{found['theme']}`\n"
                   f"> В базе разбор лежит именно там. Согласен — перетащи заметку в "
-                  f"`Literature/{found['theme']}/` или скажи `lab_pull.py --accept`: "
+                  f"`{адрес_темы(found['theme'])}/` или скажи `lab_pull.py --accept`: "
                   f"статья уедет туда вместе с рисунками и появится в этой же теме на "
-                  f"AlphaXiv и в Zotero. Не нужна — перетащи в `Literature/_trash`.\n\n")
+                  f"AlphaXiv и в Zotero. Не нужна — перетащи в `{адрес(TRASH)}`.\n\n")
     open(dst, "w", encoding="utf-8").write(front + body)
     return dst
 
@@ -351,16 +365,16 @@ def to_obsidian(txt, theme, key, tok, target_dir):
         dst = os.path.join(target_dir, "_attachments", rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         open(dst, "wb").write(data)
-        return f"![[Literature/{os.path.basename(target_dir)}/_attachments/{rel}]]"
+        return f"![[{адрес(target_dir)}/_attachments/{rel}]]"
     txt = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", img, txt)
     txt = txt.replace(f"[← вся литература темы](../README.md)",
-                      f"[[Literature/{theme}/README|← вся литература темы]]")
+                      f"[[{адрес_темы(theme)}/README|← вся литература темы]]")
     return txt
 
 
 ПРЕДЛОЖЕНА = re.compile(r"(?m)^предложенная тема:\s*(\S+)\s*$")
 ПРИНЯТА = re.compile(r"(?m)^принято:\s*\S+")
-ВСТАВКА = re.compile(r"!\[\[Literature/([^/\]]+)/_attachments/([^\]]+)\]\]")
+ВСТАВКА = re.compile(r"!\[\[([^\]]+?)/_attachments/([^\]]+)\]\]")
 
 
 def карта_alphaxiv():
@@ -412,23 +426,23 @@ def зеркалировать(arxiv, тема):
 
 def _перенести(путь, тема):
     """Заметку и её рисунки — из _inbox в папку темы, с правкой вики-вставок."""
-    цель = os.path.join(LIB, тема)
+    цель = str(tema_put(тема))
     os.makedirs(цель, exist_ok=True)
     if os.path.exists(os.path.join(цель, os.path.basename(путь))):
         # Заметка с таким названием в теме уже есть: чужой разбор затирать нельзя.
         return ""
     txt = open(путь, encoding="utf-8").read()
-    откуда = os.path.basename(os.path.dirname(путь))
+    откуда = адрес(os.path.dirname(путь))
     for где, хвост in set(ВСТАВКА.findall(txt)):
         if где != откуда:
             continue
-        a = os.path.join(LIB, где, "_attachments", хвост)
+        a = os.path.join(VAULT, где, "_attachments", хвост)
         b = os.path.join(цель, "_attachments", хвост)
         if os.path.exists(a) and not os.path.exists(b):
             os.makedirs(os.path.dirname(b), exist_ok=True)
             shutil.move(a, b)
-    txt = txt.replace(f"![[Literature/{откуда}/_attachments/",
-                      f"![[Literature/{тема}/_attachments/")
+    txt = txt.replace(f"![[{откуда}/_attachments/",
+                      f"![[{адрес(цель)}/_attachments/")
     новый = os.path.join(цель, os.path.basename(путь))
     open(новый, "w", encoding="utf-8").write(txt)
     os.remove(путь)
@@ -448,7 +462,7 @@ def _отметить(путь):
 
 def принять(какие):
     """Разложить `_inbox` по предложенным темам и дозеркалить перенесённое руками."""
-    d = os.path.join(LIB, INBOX)
+    d = INBOX
     взято = 0
     for f in sorted(os.listdir(d) if os.path.isdir(d) else []):
         if not f.endswith(".md"):
@@ -466,6 +480,9 @@ def принять(какие):
         if какие and not (какие in (ключ.group(1) if ключ else "") or какие in f):
             continue
         ax = re.search(r"arxiv\.org/abs/([^\s\")\]]+)", txt)
+        if tema_put(тема) is None:
+            print(f"  {тема:28s} {f[:52]} — темы нет в дереве, оставляю в _inbox")
+            continue
         новый = _перенести(путь, тема)
         if not новый:
             print(f"  {тема:28s} {f[:52]} — в теме уже есть заметка с таким именем, "
@@ -488,8 +505,7 @@ def дозеркалить():
     нет, а лежит заметка уже не в _inbox.
     """
     сделано = 0
-    for тема in themes_local():
-        d = os.path.join(LIB, тема)
+    for тема, d in temy().items():
         for f in sorted(os.listdir(d)):
             if not f.endswith(".md") or f == "README.md":
                 continue
@@ -519,7 +535,7 @@ def main():
     ap.add_argument("--into-theme", action="store_true",
                     help="положить сразу в папку темы, а не в _inbox")
     a = ap.parse_args()
-    if not os.path.isdir(LIB):
+    if not temy():
         sys.exit("хранилища нет на этой машине: lab_pull сравнивает базу с локальной библиотекой, "
                  "запускать его надо у владельца")
     if a.accept is not None:
@@ -555,7 +571,7 @@ def main():
             print(f"дозеркалено принятых руками: {сделано}")
         print(f"привезено в _inbox: {taken}")
         if taken:
-            print("что не нужно — перетащить в Literature/_trash, "
+            print(f"что не нужно — перетащить в {адрес(TRASH)}, "
                   "следующий проход удалит насовсем и больше не принесёт")
         return
 

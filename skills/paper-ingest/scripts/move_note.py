@@ -13,14 +13,16 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from vault_paths import VAULT, temy, tema_put, vse_papki  # noqa: E402
 
 V = str(VAULT)
-LIB = os.path.join(V, "Literature")
+
+
+def адрес(тема):
+    """Путь папки разборов темы от корня хранилища: так его пишут вики-ссылки."""
+    return os.path.relpath(str(tema_put(тема)), V)
 
 
 def найти(arxiv):
-    for тема in sorted(os.listdir(LIB)):
-        d = os.path.join(LIB, тема)
-        if not os.path.isdir(d):
-            continue
+    for тема, mesto in temy().items():
+        d = str(mesto)
         for f in os.listdir(d):
             if not f.endswith(".md") or f == "README.md":
                 continue
@@ -42,19 +44,20 @@ def main():
     if откуда == куда:
         print(f"{arxiv}: уже в {куда}")
         return
-    if not os.path.isdir(os.path.join(LIB, куда)):
+    if tema_put(куда) is None:
         sys.exit(f"темы {куда} нет")
     print(f"{arxiv}: {откуда} -> {куда}   {имя[:60]}")
     if сухой:
         return
-    shutil.move(os.path.join(LIB, откуда, имя), os.path.join(LIB, куда, имя))
-    пары = {f"Literature/{откуда}/{имя[:-3]}": f"Literature/{куда}/{имя[:-3]}"}
-    вложения = os.path.join(LIB, откуда, "_attachments", arxiv)
+    из, в = str(tema_put(откуда)), str(tema_put(куда))
+    shutil.move(os.path.join(из, имя), os.path.join(в, имя))
+    пары = {f"{адрес(откуда)}/{имя[:-3]}": f"{адрес(куда)}/{имя[:-3]}"}
+    вложения = os.path.join(из, "_attachments", arxiv)
     if os.path.isdir(вложения):
-        цель = os.path.join(LIB, куда, "_attachments", arxiv)
+        цель = os.path.join(в, "_attachments", arxiv)
         os.makedirs(os.path.dirname(цель), exist_ok=True)
         shutil.move(вложения, цель)
-        пары[f"Literature/{откуда}/_attachments/{arxiv}/"] = f"Literature/{куда}/_attachments/{arxiv}/"
+        пары[f"{адрес(откуда)}/_attachments/{arxiv}/"] = f"{адрес(куда)}/_attachments/{arxiv}/"
     правок = файлов = 0
     for r, dd, fs in os.walk(V):
         dd[:] = [x for x in dd if not x.startswith(".")]

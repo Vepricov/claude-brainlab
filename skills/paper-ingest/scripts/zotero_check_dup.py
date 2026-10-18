@@ -230,7 +230,7 @@ def obsidian_matches(title=None, arxiv_id=None, doi=None):
     if not VAULT_LITERATURE.exists():
         return matches
 
-    for path in VAULT_LITERATURE.rglob("*.md"):
+    for path in (p for d in vse_papki() if d.is_dir() for p in d.rglob("*.md")):
         try:
             text = path.read_text(encoding="utf-8")
         except Exception:
@@ -310,17 +310,11 @@ def parse_obsidian_note(path: Path):
 
 
 def collection_note_paths(collection_name: str):
-    direct = VAULT_LITERATURE / collection_name
+    # Коллекция Zotero называется слагом темы, а разборы темы лежат в её `literature/`.
+    direct = tema_put(collection_name)
     candidates = []
-    if direct.exists() and direct.is_dir():
+    if direct is not None and direct.is_dir():
         candidates.append(direct)
-
-    for top_level in VAULT_LITERATURE.iterdir():
-        if not top_level.is_dir():
-            continue
-        nested = top_level / collection_name
-        if nested.exists() and nested.is_dir():
-            candidates.append(nested)
 
     seen = set()
     note_paths = []
@@ -419,7 +413,7 @@ def main():
     parser.add_argument("--arxiv", help="arXiv ID")
     parser.add_argument("--title", help="Paper title (partial match)")
     parser.add_argument("--doi", help="DOI")
-    parser.add_argument("--collection", help="Collection/folder name under Literature/ and Zotero")
+    parser.add_argument("--collection", help="Theme slug: Zotero collection and <direction>/<theme>/literature folder")
     parser.add_argument("--final-audit", action="store_true", help="Audit Zotero/Obsidian consistency for a collection")
     parser.add_argument("--expect-title", help="Expected paper title after add flow")
     parser.add_argument("--expect-zotero-key", help="Expected Zotero key after add flow")

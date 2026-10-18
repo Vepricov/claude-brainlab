@@ -29,8 +29,8 @@ class ScoopReport:
 
 
 def _grep_library(claim: str, cfg: ARConfig, max_hits: int = 12) -> str:
-    """Локальный поиск по заметкам проекта (Knowledge/Literature + корень)."""
-    roots = [os.path.join(cfg.project_root, d) for d in ("Knowledge", "Literature", "Reports")]
+    """Локальный поиск по заметкам проекта (Knowledge, разборы темы ../literature + корень)."""
+    roots = [os.path.join(cfg.project_root, d) for d in ("Knowledge", os.path.join("..", "literature"), "Reports")]
     roots.append(cfg.project_root)
     terms = [w for w in claim.replace(",", " ").split() if len(w) > 5][:6]
     hits: List[str] = []

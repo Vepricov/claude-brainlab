@@ -180,6 +180,21 @@ HOST = BASE_URL.split("//", 1)[-1].split("/", 1)[0].split(":", 1)[0]
 #: половина и лечит ложные места, это замерено на `grants` и `management`. Тексты в
 #: `INSIDE_LAB` выше остаются запасными, для клона без описания и для несклонированного.
 SLUZHEBNYE_KORNI = ("brainlab/handbook", "brainlab/journal", "brainlab/servers")
+#: Список мест берётся С САЙТА базы, а не из того, что оказалось склонировано на этой машине.
+#: Владелец 18-10-2026: «я хотел, чтобы хук работал так, чтобы джев откуда-то сверху подсасывает
+#: все вот такие вот репозитории, получает их description и уже из этого description понимает,
+#: что и куда нужно записывать». Разница не в источнике текста, а в полноте списка: новый грант
+#: или новый служебный репозиторий, которого здесь ещё нет, из клонов не виден вовсе — то есть
+#: не предлагается, а предложить его и значит сказать «склонируй сюда». Описание на сайте —
+#: отражение поля `description:` из frontmatter README, его переносит `opisaniya.py`.
+MESTA_CACHE = Path("~/.cache/brainlab/jev-mesta.json").expanduser()
+#: Шесть часов: состав мест меняется от силы раз в недели, а хук выполняется каждым ходом.
+MESTA_TTL = 6 * 3600
+#: Признак места записи — оборот «Не сюда:». Место, которое не сказало, чего в него НЕ кладут,
+#: даёт ложные срабатывания: 17-10-2026 описание `ops/management` без этой половины подошло к
+#: любой работе со сроком, и рецензия на чужую статью получила за него 0.72. Поэтому репозиторий
+#: без неё описан на сайте, но местом записи не становится, и вопроса по нему не задаётся.
+PRIZNAK_MESTA = "Не сюда:"
 
 
 def _opisanie(papka: Path) -> str:
@@ -198,13 +213,48 @@ def _opisanie(papka: Path) -> str:
     return ""
 
 
-def mesta_vnutri() -> dict[str, str]:
-    """Служебные места базы: адрес → чем это место считают его хозяева."""
+def _s_sayta() -> dict[str, str]:
+    """Места с сайта базы: адрес → описание. Кеш на шесть часов, сеть не обязательна."""
+    try:
+        if time.time() - MESTA_CACHE.stat().st_mtime < MESTA_TTL:
+            return json.loads(MESTA_CACHE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        pass
     out: dict[str, str] = {}
+    try:
+        tok = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        for gruppa, podgruppy in (("brainlab", "false"), ("ops", "true")):
+            request = urllib.request.Request(
+                f"{BASE_URL}/api/v4/groups/{gruppa}/projects"
+                f"?include_subgroups={podgruppy}&per_page=100",
+                headers={"PRIVATE-TOKEN": tok})
+            with urllib.request.urlopen(request, timeout=5) as answer:
+                for proekt in json.loads(answer.read().decode("utf-8")):
+                    text = " ".join(str(proekt.get("description") or "").split())
+                    if PRIZNAK_MESTA in text:
+                        out[proekt["path_with_namespace"]] = text
+    except Exception:          # noqa: BLE001 — сеть не условие работы хука
+        try:
+            return json.loads(MESTA_CACHE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return {}
+    if out:
+        MESTA_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        MESTA_CACHE.write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
+    return out
+
+
+def mesta_vnutri() -> dict[str, str]:
+    """Служебные места базы: адрес → чем это место считают его хозяева.
+
+    Три источника, в порядке убывания свежести: клон на этой машине (правку описания видно
+    до отправки), сайт базы (места, которых здесь нет), зашитые тексты (нет ни сети, ни кеша).
+    """
+    out: dict[str, str] = dict(_s_sayta())
     for adres, put in sorted(v_dereve().items()):
         if adres.startswith("ops/") or adres in SLUZHEBNYE_KORNI:
-            text = _opisanie(Path(put).expanduser()) or INSIDE_LAB.get(adres, "")
-            if text:
+            text = _opisanie(Path(put).expanduser())
+            if text and PRIZNAK_MESTA in text:
                 out[adres] = text
     for adres, text in INSIDE_LAB.items():
         out.setdefault(adres, text)
@@ -1042,6 +1092,7 @@ def main() -> None:
                   payload.get("удержанное") or [], inside)
     reply = answer.get("answers") or {}
     record.update({
+        "папка": (gde(payload.get("каталог") or "") or {}).get("folder"),
         "работа": (clone or {}).get("work"),
         "не_описано_прогонов": (clone or {}).get("runs_arrived_not_described"),
         "ось": verdict["ось"],

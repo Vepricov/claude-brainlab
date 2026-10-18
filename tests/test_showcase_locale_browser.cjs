@@ -38,7 +38,7 @@ fs.mkdirSync(evidence,{recursive:true});
   await page.goto(base);await page.waitForSelector('.loop-node');
   assert.equal(await page.locator('html').getAttribute('lang'),'en');
   await inspect('English default');
-  const routes=await page.evaluate(()=>[...window.RESEARCH_LOOP.processes.map(p=>p.id),'memory','surface/obsidian','surface/mempalace','surface/yonote',...window.SYSTEM_EXAMPLES.journeys.map(j=>`examples/${j.id}/${j.stages[0].id}`)]);
+  const routes=await page.evaluate(()=>[...window.RESEARCH_LOOP.processes.map(p=>p.id),'memory','surface/obsidian','surface/mempalace','surface/tasks',...window.SYSTEM_EXAMPLES.journeys.map(j=>`examples/${j.id}/${j.stages[0].id}`)]);
   for(const route of routes){
    await page.goto(`${base}?lang=en#${route}`);await page.waitForSelector('#process-view:not([hidden]),#examples-view:not([hidden])');
    await page.locator('details').evaluateAll(xs=>xs.forEach(x=>x.open=true));await inspect(route);
@@ -51,24 +51,10 @@ fs.mkdirSync(evidence,{recursive:true});
    await page.goto(`${base}?lang=en#${route}`);await page.waitForSelector('.skill-dialog[open]');
    await page.locator('dialog[open] details').evaluateAll(xs=>xs.forEach(x=>x.open=true));await inspect(route);
   }
-  await page.goto(`${base}?lang=en#mcp-live`);await page.waitForSelector('#mcp-search-input');await inspect('demo landing');
-  const scenarios=await page.evaluate(()=>window.LAB_DEMO.scenarios);
-  for(const scenario of scenarios){
-   await page.locator('#mcp-search-input').fill(scenario.text);await page.locator('#mcp-search-form').evaluate(f=>f.requestSubmit());
-   await page.waitForSelector('#mcp-results [data-open-paper]');
-   const ids=await page.locator('#mcp-results [data-open-paper]').evaluateAll(xs=>[...new Set(xs.map(x=>x.dataset.openPaper))]);
-   assert.deepEqual(ids,[scenario.paper,...scenario.related],scenario.text);await inspect(scenario.text);
-  }
-  await page.locator('#mcp-results [data-open-paper]').first().click();const paperHash=new URL(page.url()).hash;
-  assert.match(paperHash,/^#mcp-live\/paper\//);await inspect('English paper');
-  await page.locator('[data-language=ru]').click();await page.waitForSelector('#mcp-results .paper-page');
-  assert.equal(new URL(page.url()).hash,paperHash);assert.equal(await page.locator('html').getAttribute('lang'),'ru');
-  assert.match(await page.locator('#mcp-results').innerText(),/[А-Яа-яЁё]/);
-  await page.locator('[data-language=en]').click();await page.waitForSelector('#mcp-results .paper-page');await inspect('paper after language round trip');
   for(const width of [375,560,640,768,1024,1440]){
    await page.setViewportSize({width,height:900});
-   for(const route of ['','literature','memory','surface/obsidian','surface/yonote','mcp-live']){
-    await page.goto(`${base}?lang=en#${route}`);await page.waitForSelector(route==='mcp-live'?'#mcp-search-input':route?'#process-view:not([hidden])':'.loop-node');await inspect(`${width}px ${route||'home'}`);
+   for(const route of ['','literature','memory','surface/obsidian','surface/tasks']){
+    await page.goto(`${base}?lang=en#${route}`);await page.waitForSelector(route?'#process-view:not([hidden])':'.loop-node');await inspect(`${width}px ${route||'home'}`);
     const bounds=await page.locator('.topbar').evaluate(header=>{const h=header.getBoundingClientRect();return [...header.children].filter(x=>x.checkVisibility()).every(x=>{const b=x.getBoundingClientRect();return b.top>=h.top&&b.bottom<=h.bottom+1})});
     assert(bounds,`${width}px header contains every control`);
    }

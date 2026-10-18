@@ -6,9 +6,9 @@ window.SYSTEM_EXAMPLES = {
       title: "Obsidian",
       kicker: "Personal research memory",
       promise: "A place for detailed understanding, drafts, a research log, and private project context.",
-      owns: ["Full reading notes and meeting notes", "Draft reasoning and plans", "The project hub, experiment log, and links to result files"],
-      doesNotOwn: ["Shared scientific records for the lab", "Team tasks", "An agent's automatic session history"],
-      path: ["Working material emerges in the project", "The researcher turns it into a readable note", "Only the explicitly selected material is shown to the owner before publication", "Once approved, it is published to Lab Knowledge as a typed record"],
+      owns: ["The whole lab tree ~/brainlab: the same folders as in GitLab", "Personal material next to the work: notes/, daily/, runs/ do not go to GitLab", "Operon boards with personal tasks"],
+      doesNotOwn: ["A separate copy of knowledge: Obsidian reads the same files as git", "Team tasks: they are in GitLab", "An agent's automatic session history"],
+      path: ["Working material appears in the work", "Personal material stays in its notes/ and daily/", "Knowledge is written up in claims/ of the same work", "A person merges the merge request, and it shows up in the same tree after git pull"],
       routes: [{kind:"Workflow", title:"Projects and memory", text:"How to set up a project, where its hub lives, and what can be published.", process:"projects", tool:"obsidian-project-bootstrap"}],
       links: [{label:"Obsidian", url:"https://obsidian.md/"}, {label:"Skill: project memory", url:"https://github.com/Vepricov/claude-brainlab/tree/main/skills/obsidian-project-memory"}]
     },
@@ -23,62 +23,19 @@ window.SYSTEM_EXAMPLES = {
       routes: [{kind:"Workflow", title:"Agent orchestration", text:"See how context reaches Jarvis, Hermes, and project watchers.", process:"experiments", tool:"watcher"}],
       links: [{label:"MemPalace on GitHub", url:"https://github.com/MemPalace/mempalace"}]
     },
-    yonote: {
+    tasks: {
       number: "P3",
-      title: "Yonote",
-      kicker: "Project overview and coordination",
-      promise: "Provides a readable project page and its working task board without duplicating the scientific database.",
-      owns: ["One readable project page", "Project task board: CODE · Tasks", "CODE · Meetings and documents, with CODE · Meeting DD-MM-YYYY notes"],
-      facts: ["5 live collections", "21 projects in the manifest", "20 page + Kanban bindings", "13 bindings with explicit view IDs", "op-lora is not yet bound"],
-      doesNotOwn: ["Full provenance of scientific claims", "Raw logs and private notes", "A second writable copy of hypotheses and evidence"],
-      path: ["The team and verified paper materials", "A brief project description and its audience", "The current stage, main hypotheses, and supported results", "Evidence limitations and a link to the project's single CODE task board"],
+      title: "GitLab issues",
+      kicker: "Team assignments",
+      promise: "Issues and the board live in the same work repository that knowledge is written to. There is no second board next to it.",
+      owns: ["Work issues: assignee, deadline, the claim the issue affects", "Work board: columns by labels", "Linking an issue to a merge request: “Closes #N” closes it on merge"],
+      doesNotOwn: ["Knowledge itself: claims, runs, and series live in claims/", "Raw logs and personal notes", "A second copy of the claims"],
+      path: ["An agreement becomes an issue in the work repository", "The assignee sees it at session start", "The work goes out as a merge request that links the issue", "The merge closes the issue by itself"],
       routes: [
-        {kind:"Project page", title:"Yonote project view", text:"The structure and scope of a readable project overview.", process:"projects", tool:"yonote-project-view"},
-        {kind:"Task board", title:"Yonote task broker", text:"Tasks, owners, dates assigned, statuses, and safe writes.", process:"projects", tool:"yonote-task-broker"},
-        {kind:"Meeting documents", title:"Yonote call documents", text:"A brief approved meeting summary, separate from task rows.", process:"calls", tool:"yonote-call"}
+        {kind:"Workflow", title:"Projects and memory", text:"How a work is created, who leads it, and where its issues are.", process:"projects", tool:"obsidian-project-bootstrap"}
       ],
-      links: [{label:"BRAIn Lab in Yonote", url:"https://brain-lab.yonote.ru/"}]
+      links: [{label:"How to set it up", url:"https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md"}]
     }
-  },
-  liveMcp: {
-    title: "Lab Knowledge MCP on brain_lab",
-    subtitle: "A verified snapshot of the running service. This is a read-only overview, not an administration panel.",
-    verifiedAt: "09-09-2026",
-    deployment: {host:"brain_lab", service:"lab-knowledge-user.service", endpoint:"127.0.0.1:8001 through a private connection", revision:"The deployed source code was checked separately", state:"Running · schema version 34 · 58 MCP tools"},
-    counts: [
-      {value:"47", label:"projects and topics"}, {value:"714", label:"claims"}, {value:"729", label:"runs"},
-      {value:"894", label:"measurements"}, {value:"153", label:"derivations · 145 complete"}, {value:"345", label:"rules"},
-      {value:"551", label:"paper"}, {value:"4 231", label:"paper sections"}, {value:"9 265", label:"paper claims · 9,056 quotations verified"},
-      {value:"116", label:"paper links"}, {value:"547", label:"journal entries"}, {value:"131", label:"terms · 23 resources"},
-      {value:"328", label:"sources"}, {value:"15", label:"accounts · 86 project roles"}, {value:"21 512", label:"audit events"}
-    ],
-    records: [
-      {code:"project", title:"Project and topic", text:"The context that contains records: members, status, and the parent topic."},
-      {code:"H-*", title:"Claim", text:"A statement we consider true, together with an observation that would falsify it."},
-      {code:"E-*", title:"Run", text:"A reproducible test protocol linked to a claim."},
-      {code:"R-*", title:"Measurement", text:"A run's output: numbers, an artifact, or an observation with its scope of validity."},
-      {code:"P-*", title:"Rule", text:"How the lab has decided to proceed. Status is stored explicitly; most rules are still proposed."},
-      {code:"D-*", title:"Derivation", text:"Assumptions, reasoning, and an established result in place of an experimental run."},
-      {code:"external research", title:"A paper, its sections, and its claims", text:"External work, its stored text, testable claims, and links to our work. An external claim does not become our measurement."},
-      {code:"context", title:"Observation, term, resource", text:"Factual observations, the project's glossary, and shared lab hardware."},
-      {code:"administration", title:"Source, change history, access", text:"Where a record came from, what changed, who participates, and which keys they hold."}
-    ],
-    writeFlow: ["Choose the project and record type", "Search for duplicates and related records", "Show the owner exactly what will be saved", "The service checks access and saves the appropriate record type", "Read the saved record back and return its code"],
-    readFlow: ["Validate the key", "Identify the project in question", "Search both words and relationships", "Return records, their sources, and contradictions"],
-    operations: [
-      {title:"Search and graph", mode:"read", names:["search_lab","find_similar","get_related","get_timeline","recent_changes","related_by_terms","lab_health","who_works_on_what"]},
-      {title:"Projects and topics", mode:"read and write", names:["list_projects","get_project_by_slug","get_project_context","list_themes","get_theme_context","create_project","set_project_status","set_project_theme","set_project_links","set_project_open_questions","assign_public_code"]},
-      {title:"Scientific record chain", mode:"read and write", names:["get_hypothesis","list_hypotheses","list_derivations","create_hypothesis","update_hypothesis","record_experiment","update_experiment_status","record_evidence","record_derivation","update_derivation_status","propose_decision","update_decision"]},
-      {title:"Library", mode:"read and write", names:["get_paper","list_recent_papers","list_paper_claims","find_related_papers","upsert_paper","add_paper_section","record_paper_claim","link_paper","set_record_papers"]},
-      {title:"Lab context", mode:"read and write", names:["list_terms","list_lab_resources","list_journal","define_term","upsert_resource","record_journal","publish_source_note","upsert_projection_ref"]},
-      {title:"Yonote", mode:"read and write", names:["preview_yonote_task","list_yonote_tasks","provision_project_workspace","upsert_yonote_task","upsert_call_note"]},
-      {title:"Access and lifecycle", mode:"read and write", names:["list_agent_tokens","invite_member","issue_agent_token","revoke_agent_token","delete_project","delete_record"]}
-    ],
-    liveExample: {project:"Example of linked records", status:"illustration", empirical:"Claim → run → measurement → rule: each record has its own code, status, and provenance", theory:"Paper claims and derivations connect to the same chain through typed relationships; they do not replace measurements", note:"This example illustrates the response format. Private record contents and project names are not copied into the showcase."},
-    boundaries: ["Obsidian stores private drafts", "Yonote stores tasks and a concise project overview for people", "MemPalace stores agent history", "Lab Knowledge stores shared scientific history, the library, working context, access permissions, and change history"],
-    links: [{label:"The public knowledge model", url:"https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"}, {label:"BRAIn Lab toolkit", url:"https://github.com/Vepricov/claude-brainlab"}],
-    runtime:["lab-knowledge-user.service · the MCP service on port 8001","lab-site.service · a separate read-only showcase","lab-knowledge-legacy-db-bridge.service · a temporary bridge to the old database","brainlab-reverse-tunnel.service · a private connection to port 8001"],
-    sourceStatus:"The running service exposes 58 tools and matches the deployed source code. The calling agent is responsible for showing a proposed write to the owner and reading it back; there are no separate tools for these steps. All counts were collected on 09-09-2026 by querying the database directly, including papers, sources, accounts, and the change log. Previously, those counts came from a snapshot one day older because no listing tools were available for them."
   },
   journeys: [
     {

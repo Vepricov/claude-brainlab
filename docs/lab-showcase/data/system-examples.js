@@ -6,9 +6,9 @@ window.SYSTEM_EXAMPLES = {
       title: "Obsidian",
       kicker: "Личная память исследователя",
       promise: "Место для подробного понимания, черновиков, дневника и приватного контекста проекта.",
-      owns: ["Полные заметки по статьям и созвонам", "Черновые рассуждения и планы", "Карточка проекта, журнал экспериментов и ссылки на файлы результатов"],
-      doesNotOwn: ["Общие научные записи лаборатории", "Задачи команды", "Автоматическую историю сессий агента"],
-      path: ["Рабочий материал появляется в проекте", "Исследователь оформляет его в читаемую заметку", "Только явно выбранную часть показывают человеку перед публикацией", "После подтверждения она публикуется в Lab Knowledge как типизированная запись"],
+      owns: ["Всё дерево лаборатории ~/brainlab: те же папки, что в GitLab", "Личное рядом с работой: notes/, daily/, runs/ — в GitLab не едут", "Доски Operon с личными задачами"],
+      doesNotOwn: ["Отдельную копию знания: Obsidian читает те же файлы, что git", "Задачи команды — они в GitLab", "Автоматическую историю сессий агента"],
+      path: ["Рабочий материал появляется в работе", "Личное остаётся в её notes/ и daily/", "Знание оформляется в claims/ той же работы", "Предложение сливает человек, и это видно в том же дереве после git pull"],
       routes: [{kind:"Рабочий процесс", title:"Проекты и память", text:"Как заводится проект, где живёт его карточка и что можно публиковать.", process:"projects", tool:"obsidian-project-bootstrap"}],
       links: [{label:"Obsidian", url:"https://obsidian.md/"}, {label:"Навык: память проекта", url:"https://github.com/Vepricov/claude-brainlab/tree/main/skills/obsidian-project-memory"}]
     },
@@ -23,62 +23,19 @@ window.SYSTEM_EXAMPLES = {
       routes: [{kind:"Рабочий процесс", title:"Оркестрация агентов", text:"Посмотреть, как контекст уходит Jarvis, Hermes и вахтёрам проекта.", process:"experiments", tool:"watcher"}],
       links: [{label:"MemPalace на GitHub", url:"https://github.com/MemPalace/mempalace"}]
     },
-    yonote: {
+    tasks: {
       number: "P3",
-      title: "Yonote",
-      kicker: "Человеческая проекция и координация",
-      promise: "Показывает понятную страницу проекта и хранит его рабочую доску, не дублируя научную базу.",
-      owns: ["Одна человеко-читаемая карточка проекта", "Доска задач проекта: КОД · Задачи", "CODE · Созвоны и документы CODE · Созвон DD-MM-YYYY"],
-      facts: ["5 живых collections", "21 project в manifest", "20 page + Kanban bindings", "13 bindings с explicit view IDs", "op-lora пока unbound"],
-      doesNotOwn: ["Полный provenance научных утверждений", "Сырые логи и приватные заметки", "Вторую writable-копию гипотез и evidence"],
-      path: ["Команда и проверенные материалы статьи", "Краткое описание проекта и аудитория", "Текущая стадия, основные гипотезы и подтвержденные результаты", "Ограничения evidence и ссылка на единственную доску CODE"],
+      title: "Задачи GitLab",
+      kicker: "Поручения команды",
+      promise: "Задачи и доска живут в репозитории той же работы, в которую пишут знание. Второй доски рядом нет.",
+      owns: ["Задачи работы: исполнитель, срок, утверждение, на которое задача влияет", "Доска работы: колонки по ярлыкам", "Связь задачи с предложением: «Closes #N» закрывает её слиянием"],
+      doesNotOwn: ["Само знание: утверждения, прогоны и серии лежат в claims/", "Сырые логи и личные заметки", "Вторую копию утверждений"],
+      path: ["Договорённость становится задачей в репозитории работы", "Исполнитель видит её в начале сессии", "Работа уходит предложением со ссылкой на задачу", "Слияние закрывает задачу само"],
       routes: [
-        {kind:"Страница проекта", title:"Yonote project view", text:"Структура человеческой проекции проекта и ее границы.", process:"projects", tool:"yonote-project-view"},
-        {kind:"Рабочая доска", title:"Yonote task broker", text:"Задачи, owner, issued date, status и безопасная запись.", process:"projects", tool:"yonote-task-broker"},
-        {kind:"Документы созвонов", title:"Yonote call documents", text:"Короткий approved итог разговора отдельно от task rows.", process:"calls", tool:"yonote-call"}
+        {kind:"Рабочий процесс", title:"Проекты и память", text:"Как заводится работа, кто её ведёт и где её задачи.", process:"projects", tool:"obsidian-project-bootstrap"}
       ],
-      links: [{label:"BRAIn Lab в Yonote", url:"https://brain-lab.yonote.ru/"}]
+      links: [{label:"Как поставить себе", url:"https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md"}]
     }
-  },
-  liveMcp: {
-    title: "Lab Knowledge MCP на brain_lab",
-    subtitle: "Проверенный снимок работающего сервиса. Это безопасная витрина состояния, а не административная панель.",
-    verifiedAt: "09-09-2026",
-    deployment: {host:"brain_lab", service:"lab-knowledge-user.service", endpoint:"127.0.0.1:8001 через закрытый канал", revision:"исходники развёрнутой версии сверены отдельно", state:"работает · схема версии 34 · 58 инструментов MCP"},
-    counts: [
-      {value:"47", label:"работ и тем"}, {value:"714", label:"утверждений"}, {value:"729", label:"прогонов"},
-      {value:"894", label:"измерений"}, {value:"153", label:"доказательства · 145 завершены"}, {value:"345", label:"правил"},
-      {value:"551", label:"статья"}, {value:"4 231", label:"раздел статей"}, {value:"9 265", label:"утверждений статей · 9 056 цитат сверены"},
-      {value:"116", label:"связей статей"}, {value:"547", label:"записей журнала"}, {value:"131", label:"термин · 23 ресурса"},
-      {value:"328", label:"источников"}, {value:"15", label:"учётных записей · 86 ролей в работах"}, {value:"21 512", label:"событий аудита"}
-    ],
-    records: [
-      {code:"project", title:"Работа и тема", text:"Рамка, внутри которой живут записи: участники, статус и тема сверху."},
-      {code:"H-*", title:"Утверждение", text:"То, что мы считаем верным, вместе с наблюдением, которое его опровергнет."},
-      {code:"E-*", title:"Прогон", text:"Повторяемый протокол проверки, привязанный к утверждению."},
-      {code:"R-*", title:"Измерение", text:"Что вышло из прогона: числа, артефакт или наблюдение с границами применимости."},
-      {code:"P-*", title:"Правило", text:"Как лаборатория решила поступать. Статус хранится явно, и большинство правил пока в состоянии proposed."},
-      {code:"D-*", title:"Доказательство", text:"Предпосылки, ход рассуждения и установленный результат вместо прогона."},
-      {code:"чужое", title:"Статья, её разделы и утверждения", text:"Чужая работа, её сохранённый текст, проверяемые утверждения и связи с нашими. Чужое утверждение нашим измерением не становится."},
-      {code:"контекст", title:"Наблюдение, термин, ресурс", text:"Честные факты, словарь работы и общее железо лаборатории."},
-      {code:"служебное", title:"Источник, журнал изменений, доступ", text:"Откуда запись взялась, что с ней делали, кто участник и какие у него ключи."}
-    ],
-    writeFlow: ["Выбрать работу и тип записи", "Поискать дубли и то, с чем это связано", "Показать человеку, что именно будет записано", "Служба проверяет права и сохраняет запись нужного типа", "Перечитать записанное и вернуть код записи"],
-    readFlow: ["Проверить ключ", "Понять, о какой работе спрашивают", "Искать и по словам, и по связям", "Вернуть записи, их источники и противоречия"],
-    operations: [
-      {title:"Поиск и граф", mode:"чтение", names:["search_lab","find_similar","get_related","get_timeline","recent_changes","related_by_terms","lab_health","who_works_on_what"]},
-      {title:"Проекты и темы", mode:"чтение и запись", names:["list_projects","get_project_by_slug","get_project_context","list_themes","get_theme_context","create_project","set_project_status","set_project_theme","set_project_links","set_project_open_questions","assign_public_code"]},
-      {title:"Научная цепь", mode:"чтение и запись", names:["get_hypothesis","list_hypotheses","list_derivations","create_hypothesis","update_hypothesis","record_experiment","update_experiment_status","record_evidence","record_derivation","update_derivation_status","propose_decision","update_decision"]},
-      {title:"Библиотека", mode:"чтение и запись", names:["get_paper","list_recent_papers","list_paper_claims","find_related_papers","upsert_paper","add_paper_section","record_paper_claim","link_paper","set_record_papers"]},
-      {title:"Контекст лаборатории", mode:"чтение и запись", names:["list_terms","list_lab_resources","list_journal","define_term","upsert_resource","record_journal","publish_source_note","upsert_projection_ref"]},
-      {title:"Yonote", mode:"чтение и запись", names:["preview_yonote_task","list_yonote_tasks","provision_project_workspace","upsert_yonote_task","upsert_call_note"]},
-      {title:"Доступ и жизненный цикл", mode:"чтение и запись", names:["list_agent_tokens","invite_member","issue_agent_token","revoke_agent_token","delete_project","delete_record"]}
-    ],
-    liveExample: {project:"Пример связанной записи", status:"иллюстрация", empirical:"Утверждение → прогон → измерение → правило: у каждой записи свой код, статус и происхождение", theory:"Утверждение статьи и доказательство подключаются к той же цепочке связями названного типа, но измерение собой не подменяют", note:"Пример показывает форму ответа. Тексты закрытых записей и названия закрытых работ в витрину не копируются."},
-    boundaries: ["Obsidian хранит личный черновик", "Yonote хранит задачи и краткую человеческую проекцию", "MemPalace хранит историю агента", "Lab Knowledge хранит общую научную историю, библиотеку, рабочий контекст, права доступа и журнал изменений"],
-    links: [{label:"Публичная модель знания", url:"https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"}, {label:"Набор инструментов BRAIn Lab", url:"https://github.com/Vepricov/claude-brainlab"}],
-    runtime:["lab-knowledge-user.service · сама служба MCP на порту 8001","lab-site.service · отдельная витрина только для чтения","lab-knowledge-legacy-db-bridge.service · временный мост к старой базе","brainlab-reverse-tunnel.service · закрытый канал до порта 8001"],
-    sourceStatus:"Работающая служба отдаёт 58 инструментов и совпадает с исходниками развёрнутой версии. Показ будущей записи человеку и перечитывание записанного обеспечивает вызывающая сторона, отдельных инструментов для этого нет. Все числа сняты 09-09-2026 прямым запросом к базе, включая строки про статьи, источники, учётные записи и журнал изменений: раньше их брали из снимка на день старше, потому что списочных инструментов для них нет."
   },
   journeys: [
     {

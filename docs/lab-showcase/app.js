@@ -58,7 +58,7 @@
         [n("evidence"),"измерений",""],[(lib.papers||[]).length,"статей разобрано",""],
         [both,"закрыты выкладкой и числами","is-lit"]].filter(([v])=>v);
       tally.innerHTML=rows.map(([v,label,cls])=>`<span class="${cls}"><b>${esc(String(v))}</b>${esc(label)}</span>`).join("")
-        +`<em>Столько лежит в общей базе на сегодня. Каждая запись пришла одним вызовом MCP и связана с тем, из чего выросла.</em>`;
+        +`<em>Столько лежит в общей базе на сегодня. Каждая запись вошла слитым предложением и связана с тем, из чего выросла.</em>`;
     }
   }
 
@@ -148,7 +148,7 @@
   // без чтения текста: зелёное — путь записи, синее — путь чтения, янтарное — ворота.
   function kmFlow(steps,dir="right"){
     return `<ol class="km-flow" data-dir="${esc(dir)}">${(steps||[]).map(x=>`<li class="km-step${x.human?" is-human":""}"${x.id?` data-knowledge="intake:${esc(x.id)}"`:""}>
-      <small>${x.human?"решает человек":(x.ops||[]).length?"через MCP":"шаг"}</small>
+      <small>${x.human?"решает человек":(x.ops||[]).length?"через git":"шаг"}</small>
       <strong>${esc(x.title||"")}</strong>
       ${(x.ops||[]).length?`<span class="km-ops">${x.ops.map(o=>`<code>${esc(o)}</code>`).join("")}</span>`:""}
       ${x.note?`<p>${esc(x.note)}</p>`:""}</li>`).join("")}</ol>`;
@@ -158,7 +158,7 @@
     return `<section class="km-block km-rail-block"><header><p class="section-label">Форма системы</p><h3>Четыре входа, одна база, три потребителя</h3></header>
       <div class="km-rail">
         <aside class="km-side"><span>Откуда приходит</span>${src.map(x=>`<button class="km-node" data-knowledge="producer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
-        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Единая точка чтения и записи</small><strong>Lab Knowledge</strong><em>общая проверяемая история лаборатории</em></button></div>
+        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Единая точка чтения и записи</small><strong>GitLab лаборатории</strong><em>общая проверяемая история лаборатории</em></button></div>
         <aside class="km-side"><span>Кто использует</span>${dst.map(x=>`<button class="km-node" data-knowledge="consumer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
       </div></section>`;
   }
@@ -191,7 +191,7 @@
   function knowledgeArchitecture(p){
     const km=p.knowledgeModel||{},objects=km.objectTypes||[],flow=km.publishFlow||[],producers=km.producers||[],consumers=km.consumers||[],friendly={hypothesis:"Утверждение",experiment:"Прогон",evidence:"Измерение",derivation:"Доказательство",decision:"Правило","paper-claim":"Утверждение статьи","paper-chunk":"Раздел статьи",paper:"Статья",journal:"Наблюдение",term:"Термин",resource:"Ресурс",project:"Работа",theme:"Тема","source-ref":"Источник"},objectById=Object.fromEntries(objects.map(x=>[x.id,x]));
     const objectButton=(id,kind="Запись")=>{const x=objectById[id];return x?`<button class="knowledge-record" data-knowledge="object:${esc(x.id)}" type="button"><small>${esc(kind)}</small><strong>${esc(friendly[x.id]||x.label||x.title_ru||x.title)}</strong><span>${esc(x.plain||x.summary||"")}</span></button>`:""};
-    const personal=[{id:"obsidian",title:"Obsidian",action:"Личный черновик. В общую память попадает только после показа человеку и подтверждения."},{id:"mempalace",title:"MemPalace",action:"Память агента и история сессий. Помогает продолжить работу, но не является научным результатом."},{id:"yonote",title:"Yonote",action:"Общие задачи и страницы проектов. Ссылается на знание, но не заменяет его."}];
+    const personal=[{id:"obsidian",title:"Obsidian",action:"Личный черновик. В общую память попадает только после показа человеку и подтверждения."},{id:"mempalace",title:"MemPalace",action:"Память агента и история сессий. Помогает продолжить работу, но не является научным результатом."},{id:"tasks",title:"Задачи GitLab",action:"Общие задачи и доски работ. Ссылаются на знание, но не заменяют его."}];
     const readSteps=[{id:"question",title:"Задать вопрос",summary:"Что уже проверяли?"},{id:"scope",title:"Определить область",summary:"Проект, тип записи и время"},{id:"policy",title:"Проверить доступ",summary:"Ответ по всей общей базе"},{id:"search",title:"Найти и пройти связи",summary:"Текст + граф отношений"},{id:"answer",title:"Ответить с источниками",summary:"коды записей, их происхождение и границы"}];
     const lc=km.lifecycle||{};
     const lifecycleBlock=lc.tracks?`<section class="knowledge-lifecycle process-section"><header><p class="section-label">Жизненный цикл записи</p><h2>Два пути от утверждения до правила</h2><p>${esc(lc.intro||"")}</p></header><div class="lifecycle-tracks">${lc.tracks.map(t=>`<article class="lifecycle-track"><h3>${esc(t.title)}</h3><span class="lifecycle-chain">${esc(t.chain)}</span><ol>${t.steps.map(x=>`<li><code>${esc(x.op)}</code><strong>${esc(x.title)}</strong><span class="lifecycle-needs">${esc(x.needs)}</span><em>${esc(x.gives)}</em><p>${esc(x.note)}</p></li>`).join("")}</ol></article>`).join("")}</div>${lc.verdictOnEdge?`<p class="lifecycle-verdict">${esc(lc.verdictOnEdge)}</p>`:""}<details class="lifecycle-statuses"><summary>Статусы и их переходы <span>${(lc.statuses||[]).length} рода записей</span></summary><div>${(lc.statuses||[]).map(g=>`<article><h4>${esc(g.title)}<code>${esc(g.tool)}</code></h4><p>${esc(g.rule)}</p><dl>${g.values.map(v=>`<dt><code>${esc(v.value)}</code> ${esc(v.means)}</dt>${v.exit?`<dd>Выход: ${esc(v.exit)}</dd>`:""}`).join("")}</dl></article>`).join("")}</div></details><details class="lifecycle-kinds"><summary>Роды внутри типов <span>чем один род отличается от другого</span></summary><table><thead><tr><th>Род чего</th><th>Значения</th><th>Зачем различать</th></tr></thead><tbody>${(lc.kinds||[]).map(k=>`<tr><td>${esc(k.of)}</td><td><code>${esc(k.values)}</code></td><td>${esc(k.why)}</td></tr>`).join("")}</tbody></table></details></section>`:"";
@@ -1727,9 +1727,9 @@
       .map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
     const tasks=demo?(workspace?.example_tasks||[]):[];
     return `<section class="project-workspace" aria-label="Работа команды"><div class="project-workspace-heading"><div><span>Работа команды</span><h3>Задачи проекта</h3></div>${links.length?`<nav aria-label="Ссылки проекта">${links.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>`).join("")}</nav>`:""}</div>
-      <p>${demo?"Пример общей доски: человек остаётся исполнителем, Hermes помогает выполнять порученную ему работу.":links.length?"Задачи, исполнители и сроки — на общей доске Yonote. Hermes может выполнять задачи, назначенные его владельцу.":!window.LAB_PROJECT_WORKSPACES?"Загружаю ссылки на Yonote…":window.LAB_PROJECT_WORKSPACES.unavailable?"Ссылки на Yonote сейчас не загрузились.":"Доска Yonote пока не привязана к этому проекту."}</p>
+      <p>${demo?"Пример общей доски: человек остаётся исполнителем, Hermes помогает выполнять порученную ему работу.":links.length?"Задачи, исполнители и сроки — в задачах репозитория работы в GitLab.":!window.LAB_PROJECT_WORKSPACES?"Загружаю ссылки на задачи…":window.LAB_PROJECT_WORKSPACES.unavailable?"Ссылки на задачи сейчас не загрузились.":"Задачи этой работы ещё не заведены."}</p>
       ${tasks.length?`<ul class="project-task-preview">${tasks.map(t=>`<li><span class="project-task-state">${esc(t.status)}</span><strong>${esc(t.title)}</strong><span>${esc(t.assignee)}</span></li>`).join("")}</ul><small>Учебный пример. Карточки выдуманы; действия с настоящей доской здесь недоступны.</small>`:""}
-      ${!demo&&links.length?"<small>Смена статусов через Hermes ещё проходит проверку. Ссылка открывает исходную доску.</small>":""}</section>`;
+      ${!demo&&links.length?"<small>Ссылка открывает доску работы в GitLab.</small>":""}</section>`;
   }
 
   function projectCard(code,q=""){

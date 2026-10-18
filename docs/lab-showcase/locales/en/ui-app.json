@@ -840,5 +840,15 @@
   "ee146251c587": "<p class=\"empty-search\">No matches. Try describing the action differently.</p>",
   "5c3da2834b2b": "Back to top",
   "9611065a0eee": "</div>\n        </div>\n        <div id=\"mcp-call-line\" class=\"way-call\"></div></section>\n\n      <section class=\"way way-explore\"><span>From broad to specific</span>\n        <h3>Explore topics</h3>\n        <p>Section → subtopic → paper → claims.</p>\n        <div class=\"way-body\"><div class=\"way-areas\">\n          ",
-  "a59d5a0d4209": "<p class=\"sky-pending\">In development</p>"
+  "a59d5a0d4209": "<p class=\"sky-pending\">In development</p>",
+  "c2dd1ad81904": "<em>This is what the shared base holds today. Every record came in as a merged merge request and is linked to what it grew from.</em>",
+  "f4d059cfbf08": "through git",
+  "17516cf67608": "</aside>\n        <div class=\"km-core\"><button class=\"km-node is-core\" data-knowledge=\"boundary:mcp\" type=\"button\"><small>Single point of reading and writing</small><strong>Lab GitLab</strong><em>the lab's shared verifiable history</em></button></div>\n        <aside class=\"km-side\"><span>Who uses it</span>",
+  "252824ec3dfc": "GitLab issues",
+  "f530949d4a35": "Shared issues and work boards. They link to knowledge but do not replace it.",
+  "eae00ca81e6d": "Tasks, assignees, and deadlines live in the issues of the work repository in GitLab.",
+  "cf5824cd4dd2": "Loading issue links…",
+  "feddb5560f81": "Issue links did not load right now.",
+  "34732e57b1f8": "This work has no issues yet.",
+  "960b4a4761fd": "<small>The link opens the work's board in GitLab.</small>"
 }

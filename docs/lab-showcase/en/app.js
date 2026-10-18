@@ -58,7 +58,7 @@
         [n("evidence"),"measurements",""],[(lib.papers||[]).length,"papers analyzed",""],
         [both,"resolved through derivations and numbers","is-lit"]].filter(([v])=>v);
       tally.innerHTML=rows.map(([v,label,cls])=>`<span class="${cls}"><b>${esc(String(v))}</b>${esc(label)}</span>`).join("")
-        +`<em>Records currently in the shared database. Each arrived through an MCP call and is linked to its origins.</em>`;
+        +`<em>This is what the shared base holds today. Every record came in as a merged merge request and is linked to what it grew from.</em>`;
     }
   }
 
@@ -148,7 +148,7 @@
   // без чтения текста: зелёное — путь записи, синее — путь чтения, янтарное — ворота.
   function kmFlow(steps,dir="right"){
     return `<ol class="km-flow" data-dir="${esc(dir)}">${(steps||[]).map(x=>`<li class="km-step${x.human?" is-human":""}"${x.id?` data-knowledge="intake:${esc(x.id)}"`:""}>
-      <small>${x.human?"a person decides":(x.ops||[]).length?"through MCP":"step"}</small>
+      <small>${x.human?"a person decides":(x.ops||[]).length?"through git":"step"}</small>
       <strong>${esc(x.title||"")}</strong>
       ${(x.ops||[]).length?`<span class="km-ops">${x.ops.map(o=>`<code>${esc(o)}</code>`).join("")}</span>`:""}
       ${x.note?`<p>${esc(x.note)}</p>`:""}</li>`).join("")}</ol>`;
@@ -158,7 +158,7 @@
     return `<section class="km-block km-rail-block"><header><p class="section-label">System structure</p><h3>Four inputs, one database, three consumers</h3></header>
       <div class="km-rail">
         <aside class="km-side"><span>Where it comes from</span>${src.map(x=>`<button class="km-node" data-knowledge="producer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
-        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>One entry point for reading and writing</small><strong>Lab Knowledge</strong><em>the laboratory's shared, verifiable history</em></button></div>
+        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Single point of reading and writing</small><strong>Lab GitLab</strong><em>the lab's shared verifiable history</em></button></div>
         <aside class="km-side"><span>Who uses it</span>${dst.map(x=>`<button class="km-node" data-knowledge="consumer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
       </div></section>`;
   }
@@ -191,7 +191,7 @@
   function knowledgeArchitecture(p){
     const km=p.knowledgeModel||{},objects=km.objectTypes||[],flow=km.publishFlow||[],producers=km.producers||[],consumers=km.consumers||[],friendly={hypothesis:"Claim",experiment:"Run",evidence:"Measurement",derivation:"Derivation",decision:"Rule","paper-claim":"Paper claim","paper-chunk":"Paper section",paper:"Paper",journal:"Observation",term:"Term",resource:"Resource",project:"Project",theme:"Topic","source-ref":"Source"},objectById=Object.fromEntries(objects.map(x=>[x.id,x]));
     const objectButton=(id,kind="Record")=>{const x=objectById[id];return x?`<button class="knowledge-record" data-knowledge="object:${esc(x.id)}" type="button"><small>${esc(kind)}</small><strong>${esc(friendly[x.id]||x.label||x.title_ru||x.title)}</strong><span>${esc(x.plain||x.summary||"")}</span></button>`:""};
-    const personal=[{id:"obsidian",title:"Obsidian",action:"Personal draft. Enters shared memory only after human preview and approval."},{id:"mempalace",title:"MemPalace",action:"Agent memory and session history. Helps resume work, but is not a research result."},{id:"yonote",title:"Yonote",action:"Shared tasks and project pages. References knowledge without replacing it."}];
+    const personal=[{id:"obsidian",title:"Obsidian",action:"Personal draft. Enters shared memory only after human preview and approval."},{id:"mempalace",title:"MemPalace",action:"Agent memory and session history. Helps resume work, but is not a research result."},{id:"tasks",title:"GitLab issues",action:"Shared issues and work boards. They link to knowledge but do not replace it."}];
     const readSteps=[{id:"question",title:"Ask a question",summary:"What has already been tested?"},{id:"scope",title:"Set the scope",summary:"Project, record type, and time"},{id:"policy",title:"Check access",summary:"Answer across the shared database"},{id:"search",title:"Search and follow relationships",summary:"Text + relationship graph"},{id:"answer",title:"Answer with sources",summary:"record codes, provenance, and limitations"}];
     const lc=km.lifecycle||{};
     const lifecycleBlock=lc.tracks?`<section class="knowledge-lifecycle process-section"><header><p class="section-label">Record lifecycle</p><h2>Two paths from claim to rule</h2><p>${esc(lc.intro||"")}</p></header><div class="lifecycle-tracks">${lc.tracks.map(t=>`<article class="lifecycle-track"><h3>${esc(t.title)}</h3><span class="lifecycle-chain">${esc(t.chain)}</span><ol>${t.steps.map(x=>`<li><code>${esc(x.op)}</code><strong>${esc(x.title)}</strong><span class="lifecycle-needs">${esc(x.needs)}</span><em>${esc(x.gives)}</em><p>${esc(x.note)}</p></li>`).join("")}</ol></article>`).join("")}</div>${lc.verdictOnEdge?`<p class="lifecycle-verdict">${esc(lc.verdictOnEdge)}</p>`:""}<details class="lifecycle-statuses"><summary>Statuses and transitions <span>${(lc.statuses||[]).length} record kinds</span></summary><div>${(lc.statuses||[]).map(g=>`<article><h4>${esc(g.title)}<code>${esc(g.tool)}</code></h4><p>${esc(g.rule)}</p><dl>${g.values.map(v=>`<dt><code>${esc(v.value)}</code> ${esc(v.means)}</dt>${v.exit?`<dd>Output: ${esc(v.exit)}</dd>`:""}`).join("")}</dl></article>`).join("")}</div></details><details class="lifecycle-kinds"><summary>Kinds within types <span>how the kinds differ</span></summary><table><thead><tr><th>Record type</th><th>Values</th><th>Why distinguish them</th></tr></thead><tbody>${(lc.kinds||[]).map(k=>`<tr><td>${esc(k.of)}</td><td><code>${esc(k.values)}</code></td><td>${esc(k.why)}</td></tr>`).join("")}</tbody></table></details></section>`:"";
@@ -1727,9 +1727,9 @@
       .map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
     const tasks=demo?(workspace?.example_tasks||[]):[];
     return `<section class="project-workspace" aria-label="Team workspace"><div class="project-workspace-heading"><div><span>Team workspace</span><h3>Project tasks</h3></div>${links.length?`<nav aria-label="Project links">${links.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>`).join("")}</nav>`:""}</div>
-      <p>${demo?"Example shared board: the person remains the assignee; Hermes helps carry out their assigned work.":links.length?"Tasks, assignees, and deadlines live on the shared Yonote board. Hermes can carry out tasks assigned to its owner.":!window.LAB_PROJECT_WORKSPACES?"Loading Yonote links…":window.LAB_PROJECT_WORKSPACES.unavailable?"Yonote links could not be loaded.":"No Yonote board is linked to this project yet."}</p>
+      <p>${demo?"Example shared board: the person remains the assignee; Hermes helps carry out their assigned work.":links.length?"Tasks, assignees, and deadlines live in the issues of the work repository in GitLab.":!window.LAB_PROJECT_WORKSPACES?"Loading issue links…":window.LAB_PROJECT_WORKSPACES.unavailable?"Issue links did not load right now.":"This work has no issues yet."}</p>
       ${tasks.length?`<ul class="project-task-preview">${tasks.map(t=>`<li><span class="project-task-state">${esc(t.status)}</span><strong>${esc(t.title)}</strong><span>${esc(t.assignee)}</span></li>`).join("")}</ul><small>Demo example. Cards are fictional; actions on the real board are unavailable here.</small>`:""}
-      ${!demo&&links.length?"<small>Status updates through Hermes are still being verified. The link opens the original board.</small>":""}</section>`;
+      ${!demo&&links.length?"<small>The link opens the work's board in GitLab.</small>":""}</section>`;
   }
 
   function projectCard(code,q=""){

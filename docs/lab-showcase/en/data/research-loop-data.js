@@ -3,14 +3,14 @@ window.RESEARCH_LOOP = {
   "shared": {
     "id": "memory",
     "number": "00",
-    "title": "Lab Knowledge MCP",
-    "verb": "Shared laboratory knowledge",
+    "title": "Lab GitLab",
+    "verb": "A shared GitHub for ideas",
     "result": "A verifiable history of hypotheses, experiments, proofs, and decisions",
     "color": "#b9ff66",
     "registryProcessIds": [
       "knowledge-maintenance"
     ],
-    "purpose": "Lab Knowledge MCP connects research and literature. Personal notes live in Obsidian, agent context in MemPalace, and shared assignments in Yonote.",
+    "purpose": "The Lab GitLab connects research and literature. Personal notes live in Obsidian, agent context in MemPalace, shared assignments in the work's issues in GitLab.",
     "when": [
       "Before starting new work, to avoid repeating what has already been done.",
       "After a confirmed result, decision, or theoretical derivation.",
@@ -18,7 +18,7 @@ window.RESEARCH_LOOP = {
     ],
     "destinations": [
       {
-        "name": "Lab Knowledge MCP",
+        "name": "Lab GitLab",
         "what": "Shared scientific records with explicit types",
         "why": "The laboratory's authoritative record of knowledge and its supporting evidence"
       },
@@ -36,9 +36,9 @@ window.RESEARCH_LOOP = {
     "tools": [
       {
         "id": "lab-knowledge",
-        "title": "Lab Knowledge MCP",
+        "title": "Lab GitLab",
         "type": "Shared system",
-        "role": "The laboratory's shared research memory, available to people through Atlas and to agents through MCP. Find out what has already been tried, what supports a conclusion, and which questions remain open. The database brings together claims from papers and the laboratory's own work, preserving the source and status of each record.",
+        "role": "The lab's shared research memory in git: a person reads it in GitLab and in Obsidian, an agent in the ~/brainlab clone. Here you can find out what has already been tried, what a conclusion rests on, and which questions are open. The base brings together paper analyses and the lab's own work, keeping the source and state of each piece of knowledge.",
         "when": "Before new work, to avoid repeating completed checks. After a result, to save it with its relationships and provenance when the record type requires them.",
         "inputs": [
           "A question, topic, or project ID. A project filter is optional when searching the entire library.",
@@ -50,9 +50,9 @@ window.RESEARCH_LOOP = {
           "A paper gets a record with bibliographic details and sections grouped by meaning. Its claims are stored separately with their wording, conditions, location in the paper, and relationships. A quotation is optional; a paraphrase is acceptable.",
           "The laboratory's work starts with a testable claim. An experiment stores its protocol and status, a measurement stores numbers and their provenance, and a proof stores assumptions and a conclusion. These records link to the claim and help assess it.",
           "Decisions, observations, terms, and resources have their own types. Failed runs and unfinished checks are also saved with their actual status.",
-          "For semantic search, the service embeds the question with multilingual-e5-large. For exact words, PostgreSQL uses Russian and English full-text dictionaries. The indexing model runs on the server.",
+          "There is no separate service or index: search runs over the tree itself. That is git grep or ripgrep over ~/brainlab, Obsidian search, and GitLab search.",
           "Results from both search branches are merged. A Jina reranker refines their order, and graph traversal adds related records, such as the experiment and measurement behind a claim.",
-          "MCP returns records, IDs, sources, and relationships. The agent can open a complete record, compare results, or check the grounds for a decision. The agent's model writes the explanation; the search models retrieve the material.",
+          "Search returns files: claims claims/H-XXX/, runs, series, and paper analyses. The agent can open the needed file in full, compare results, or check the grounds for a decision in git log and in merge request discussions. The agent's model writes the connected explanation.",
           "Writes are checked for permissions, fields, and relationships. Each record receives an ID and a change history, and the calling agent reads it back. A failed operation cannot count as successful completion of the whole workflow."
         ],
         "outputs": [
@@ -60,7 +60,7 @@ window.RESEARCH_LOOP = {
           "A chain from the question and protocol to the result, with links to claims in external papers.",
           "A new record with its contents verified, or a specific reason the write failed."
         ],
-        "writes": "Two shared parts of PostgreSQL: the laboratory's own work and the paper library. Personal drafts, tasks, and raw checkpoints stay in their own systems.",
+        "writes": "Two kinds of shared repositories: lab works and theme literature. Personal notes/, daily/, and runs/ are excluded through .git/info/exclude and stay on the machine.",
         "gates": [
           "Writes are limited to accessible projects. Personal drafts are not shared automatically.",
           "Saving a claim does not make it true. Its status depends on the supporting grounds.",
@@ -72,7 +72,7 @@ window.RESEARCH_LOOP = {
         ],
         "links": [
           {
-            "label": "Public guide to the Lab Knowledge MCP contract",
+            "label": "Guide to connecting to the Lab GitLab",
             "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
           }
         ],
@@ -81,14 +81,14 @@ window.RESEARCH_LOOP = {
           "invoke": "Through a connected runtime",
           "installNote": "The laboratory service is private. Only its contract in docs/knowledge-base.md is public; the owner provides the connection address and key."
         },
-        "purpose": "The laboratory's shared research memory, available to people through Atlas and to agents through MCP. Find out what has already been tried, what supports a conclusion, and which questions remain open. The database brings together claims from papers and the laboratory's own work, preserving the source and status of each record.",
+        "purpose": "The lab's shared research memory in git: a person reads it in GitLab and in Obsidian, an agent in the ~/brainlab clone. Here you can find out what has already been tried, what a conclusion rests on, and which questions are open. The base brings together paper analyses and the lab's own work, keeping the source and state of each piece of knowledge.",
         "capabilities": [
           "A paper gets a record with bibliographic details and sections grouped by meaning. Its claims are stored separately with their wording, conditions, location in the paper, and relationships. A quotation is optional; a paraphrase is acceptable.",
           "The laboratory's work starts with a testable claim. An experiment stores its protocol and status, a measurement stores numbers and their provenance, and a proof stores assumptions and a conclusion. These records link to the claim and help assess it.",
           "Decisions, observations, terms, and resources have their own types. Failed runs and unfinished checks are also saved with their actual status.",
-          "For semantic search, the service embeds the question with multilingual-e5-large. For exact words, PostgreSQL uses Russian and English full-text dictionaries. The indexing model runs on the server.",
+          "There is no separate service or index: search runs over the tree itself. That is git grep or ripgrep over ~/brainlab, Obsidian search, and GitLab search.",
           "Results from both search branches are merged. A Jina reranker refines their order, and graph traversal adds related records, such as the experiment and measurement behind a claim.",
-          "MCP returns records, IDs, sources, and relationships. The agent can open a complete record, compare results, or check the grounds for a decision. The agent's model writes the explanation; the search models retrieve the material.",
+          "Search returns files: claims claims/H-XXX/, runs, series, and paper analyses. The agent can open the needed file in full, compare results, or check the grounds for a decision in git log and in merge request discussions. The agent's model writes the connected explanation.",
           "Writes are checked for permissions, fields, and relationships. Each record receives an ID and a change history, and the calling agent reads it back. A failed operation cannot count as successful completion of the whole workflow."
         ],
         "useCases": "Before new work, to avoid repeating completed checks. After a result, to save it with its relationships and provenance when the record type requires them.",
@@ -116,21 +116,21 @@ window.RESEARCH_LOOP = {
         "relations": [
           {
             "toolId": "lab-knowledge-skill",
-            "label": "The skill calls MCP safely",
+            "label": "the skill makes the record through a merge request",
             "title": "lab-knowledge"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -139,19 +139,19 @@ window.RESEARCH_LOOP = {
           "label": "The retrieval model and the response model do different jobs",
           "nodes": [
             "The agent's question and an accessible project",
-            "E5: question meaning; PostgreSQL: exact words",
+            "git grep and ripgrep: search over the tree",
             "Record relationships and Jina: candidate ranking",
-            "MCP response: records, sources, and IDs",
+            "Result: files, H/E/S codes, and history",
             "The calling agent's model: an explanation of the findings",
             "Publication: confirmed object → contract validation → save → read back"
           ]
         },
         "storage": [
-          "PostgreSQL stores typed records, sources, relationships, and change history.",
+          "Git stores claims, runs, series, links between them, and the history of changes.",
           "The search index adds vectors to the text; it does not replace the original records.",
           "Search and write scope are limited by the calling user's or agent's access."
         ],
-        "start": "Connect Lab Knowledge to your agent and name the project. Ask it to find earlier results or save a new fact with its source."
+        "start": "Run lab here <work> and tell the agent the work. Ask it to find earlier results or to write up a new fact as a merge request with a source."
       },
       {
         "id": "obsidian-project-memory",
@@ -230,14 +230,14 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -274,7 +274,7 @@ window.RESEARCH_LOOP = {
         ],
         "limits": [
           "Memory contains only what was actually saved. It does not guarantee a complete archive of every conversation.",
-          "An old message or decision does not confirm an experiment's current state. Scientific support is checked against original artifacts and Lab Knowledge."
+          "An old message or decision does not confirm the current state of an experiment. Scientific grounds are checked in the source artifacts and in the Lab GitLab."
         ],
         "links": [
           {
@@ -307,7 +307,7 @@ window.RESEARCH_LOOP = {
         "afterSetup": "Relevant context for the agent",
         "important": [
           "Memory contains only what was actually saved. It does not guarantee a complete archive of every conversation.",
-          "An old message or decision does not confirm an experiment's current state. Scientific support is checked against original artifacts and Lab Knowledge."
+          "An old message or decision does not confirm the current state of an experiment. Scientific grounds are checked in the source artifacts and in the Lab GitLab."
         ],
         "nonInstallable": false,
         "usedBy": [
@@ -324,20 +324,20 @@ window.RESEARCH_LOOP = {
           {
             "toolId": "lab-knowledge",
             "label": "Used together in the same workflow",
-            "title": "Lab Knowledge MCP"
+            "title": "Lab GitLab"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -345,7 +345,7 @@ window.RESEARCH_LOOP = {
         "storage": [
           "In the verified installation, text and vectors are stored in local Chroma, while the graph and the validity periods of its relationships are stored in SQLite.",
           "The diary supports the compact AAAK format. Exact source fragments are saved as readable text.",
-          "MemPalace stores agent history separately from Obsidian Markdown notes and shared scientific records in Lab Knowledge."
+          "MemPalace keeps the agent's history separate from Obsidian Markdown notes and from shared scientific records in the Lab GitLab."
         ]
       },
       {
@@ -370,7 +370,7 @@ window.RESEARCH_LOOP = {
           "A searchable registry of 206 capabilities",
           "Context for choosing a tool"
         ],
-        "writes": "A static Atlas inventory; publishing it as a live MCP resource remains a planned step",
+        "writes": "Static atlas inventory",
         "gates": [
           "Data is rebuilt from source",
           "Outdated components are marked separately"
@@ -391,8 +391,7 @@ window.RESEARCH_LOOP = {
         ],
         "adoption": {
           "kind": "internal",
-          "invoke": "Through a connected runtime",
-          "installNote": "The registry lives inside the private Lab Knowledge service and comes with access to it. Ask the owner."
+          "invoke": "Through a connected runtime"
         },
         "purpose": "Gives people and agents a shared map of available skills, agents, commands, MCP tools, services, and the rules for using them.",
         "capabilities": [
@@ -426,20 +425,20 @@ window.RESEARCH_LOOP = {
           {
             "toolId": "lab-knowledge",
             "label": "Used together in the same workflow",
-            "title": "Lab Knowledge MCP"
+            "title": "Lab GitLab"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -472,14 +471,14 @@ window.RESEARCH_LOOP = {
           "Separates shared scientific knowledge from personal notes and tasks",
           "Checks for a possible duplicate",
           "Shows the project, type, wording, and provenance when required",
-          "Calls MCP after confirmation and reads the result back"
+          "after confirmation it commits and runs git push, and the merge request opens by itself"
         ],
         "outputs": [
           "An answer with relationships, gaps, and accessible sources",
           "A confirmed record and its ID or public code",
           "A specific blocker when the project is ambiguous, a duplicate exists, or access is denied"
         ],
-        "writes": "Only approved records go to Lab Knowledge; the original Obsidian draft stays in place.",
+        "writes": "Only merge requests into a work, merged by a person; the source Obsidian draft stays in place.",
         "gates": [
           "Queries do not change the database",
           "Frontmatter does not count as permission",
@@ -488,7 +487,7 @@ window.RESEARCH_LOOP = {
         ],
         "limits": [
           "The skill stores nothing itself",
-          "Does not create a second writable copy between Obsidian, Yonote, and Lab Knowledge"
+          "does not create a second copy: Obsidian and GitLab are the same ~/brainlab tree"
         ],
         "links": [
           {
@@ -503,7 +502,7 @@ window.RESEARCH_LOOP = {
         "adoption": {
           "kind": "internal",
           "invoke": "Through a connected runtime",
-          "installNote": "The skills/lab-knowledge/ skill is excluded by .gitignore and comes with service access. Ask the owner."
+          "installNote": "The skills/lab-knowledge/ skill works with the Lab GitLab; access to it is granted by the Telegram bot."
         },
         "purpose": "Instructions for safely using the shared database: read by default, show an exact preview before writing, and read the result back afterward.",
         "capabilities": [
@@ -511,7 +510,7 @@ window.RESEARCH_LOOP = {
           "Separates shared scientific knowledge from personal notes and tasks",
           "Checks for a possible duplicate",
           "Shows the project, type, wording, and provenance when required",
-          "Calls MCP after confirmation and reads the result back"
+          "after confirmation it commits and runs git push, and the merge request opens by itself"
         ],
         "useCases": "When querying the laboratory's shared memory or explicitly publishing the verified part of a personal draft.",
         "outcomes": [
@@ -522,7 +521,7 @@ window.RESEARCH_LOOP = {
         "afterSetup": "An answer with relationships, gaps, and accessible sources",
         "important": [
           "The skill stores nothing itself",
-          "Does not create a second writable copy between Obsidian, Yonote, and Lab Knowledge"
+          "does not create a second copy: Obsidian and GitLab are the same ~/brainlab tree"
         ],
         "nonInstallable": false,
         "usedBy": [
@@ -538,8 +537,8 @@ window.RESEARCH_LOOP = {
         "relations": [
           {
             "toolId": "lab-knowledge",
-            "label": "Reads and publishes through MCP",
-            "title": "Lab Knowledge MCP"
+            "label": "reads the tree and writes through a merge request",
+            "title": "Lab GitLab"
           },
           {
             "toolId": "obsidian-project-memory",
@@ -550,14 +549,14 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -596,14 +595,14 @@ window.RESEARCH_LOOP = {
           "A request to save meaningful context",
           "Confirmed records in available stores, or an explicit pending status"
         ],
-        "writes": "The agent saves personal context in MemPalace and the mapped Obsidian notes. Only authorized shared knowledge goes to Lab Knowledge, using the appropriate record type and a read-back check.",
+        "writes": "The agent saves personal context in MemPalace and in the notes/ of its work. Only shared knowledge goes to the Lab GitLab, through a merge request that a person merges.",
         "gates": [
           "What to save and where depends on the result and the owner's instructions.",
           "After publication, the agent reads the object back. A failed write remains pending.",
           "Personal tasks stay in Operon, and the Hermes queue is shown privately in Obsidian."
         ],
         "limits": [
-          "A hook cannot confirm a successful write on MCP's behalf.",
+          "The hook writes nothing and does not confirm a record: the record is the merge of the merge request.",
           "Installed configuration applies to new client connections. An existing session may need to reconnect."
         ],
         "links": [
@@ -655,16 +654,16 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
         "start": "After installing the hooks, continue working normally in your client. At a checkpoint, the agent receives a reminder to save a meaningful result.",
         "capabilities": [
@@ -680,7 +679,7 @@ window.RESEARCH_LOOP = {
         ],
         "useCases": "On session events configured in the current Codex or Claude Code client.",
         "important": [
-          "A hook cannot confirm a successful write on MCP's behalf.",
+          "The hook writes nothing and does not confirm a record: the record is the merge of the merge request.",
           "Installed configuration applies to new client connections. An existing session may need to reconnect."
         ]
       },
@@ -724,16 +723,16 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
         "start": "Open the relevant project's Knowledge folder, or ask the agent to find instructions for a particular setup.",
         "capabilities": [
@@ -808,16 +807,16 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
         "start": "Choose a service, connect it to your client, and try a read operation. The available tools depend on your connections.",
         "purpose": "Connections that let the agent use external systems: the Zotero library, MemPalace memory, Google documents, Miro boards, and the AlphaXiv catalog. Each connection has its own tools and permissions.",
@@ -883,16 +882,16 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
         "start": "Install the extension you need in your client and check which commands and tools it adds.",
         "purpose": "Client extensions that add skills and connections for documents, GitHub, the terminal, and language tooling. The set depends on the user's installation.",
@@ -975,16 +974,16 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
         "start": "Save rules in the location supported by your client and set their scope: the whole profile or one project.",
         "capabilities": [
@@ -1056,18 +1055,18 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab Knowledge MCP"
+            "stageTitle": "Lab GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab Knowledge MCP",
+          "processTitle": "Lab GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab Knowledge MCP"
+          "stageTitle": "Lab GitLab"
         },
-        "start": "The administrator configures backups and service availability checks. Users continue working through their regular MCP connection.",
+        "start": "The administrator sets up nightly GitLab backups: 7 nights on the server and a second copy on a separate machine. Users keep working through plain git.",
         "capabilities": [
           "At 03:17, a logical backup saves table rows without search vectors. Vectors can be rebuilt during warm-up and are larger than the underlying data",
           "Backups are kept for two weeks. The database is small, but the shared disk is nearly full",
@@ -1085,7 +1084,7 @@ window.RESEARCH_LOOP = {
       }
     ],
     "implementation": {
-      "summary": "One PostgreSQL database and 59 MCP tools on brain_lab. Measured on 06-09-2026.",
+      "summary": "One self-hosted GitLab CE: the brainlab group, directions, themes, and works.",
       "items": [
         "47 projects and themes: 24 laboratory papers and 23 parent themes",
         "707 claims: 292 supported, 93 inconclusive, 33 refuted, with the rest still under investigation",
@@ -1093,7 +1092,7 @@ window.RESEARCH_LOOP = {
         "345 rules, 497 journal entries, 129 terms, and 22 resources",
         "A shared library of papers, meaningful sections, and individual claims. Claims may be paraphrased; an explicitly supplied quotation is checked against the saved text.",
         "lab_health reports six categories: 121 measurements without a rule, 111 runs without numbers, 90 claims without a run, one scientific rule without support, zero measurements without values, and zero projects without a glossary",
-        "Personal drafts stay in Obsidian, agent history in MemPalace, and tasks in Yonote. There is no two-way synchronization"
+        "Personal drafts stay in notes/ on the machine, agent history in MemPalace, shared tasks in GitLab issues, personal ones in Operon; there is no two-way sync"
       ]
     },
     "glossary": [
@@ -1124,9 +1123,9 @@ window.RESEARCH_LOOP = {
     ],
     "knowledgeModel": {
       "boundary": {
-        "mcp": "Lab Knowledge is the laboratory's shared database of verifiable work. It records what was proposed, how it was tested, what was found, and what rule follows.",
-        "skill": "lab-knowledge is an instruction set for the agent: restore context, check for duplicates and the correct record type, then publish within current authorization and read the result back. The skill itself stores nothing.",
-        "personal": "Obsidian stores personal explanations and drafts, MemPalace stores agent history, and Yonote stores tasks. Material is not automatically copied into every system."
+        "mcp": "The Lab GitLab is the shared base of the lab's verifiable work. It answers what was assumed, how it was tested, what came out, and which rule follows from it.",
+        "skill": "lab-knowledge is an instruction for the agent: first restore context and check for duplicates, then write up the claim, runs, and series according to the canon canon.md and open a merge request. The skill itself stores nothing.",
+        "personal": "Obsidian keeps personal explanations and drafts, MemPalace the agent's history, GitLab issues the shared tasks. Nothing is copied automatically into every system."
       },
       "corpora": [
         {
@@ -1158,7 +1157,7 @@ window.RESEARCH_LOOP = {
       "read": {
         "default": "Querying the database changes nothing.",
         "tools": [
-          "search_lab: find a topic across laboratory knowledge and the paper library",
+          "git grep over ~/brainlab: find a topic in lab works and theme literature at once",
           "get_project_context: the complete history of one project, including claims, runs, measurements, rules, derivations, and terms",
           "get_related: follow the relationships of one record",
           "get_paper: a paper with its sections, claims, and links to our work",
@@ -1175,13 +1174,13 @@ window.RESEARCH_LOOP = {
       },
       "write": {
         "tools": [
-          "create_hypothesis: record a testable claim",
-          "record_experiment: record a test protocol",
-          "record_evidence: record the outcome",
-          "record_derivation: record a proof",
+          "claims/H-XXX/README.md: write down a testable claim",
+          "lab_run.py: the recorder writes the run from launch",
+          "runs/E-XXX.md and series/S-XXX.md: write down what came out",
+          "theory/D-XXX.md: write down a derivation with its proof",
           "propose_decision: propose a rule",
-          "upsert_paper, add_paper_section, record_paper_claim, link_paper: maintain the library",
-          "record_journal, define_term, upsert_resource: save working context",
+          "paper-ingest: a paper page in the theme literature with a citation key and BibTeX",
+          "brainlab/journal, literature/glossary/, brainlab/handbook: keep the working context",
           "delete_record: remove a record of any of the six types"
         ],
         "behavior": [
@@ -1212,7 +1211,7 @@ window.RESEARCH_LOOP = {
       ],
       "agentConnection": [
         "Obtain a separate revocable key for your agent.",
-        "Run scripts/lab_connect.py --token <token>. The script connects MCP to Codex and Claude Code and checks the tool list.",
+        "Run lab sync: the command builds the ~/brainlab tree as it is laid out in GitLab, and lab here <work> fetches a single work.",
         "First read the project context or run a search.",
         "Before writing, check for a possible duplicate, choose the correct record type, and show the exact change to the user.",
         "After confirmation, save the object, return its identifier, and read it back with the same permissions."
@@ -1284,7 +1283,7 @@ window.RESEARCH_LOOP = {
           "note": "A source may be omitted. If source_ref_id is empty, the service creates one source per project per day: “Working session <date>”.",
           "who": "A member with contributor or lead status in this project",
           "operations": [
-            "create_hypothesis",
+            "claims/H-XXX/README.md",
             "update_hypothesis",
             "get_hypothesis",
             "list_hypotheses"
@@ -1317,7 +1316,7 @@ window.RESEARCH_LOOP = {
           "note": "Created only with planned or running status. A run cannot attach to a closed claim. This rule followed an incident where an agent attached three SOAP runs to a refuted Muon claim overnight: the links were structurally valid but scientifically misleading.",
           "who": "A member with contributor or lead status in this project",
           "operations": [
-            "record_experiment",
+            "lab_run.py",
             "update_experiment_status"
           ],
           "connections": [
@@ -1346,7 +1345,7 @@ window.RESEARCH_LOOP = {
           "note": "If kind implies a numerical value (metric or measurement), metrics must contain at least one number such as {\"name\":\"val_loss\",\"value\":2.71}. A number left only in prose cannot be compared reliably.",
           "who": "A member with contributor or lead status in this project",
           "operations": [
-            "record_evidence",
+            "runs/E-XXX.md",
             "update_evidence"
           ],
           "connections": [
@@ -1378,7 +1377,7 @@ window.RESEARCH_LOOP = {
           "note": "The gap status requires an explanation. An unstated gap looks like a completed proof. A derivation may depend on another derivation through depends_on, but only within the same project.",
           "who": "A member with contributor or lead status in this project",
           "operations": [
-            "record_derivation",
+            "theory/D-XXX.md",
             "update_derivation_status",
             "list_derivations"
           ],
@@ -1428,7 +1427,7 @@ window.RESEARCH_LOOP = {
           "note": "The project is optional because many entries concern the laboratory rather than a paper project. If a project is specified, its permissions apply. If no idempotency key is supplied, one is derived from the text so a retried hook does not create a duplicate.",
           "who": "Any member; if a project is specified, the member must have write access to it",
           "operations": [
-            "record_journal",
+            "brainlab/journal",
             "list_journal"
           ],
           "connections": [
@@ -1553,7 +1552,7 @@ window.RESEARCH_LOOP = {
           "note": "There is no required quotation, minimum length, or quota for mixing claim types. The claim's author checks its substance, numerical conditions, and limits against the source. Existing quotations do not need to be removed.",
           "who": "Any laboratory member",
           "operations": [
-            "record_paper_claim",
+            "paper-ingest",
             "list_paper_claims",
             "link_paper"
           ],
@@ -1605,7 +1604,7 @@ window.RESEARCH_LOOP = {
             "Search scope"
           ],
           "operations": [
-            "search_lab",
+            "git grep",
             "get_project_context"
           ],
           "connections": [
@@ -1659,7 +1658,7 @@ window.RESEARCH_LOOP = {
           ],
           "operations": [
             "find_similar",
-            "search_lab",
+            "git grep",
             "publish_source_note"
           ],
           "connections": [
@@ -1679,19 +1678,19 @@ window.RESEARCH_LOOP = {
           "id": "preview",
           "title": "Show the proposed record to the user",
           "summary": "The user can see what will be written and where before anything changes.",
-          "detail": "The skill shows the project, type, wording, source, and whether the operation creates a record or updates an existing one. This is a workflow rule, not an automatic MCP button.",
+          "detail": "The skill shows the work, the claim, the wording, the source, and whether a new folder is created or an existing one is edited. This is a workflow rule; after that the gates check the merge request.",
           "required": [
             "Exact payload",
             "Project and owner",
             "Explicit human confirmation"
           ],
           "operations": [
-            "skill: lab-knowledge preview"
+            "skill: lab-knowledge, branch claim/H-XXX"
           ],
           "connections": [
             {
               "to": "flow:write",
-              "label": "Only the confirmed preview goes to MCP"
+              "label": "only a confirmed commit goes to git push"
             }
           ],
           "links": [
@@ -1704,7 +1703,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "write",
           "title": "Write with validation",
-          "summary": "MCP checks permissions, fields, relationships, and retries.",
+          "summary": "The gates count numbers and links, the prose judge judges the text; the verdict comes in about a minute.",
           "detail": "The service rejects extra fields, invalid state transitions, writes to inaccessible projects, and incomplete scientific objects. Repeating the same request with the same key does not create another object.",
           "required": [
             "Confirmed payload",
@@ -1712,13 +1711,13 @@ window.RESEARCH_LOOP = {
             "An idempotency key if the operation requires it"
           ],
           "operations": [
-            "create_hypothesis",
-            "record_experiment",
-            "record_evidence",
-            "record_derivation",
+            "claims/H-XXX/README.md",
+            "lab_run.py",
+            "runs/E-XXX.md",
+            "theory/D-XXX.md",
             "propose_decision",
             "upsert_paper",
-            "record_paper_claim"
+            "paper-ingest"
           ],
           "connections": [
             {
@@ -1780,9 +1779,9 @@ window.RESEARCH_LOOP = {
             "Explicit confirmation"
           ],
           "operations": [
-            "lab-knowledge preview",
-            "create_hypothesis",
-            "record_evidence",
+            "lab-knowledge: branch and commit",
+            "claims/H-XXX/README.md",
+            "runs/E-XXX.md",
             "propose_decision"
           ],
           "connections": [
@@ -1814,7 +1813,7 @@ window.RESEARCH_LOOP = {
             "project scope"
           ],
           "operations": [
-            "search_lab",
+            "git grep",
             "get_project_context",
             "get_related",
             "Permitted write operations"
@@ -1855,9 +1854,9 @@ window.RESEARCH_LOOP = {
           "operations": [
             "publish_source_note",
             "upsert_call_note",
-            "create_hypothesis",
-            "record_experiment",
-            "record_evidence",
+            "claims/H-XXX/README.md",
+            "lab_run.py",
+            "runs/E-XXX.md",
             "propose_decision"
           ],
           "connections": [
@@ -1898,7 +1897,7 @@ window.RESEARCH_LOOP = {
           ],
           "operations": [
             "upsert_paper",
-            "record_paper_claim",
+            "paper-ingest",
             "link_paper"
           ],
           "connections": [
@@ -1940,7 +1939,7 @@ window.RESEARCH_LOOP = {
             "An understanding of the answer's limits"
           ],
           "operations": [
-            "search_lab",
+            "git grep",
             "get_project_context",
             "get_related",
             "lab_health"
@@ -2017,7 +2016,7 @@ window.RESEARCH_LOOP = {
             "Limits of the evidence"
           ],
           "operations": [
-            "search_lab",
+            "git grep",
             "get_related",
             "get_paper",
             "list_paper_claims"
@@ -2046,9 +2045,9 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "projections",
-          "title": "Yonote and the public laboratory website",
+          "title": "GitLab issues and the lab's public website",
           "action": "Show tasks and public views without maintaining a second copy",
-          "detail": "Lab Knowledge stores the external object's link and purpose. A task or public card is not evidence and cannot silently rewrite the scientific history.",
+          "detail": "The work keeps a link to an issue or an external object and its purpose. An issue or a public card does not become evidence and cannot silently rewrite the scientific history.",
           "required": [
             "Stable external link",
             "Projection type",
@@ -2097,21 +2096,21 @@ window.RESEARCH_LOOP = {
             "chain": "Claim → run → measurement → rule",
             "steps": [
               {
-                "op": "create_hypothesis",
+                "op": "claims/H-XXX/README.md",
                 "title": "Claim",
                 "gives": "Code such as H-WBD-027",
                 "needs": "project_id, statement, falsification_criteria, idempotency_key",
                 "note": "The falsification criterion is a separate required field. The record cannot be created without it."
               },
               {
-                "op": "record_experiment",
+                "op": "lab_run.py",
                 "title": "Run",
                 "gives": "Code such as E-WBD-033",
                 "needs": "hypothesis_id, protocol, idempotency_key",
                 "note": "The project is inherited from the claim rather than passed separately. A new run can only be planned or running. It cannot attach to a closed claim."
               },
               {
-                "op": "record_evidence",
+                "op": "runs/E-XXX.md",
                 "title": "Measurement",
                 "gives": "Code such as R-WBD-023",
                 "needs": "experiment_id, summary, kind, idempotency_key",
@@ -2132,14 +2131,14 @@ window.RESEARCH_LOOP = {
             "chain": "Claim → proof → rule",
             "steps": [
               {
-                "op": "create_hypothesis",
+                "op": "claims/H-XXX/README.md",
                 "title": "Claim",
                 "gives": "H-* code",
                 "needs": "The same fields, with kind=theoretical",
                 "note": "The claim's kind specifies the expected support. A theorem has no seeds or dataset, and the absence of a run does not count as a broken chain."
               },
               {
-                "op": "record_derivation",
+                "op": "theory/D-XXX.md",
                 "title": "Proof",
                 "gives": "Code such as D-WBD-007",
                 "needs": "hypothesis_id, result, argument, idempotency_key",
@@ -2155,7 +2154,7 @@ window.RESEARCH_LOOP = {
             ]
           }
         ],
-        "verdictOnEdge": "The assessment belongs to the relationship, not the record. One measurement can support one claim and undermine another. record_evidence therefore stores support, contradiction, or scope reduction in hypothesis_effects: an object with a hypothesis_id from the same project, an effect (support, partial-support, contradict, inconclusive, or scope-reduction), and an optional reason. A hypothesis code without its UUID is not accepted.",
+        "verdictOnEdge": "The verdict lives in the series, not in a single run. A series series/S-XXX.md gathers the runs that answer one question and gives a verdict; the claim's state moves from testing to supported, refuted, or inconclusive only by its own falsification criterion.",
         "statuses": [
           {
             "id": "hypothesis",
@@ -2293,7 +2292,6 @@ window.RESEARCH_LOOP = {
             "id": "project",
             "title": "Project",
             "tool": "set_project_status",
-            "rule": "Eleven values replace the previous four. Previously, all unfinished work was active, making an idea indistinguishable from a submitted paper. Three values count as closed: paused, completed, and archived. These move the Yonote card from the collection root into the completed folder.",
             "values": [
               {
                 "value": "idea",
@@ -2484,7 +2482,7 @@ window.RESEARCH_LOOP = {
               "title": "Find the project and check for duplicates",
               "note": "Read first: does the record already exist, and which project should contain it?",
               "ops": [
-                "search_lab",
+                "git grep",
                 "get_project_context"
               ]
             },
@@ -2507,7 +2505,7 @@ window.RESEARCH_LOOP = {
               "id": "human-confirm",
               "title": "Human confirmation",
               "human": true,
-              "note": "A skill rule, not a service button: MCP itself can write without a preview.",
+              "note": "A skill rule; the record is still only the merge of the merge request by a person.",
               "ops": []
             },
             {
@@ -2515,8 +2513,8 @@ window.RESEARCH_LOOP = {
               "title": "Write and read back",
               "note": "The service returns a record code, and the agent reads it back with the same permissions.",
               "ops": [
-                "create_hypothesis",
-                "record_evidence",
+                "claims/H-XXX/README.md",
+                "runs/E-XXX.md",
                 "propose_decision",
                 "get_project_context"
               ]
@@ -2556,14 +2554,14 @@ window.RESEARCH_LOOP = {
             {
               "id": "hook-write",
               "title": "Appropriate storage locations",
-              "note": "The agent saves meaningful results in MemPalace, existing Obsidian notes, and, when publication is authorized, Lab Knowledge. An empty checkpoint creates no records.",
+              "note": "The agent saves meaningful results in MemPalace, in the notes/ of its work, and, if the lab cares about it, through a merge request into the Lab GitLab. An empty checkpoint creates no records.",
               "ops": [
-                "create_hypothesis",
-                "record_experiment",
-                "record_evidence",
+                "claims/H-XXX/README.md",
+                "lab_run.py",
+                "runs/E-XXX.md",
                 "propose_decision",
                 "upsert_resource",
-                "record_journal"
+                "brainlab/journal"
               ]
             },
             {
@@ -2598,7 +2596,7 @@ window.RESEARCH_LOOP = {
               "note": "The conversation is divided into claims, run plans, measurements, and rules for the relevant projects.",
               "ops": [
                 "get_project_context",
-                "search_lab"
+                "git grep"
               ]
             },
             {
@@ -2621,8 +2619,8 @@ window.RESEARCH_LOOP = {
               "ops": [
                 "publish_source_note",
                 "upsert_call_note",
-                "create_hypothesis",
-                "record_experiment",
+                "claims/H-XXX/README.md",
+                "lab_run.py",
                 "propose_decision"
               ]
             }
@@ -2656,7 +2654,7 @@ window.RESEARCH_LOOP = {
               "title": "Individual paper claims",
               "note": "A paraphrase, claim type, and locator. Add a quotation only when needed.",
               "ops": [
-                "record_paper_claim"
+                "paper-ingest"
               ]
             },
             {
@@ -2717,19 +2715,19 @@ window.RESEARCH_LOOP = {
           },
           {
             "id": "lab",
-            "title": "Lab Knowledge",
+            "title": "Lab GitLab",
             "what": "Only material the laboratory can later cite: a claim, run, measurement, rule, resource, or journal entry.",
-            "conditional": "Only if Lab Knowledge is configured in the current client and publication is authorized"
+            "conditional": "the hook only names where to write, based on the descriptions of the service repositories; it writes nothing itself"
           }
         ],
         "ops": [
-          "create_hypothesis",
-          "record_experiment",
+          "claims/H-XXX/README.md",
+          "lab_run.py",
           "update_experiment_status",
-          "record_evidence",
+          "runs/E-XXX.md",
           "propose_decision",
           "upsert_resource",
-          "record_journal"
+          "brainlab/journal"
         ],
         "rules": [
           "The project is resolved using its existing stable ID and aliases. If the binding is unknown, the write stays pending; no arbitrary project or board is created.",
@@ -2797,7 +2795,7 @@ window.RESEARCH_LOOP = {
         "id": "c-no-metrics",
         "kind": "Measurement",
         "title": "The kind implies a number, but no numbers are supplied",
-        "explanation": "metric and measurement require metrics. Otherwise, later records may cite this entry as a number when there is nothing to compare. The rejection offers three options: supply a value in metrics, record the observation with record_journal, or use a kind that does not imply values, such as artifact, manuscript, or diagnostic."
+        "explanation": "The gates count numbers and links: a number the text relies on must appear on a run page written by code. Otherwise the verdict is red."
       },
       {
         "id": "c-effect-target",
@@ -2960,20 +2958,20 @@ window.RESEARCH_LOOP = {
   "contours": [],
   "meta": {
     "verified": "06.09.2026",
-    "registryCount": 205,
+    "registryCount": 138,
     "toolkit": {
       "title": "Get the source code",
       "lead": "Lab tools, Hermes prompts, and third-party projects. Clone the repositories you need and follow their READMEs.",
       "install": [
         "git clone https://github.com/brain-lab-research/claude-brainlab.git",
-        "git clone https://github.com/brain-lab-research/lab-knowledge.git",
+        "bash claude-brainlab/docs/lab/install.sh",
         "git clone https://github.com/brain-lab-research/brain-call.git",
         "git clone https://github.com/brain-lab-research/hermes-prompts.git",
         "git clone https://github.com/NousResearch/hermes-agent.git",
         "git clone https://github.com/MemPalace/mempalace.git",
         "git clone https://github.com/54yyyu/zotero-mcp.git"
       ],
-      "after": "Cloning Lab Knowledge MCP and Brain Call requires access to their private repositories.",
+      "after": "Cloning Brain Call requires access to its private repository; access to the Lab GitLab is granted by the Telegram bot.",
       "components": "skills · commands · agents · hooks · scripts · rules",
       "links": [],
       "pieces": [
@@ -2996,10 +2994,10 @@ window.RESEARCH_LOOP = {
           "url": "https://github.com/brain-lab-research/hermes-prompts"
         },
         {
-          "name": "Lab Knowledge MCP",
-          "what": "Shared database: claims, runs, measurements, and rules",
+          "name": "Lab GitLab",
+          "what": "a shared GitHub for ideas: works, claims, runs, and merge requests",
           "access": "By approved request",
-          "url": "https://github.com/brain-lab-research/lab-knowledge"
+          "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md"
         },
         {
           "name": "Brain Call",
@@ -3040,7 +3038,7 @@ window.RESEARCH_LOOP = {
         "people-access",
         "infrastructure"
       ],
-      "purpose": "Use one project name in three places: code and personal notes stay local, the laboratory's shared database holds one project record, and Yonote provides a page and task board for participants.",
+      "purpose": "Bring the project down to one name: a work is one repository in the Lab GitLab, its clone lives in ~/brainlab and opens in Obsidian, and personal notes are excluded from git and stay on the machine.",
       "when": [
         "A new line of research is starting.",
         "An existing repository is not yet connected to the laboratory's memory.",
@@ -3068,7 +3066,7 @@ window.RESEARCH_LOOP = {
         {
           "title": "Open the project to participants",
           "summary": "A page under the topic, a task board, and meeting pages if needed.",
-          "result": "Workspaces in Yonote",
+          "result": "Work issues and boards in GitLab",
           "ref": "s4"
         },
         {
@@ -3087,7 +3085,7 @@ window.RESEARCH_LOOP = {
         "Local: a repository and a project page in the vault.",
         "Local: an entry in the note-routing file.",
         "Shared database: a project record with its topic and sources.",
-        "Yonote: a project page and a task board for participants."
+        "In GitLab: the work's README and issues with members' task boards."
       ],
       "destinations": [
         {
@@ -3109,7 +3107,7 @@ window.RESEARCH_LOOP = {
           "ref": "d3"
         },
         {
-          "name": "Yonote",
+          "name": "Issues GitLab",
           "what": "A page under the topic and a “CODE · Tasks” board",
           "why": "Coordination between participants",
           "ref": "d4"
@@ -3119,7 +3117,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "dedup",
           "title": "Search all three locations first",
-          "explanation": "Before creating records, search for the short name in repositories, the vault, the shared database, and Yonote sections. A duplicate project splits one body of work across two memories.",
+          "explanation": "Before creating records, the short name is searched in the ~/brainlab tree and in the Lab GitLab. A duplicate project splits one work into two memories.",
           "example": "",
           "links": []
         },
@@ -3133,7 +3131,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "no-local-paths",
           "title": "Local paths stay local",
-          "explanation": "Only the name, topic, participants, and verified links go to the shared database and Yonote. Filesystem paths and access keys are never published.",
+          "explanation": "The work's README gets only the name, theme, leads, team, and verified links. A disk path and an access key are never published.",
           "example": "",
           "links": []
         },
@@ -3168,10 +3166,10 @@ window.RESEARCH_LOOP = {
           "outputs": [
             "a project linked across all systems"
           ],
-          "writes": "Repository, Obsidian, routing file, Lab Knowledge",
+          "writes": "Work repository in GitLab, clone in ~/brainlab, the work's README",
           "gates": [
             "plan first, then approval, then writes",
-            "local paths are not sent to Lab Knowledge or Yonote"
+            "local paths do not go into the work's README and issues"
           ],
           "limits": [
             "does not guess the owner or visibility",
@@ -3426,7 +3424,7 @@ window.RESEARCH_LOOP = {
           "id": "lab-project-onboarding",
           "title": "lab-project-onboarding",
           "type": "Skill",
-          "role": "Links an existing personal workspace to the shared project record, its Obsidian page, and its Yonote section. Running it again does not create duplicates.",
+          "role": "Links an existing working folder to the work repository in GitLab and its clone in ~/brainlab, which Obsidian opens as a vault. Running it again duplicates nothing.",
           "when": "After creating a new laboratory project, or when an existing project's links have become inconsistent.",
           "inputs": [
             "project short name and three-letter code",
@@ -3436,14 +3434,14 @@ window.RESEARCH_LOOP = {
           "inside": [
             "searches the database by short name, title, code, and known sources",
             "shows one plan with each operation labeled: create, reuse, update, or blocked",
-            "provisioning runs on the server, not through the local agent: the shared Yonote key never reaches a participant's computer",
+            "access is granted by the Telegram bot according to GitLab roles, not by a local agent: a Request access request goes to the lead",
             "creates or reuses the project page and “CODE · Tasks” board",
             "checks publication links on arxiv.org and the venue's official page first"
           ],
           "outputs": [
-            "stable links between the database, vault, and Yonote"
+            "one folder: the repository in GitLab, the clone in ~/brainlab, and the Obsidian vault"
           ],
-          "writes": "Lab Knowledge, personal vault, Yonote",
+          "writes": "Lab GitLab, clone in ~/brainlab",
           "gates": [
             "safe to rerun without creating a second record",
             "any shared record is changed only after human approval",
@@ -3458,7 +3456,7 @@ window.RESEARCH_LOOP = {
           "adoption": {
             "kind": "private",
             "invoke": "The skill is installed at ~/.claude/skills/lab-project-onboarding/ and is not in the public repository",
-            "installNote": "The skills/lab-project-onboarding/ skill is excluded by .gitignore. It is supplied with Lab Knowledge and Yonote access; ask the owner."
+            "installNote": "The skills/lab-project-onboarding/ skill is excluded in .gitignore: it comes with access to the Lab GitLab, and access is granted by the Telegram bot."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -3471,7 +3469,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "yonote-project-view",
               "label": "passes the result to the next stage",
-              "title": "Yonote project view"
+              "title": "The work's README in GitLab"
             }
           ],
           "processRelations": [
@@ -3493,12 +3491,12 @@ window.RESEARCH_LOOP = {
           "capabilities": [
             "searches the database by short name, title, code, and known sources",
             "shows one plan with each operation labeled: create, reuse, update, or blocked",
-            "provisioning runs on the server, not through the local agent: the shared Yonote key never reaches a participant's computer",
+            "access is granted by the Telegram bot according to GitLab roles, not by a local agent: a Request access request goes to the lead",
             "creates or reuses the project page and “CODE · Tasks” board",
             "checks publication links on arxiv.org and the venue's official page first"
           ],
           "outcomes": [
-            "stable links between the database, vault, and Yonote"
+            "one folder: the repository in GitLab, the clone in ~/brainlab, and the Obsidian vault"
           ],
           "useCases": "After creating a new laboratory project, or when an existing project's links have become inconsistent.",
           "important": [
@@ -3509,9 +3507,9 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "yonote-project-view",
-          "title": "Project page in Yonote",
+          "title": "The work's README in GitLab",
           "type": "Projection",
-          "role": "A compact project page built from approved facts. The full history and machine-readable records remain in Lab Knowledge.",
+          "role": "A compact work page with the lines “Leads” and “Team”. The full history and claims stay in claims/ and in git log.",
           "when": "After the shared project record has been created and its links verified.",
           "inputs": [
             "project links",
@@ -3529,7 +3527,7 @@ window.RESEARCH_LOOP = {
             "a human-readable project page",
             "direct links to the page and board"
           ],
-          "writes": "The linked Yonote section. Lab Knowledge remains the authoritative research record",
+          "writes": "The work's README in GitLab. Scientific truth stays in claims/",
           "gates": [
             "local paths and raw diagnostics are not published",
             "page and board URLs are read from project links"
@@ -3540,14 +3538,14 @@ window.RESEARCH_LOOP = {
           ],
           "links": [
             {
-              "label": "Yonote",
+              "label": "Issues GitLab",
               "url": "https://brain-lab.yonote.ru"
             }
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab Knowledge service",
-            "installNote": "The laboratory's Yonote workspace is private. Lab Knowledge creates project pages; the owner grants access."
+            "invoke": "Through git: a README edit and a merge request",
+            "installNote": "The work is open to members according to GitLab roles: access is granted by the Telegram bot, and the work itself has a Request access button."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -3560,7 +3558,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "yonote-task-broker",
               "label": "works alongside it at the same stage",
-              "title": "Yonote task broker"
+              "title": "Issues GitLab"
             },
             {
               "toolId": "obsidian-project-lifecycle",
@@ -3582,7 +3580,7 @@ window.RESEARCH_LOOP = {
             "stageRef": "s4",
             "stageTitle": "Open the project to participants"
           },
-          "start": "Open the Yonote link on the project card next to GitHub and Overleaf. It contains shared context and a link to the task board.",
+          "start": "Open the link to the work repository in GitLab on the project card next to GitHub and Overleaf. It has the README and a way to the issues and task boards.",
           "capabilities": [
             "resolves the section only from project links, not from its name",
             "places the team and paper materials above the general description",
@@ -3602,8 +3600,8 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "yonote-task-broker",
-          "title": "Project tasks in Yonote",
-          "type": "MCP workflow",
+          "title": "Work issues in GitLab",
+          "type": "GitLab issues and boards",
           "role": "Creates and updates tasks only on the project's own board, repairs an outdated board schema before writing, and reads back the result.",
           "when": "When an approved action needs an assignee, status, and optionally a deadline.",
           "inputs": [
@@ -3628,7 +3626,7 @@ window.RESEARCH_LOOP = {
           "gates": [
             "the project binding is specified exactly",
             "preview, fingerprint approval, write, read back",
-            "the service holds the Yonote key, not the local agent"
+            "rights come from a GitLab role, not from a key held by a local agent"
           ],
           "limits": [
             "the canonical statuses are “Backlog,” “In progress,” and “Done”",
@@ -3637,14 +3635,14 @@ window.RESEARCH_LOOP = {
           ],
           "links": [
             {
-              "label": "Yonote",
+              "label": "Issues GitLab",
               "url": "https://brain-lab.yonote.ru"
             }
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab Knowledge service",
-            "installNote": "The task board lives in the laboratory's private Yonote workspace. The owner grants participant access."
+            "invoke": "Through git: a README edit and a merge request",
+            "installNote": "Issues and boards live in the work repository in GitLab: member access is granted by the Telegram bot."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -3657,7 +3655,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "yonote-project-view",
               "label": "works alongside it at the same stage",
-              "title": "Yonote project view"
+              "title": "The work's README in GitLab"
             },
             {
               "toolId": "obsidian-project-lifecycle",
@@ -5334,14 +5332,14 @@ window.RESEARCH_LOOP = {
           "processRelations": [
             {
               "processId": "memory",
-              "processTitle": "Lab Knowledge MCP",
+              "processTitle": "Lab GitLab",
               "stageRef": "",
               "stageTitle": "Ask what is already known"
             }
           ],
           "processRelation": {
             "processId": "memory",
-            "processTitle": "Lab Knowledge MCP",
+            "processTitle": "Lab GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           },
@@ -5552,7 +5550,7 @@ window.RESEARCH_LOOP = {
             "the terms without which the records cannot be read",
             "a list of what stayed unfilled"
           ],
-          "writes": "Lab Knowledge MCP",
+          "writes": "Lab GitLab",
           "gates": [
             "shows what it intends to write before the first write and waits for consent",
             "what the material does not say is written as «не указано», never invented",
@@ -5562,7 +5560,7 @@ window.RESEARCH_LOOP = {
           "limits": [
             "draws no conclusion the person did not draw: a table with one seed is not a conclusion",
             "does not call a run successful without measurements",
-            "somebody else's paper goes to record_paper_claim with a pointer to the place, not into our hypothesis",
+            "someone else's paper goes to an analysis in the theme literature with a pointer to the location, not into our claim",
             "does not read weights, checkpoints or data: it notes them in one line of the inventory"
           ],
           "links": [
@@ -5592,15 +5590,15 @@ window.RESEARCH_LOOP = {
           ],
           "purpose": "Catch up on what has piled up: results in notebooks, a draft in Overleaf, logs on a server — into the shared base in one pass.",
           "important": [
-            "Not for daily work: as work happens it is written straight through the lab-knowledge calls",
+            "This is not for daily work: along the way, records are written right away through the lab-knowledge skill, as a merge request",
             "Somebody else's work is easy to read wrong, so consent is required"
           ],
-          "start": "Hand over the .zip or the path to the folder and say «занеси в базу».",
+          "start": "Hand over the .zip or the path to the folder and say “put it into the base”.",
           "relations": [
             {
               "toolId": "lab-knowledge",
               "label": "writes through its calls",
-              "title": "Lab Knowledge MCP"
+              "title": "Lab GitLab"
             }
           ],
           "usedBy": [
@@ -5657,7 +5655,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "ref": "o4",
-          "label": "Yonote: a project page and a task board for participants."
+          "label": "In GitLab: the work's README and issues with members' task boards."
         }
       ],
       "toolClusters": [
@@ -5780,7 +5778,7 @@ window.RESEARCH_LOOP = {
       ],
       "example": {
         "title": "One project name, end to end",
-        "text": "The project already has a repository and a vault page, but no shared database record. Onboarding finds existing objects by the short name and shows one plan labeled “create,” “reuse,” or “blocked”: locally, only a routing-file entry is missing; the shared database needs a project record with its topic; Yonote needs a page under the topic and a “CODE · Tasks” board visible to participants. After approval, it creates only what is missing. The service holds the Yonote key, not the participant's computer. Finally, every link is read back: anything not confirmed remains a reported gap."
+        "text": "The project already has a repository and a folder in ~/brainlab, but there is no work in the Lab GitLab. Onboarding finds what exists by the short name and shows one plan with the marks “create”, “reuse”, “blocked”: GitLab gets a work repository inside its theme with a README that records the lines “Leads” and “Team”, and shared tasks are created as the work's issues. After confirmation only what is missing is created, and the Telegram bot grants members access according to GitLab roles. At the end every link is read back: whatever was not confirmed by reading stays a named gap."
       },
       "toMcp": {
         "lead": "The work itself becomes shared: its three-letter code, terms, and laboratory topic.",
@@ -5795,7 +5793,7 @@ window.RESEARCH_LOOP = {
                 "lane": "work",
                 "title": "Duplicate check",
                 "stageRef": "s1",
-                "detail": "Run search_lab and list_projects before creating a record: duplicating a project is costlier than delaying it."
+                "detail": "search the ~/brainlab tree and GitLab before creating: a second work costs more than a miss."
               },
               {
                 "lane": "work",
@@ -5852,7 +5850,7 @@ window.RESEARCH_LOOP = {
         ],
         "kept": [
           "repository, project folder in Obsidian, obsidian-projects.json, and .claude/",
-          "Yonote page and board: provision_project_workspace creates a workspace, not knowledge",
+          "GitLab issues and boards: a working surface, not knowledge",
           "agent keys and roles: issue_agent_token and invite_member grant write access but are not knowledge records"
         ],
         "hook": true
@@ -6017,7 +6015,7 @@ window.RESEARCH_LOOP = {
           "ref": "d2"
         },
         {
-          "name": "Lab Knowledge",
+          "name": "Lab GitLab",
           "what": "Paper, sections, and paper claims",
           "why": "Shared laboratory search",
           "ref": "d3"
@@ -6104,7 +6102,7 @@ window.RESEARCH_LOOP = {
           "inputs": [
             "Your library and the topics you want to follow. Previous choices guide selection without excluding adjacent fields.",
             "A Hermes profile with model access and search and analysis jobs.",
-            "Connections to your Obsidian, Zotero, and Lab Knowledge; scripts for fetching materials and completing processing."
+            "Connections to your own Obsidian and Zotero, a clone of the theme literature; scripts for fetching materials and finishing processing."
           ],
           "inside": [
             "Search starts on a schedule. A script reads the latest arXiv announcement, current library folders, and previous cards; it removes previously seen papers before calling the model.",
@@ -6112,27 +6110,27 @@ window.RESEARCH_LOOP = {
             "A script creates cards in Operon's Inbox and sends the selection to Telegram. The owner chooses papers; a recommendation alone does not start analysis of the entire selection.",
             "A separate job takes one accepted paper from the queue. A preparation script fetches the text, PDF, and figures, creates a Zotero record, and prepares a note outline in the selected Literature folder.",
             "The agent writes a coherent analysis covering the problem and assumptions, method and mathematical claims, experimental setup, results, and limitations. It recomputes available numbers and clearly separates its own checks from the authors' conclusions.",
-            "Lab Knowledge stores the paper, its meaningful sections, and self-contained claims. A claim includes a paraphrase, conditions, and a location in the original. A verbatim quote is optional; links to our work are added where substantively relevant.",
+            "A paper page is saved in the theme literature: the citation key and BibTeX in the header, the analysis, and the paper's claims with conditions and location in the original. A verbatim quote is optional; links to our work are added based on content.",
             "A completion script checks the note, figure links, and shared database records. A failure leaves processing incomplete. On success, the note is delivered to the owner and the entry leaves the analysis queue.",
             "Analysis completion and personal reading status are different. The agent adds links to the card, but only the owner sets “Reading” or “Read.”"
           ],
           "outputs": [
             "A selection explaining each paper's value, with a way to choose it.",
             "A note with bibliography, figures, method analysis, and checks; a linked Zotero record and PDF.",
-            "Paper claims with stable IDs in Lab Knowledge. They can be found individually and linked to your own research."
+            "A paper page in the theme literature, with the citation key in the header. It can be found by searching the tree and linked to your own research."
           ],
           "writes": [
             "Operon in Obsidian: reading card; the technical analysis queue is stored separately.",
             "Literature in Obsidian: the note and its materials. Zotero: bibliographic record and PDF.",
-            "Lab Knowledge: paper, sections, claims, and meaningful research links."
+            "Theme literature: a paper page with the analysis, claims, and links to research."
           ],
           "gates": [
             "Only owner-selected papers are analyzed. Successful processing does not imply a personal status of “Read.”",
-            "Completion requires verified artifacts and confirmed MCP records; sending a request does not mean it was saved."
+            "Finishing requires checking the artifacts and a page that actually sits in main of the literature; a sent request does not yet mean it is saved."
           ],
           "limits": [
             "Job instructions are public, but your library, credentials, and supporting scripts require configuration. Importing SOUL.md alone does not reproduce the full workflow.",
-            "papers-ingest analyzes an accepted paper: card, detailed note, self-contained MCP claims, and a completion check.",
+            "An accepted paper is analyzed by paper-ingest: a card, a detailed note, a page in the theme literature, and a readiness check.",
             "An automated review does not guarantee completeness. Important claims are checked against the original."
           ],
           "links": [
@@ -6213,18 +6211,18 @@ window.RESEARCH_LOOP = {
             "A script creates cards in Operon's Inbox and sends the selection to Telegram. The owner chooses papers; a recommendation alone does not start analysis of the entire selection.",
             "A separate job takes one accepted paper from the queue. A preparation script fetches the text, PDF, and figures, creates a Zotero record, and prepares a note outline in the selected Literature folder.",
             "The agent writes a coherent analysis covering the problem and assumptions, method and mathematical claims, experimental setup, results, and limitations. It recomputes available numbers and clearly separates its own checks from the authors' conclusions.",
-            "Lab Knowledge stores the paper, its meaningful sections, and self-contained claims. A claim includes a paraphrase, conditions, and a location in the original. A verbatim quote is optional; links to our work are added where substantively relevant.",
+            "A paper page is saved in the theme literature: the citation key and BibTeX in the header, the analysis, and the paper's claims with conditions and location in the original. A verbatim quote is optional; links to our work are added based on content.",
             "A completion script checks the note, figure links, and shared database records. A failure leaves processing incomplete. On success, the note is delivered to the owner and the entry leaves the analysis queue.",
             "Analysis completion and personal reading status are different. The agent adds links to the card, but only the owner sets “Reading” or “Read.”"
           ],
           "outcomes": [
             "A selection explaining each paper's value, with a way to choose it.",
             "A note with bibliography, figures, method analysis, and checks; a linked Zotero record and PDF.",
-            "Paper claims with stable IDs in Lab Knowledge. They can be found individually and linked to your own research."
+            "A paper page in the theme literature, with the citation key in the header. It can be found by searching the tree and linked to your own research."
           ],
           "important": [
             "Job instructions are public, but your library, credentials, and supporting scripts require configuration. Importing SOUL.md alone does not reproduce the full workflow.",
-            "papers-ingest analyzes an accepted paper: card, detailed note, self-contained MCP claims, and a completion check.",
+            "An accepted paper is analyzed by paper-ingest: a card, a detailed note, a page in the theme literature, and a readiness check.",
             "An automated review does not guarantee completeness. Important claims are checked against the original."
           ],
           "useCases": "When you want regular updates on new papers in your area and analysis of selected work without gathering the materials manually."
@@ -6474,7 +6472,7 @@ window.RESEARCH_LOOP = {
             "Retrieves bibliography from an external source, downloads the PDF, and fetches sources with tables and figures when needed.",
             "Creates or updates the Zotero bibliographic record and PDF attachment, linking them to the canonical Obsidian note.",
             "Prepares a detailed analysis of the method, theory, and results. In the currently installed workflow, a separate “Paper claims” section contains verifiable claims in the agent's own words.",
-            "Configured synchronization sends the paper, meaningful sections, and claims to Lab Knowledge while preserving other participants' materials.",
+            "The analysis is written straight into main of the theme literature, next to other members' analyses.",
             "Reads back submitted objects and reports partial failures. A paper with sections but missing expected claims needs further checking."
           ],
           "outputs": [
@@ -6482,7 +6480,7 @@ window.RESEARCH_LOOP = {
             "A canonical Literature note with detailed analysis and separate claims.",
             "In the connected shared database: paper, sections, and claims, with read-back verification results."
           ],
-          "writes": "Zotero, Literature/ in Obsidian, AlphaXiv, shared Lab Knowledge corpus",
+          "writes": "Zotero, Literature/ in Obsidian, AlphaXiv, the theme literature repository in GitLab",
           "gates": [
             "does not create a second Zotero record or note",
             "retrieves BibTeX from an external source, not from the model",
@@ -6491,7 +6489,7 @@ window.RESEARCH_LOOP = {
             "the final review reads back everything written"
           ],
           "limits": [
-            "Synchronization and Lab Knowledge access are configured separately. Installing the skill does not grant access to the laboratory database.",
+            "Access to the Lab GitLab is granted separately, through the Telegram bot. Installing the skill does not give access to the lab base.",
             "A discrepancy or failed write remains explicitly reported; the existence of a paper record does not prove its analysis is complete."
           ],
           "links": [
@@ -6566,7 +6564,7 @@ window.RESEARCH_LOOP = {
             "Retrieves bibliography from an external source, downloads the PDF, and fetches sources with tables and figures when needed.",
             "Creates or updates the Zotero bibliographic record and PDF attachment, linking them to the canonical Obsidian note.",
             "Prepares a detailed analysis of the method, theory, and results. In the currently installed workflow, a separate “Paper claims” section contains verifiable claims in the agent's own words.",
-            "Configured synchronization sends the paper, meaningful sections, and claims to Lab Knowledge while preserving other participants' materials.",
+            "The analysis is written straight into main of the theme literature, next to other members' analyses.",
             "Reads back submitted objects and reports partial failures. A paper with sections but missing expected claims needs further checking."
           ],
           "outcomes": [
@@ -6576,7 +6574,7 @@ window.RESEARCH_LOOP = {
           ],
           "useCases": "After the owner approves a paper, or when a local PDF needs to be linked to Zotero before reading.",
           "important": [
-            "Synchronization and Lab Knowledge access are configured separately. Installing the skill does not grant access to the laboratory database.",
+            "Access to the Lab GitLab is granted separately, through the Telegram bot. Installing the skill does not give access to the lab base.",
             "A discrepancy or failed write remains explicitly reported; the existence of a paper record does not prove its analysis is complete."
           ]
         },
@@ -7555,7 +7553,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "paper-claim-validator",
           "title": "Paper claim record",
-          "type": "MCP tools",
+          "type": "Files in git",
           "role": "Helps turn an idea from a paper you have read into a separate claim in the shared database. Preserves the meaning in your own words, identifies the source and location in the paper, then links the claim to our work.",
           "when": "After reading the full text, when a specific statement should become support, a comparison or a counterargument.",
           "inputs": [
@@ -7563,9 +7561,9 @@ window.RESEARCH_LOOP = {
             "A claim in your own words and a location in the paper where it can be checked."
           ],
           "inside": [
-            "Checks that the paper exists in the MCP library and that a source is available for the claim.",
+            "Checks that the paper page exists in the theme literature and that the source for the statement is available.",
             "Formulates one self-contained claim: what was shown, under which conditions and with which limitations.",
-            "Records the paraphrase and paper reference through record_paper_claim. A verbatim quotation is optional and is added only when useful.",
+            "Writes a paraphrase and a pointer to the location in the paper on its page in the theme literature. A verbatim quote is optional; it is added only when it helps.",
             "If a quotation is included, its provenance and verification cannot be replaced by a match against someone else's summary.",
             "Links the claim to a project or record as prior art, comparison, support or contradiction. Reads the saved object back."
           ],
@@ -7573,7 +7571,7 @@ window.RESEARCH_LOOP = {
             "A paper claim with a source and stable ID.",
             "A link to our work and explicit limits on the claim."
           ],
-          "writes": "Lab Knowledge library. Our own claims and measurements stay unchanged",
+          "writes": "Theme literature; our claims and runs do not change",
           "gates": [
             "The paraphrase must reflect the source's meaning.",
             "Verbatim accuracy is checked only for an actual quotation."
@@ -7590,8 +7588,8 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab Knowledge MCP",
-            "installNote": "Claims are saved through Lab Knowledge MCP with access to its library."
+            "invoke": "Through the paper-ingest skill",
+            "installNote": "The record goes into main of the theme literature if you have access to the Lab GitLab."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -7635,9 +7633,9 @@ window.RESEARCH_LOOP = {
           "start": "Provide the claim in your own words, the paper and the location supporting it. The agent saves the paper claim and links it to the project.",
           "purpose": "Helps turn an idea from a paper you have read into a separate claim in the shared database. Preserves the meaning in your own words, identifies the source and location in the paper, then links the claim to our work.",
           "capabilities": [
-            "Checks that the paper exists in the MCP library and that a source is available for the claim.",
+            "Checks that the paper page exists in the theme literature and that the source for the statement is available.",
             "Formulates one self-contained claim: what was shown, under which conditions and with which limitations.",
-            "Records the paraphrase and paper reference through record_paper_claim. A verbatim quotation is optional and is added only when useful.",
+            "Writes a paraphrase and a pointer to the location in the paper on its page in the theme literature. A verbatim quote is optional; it is added only when it helps.",
             "If a quotation is included, its provenance and verification cannot be replaced by a match against someone else's summary.",
             "Links the claim to a project or record as prior art, comparison, support or contradiction. Reads the saved object back."
           ],
@@ -7843,7 +7841,7 @@ window.RESEARCH_LOOP = {
                   "a saved paraphrase is checked for meaning and provenance"
                 ],
                 "via": {
-                  "tool": "record_paper_claim",
+                  "tool": "paper-ingest",
                   "type": "mcp"
                 }
               },
@@ -8426,7 +8424,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "title": "Publish to the right destinations",
-          "summary": "Private notes are saved in Obsidian. Approved research records go to Lab Knowledge MCP; shared tasks and the approved report go to Yonote.",
+          "summary": "The private summary is saved in Obsidian. Approved scientific records go to the Lab GitLab as a merge request, shared tasks and the agreed report go to the work's issues.",
           "result": "Saved objects with their IDs",
           "ref": "s5"
         },
@@ -8452,13 +8450,13 @@ window.RESEARCH_LOOP = {
           "ref": "d1"
         },
         {
-          "name": "Lab Knowledge",
+          "name": "Lab GitLab",
           "what": "Approved claims, runs, measurements, and rules",
           "why": "Shared research memory",
           "ref": "d2"
         },
         {
-          "name": "Yonote",
+          "name": "Issues GitLab",
           "what": "Agreed tasks with assignees and deadlines",
           "why": "Team workspace",
           "ref": "d3"
@@ -8489,12 +8487,12 @@ window.RESEARCH_LOOP = {
         {
           "id": "read-back verification",
           "title": "Every publication is read back",
-          "explanation": "The receipt is based on records actually read from Obsidian, Lab Knowledge, and Yonote, not on the server's response code.",
+          "explanation": "The receipt is built from the Obsidian notes, git files, and GitLab issues that were actually read, not from the server response code.",
           "example": "",
           "links": []
         }
       ],
-      "example": "A meeting agrees to test a new claim. The notes stay in Obsidian; the claim and run plan appear in Lab Knowledge; the launch task goes to Yonote.",
+      "example": "On the call we agreed to test a new claim. The summary stays in Obsidian, the claim and the plan appear in claims/ through a merge request, and the launch task goes to the work's issues.",
       "links": [
         {
           "label": "Brain Call owner: request access",
@@ -8520,7 +8518,7 @@ window.RESEARCH_LOOP = {
             "The analysis agent reads the transcript and project context. The current profile uses GPT-5.6-Sol through Codex. It distinguishes decisions from proposals, tasks from questions, and research claims from everyday remarks.",
             "Preserves each proposed record's origin in the conversation. A task needs an action and assignee; a hypothesis needs a testable formulation and a way to refute it. Gaps are stated explicitly.",
             "Shows the owner a preview. You can correct meaning, participants, and destinations. In project mode, sending to shared systems starts after approval; a personal note is not published there.",
-            "In project mode, saves notes to Obsidian, research records to Lab Knowledge, and the shared summary and assignments to Yonote if those connections are configured. Personal mode creates only a local note. Results are read back; partial failures remain unresolved."
+            "In project mode it saves the summary in Obsidian, scientific records into the work as a merge request, and the shared outcome and assignments in GitLab issues, if access is set up. In personal mode it creates only a local note. It reads back the results; partial errors stay open."
           ],
           "outputs": [
             "Audio recording and timestamped transcript for returning to individual utterances.",
@@ -8528,10 +8526,10 @@ window.RESEARCH_LOOP = {
             "A personal Markdown note or, in project mode after approval, notes and separate records in connected systems with source links."
           ],
           "writes": [
-            "Personal note: Markdown alongside the original recording, without publication to MCP or Yonote.",
+            "Personal note: Markdown next to the source recording, not published to GitLab.",
             "Project mode, Obsidian: notes in the corresponding project.",
-            "Project mode, Lab Knowledge: claims, experiments, measurements, and decisions actually supported by the meeting.",
-            "Project mode, Yonote: approved shared summary and tasks on the existing project board."
+            "Project mode, Lab GitLab: claims, runs, and decisions that actually follow from the meeting.",
+            "Project mode, GitLab: the approved shared outcome and tasks in the work's issues."
           ],
           "gates": [
             "Check disputed names and conclusions against the transcript and timestamps.",
@@ -8603,12 +8601,12 @@ window.RESEARCH_LOOP = {
               "Mac / CAM++: acoustic groups; browser events: evidence for names",
               "Codex / GPT-5.6-Sol: transcript analysis with project context",
               "Telegram: owner's decision",
-              "Obsidian, Lab Knowledge MCP, Yonote: saving and read-back verification"
+              "Obsidian, Lab GitLab: saving and read-back check"
             ]
           },
           "storage": [
             "Audio tracks, transcripts, and processing materials are saved locally. Speech recognition sends audio to its provider; analysis through Codex sends text to the model.",
-            "In “Personal note” mode, analysis stays in a Markdown file alongside the recording and is not published to MCP or Yonote. This mode limits publication, not model calls.",
+            "In “Personal note” mode the analysis stays a Markdown file next to the recording and is not published to GitLab. This mode limits publication, not the call to the model.",
             "Every new meeting has its own ID. Its source, note, and shared project document are linked to that ID so meetings on the same day do not overwrite one another."
           ],
           "cardTitle": "Keep a conversation useful",
@@ -8620,7 +8618,7 @@ window.RESEARCH_LOOP = {
             "The analysis agent reads the transcript and project context. The current profile uses GPT-5.6-Sol through Codex. It distinguishes decisions from proposals, tasks from questions, and research claims from everyday remarks.",
             "Preserves each proposed record's origin in the conversation. A task needs an action and assignee; a hypothesis needs a testable formulation and a way to refute it. Gaps are stated explicitly.",
             "Shows the owner a preview. You can correct meaning, participants, and destinations. In project mode, sending to shared systems starts after approval; a personal note is not published there.",
-            "In project mode, saves notes to Obsidian, research records to Lab Knowledge, and the shared summary and assignments to Yonote if those connections are configured. Personal mode creates only a local note. Results are read back; partial failures remain unresolved."
+            "In project mode it saves the summary in Obsidian, scientific records into the work as a merge request, and the shared outcome and assignments in GitLab issues, if access is set up. In personal mode it creates only a local note. It reads back the results; partial errors stay open."
           ],
           "start": "Open Brain Call on Mac and click “Record meeting.” Allow microphone and system audio access. Choose a project or “Personal note” mode. After stopping, review the analysis in Telegram; for a project, you can approve, revise, or cancel publication.",
           "outcomes": [
@@ -8651,14 +8649,14 @@ window.RESEARCH_LOOP = {
           ],
           "outputs": [
             "personal meeting note with project history",
-            "historical snapshot of each Yonote task with assignee, dates, and context",
+            "the history of each GitLab issue with the assignee, dates, and context",
             "updated project hypothesis list with bidirectional links",
             "separate candidates: claim, run, measurement, rule",
-            "Yonote tasks with assignee and assignment date",
+            "GitLab issues with the assignee and the date assigned",
             "blocked items and one set of questions",
             "receipt after read-back verification"
           ],
-          "writes": "Audio and transcript remain local; meeting note goes to Obsidian; approved research records to the shared database; actions to the bound Yonote board",
+          "writes": "Audio and transcript stay local; the meeting note in Obsidian; approved scientific records into the work as a merge request; actions in the work's issues in GitLab",
           "gates": [
             "canonical writes are blocked without the required multi-agent workflow",
             "every task requires an assignee and assignment date",
@@ -8707,7 +8705,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "lab-knowledge-call",
               "label": "routes approved research records by kind",
-              "title": "Lab Knowledge"
+              "title": "Lab GitLab"
             }
           ],
           "processRelations": [
@@ -8751,10 +8749,10 @@ window.RESEARCH_LOOP = {
           ],
           "outcomes": [
             "personal meeting note with project history",
-            "historical snapshot of each Yonote task with assignee, dates, and context",
+            "the history of each GitLab issue with the assignee, dates, and context",
             "updated project hypothesis list with bidirectional links",
             "separate candidates: claim, run, measurement, rule",
-            "Yonote tasks with assignee and assignment date",
+            "GitLab issues with the assignee and the date assigned",
             "blocked items and one set of questions",
             "receipt after read-back verification"
           ],
@@ -8768,7 +8766,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "lab-knowledge-call",
-          "title": "Lab Knowledge",
+          "title": "Lab GitLab",
           "type": "Shared system",
           "role": "Provides project context for analysis and accepts only approved research records.",
           "when": "Before analysis for context; after approval for writes.",
@@ -8778,7 +8776,7 @@ window.RESEARCH_LOOP = {
           ],
           "inside": [
             "returns the project's claims, runs, measurements, and rules",
-            "accepts different kinds through separate calls: create_hypothesis, record_experiment, record_evidence, propose_decision",
+            "writes different kinds into different files: a claim in claims/H-XXX/, a run in runs/, a series in series/, a derivation in theory/",
             "checks provenance and relationships",
             "assigns a code to the new record: H-*, E-*, R-*, P-*"
           ],
@@ -8786,7 +8784,7 @@ window.RESEARCH_LOOP = {
             "project context before analysis",
             "shared research records with codes"
           ],
-          "writes": "Shared laboratory database through MCP",
+          "writes": "Lab GitLab through a merge request",
           "gates": [
             "no writes before human approval",
             "a new measurement does not automatically change a claim's status"
@@ -8804,7 +8802,7 @@ window.RESEARCH_LOOP = {
           "adoption": {
             "kind": "internal",
             "invoke": "Through the connected shared laboratory database",
-            "installNote": "Meeting records go to the private Lab Knowledge service. The owner grants access."
+            "installNote": "Call records go into the work as a merge request: access to GitLab is granted by the Telegram bot."
           },
           "nonInstallable": true,
           "usedBy": [
@@ -8821,7 +8819,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "yonote-call",
               "label": "works alongside it at the same stage",
-              "title": "Yonote"
+              "title": "Issues GitLab"
             }
           ],
           "processRelations": [
@@ -8849,10 +8847,10 @@ window.RESEARCH_LOOP = {
               "Rule"
             ]
           },
-          "start": "After analyzing the meeting, ask to save its research outcomes in Lab Knowledge. Specify the project and check which records are actually supported by the conversation.",
+          "start": "After going through the meeting, ask to save its scientific outcomes in the Lab GitLab. Name the work and check which records actually follow from the conversation.",
           "capabilities": [
             "returns the project's claims, runs, measurements, and rules",
-            "accepts different kinds through separate calls: create_hypothesis, record_experiment, record_evidence, propose_decision",
+            "writes different kinds into different files: a claim in claims/H-XXX/, a run in runs/, a series in series/, a derivation in theory/",
             "checks provenance and relationships",
             "assigns a code to the new record: H-*, E-*, R-*, P-*"
           ],
@@ -8868,12 +8866,12 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "yonote-call",
-          "title": "Yonote",
+          "title": "Issues GitLab",
           "type": "Work system",
           "role": "After approval, publishes two separate outputs: a short meeting note and individual tasks with assignees and deadlines.",
-          "when": "After the meeting summary and task assignments are approved and the Yonote project binding is confirmed.",
+          "when": "After the call outcome and task assignments are approved, once the work repository in GitLab is confirmed.",
           "inputs": [
-            "Confirmed Yonote project and board binding.",
+            "a confirmed work repository in GitLab",
             "Approved meeting summary, date, and source meeting.",
             "Agreed tasks, assignees, and explicitly stated deadlines."
           ],
@@ -8890,7 +8888,7 @@ window.RESEARCH_LOOP = {
             "A link to the meeting summary from the project page.",
             "Verified tasks with assignees and any stated deadlines."
           ],
-          "writes": "The CODE · Calls section, project page, and existing CODE · Tasks board in Yonote.",
+          "writes": "The calls/ folder, README, and the work's issues in GitLab",
           "gates": [
             "board binding and assignee are verified",
             "if the shared database offers no task operation, tasks remain incomplete rather than being reported as created",
@@ -8902,14 +8900,14 @@ window.RESEARCH_LOOP = {
           ],
           "links": [
             {
-              "label": "Yonote workspace",
+              "label": "Work repository in GitLab",
               "url": "https://brain-lab.yonote.ru"
             }
           ],
           "adoption": {
             "kind": "internal",
             "invoke": "Through the connected laboratory workspace",
-            "installNote": "Meeting summaries and tasks are stored in the laboratory's private Yonote workspace; project access is required."
+            "installNote": "Meeting outcomes and tasks are stored in the work repository in GitLab; access to the work is required."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -8926,7 +8924,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "lab-knowledge-call",
               "label": "works alongside it at the same stage",
-              "title": "Lab Knowledge"
+              "title": "Lab GitLab"
             }
           ],
           "processRelations": [
@@ -8943,7 +8941,7 @@ window.RESEARCH_LOOP = {
             "stageRef": "s5",
             "stageTitle": "Publish to the right destinations"
           },
-          "start": "Approve a meeting summary the team can understand and the task assignments. The agent writes them to the existing Yonote project.",
+          "start": "Confirm a meeting outcome the team can understand and the task assignments. The agent will record them in the work's issues in GitLab.",
           "capabilities": [
             "Checks the project and board binding and the assignees.",
             "Creates or reuses the CODE · Calls section.",
@@ -8957,7 +8955,7 @@ window.RESEARCH_LOOP = {
             "A link to the meeting summary from the project page.",
             "Verified tasks with assignees and any stated deadlines."
           ],
-          "useCases": "After the meeting summary and task assignments are approved and the Yonote project binding is confirmed.",
+          "useCases": "After the call outcome and task assignments are approved, once the work repository in GitLab is confirmed.",
           "important": [
             "the full transcript and private discussion stay in Obsidian",
             "a meeting note or completed task is not a research measurement"
@@ -9158,7 +9156,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d2",
                 "detail": "A meeting claim also requires a falsification criterion; without one, the record is rejected.",
                 "via": {
-                  "tool": "create_hypothesis",
+                  "tool": "claims/H-XXX/README.md",
                   "type": "mcp"
                 }
               },
@@ -9198,7 +9196,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d2",
                 "detail": "hypothesis_id is required: the run inherits its project from its claim.",
                 "via": {
-                  "tool": "record_experiment",
+                  "tool": "lab_run.py",
                   "type": "mcp"
                 }
               },
@@ -9211,7 +9209,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d2",
                 "detail": "metric and measurement kinds require numbers; otherwise the write is rejected.",
                 "via": {
-                  "tool": "record_evidence",
+                  "tool": "runs/E-XXX.md",
                   "type": "mcp"
                 }
               }
@@ -9221,14 +9219,14 @@ window.RESEARCH_LOOP = {
         "kept": [
           "audio and full transcript",
           "personal and non-work content",
-          "meeting document and task cards in Yonote: upsert_call_note and upsert_yonote_task create work artifacts, not knowledge records",
-          "a completed Yonote task is not a measurement"
+          "call outcomes in calls/ and tasks in GitLab issues: a working surface, not knowledge",
+          "a closed issue is not a measurement"
         ],
         "hook": true
       },
       "pipeline": {
         "title": "From audio and a named tile to an approved record",
-        "note": "Audio and hints go to OpenRouter for ASR; text and bounded context go to Codex's model service for analysis. The extension reads tile activity, while acoustic analysis runs on the Mac. The preview goes to Telegram; approved records go to Lab Knowledge and Yonote. Synthetic tests do not establish name-attribution accuracy in a live meeting.",
+        "note": "Audio and hints are sent to OpenRouter for ASR; text and limited context go to the Codex model service for analysis. The extension reads tile activity, and acoustic diarization runs on the Mac. The preview is sent to Telegram; approved records go to the Lab GitLab. Synthetic tests do not confirm name accuracy on a live call.",
         "steps": [
           {
             "op": "capture",
@@ -9295,7 +9293,7 @@ window.RESEARCH_LOOP = {
           {
             "op": "apply",
             "t": "Save and read back",
-            "m": "Obsidian · Lab Knowledge MCP · Yonote",
+            "m": "Obsidian · Lab GitLab",
             "d": "Approved records are linked to existing projects and boards. The receipt records IDs, the version hash, and results actually read back.",
             "n": [
               "partial success is shown separately; saved records are not recreated",
@@ -9587,8 +9585,8 @@ window.RESEARCH_LOOP = {
         {
           "id": "experiment-mcp",
           "title": "Shared database: run",
-          "type": "MCP tools",
-          "role": "record_experiment creates a run: an experiment designed to test a claim. hypothesis_id and protocol are required. The run inherits its project from the claim and does not accept a separate project.",
+          "type": "Files in git",
+          "role": "A run, that is, an experiment that tests a claim, lives in claims/H-XXX/runs/E-XXX.md. It is written by the lab_run.py recorder: hyperparameters, numbers, commit, and hardware; the run takes its claim from its folder.",
           "when": "When a test plan needs a code such as E-WBD-033.",
           "inputs": [
             "hypothesis_id",
@@ -9623,8 +9621,8 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab MCP",
-            "installNote": "Run records go to the private Lab Knowledge service. Its owner grants access."
+            "invoke": "Through git and a merge request",
+            "installNote": "The run page goes into the work as a merge request: access is granted by the Telegram bot."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -9690,39 +9688,38 @@ window.RESEARCH_LOOP = {
             "The working directory and canonical notes for a specific project.",
             "The goal, completion criterion, permitted resources and stopping rules.",
             "A separate profile with a selected model and available tools. MCP connections are checked for that profile.",
-            "For shared assignments: a binding to the existing Yonote board and the human owner."
+            "For shared assignments: a link to an issue of the work in GitLab and to a human owner."
           ],
           "inside": [
             "Recovers project instructions, history and state. Checks its own files, processes and permitted servers. Other projects do not become part of the assignment.",
             "The model chooses the next step and tool: read a file, edit code, run a check, inspect a log or call MCP. The tool's response returns to the same working loop.",
             "Breaks work into internal tasks. In our setup, the Hermes board stores their IDs, states, messages and results. The profile's schedule lets it return to unfinished work.",
             "Checks resources and budget before computation. Records the launch protocol and actual run status, retaining metrics and sources. A running process may still have no result.",
-            "Compares measurements or a theoretical derivation with the claim under test. Lab Knowledge stores the experiment, measurement or derivation and claim assessment separately. A completed task does not imply a supported hypothesis.",
-            "During its regular cycle, reads Yonote tasks assigned to its owner. It can accept an unstarted assignment and add an outcome the team can understand. Tasks needing further checks stay in progress. Blocked tasks state what is needed and from whom.",
+            "Matches measurements or a theoretical derivation against a testable claim. The Lab GitLab stores the run, series, or derivation separately from the claim's state. “Task done” does not mean “hypothesis supported”.",
+            "In the regular cycle it reads GitLab issues assigned to its owner. It can take an assignment that has not started yet and add a result the team can understand. If a check is needed, the issue stays in progress; if blocked, it states what is needed and from whom.",
             "Every 15 minutes, a separate Python exporter reads the internal board over SSH and updates the overview in the same project's Obsidian folder. No model is involved in this conversion.",
             "Reports a meaningful result, failure or decision needed. A verifiable outcome includes artifacts and confirmed records. When paused or short of resources, the agent does not describe waiting as a completed run."
           ],
           "outputs": [
             "Code changes and results of completed checks.",
-            "Runs with their states and result sources, plus scientific records in Lab Knowledge when the database is connected.",
+            "Runs with state and sources of results; scientific records go to the Lab GitLab as a merge request.",
             "A personal board with history in Obsidian and clear outcomes for assigned tasks on the shared project board."
           ],
           "writes": [
             "The internal Hermes queue on the server: the authoritative state of personal tasks.",
             "Obsidian: an overview in the same project folder, updated by the Python exporter.",
-            "Lab Knowledge: the project's scientific and operational records.",
-            "Yonote: shared project tasks and clear completion summaries only."
+            "Lab GitLab: the work's scientific records and journal entries.",
+            "GitLab issues: only shared project tasks and a clear outcome."
           ],
           "gates": [
             "Resources and authority are checked before launch. Other people's jobs, profiles and processes are preserved.",
             "Shared assignments require a project → board → owner binding. The human remains the task's assignee.",
-            "Yonote outcomes and statuses are updated with a card version check, so someone else's changes are not overwritten.",
+            "The outcome and status of a GitLab issue are updated so that someone else's change is not overwritten.",
             "Scientific conclusions rely on measurements or a derivation and retain the limits of the test."
           ],
           "limits": [
-            "The project queue, its exporter and the Yonote broker are specific to our setup. A standard Hermes installation does not include them automatically.",
-            "Manual changes to the Obsidian overview do not control the agent's queue.",
-            "Yonote operations have been tested on test cards. A complete end-to-end run on an actual assigned task remains unverified."
+            "The project queue and the GitLab issue handling are settings of our installation. A standard Hermes install does not enable them automatically.",
+            "Manual changes to the Obsidian overview do not control the agent's queue."
           ],
           "links": [
             {
@@ -9750,15 +9747,15 @@ window.RESEARCH_LOOP = {
             "The model chooses the next step and tool: read a file, edit code, run a check, inspect a log or call MCP. The tool's response returns to the same working loop.",
             "Breaks work into internal tasks. In our setup, the Hermes board stores their IDs, states, messages and results. The profile's schedule lets it return to unfinished work.",
             "Checks resources and budget before computation. Records the launch protocol and actual run status, retaining metrics and sources. A running process may still have no result.",
-            "Compares measurements or a theoretical derivation with the claim under test. Lab Knowledge stores the experiment, measurement or derivation and claim assessment separately. A completed task does not imply a supported hypothesis.",
-            "During its regular cycle, reads Yonote tasks assigned to its owner. It can accept an unstarted assignment and add an outcome the team can understand. Tasks needing further checks stay in progress. Blocked tasks state what is needed and from whom.",
+            "Matches measurements or a theoretical derivation against a testable claim. The Lab GitLab stores the run, series, or derivation separately from the claim's state. “Task done” does not mean “hypothesis supported”.",
+            "In the regular cycle it reads GitLab issues assigned to its owner. It can take an assignment that has not started yet and add a result the team can understand. If a check is needed, the issue stays in progress; if blocked, it states what is needed and from whom.",
             "Every 15 minutes, a separate Python exporter reads the internal board over SSH and updates the overview in the same project's Obsidian folder. No model is involved in this conversion.",
             "Reports a meaningful result, failure or decision needed. A verifiable outcome includes artifacts and confirmed records. When paused or short of resources, the agent does not describe waiting as a completed run."
           ],
           "useCases": "When a task takes several steps and checks, and work needs to continue between your messages.",
           "outcomes": [
             "Code changes and results of completed checks.",
-            "Runs with their states and result sources, plus scientific records in Lab Knowledge when the database is connected.",
+            "Runs with state and sources of results; scientific records go to the Lab GitLab as a merge request.",
             "A personal board with history in Obsidian and clear outcomes for assigned tasks on the shared project board."
           ],
           "afterSetup": "Assign Hermes bounded project tasks and receive a verified outcome with status and artifacts.",
@@ -9812,14 +9809,13 @@ window.RESEARCH_LOOP = {
           },
           "start": "In an existing profile's chat, state the goal and completion criterion. For example: “Compare two optimizers under the same budget and bring back a table with a conclusion.” Specify permitted servers and limits. First check that the agent has selected the correct project.",
           "important": [
-            "The project queue, its exporter and the Yonote broker are specific to our setup. A standard Hermes installation does not include them automatically.",
-            "Manual changes to the Obsidian overview do not control the agent's queue.",
-            "Yonote operations have been tested on test cards. A complete end-to-end run on an actual assigned task remains unverified."
+            "The project queue and the GitLab issue handling are settings of our installation. A standard Hermes install does not enable them automatically.",
+            "Manual changes to the Obsidian overview do not control the agent's queue."
           ],
           "skyTitle": "Hermes Agent",
           "storage": [
             "The internal Hermes board is the authoritative state of its operational tasks. The Knowledge/Hermes overview in Obsidian is for reading.",
-            "Yonote stores shared assignments and team-facing outcomes. Lab Knowledge stores scientific and operational records. Internal agent steps are not copied to the shared board."
+            "GitLab issues hold shared assignments and the team outcome, the work's claims/ hold scientific records. The agent's internal steps are not copied to the shared board."
           ]
         },
         {
@@ -12204,7 +12200,7 @@ window.RESEARCH_LOOP = {
                   "the project is inherited from the claim and is not accepted separately"
                 ],
                 "via": {
-                  "tool": "record_experiment",
+                  "tool": "lab_run.py",
                   "type": "mcp"
                 }
               },
@@ -12245,7 +12241,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d4",
                 "detail": "The key label appears in the audit log. Revocation affects just that agent.",
                 "via": {
-                  "tool": "record_experiment",
+                  "tool": "lab_run.py",
                   "type": "mcp"
                 }
               },
@@ -12258,7 +12254,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d4",
                 "detail": "The same call as for a person, with a different key.",
                 "via": {
-                  "tool": "record_evidence",
+                  "tool": "runs/E-XXX.md",
                   "type": "mcp"
                 }
               }
@@ -12285,7 +12281,7 @@ window.RESEARCH_LOOP = {
                 "destRef": "d4",
                 "detail": "The incident kind and resource slug. An unknown slug is silently dropped.",
                 "via": {
-                  "tool": "record_journal",
+                  "tool": "brainlab/journal",
                   "type": "mcp"
                 }
               }
@@ -12877,7 +12873,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "evidence-mcp",
               "label": "passes the result to the next stage",
-              "title": "Lab Knowledge Evidence"
+              "title": "Run page in runs/"
             }
           ],
           "processRelations": [
@@ -12974,7 +12970,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "evidence-mcp",
               "label": "passes the result to the next stage",
-              "title": "Lab Knowledge Evidence"
+              "title": "Run page in runs/"
             }
           ],
           "processRelations": [
@@ -13010,8 +13006,8 @@ window.RESEARCH_LOOP = {
         {
           "id": "evidence-mcp",
           "title": "Shared database: measurement",
-          "type": "MCP tools",
-          "role": "record_evidence records what a run produced: experiment_id, a summary, a kind and numbers in metrics. The assessment of the claim is stored on the relationship in hypothesis_effects, not in the record itself.",
+          "type": "Files in git",
+          "role": "The run page runs/E-XXX.md records what came out: code writes hyperparameters, numbers, commit, and hardware, and the agent adds only “what is seen”. The verdict on the claim comes from the series, not from the run itself.",
           "when": "After the analysis package has been checked.",
           "inputs": [
             "experiment_id",
@@ -13047,8 +13043,8 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab MCP",
-            "installNote": "Measurement records go to the private Lab Knowledge service. Its owner grants access."
+            "invoke": "Through git and a merge request",
+            "installNote": "The run page goes into the work as a merge request: access is granted by the Telegram bot."
           },
           "nonInstallable": true,
           "usedBy": [
@@ -13061,7 +13057,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "decision-mcp",
               "label": "works alongside it at the same stage",
-              "title": "Lab Knowledge: Decision"
+              "title": "Journal: decision"
             }
           ],
           "processRelations": [
@@ -13098,7 +13094,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "decision-mcp",
           "title": "Shared database: rule",
-          "type": "MCP tools",
+          "type": "Files in git",
           "role": "propose_decision records how the lab has decided to proceed: project_id, the decision text and rationale. A rule has a kind: scientific, operational or unspecified.",
           "when": "When a measurement has been interpreted and a course of action needs to be recorded.",
           "inputs": [
@@ -13135,8 +13131,8 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected Lab MCP",
-            "installNote": "Rule records go to the private Lab Knowledge service. Its owner grants access."
+            "invoke": "Through git and a merge request",
+            "installNote": "A rule goes into brainlab/journal by a plain push to main, and into the canon canon.md through a merge request."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -13149,7 +13145,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "evidence-mcp",
               "label": "works alongside it at the same stage",
-              "title": "Lab Knowledge Evidence"
+              "title": "Run page in runs/"
             }
           ],
           "processRelations": [
@@ -13258,12 +13254,12 @@ window.RESEARCH_LOOP = {
         }
       ],
       "implementation": {
-        "summary": "Primary artifacts stay with the runs. The analysis bundle holds calculations. Obsidian explains them to people. MCP stores typed Evidence and Decision records.",
+        "summary": "Primary artifacts stay with the runs. The analysis bundle holds the computations. Obsidian explains to a person. Git holds the run pages and the series with its verdict.",
         "items": [
           "A comparability audit comes before aggregation",
           "Statistics use the correct unit of analysis",
           "Figures are generated from source data",
-          "record_evidence links a measurement to an Experiment",
+          "the run page lives under its claim in claims/H-XXX/runs/",
           "A Hypothesis is updated only after assessing the Evidence"
         ]
       },
@@ -13428,7 +13424,7 @@ window.RESEARCH_LOOP = {
                   "applicability limits are recorded here too"
                 ],
                 "via": {
-                  "tool": "record_evidence",
+                  "tool": "runs/E-XXX.md",
                   "type": "mcp"
                 }
               },
@@ -15879,7 +15875,7 @@ window.RESEARCH_LOOP = {
           "why": "Slides, posters and posts present a result already recorded. If preparation leads to an agreement on a template, record it with propose_decision as operational. Such a rule does not require supporting measurements.",
           "instead": "process:results",
           "insteadLabel": "05 Results → measurement R-*",
-          "back": "search_lab and get_paper provide record codes and citation keys for slides"
+          "back": "a search over the ~/brainlab tree gives claim codes and citation keys for the slide"
         },
         "kept": [
           "slide and poster sources in the project repository",

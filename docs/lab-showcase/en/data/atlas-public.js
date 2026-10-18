@@ -2,7 +2,7 @@
 window.LAB_ATLAS_DATA = {
   "meta": {
     "schema_version": 1,
-    "capabilities": 205,
+    "capabilities": 138,
     "privacy": "capability-only public projection"
   },
   "capabilities": [
@@ -374,7 +374,7 @@ window.LAB_ATLAS_DATA = {
       "type": "agent",
       "name": "obsidian-hub-creator",
       "title_ru": "obsidian-hub-creator",
-      "description": "Use this agent when the user wants to create a new Obsidian project hub card, add a project to the vault, or set up a new paper/project/staff entry. Examples:",
+      "description": "|",
       "description_ru": "Creates and updates Obsidian records for projects, papers, and team members.",
       "what_is_special": "A specialist role with a defined scope that can be delegated and reviewed independently. Related workflows: project lifecycle, memory and knowledge maintenance. Minimum check: stay within the assigned responsibility. Purpose: creates and updates Obsidian records for projects, papers, and team members.",
       "inputs": [
@@ -1930,51 +1930,6 @@ window.LAB_ATLAS_DATA = {
       ]
     },
     {
-      "id": "command:publish-hypothesis",
-      "type": "command",
-      "name": "publish-hypothesis",
-      "title_ru": "/publish-hypothesis",
-      "description": "Publish one private Obsidian hypothesis to Lab Knowledge after review",
-      "description_ru": "After review, publishes one private Obsidian hypothesis in Lab Knowledge.",
-      "what_is_special": "An explicit user entry point combining several steps into a reproducible workflow. Related workflows: research direction, memory and knowledge maintenance. Minimum check: command preflight. Purpose: after review, publishes one private Obsidian hypothesis in Lab Knowledge.",
-      "inputs": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs": [
-        "The delegated workflow's result"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Command preflight check"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
-        "Usually a thin entry point; the full contract belongs to the underlying skill",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "research-direction",
-        "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs_ru": [
-        "The delegated workflow's result"
-      ],
-      "quality_gates_ru": [
-        "Command preflight check"
-      ],
-      "known_limitations_ru": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ]
-    },
-    {
       "id": "command:rebuttal",
       "type": "command",
       "name": "rebuttal",
@@ -2854,2676 +2809,6 @@ window.LAB_ATLAS_DATA = {
       ]
     },
     {
-      "id": "mcp-tool:add_paper_section",
-      "type": "mcp-tool",
-      "name": "add_paper_section",
-      "title_ru": "add_paper_section",
-      "description": "Add one section of a paper's text without touching the others.",
-      "description_ru": "Adds one section of paper text without changing the other sections.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: adds one section of paper text without changing the other sections.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:assign_public_code",
-      "type": "mcp-tool",
-      "name": "assign_public_code",
-      "title_ru": "assign_public_code",
-      "description": "Give a record its human-readable code when it has none.",
-      "description_ru": "Assigns a readable public code to a record that does not yet have one.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: assigns a readable public code to a record that does not yet have one.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:create_hypothesis",
-      "type": "mcp-tool",
-      "name": "create_hypothesis",
-      "title_ru": "create_hypothesis",
-      "description": "Create a draft claim. A same-project source is mandatory.",
-      "description_ru": "Creates a draft hypothesis with a required source from the same project.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: research direction, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates a draft hypothesis with a required source from the same project.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "research-direction",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:create_project",
-      "type": "mcp-tool",
-      "name": "create_project",
-      "title_ru": "create_project",
-      "description": "Create a knowledge project. Any member may; the server assigns its public code.",
-      "description_ru": "Creates a knowledge project and assigns it a public code automatically.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: project lifecycle, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates a knowledge project and assigns it a public code automatically.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "project-lifecycle",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:define_term",
-      "type": "mcp-tool",
-      "name": "define_term",
-      "title_ru": "define_term",
-      "description": "Define one of this project's internal names so records using it can be read.",
-      "description_ru": "Defines an internal project term so records using it can be understood unambiguously.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: defines an internal project term so records using it can be understood unambiguously.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:delete_project",
-      "type": "mcp-tool",
-      "name": "delete_project",
-      "title_ru": "delete_project",
-      "description": "Remove a project you created, if nothing has been recorded in it yet.",
-      "description_ru": "Deletes a user-created project while it is still empty.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: deletes a user-created project while it is still empty.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:delete_record",
-      "type": "mcp-tool",
-      "name": "delete_record",
-      "title_ru": "delete_record",
-      "description": "Remove one record, and with cascade everything that hangs on it.",
-      "description_ru": "Deletes a record and its dependent objects through cascading deletion.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: deletes a record and its dependent objects through cascading deletion.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:find_related_papers",
-      "type": "mcp-tool",
-      "name": "find_related_papers",
-      "title_ru": "find_related_papers",
-      "description": "What the open literature says around one of our hypotheses.",
-      "description_ru": "Finds external papers relevant to the selected laboratory hypothesis.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: finds external papers relevant to the selected laboratory hypothesis.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:find_similar",
-      "type": "mcp-tool",
-      "name": "find_similar",
-      "title_ru": "find_similar",
-      "description": "Look for records that already say this, before writing a new one.",
-      "description_ru": "Checks for existing objects with similar content before writing.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: checks for existing objects with similar content before writing.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_hypothesis",
-      "type": "mcp-tool",
-      "name": "get_hypothesis",
-      "title_ru": "get_hypothesis",
-      "description": "Get one accessible hypothesis with provenance.",
-      "description_ru": "Returns an accessible hypothesis with its provenance.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: research direction, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns an accessible hypothesis with its provenance.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "research-direction",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_paper",
-      "type": "mcp-tool",
-      "name": "get_paper",
-      "title_ru": "get_paper",
-      "description": "One paper from the library with its sections and its links to lab records.",
-      "description_ru": "Returns a paper, its sections, and links to laboratory records.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns a paper, its sections, and links to laboratory records.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_project_by_slug",
-      "type": "mcp-tool",
-      "name": "get_project_by_slug",
-      "title_ru": "get_project_by_slug",
-      "description": "Return rich project context using its stable human-readable slug.",
-      "description_ru": "Returns full project context using a stable, readable slug.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns full project context using a stable, readable slug.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_project_context",
-      "type": "mcp-tool",
-      "name": "get_project_context",
-      "title_ru": "get_project_context",
-      "description": "Return the accessible project's structured research context.",
-      "description_ru": "Returns structured research context for an accessible project.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns structured research context for an accessible project.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_related",
-      "type": "mcp-tool",
-      "name": "get_related",
-      "title_ru": "get_related",
-      "description": "Everything connected to one record, following the links the data already has.",
-      "description_ru": "Collects objects connected to the selected record by existing relationships.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: collects objects connected to the selected record by existing relationships.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_theme_context",
-      "type": "mcp-tool",
-      "name": "get_theme_context",
-      "title_ru": "get_theme_context",
-      "description": "Everything recorded under one research theme: its papers, literature and knowledge.",
-      "description_ru": "Returns papers, literature, and knowledge associated with one research theme.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns papers, literature, and knowledge associated with one research theme.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:get_timeline",
-      "type": "mcp-tool",
-      "name": "get_timeline",
-      "title_ru": "get_timeline",
-      "description": "How a project or a single record changed over time, newest first.",
-      "description_ru": "Shows changes to a project or record in reverse chronological order.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows changes to a project or record in reverse chronological order.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:invite_member",
-      "type": "mcp-tool",
-      "name": "invite_member",
-      "title_ru": "invite_member",
-      "description": "Add a person so they have something to log in to. Lead or manager only.",
-      "description_ru": "Adds a member who can sign in; available to a lead or manager.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: adds a member who can sign in; available to a lead or manager.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:issue_agent_token",
-      "type": "mcp-tool",
-      "name": "issue_agent_token",
-      "title_ru": "issue_agent_token",
-      "description": "Issue a token for one of your agents. The token is shown once and never stored.",
-      "description_ru": "Issues a token for a specific agent and reveals the secret only once.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: issues a token for a specific agent and reveals the secret only once.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:lab_health",
-      "type": "mcp-tool",
-      "name": "lab_health",
-      "title_ru": "lab_health",
-      "description": "Where the chain of knowledge breaks and work has quietly stalled.",
-      "description_ru": "Finds gaps in knowledge chains and work that has stalled without notice.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: finds gaps in knowledge chains and work that has stalled without notice.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:link_paper",
-      "type": "mcp-tool",
-      "name": "link_paper",
-      "title_ru": "link_paper",
-      "description": "Record that an outside work bears on one of our claims.",
-      "description_ru": "Records how an external paper relates to a laboratory claim.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records how an external paper relates to a laboratory claim.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_agent_tokens",
-      "type": "mcp-tool",
-      "name": "list_agent_tokens",
-      "title_ru": "list_agent_tokens",
-      "description": "Which of your agents hold a token, and since when. The tokens themselves are not kept.",
-      "description_ru": "Lists agents with issued tokens and their issue times without exposing the secrets.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists agents with issued tokens and their issue times without exposing the secrets.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_derivations",
-      "type": "mcp-tool",
-      "name": "list_derivations",
-      "title_ru": "list_derivations",
-      "description": "This project's proofs, with what each establishes and how complete it is.",
-      "description_ru": "Lists a project's proofs, conclusions, and degree of completeness.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: theory and derivations, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists a project's proofs, conclusions, and degree of completeness.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "theory",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_hypotheses",
-      "type": "mcp-tool",
-      "name": "list_hypotheses",
-      "title_ru": "list_hypotheses",
-      "description": "List claims in accessible projects, optionally only theorems or only empirical ones.",
-      "description_ru": "Lists hypotheses in accessible projects, with filters for theoretical or empirical kinds.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists hypotheses in accessible projects, with filters for theoretical or empirical kinds.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_journal",
-      "type": "mcp-tool",
-      "name": "list_journal",
-      "title_ru": "list_journal",
-      "description": "Recent journal entries: observations, incidents, measurements, organisational facts.",
-      "description_ru": "Returns recent observations, incidents, measurements, and organisational facts from the journal.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: returns recent observations, incidents, measurements, and organisational facts from the journal.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_lab_resources",
-      "type": "mcp-tool",
-      "name": "list_lab_resources",
-      "title_ru": "list_lab_resources",
-      "description": "The lab's servers, quotas, accounts and datasets, with their quirks.",
-      "description_ru": "Shows servers, quotas, accounts, datasets, and their operational constraints.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows servers, quotas, accounts, datasets, and their operational constraints.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_paper_claims",
-      "type": "mcp-tool",
-      "name": "list_paper_claims",
-      "title_ru": "list_paper_claims",
-      "description": "What a paper claims, as recorded by whoever read it.",
-      "description_ru": "Shows the paper claims recorded during its analysis.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: reading and ingestion, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows the paper claims recorded during its analysis.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "literature-ingest",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_projects",
-      "type": "mcp-tool",
-      "name": "list_projects",
-      "title_ru": "list_projects",
-      "description": "List projects visible to the authenticated user with canonical links.",
-      "description_ru": "Lists projects accessible to the user and their canonical links.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: project lifecycle, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists projects accessible to the user and their canonical links.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "project-lifecycle",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_recent_papers",
-      "type": "mcp-tool",
-      "name": "list_recent_papers",
-      "title_ru": "list_recent_papers",
-      "description": "What arrived in the library lately, and whether it was actually decomposed.",
-      "description_ru": "Shows recently added papers and whether they have a substantive analysis.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows recently added papers and whether they have a substantive analysis.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_terms",
-      "type": "mcp-tool",
-      "name": "list_terms",
-      "title_ru": "list_terms",
-      "description": "This project's internal names with their definitions.",
-      "description_ru": "Lists internal project terms and their definitions.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists internal project terms and their definitions.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_themes",
-      "type": "mcp-tool",
-      "name": "list_themes",
-      "title_ru": "list_themes",
-      "description": "Research themes of the lab, each with its papers and how much is written down.",
-      "description_ru": "Shows research themes, related papers, and gaps in accumulated knowledge.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows research themes, related papers, and gaps in accumulated knowledge.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:list_yonote_tasks",
-      "type": "mcp-tool",
-      "name": "list_yonote_tasks",
-      "title_ru": "list_yonote_tasks",
-      "description": "List visible task rows on a lead-accessible project's bound Kanban.",
-      "description_ru": "Lists visible tasks on the project's linked Yonote Kanban board accessible to the lead.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: lists visible tasks on the project's linked Yonote Kanban board accessible to the lead.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:preview_yonote_task",
-      "type": "mcp-tool",
-      "name": "preview_yonote_task",
-      "title_ru": "preview_yonote_task",
-      "description": "Preview a lead-only task upsert on the project's bound Yonote Kanban.",
-      "description_ru": "Previews a lead-only task upsert on a Yonote Kanban board without writing.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: previews a lead-only task upsert on a Yonote Kanban board without writing.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:propose_decision",
-      "type": "mcp-tool",
-      "name": "propose_decision",
-      "title_ru": "propose_decision",
-      "description": "Propose a source-backed project decision.",
-      "description_ru": "Creates a proposed project decision supported by the specified source.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: results and evidence, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates a proposed project decision supported by the specified source.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "results",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:provision_project_workspace",
-      "type": "mcp-tool",
-      "name": "provision_project_workspace",
-      "title_ru": "provision_project_workspace",
-      "description": "Create or reuse the project's Yonote page and code-named Kanban.",
-      "description_ru": "Creates or reuses a project page and named Kanban board in Yonote.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates or reuses a project page and named Kanban board in Yonote.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:publish_source_note",
-      "type": "mcp-tool",
-      "name": "publish_source_note",
-      "title_ru": "publish_source_note",
-      "description": "Publish a provenance pointer; note content remains in its canonical system.",
-      "description_ru": "Publishes a provenance link to a note while leaving its content in the canonical system.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: publishes a provenance link to a note while leaving its content in the canonical system.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:recent_changes",
-      "type": "mcp-tool",
-      "name": "recent_changes",
-      "title_ru": "recent_changes",
-      "description": "What changed across visible projects, for catching up after time away.",
-      "description_ru": "Shows recent changes across all visible projects.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows recent changes across all visible projects.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:record_derivation",
-      "type": "mcp-tool",
-      "name": "record_derivation",
-      "title_ru": "record_derivation",
-      "description": "Record the proof of a claim: how theory carries its weight instead of a run.",
-      "description_ru": "Records a theoretical proof of a claim instead of an experimental run.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: theory and derivations, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records a theoretical proof of a claim instead of an experimental run.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "theory",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:record_evidence",
-      "type": "mcp-tool",
-      "name": "record_evidence",
-      "title_ru": "record_evidence",
-      "description": "Attach source-backed evidence to an experiment in any status.",
-      "description_ru": "Attaches source-backed evidence to an experiment in any status.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: results and evidence, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: attaches source-backed evidence to an experiment in any status.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "results",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:record_experiment",
-      "type": "mcp-tool",
-      "name": "record_experiment",
-      "title_ru": "record_experiment",
-      "description": "Record an experiment with an optional provider-neutral work item.",
-      "description_ru": "Records an experiment and, optionally, a neutral reference to an external work task.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records an experiment and, optionally, a neutral reference to an external work task.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:record_journal",
-      "type": "mcp-tool",
-      "name": "record_journal",
-      "title_ru": "record_journal",
-      "description": "Record an honest observation that is not yet a hypothesis or a result.",
-      "description_ru": "Records an observation that has not yet been formulated as a hypothesis or result.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: research direction, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records an observation that has not yet been formulated as a hypothesis or result.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "research-direction",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:record_paper_claim",
-      "type": "mcp-tool",
-      "name": "record_paper_claim",
-      "title_ru": "record_paper_claim",
-      "description": "Record what an outside paper claims, so our link to it can be checked.",
-      "description_ru": "Records an external paper's claim for later assessment of its relationship to laboratory work.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: reading and ingestion, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records an external paper's claim for later assessment of its relationship to laboratory work.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "literature-ingest",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:related_by_terms",
-      "type": "mcp-tool",
-      "name": "related_by_terms",
-      "title_ru": "related_by_terms",
-      "description": "What else speaks about the same subject: literature and records sharing its terms.",
-      "description_ru": "Finds literature and records that use the same defined terms.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: finds literature and records that use the same defined terms.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:revoke_agent_token",
-      "type": "mcp-tool",
-      "name": "revoke_agent_token",
-      "title_ru": "revoke_agent_token",
-      "description": "Kill the token of one agent. A stolen laptop costs one agent, not the person.",
-      "description_ru": "Revokes one agent's token without affecting the person's account.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: revokes one agent's token without affecting the person's account.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:search_lab",
-      "type": "mcp-tool",
-      "name": "search_lab",
-      "title_ru": "search_lab",
-      "description": "Hybrid, lexical, or semantic search over lab knowledge and the library.",
-      "description_ru": "Runs hybrid, lexical, or semantic search across laboratory knowledge and the library.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: runs hybrid, lexical, or semantic search across laboratory knowledge and the library.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:set_project_links",
-      "type": "mcp-tool",
-      "name": "set_project_links",
-      "title_ru": "set_project_links",
-      "description": "Record where a project's card and code live, for readers and for audits.",
-      "description_ru": "Saves canonical links to the project page and code for reading and audit.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: saves canonical links to the project page and code for reading and audit.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:set_project_open_questions",
-      "type": "mcp-tool",
-      "name": "set_project_open_questions",
-      "title_ru": "set_project_open_questions",
-      "description": "Record what is still unresolved about a project.",
-      "description_ru": "Records the project's open questions.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: records the project's open questions.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:set_project_status",
-      "type": "mcp-tool",
-      "name": "set_project_status",
-      "title_ru": "set_project_status",
-      "description": "Move a project along its lifecycle: idea → active → submitted → completed.",
-      "description_ru": "Moves a project between idea, active, submitted, and completed stages.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: moves a project between idea, active, submitted, and completed stages.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:set_project_theme",
-      "type": "mcp-tool",
-      "name": "set_project_theme",
-      "title_ru": "set_project_theme",
-      "description": "Put a paper under a research theme, or restate which themes reference it.",
-      "description_ru": "Assigns a paper project to a research theme or updates its related themes.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: assigns a paper project to a research theme or updates its related themes.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:set_record_papers",
-      "type": "mcp-tool",
-      "name": "set_record_papers",
-      "title_ru": "set_record_papers",
-      "description": "Retag one record with the papers it touches, or move it to another theme.",
-      "description_ru": "Updates papers linked to a knowledge record or moves the record to another theme.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: updates papers linked to a knowledge record or moves the record to another theme.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:update_decision",
-      "type": "mcp-tool",
-      "name": "update_decision",
-      "title_ru": "update_decision",
-      "description": "Ratify or supersede a proposed decision, or name what it rests on.",
-      "description_ru": "Accepts or replaces a proposed decision and records its evidential basis.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: results and evidence, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: accepts or replaces a proposed decision and records its evidential basis.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "results",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:update_derivation_status",
-      "type": "mcp-tool",
-      "name": "update_derivation_status",
-      "title_ru": "update_derivation_status",
-      "description": "Move a proof's completeness: sketch to complete to verified, or name its gap.",
-      "description_ru": "Updates proof completeness from sketch to complete or verified, or records a gap.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: theory and derivations, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: updates proof completeness from sketch to complete or verified, or records a gap.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "theory",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:update_experiment_status",
-      "type": "mcp-tool",
-      "name": "update_experiment_status",
-      "title_ru": "update_experiment_status",
-      "description": "Advance an experiment through its lifecycle.",
-      "description_ru": "Moves an experiment between the stages of its lifecycle.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: moves an experiment between the stages of its lifecycle.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:update_hypothesis",
-      "type": "mcp-tool",
-      "name": "update_hypothesis",
-      "title_ru": "update_hypothesis",
-      "description": "Edit or transition a hypothesis while enforcing lifecycle guards.",
-      "description_ru": "Updates a hypothesis or its status, checking permitted transitions.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: research direction, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: updates a hypothesis or its status, checking permitted transitions.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "research-direction",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:upsert_call_note",
-      "type": "mcp-tool",
-      "name": "upsert_call_note",
-      "title_ru": "upsert_call_note",
-      "description": "Publishes one call write-up as a document in the project’s Calls section.",
-      "description_ru": "Creates or updates meeting notes in the project’s Calls section.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: calls and discussions, memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates or updates meeting notes in the project’s Calls section.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "discussion",
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:upsert_paper",
-      "type": "mcp-tool",
-      "name": "upsert_paper",
-      "title_ru": "upsert_paper",
-      "description": "Write one paper of the shared library, with its sections. Any member.",
-      "description_ru": "Creates or updates a shared-library paper and its sections.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates or updates a shared-library paper and its sections.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:upsert_projection_ref",
-      "type": "mcp-tool",
-      "name": "upsert_projection_ref",
-      "title_ru": "upsert_projection_ref",
-      "description": "Bind an accessible knowledge object to its stable public projection.",
-      "description_ru": "Links an accessible knowledge object to its stable public view.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: links an accessible knowledge object to its stable public view.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:upsert_resource",
-      "type": "mcp-tool",
-      "name": "upsert_resource",
-      "title_ru": "upsert_resource",
-      "description": "Write one resource of the lab: a server, quota, account, license, dataset, budget.",
-      "description_ru": "Creates or updates a laboratory resource: a server, quota, account, license, dataset, or budget.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates or updates a laboratory resource: a server, quota, account, license, dataset, or budget.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:upsert_yonote_task",
-      "type": "mcp-tool",
-      "name": "upsert_yonote_task",
-      "title_ru": "upsert_yonote_task",
-      "description": "Create or reconcile one visible task row using the server credential.",
-      "description_ru": "Creates or reconciles a task row through the server’s Yonote account.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: creates or reconciles a task row through the server’s Yonote account.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
-      "id": "mcp-tool:who_works_on_what",
-      "type": "mcp-tool",
-      "name": "who_works_on_what",
-      "title_ru": "who_works_on_what",
-      "description": "People and the projects they belong to, for deciding who to hand work to.",
-      "description_ru": "Shows members and their projects to support an informed handoff.",
-      "what_is_special": "A typed operation on shared laboratory memory, with access controls and verifiable provenance. Related workflows: memory and knowledge maintenance, agents and infrastructure. Minimum check: schema validation. Purpose: shows members and their projects to support an informed handoff.",
-      "inputs": [
-        "Authenticated structured arguments"
-      ],
-      "outputs": [
-        "A typed result or write receipt"
-      ],
-      "execution_owner": "Lab Knowledge service",
-      "quality_gates": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Availability depends on the live service schema and the caller’s permissions",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance",
-        "agent-orchestration"
-      ],
-      "execution_owner_ru": "Lab Knowledge service",
-      "inputs_ru": [
-        "Authenticated structured arguments"
-      ],
-      "outputs_ru": [
-        "A typed result or write receipt"
-      ],
-      "quality_gates_ru": [
-        "Schema validation",
-        "ACL",
-        "Auditable provenance"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the live service schema and the caller’s permissions"
-      ]
-    },
-    {
       "id": "skill:agent-identifier",
       "type": "skill",
       "name": "agent-identifier",
@@ -5671,7 +2956,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "bug-detective",
       "title_ru": "bug-detective",
-      "description": "This skill should be used when the user asks to \"debug this\", \"fix this error\", \"investigate this bug\", \"troubleshoot this issue\", \"find the problem\", \"something is broken\", \"this isn't working\", \"why is this failing\", or reports errors/exceptions/bugs. Provides systematic debugging workflow and common error patterns.",
+      "description": "Investigates software failures, exceptions, and errors by tracing execution, reproducing the problem, and testing the suspected cause. Use when the user reports a crash, a traceback, an unexpected result, says 'this code throws an error', 'why does this fail', or asks to debug a failing function.",
       "description_ru": "Systematically diagnoses a complex bug and establishes its root cause before fixing it.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: systematically diagnoses a complex bug and establishes its root cause before fixing it.",
       "inputs": [
@@ -5717,8 +3002,8 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "call-notes",
       "title_ru": "call-notes",
-      "description": "Processes research call or meeting notes when the user asks to record a call or meeting, prepare call notes, identify work for students, or list tasks after a call. Keeps the private narrative in Obsidian, publishes approved hypotheses, experiments, evidence, and decisions to Lab Knowledge MCP, and creates laboratory tasks only on the project’s bound Yonote Kanban board without duplicates.",
-      "description_ru": "Turns a call into private meeting notes, approved Lab Knowledge objects, and tasks on the linked Yonote Kanban board.",
+      "description": "Turns research meeting notes or a call transcript into a private project record plus approved scientific records and tasks routed to their own destinations. Use when the user says 'record the call', 'call notes', 'go through the meeting', or pastes a transcript or meeting summary to be filed.",
+      "description_ru": "Turns a call into a private summary, approved records in the work, and issues in its GitLab repository.",
       "what_is_special": "A required structure of three independent extraction branches, an integrator, and a fresh skeptical reviewer keeps record types and private information separate.",
       "inputs": [
         "audio/VTT/transcript JSON",
@@ -5728,7 +3013,7 @@ window.LAB_ATLAS_DATA = {
       "outputs": [
         "private meeting note",
         "hypothesis/experiment/evidence/decision candidates",
-        "Yonote tasks"
+        "GitLab issues of the work"
       ],
       "execution_owner": "local call-notes orchestrator",
       "quality_gates": [
@@ -5744,7 +3029,7 @@ window.LAB_ATLAS_DATA = {
         }
       ],
       "known_limitations": [
-        "blocks if topology, bindings or Yonote task CRUD are unavailable"
+        "blocks if the work's clone or its GitLab issues are unavailable"
       ],
       "process_ids": [
         "discussion",
@@ -5771,7 +3056,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "caveman",
       "title_ru": "caveman",
-      "description": "Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman.",
+      "description": ">",
       "description_ru": "Enables extremely concise communication without losing technical precision.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: enables extremely concise communication without losing technical precision.",
       "inputs": [
@@ -5864,7 +3149,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "code-ingest",
       "title_ru": "code-ingest",
-      "description": "Use when the user provides a code repository, as a GitHub URL or a local or server path, and wants it added to the Obsidian Code library. A one-time detailed analysis creates structured Markdown notes explaining entry points, modules, and where to change particular behavior, without copying the code. Applies to requests to analyze a repository, document code, run code-ingest <url>, or add an external repository not yet recorded in Code/.",
+      "description": "Adds a code repository to the Obsidian code library with its purpose, usage, and links to research projects. Use when the user hands over a repo URL or path and says 'add to the code library', 'analyze the repository', or starts a project that uses a repo missing from Code/.",
       "description_ru": "Studies the supplied repository and extracts its structure, contracts, and essential context.",
       "what_is_special": "Creates a two-minute guide to an unfamiliar repository with immutable path:line permalinks and precise directions for changing code, without copying large fragments.",
       "inputs": [
@@ -5915,7 +3200,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "code-library",
       "title_ru": "code-library",
-      "description": "A reference for how the user runs and documents code. Explains which coding skills and rules apply, how the Obsidian Code library works, how a project hub records its repository and project-specific edits, and how experiments are monitored through plots, tables, and a working loop. Use for questions about the coding workflow, before running project experiments, or when joining a project with code.",
+      "description": "Finds documented repositories, execution patterns, and project links in the user's Obsidian code library. Use when the user asks 'how does repo X work', 'where is the code for this project', how to run or monitor experiments, or which code skills exist.",
       "description_ru": "Describes the user's established process for running, checking, and documenting code.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: experiment design, code and engineering, memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: describes the user's established process for running, checking, and documenting code.",
       "inputs": [
@@ -6009,7 +3294,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "command-development",
       "title_ru": "command-development",
-      "description": "This skill should be used when the user asks to \"create a slash command\", \"add a command\", \"write a custom command\", \"define command arguments\", \"use command frontmatter\", \"organize commands\", \"create command with file references\", \"interactive command\", \"use AskUserQuestion in command\", or needs guidance on slash command structure, YAML frontmatter fields, dynamic arguments, bash execution in commands, user interaction patterns, or command development best practices for Claude Code.",
+      "description": "Creates and repairs Claude Code slash commands, including their frontmatter, arguments, prompts, and local file references. Use when the user says 'create a slash command', 'add a command', 'fix my command arguments', or edits a markdown file under a commands directory.",
       "description_ru": "Creates and validates Claude Code commands with correct frontmatter, workflows, and documentation.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: creates and validates Claude Code commands with correct frontmatter, workflows, and documentation.",
       "inputs": [
@@ -6055,9 +3340,9 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "create-project",
       "title_ru": "create-project",
-      "description": "Creates or initializes a research project when asked to set up a project, paper, code repository, or Obsidian hub, including when a call introduces work absent from the catalog. First establish across all five locations that the project does not already exist under another name. For Brain Lab projects, also invoke lab-project-onboarding to bind the private local project idempotently to shared Lab Knowledge MCP and a Yonote project view whose Kanban is participants_only by default.",
-      "description_ru": "Creates a research project after checking for duplicates, then connects its repository, Obsidian, Lab Knowledge, and Yonote.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: project lifecycle, code and engineering, memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: creates a research project after checking for duplicates, then connects its repository, Obsidian, Lab Knowledge, and Yonote.",
+      "description": "Creates a research project, or repairs its local and shared setup, after checking that no such project already exists. Use when the user says 'create a project', 'new project', 'set up a project', 'set up a repo for a paper', or a project is missing its hub card, folders, or shared records.",
+      "description_ru": "Creates a work in the GitLab tree after checking that it does not exist yet, and asks who leads it.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and checks. Linked to processes: Project lifecycle, Code and engineering, Memory and knowledge maintenance. Minimal check: fully satisfy the SKILL.md contract. Purpose: Creates a work in the GitLab tree after checking that it does not exist yet, and asks who leads it.",
       "inputs": [
         "User request",
         "Project context"
@@ -6149,7 +3434,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "defuddle",
       "title_ru": "defuddle",
-      "description": "Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page.",
+      "description": "Extract readable Markdown from a web page with Defuddle when page navigation obscures the content.",
       "description_ru": "Extracts clean Markdown from a web page without navigation, advertising, or unnecessary markup.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: reading and ingestion. Minimum check: follow the full SKILL.md contract. Purpose: extracts clean Markdown from a web page without navigation, advertising, or unnecessary markup.",
       "inputs": [
@@ -6195,7 +3480,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "diagnose",
       "title_ru": "diagnose",
-      "description": "Disciplined diagnosis loop for hard bugs and performance regressions. Reproduce → minimise → hypothesise → instrument → fix → regression-test. Use when user says \"diagnose this\" / \"debug this\", reports a bug, says something is broken/throwing/failing, or describes a performance regression.",
+      "description": "Diagnoses hard bugs and performance regressions by building a reproducible feedback loop and testing competing causal hypotheses. Use when a bug is intermittent or resists a quick fix, the user says 'it is flaky', 'performance regressed', 'I cannot reproduce it', or an earlier fix attempt failed.",
       "description_ru": "Runs a disciplined diagnosis workflow for difficult bugs and performance problems.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: research direction, execution and monitoring, code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: runs a disciplined diagnosis workflow for difficult bugs and performance problems.",
       "inputs": [
@@ -6243,7 +3528,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "doc-coauthoring",
       "title_ru": "doc-coauthoring",
-      "description": "This skill should be used when the user asks to co-author documentation, draft a proposal, write a technical spec, create a decision doc or RFC, or structure a substantial document through iterative collaboration and reader testing.",
+      "description": "Co-authors a technical document, proposal, or specification through context gathering, targeted drafting, and reader-testing review. Use when the user says 'help me write a doc', 'draft a spec', 'write a proposal', 'RFC', or wants to iterate on a design document together.",
       "description_ru": "Organizes collaborative document drafting around the document type, reader, and available sources.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: results and evidence, scientific writing. Minimum check: follow the full SKILL.md contract. Purpose: organizes collaborative document drafting around the document type, reader, and available sources.",
       "inputs": [
@@ -6290,7 +3575,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "frontend-design",
       "title_ru": "frontend-design",
-      "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.",
+      "description": "Designs and implements polished, production-grade frontend interfaces with a coherent visual direction and real working code. Use when the user asks to build a component, page, landing page, dashboard or app UI, or wants a frontend that looks distinctive rather than generic.",
       "description_ru": "Creates distinctive production-quality web interfaces without generic visual templates.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering, presentations and posters. Minimum check: follow the full SKILL.md contract. Purpose: creates distinctive production-quality web interfaces without generic visual templates.",
       "inputs": [
@@ -6337,7 +3622,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "git-guardrails-claude-code",
       "title_ru": "git-guardrails-claude-code",
-      "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
+      "description": "Install Claude Code hooks that block selected destructive Git operations when the user requests guardrails.",
       "description_ru": "Installs hooks that block dangerous Git commands in Claude Code.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: installs hooks that block dangerous Git commands in Claude Code.",
       "inputs": [
@@ -6383,7 +3668,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "git-workflow",
       "title_ru": "git-workflow",
-      "description": "This skill should be used when the user asks to \"create git commit\", \"manage branches\", \"follow git workflow\", \"use Conventional Commits\", \"handle merge conflicts\", or asks about git branching strategies, version control best practices, pull request workflows. Provides comprehensive Git workflow guidance for team collaboration.",
+      "description": "Prepares commits, branches and pull requests following the repository's existing Git conventions, including Conventional Commits messages and merge strategy. Use when the user asks to write a commit message, name or create a branch, open a pull request, or asks how to handle merges in this project.",
       "description_ru": "Manages branches, commits, merges, and collaboration according to established Git conventions.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: manages branches, commits, merges, and collaboration according to established Git conventions.",
       "inputs": [
@@ -6429,7 +3714,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "google-workspace-mcp",
       "title_ru": "google-workspace-mcp",
-      "description": "Use to read or edit Google Docs from Claude, refresh expired Google Workspace MCP tokens, diagnose google-workspace MCP failures, or change OAuth scopes. Covers OAuth pitfalls such as Web versus Desktop clients, restricted scopes, browser caching, and test users, together with practical repair procedures.",
+      "description": "Reads and edits Google Docs and Drive files through the user-scope google-workspace MCP and repairs its authentication or connection. Use when the user asks to open or change a Google Doc, or when google-workspace tools report auth errors, missing tools or a failed connection.",
       "description_ru": "Configures and repairs Claude's MCP access to Google Docs and Drive, including OAuth and scopes.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: scientific writing, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: configures and repairs Claude's MCP access to Google Docs and Drive, including OAuth and scopes.",
       "inputs": [
@@ -6476,7 +3761,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "grill-me",
       "title_ru": "grill-me",
-      "description": "Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use when user wants to stress-test a plan, get grilled on their design, or mentions \"grill me\".",
+      "description": "Interviews the user relentlessly about a plan or design, walking each branch of the decision tree and proposing a recommended answer to every question. Use when the user says grill me, stress-test my plan, or wants to resolve assumptions and open decisions before building.",
       "description_ru": "Challenges a plan with questions until its assumptions, risks, and weaknesses are explicit.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: research direction, experiment design, results and evidence. Minimum check: follow the full SKILL.md contract. Purpose: challenges a plan with questions until its assumptions, risks, and weaknesses are explicit.",
       "inputs": [
@@ -6524,7 +3809,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "grill-with-docs",
       "title_ru": "grill-with-docs",
-      "description": "Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.",
+      "description": "Challenges a proposed plan or design against existing domain documents, terminology and implementation choices by asking one question at a time with recommended answers. Use when the user wants a design grilled against the docs or codebase, or says check this plan against our domain model.",
       "description_ru": "Checks a plan against the domain model and existing documentation, clarifying terminology and decisions.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: research direction, results and evidence, theory and derivations. Minimum check: follow the full SKILL.md contract. Purpose: checks a plan against the domain model and existing documentation, clarifying terminology and decisions.",
       "inputs": [
@@ -6572,7 +3857,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "handoff",
       "title_ru": "handoff",
-      "description": "Compact the current conversation into a handoff document for another agent to pick up.",
+      "description": "Summarizes the current conversation into a handoff document saved to a temporary file so a fresh agent can continue the work. Use when the user says hand this off, write a handoff, wrap up for the next session, or wants to continue in a new context window.",
       "description_ru": "Condenses the current conversation into a handoff that gives another agent enough context to continue.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: condenses the current conversation into a handoff that gives another agent enough context to continue.",
       "inputs": [
@@ -6670,7 +3955,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "hook-development",
       "title_ru": "hook-development",
-      "description": "This skill should be used when the user asks to \"create a hook\", \"add a PreToolUse/PostToolUse/Stop hook\", \"validate tool use\", \"implement prompt-based hooks\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"set up event-driven automation\", \"block dangerous commands\", or mentions hook events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, UserPromptSubmit, PreCompact, Notification). Provides comprehensive guidance for creating and implementing Claude Code plugin hooks with focus on advanced prompt-based hooks API.",
+      "description": "Builds and debugs Claude Code lifecycle hooks, covering event types, input payloads, JSON responses, exit codes and registration in settings or plugins. Use when the user asks to create a PreToolUse or PostToolUse hook, block or validate tool calls, or fix a hook that does not fire.",
       "description_ru": "Designs Claude Code hooks for events, tool checks, and controlled automation.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: designs Claude Code hooks for events, tool checks, and controlled automation.",
       "inputs": [
@@ -6716,7 +4001,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "improve-codebase-architecture",
       "title_ru": "improve-codebase-architecture",
-      "description": "Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.",
+      "description": "Finds architectural friction in an existing codebase and proposes deepening refactors that turn shallow modules into deep ones, improving testability and navigability. Use when the user asks to improve architecture, find refactoring opportunities, consolidate tightly coupled modules, or make the code easier to test.",
       "description_ru": "Identifies justified architecture improvements from the existing codebase's domain language and architecture decision records.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: results and evidence, code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: identifies justified architecture improvements from the existing codebase's domain language and architecture decision records.",
       "inputs": [
@@ -6763,7 +4048,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "json-canvas",
       "title_ru": "json-canvas",
-      "description": "Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian.",
+      "description": "Creates and edits Obsidian Canvas (.canvas) files with nodes, edges, groups, and layout following JSON Canvas Spec 1.0. Use when the user asks to make a canvas, add or connect nodes, group cards, rearrange a canvas layout, or fix a broken .canvas file.",
       "description_ru": "Creates and edits Obsidian JSON Canvas files with nodes, groups, and links.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: creates and edits Obsidian JSON Canvas files with nodes, groups, and links.",
       "inputs": [
@@ -6809,7 +4094,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "kaggle-learner",
       "title_ru": "kaggle-learner",
-      "description": "This skill should be used when the user asks to \"learn from Kaggle\", \"study Kaggle solutions\", \"analyze Kaggle competitions\", or mentions Kaggle competition URLs. Provides access to extracted knowledge from winning Kaggle solutions across NLP, CV, time series, tabular, and multimodal domains.",
+      "description": "Extracts reusable ML techniques, code patterns, and feature engineering ideas from Kaggle competition winning solutions and maps where they apply. Use when the user shares a Kaggle competition, asks to learn from top solutions, or wants competition tricks for their own model or pipeline.",
       "description_ru": "Studies Kaggle competitions and extracts techniques from winning solutions for different data types.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: literature search. Minimum check: follow the full SKILL.md contract. Purpose: studies Kaggle competitions and extracts techniques from winning solutions for different data types.",
       "inputs": [
@@ -6855,8 +4140,8 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "lab-knowledge",
       "title_ru": "lab-knowledge",
-      "description": "Use when the user asks Ask Lab, whether anyone has tested a hypothesis, what the laboratory knows, or wants to publish a research hypothesis, record experiment evidence, or connect shared laboratory knowledge with Yonote tasks. Keeps personal Obsidian drafts and Operon tasks separate from shared Lab Knowledge and Yonote.",
-      "description_ru": "Reads and publishes shared laboratory knowledge while preserving the boundaries between private Obsidian notes, Lab Knowledge, and Yonote tasks.",
+      "description": "Searches the laboratory's git knowledge base and writes into it through a pull request on a claim. Use when the user asks what the lab knows about something, or when work produces something the lab should keep — a finished run, a series of runs with a verdict, a derivation, a new claim, or a correction to one. Also use before writing anything into a work repository, the handbook or the journal, because it carries the canon of rules that the proposal gates enforce.",
+      "description_ru": "Searches the lab base and writes to it through a merge request: claims, runs, series, canon rules.",
       "what_is_special": "Defines the publication boundary between private notes and the shared typed evidence graph. Read-only Ask Lab has no side effects.",
       "inputs": [
         "research question or curated private draft"
@@ -6880,57 +4165,6 @@ window.LAB_ATLAS_DATA = {
         "experiment-design",
         "results",
         "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "User request",
-        "Project context"
-      ],
-      "outputs_ru": [
-        "A verified artifact appropriate to the task"
-      ],
-      "quality_gates_ru": [
-        "Follow the full SKILL.md contract"
-      ],
-      "known_limitations_ru": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
-        "Availability depends on the installation and runtime tools"
-      ]
-    },
-    {
-      "id": "skill:lab-project-onboarding",
-      "type": "skill",
-      "name": "lab-project-onboarding",
-      "title_ru": "lab-project-onboarding",
-      "description": "Create or repair the shared bindings and canonical Yonote card for a Brain Lab research project when a user asks to add a project to the lab, fix a project-card layout, create its MCP card, connect Obsidian with Lab Knowledge and Yonote, create a project Kanban, or make the setup reusable for another laboratory member. Provision idempotently through the server-side integration and preserve the private Obsidian to shared MCP to generated Yonote layer contract.",
-      "description_ru": "Creates or repairs project bindings between Lab Knowledge, Yonote, the repository, and personal Obsidian.",
-      "what_is_special": "Idempotently connects the MCP project, Yonote page, named Kanban board, collection, curated stub, and the project’s actual ASR glossary.",
-      "inputs": [
-        "project specification",
-        "member identity",
-        "approved visibility"
-      ],
-      "outputs": [
-        "stable project bindings",
-        "Yonote workspace",
-        "local curated/glossary records"
-      ],
-      "execution_owner": "project onboarding orchestrator",
-      "quality_gates": [
-        "single preview plan",
-        "replay-safe IDs",
-        "minimum real glossary",
-        "public page privacy audit"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
-        "project is not recording-ready until all three local artifacts exist"
-      ],
-      "process_ids": [
-        "project-lifecycle",
-        "knowledge-maintenance",
-        "agent-orchestration"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -6999,7 +4233,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "mcp-integration",
       "title_ru": "mcp-integration",
-      "description": "This skill should be used when the user asks to \"add MCP server\", \"integrate MCP\", \"configure MCP in plugin\", \"use .mcp.json\", \"set up Model Context Protocol\", \"connect external service\", mentions \"${CLAUDE_PLUGIN_ROOT} with MCP\", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.",
+      "description": "Configures and debugs MCP server connections for Claude Code plugins, covering .mcp.json setup, server types, and tool exposure. Use when the user asks to add an MCP server to a plugin, connect an external API or database through MCP, or fix an MCP server that fails to connect or shows no tools.",
       "description_ru": "Adds and configures MCP servers and their tools in Claude Code plugins.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: experiment design, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: adds and configures MCP servers and their tools in Claude Code plugins.",
       "inputs": [
@@ -7046,7 +4280,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "ml-paper-writing",
       "title_ru": "ml-paper-writing",
-      "description": "Write publication-ready ML/AI papers for NeurIPS, ICML, ICLR, ACL, AAAI, COLM. Use when drafting papers from research repos, conducting literature reviews, finding related work, verifying citations, or preparing camera-ready submissions. Includes LaTeX templates, citation verification workflows, and paper discovery/evaluation criteria.",
+      "description": "Writing an ML research paper as an argument: finding the one-sentence contribution, shaping the narrative, structuring sections, and keeping every citation real. Use when the user asks to draft, restructure or sharpen a paper or any of its sections, to turn results into a story, or to check that the claims the text makes are the ones the evidence supports. Not about venue formatting or style files.",
       "description_ru": "Prepares ML/AI papers for leading conferences, including LaTeX, literature, citations, and camera-ready versions.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: scientific writing, publication and communication. Minimum check: follow the full SKILL.md contract. Purpose: prepares ML/AI papers for leading conferences, including LaTeX, literature, citations, and camera-ready versions.",
       "inputs": [
@@ -7093,7 +4327,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-bases",
       "title_ru": "obsidian-bases",
-      "description": "Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.",
+      "description": "Creates and edits Obsidian Bases (.base) files with filters, formulas, views, and summaries in valid YAML. Use when the user asks to make a database-style view of notes, build a table or cards view, filter notes by tag, folder, or property, or add computed columns to a .base file.",
       "description_ru": "Creates and edits Obsidian Bases with views, filters, formulas, and summaries.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: creates and edits Obsidian Bases with views, filters, formulas, and summaries.",
       "inputs": [
@@ -7139,7 +4373,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-cli",
       "title_ru": "obsidian-cli",
-      "description": "Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.",
+      "description": "Operates a running Obsidian instance through the obsidian command line for vault operations and plugin debugging. Use when the user asks to create, read, search, or move notes from the terminal, reload a plugin, inspect app state, or test and debug an Obsidian plugin or theme.",
       "description_ru": "Manages notes, tasks, properties, and plugin development through the Obsidian CLI.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering, memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: manages notes, tasks, properties, and plugin development through the Obsidian CLI.",
       "inputs": [
@@ -7186,7 +4420,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-experiment-log",
       "title_ru": "obsidian-experiment-log",
-      "description": "Use this skill when the user discusses experiment design, ablations, training runs, evaluation, baselines, metrics, failures, or result interpretation that should be logged into Obsidian experiment and result notes. Covers both the note structure and the operational workflow for launching, monitoring, and post-mortem of multi-hour ML runs on shared servers.",
+      "description": "Records an experiment's protocol, progress snapshots, results, and next decision in its canonical Obsidian project log. Use when the user launches, monitors, or finishes a training run, asks to log an experiment, update a results table, or promote a finished result into a stable finding.",
       "description_ru": "Documents the design, execution, monitoring, and post-mortem of long-running ML experiments in Obsidian.",
       "what_is_special": "One contract connects an actual remote run to a durable scientific record while assigning narrative writing, final tables, and plot updates to separate roles.",
       "inputs": [
@@ -7289,7 +4523,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-literature-workflow",
       "title_ru": "obsidian-literature-workflow",
-      "description": "Use this skill when the user keeps paper notes inside an Obsidian project knowledge base and wants filesystem-first literature review, explicit agent-first Zotero ingestion, `Papers/` plus `Knowledge/` synthesis, collection-wide normalization, and a default literature canvas without Obsidian MCP.",
+      "description": "Develops project-linked reading notes and literature synthesis from papers stored in the Obsidian knowledge base or Zotero. Use when the user says their papers are in Obsidian, asks to review notes under Papers, or wants literature notes, comparisons, or a related-work summary tied to a project.",
       "description_ru": "Organizes a filesystem-first literature review, Zotero ingestion, synthesis, and Canvas within the project's Obsidian knowledge base.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: reading and ingestion, memory and knowledge maintenance, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: organizes a filesystem-first literature review, Zotero ingestion, synthesis, and Canvas within the project's Obsidian knowledge base.",
       "inputs": [
@@ -7337,7 +4571,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-markdown",
       "title_ru": "obsidian-markdown",
-      "description": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.",
+      "description": "Writes and edits Obsidian Flavored Markdown with valid wikilinks, embeds, properties, callouts, comments, and tables. Use when the user asks to create or fix a note for the vault, add a callout, embed a file, write frontmatter properties, or repair broken wikilinks.",
       "description_ru": "Creates Obsidian Markdown with wikilinks, embeds, callouts, properties, and tags.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: creates Obsidian Markdown with wikilinks, embeds, callouts, properties, and tags.",
       "inputs": [
@@ -7383,7 +4617,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-project-bootstrap",
       "title_ru": "obsidian-project-bootstrap",
-      "description": "This skill should be used when the user asks to start a new research project, import an existing code-plus-Markdown repository into Obsidian, or bind the current repository to a compact research knowledge base for future syncing.",
+      "description": "Creates or repairs the Obsidian knowledge base and folder mappings for an existing research repository. Use when the user says start a new research project, asks to bind a repo to the vault, or finds that a project has no hub card or its mapping is broken.",
       "description_ru": "Creates a compact Obsidian project knowledge base or connects an existing research repository to it.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: project lifecycle, code and engineering, memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: creates a compact Obsidian project knowledge base or connects an existing research repository to it.",
       "inputs": [
@@ -7478,7 +4712,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "obsidian-project-memory",
       "title_ru": "obsidian-project-memory",
-      "description": "This skill should be used when the user asks to maintain an Obsidian knowledge base for a research project, import an existing research repository into Obsidian, keep project memory or daily notes synchronized, summarize project context into durable notes, or update experiments, results, papers, writing, and plans in an Obsidian vault without requiring MCP.",
+      "description": "Maintains canonical project context and durable research decisions in the mapped Obsidian knowledge base. Use when the user discusses project state, records a decision or experiment outcome, asks to update the hub card or plan notes, or wants past project context saved.",
       "description_ru": "Maintains project memory, plans, experiments, results, manuscripts, and daily notes in Obsidian through filesystem access.",
       "what_is_special": "Separates deterministic state management from agent-written synthesis and keeps a small set of canonical notes rather than mirroring every file.",
       "inputs": [
@@ -7628,7 +4862,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "operon-obsidian-setup",
       "title_ru": "operon-obsidian-setup",
-      "description": "Use to set up Operon in an Obsidian vault as configured by the laboratory, or reproduce the setup on a new machine. Includes flat project tags without a parentTask hierarchy, a My Tasks table dashboard, service-link badges on project pages, emoji task icons, and automatic archiving at day boundaries. Applies plugin settings in data.json, templates, a CSS snippet, optional main.js display patches, and an optional macOS launchd archiver. Applies to requests to configure Operon or reproduce the Obsidian task and project-page setup.",
+      "description": "Installs or repairs the laboratory's Operon task boards and project views in an Obsidian vault. Use when the user sets up a new vault, asks to install Operon or the Reading and Personal boards, or reports that boards, plugins, or the startup layout are broken.",
       "description_ru": "Reproduces the laboratory's Operon setup in Obsidian: a task dashboard, project tags, badges, icons, and automatic archiving.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: reproduces the laboratory's Operon setup in Obsidian: a task dashboard, project tags, badges, icons, and automatic archiving.",
       "inputs": [
@@ -7674,7 +4908,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "paper-ingest",
       "title_ru": "paper-ingest",
-      "description": "Ingest papers from AlphaXiv/arXiv into Zotero + Obsidian. Trigger when user provides an arXiv URL or AlphaXiv folder link and wants a full literature note created. Handles BibTeX from external APIs, PDF download, tex-source figure/table extraction, creation of a proper Zotero parent paper item with child PDF attachment, duplicate prevention, an especially detailed Obsidian note with 8-section AI Explanation written by a specialised multi-agent pass (recon router, section writers, adversarial verifier), the AlphaXiv mirror write, and a strict BibTeX audit at the end.",
+      "description": "Analysis of a single paper in Zotero and Obsidian following the lab canon. Use when asked to analyze a paper from an arXiv or AlphaXiv link, add a paper to the library, or create a note for a paper.",
       "description_ru": "Imports an arXiv or AlphaXiv paper into Zotero and Obsidian, analyzes PDF and TeX, creates a detailed note, and adds an AlphaXiv mirror.",
       "what_is_special": "An end-to-end integrity workflow checks the Zotero parent item and PDF, external BibTeX, TeX figures, code URL, an eight-section multi-agent note, the AlphaXiv mirror, and the shared-corpus write.",
       "inputs": [
@@ -7825,7 +5059,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "paper-to-social",
       "title_ru": "paper-to-social",
-      "description": "Use to turn a research paper into promotional posts for Telegram, Twitter/X, or Habr. LinkedIn is paused at the user’s request. Covers requests for an article post, a thread, or content for any one of these platforms. Produces ready-to-paste posts in the project’s Obsidian folder, with figures from the arXiv version and wording that matches the user’s voice.",
+      "description": "Creates Telegram, X, or Habr posts from a research paper using verified figures and the user's writing style. Use when the user asks to write a post about a paper, announce a publication, promote a result on Telegram or Twitter, or draft a Habr article.",
       "description_ru": "Turns a paper into ready-to-publish Telegram, X, or Habr posts with figures and wording in the user’s voice.",
       "what_is_special": "First assembles one verified source packet, then adapts it separately for Telegram, X, and Habr in the author’s voice.",
       "inputs": [
@@ -7875,7 +5109,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "pdf-reader",
       "title_ru": "pdf-reader",
-      "description": "This skill should be used when the user asks to \"read this PDF\", \"extract text from PDF\", \"what's in this PDF\", or provides a PDF file path and wants to understand its contents. Extracts structured text from PDF files using PyMuPDF with pypdf fallback.",
+      "description": "Reads and extracts text from PDF files with the local PyMuPDF workflow, including page-level inspection. Use when the user gives a .pdf path and asks to read it, summarize it, extract its text, or find out what a specific page contains.",
       "description_ru": "Extracts structured text from PDFs with PyMuPDF, falling back to pypdf.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: reading and ingestion. Minimum check: follow the full SKILL.md contract. Purpose: extracts structured text from PDFs with PyMuPDF, falling back to pypdf.",
       "inputs": [
@@ -7921,7 +5155,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "planning-with-files",
       "title_ru": "planning-with-files",
-      "description": "Transforms workflow to use Manus-style persistent markdown files for planning, progress tracking, and knowledge storage. Use when starting complex tasks, multi-step projects, research tasks, or when the user mentions planning, organizing work, tracking progress, or wants structured output.",
+      "description": "Maintains durable plans and progress in markdown files such as task_plan.md for work that spans many steps or sessions. Use when the user starts a complex multi-phase task, asks to plan and track progress on disk, or needs to resume work after a context reset.",
       "description_ru": "Manages complex work through persistent Markdown files for the plan, progress, and accumulated knowledge.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: experiment design. Minimum check: follow the full SKILL.md contract. Purpose: manages complex work through persistent Markdown files for the plan, progress, and accumulated knowledge.",
       "inputs": [
@@ -7967,7 +5201,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "plugin-structure",
       "title_ru": "plugin-structure",
-      "description": "This skill should be used when the user asks to \"create a plugin\", \"scaffold a plugin\", \"understand plugin structure\", \"organize plugin components\", \"set up plugin.json\", \"use ${CLAUDE_PLUGIN_ROOT}\", \"add commands/agents/skills/hooks\", \"configure auto-discovery\", or needs guidance on plugin directory layout, manifest configuration, component organization, file naming conventions, or Claude Code plugin architecture best practices.",
+      "description": "Organizes a Claude Code plugin's manifest, commands, agents, skills, and hooks into the standard directory layout. Use when the user asks to create a plugin, fix plugin.json, decide where a component belongs, or debug why plugin components are not discovered.",
       "description_ru": "Designs a Claude Code plugin's structure: manifest, commands, agents, skills, hooks, and MCP configuration.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: designs a Claude Code plugin's structure: manifest, commands, agents, skills, hooks, and MCP configuration.",
       "inputs": [
@@ -8114,7 +5348,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "prototype",
       "title_ru": "prototype",
-      "description": "Build a throwaway prototype to flesh out a design before committing to it. Routes between two branches — a runnable terminal app for state/business-logic questions, or several radically different UI variations toggleable from one route. Use when the user wants to prototype, sanity-check a data model or state machine, mock up a UI, explore design options, or says \"prototype this\", \"let me play with it\", \"try a few designs\".",
+      "description": "Builds a disposable terminal or UI prototype that answers a specific design question about logic, state models or interface feel. Use when the user says 'prototype this', 'try a quick mock', 'does this state model feel right' or wants to compare UI variants before committing to an implementation.",
       "description_ru": "Creates a disposable interactive prototype of behavior or several switchable interface variants.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: creates a disposable interactive prototype of behavior or several switchable interface variants.",
       "inputs": [
@@ -8206,7 +5440,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "restore-session",
       "title_ru": "restore-session",
-      "description": "Use when the user asks to \"restore session\", \"continue previous conversation\", \"recall what we discussed\", \"load past context\", or wants to resume work from a prior Claude session. Lists saved conversations and loads selected one as context.",
+      "description": "Recovers a prior agent session and loads its conversation as context for the current one. Use when the user says 'restore session', 'continue from last time', 'recall previous context' or wants to resume work on a topic discussed in an earlier session.",
       "description_ru": "Finds a saved session and loads its context so work can continue.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: finds a saved session and loads its context so work can continue.",
       "inputs": [
@@ -8252,7 +5486,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "results-analysis",
       "title_ru": "results-analysis",
-      "description": "This skill should be used when the user asks to \"analyze experimental results\", \"run strict statistical analysis\", \"compare model performance\", \"generate scientific figures\", \"check significance\", \"do ablation analysis\", or mentions interpreting experiment data with rigorous statistics and visualization. It focuses on strict analysis bundles, not Results-section prose.",
+      "description": "Runs strict, evidence-first analysis of ML experiment artifacts and produces an analysis report, stats appendix, figure catalog and figures. Use when the user asks to analyze experiment results, compare metrics across runs, check uncertainty or significance, or build figures before writing any conclusions.",
       "description_ru": "Performs rigorous statistical analysis of experiments, comparisons, ablations, and scientific visualization.",
       "what_is_special": "Produces evidence artifacts rather than manuscript text. Requires actual figures, units, seed counts, intervals, effect sizes, and justified statistical tests.",
       "inputs": [
@@ -8305,7 +5539,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "results-report",
       "title_ru": "results-report",
-      "description": "This skill should be used when the user asks to \"write an experiment report\", \"summarize experimental results\", \"do experiment retrospection\", \"write a results report\", or mentions turning completed experiment artifacts into a structured, decision-oriented research report. It assumes strict analysis should come from `results-analysis` first.",
+      "description": "Writes a complete project-level experiment report from verified analysis artifacts, with a decision-oriented narrative and unresolved limitations. Use when the user asks for an experiment wrap-up, a results report or a summary after results-analysis is done and the experiments are finished.",
       "description_ru": "Turns a completed analysis bundle into a structured report that supports a decision.",
       "what_is_special": "Turns an already verified analysis bundle into a decision-oriented retrospective without recomputing or embellishing the evidence.",
       "inputs": [
@@ -8409,7 +5643,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "setup-pre-commit",
       "title_ru": "setup-pre-commit",
-      "description": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
+      "description": "Set up Husky and lint-staged checks when the user requests commit-time formatting or validation.",
       "description_ru": "Configures Husky and lint-staged for formatting, type checks, and tests before commits.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: configures Husky and lint-staged for formatting, type checks, and tests before commits.",
       "inputs": [
@@ -8641,7 +5875,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "ui-ux-pro-max",
       "title_ru": "ui-ux-pro-max",
-      "description": "This skill should be used when the user asks to design or review a UI, create a landing page or dashboard, choose colors or typography, improve accessibility, or implement polished frontend interfaces with a clear design system.",
+      "description": "Turns a vague UI request into a concrete design system with palette, typography, layout and implementation guidance, and reviews existing UIs for UX problems. Use when the user asks to design a page, pick colors and fonts, review accessibility or interaction patterns, or fix a UI that looks off.",
       "description_ru": "Develops a design system and guidance for interface layout, typography, palette, accessibility, and frontend finish.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: develops a design system and guidance for interface layout, typography, palette, accessibility, and frontend finish.",
       "inputs": [
@@ -8687,7 +5921,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "uv-package-manager",
       "title_ru": "uv-package-manager",
-      "description": "Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, or optimizing Python development workflows with uv.",
+      "description": "Manages Python dependencies, virtual environments, interpreters and project packaging with uv. Use when the user sets up a new Python project, asks to replace pip or venv with uv, installs or locks dependencies, runs uv sync or uv add, or wants faster dependency resolution.",
       "description_ru": "Manages Python dependencies, virtual environments, and development workflows with uv.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: manages Python dependencies, virtual environments, and development workflows with uv.",
       "inputs": [
@@ -8781,7 +6015,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "want-2-read",
       "title_ru": "want-2-read",
-      "description": "Use to process the reading queue on the Operon Reading board. Synchronize the AlphaXiv Want to read folder into the board, select cards in the Queue column that have no library link, fully ingest them into Zotero and Obsidian through paper-ingest, classify them into the current Literature folders, mirror placement to AlphaXiv, and write the final wikilink, Zotero link, and detailed description back to each card.",
+      "description": "Processes papers from the Operon reading board selected by the owner, following the current ingest rules for Zotero, Obsidian, and the lab base. Use when the user writes 'want-2-read', 'go through the reading queue', 'process the papers from the Queue', or asks to accept the marked Reading cards into the library.",
       "description_ru": "Processes the Operon reading queue, completes paper-ingest, and synchronizes Zotero, Obsidian, and AlphaXiv.",
       "what_is_special": "Combines AlphaXiv Want to read with the Operon Queue, then runs one paper-ingest worker per paper and a separate reviewer for the batch.",
       "inputs": [
@@ -8833,7 +6067,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "web-design-reviewer",
       "title_ru": "web-design-reviewer",
-      "description": "This skill enables visual inspection of websites running locally or remotely to identify and fix design issues. Triggers on requests like \"review website design\", \"check the UI\", \"fix the layout\", \"find design problems\". Detects issues with responsive design, accessibility, visual consistency, and layout breakage, then performs fixes at the source code level.",
+      "description": "Inspects a rendered website in a browser and fixes demonstrated layout, visual and responsive design problems in the source code. Use when the user says 'review this page's design', 'the layout is broken on mobile', 'check responsive behavior' or asks to find and fix visual issues on a running site.",
       "description_ru": "Visually inspects a web interface, finds responsive layout, accessibility, and consistency problems, and fixes them in the source.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: review and rebuttal. Minimum check: follow the full SKILL.md contract. Purpose: visually inspects a web interface, finds responsive layout, accessibility, and consistency problems, and fixes them in the source.",
       "inputs": [
@@ -8879,7 +6113,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "webapp-testing",
       "title_ru": "webapp-testing",
-      "description": "Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.",
+      "description": "Verify a local web app's behavior in a browser, using rendered state and relevant interaction checks.",
       "description_ru": "Tests local web applications with Playwright, checking behavior, screenshots, and browser logs.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: tests local web applications with Playwright, checking behavior, screenshots, and browser logs.",
       "inputs": [
@@ -9061,140 +6295,6 @@ window.LAB_ATLAS_DATA = {
       ]
     },
     {
-      "id": "system:doc:joining",
-      "type": "documentation",
-      "name": "Joining the lab's knowledge base",
-      "title_ru": "Connecting to the knowledge base",
-      "description": "The base is a shared, typed record of what the lab claims, ran, measured and decided, plus a library of read papers. Your agents read it and write to it over MCP; you set it up once.",
-      "description_ru": "Briefly explains the shared typed database of claims, experiments, measurements, decisions, and analyzed papers.",
-      "what_is_special": "A normative description used by people and agents to check the shared behavior contract. Related workflow: memory and knowledge maintenance. Minimum check: verify against sources and keep it current. Purpose: briefly explains the shared typed database of claims, experiments, measurements, decisions, and analyzed papers.",
-      "inputs": [
-        "Information need"
-      ],
-      "outputs": [
-        "Operational instructions"
-      ],
-      "execution_owner": "A person or an agent reading the guide",
-      "quality_gates": [
-        "Verify against sources and keep it current"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/joining.md"
-        }
-      ],
-      "known_limitations": [
-        "Documentation may lag behind the runtime"
-      ],
-      "process_ids": [
-        "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "A person or an agent reading the guide",
-      "inputs_ru": [
-        "Information need"
-      ],
-      "outputs_ru": [
-        "Operational instructions"
-      ],
-      "quality_gates_ru": [
-        "Verify against sources and keep it current"
-      ],
-      "known_limitations_ru": [
-        "Documentation may lag behind the runtime"
-      ]
-    },
-    {
-      "id": "system:doc:joining-ru",
-      "type": "documentation",
-      "name": "Laboratory knowledge base: getting started",
-      "title_ru": "Laboratory knowledge base: getting started",
-      "description": "The laboratory's shared memory, read and written by people's agents. Records form linked chains, and each type has its own tool:",
-      "description_ru": "A Russian-language guide to connecting for the first time and writing the main object types through MCP.",
-      "what_is_special": "A normative description used by people and agents to check the shared behavior contract. Related workflow: memory and knowledge maintenance. Minimum check: verify against sources and keep it current. Purpose: a Russian-language guide to connecting for the first time and writing the main object types through MCP.",
-      "inputs": [
-        "Information need"
-      ],
-      "outputs": [
-        "Operational instructions"
-      ],
-      "execution_owner": "A person or an agent reading the guide",
-      "quality_gates": [
-        "Verify against sources and keep it current"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/joining-ru.md"
-        }
-      ],
-      "known_limitations": [
-        "Documentation may lag behind the runtime"
-      ],
-      "process_ids": [
-        "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "A person or an agent reading the guide",
-      "inputs_ru": [
-        "Information need"
-      ],
-      "outputs_ru": [
-        "Operational instructions"
-      ],
-      "quality_gates_ru": [
-        "Verify against sources and keep it current"
-      ],
-      "known_limitations_ru": [
-        "Documentation may lag behind the runtime"
-      ]
-    },
-    {
-      "id": "system:doc:knowledge-base",
-      "type": "documentation",
-      "name": "Feeding the shared knowledge base",
-      "title_ru": "Adding to the shared knowledge base",
-      "description": "The lab runs a shared knowledge service (Lab Knowledge MCP, 59 tools) that holds two corpora side by side: the lab's own records — hypotheses, experiments, evidence, derivations, decisions — and the library of read papers with the claims those papers make. Search answers over both.",
-      "description_ru": "Describes the two Lab Knowledge corpora: laboratory knowledge and the library of analyzed papers.",
-      "what_is_special": "A normative description used by people and agents to check the shared behavior contract. Related workflows: results and evidence, theory and derivations, memory and knowledge maintenance. Minimum check: verify against sources and keep it current. Purpose: describes the two Lab Knowledge corpora, laboratory knowledge and the library of analyzed papers.",
-      "inputs": [
-        "Information need"
-      ],
-      "outputs": [
-        "Operational instructions"
-      ],
-      "execution_owner": "A person or an agent reading the guide",
-      "quality_gates": [
-        "Verify against sources and keep it current"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/knowledge-base.md"
-        }
-      ],
-      "known_limitations": [
-        "Documentation may lag behind the runtime"
-      ],
-      "process_ids": [
-        "results",
-        "theory",
-        "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "A person or an agent reading the guide",
-      "inputs_ru": [
-        "Information need"
-      ],
-      "outputs_ru": [
-        "Operational instructions"
-      ],
-      "quality_gates_ru": [
-        "Verify against sources and keep it current"
-      ],
-      "known_limitations_ru": [
-        "Documentation may lag behind the runtime"
-      ]
-    },
-    {
       "id": "system:doc:llm-providers",
       "type": "documentation",
       "name": "Which model does what, and what it costs",
@@ -9223,50 +6323,6 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "code-engineering"
-      ],
-      "execution_owner_ru": "A person or an agent reading the guide",
-      "inputs_ru": [
-        "Information need"
-      ],
-      "outputs_ru": [
-        "Operational instructions"
-      ],
-      "quality_gates_ru": [
-        "Verify against sources and keep it current"
-      ],
-      "known_limitations_ru": [
-        "Documentation may lag behind the runtime"
-      ]
-    },
-    {
-      "id": "system:doc:model-ru",
-      "type": "documentation",
-      "name": "How the database works: a complete map",
-      "title_ru": "The complete knowledge base model",
-      "description": "This document explains what the system contains and why. It goes beyond what you need for a first record; joining-ru.md covers that in ten minutes and three calls. Read this after making your first record if you need to understand the additional entities and the relationships between them.",
-      "description_ru": "Explains the purpose, entities, relationships, constraints, and known usability issues of Lab Knowledge in detail.",
-      "what_is_special": "A normative description used by people and agents to check the shared behavior contract. Related workflow: memory and knowledge maintenance. Minimum check: verify against sources and keep it current. Purpose: explains the purpose, entities, relationships, constraints, and known usability issues of Lab Knowledge in detail.",
-      "inputs": [
-        "Information need"
-      ],
-      "outputs": [
-        "Operational instructions"
-      ],
-      "execution_owner": "A person or an agent reading the guide",
-      "quality_gates": [
-        "Verify against sources and keep it current"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/model-ru.md"
-        }
-      ],
-      "known_limitations": [
-        "Documentation may lag behind the runtime"
-      ],
-      "process_ids": [
-        "knowledge-maintenance"
       ],
       "execution_owner_ru": "A person or an agent reading the guide",
       "inputs_ru": [
@@ -9368,86 +6424,6 @@ window.LAB_ATLAS_DATA = {
       ],
       "known_limitations_ru": [
         "The local working tree may be ahead of the published GitHub version"
-      ]
-    },
-    {
-      "id": "system:service:lab-knowledge",
-      "type": "service",
-      "name": "lab-knowledge",
-      "title_ru": "lab-knowledge",
-      "description": "Private, access-controlled research knowledge exposed to personal agents over Streamable HTTP MCP. This service is the canonical store for shared research claims and provenance. Private Yonote boards are canonical for shared tasks; this service stores only optional provider-neutral external work-item references.",
-      "description_ru": "The canonical protected store of shared research claims and provenance, accessible to personal agents through MCP.",
-      "what_is_special": "A persistent system component with its own state and responsibility boundaries. Related workflow: memory and knowledge maintenance. Minimum check: service tests and health checks. Purpose: the canonical protected store of shared research claims and provenance, accessible to personal agents through MCP.",
-      "inputs": [
-        "Service request"
-      ],
-      "outputs": [
-        "Service response"
-      ],
-      "execution_owner": "Service runtime",
-      "quality_gates": [
-        "Service tests and health checks"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Runtime state must be checked live",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "Service runtime",
-      "inputs_ru": [
-        "Service request"
-      ],
-      "outputs_ru": [
-        "Service response"
-      ],
-      "quality_gates_ru": [
-        "Service tests and health checks"
-      ],
-      "known_limitations_ru": [
-        "Runtime state must be checked live"
-      ]
-    },
-    {
-      "id": "system:service:lab-portal",
-      "type": "service",
-      "name": "lab-portal",
-      "title_ru": "lab-portal",
-      "description": "Service source present in the repository working tree.",
-      "description_ru": "Issues one-time invitations to members and obtains Lab Knowledge access keys without storing the keys themselves.",
-      "what_is_special": "A persistent system component with its own state and responsibility boundaries. Related workflow: code and engineering. Minimum check: service tests and health checks. Purpose: issues one-time invitations to members and obtains Lab Knowledge access keys without storing the keys themselves.",
-      "inputs": [
-        "Service request"
-      ],
-      "outputs": [
-        "Service response"
-      ],
-      "execution_owner": "Service runtime",
-      "quality_gates": [
-        "Service tests and health checks"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Runtime state must be checked live",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "code-engineering"
-      ],
-      "execution_owner_ru": "Service runtime",
-      "inputs_ru": [
-        "Service request"
-      ],
-      "outputs_ru": [
-        "Service response"
-      ],
-      "quality_gates_ru": [
-        "Service tests and health checks"
-      ],
-      "known_limitations_ru": [
-        "Runtime state must be checked live"
       ]
     },
     {

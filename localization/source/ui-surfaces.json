@@ -163,10 +163,17 @@
       ]
     },
     {
-      "id": "38003960fa04",
-      "text": "\n        <ol class=\"sp-recall-path\"><li><span>Короткий запрос</span><p>Ключевые слова, проект и нужная тема.</p></li><li><span>Смысл и слова</span><p>Векторные кандидаты; совпадения слов уточняют порядок.</p></li><li><span>Исходный фрагмент</span><p>Текст, место в памяти и ссылка на источник.</p></li><li><span>Проверка сейчас</span><p>Статус сервера, код и результаты могли измениться.</p></li></ol>\n        <div class=\"sp-memory-foot\"><div><h3>Нужно быстро продолжить?</h3><p>Последние записи дневника дают ближайшие действия. Поиск по проекту помогает восстановить более старое решение.</p></div><div><h3>Нужно понять связь?</h3><p>Запрос к графу находит отношения сущностей и их историю. Старый факт можно завершить по времени, сохранив его происхождение.</p></div></div>\n        <details class=\"sp-fold\"><summary>Хранилище и инструменты <span>Технические детали</span></summary><div class=\"sp-fold-body\"><p>В проверенной установке тексты и векторы лежат в локальном Chroma. Поиск сначала получает кандидатов по смыслу; тематические сводки могут поднять связанные источники, а BM25 уточняет порядок по словам. Это поиск сохранённого материала, без генерации нового текста внутри поискового инструмента.</p><p>Типизированные связи с периодом действия хранятся отдельно в SQLite. Дневник может быть записан в компактном формате AAAK; исходные фрагменты сохраняют обычным текстом, чтобы их можно было прочитать и проверить.</p><dl class=\"sp-api\"><dt>Записать</dt><dd>mempalace_diary_write · mempalace_add_drawer · mempalace_kg_add</dd><dt>Вспомнить</dt><dd>mempalace_diary_read · mempalace_search · mempalace_get_drawer · mempalace_kg_query</dd></dl></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>MemPalace возвращает историю работы. Общие научные утверждения и их основания ведутся в Lab Knowledge MCP.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"https://github.com/MemPalace/mempalace\" target=\"_blank\" rel=\"noopener\">MemPalace на GitHub ↗</a></nav></footer>\n    </div>",
+      "id": "31e7cfac529e",
+      "text": "\n        <ol class=\"sp-recall-path\"><li><span>Короткий запрос</span><p>Ключевые слова, проект и нужная тема.</p></li><li><span>Смысл и слова</span><p>Векторные кандидаты; совпадения слов уточняют порядок.</p></li><li><span>Исходный фрагмент</span><p>Текст, место в памяти и ссылка на источник.</p></li><li><span>Проверка сейчас</span><p>Статус сервера, код и результаты могли измениться.</p></li></ol>\n        <div class=\"sp-memory-foot\"><div><h3>Нужно быстро продолжить?</h3><p>Последние записи дневника дают ближайшие действия. Поиск по проекту помогает восстановить более старое решение.</p></div><div><h3>Нужно понять связь?</h3><p>Запрос к графу находит отношения сущностей и их историю. Старый факт можно завершить по времени, сохранив его происхождение.</p></div></div>\n        <details class=\"sp-fold\"><summary>Хранилище и инструменты <span>Технические детали</span></summary><div class=\"sp-fold-body\"><p>В проверенной установке тексты и векторы лежат в локальном Chroma. Поиск сначала получает кандидатов по смыслу; тематические сводки могут поднять связанные источники, а BM25 уточняет порядок по словам. Это поиск сохранённого материала, без генерации нового текста внутри поискового инструмента.</p><p>Типизированные связи с периодом действия хранятся отдельно в SQLite. Дневник может быть записан в компактном формате AAAK; исходные фрагменты сохраняют обычным текстом, чтобы их можно было прочитать и проверить.</p><dl class=\"sp-api\"><dt>Записать</dt><dd>mempalace_diary_write · mempalace_add_drawer · mempalace_kg_add</dd><dt>Вспомнить</dt><dd>mempalace_diary_read · mempalace_search · mempalace_get_drawer · mempalace_kg_query</dd></dl></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>MemPalace возвращает историю работы. Общие научные утверждения и их основания живут в GitLab лаборатории.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"https://github.com/MemPalace/mempalace\" target=\"_blank\" rel=\"noopener\">MemPalace на GitHub ↗</a></nav></footer>\n    </div>",
       "paths": [
         "surface-pages.js:34"
+      ]
+    },
+    {
+      "id": "252824ec3dfc",
+      "text": "Задачи GitLab",
+      "paths": [
+        "surface-pages.js:45"
       ]
     },
     {
@@ -177,50 +184,50 @@
       ]
     },
     {
-      "id": "8e0c1f0e5864",
-      "text": "У каждой работы — свой дом.<br>У каждой задачи — понятный результат.",
+      "id": "ac2cf772d476",
+      "text": "У каждой работы — свой репозиторий.<br>У каждой задачи — понятный результат.",
       "paths": [
         "surface-pages.js:45"
       ]
     },
     {
-      "id": "805531461c44",
-      "text": "Научная работа",
+      "id": "6fb69d85e030",
+      "text": "Группа верхнего уровня",
       "paths": [
         "surface-pages.js:48"
       ]
     },
     {
-      "id": "882ea97b2ac5",
-      "text": "Исследования",
+      "id": "bc0c40581492",
+      "text": "Направление",
       "paths": [
         "surface-pages.js:48"
       ]
     },
     {
-      "id": "d7c6b7913202",
-      "text": "Что изучаем и какой вопрос решаем.",
+      "id": "0f7b0ceffa24",
+      "text": "Область лаборатории: что изучаем и какие вопросы решаем.",
       "paths": [
         "surface-pages.js:48"
       ]
     },
     {
-      "id": "2106d07f235f",
-      "text": "Внутри исследований",
+      "id": "6001b8220331",
+      "text": "Внутри направления",
       "paths": [
         "surface-pages.js:49"
       ]
     },
     {
-      "id": "2d2e04d1104d",
-      "text": "Научная тема",
+      "id": "682f961a0751",
+      "text": "Тема",
       "paths": [
         "surface-pages.js:49"
       ]
     },
     {
-      "id": "b7bffa50b1d8",
-      "text": "Направление, которое объединяет родственные работы.",
+      "id": "f7b2899723cf",
+      "text": "Родственные работы и общий репозиторий литературы.",
       "paths": [
         "surface-pages.js:49"
       ]
@@ -233,43 +240,43 @@
       ]
     },
     {
-      "id": "41f3522b9e88",
-      "text": "Подраздел",
+      "id": "e0cd22932fe3",
+      "text": "Работа",
       "paths": [
         "surface-pages.js:50"
       ]
     },
     {
-      "id": "0bb5942f5f49",
-      "text": "Более узкая область или семейство методов.",
+      "id": "7469a10bb026",
+      "text": "Один репозиторий: утверждения, рукопись и код.",
       "paths": [
         "surface-pages.js:50"
       ]
     },
     {
-      "id": "fc76bf728c91",
-      "text": "Обязательства команды",
+      "id": "378df6439bab",
+      "text": "Операционка",
       "paths": [
         "surface-pages.js:52"
       ]
     },
     {
-      "id": "deb42d77cfb3",
-      "text": "Менеджмент",
+      "id": "10189fe0bc7d",
+      "text": "Обязательства",
       "paths": [
         "surface-pages.js:52"
       ]
     },
     {
-      "id": "90bede3101ed",
-      "text": "Коммерческие проекты, этапы, приёмка и административная работа.",
+      "id": "f93e0b1ae270",
+      "text": "Гранты, коммерческие проекты, этапы и приёмка — группа ops.",
       "paths": [
         "surface-pages.js:52"
       ]
     },
     {
-      "id": "806fb1d1759c",
-      "text": "Внутри проекта",
+      "id": "0842e99aa4dd",
+      "text": "Внутри работы",
       "paths": [
         "surface-pages.js:57"
       ]
@@ -282,8 +289,8 @@
       ]
     },
     {
-      "id": "f0508e483ce5",
-      "text": "Человек видит ожидаемый результат, ответственного и движение работы. Подробности остаются в карточке задачи.",
+      "id": "3a22ebe534f9",
+      "text": "Человек видит ожидаемый результат, исполнителя и движение работы. Подробности остаются в самой задаче.",
       "paths": [
         "surface-pages.js:57"
       ]
@@ -303,43 +310,43 @@
       ]
     },
     {
-      "id": "09078c806c34",
-      "text": "Запись агента попадает в тот же проект, который открывает команда. Связь задаётся заранее, по существующим ID.",
+      "id": "22f4d9bae645",
+      "text": "Задачи живут в репозитории той же работы, в которую пишут знание. Второй доски рядом нет.",
       "paths": [
         "surface-pages.js:61"
       ]
     },
     {
-      "id": "2fe1bd43e3b3",
-      "text": "\n      <section class=\"sp-team-map sp-map\" data-sp-map data-sp-links='[[\"research\",\"theme\"],[\"theme\",\"area\"],[\"area\",\"project\"],[\"management\",\"delivery\"],[\"delivery\",\"project\"]]' aria-label=\"Исследовательская и управленческая стороны проекта\">\n        ",
+      "id": "5758c60acc81",
+      "text": "\n      <section class=\"sp-team-map sp-map\" data-sp-map data-sp-links='[[\"research\",\"theme\"],[\"theme\",\"area\"],[\"area\",\"project\"],[\"management\",\"delivery\"],[\"delivery\",\"project\"]]' aria-label=\"Исследовательская и управленческая стороны работы\">\n        ",
       "paths": [
         "surface-pages.js:45"
       ]
     },
     {
-      "id": "c5159dea8241",
-      "text": "\n        <article class=\"sp-project-sheet\" data-sp-node=\"project\"><span class=\"sp-label\">Исследовательский проект</span><h3>Вопрос → результат</h3><p>Цель, подход, участники, текущий статус и ссылки на знание.</p><div><b>КОД · Задачи</b><span>Одна исследовательская доска</span></div><div><b>КОД · Созвоны</b><span>Итоги обсуждений и договорённости</span></div></article>\n        ",
+      "id": "106eecd3f90e",
+      "text": "\n        <article class=\"sp-project-sheet\" data-sp-node=\"project\"><span class=\"sp-label\">Репозиторий работы</span><h3>Вопрос → результат</h3><p>README: что утверждаем, кто ведёт, кто в команде и что открыто.</p><div><b>Задачи</b><span>Доска работы: что делается и кем</span></div><div><b>Предложения</b><span>Каждая запись в работу — merge request</span></div></article>\n        ",
       "paths": [
         "surface-pages.js:50"
       ]
     },
     {
-      "id": "e45fed8c41ad",
-      "text": "\n        <article class=\"sp-delivery\" data-sp-node=\"delivery\"><span class=\"sp-label\">Управленческая страница</span><h3>Что и когда передаём</h3><p>Заказчик или программа, обязательства, сроки, документы и критерии приёмки.</p><span class=\"sp-crosslink\">Взаимные ссылки с исследовательским проектом ↗</span></article>\n      </section>\n      <p class=\"sp-under-map\"><b>Коммерческое исследование использует обе стороны.</b> Научная работа остаётся в «Исследованиях», договорные материалы — в «Менеджменте». Исследовательская доска у проекта одна.</p>\n      <section class=\"sp-section\">\n        ",
+      "id": "fc33c43ff001",
+      "text": "\n        <article class=\"sp-delivery\" data-sp-node=\"delivery\"><span class=\"sp-label\">Репозиторий обязательства</span><h3>Что и когда передаём</h3><p>Заказчик или программа, этапы, сроки, документы и критерии приёмки.</p><span class=\"sp-crosslink\">Ссылки на работы, из которых берётся результат ↗</span></article>\n      </section>\n      <p class=\"sp-under-map\"><b>Коммерческое исследование использует обе стороны.</b> Научная работа остаётся в дереве лаборатории, договорные материалы — в операционке. Доска задач у работы одна.</p>\n      <section class=\"sp-section\">\n        ",
       "paths": [
         "surface-pages.js:52"
       ]
     },
     {
-      "id": "ff947a90dfb7",
-      "text": "\n        <div class=\"sp-task-layout\"><article class=\"sp-task-example\"><span class=\"sp-label\">Условный пример задачи</span><h3>Сравнить два метода<br>при одинаковом бюджете</h3><dl><dt>Ответственный</dt><dd>Участник проекта</dd><dt>Постановка</dt><dd>Что сравниваем и какие условия фиксируем</dd><dt>Готово, когда</dt><dd>Есть таблица результатов и ссылка на проверенный запуск</dd><dt>Результат</dt><dd>Артефакт, краткий вывод и связанные записи MCP</dd></dl></article><div class=\"sp-task-explainer\"><h3>Статус отражает ход работы.</h3><ol class=\"sp-task-path\"><li><b>Поставлена</b><span>Понятны цель и исполнитель</span></li><li><b>В работе</b><span>Есть прогресс или конкретное препятствие</span></li><li><b>На проверке</b><span>Результат приложен, его можно оценить</span></li><li><b>Завершена</b><span>Критерий готовности выполнен</span></li></ol><p class=\"sp-small\">Это схема движения задачи. Названия и набор статусов берутся из существующей доски проекта.</p></div></div>\n      </section>\n      <section class=\"sp-section\">\n        ",
+      "id": "4b18f5d7321c",
+      "text": "\n        <div class=\"sp-task-layout\"><article class=\"sp-task-example\"><span class=\"sp-label\">Условный пример задачи</span><h3>Сравнить два метода<br>при одинаковом бюджете</h3><dl><dt>Исполнитель</dt><dd>Участник работы</dd><dt>Утверждение</dt><dd>Задача называет утверждение, на которое влияет</dd><dt>Готово, когда</dt><dd>Есть серия прогонов и ссылка на неё в утверждении</dd><dt>Результат</dt><dd>Слитое предложение со строкой «Closes #N»</dd></dl></article><div class=\"sp-task-explainer\"><h3>Статус отражает ход работы.</h3><ol class=\"sp-task-path\"><li><b>Открыта</b><span>Понятны цель и исполнитель</span></li><li><b>Делается</b><span>Есть прогресс или конкретное препятствие</span></li><li><b>На проверке</b><span>Предложение открыто, его можно оценить</span></li><li><b>Закрыта</b><span>Предложение слито — задача закрылась сама</span></li></ol><p class=\"sp-small\">Колонки доски — ярлыки задач. Задачу закрывает слияние предложения, а не отметка руками.</p></div></div>\n      </section>\n      <section class=\"sp-section\">\n        ",
       "paths": [
         "surface-pages.js:57"
       ]
     },
     {
-      "id": "79011d4c4526",
-      "text": "\n        <div class=\"sp-team-actors\"><article><span class=\"sp-label\">Человек</span><h3>Ставит и проверяет</h3><p>Определяет результат, назначает исполнителя, обсуждает прогресс и принимает выполненную работу.</p></article><article><span class=\"sp-label\">Агент с доступом</span><h3>Готовит и обновляет</h3><p>Находит привязанную доску, проверяет будущую запись, сохраняет задачу и перечитывает результат. Повторный вызов использует тот же ключ задачи.</p></article><article><span class=\"sp-label\">Hermes</span><h3>Получает поручение</h3><p>Читает задачи этого проекта, назначенные его владельцу. Может принять поручение и дописать итог, сохраняя человека исполнителем. Личная очередь Hermes остаётся отдельно; её обзор доступен в Obsidian.</p></article></div>\n        <p class=\"sp-under-map\">Hermes проверяет поручения в своём обычном рабочем цикле. Перед изменением сверяет назначение и версию карточки; при блокировке объясняет, какая помощь нужна. Закрытие задачи и оценка научного утверждения в MCP — разные результаты.</p>\n      </section>\n      <aside class=\"sp-common\"><span class=\"sp-label\">Общая информация</span><h3>Точка входа для всех.</h3><p>Правила размещения, справочник сотрудников и ссылки на общие ресурсы. Исследовательские и управленческие страницы ссылаются на эти правила.</p></aside>\n      <footer class=\"sp-footer\"><p>Личные задачи — в Operon. Работа команды — на доске проекта в Yonote. Полные личные черновики остаются в Obsidian.</p><nav><a href=\"https://brain-lab.yonote.ru/\" target=\"_blank\" rel=\"noopener\">Открыть Yonote ↗</a><a href=\"https://brain-lab.yonote.ru/doc/kak-ustroen-yonote-proekty-zadachi-i-fajly-nBdlvLwAXi\" target=\"_blank\" rel=\"noopener\">Правила лаборатории ↗</a></nav><small>Ссылки Yonote доступны участникам с правами на пространство.</small></footer>\n    </div>",
+      "id": "7065293627a7",
+      "text": "\n        <div class=\"sp-team-actors\"><article><span class=\"sp-label\">Человек</span><h3>Ставит и проверяет</h3><p>Определяет результат, назначает исполнителя, обсуждает прогресс и сливает предложение, которое задачу закрывает.</p></article><article><span class=\"sp-label\">Агент в клоне</span><h3>Готовит и отправляет</h3><p>В начале сессии видит, что ему поручено. Берёт задачу, делает работу в клоне и открывает предложение со ссылкой на задачу.</p></article><article><span class=\"sp-label\">Агент на сервере</span><h3>Ведёт долгое</h3><p>Сторожит прогоны и докладывает, что получилось, в ту же задачу. Исполнителем остаётся человек.</p></article></div>\n        <p class=\"sp-under-map\">Закрытая задача и оценка научного утверждения — разные результаты: задача говорит, что работа сделана, состояние утверждения — что из неё следует.</p>\n      </section>\n      <aside class=\"sp-common\"><span class=\"sp-label\">Общая информация</span><h3>Точка входа для всех.</h3><p>Передняя страница лаборатории в GitLab, справочник и журнал: как всё устроено, как попасть в работу и что недавно поменялось.</p></aside>\n      <footer class=\"sp-footer\"><p>Личные задачи — в Operon. Работа команды — задачи и доски работы в GitLab. Черновики остаются в notes/ своей работы.</p><nav><a href=\"https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md\" target=\"_blank\" rel=\"noopener\">Как поставить себе ↗</a></nav><small>Адрес базы приходит в сообщении бота доступа.</small></footer>\n    </div>",
       "paths": [
         "surface-pages.js:61"
       ]
@@ -702,8 +709,8 @@
       ]
     },
     {
-      "id": "98abe9648605",
-      "text": "</div><p>File Tree Alternative 2.6.0 и Notebook Navigator 2.6.2 записаны как выключенные. Параметр <code>--include-disabled</code> скачает и их. Автоархиватор не включён.</p></div></details>\n        <details class=\"sp-fold\" data-setup-hermes><summary>Подключение Hermes <span>Сервер → папка проекта</span></summary><div class=\"sp-fold-body\"><p>В <code>examples/hermes-config.json</code> укажите существующие board slug, SSH alias и папку проекта. Один конфиг связывает несколько проектов.</p><pre><code>python3 sync_hermes.py --config /path/to/hermes-config.json</code></pre><p>Сначала проверьте один запуск. Затем включите интервал 15 минут: в наборе есть шаблоны launchd для Mac, systemd для Linux и инструкция Task Scheduler для Windows. Компьютер должен быть включён.</p><p>Контракт <code>kanban.db</code> относится к нашему профилю Hermes: такая очередь должна существовать на вашем сервере. Экспорт читает её и не меняет задачи Hermes или Yonote.</p></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>Личные файлы остаются в вашем Obsidian. Общие утверждения — в MCP, задачи команды — в Yonote.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"#surface/yonote\">Как устроен Yonote ↗</a></nav></footer>\n    </div>",
+      "id": "4d327265356f",
+      "text": "</div><p>File Tree Alternative 2.6.0 и Notebook Navigator 2.6.2 записаны как выключенные. Параметр <code>--include-disabled</code> скачает и их. Автоархиватор не включён.</p></div></details>\n        <details class=\"sp-fold\" data-setup-hermes><summary>Подключение Hermes <span>Сервер → папка проекта</span></summary><div class=\"sp-fold-body\"><p>В <code>examples/hermes-config.json</code> укажите существующие board slug, SSH alias и папку проекта. Один конфиг связывает несколько проектов.</p><pre><code>python3 sync_hermes.py --config /path/to/hermes-config.json</code></pre><p>Сначала проверьте один запуск. Затем включите интервал 15 минут: в наборе есть шаблоны launchd для Mac, systemd для Linux и инструкция Task Scheduler для Windows. Компьютер должен быть включён.</p><p>Контракт <code>kanban.db</code> относится к нашему профилю Hermes: такая очередь должна существовать на вашем сервере. Экспорт читает её и не меняет задачи Hermes.</p></div></details>\n      </section>\n      <footer class=\"sp-footer\"><p>Obsidian открывает дерево ~/brainlab: личное лежит в notes/ своей работы, общие утверждения — в её claims/, задачи команды — в GitLab.</p><nav><a href=\"#memory\">Карта общего знания ↗</a><a href=\"#surface/tasks\">Задачи и доски GitLab ↗</a></nav></footer>\n    </div>",
       "paths": [
         "obsidian-setup.js:39"
       ]

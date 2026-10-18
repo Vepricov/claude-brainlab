@@ -43,14 +43,12 @@ Create the private working layer first. For a Brain Lab project, continue with
 
 Пять мест, все пять обязательны:
 
-1. **Каталог Brain Call** — `~/brainlab/agents/claude-brainlab/services/lab-knowledge/data/projects.json`.
+1. **Каталог Brain Call** — `~/brainlab/agents/brain-call/data/projects.json` (если он есть).
    Прочитать `slug`, `legacy_labels`, `display_title`, `summary` каждой записи и сравнить по теме.
-2. **Дерево базы в GitLab** — список проектов направления и темы, `list_projects` или
-   страница группы. Искать по смыслу: названием метода, задачей, фамилией. `search_lab`
-   со `scope: lab` для этого больше не годится — эта половина поиска отвечает отказом с
-   переездом знания в git.
-3. **Хранилище Obsidian** — `Papers/**`, `Projects/**`, `Staff/**`. Смотреть не только имена папок:
-   `rg` по названию метода и по фамилиям участников внутри карточек проектов.
+2. **Дерево базы в GitLab** — список проектов направления и темы: страница группы или
+   `git ls-remote`. Искать по смыслу: названием метода, задачей, фамилией.
+3. **Хранилище Obsidian** — это само дерево `${OBSIDIAN_VAULT}`. Смотреть не только имена папок:
+   `rg` по названию метода и по фамилиям участников внутри README работ.
 4. **Файловая система** — `~/brainlab/<направление>/<тема>/`. Папка без README — тоже
    существующий проект, просто заброшенный.
 5. **Задачи в GitLab** — открытые задачи работ темы и группы `ops`: работа часто начинается
@@ -73,9 +71,9 @@ Resolve existing values before asking. Collect only missing fields:
 - Kanban access is always `participants_only`; do not ask for it;
 - whether this is a Brain Lab project.
 
-Use `~/.Codex/obsidian-projects.json` as the authoritative filesystem-to-vault mapping. If it
-does not exist, follow the current `AGENTS.md` routing rules and create the Codex registry only
-after approval; do not silently treat a Claude registry as authoritative. Show
+The vault is the lab tree itself: a work lives at `${OBSIDIAN_VAULT}/<направление>/<тема>/<работа>`,
+and its notes live inside it. There is no mapping file any more, and the path is visible from
+the path. Show
 one preview with planned paths, clones, hub card, participants, and, for a lab project, the
 shared onboarding handoff. Obtain approval before creating directories, cloning repositories,
 or updating shared systems.
@@ -87,7 +85,7 @@ Create the minimum requested folder structure and a project-root `AGENTS.md`. Cr
 the user supplied. When an Overleaf repository exists, identify the actual main TeX file and
 verify its existing build workflow; do not impose a new layout or overwrite repository config.
 
-Write the project card to the vault path resolved from `obsidian-projects.json`. Include:
+Write the project card as the work's own `README.md`. Include:
 
 - a concise project summary;
 - linked participant cards already confirmed by the user;
@@ -109,7 +107,6 @@ Read the tag when the lab catalogue or an onboarding call needs a status: `ст�
 finished, and everything before it — `статус/идея`, `статус/планирование`, `статус/черновик`,
 `статус/активный`, `статус/почти-готово`, `статус/подано` — is an active project.
 
-Register the project in the Codex `obsidian-projects.json` without replacing unrelated entries.
 Local paths belong only in the private card and the agent config: the tree is the same on no
 other machine, so a path published into the base is noise for everyone who reads it.
 
@@ -128,7 +125,7 @@ Obsidian caches plugin settings in memory, so tell the user to reload the app fo
 colour to appear, and write both files while Obsidian is idle.
 
 Register the project in the Brain Call catalogue so it can be picked when recording a call:
-append one entry to `~/brainlab/agents/claude-brainlab/services/lab-knowledge/data/projects.json`
+append one entry to `~/brainlab/agents/brain-call/data/projects.json` (если он есть)
 with `slug`, unique `public_code`, `legacy_labels` (the filesystem folder name), `display_title`,
 an existing `direction`, `summary`, `problem`, `approach`, `status`, `leads`, `members`.
 

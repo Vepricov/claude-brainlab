@@ -35,7 +35,7 @@ Read-aloud test: if a sentence sounds like a press release or a LinkedIn-influen
 - **Acceptance line matters.** If accepted, say it ("Принято в UAI 2026", "accepted at @icmlconf 2026"). Tag the venue handle (ICML=@icmlconf, NeurIPS=@NeurIPSConf, ICLR=@iclr_conf) where the platform allows it.
 - **Figures from the published/arXiv version**, not a local draft. See `images.md`.
 - **Don't over-tag.** 4–6 genuinely-relevant handles max. Tag the authors of the work you build on and a few notable people who would reshare. Each external tag gets a short "(what they did)".
-- **Output goes to Obsidian**, routed by project location via `~/.claude/obsidian-projects.json` (`Papers/<slug>/`), never `Research/`.
+- **Output goes into the work itself**: `${OBSIDIAN_VAULT}/<направление>/<тема>/<работа>/socials/`.
 - **The user iterates.** Expect "make it denser / fix block N / add an image here". Keep the deliverable clean and easy to edit (numbered blocks, image markers, a checklist).
 
 ## Language per platform

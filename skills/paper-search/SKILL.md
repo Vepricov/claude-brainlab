@@ -314,7 +314,7 @@ https://arxiv.org/abs/<ARXIV_ID>
 - `operonId` должен быть уникален по всей папке `Operon/Reading/` и по `Operon/Archives/`;
   проверить перед записью.
 - Имя файла всегда `Operon/Reading/operon-<operonId>.md` (правило 11 в
-  `~/.claude/rules/alphaxiv-sync.md`), никогда не заголовок статьи и не arXiv ID. Человекочитаемое
+  `~/.claude/skills/paper-ingest/references/alphaxiv-sync.md`), никогда не заголовок статьи и не arXiv ID. Человекочитаемое
   имя живёт в YAML-поле `taskTitle` и в H1: Operon показывает `taskTitle`, а не basename.
   Заголовок в `taskTitle` и H1 сохраняется как есть, включая двоеточия и `$...$`; санитайзить
   его не надо, потому что в имя файла он больше не попадает. `taskTitle` при этом обязан быть

@@ -41,7 +41,7 @@ The reading queue has **two** entry points and they must be reconciled every run
    `~/.claude/alphaxiv-library-map.json`) — where the owner drops papers from the phone or the
    alphaxiv.org site without opening Obsidian.
 
-Per `~/.claude/rules/alphaxiv-sync.md` rule 2, a paper sitting in AlphaXiv "Want to read" is a
+Per `~/.claude/skills/paper-ingest/references/alphaxiv-sync.md` rule 2, a paper sitting in AlphaXiv "Want to read" is a
 **decision to read**, so it maps to the «Очередь» column, not to «Инбокс». Step 1 below imports
 those papers into the board before anything else happens.
 
@@ -456,7 +456,7 @@ After a successful full ingest, remove `paperIngestState: pending` (or set it to
 If the card still carries the `[found] ` prefix from Step 1b, **strip it** from both the H1 and
 `taskTitle` while writing the card back — including a card that is still sitting in «Жду
 публикацию». The prefix means "the source turned up, this needs deciding"; once the note exists the
-resolved wikilink is the signal, and the availability callout in `## Комментарии` keeps the history. Per rule 11 of `~/.claude/rules/alphaxiv-sync.md` the H1 of
+resolved wikilink is the signal, and the availability callout in `## Комментарии` keeps the history. Per rule 11 of `~/.claude/skills/paper-ingest/references/alphaxiv-sync.md` the H1 of
 a completed card is the canonical `# [[Literature/path/note|Human title]]` link and `taskTitle` is
 that same H1 without the leading `# `.
 

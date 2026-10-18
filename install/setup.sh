@@ -228,15 +228,6 @@ if (( ! DRY_RUN )) && [[ -f "$REPO_ROOT/install/register-lab-mcp.py" ]]; then
   "${PYTHON_BIN:-python3}" "$REPO_ROOT/install/register-lab-mcp.py" "$SETTINGS_DST" "$BACKUP_DIR"
 fi
 
-# ── obsidian-projects.json ──
-OPJ_DST="$CLAUDE_HOME/obsidian-projects.json"
-if [[ ! -f "$OPJ_DST" ]]; then
-  echo "  ↪ obsidian-projects.json (from example)"
-  run "cp \"$REPO_ROOT/obsidian-projects.example.json\" \"$OPJ_DST\""
-else
-  echo "  [keep] obsidian-projects.json (yours)"
-fi
-
 # ── Manifest ──
 if (( ! DRY_RUN )); then
   {
@@ -254,5 +245,4 @@ echo "  Restart Claude Code to pick up new settings."
 echo
 echo "Optional next steps:"
 echo "  • Install MemPalace:  pip install mempalace && mempalace init"
-echo "  • Edit obsidian-projects.json to map your project folders."
 echo "  • To uninstall: bash install/uninstall.sh"

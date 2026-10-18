@@ -18,7 +18,7 @@ Read `references/voice-and-anti-ai.md` in full before writing anything. The non-
 - **Never invent personal content.** Professional feelings, what worked / what didn't, who to tag, behind-the-scenes story: if you don't know it, ASK the user, do not make it up. (This is a standing rule the user stated explicitly.) Documented process notes the user points you to (e.g. an "how we did it" note) are fair to summarize faithfully.
 - **Use the BRAIn Lab brand for all visuals** — palette and logo in `references/brand.md` (berry/apricot/cream/blue + the real graph-node logo). Never the old purple/lavender scheme, never a placeholder logo.
 - **Figures come from the arXiv/published version**, extracted cleanly. See `references/images.md`.
-- **Route output** to the project's Obsidian folder via `~/.claude/obsidian-projects.json` (`Papers/<тема>/<slug>/...`, тема берётся из маршрута), never `Research/`.
+- **Route output** into the work itself: `${OBSIDIAN_VAULT}/<направление>/<тема>/<работа>/socials/`. The path is visible from the path; there is no mapping file any more.
 
 ## Workflow
 

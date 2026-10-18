@@ -2,7 +2,7 @@
 
 > Зеркал теперь два. AlphaXiv это витрина для чтения с телефона, а **общая база лаборатории в
 > git** это то, что читают остальные участники: репозиторий на тему, страница на статью,
-> рисунки рядом. Правила git-стороны лежат отдельно, в `~/.claude/rules/lab-git-literature.md`,
+> рисунки рядом. Правила git-стороны лежат отдельно, в `~/.claude/skills/paper-ingest/references/lab-git-literature.md`,
 > и шаг туда обязателен в `paper-ingest` и `want-2-read` так же, как шаг на AlphaXiv.
 
 The user's **local Obsidian `Literature/` is the master** paper library. The **AlphaXiv account**

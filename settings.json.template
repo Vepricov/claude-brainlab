@@ -22,6 +22,12 @@
             "type": "command",
             "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/citation-validator.py",
             "timeout": 5
+          },
+          {
+            "_comment": "Guard against writing to vault roots that no longer exist. Disable by removing this hook entry.",
+            "type": "command",
+            "command": "${PYTHON_BIN} ${HOME}/.claude/hooks/no-old-paths.py",
+            "timeout": 5
           }
         ]
       }
@@ -74,12 +80,6 @@
             "type": "command",
             "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/mempalace-obsidian-hook.py",
             "timeout": 30
-          },
-          {
-            "_comment": "Obsidian daily-note sync. Disable by removing this hook entry.",
-            "type": "command",
-            "command": "${PYTHON_BIN} ${HOME}/.claude/scripts/obsidian-daily-sync.py",
-            "timeout": 10
           }
         ]
       }

@@ -56,7 +56,6 @@ function substitute(value) {
 const settings = substitute(JSON.parse(fs.readFileSync(source, 'utf8')));
 const servers = settings.mcpServers || {};
 if (!process.env.ZOTERO_API_KEY) delete servers.zotero;
-if (!(process.env.LAB_MCP_URL && process.env.LAB_MCP_TOKEN)) delete servers['lab-knowledge'];
 if (!(process.env.PLANE_API_KEY && process.env.PLANE_WORKSPACE_SLUG)) delete servers.plane;
 else if (!process.env.PLANE_BASE_URL) delete servers.plane.env.PLANE_BASE_URL;
 
@@ -216,9 +215,9 @@ if (template.mcpServers) {
   }
 }
 
-// Lab Knowledge and Plane are managed by this bundle. If the rendered
-// template omitted one because its credentials are incomplete, remove the
-// stale installed entry instead of silently retaining old credentials.
+// Plane is managed by this bundle; lab-knowledge was, until the service was removed on
+// 07-10-2026. If the rendered template omits one, remove the stale installed entry
+// instead of silently retaining old credentials.
 existing.mcpServers = existing.mcpServers || {};
 for (const key of ['lab-knowledge', 'plane']) {
   if (!(template.mcpServers && key in template.mcpServers)) {

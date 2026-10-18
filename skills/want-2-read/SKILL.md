@@ -421,25 +421,19 @@ Read `~/.claude/alphaxiv-library-map.json` for the target `folder_id`.
 At the end of the batch, verify the mirror: the arXiv IDs you filed this run must all report the
 expected folder in `list_library(paper_ids_or_urls=[...])`.
 
-## Step 6b: Push into the shared lab corpus
+## Step 6b: Put the paper page into the theme's literature repository
 
-**Mandatory, and the step this skill used to be missing entirely.** A batch filed through this
-board landed in Obsidian, Zotero and AlphaXiv but never reached the Lab Knowledge corpus: forty
-papers were invisible to `search_lab`, to `related_by_terms` and to every question asked at the
-level of a research theme. The board is not the library of record for the lab; the corpus is what
-other members search.
-
-For every paper filed in Step 5:
+**Mandatory.** The board is not the library of record for the lab; the theme's literature
+repository in GitLab is what other members read. For every paper filed in Step 5:
 
 ```bash
-python3 ~/.claude/skills/paper-ingest/scripts/sync_to_lab.py --arxiv {ARXIV_ID} --verify
+python3 ~/.claude/skills/paper-ingest/scripts/lab_page_sync.py --arxiv {ARXIV_ID}
 ```
 
-Read-back is mandatory and compares the expected metadata and section contents. Section counts
-alone do not prove publication. The sync preserves unrelated sections, tags, and themes.
-Repeat only the authorized paper or batch; `--all` requires an explicitly authorized full-library
-publication. On failure, keep the corpus publication pending and preserve the local work.
-Use the existing `Literature` folder taxonomy. Do not edit the server taxonomy as an ingest step.
+It pushes the page to `main` of the theme's literature repository in GitLab (through a temporary
+clone); `lab sync` then brings it into `~/brainlab/<direction>/<theme>/literature/`.
+Repeat only the authorized paper or batch. On failure, keep the card's ingest pending and preserve
+the local work. Use the existing theme taxonomy; do not invent a new theme as an ingest step.
 
 ## Step 7: Write the cards back
 

@@ -194,8 +194,7 @@ elif "zotero" in data.get("mcpServers", {}):
         print("  Zotero: existing CLI kept (shared runtime prerequisites not found)")
 # Shared MCP entries are all-or-nothing so incomplete credentials never leave
 # unusable clients or unresolved secret placeholders in settings.json.
-if not (os.environ.get("LAB_MCP_URL") and os.environ.get("LAB_MCP_TOKEN")):
-    data.get("mcpServers", {}).pop("lab-knowledge", None)
+data.get("mcpServers", {}).pop("lab-knowledge", None)  # служба снята 07-10-2026; убрать у прежних установок
 if not (os.environ.get("PLANE_API_KEY") and os.environ.get("PLANE_WORKSPACE_SLUG")):
     data.get("mcpServers", {}).pop("plane", None)
 elif not os.environ.get("PLANE_BASE_URL"):
@@ -221,11 +220,6 @@ if (( ! DRY_RUN )) && [[ -n "${OPENROUTER_API_KEY:-}" ]]; then
   echo "  ↪ $KEY_FILE (chmod 600)"
 elif [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
   echo "  Jev: no OPENROUTER_API_KEY, the recording hook will stay silent"
-fi
-
-# ── Native Lab MCP registration ──
-if (( ! DRY_RUN )) && [[ -f "$REPO_ROOT/install/register-lab-mcp.py" ]]; then
-  "${PYTHON_BIN:-python3}" "$REPO_ROOT/install/register-lab-mcp.py" "$SETTINGS_DST" "$BACKUP_DIR"
 fi
 
 # ── Manifest ──

@@ -77,12 +77,6 @@ ask_secret ZOTERO_API_KEY    "ZOTERO_API_KEY"
 ask        ZOTERO_LIBRARY_ID "ZOTERO_LIBRARY_ID (numeric)" ""
 ask        UNPAYWALL_EMAIL   "UNPAYWALL_EMAIL"             "you@example.com"
 
-# ── Shared lab knowledge ──
-echo
-echo "Lab Knowledge MCP (optional — leave blank to skip):"
-ask        LAB_MCP_URL       "LAB_MCP_URL" ""
-ask_secret LAB_MCP_TOKEN     "LAB_MCP_TOKEN"
-
 # ── Plane ──
 echo
 echo "Plane MCP (optional — leave API key blank to skip):"
@@ -105,8 +99,6 @@ OPENROUTER_API_KEY="$OPENROUTER_API_KEY"
 ZOTERO_API_KEY="$ZOTERO_API_KEY"
 ZOTERO_LIBRARY_ID="$ZOTERO_LIBRARY_ID"
 UNPAYWALL_EMAIL="$UNPAYWALL_EMAIL"
-LAB_MCP_URL="$LAB_MCP_URL"
-LAB_MCP_TOKEN="$LAB_MCP_TOKEN"
 PLANE_API_KEY="$PLANE_API_KEY"
 PLANE_WORKSPACE_SLUG="$PLANE_WORKSPACE_SLUG"
 PLANE_BASE_URL="$PLANE_BASE_URL"

@@ -215,6 +215,10 @@ if os.path.exists(dst):
     for key in ("enabledPlugins", "extraKnownMarketplaces"):
         if isinstance(previous.get(key), dict):
             data[key] = {**data.get(key, {}), **previous[key]}
+    # env: the person's own variables survive (CLAUDE_CODE_ENABLE_FUNCTION_HOOKS is what
+    # plugin hook modules need to run at all); the template's own variables win.
+    if isinstance(previous.get("env"), dict):
+        data["env"] = {**previous["env"], **data.get("env", {})}
 with open(dst, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 os.chmod(dst, 0o600)

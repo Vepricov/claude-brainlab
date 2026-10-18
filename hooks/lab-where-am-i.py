@@ -193,19 +193,35 @@ def klon_bazy(folder: Path) -> bool:
     return bool(adres) and (urllib.parse.urlparse(BASE_URL).netloc in adres)
 
 
-def mesto_raboty(cwd: str) -> tuple[str, Path]:
-    """ГДЕ агент работает прямо сейчас. Три случая, и порядок у них не случайный.
+#: Дерево лаборатории на машине: `lab sync` кладёт сюда всё, что человеку видно.
+TREE = Path(os.getenv("BRAINLAB_TREE", "~/brainlab")).expanduser()
+
+
+def v_dereve(slug: str) -> Path | None:
+    """Клон работы в дереве `~/brainlab/<направление>/<тема>/<работа>`, если он там есть."""
+    if not slug or not TREE.is_dir():
+        return None
+    for folder in sorted(TREE.glob(f"*/*/{slug}")):
+        if klon_bazy(folder):
+            return folder
+    return None
+
+
+def mesto_raboty(cwd: str, slug: str = "") -> tuple[str, Path]:
+    """ГДЕ агент работает прямо сейчас. Четыре случая, и порядок у них не случайный.
 
     Владелец 17-10-2026: «щас у нас получается иногда агент работает сразу под гитом лабы,
     а раньше он говорил что надо куда-то сделать гит клон. Надо оставить обе возможности,
-    но в приоритете как у меня щас».
+    но в приоритете как у меня щас». И 18-10-2026: основа — как у него, дерево `~/brainlab`,
+    а не клон «куда-то себе».
 
-      `здесь`  — сессия идёт ВНУТРИ клона базы: правим файлы там, где они лежат, и ничего
-                 клонировать не надо. С переезда 16-10-2026 это обычный случай: дерево
-                 `~/brainlab` целиком состоит из клонов, и хранилище Obsidian — оно же.
-      `рядом`  — клон лежит в папке проекта (`<проект>/lab-base`). Так работают на чужой
-                 машине и в репозиториях с кодом, где дерева лаборатории нет.
-      `завести` — клона нет ни там, ни там; путь в ответе — куда его класть.
+      `здесь`   — сессия идёт ВНУТРИ клона базы: правим файлы там, где они лежат.
+      `в дереве` — сессия идёт снаружи (например, в репозитории с кодом), а работа лежит в
+                  дереве `~/brainlab`: пишем туда, второй клон не заводим.
+      `рядом`   — дерева нет, клон лежит в папке проекта (`<проект>/lab-base`). Запасной
+                  путь для машины без дерева.
+      `завести` — клона нет нигде. Хук его не заводит: `lab here <работа>` кладёт работу
+                  на её место в дереве.
 
     Первым спрашивается рабочий каталог, а не карта: карта может ошибаться, а `origin`
     клона — нет.
@@ -216,6 +232,8 @@ def mesto_raboty(cwd: str) -> tuple[str, Path]:
             return "здесь", folder
         if folder == folder.parent:
             break
+    if found := v_dereve(slug):
+        return "в дереве", found
     ryadom = clone_of_project(cwd)
     if (ryadom / ".git").is_dir():
         return "рядом", ryadom
@@ -248,7 +266,9 @@ def pull_clone(work: str, cwd: str, root: Path | None = None) -> list[str]:
     if not (root / ".git").is_dir():
         if not LAB_CLI.is_file():
             return [f"  клона базы нет, и помощника нет: {LAB_CLI}"]
-        done = subprocess.run([str(LAB_CLI), "here", work], cwd=str(root.parent),
+        # Есть дерево — работа ложится на своё место в нём; нет — по-старому, рядом.
+        here_args = [str(LAB_CLI), "here", work] + ([] if TREE.is_dir() else ["--рядом"])
+        done = subprocess.run(here_args, cwd=str(root.parent),
                               capture_output=True, text=True, timeout=120,
                               stdin=subprocess.DEVNULL,
                               env={**os.environ, **NO_PROMPT_ENV})
@@ -721,7 +741,7 @@ def main() -> int:
         tell_places(cwd)
         tell_proposals(cwd)
         return 0
-    rezhim, place = mesto_raboty(cwd)
+    rezhim, place = mesto_raboty(cwd, slug)
     repo, claims = claims_of(slug, place)
     if not claims:
         # Ни утверждений, ни клона — значит это и не работа базы. Каталог сопоставляется
@@ -741,8 +761,10 @@ def main() -> int:
         return 0
     print(f"\nЛаборатория: {slug}, утверждений {len(claims)} — {', '.join(claims)}")
     print({"здесь": f"Пишешь прямо здесь, это клон работы: {place}",
+           "в дереве": f"Работа лежит в дереве, пиши туда: {place}",
            "рядом": f"Клон рядом: {place}",
-           "завести": f"Клона нет, завожу: {place}"}[rezhim])
+           "завести": (f"Работы нет в дереве — кладу её на место: `lab here {slug}`"
+                       if TREE.is_dir() else f"Клона нет, завожу: {place}")}[rezhim])
     # Утверждения прочитаны из рабочего дерева, а обновляется `origin main`. Если дерево
     # стоит на ветке предложения, хук покажет её состояние, назвав его состоянием базы.
     # Проверено 07-10-2026 на `wsd-muon`: клон остался на `claim/H-WSD-017-audit`, ветку

@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """База знания лаборатории в GitLab как обычный git.
 
-Единица в GitLab — работа: у неё свой проект, свои члены, своя доска и свои задачи. Тема
-стала группой, направление — группой над ней. Поэтому клонируется работа, а не тема, и
-полный путь искать не нужно: скажи слаг работы, остальное найдётся само.
+Это GitHub для идей: вся лаборатория — одно дерево репозиториев, и у каждого оно лежит
+локально в `~/brainlab` ровно так, как в GitLab: `~/brainlab/<направление>/<тема>/<работа>`,
+литература темы рядом, справочник, журнал и серверы в корне, операционка в `ops/`. Это же
+дерево открывает Obsidian. Работают в нём обычным git: правка файлов, ветка, `git push`.
 
-Здесь только то, чего git не делает сам: открыть предложение о слиянии и показать, что
-сказали проверки. Всё остальное — `git pull`, `git checkout -b`, правка файлов, `git push`
-— обычный git, и прослойки для этого не нужно.
+Здесь только то, чего git не делает сам: собрать дерево, найти работу по слагу, положить
+ключ, показать задачи и что сказали проверки.
 
-    lab here <работа>      склонировать работу в папку проекта (lab-base): слаг → полный путь
+    lab sync [часть пути]  собрать или обновить дерево ~/brainlab: всё, что тебе видно
+    lab here <работа>      одна работа в дереве: слаг → её место в ~/brainlab
+    lab here <работа> --рядом   по-старому: клон в <папка проекта>/lab-base
     lab pull               обновить клон и вложенные репозитории (код, статья),
                            положить ключ git'у, показать открытые предложения
     lab tasks              открытые задачи работы: кому назначены, какое утверждение
@@ -317,12 +319,213 @@ def sign_clone(target: Path) -> None:
     git("config", "user.email", email, cwd=target, quiet=True)
 
 
+#: Корень дерева лаборатории на машине. Хранилище Obsidian — оно же.
+TREE = Path(os.getenv("BRAINLAB_TREE", "~/brainlab")).expanduser()
+#: Где в дереве лежит репозиторий, если не там, куда указывает его путь в GitLab. Обвязка
+#: служб лежит рядом с агентами, а не в корне: так дерево разложено с 16-10-2026.
+V_DEREVE_INACHE = {"brainlab/services": "agents/services"}
+#: Что в клоне работы остаётся на машине. `/runs/` с косой чертой: без неё git закрывает и
+#: `claims/<утверждение>/runs/`, то есть карточки прогонов, которые обязаны попасть в базу
+#: (журнал, 18-10-2026).
+ZAKRYTO_V_RABOTE = ("notes/", "daily/", "/runs/", "paper/drafts/", "code/local/",
+                    "calls/raw/", ".claude/", ".DS_Store")
+ZAKRYTO_V_LITERATURE = ("zotero/", ".claude/", ".DS_Store")
+ZAKRYTO_VEZDE = (".claude/", ".DS_Store")
+
+
+def put_v_dereve(project: dict) -> Path:
+    """Место репозитория в ~/brainlab: его путь в GitLab без корня `brainlab/`."""
+    full = project["path_with_namespace"]
+    if full in V_DEREVE_INACHE:
+        return TREE / V_DEREVE_INACHE[full]
+    return TREE / (full[len("brainlab/"):] if full.startswith("brainlab/") else full)
+
+
+def vid(project: dict) -> str:
+    """Работа, литература или служебный репозиторий: от этого зависит, как его настроить.
+
+    Работа — `brainlab/<направление>/<тема>/<работа>`: в неё пишут предложением, и push
+    открывает его сам. Литература и служебные (`handbook`, `journal`, `servers`, `ops/*`)
+    принимают обычный push в `main`.
+    """
+    parts = project["path_with_namespace"].split("/")
+    if parts[0] == "brainlab" and len(parts) == 4:
+        return "литература" if parts[-1] == "literature" else "работа"
+    return "служебный"
+
+
+def vse_vidimye() -> list[dict]:
+    """Все репозитории, какие видно этим ключом. Постранично: их больше сотни на подходе."""
+    found, page = [], 1
+    while True:
+        chunk = api(f"projects?simple=true&archived=false&per_page=100&page={page}") or []
+        found += chunk
+        if len(chunk) < 100:
+            break
+        page += 1
+    return sorted((one for one in found if one["path"] != "gitlab-profile"),
+                  key=lambda one: one["path_with_namespace"])
+
+
+def vedushchiy(project: dict) -> str:
+    """Логин первого ведущего из строки «Ведут» README работы: ему назначается предложение."""
+    # Не через api(): тот разбирает ответ как JSON, а README — текст.
+    request = urllib.request.Request(
+        f"{site()}/api/v4/projects/{project['id']}/repository/files/README.md/raw?ref=main",
+        headers={"PRIVATE-TOKEN": token()})
+    try:
+        with urllib.request.urlopen(request, timeout=60) as answer:
+            text = answer.read().decode("utf-8", "replace")
+    except (urllib.error.URLError, TimeoutError, ssl.SSLError, OSError):
+        return ""
+    # Ссылка на человека бывает и `(/логин)`, и полным адресом `(https://…/логин)`.
+    found = re.search(r"\*\*Вед[уё]т\*\*\s*\[[^\]]*\]\((?:[^)\s]*/)?([^)\s/]+)\)", text)
+    return found.group(1) if found else ""
+
+
+def nastroit(project: dict, target: Path) -> None:
+    """Настроить клон так, как настроены клоны в дереве владельца.
+
+    Закрыть личное через `.git/info/exclude`, а не `.gitignore`: общее дерево от этого не
+    меняется. В работе — push сам открывает предложение и назначает его ведущему.
+    """
+    kind = vid(project)
+    zakryto = {"работа": ZAKRYTO_V_RABOTE, "литература": ZAKRYTO_V_LITERATURE}.get(
+        kind, ZAKRYTO_VEZDE)
+    exclude = target / ".git" / "info" / "exclude"
+    exclude.parent.mkdir(parents=True, exist_ok=True)
+    lines = exclude.read_text(encoding="utf-8").splitlines() if exclude.is_file() else []
+    # Старая строка `runs/` закрывала и карточки прогонов: заменяется на `/runs/`.
+    lines = ["/runs/" if line.strip() == "runs/" else line for line in lines]
+    lines += [one for one in zakryto if one not in lines]
+    exclude.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    if kind != "работа":
+        return
+    options = git("config", "--get-all", "push.pushOption", cwd=target, quiet=True).splitlines()
+    if "merge_request.create" not in options:
+        git("config", "--add", "push.pushOption", "merge_request.create", cwd=target, quiet=True)
+    if not any(one.startswith("merge_request.assign=") for one in options):
+        login_item = vedushchiy(project)
+        if login_item:
+            git("config", "--add", "push.pushOption", f"merge_request.assign={login_item}",
+                cwd=target, quiet=True)
+    git("config", "push.default", "current", cwd=target, quiet=True)
+
+
+def bez_kluchey(address: str) -> str:
+    """Адрес без учётных данных и `.git`: сравнивать надо так, иначе ключ мешает."""
+    return re.sub(r"//[^@/]+@", "//", address).removesuffix(".git").rstrip("/")
+
+
+def v_derevo(project: dict, *, obnovit: bool = True) -> tuple[str, Path, str]:
+    """Положить репозиторий на его место в дереве или обновить, если он уже там.
+
+    Ничего чужого не трогает: папка, которая уже есть, но не клон, или клон другого
+    репозитория называются и пропускаются. Клон с правками или на ветке не обновляется,
+    только `fetch`: подтягивание поверх чужой работы — не наше решение.
+    """
+    target = put_v_dereve(project)
+    address = clone_url(project)
+    # Оборванный клон (сборку прервали посреди перекачки): `.git` есть, коммита нет, файлов
+    # рядом нет. Такой не обновить, его перекачивают заново.
+    if ((target / ".git").is_dir() and not git("rev-parse", "-q", "--verify", "HEAD",
+                                                cwd=target, quiet=True)
+            and not [one for one in target.iterdir() if one.name != ".git"]):
+        subprocess.run(["rm", "-rf", str(target)], capture_output=True)
+    if not (target / ".git").is_dir():
+        if target.exists() and any(one.name not in (".DS_Store",) for one in target.iterdir()):
+            return "папка есть, но не клон", target, ""
+        target.parent.mkdir(parents=True, exist_ok=True)
+        # Туннель до базы рвёт рукопожатие под нагрузкой (`SSL_ERROR_SYSCALL`): это
+        # повторяется, а не чинится. Три попытки с паузой.
+        for attempt in range(3):
+            done = subprocess.run(["git", *helpers(), "clone", "-q", address, str(target)],
+                                  capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                                  env=environment())
+            if not done.returncode:
+                break
+            subprocess.run(["rm", "-rf", str(target)], capture_output=True)
+            time.sleep(5 * (attempt + 1))
+        if done.returncode:
+            return "не склонировать", target, (done.stderr.strip().splitlines() or [""])[-1]
+        nastroit(project, target)
+        return "склонировано", target, ""
+    origin = git("config", "--get", "remote.origin.url", cwd=target, quiet=True)
+    if bez_kluchey(origin) != bez_kluchey(address):
+        return "здесь другой репозиторий", target, origin
+    nastroit(project, target)
+    if not obnovit:
+        return "на месте", target, ""
+    branch = git("rev-parse", "--abbrev-ref", "HEAD", cwd=target, quiet=True)
+    dirty = git("status", "--porcelain", "--untracked-files=no", cwd=target, quiet=True)
+    git("fetch", "-q", "origin", cwd=target, quiet=True)
+    if branch != "main" or dirty:
+        return "не обновлено: " + ("правки" if dirty else f"ветка {branch}"), target, ""
+    was = git("rev-parse", "HEAD", cwd=target, quiet=True)
+    git("merge", "-q", "--ff-only", "origin/main", cwd=target, quiet=True)
+    became = git("rev-parse", "HEAD", cwd=target, quiet=True)
+    return ("обновлено" if was != became else "без изменений"), target, ""
+
+
+def do_sync(arguments: list[str]) -> None:
+    """Собрать дерево лаборатории или обновить его: всё, что видно твоим ключом.
+
+    Повторный запуск безопасен: недостающее клонирует, остальное подтягивает, а клоны с
+    правками и на ветках только называет. Часть пути ограничивает обход
+    (`lab sync low-rank`, `lab sync ops`).
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    setup_key()
+    prefixes = [one.strip("/") for one in arguments if not one.startswith("-")]
+    projects = [one for one in vse_vidimye()
+                if not prefixes or any(
+                    str(put_v_dereve(one).relative_to(TREE)).startswith(prefix)
+                    or one["path_with_namespace"].startswith(prefix) for prefix in prefixes)]
+    # Сначала работы и служебные, литература последней: она весит больше всего (картинки и
+    # PDF разборов, 50–115 МБ на тему), а работать можно, пока она докачивается.
+    projects.sort(key=lambda one: (vid(one) == "литература", one["path_with_namespace"]))
+    print(f"дерево: {TREE} — репозиториев видно: {len(projects)}. Первый раз это около 1.5 ГБ "
+          "через туннель базы, порядка часа; дальше только подтягивание.")
+    # Параллельно, но по двое: каждый клон идёт через туннель секунду-другую, а их под сотню,
+    # и при шести разом туннель рвёт половину рукопожатий (замер 18-10-2026: 7 из 12).
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(v_derevo, projects))
+    groups: dict[str, list[str]] = {}
+    for (state, target, why), project in zip(results, projects):
+        line = str(target.relative_to(TREE)) + (f" — {why}" if why else "")
+        groups.setdefault(state, []).append(line)
+    for state in ("склонировано", "обновлено"):
+        for line in groups.pop(state, []):
+            print(f"  {state}: {line}")
+    quiet = len(groups.pop("без изменений", []))
+    for state, lines in sorted(groups.items()):
+        for line in lines:
+            print(f"  {state}: {line}")
+    print(f"без изменений: {quiet}")
+    print("Obsidian открывает эту же папку как хранилище: Open folder as vault → "
+          f"{TREE}")
+
+
 def do_here(names: list[str]) -> None:
-    """Склонировать работу в папку проекта, а если клон уже есть — обновить его."""
+    """Положить работу на её место в дереве ~/brainlab, а если она уже там — обновить.
+
+    С `--рядом` — по-старому, в `<папка проекта>/lab-base`: для машин, где дерева нет, и для
+    репозитория с кодом, рядом с которым удобнее держать клон.
+    """
+    ryadom = "--рядом" in names
+    names = [one for one in names if not one.startswith("--")]
     if not names:
         sys.exit("скажи работу: lab here <работа>")
     setup_key()
     project = find_project(names[0])
+    if not ryadom:
+        state, target, why = v_derevo(project)
+        print(f"{project['path_with_namespace']}: {state}{' — ' + why if why else ''}")
+        print(f"место в дереве: {target}")
+        if (target / ".git").is_dir():
+            podtyanut_vlozhennye(target)
+        return
     target = project_root() / "lab-base"
     address = clone_url(project)
     if not (target / ".git").is_dir():
@@ -630,7 +833,9 @@ def do_take(arguments: list[str]) -> None:
 def main() -> None:
     args = sys.argv[1] if len(sys.argv) > 1 else ""
     tail = sys.argv[2:]
-    if args == "here":
+    if args == "sync":
+        do_sync(tail)
+    elif args == "here":
         do_here(tail)
     elif args == "pull":
         do_pull()

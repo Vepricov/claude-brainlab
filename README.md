@@ -98,7 +98,7 @@ What makes it work rather than rot:
 
 | | |
 |---|---|
-| **A clone is the address** | `lab here <work>` puts the clone in `lab-base/`. From then on the clone is the answer to "where does this get written", and there is no second place that records the decision. |
+| **One tree, like GitHub for ideas** | `lab sync` lays out everything you can see in `~/brainlab`, exactly as the paths in GitLab; `lab here <work>` puts one work in its place. The clone in the tree is the answer to "where does this get written", and there is no second copy anywhere else. |
 | **A merge is the write** | `push` to `main` is forbidden for everyone. A change enters as a merge request that a human merges, so nothing lands unread. |
 | **Two gates, one of them reads** | `база` counts what code can count: tree shape, numbers, codes, deletions, vanished records. `lab/проза` judges the text of the change and blocks the merge when it is a diary entry rather than a record. |
 | **Runs are written by code, not retyped** | `lab_run.py` writes the run's own page — hyperparameters, metrics, environment, commit, hardware — and pushes it to a branch. A number that is not in the corpus turns the verdict red, so transcribing by hand does not pass. |

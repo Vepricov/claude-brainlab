@@ -1030,7 +1030,10 @@ def hint(verdict: dict) -> str:
         if puti:
             tail = " Пиши в " + ", ".join(f"`{put}`" for put in puti) + "."
         if net:
-            tail += " Клона нет — склонируй: " + ", ".join(f"`{r}`" for r in net) + "."
+            # Одна команда на всё дерево, а не «склонируй куда-нибудь»: `lab sync` кладёт
+            # недостающее ровно туда, где оно лежит у всех, — путь в GitLab без `brainlab/`.
+            tail += (" В дереве нет " + ", ".join(f"`{r}`" for r in net)
+                     + " — `lab sync` положит его на место в `~/brainlab`.")
     return ("Записать: " + ", ".join(parts)
             + f". Оценка {verdict['оценка']:.1f}/3, устоялось {verdict['устоялось']:.2f}."
             + tail)

@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
-# Поставить себе работу с базой лаборатории: правило для агента и хук начала сессии.
+# Поставить себе лабораторию так, как она стоит у владельца: дерево ~/brainlab, Obsidian на
+# нём, правило и хук для агента.
 #
 # Запускается из клона открытого репозитория лаборатории:
 #
 #   bash docs/lab/install.sh
 #
-# Ставит пять вещей и ничего больше:
+# Ставит:
 #
 #   ~/.claude/rules/lab.md              КАК писать в базу. Читается один раз за сессию.
 #   ~/.claude/skills/lab-knowledge/references/canon.md        СВОД правил: на него ссылаются правило, навык и хуки.
 #   ~/.claude/skills/lab-knowledge/     навык: как пишется страница утверждения и серии.
 #   ~/.claude/hooks/lab-where-am-i.py   ГДЕ ты и что тебя ждёт. Печатает только состояние.
-#   ~/.local/bin/lab                    ветка, задачи, вердикт — из терминала.
+#   ~/.local/bin/lab                    дерево, задачи, вердикт — из терминала.
+#   ~/brainlab                          дерево лаборатории: Obsidian-сетап (если папки ещё
+#                                       нет), затем `lab sync` кладёт в неё всё, что видно.
 #
 # Свод не копируется из этого репозитория: его источник лежит в базе,
 # `brainlab/handbook/canon.md`, и наливает его `scripts/canon_sync.py`. Поэтому шаг со сводом
@@ -31,7 +34,7 @@ py="${PYTHON:-python3}"
 mkdir -p "$rules" "$hooks_dir" "$home/.local/bin" "$conf"
 
 # 1. правило: как писать
-cp "$here/docs/lab/lab.md" "$rules/lab.md"
+cp "$here/rules/lab.md" "$rules/lab.md"
 echo "правило:  $rules/lab.md"
 
 # 2. хук начала сессии
@@ -172,7 +175,23 @@ if [ -s "$conf/git-token" ]; then
     echo "  ключ есть, но справочник не ответил — проверь адрес в $conf/git-url"
   fi
 fi
+# 5. дерево лаборатории. Сначала Obsidian-сетап — он ставится только в новую папку, — потом
+# `lab sync` наполняет её клонами. Папка уже есть — сетап не трогаем, только синхронизируем.
+tree="${BRAINLAB_TREE:-$home/brainlab}"
+if [ ! -e "$tree" ] && [ -s "$conf/gitlab-login" ]; then
+  echo
+  echo "Obsidian: ставлю хранилище в $tree"
+  "$py" "$here/obsidian-setup/install.py" --vault "$tree" --owner "$(cat "$conf/gitlab-login")" \
+    || echo "  сетап Obsidian не встал — дерево всё равно соберётся, сетап можно поставить позже"
+fi
+if [ -s "$conf/git-token" ]; then
+  echo
+  echo "дерево: собираю $tree — первый раз около часа (литература тяжёлая и идёт последней); прервать можно, повторный запуск продолжит"
+  BRAINLAB_TREE="$tree" "$py" "$here/scripts/lab" sync || echo "  lab sync не закончил — запусти его ещё раз"
+fi
+
 echo
-echo "дальше: открой свою работу — \`lab here <слаг>\` — и работай обычным git."
+echo "дальше: открой в Obsidian папку $tree (Open folder as vault) и работай в ней обычным git."
+echo "обновить всё дерево: lab sync; одна работа: lab here <слаг>"
 echo "как писать, читается один раз: $rules/lab.md"
 echo "свод правил, на него ссылается всё: $skills/lab-knowledge/references/canon.md"

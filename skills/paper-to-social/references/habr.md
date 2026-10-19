@@ -29,6 +29,6 @@ How Habr ML paper-writeups actually read (from Yandex/Sber/AIRI posts, e.g. the 
 ## Process
 
 - Reuse the Telegram draft as the skeleton of content, then *expand each block into real paragraphs* with intuition and transitions. Telegram is the compressed version; Habr is the full narrative.
-- Put the article in `Papers/<slug>/habr-<slug>.md`, images in the shared assets folder.
+- Put the article in `<направление>/<тема>/<работа>/socials/habr-<работа>.md`, images in the shared assets folder.
 
 See `examples/habr-template.md` for a worked example (softsign).

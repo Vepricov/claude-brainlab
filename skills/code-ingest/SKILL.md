@@ -80,7 +80,7 @@ One-paragraph: what this repo is and what you use it for.
 - [[architecture]] · [[optimizers]] · [[models]] · [[data]] · ...
 
 ## Used by projects
-- [[Papers/<тема>/<slug>/<slug>|<project>]] — <fork/branch + what's changed>
+- [[<направление>/<тема>/<работа>/README|<работа>]] — <fork/branch + what's changed>
 ```
 
 ## Module note template (`<module>.md`)

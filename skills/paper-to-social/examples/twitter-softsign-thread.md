@@ -2,7 +2,7 @@
 
 This is the bar. Written for *"Softsign: Smooth Sign in Your Optimizer for Better Parameter Heterogeneity Handling"* (ICML 2026 submission). Every tweet is 255–279 chars (dense, near the cap), the theory gets three dedicated tweets, Muon is named in tweet 1, and real @handles are tagged where the work is discussed. Each tweet is followed by **why it works** so future agents copy the *moves*.
 
-Full deliverable (frontmatter, embeds, alt text, checklist): `Papers/softsign/softsign-twitter-thread.md`. This file is the teaching copy.
+Full deliverable (frontmatter, embeds, alt text, checklist): `matrix-optimization/muon-sign-methods/softsign/socials/softsign-twitter-thread.md`. This file is the teaching copy.
 
 Tags are NOT inline. They live in one separate shout-out post (13) at the end, Pethick-style. All web-verified: @kellerjordan0 (Muon), @jxbz (signSGD/duality), @leloykun (Newton–Schulz), @tmpethick (Scion/clipping).
 

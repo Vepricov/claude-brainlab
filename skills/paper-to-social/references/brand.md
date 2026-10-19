@@ -32,4 +32,4 @@ The lab's slide decks use light decorative elements (transformer/letter shapes, 
 - Content cards: floral-white background, berry headings, papaya/blue equation boxes, berry highlight blocks with white text, berry ✓ circles, papaya icon chips, real logo top-right.
 - Blobs: soft apricot, frosted-blue, papaya circles (not lavender).
 
-Build recipe and CSS gotchas: see `images.md`. Reference build script: `Papers/softsign/linkedin-carousel/build_carousel.py`.
+Build recipe and CSS gotchas: see `images.md`. Reference build script: `matrix-optimization/muon-sign-methods/softsign/code/local/linkedin-carousel/build_carousel.py`.

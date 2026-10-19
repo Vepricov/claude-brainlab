@@ -75,6 +75,6 @@ Build the cards as one HTML file, render to a multi-page PDF with Chrome, then t
 
 ## Conventions
 
-- Store images in `Papers/<slug>/social-assets/` (or `<platform>-assets/`).
+- Store images in `<направление>/<тема>/<работа>/socials/social-assets/` (or `<platform>-assets/`).
 - In the post note, mark `[IMG: name]` where the image attaches, and at the bottom embed `![[...]]` previews with **paste-ready alt text** for accessibility and reach.
 - If PyMuPDF is absent, `sips -s format png in.pdf --out out.png` works but only at 72 dpi (low res) — prefer PyMuPDF.

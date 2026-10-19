@@ -24,7 +24,7 @@ Read `references/voice-and-anti-ai.md` in full before writing anything. The non-
 
 1. **Get the paper.** `git pull` the Overleaf/local source if present and read `main.tex` (abstract, intro/contributions, method, experiments/tables, conclusion). Prefer `.tex` over PDF. Also note the arXiv id, code URL, and conference acceptance if any.
 2. **Extract the core once** (reused across platforms): the one-sentence idea, the problem it fixes, the mechanism, the headline numbers (exact), the theory in one breath, the "free to adopt" angle, and the live debate it plugs into.
-3. **Pull figures from the arXiv version** into `Papers/<тема>/<slug>/<platform>-assets/` (or a shared `social-assets/`). See `references/images.md`. View every render before describing it.
+3. **Pull figures from the arXiv version** into `<направление>/<тема>/<работа>/socials/<platform>-assets/` (or a shared `socials/social-assets/`). See `references/images.md`. View every render before describing it.
 4. **Write each requested platform** using its reference file. Match the user's voice from the examples, not a generic template.
    - Telegram → `references/telegram.md` (examples: `telegram-wlora.md`, `telegram-kawasaki.md`, `telegram-markovian.md`)
    - Twitter/X → `references/twitter.md` (example: `twitter-softsign-thread.md`)

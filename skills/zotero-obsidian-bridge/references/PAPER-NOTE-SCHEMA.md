@@ -27,7 +27,7 @@ methods:
   - contrastive pretraining
 subfield: speech-transfer
 related_papers:
-  - "Papers/Another-Paper"
+  - "zero-order/zo-estimators/literature/Another-Paper"
 linked_knowledge:
   - "Knowledge/Literature-Overview"
   - "Knowledge/Method-Families"
@@ -38,7 +38,7 @@ argument_methods:
 argument_gaps:
   - "Still needs speech-specific validation"
 paper_relationships:
-  - "Papers/Another-Paper::complements"
+  - "zero-order/zo-estimators/literature/Another-Paper::complements"
 updated: 2026-03-16T00:00:00Z
 ---
 ```

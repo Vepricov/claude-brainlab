@@ -68,7 +68,7 @@ class BoardTests(unittest.TestCase):
             self.assertEqual({p.name:p.read_bytes() for p in view.iterdir()}, before)
 
     def test_active_cards_and_full_history_keep_original_ids(self):
-        files = board.render(fixture(), 'Staff/fixture/Hermes')
+        files = board.render(fixture(), 'agents/notes/fixture/Hermes')
         canvas = json.loads(files['Hermes.canvas'])
         cards = [n for n in canvas['nodes'] if n.get('hermes_task_id')]
         self.assertEqual([n['hermes_task_id'] for n in cards], ['t_active'])
@@ -82,9 +82,9 @@ class BoardTests(unittest.TestCase):
 
     def test_status_transition_keeps_identity_and_unknown_status_visible(self):
         data = fixture()
-        old = json.loads(board.render(data, 'Staff/fixture/Hermes')['Hermes.canvas'])
+        old = json.loads(board.render(data, 'agents/notes/fixture/Hermes')['Hermes.canvas'])
         data['boards'][0]['tasks'][0]['status'] = 'future-status'
-        new = json.loads(board.render(data, 'Staff/fixture/Hermes')['Hermes.canvas'])
+        new = json.loads(board.render(data, 'agents/notes/fixture/Hermes')['Hermes.canvas'])
         pick = lambda c: next(n for n in c['nodes'] if n.get('hermes_task_id') == 't_active')
         self.assertEqual(pick(old)['id'], pick(new)['id'])
         self.assertIn('future-status', pick(new)['text'])
@@ -92,18 +92,18 @@ class BoardTests(unittest.TestCase):
     def test_untrusted_text_cannot_add_canvas_nodes_or_executable_blocks(self):
         data = fixture()
         data['boards'][0]['tasks'][0]['body'] = '```\n```dataviewjs\nalert(1)\n```\n- [ ] injected'
-        files = board.render(data, 'Staff/fixture/Hermes')
+        files = board.render(data, 'agents/notes/fixture/Hermes')
         self.assertIn('````text', files['project.md'])
         self.assertNotIn('- [ ]', files['project.md'])
         self.assertEqual(json.loads(files['snapshot.json']), data)
         data['boards'][0]['slug'] = '../escape'
         with self.assertRaises(ValueError):
-            board.render(data, 'Staff/fixture/Hermes')
+            board.render(data, 'agents/notes/fixture/Hermes')
 
     def test_refresh_preserves_manual_notes_and_unchanged_files(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            files = board.render(fixture(), 'Staff/fixture/Hermes')
+            files = board.render(fixture(), 'agents/notes/fixture/Hermes')
             board.write_view(root, files)
             manual = root / 'My notes.md'
             manual.write_text('Keep this')
@@ -119,7 +119,7 @@ class BoardTests(unittest.TestCase):
     def test_task_id_is_scoped_by_board(self):
         data = fixture()
         data['boards'].append({'slug': 'second', 'tasks': [dict(data['boards'][0]['tasks'][0])]})
-        canvas = json.loads(board.render(data, 'Staff/fixture/Hermes')['Hermes.canvas'])
+        canvas = json.loads(board.render(data, 'agents/notes/fixture/Hermes')['Hermes.canvas'])
         cards = [n for n in canvas['nodes'] if n.get('hermes_task_id')]
         self.assertEqual(len({n['id'] for n in cards}), 2)
 

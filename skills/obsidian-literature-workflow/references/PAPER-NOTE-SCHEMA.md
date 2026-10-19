@@ -31,7 +31,7 @@ concepts:
 methods:
   - contrastive learning
 related_papers:
-  - "Papers/Neighbor-Paper"
+  - "zero-order/zo-estimators/literature/Neighbor-Paper"
 linked_knowledge:
   - "Knowledge/Literature-Overview"
   - "Knowledge/Method-Families"

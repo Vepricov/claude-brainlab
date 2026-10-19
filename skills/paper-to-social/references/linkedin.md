@@ -31,7 +31,7 @@ Every LinkedIn post gets at least one image. Pick one:
 LinkedIn is the right place to get personal, more than the other platforms. The user wants this here:
 - **Tag coauthors** inline (verify handles first), and thank them.
 - **Write professional feelings about the work**: what went well, what was hard, what surprised you, the frustration-then-breakthrough moment. This is what makes a LinkedIn post feel human instead of an abstract.
-- A documented behind-the-scenes story is great material. Example: softsign has `Papers/softsign/llm_as_coauthor.md` — an honest account of how an LLM suggested the proximal/Fenchel-V framing that became the core theory (and confidently botched the algebra, `tanh(αx)=α·tanh(x)`, while the authors did the real work). Summarize such notes faithfully, do not embellish.
+- A documented behind-the-scenes story is great material. Example: softsign has `matrix-optimization/muon-sign-methods/softsign/notes/llm_as_coauthor.md` — an honest account of how an LLM suggested the proximal/Fenchel-V framing that became the core theory (and confidently botched the algebra, `tanh(αx)=α·tanh(x)`, while the authors did the real work). Summarize such notes faithfully, do not embellish.
 
 **Do not invent the personal parts.** If you don't know the feelings, the story, or the handles, ASK the user before writing them. Leave clear placeholders meanwhile.
 

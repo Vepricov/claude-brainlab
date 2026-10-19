@@ -34,7 +34,7 @@ updated: 2026-03-18T00:00:00Z
 ## Item Mapping
 | Zotero Key | Item Title | Canonical Note | Status |
 |---|---|---|---|
-| ABCDEFGH | Example title | Papers/Example-Paper.md | covered |
+| ABCDEFGH | Example title | zero-order/zo-estimators/literature/Example-Paper.md | covered |
 
 ## Triage
 - fully covered

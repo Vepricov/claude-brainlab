@@ -130,7 +130,7 @@ If the vault is not Russian, translate the section headers; keep the frontmatter
 
 ## 8. Project-page convention
 
-A project = folder `Papers/<project>/` (or `Projects/<project>/`) with:
+A project = the work folder `<direction>/<theme>/<work>/`; its private pages live in `notes/`:
 - `<Project> (проект).md` — the project page (template above). Order: **links block → description →
   link to literature → Work history → Problems → Reports**.
 - `<Project> — литература.md` — a MOC of the project's papers, linking into the theme's `<direction>/<theme>/literature/`.

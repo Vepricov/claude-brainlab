@@ -2,7 +2,7 @@
 window.LAB_ATLAS_DATA = {
   "meta": {
     "schema_version": 1,
-    "capabilities": 138,
+    "capabilities": 145,
     "privacy": "capability-only public projection"
   },
   "capabilities": [
@@ -27,7 +27,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/architect.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/architect.md"
         }
       ],
       "known_limitations": [
@@ -72,7 +72,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/bug-analyzer.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/bug-analyzer.md"
         }
       ],
       "known_limitations": [
@@ -116,7 +116,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/build-error-resolver.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/build-error-resolver.md"
         }
       ],
       "known_limitations": [
@@ -163,7 +163,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/code-reviewer.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/code-reviewer.md"
         }
       ],
       "known_limitations": [
@@ -208,7 +208,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/dev-planner.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/dev-planner.md"
         }
       ],
       "known_limitations": [
@@ -253,7 +253,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/kaggle-miner.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/kaggle-miner.md"
         }
       ],
       "known_limitations": [
@@ -297,7 +297,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/literature-reviewer.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer.md"
         }
       ],
       "known_limitations": [
@@ -343,7 +343,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/literature-reviewer-obsidian.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer-obsidian.md"
         }
       ],
       "known_limitations": [
@@ -374,7 +374,7 @@ window.LAB_ATLAS_DATA = {
       "type": "agent",
       "name": "obsidian-hub-creator",
       "title_ru": "obsidian-hub-creator",
-      "description": "|",
+      "description": "Use this agent when the user wants to create a new Obsidian project hub card, add a project to the vault, or set up a new paper/project/staff entry. Examples:",
       "description_ru": "Creates and updates Obsidian records for projects, papers, and team members.",
       "what_is_special": "A specialist role with a defined scope that can be delegated and reviewed independently. Related workflows: project lifecycle, memory and knowledge maintenance. Minimum check: stay within the assigned responsibility. Purpose: creates and updates Obsidian records for projects, papers, and team members.",
       "inputs": [
@@ -390,7 +390,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/obsidian-hub-creator.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/obsidian-hub-creator.md"
         }
       ],
       "known_limitations": [
@@ -435,7 +435,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/paper-miner.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/paper-miner.md"
         }
       ],
       "known_limitations": [
@@ -445,50 +445,6 @@ window.LAB_ATLAS_DATA = {
         "literature-discovery",
         "literature-ingest",
         "writing",
-        "external-review"
-      ],
-      "execution_owner_ru": "A subagent assigned by the orchestrator",
-      "inputs_ru": [
-        "A bounded task brief"
-      ],
-      "outputs_ru": [
-        "Specialist findings or an artifact"
-      ],
-      "quality_gates_ru": [
-        "Stay within the assigned responsibility"
-      ],
-      "known_limitations_ru": [
-        "The orchestrator reviews meaningful results"
-      ]
-    },
-    {
-      "id": "agent:rebuttal-writer",
-      "type": "agent",
-      "name": "rebuttal-writer",
-      "title_ru": "rebuttal-writer",
-      "description": "Use this agent when the user asks to \"write rebuttal\", \"respond to reviewers\", \"analyze review comments\", or needs help with academic paper review response. This agent specializes in systematic rebuttal writing with professional tone and structured responses.",
-      "description_ru": "Systematically analyzes reviewer comments and prepares a professional response.",
-      "what_is_special": "A specialist role with a defined scope that can be delegated and reviewed independently. Related workflow: review and rebuttal. Minimum check: stay within the assigned responsibility. Purpose: systematically analyzes reviewer comments and prepares a professional response.",
-      "inputs": [
-        "A bounded task brief"
-      ],
-      "outputs": [
-        "Specialist findings or an artifact"
-      ],
-      "execution_owner": "A subagent assigned by the orchestrator",
-      "quality_gates": [
-        "Stay within the assigned responsibility"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/rebuttal-writer.md"
-        }
-      ],
-      "known_limitations": [
-        "The orchestrator reviews meaningful results"
-      ],
-      "process_ids": [
         "external-review"
       ],
       "execution_owner_ru": "A subagent assigned by the orchestrator",
@@ -526,7 +482,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/refactor-cleaner.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/refactor-cleaner.md"
         }
       ],
       "known_limitations": [
@@ -570,7 +526,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/research-knowledge-curator-obsidian.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/research-knowledge-curator-obsidian.md"
         }
       ],
       "known_limitations": [
@@ -615,7 +571,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/story-generator.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/story-generator.md"
         }
       ],
       "known_limitations": [
@@ -660,7 +616,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/tdd-guide.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/tdd-guide.md"
         }
       ],
       "known_limitations": [
@@ -704,7 +660,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/agents/ui-sketcher.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/ui-sketcher.md"
         }
       ],
       "known_limitations": [
@@ -749,7 +705,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/analyze-results.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/analyze-results.md"
         }
       ],
       "known_limitations": [
@@ -795,7 +751,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/build-fix.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/build-fix.md"
         }
       ],
       "known_limitations": [
@@ -841,7 +797,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/checkpoint.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/checkpoint.md"
         }
       ],
       "known_limitations": [
@@ -887,7 +843,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/code-review.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/code-review.md"
         }
       ],
       "known_limitations": [
@@ -933,7 +889,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/commit.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/commit.md"
         }
       ],
       "known_limitations": [
@@ -979,7 +935,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/conversations.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/conversations.md"
         }
       ],
       "known_limitations": [
@@ -1025,7 +981,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/create_project.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/create_project.md"
         }
       ],
       "known_limitations": [
@@ -1071,7 +1027,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/evaluate-repository.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/evaluate-repository.md"
         }
       ],
       "known_limitations": [
@@ -1079,6 +1035,52 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "code-engineering"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "Command arguments",
+        "Current project context"
+      ],
+      "outputs_ru": [
+        "The delegated workflow's result"
+      ],
+      "quality_gates_ru": [
+        "Command preflight check"
+      ],
+      "known_limitations_ru": [
+        "Usually a thin entry point; the full contract belongs to the underlying skill"
+      ]
+    },
+    {
+      "id": "command:hypothesize",
+      "type": "command",
+      "name": "hypothesize",
+      "title_ru": "/hypothesize",
+      "description": "Generate research hypotheses for a project by pulling its full Obsidian context (hub card + Code library + literature) and brainstorming testable ideas. Optionally writes them to the work's private notes/.",
+      "description_ru": "Generate research hypotheses for a project by pulling its full Obsidian context (hub card + Code library + literature) and brainstorming testable ideas. Optionally writes them to the work's private notes/.",
+      "what_is_special": "An explicit user entry point that bundles several steps into one reproducible scenario. Linked to processes: Memory and knowledge maintenance. Minimum check: a dry run of the command. Purpose: Generate research hypotheses for a project by pulling its full Obsidian context (hub card + Code library + literature) and brainstorming testable ideas. Optionally writes them to the work's private notes/.",
+      "inputs": [
+        "Command arguments",
+        "Current project context"
+      ],
+      "outputs": [
+        "The delegated workflow's result"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Command preflight check"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/hypothesize.md"
+        }
+      ],
+      "known_limitations": [
+        "Usually a thin entry point; the full contract belongs to the underlying skill"
+      ],
+      "process_ids": [
+        "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -1117,7 +1119,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/learn.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/learn.md"
         }
       ],
       "known_limitations": [
@@ -1163,7 +1165,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/limits.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/limits.md"
         }
       ],
       "known_limitations": [
@@ -1209,7 +1211,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/memory-status.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-status.md"
         }
       ],
       "known_limitations": [
@@ -1255,7 +1257,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/memory-sync.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-sync.md"
         }
       ],
       "known_limitations": [
@@ -1301,7 +1303,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/mine-writing-patterns.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/mine-writing-patterns.md"
         }
       ],
       "known_limitations": [
@@ -1350,7 +1352,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-ingest.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-ingest.md"
         }
       ],
       "known_limitations": [
@@ -1396,7 +1398,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-init.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-init.md"
         }
       ],
       "known_limitations": [
@@ -1443,7 +1445,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-link.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-link.md"
         }
       ],
       "known_limitations": [
@@ -1489,7 +1491,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-note.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-note.md"
         }
       ],
       "known_limitations": [
@@ -1535,7 +1537,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-notes.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-notes.md"
         }
       ],
       "known_limitations": [
@@ -1581,7 +1583,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-project.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-project.md"
         }
       ],
       "known_limitations": [
@@ -1628,7 +1630,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-review.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-review.md"
         }
       ],
       "known_limitations": [
@@ -1674,7 +1676,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-sync.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-sync.md"
         }
       ],
       "known_limitations": [
@@ -1721,7 +1723,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/obsidian-views.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-views.md"
         }
       ],
       "known_limitations": [
@@ -1767,7 +1769,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/plan.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/plan.md"
         }
       ],
       "known_limitations": [
@@ -1775,190 +1777,6 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "experiment-design"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs_ru": [
-        "The delegated workflow's result"
-      ],
-      "quality_gates_ru": [
-        "Command preflight check"
-      ],
-      "known_limitations_ru": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ]
-    },
-    {
-      "id": "command:poster",
-      "type": "command",
-      "name": "poster",
-      "title_ru": "/poster",
-      "description": "Design academic poster for conference",
-      "description_ru": "Designs an academic conference poster.",
-      "what_is_special": "An explicit user entry point combining several steps into a reproducible workflow. Related workflow: presentations and posters. Minimum check: command preflight. Purpose: designs an academic conference poster.",
-      "inputs": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs": [
-        "The delegated workflow's result"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Command preflight check"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/poster.md"
-        }
-      ],
-      "known_limitations": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ],
-      "process_ids": [
-        "presentation"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs_ru": [
-        "The delegated workflow's result"
-      ],
-      "quality_gates_ru": [
-        "Command preflight check"
-      ],
-      "known_limitations_ru": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ]
-    },
-    {
-      "id": "command:presentation",
-      "type": "command",
-      "name": "presentation",
-      "title_ru": "/presentation",
-      "description": "Create conference presentation slides quickly",
-      "description_ru": "Quickly assembles slides for a conference talk.",
-      "what_is_special": "An explicit user entry point combining several steps into a reproducible workflow. Related workflow: presentations and posters. Minimum check: command preflight. Purpose: quickly assembles slides for a conference talk.",
-      "inputs": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs": [
-        "The delegated workflow's result"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Command preflight check"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/presentation.md"
-        }
-      ],
-      "known_limitations": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ],
-      "process_ids": [
-        "presentation"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs_ru": [
-        "The delegated workflow's result"
-      ],
-      "quality_gates_ru": [
-        "Command preflight check"
-      ],
-      "known_limitations_ru": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ]
-    },
-    {
-      "id": "command:promote",
-      "type": "command",
-      "name": "promote",
-      "title_ru": "/promote",
-      "description": "Generate promotion content for multiple platforms",
-      "description_ru": "Prepares materials about a research project for several public platforms, adapting them to each audience.",
-      "what_is_special": "An explicit user entry point combining several steps into a reproducible workflow. Related workflow: publication and communication. Minimum check: command preflight. Purpose: prepares materials about a research project for several public platforms, adapting them to each audience.",
-      "inputs": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs": [
-        "The delegated workflow's result"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Command preflight check"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/promote.md"
-        }
-      ],
-      "known_limitations": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ],
-      "process_ids": [
-        "publication"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs_ru": [
-        "The delegated workflow's result"
-      ],
-      "quality_gates_ru": [
-        "Command preflight check"
-      ],
-      "known_limitations_ru": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ]
-    },
-    {
-      "id": "command:rebuttal",
-      "type": "command",
-      "name": "rebuttal",
-      "title_ru": "/rebuttal",
-      "description": "Start systematic review response workflow for professional rebuttal writing",
-      "description_ru": "Starts a structured workflow for preparing reviewer responses.",
-      "what_is_special": "An explicit user entry point combining several steps into a reproducible workflow. Related workflow: review and rebuttal. Minimum check: command preflight. Purpose: starts a structured workflow for preparing reviewer responses.",
-      "inputs": [
-        "Command arguments",
-        "Current project context"
-      ],
-      "outputs": [
-        "The delegated workflow's result"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Command preflight check"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/rebuttal.md"
-        }
-      ],
-      "known_limitations": [
-        "Usually a thin entry point; the full contract belongs to the underlying skill"
-      ],
-      "process_ids": [
-        "external-review"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -1997,7 +1815,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/refactor-clean.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/refactor-clean.md"
         }
       ],
       "known_limitations": [
@@ -2043,7 +1861,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/research-init.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/research-init.md"
         }
       ],
       "known_limitations": [
@@ -2089,7 +1907,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/setup-pm.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/setup-pm.md"
         }
       ],
       "known_limitations": [
@@ -2135,7 +1953,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/tdd.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/tdd.md"
         }
       ],
       "known_limitations": [
@@ -2181,7 +1999,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/update-github.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-github.md"
         }
       ],
       "known_limitations": [
@@ -2227,7 +2045,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/update-memory.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-memory.md"
         }
       ],
       "known_limitations": [
@@ -2273,7 +2091,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/update-readme.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-readme.md"
         }
       ],
       "known_limitations": [
@@ -2319,7 +2137,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/verify.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/verify.md"
         }
       ],
       "known_limitations": [
@@ -2365,7 +2183,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/zotero-notes.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-notes.md"
         }
       ],
       "known_limitations": [
@@ -2412,7 +2230,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/commands/zotero-review.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-review.md"
         }
       ],
       "known_limitations": [
@@ -2459,7 +2277,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/citation-validator.py"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/citation-validator.py"
         }
       ],
       "known_limitations": [
@@ -2505,7 +2323,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/hook-common.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hook-common.js"
         }
       ],
       "known_limitations": [
@@ -2551,7 +2369,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/hooks.json"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hooks.json"
         }
       ],
       "known_limitations": [
@@ -2560,6 +2378,94 @@ window.LAB_ATLAS_DATA = {
       "process_ids": [
         "agent-orchestration"
       ],
+      "execution_owner_ru": "Hook runtime",
+      "inputs_ru": [
+        "Lifecycle event payload"
+      ],
+      "outputs_ru": [
+        "A guard decision or lifecycle metadata"
+      ],
+      "quality_gates_ru": [
+        "Bounded timeout",
+        "Failure behavior is defined by the hook contract"
+      ],
+      "known_limitations_ru": [
+        "Depends on the event and host"
+      ]
+    },
+    {
+      "id": "hook:lab-where-am-i",
+      "type": "hook",
+      "name": "lab where am i",
+      "title_ru": "lab where am i",
+      "description": "Tells the agent which base repository to write to from here and how to submit",
+      "description_ru": "Tells the agent which base repository to write to from here and how to submit",
+      "what_is_special": "Fires automatically on a runtime event, with no manual call from the user. Minimum check: a bounded timeout. Purpose: Tells the agent which base repository to write to from here and how to submit",
+      "inputs": [
+        "Lifecycle event payload"
+      ],
+      "outputs": [
+        "A guard decision or lifecycle metadata"
+      ],
+      "execution_owner": "Hook runtime",
+      "quality_gates": [
+        "Bounded timeout",
+        "Failure behavior is defined by the hook contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/lab-where-am-i.py"
+        }
+      ],
+      "known_limitations": [
+        "Depends on the event and host"
+      ],
+      "process_ids": [],
+      "execution_owner_ru": "Hook runtime",
+      "inputs_ru": [
+        "Lifecycle event payload"
+      ],
+      "outputs_ru": [
+        "A guard decision or lifecycle metadata"
+      ],
+      "quality_gates_ru": [
+        "Bounded timeout",
+        "Failure behavior is defined by the hook contract"
+      ],
+      "known_limitations_ru": [
+        "Depends on the event and host"
+      ]
+    },
+    {
+      "id": "hook:no-old-paths",
+      "type": "hook",
+      "name": "no old paths",
+      "title_ru": "no old paths",
+      "description": "Parses by quotes, not spaces: in the old vault the path contains spaces",
+      "description_ru": "Parses by quotes, not spaces: in the old vault the path contains spaces",
+      "what_is_special": "Fires automatically on a runtime event, with no manual call from the user. Minimum check: a bounded timeout. Purpose: Parses by quotes, not spaces: in the old vault the path contains spaces",
+      "inputs": [
+        "Lifecycle event payload"
+      ],
+      "outputs": [
+        "A guard decision or lifecycle metadata"
+      ],
+      "execution_owner": "Hook runtime",
+      "quality_gates": [
+        "Bounded timeout",
+        "Failure behavior is defined by the hook contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/no-old-paths.py"
+        }
+      ],
+      "known_limitations": [
+        "Depends on the event and host"
+      ],
+      "process_ids": [],
       "execution_owner_ru": "Hook runtime",
       "inputs_ru": [
         "Lifecycle event payload"
@@ -2600,7 +2506,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/security-guard.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/security-guard.js"
         }
       ],
       "known_limitations": [
@@ -2646,7 +2552,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/session-start.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-start.js"
         }
       ],
       "known_limitations": [
@@ -2692,7 +2598,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/session-summary.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-summary.js"
         }
       ],
       "known_limitations": [
@@ -2738,7 +2644,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/skill-forced-eval.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/skill-forced-eval.js"
         }
       ],
       "known_limitations": [
@@ -2784,7 +2690,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/hooks/stop-summary.js"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/stop-summary.js"
         }
       ],
       "known_limitations": [
@@ -2809,6 +2715,54 @@ window.LAB_ATLAS_DATA = {
       ]
     },
     {
+      "id": "skill:academic-plotting",
+      "type": "skill",
+      "name": "academic-plotting",
+      "title_ru": "academic-plotting",
+      "description": "Generates publication-quality figures for ML papers from research context. Given a paper section or description, extracts system components and relationships to generate architecture diagrams via Gemini. Given experiment results or data, auto-selects chart type and generates data-driven figures via matplotlib/seaborn. Use when creating any figure for a conference paper.",
+      "description_ru": "Generates publication-quality figures for ML papers from research context. Given a paper section or description, extracts system components and relationships to generate architecture diagrams via Gemini. Given experiment results or data, auto-selects chart type and generates data-driven figures via matplotlib/seaborn. Use when creating any figure for a conference paper.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Reading and ingest, Code and engineering, Publishing and communication. Minimum check: fully meet the SKILL.md contract. Purpose: Generates publication-quality figures for ML papers from research context. Given a paper section or description, extracts system components and relationships to generate architecture diagrams via Gemini. Given experiment results or data, auto-selects chart type and generates data-driven figures via matplotlib/seaborn. Use when creating any figure for a conference paper.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/academic-plotting/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [
+        "literature-ingest",
+        "code-engineering",
+        "publication"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
       "id": "skill:agent-identifier",
       "type": "skill",
       "name": "agent-identifier",
@@ -2830,7 +2784,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/agent-identifier/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/agent-identifier/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2876,7 +2830,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/architecture-design/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/architecture-design/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2927,7 +2881,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/astar-paper-review/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/astar-paper-review/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2973,7 +2927,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/bug-detective/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/bug-detective/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3003,7 +2957,7 @@ window.LAB_ATLAS_DATA = {
       "name": "call-notes",
       "title_ru": "call-notes",
       "description": "Turns research meeting notes or a call transcript into a private project record plus approved scientific records and tasks routed to their own destinations. Use when the user says 'record the call', 'call notes', 'go through the meeting', or pastes a transcript or meeting summary to be filed.",
-      "description_ru": "Turns a call into a private summary, approved records in the work, and issues in its GitLab repository.",
+      "description_ru": "Turns a call into an outcome in the work's calls/, claims and runs in claims/ via a proposal, and tasks in GitLab. The raw transcript stays on the machine.",
       "what_is_special": "A required structure of three independent extraction branches, an integrator, and a fresh skeptical reviewer keeps record types and private information separate.",
       "inputs": [
         "audio/VTT/transcript JSON",
@@ -3011,9 +2965,9 @@ window.LAB_ATLAS_DATA = {
         "confirmed roster"
       ],
       "outputs": [
-        "private meeting note",
-        "hypothesis/experiment/evidence/decision candidates",
-        "GitLab issues of the work"
+        "calls/<date>.md in the work",
+        "claims and runs via a proposal",
+        "GitLab issues"
       ],
       "execution_owner": "local call-notes orchestrator",
       "quality_gates": [
@@ -3025,16 +2979,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/call-notes/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/call-notes/SKILL.md"
         }
       ],
       "known_limitations": [
-        "blocks if the work's clone or its GitLab issues are unavailable"
+        "the raw transcript stays in calls/raw/, closed from git"
       ],
       "process_ids": [
-        "discussion",
-        "results",
-        "knowledge-maintenance"
+        "discussion"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -3056,7 +3008,7 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "caveman",
       "title_ru": "caveman",
-      "description": ">",
+      "description": "Ultra-compressed communication mode. Cuts token usage ~75% by dropping filler, articles, and pleasantries while keeping full technical accuracy. Use when user says \"caveman mode\", \"talk like caveman\", \"use caveman\", \"less tokens\", \"be brief\", or invokes /caveman.",
       "description_ru": "Enables extremely concise communication without losing technical precision.",
       "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: enables extremely concise communication without losing technical precision.",
       "inputs": [
@@ -3073,7 +3025,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/caveman/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/caveman/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3119,7 +3071,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/citation-verification/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/citation-verification/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3169,7 +3121,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/code-ingest/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-ingest/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3177,8 +3129,7 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "code-engineering",
-        "knowledge-maintenance",
-        "agent-orchestration"
+        "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -3202,7 +3153,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "code-library",
       "description": "Finds documented repositories, execution patterns, and project links in the user's Obsidian code library. Use when the user asks 'how does repo X work', 'where is the code for this project', how to run or monitor experiments, or which code skills exist.",
       "description_ru": "Describes the user's established process for running, checking, and documenting code.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: experiment design, code and engineering, memory and knowledge maintenance. Minimum check: follow the full SKILL.md contract. Purpose: describes the user's established process for running, checking, and documenting code.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Project lifecycle, Experiment design, Code and engineering, Memory and knowledge maintenance. Minimum check: fully meet the SKILL.md contract. Purpose: Describes the user's established way of running, checking and documenting code.",
       "inputs": [
         "User request",
         "Project context"
@@ -3217,13 +3168,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/code-library/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-library/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
+        "project-lifecycle",
         "experiment-design",
         "code-engineering",
         "knowledge-maintenance"
@@ -3265,7 +3217,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/code-review-excellence/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-review-excellence/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3311,7 +3263,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/command-development/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/command-development/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3340,9 +3292,9 @@ window.LAB_ATLAS_DATA = {
       "type": "skill",
       "name": "create-project",
       "title_ru": "create-project",
-      "description": "Creates a research project, or repairs its local and shared setup, after checking that no such project already exists. Use when the user says 'create a project', 'new project', 'set up a project', 'set up a repo for a paper', or a project is missing its hub card, folders, or shared records.",
-      "description_ru": "Creates a work in the GitLab tree after checking that it does not exist yet, and asks who leads it.",
-      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and checks. Linked to processes: Project lifecycle, Code and engineering, Memory and knowledge maintenance. Minimal check: fully satisfy the SKILL.md contract. Purpose: Creates a work in the GitLab tree after checking that it does not exist yet, and asks who leads it.",
+      "description": "Creates a new lab work (one GitLab repository in its theme, cloned into ~/brainlab at the same path), or repairs an existing work's setup, after checking that no such work already exists. Use when the user says 'create a project', 'new project', 'заведи проект', 'заведи работу', 'set up a repo for a paper', or a work is missing its README, people lines, local folders or clone settings.",
+      "description_ru": "Creates a work: one GitLab repository in its topic, a clone in ~/brainlab at the same path, a README with the “Leads” and “Team” lines. First checks that no such work exists yet.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Project lifecycle, Code and engineering. Minimum check: fully meet the SKILL.md contract. Purpose: Creates a work: one GitLab repository in its topic, a clone in ~/brainlab at the same path, a README with the “Leads” and “Team” lines. First checks that no such work exists yet.",
       "inputs": [
         "User request",
         "Project context"
@@ -3357,7 +3309,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/create-project/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/create-project/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3365,8 +3317,7 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "project-lifecycle",
-        "code-engineering",
-        "knowledge-maintenance"
+        "code-engineering"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -3405,7 +3356,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/daily-coding/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/daily-coding/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3451,7 +3402,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/defuddle/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/defuddle/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3482,7 +3433,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "diagnose",
       "description": "Diagnoses hard bugs and performance regressions by building a reproducible feedback loop and testing competing causal hypotheses. Use when a bug is intermittent or resists a quick fix, the user says 'it is flaky', 'performance regressed', 'I cannot reproduce it', or an earlier fix attempt failed.",
       "description_ru": "Runs a disciplined diagnosis workflow for difficult bugs and performance problems.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: research direction, execution and monitoring, code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: runs a disciplined diagnosis workflow for difficult bugs and performance problems.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Launch and monitoring, Code and engineering. Minimum check: fully meet the SKILL.md contract. Purpose: Runs a disciplined diagnostic loop for hard bugs and performance problems.",
       "inputs": [
         "User request",
         "Project context"
@@ -3497,14 +3448,13 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/diagnose/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/diagnose/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "research-direction",
         "experiment-run",
         "code-engineering"
       ],
@@ -3530,7 +3480,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "doc-coauthoring",
       "description": "Co-authors a technical document, proposal, or specification through context gathering, targeted drafting, and reader-testing review. Use when the user says 'help me write a doc', 'draft a spec', 'write a proposal', 'RFC', or wants to iterate on a design document together.",
       "description_ru": "Organizes collaborative document drafting around the document type, reader, and available sources.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: results and evidence, scientific writing. Minimum check: follow the full SKILL.md contract. Purpose: organizes collaborative document drafting around the document type, reader, and available sources.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Scientific writing. Minimum check: fully meet the SKILL.md contract. Purpose: Organizes joint drafting of a document, taking into account the document type, the reader and the available sources.",
       "inputs": [
         "User request",
         "Project context"
@@ -3545,15 +3495,61 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/doc-coauthoring/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/doc-coauthoring/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "results",
         "writing"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
+      "id": "skill:experiment-runs",
+      "type": "skill",
+      "name": "experiment-runs",
+      "title_ru": "experiment-runs",
+      "description": "Launching training on the lab's servers and keeping runs reproducible. Use when starting, monitoring or resuming a training run on a remote GPU box, choosing which server or GPU index to take, syncing code to a server, or deciding what a run must record to be reproducible later.",
+      "description_ru": "Launching training on the lab's servers and keeping runs reproducible. Use when starting, monitoring or resuming a training run on a remote GPU box, choosing which server or GPU index to take, syncing code to a server, or deciding what a run must record to be reproducible later.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Launch and monitoring, Agents and infrastructure. Minimum check: fully meet the SKILL.md contract. Purpose: Launching training on the lab's servers and keeping runs reproducible. Use when starting, monitoring or resuming a training run on a remote GPU box, choosing which server or GPU index to take, syncing code to a server, or deciding what a run must record to be reproducible later.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/experiment-runs/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [
+        "experiment-run",
+        "agent-orchestration"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -3577,7 +3573,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "frontend-design",
       "description": "Designs and implements polished, production-grade frontend interfaces with a coherent visual direction and real working code. Use when the user asks to build a component, page, landing page, dashboard or app UI, or wants a frontend that looks distinctive rather than generic.",
       "description_ru": "Creates distinctive production-quality web interfaces without generic visual templates.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: code and engineering, presentations and posters. Minimum check: follow the full SKILL.md contract. Purpose: creates distinctive production-quality web interfaces without generic visual templates.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Code and engineering. Minimum check: fully meet the SKILL.md contract. Purpose: Builds expressive production-grade web interfaces and avoids a templated visual language.",
       "inputs": [
         "User request",
         "Project context"
@@ -3592,15 +3588,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/frontend-design/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/frontend-design/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "code-engineering",
-        "presentation"
+        "code-engineering"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -3639,7 +3634,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/git-guardrails-claude-code/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-guardrails-claude-code/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3685,7 +3680,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/git-workflow/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-workflow/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3731,7 +3726,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/google-workspace-mcp/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/google-workspace-mcp/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3778,7 +3773,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/grill-me/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-me/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3811,7 +3806,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "grill-with-docs",
       "description": "Challenges a proposed plan or design against existing domain documents, terminology and implementation choices by asking one question at a time with recommended answers. Use when the user wants a design grilled against the docs or codebase, or says check this plan against our domain model.",
       "description_ru": "Checks a plan against the domain model and existing documentation, clarifying terminology and decisions.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: research direction, results and evidence, theory and derivations. Minimum check: follow the full SKILL.md contract. Purpose: checks a plan against the domain model and existing documentation, clarifying terminology and decisions.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Research direction, Theory and derivations. Minimum check: fully meet the SKILL.md contract. Purpose: Checks a plan against the domain model and existing documentation, sharpening terms and decisions.",
       "inputs": [
         "User request",
         "Project context"
@@ -3826,7 +3821,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/grill-with-docs/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-with-docs/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3834,7 +3829,6 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "research-direction",
-        "results",
         "theory"
       ],
       "execution_owner_ru": "Local agent",
@@ -3874,7 +3868,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/handoff/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3925,7 +3919,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/handoff-to-jarvis/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff-to-jarvis/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3957,7 +3951,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "hook-development",
       "description": "Builds and debugs Claude Code lifecycle hooks, covering event types, input payloads, JSON responses, exit codes and registration in settings or plugins. Use when the user asks to create a PreToolUse or PostToolUse hook, block or validate tool calls, or fix a hook that does not fire.",
       "description_ru": "Designs Claude Code hooks for events, tool checks, and controlled automation.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: designs Claude Code hooks for events, tool checks, and controlled automation.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Code and engineering, Agents and infrastructure. Minimum check: fully meet the SKILL.md contract. Purpose: Designs Claude Code hooks for events, tool checks and controlled automation.",
       "inputs": [
         "User request",
         "Project context"
@@ -3972,13 +3966,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/hook-development/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/hook-development/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
+        "code-engineering",
         "agent-orchestration"
       ],
       "execution_owner_ru": "Local agent",
@@ -4003,7 +3998,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "improve-codebase-architecture",
       "description": "Finds architectural friction in an existing codebase and proposes deepening refactors that turn shallow modules into deep ones, improving testability and navigability. Use when the user asks to improve architecture, find refactoring opportunities, consolidate tightly coupled modules, or make the code easier to test.",
       "description_ru": "Identifies justified architecture improvements from the existing codebase's domain language and architecture decision records.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: results and evidence, code and engineering. Minimum check: follow the full SKILL.md contract. Purpose: identifies justified architecture improvements from the existing codebase's domain language and architecture decision records.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Code and engineering. Minimum check: fully meet the SKILL.md contract. Purpose: Finds well-grounded architecture improvements based on the domain language and ADRs of an existing codebase.",
       "inputs": [
         "User request",
         "Project context"
@@ -4018,14 +4013,13 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/improve-codebase-architecture/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/improve-codebase-architecture/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "results",
         "code-engineering"
       ],
       "execution_owner_ru": "Local agent",
@@ -4065,7 +4059,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/json-canvas/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/json-canvas/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4111,7 +4105,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/kaggle-learner/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/kaggle-learner/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4141,7 +4135,7 @@ window.LAB_ATLAS_DATA = {
       "name": "lab-knowledge",
       "title_ru": "lab-knowledge",
       "description": "Searches the laboratory's git knowledge base and writes into it through a pull request on a claim. Use when the user asks what the lab knows about something, or when work produces something the lab should keep — a finished run, a series of runs with a verdict, a derivation, a new claim, or a correction to one. Also use before writing anything into a work repository, the handbook or the journal, because it carries the canon of rules that the proposal gates enforce.",
-      "description_ru": "Searches the lab base and writes to it through a merge request: claims, runs, series, canon rules.",
+      "description_ru": "Searches the lab's knowledge base in git and writes to it through a proposal on a claim: a run, a series with a conclusion, a derivation, a new claim. Carries the canon of rules that the checks enforce.",
       "what_is_special": "Defines the publication boundary between private notes and the shared typed evidence graph. Read-only Ask Lab has no side effects.",
       "inputs": [
         "research question or curated private draft"
@@ -4155,15 +4149,19 @@ window.LAB_ATLAS_DATA = {
         "stable source provenance",
         "ACL read-back"
       ],
-      "github_urls": [],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/lab-knowledge/SKILL.md"
+        }
+      ],
       "known_limitations": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
         "does not expose raw private Obsidian content"
       ],
       "process_ids": [
-        "research-direction",
         "experiment-design",
-        "results",
+        "theory",
+        "code-engineering",
         "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
@@ -4178,7 +4176,6 @@ window.LAB_ATLAS_DATA = {
         "Follow the full SKILL.md contract"
       ],
       "known_limitations_ru": [
-        "An internal laboratory component: it is absent from the public repository and cannot be installed from it.",
         "Availability depends on the installation and runtime tools"
       ]
     },
@@ -4204,7 +4201,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/latex-conference-template-organizer/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/latex-conference-template-organizer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4235,7 +4232,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "mcp-integration",
       "description": "Configures and debugs MCP server connections for Claude Code plugins, covering .mcp.json setup, server types, and tool exposure. Use when the user asks to add an MCP server to a plugin, connect an external API or database through MCP, or fix an MCP server that fails to connect or shows no tools.",
       "description_ru": "Adds and configures MCP servers and their tools in Claude Code plugins.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: experiment design, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: adds and configures MCP servers and their tools in Claude Code plugins.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Code and engineering, Agents and infrastructure. Minimum check: fully meet the SKILL.md contract. Purpose: Adds and configures MCP servers and their tools in Claude Code plugins.",
       "inputs": [
         "User request",
         "Project context"
@@ -4250,14 +4247,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/mcp-integration/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/mcp-integration/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "experiment-design",
+        "code-engineering",
         "agent-orchestration"
       ],
       "execution_owner_ru": "Local agent",
@@ -4282,7 +4279,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "ml-paper-writing",
       "description": "Writing an ML research paper as an argument: finding the one-sentence contribution, shaping the narrative, structuring sections, and keeping every citation real. Use when the user asks to draft, restructure or sharpen a paper or any of its sections, to turn results into a story, or to check that the claims the text makes are the ones the evidence supports. Not about venue formatting or style files.",
       "description_ru": "Prepares ML/AI papers for leading conferences, including LaTeX, literature, citations, and camera-ready versions.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: scientific writing, publication and communication. Minimum check: follow the full SKILL.md contract. Purpose: prepares ML/AI papers for leading conferences, including LaTeX, literature, citations, and camera-ready versions.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Results and evidence, Scientific writing. Minimum check: fully meet the SKILL.md contract. Purpose: Prepares ML/AI papers for top conferences: LaTeX, literature, citations and camera-ready.",
       "inputs": [
         "User request",
         "Project context"
@@ -4297,15 +4294,15 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/ml-paper-writing/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ml-paper-writing/SKILL.md"
         }
       ],
       "known_limitations": [
         "Availability depends on the installation and runtime tools"
       ],
       "process_ids": [
-        "writing",
-        "publication"
+        "results",
+        "writing"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -4344,7 +4341,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-bases/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-bases/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4390,7 +4387,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-cli/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-cli/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4444,7 +4441,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-experiment-log/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-experiment-log/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4454,8 +4451,8 @@ window.LAB_ATLAS_DATA = {
         "experiment-design",
         "experiment-run",
         "results",
-        "knowledge-maintenance",
-        "agent-orchestration"
+        "publication",
+        "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -4494,7 +4491,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-link-graph/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-link-graph/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4525,7 +4522,7 @@ window.LAB_ATLAS_DATA = {
       "title_ru": "obsidian-literature-workflow",
       "description": "Develops project-linked reading notes and literature synthesis from papers stored in the Obsidian knowledge base or Zotero. Use when the user says their papers are in Obsidian, asks to review notes under Papers, or wants literature notes, comparisons, or a related-work summary tied to a project.",
       "description_ru": "Organizes a filesystem-first literature review, Zotero ingestion, synthesis, and Canvas within the project's Obsidian knowledge base.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: reading and ingestion, memory and knowledge maintenance, agents and infrastructure. Minimum check: follow the full SKILL.md contract. Purpose: organizes a filesystem-first literature review, Zotero ingestion, synthesis, and Canvas within the project's Obsidian knowledge base.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Reading and ingest, Memory and knowledge maintenance. Minimum check: fully meet the SKILL.md contract. Purpose: Organizes a filesystem-first literature review, Zotero ingest, synthesis and Canvas inside the project's Obsidian base.",
       "inputs": [
         "User request",
         "Project context"
@@ -4540,7 +4537,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-literature-workflow/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-literature-workflow/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4548,8 +4545,7 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "literature-ingest",
-        "knowledge-maintenance",
-        "agent-orchestration"
+        "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -4588,7 +4584,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-markdown/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-markdown/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4634,7 +4630,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-project-bootstrap/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-bootstrap/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4682,7 +4678,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-project-lifecycle/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-lifecycle/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4738,14 +4734,14 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-project-memory/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-memory/SKILL.md"
         }
       ],
       "known_limitations": [
         "checked-in default Research/{slug} layout conflicts with the current root-based routing contract"
       ],
       "process_ids": [
-        "code-engineering",
+        "results",
         "knowledge-maintenance"
       ],
       "execution_owner_ru": "Local agent",
@@ -4785,7 +4781,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-research-log/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-research-log/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4832,7 +4828,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/obsidian-synthesis-map/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-synthesis-map/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4879,7 +4875,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/operon-obsidian-setup/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/operon-obsidian-setup/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4932,7 +4928,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/paper-ingest/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-ingest/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4983,7 +4979,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/paper-search/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-search/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4992,52 +4988,6 @@ window.LAB_ATLAS_DATA = {
       "process_ids": [
         "literature-discovery",
         "knowledge-maintenance"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "User request",
-        "Project context"
-      ],
-      "outputs_ru": [
-        "A verified artifact appropriate to the task"
-      ],
-      "quality_gates_ru": [
-        "Follow the full SKILL.md contract"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the installation and runtime tools"
-      ]
-    },
-    {
-      "id": "skill:paper-self-review",
-      "type": "skill",
-      "name": "paper-self-review",
-      "title_ru": "paper-self-review",
-      "description": "This skill should be used when the user asks to \"review paper quality\", \"check paper completeness\", \"validate paper structure\", \"self-review before submission\", or mentions systematic paper quality checking. Provides comprehensive quality assurance checklist for academic papers.",
-      "description_ru": "Checks a research paper's completeness, structure, and quality before submission.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: review and rebuttal. Minimum check: follow the full SKILL.md contract. Purpose: checks a research paper's completeness, structure, and quality before submission.",
-      "inputs": [
-        "User request",
-        "Project context"
-      ],
-      "outputs": [
-        "A verified artifact appropriate to the task"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Follow the full SKILL.md contract"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/paper-self-review/SKILL.md"
-        }
-      ],
-      "known_limitations": [
-        "Availability depends on the installation and runtime tools"
-      ],
-      "process_ids": [
-        "external-review"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -5079,16 +5029,59 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/paper-to-social/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-to-social/SKILL.md"
         }
       ],
       "known_limitations": [
         "LinkedIn is intentionally paused"
       ],
       "process_ids": [
-        "publication",
-        "knowledge-maintenance"
+        "publication"
       ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
+      "id": "skill:paper-venue-formatting",
+      "type": "skill",
+      "name": "paper-venue-formatting",
+      "title_ru": "paper-venue-formatting",
+      "description": "Venue formatting for an ML paper: official style files, starting from a conference template, converting a submission between venues, and the page and margin rules each one enforces. Use when the user asks which template to use, how to set up or compile a conference submission, or how to move an existing paper to another venue. Not about what the paper argues.",
+      "description_ru": "Venue formatting for an ML paper: official style files, starting from a conference template, converting a submission between venues, and the page and margin rules each one enforces. Use when the user asks which template to use, how to set up or compile a conference submission, or how to move an existing paper to another venue. Not about what the paper argues.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Minimum check: fully meet the SKILL.md contract. Purpose: Venue formatting for an ML paper: official style files, starting from a conference template, converting a submission between venues, and the page and margin rules each one enforces. Use when the user asks which template to use, how to set up or compile a conference submission, or how to move an existing paper to another venue. Not about what the paper argues.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-venue-formatting/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
         "User request",
@@ -5126,7 +5119,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/pdf-reader/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/pdf-reader/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5172,7 +5165,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/planning-with-files/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/planning-with-files/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5218,7 +5211,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/plugin-structure/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/plugin-structure/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5227,53 +5220,6 @@ window.LAB_ATLAS_DATA = {
       "process_ids": [
         "code-engineering",
         "agent-orchestration"
-      ],
-      "execution_owner_ru": "Local agent",
-      "inputs_ru": [
-        "User request",
-        "Project context"
-      ],
-      "outputs_ru": [
-        "A verified artifact appropriate to the task"
-      ],
-      "quality_gates_ru": [
-        "Follow the full SKILL.md contract"
-      ],
-      "known_limitations_ru": [
-        "Availability depends on the installation and runtime tools"
-      ]
-    },
-    {
-      "id": "skill:post-acceptance",
-      "type": "skill",
-      "name": "post-acceptance",
-      "title_ru": "post-acceptance",
-      "description": "Use to prepare a conference presentation, presentation slides, a Beamer talk, a terminal-style presentation, an academic poster, or promotional content after acceptance. Provides workflows for Beamer presentations, posters, and public communication.",
-      "description_ru": "Organizes slides, a poster, and public materials after a paper is accepted.",
-      "what_is_special": "A repeatable workflow with its own input and validation contract, rather than a single prompt. Related workflows: presentations and posters, publication and communication. Minimum check: follow the full SKILL.md contract. Purpose: organizes slides, a poster, and public materials after a paper is accepted.",
-      "inputs": [
-        "User request",
-        "Project context"
-      ],
-      "outputs": [
-        "A verified artifact appropriate to the task"
-      ],
-      "execution_owner": "Local agent",
-      "quality_gates": [
-        "Follow the full SKILL.md contract"
-      ],
-      "github_urls": [
-        {
-          "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/post-acceptance/SKILL.md"
-        }
-      ],
-      "known_limitations": [
-        "Availability depends on the installation and runtime tools"
-      ],
-      "process_ids": [
-        "presentation",
-        "publication"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -5318,7 +5264,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/presentation/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presentation/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5326,6 +5272,52 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "writing",
+        "presentation"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
+      "id": "skill:presenter-mode",
+      "type": "skill",
+      "name": "presenter-mode",
+      "title_ru": "presenter-mode",
+      "description": "Use when the user wants to present a PDF/Beamer deck on macOS with a presenter view on the laptop (current + next slide, timer, speaker notes) and clean slides on the projector or second monitor, or wants speaker notes from a talk script (md) attached to slides, or asks why the second screen lags / notes don't fit / animations don't play while presenting. Private workflow built around Présentation.app; not part of the public presentation skill.",
+      "description_ru": "Use when the user wants to present a PDF/Beamer deck on macOS with a presenter view on the laptop (current + next slide, timer, speaker notes) and clean slides on the projector or second monitor, or wants speaker notes from a talk script (md) attached to slides, or asks why the second screen lags / notes don't fit / animations don't play while presenting. Private workflow built around Présentation.app; not part of the public presentation skill.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Presentations and posters. Minimum check: fully meet the SKILL.md contract. Purpose: Use when the user wants to present a PDF/Beamer deck on macOS with a presenter view on the laptop (current + next slide, timer, speaker notes) and clean slides on the projector or second monitor, or wants speaker notes from a talk script (md) attached to slides, or asks why the second screen lags / notes don't fit / animations don't play while presenting. Private workflow built around Présentation.app; not part of the public presentation skill.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presenter-mode/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [
         "presentation"
       ],
       "execution_owner_ru": "Local agent",
@@ -5365,7 +5357,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/prototype/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/prototype/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5373,6 +5365,53 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "code-engineering"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
+      "id": "skill:research-cycle",
+      "type": "skill",
+      "name": "research-cycle",
+      "title_ru": "research-cycle",
+      "description": "Use when designing a research check, interpreting new evidence, or choosing the next test across results. Skip routine monitoring and implementation.",
+      "description_ru": "Use when designing a research check, interpreting new evidence, or choosing the next test across results. Skip routine monitoring and implementation.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Launch and monitoring, Results and evidence. Minimum check: fully meet the SKILL.md contract. Purpose: Use when designing a research check, interpreting new evidence, or choosing the next test across results. Skip routine monitoring and implementation.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-cycle/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [
+        "experiment-run",
+        "results"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -5411,7 +5450,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/research-ideation/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-ideation/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5457,7 +5496,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/restore-session/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/restore-session/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5510,7 +5549,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/results-analysis/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-analysis/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5558,7 +5597,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/results-report/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-report/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5566,6 +5605,53 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "results"
+      ],
+      "execution_owner_ru": "Local agent",
+      "inputs_ru": [
+        "User request",
+        "Project context"
+      ],
+      "outputs_ru": [
+        "A verified artifact appropriate to the task"
+      ],
+      "quality_gates_ru": [
+        "Follow the full SKILL.md contract"
+      ],
+      "known_limitations_ru": [
+        "Availability depends on the installation and runtime tools"
+      ]
+    },
+    {
+      "id": "skill:reverse-outline-flow-check",
+      "type": "skill",
+      "name": "reverse-outline-flow-check",
+      "title_ru": "reverse-outline-flow-check",
+      "description": "Diagnose and rewrite section flow using reverse outlining, one-paragraph-one-message structure, and explicit sentence-to-sentence relations. Use when a paper section feels unclear, disconnected, or hard to follow even though the content is roughly correct.",
+      "description_ru": "Diagnose and rewrite section flow using reverse outlining, one-paragraph-one-message structure, and explicit sentence-to-sentence relations. Use when a paper section feels unclear, disconnected, or hard to follow even though the content is roughly correct.",
+      "what_is_special": "Not a single prompt but a repeatable workflow with its own contract for inputs and verification. Linked to processes: Reading and ingest, Code and engineering. Minimum check: fully meet the SKILL.md contract. Purpose: Diagnose and rewrite section flow using reverse outlining, one-paragraph-one-message structure, and explicit sentence-to-sentence relations. Use when a paper section feels unclear, disconnected, or hard to follow even though the content is roughly correct.",
+      "inputs": [
+        "User request",
+        "Project context"
+      ],
+      "outputs": [
+        "A verified artifact appropriate to the task"
+      ],
+      "execution_owner": "Local agent",
+      "quality_gates": [
+        "Follow the full SKILL.md contract"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/reverse-outline-flow-check/SKILL.md"
+        }
+      ],
+      "known_limitations": [
+        "Availability depends on the installation and runtime tools"
+      ],
+      "process_ids": [
+        "literature-ingest",
+        "code-engineering"
       ],
       "execution_owner_ru": "Local agent",
       "inputs_ru": [
@@ -5613,7 +5699,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/review-response/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/review-response/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5660,7 +5746,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/setup-pre-commit/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/setup-pre-commit/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5706,7 +5792,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/skill-development/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-development/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5752,7 +5838,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/skill-improver/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-improver/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5799,7 +5885,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/skill-quality-reviewer/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-quality-reviewer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5846,7 +5932,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/tdd/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/tdd/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5892,7 +5978,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/ui-ux-pro-max/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ui-ux-pro-max/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5938,7 +6024,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/uv-package-manager/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/uv-package-manager/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5984,7 +6070,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/verification-loop/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/verification-loop/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6036,7 +6122,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/want-2-read/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/want-2-read/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6084,7 +6170,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/web-design-reviewer/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/web-design-reviewer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6130,7 +6216,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/webapp-testing/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/webapp-testing/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6176,7 +6262,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/writing-anti-ai/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/writing-anti-ai/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6223,7 +6309,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/zoom-out/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zoom-out/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6269,7 +6355,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/skills/zotero-obsidian-bridge/SKILL.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zotero-obsidian-bridge/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6295,6 +6381,218 @@ window.LAB_ATLAS_DATA = {
       ]
     },
     {
+      "id": "system:doc:architecture",
+      "type": "documentation",
+      "name": "The lab knowledge base: how it works",
+      "title_ru": "The lab knowledge base: how it works",
+      "description": "A description of the environment, not of scientific content. Everything written here was checked on the live installation on 30-09-2026. The numbers are measured, not estimated.",
+      "description_ru": "A description of the environment, not of scientific content. Everything written here was checked on the live installation on 30-09-2026. The numbers are measured, not estimated.",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Linked to processes: Code and engineering. Minimum check: confirm against a source and keep it current. Purpose: A description of the environment, not of scientific content. Everything written here was checked on the live installation on 30-09-2026. The numbers are measured, not estimated.",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/architecture.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [
+        "code-engineering"
+      ],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
+      "id": "system:doc:gitlab-layout",
+      "type": "documentation",
+      "name": "How the base maps onto GitLab",
+      "title_ru": "How the base maps onto GitLab",
+      "description": "A layout, not a wish list: what becomes what, why exactly so, and how each decision is justified by today's work. Read together with gitlab-migration.md, which has the order of work and the risks.",
+      "description_ru": "A layout, not a wish list: what becomes what, why exactly so, and how each decision is justified by today's work. Read together with gitlab-migration.md, which has the order of work and the risks.",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Minimum check: confirm against a source and keep it current. Purpose: A layout, not a wish list: what becomes what, why exactly so, and how each decision is justified by today's work. Read together with gitlab-migration.md, which has the order of work and the risks.",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-layout.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
+      "id": "system:doc:gitlab-migration",
+      "type": "documentation",
+      "name": "Moving from Gitea to GitLab",
+      "title_ru": "Moving from Gitea to GitLab",
+      "description": "Decided on 30-09-2026. The reason is not “GitLab is better” but three things Gitea does not have and will not get. Everything else — repositories, branches, pull requests, permissions, branch protection, check marks — both have, and that alone would be no reason to move.",
+      "description_ru": "Decided on 30-09-2026. The reason is not “GitLab is better” but three things Gitea does not have and will not get. Everything else — repositories, branches, pull requests, permissions, branch protection, check marks — both have, and that alone would be no reason to move.",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Minimum check: confirm against a source and keep it current. Purpose: Decided on 30-09-2026. The reason is not “GitLab is better” but three things Gitea does not have and will not get. Everything else — repositories, branches, pull requests, permissions, branch protection, check marks — both have, and that alone would be no reason to move.",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-migration.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
+      "id": "system:doc:gitlab-structure-proposal",
+      "type": "documentation",
+      "name": "Layout by direction: a proposal",
+      "title_ru": "Layout by direction: a proposal",
+      "description": "Step 1 of the move hinges on the direction names. Here they are derived from the data, not invented: topics are grouped by what they contain, with the number of works, claims and reviewed papers as of 30-09-2026. Fixing the names takes a minute. Accepting them as is takes zero.",
+      "description_ru": "Step 1 of the move hinges on the direction names. Here they are derived from the data, not invented: topics are grouped by what they contain, with the number of works, claims and reviewed papers as of 30-09-2026. Fixing the names takes a minute. Accepting them as is takes zero.",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Minimum check: confirm against a source and keep it current. Purpose: Step 1 of the move hinges on the direction names. Here they are derived from the data, not invented: topics are grouped by what they contain, with the number of works, claims and reviewed papers as of 30-09-2026. Fixing the names takes a minute. Accepting them as is takes zero.",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-structure-proposal.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
+      "id": "system:doc:lab-showcase:README",
+      "type": "documentation",
+      "name": "A research lab showcase",
+      "title_ru": "A research lab showcase",
+      "description": "The shared base links hypotheses to refutation criteria, protocols to run states, measurements to their sources, and mathematical derivations and decisions to their grounds.",
+      "description_ru": "The shared base links hypotheses to refutation criteria, protocols to run states, measurements to their sources, and mathematical derivations and decisions to their grounds.",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Minimum check: confirm against a source and keep it current. Purpose: The shared base links hypotheses to refutation criteria, protocols to run states, measurements to their sources, and mathematical derivations and decisions to their grounds.",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/lab-showcase/README.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
       "id": "system:doc:llm-providers",
       "type": "documentation",
       "name": "Which model does what, and what it costs",
@@ -6315,7 +6613,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/llm-providers.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/llm-providers.md"
         }
       ],
       "known_limitations": [
@@ -6323,6 +6621,50 @@ window.LAB_ATLAS_DATA = {
       ],
       "process_ids": [
         "code-engineering"
+      ],
+      "execution_owner_ru": "A person or an agent reading the guide",
+      "inputs_ru": [
+        "Information need"
+      ],
+      "outputs_ru": [
+        "Operational instructions"
+      ],
+      "quality_gates_ru": [
+        "Verify against sources and keep it current"
+      ],
+      "known_limitations_ru": [
+        "Documentation may lag behind the runtime"
+      ]
+    },
+    {
+      "id": "system:doc:onboarding",
+      "type": "documentation",
+      "name": "The BRAIn Lab knowledge base: a member's guide",
+      "title_ru": "The BRAIn Lab knowledge base: a member's guide",
+      "description": "<!-- One text with the instructions the lead sends out to members. The base switched to GitLab on 01-10-2026. The old text about Gitea was replaced by this one. On 05-10-2026 the file was called mcp-onboarding.md, while the instructions were about setting up MCP. There is no read server anymore, the base is read from a clone, and the name became a lie. --",
+      "description_ru": "<!-- One text with the instructions the lead sends out to members. The base switched to GitLab on 01-10-2026. The old text about Gitea was replaced by this one. On 05-10-2026 the file was called mcp-onboarding.md, while the instructions were about setting up MCP. There is no read server anymore, the base is read from a clone, and the name became a lie. --",
+      "what_is_special": "A normative description that people and agents use to check against one shared contract of behavior. Linked to processes: Agents and infrastructure. Minimum check: confirm against a source and keep it current. Purpose: <!-- One text with the instructions the lead sends out to members. The base switched to GitLab on 01-10-2026. The old text about Gitea was replaced by this one. On 05-10-2026 the file was called mcp-onboarding.md, while the instructions were about setting up MCP. There is no read server anymore, the base is read from a clone, and the name became a lie. --",
+      "inputs": [
+        "Information need"
+      ],
+      "outputs": [
+        "Operational instructions"
+      ],
+      "execution_owner": "A person or an agent reading the guide",
+      "quality_gates": [
+        "Verify against sources and keep it current"
+      ],
+      "github_urls": [
+        {
+          "label": "Source",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/onboarding.md"
+        }
+      ],
+      "known_limitations": [
+        "Documentation may lag behind the runtime"
+      ],
+      "process_ids": [
+        "agent-orchestration"
       ],
       "execution_owner_ru": "A person or an agent reading the guide",
       "inputs_ru": [
@@ -6359,7 +6701,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/ad8a0f67d9ea17205fd8c59d59b52646fb9288be/docs/reference-setup.md"
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/reference-setup.md"
         }
       ],
       "known_limitations": [
@@ -6424,46 +6766,6 @@ window.LAB_ATLAS_DATA = {
       ],
       "known_limitations_ru": [
         "The local working tree may be ahead of the published GitHub version"
-      ]
-    },
-    {
-      "id": "system:service:lab-site",
-      "type": "service",
-      "name": "lab-site",
-      "title_ru": "lab-site",
-      "description": "Service source present in the repository working tree.",
-      "description_ru": "An empty directory scaffold for the laboratory website; its source currently contains no implemented features.",
-      "what_is_special": "A persistent system component with its own state and responsibility boundaries. Related workflow: code and engineering. Minimum check: service tests and health checks. Purpose: an empty directory scaffold for the laboratory website, whose source currently contains no implemented features.",
-      "inputs": [
-        "Service request"
-      ],
-      "outputs": [
-        "Service response"
-      ],
-      "execution_owner": "Service runtime",
-      "quality_gates": [
-        "Service tests and health checks"
-      ],
-      "github_urls": [],
-      "known_limitations": [
-        "Runtime state must be checked live",
-        "No published GitHub URL has been verified for the source"
-      ],
-      "process_ids": [
-        "code-engineering"
-      ],
-      "execution_owner_ru": "Service runtime",
-      "inputs_ru": [
-        "Service request"
-      ],
-      "outputs_ru": [
-        "Service response"
-      ],
-      "quality_gates_ru": [
-        "Service tests and health checks"
-      ],
-      "known_limitations_ru": [
-        "Runtime state must be checked live"
       ]
     }
   ]

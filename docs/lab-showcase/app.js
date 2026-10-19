@@ -3,7 +3,8 @@
   const model=window.RESEARCH_LOOP||{}, registry=window.LAB_ATLAS_DATA||{}, systemData=window.SYSTEM_EXAMPLES||{};
   const all=[model.shared,...(model.processes||[]),...(model.support||[]),...(model.contours||[])].filter(Boolean), byId=Object.fromEntries(all.map(x=>[x.id,x]));
   const $=id=>document.getElementById(id), arr=v=>(Array.isArray(v)?v:v?[v]:[]).filter(Boolean);
-  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+  // Обратные кавычки из markdown в данных сайт не рисует: показываем только содержимое.
+  const esc=v=>String(v??"").replace(/`([^`\n]+)`/g,"$1").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const safe=v=>{try{const u=new URL(v);return u.protocol==="https:"?u.href:null}catch{return null}};
   // 06-09-2026 набор доложен на main: русские инструкции по базе, хук проверки цитат и
   // проверка вылезаний опубликованы, поэтому из списка непубликованного они ушли.
@@ -16,9 +17,14 @@
 
   function links(items=[]){const unique=[...new Map(items.map(liveSource).filter(x=>x.url).map(x=>[x.url,x])).values()],chosen=unique.find(x=>x.canonical)||unique[0];if(!chosen)return"";const label=chosen.label||(chosen.url.includes("github.com/")?"GitHub":"Документация");return `<a class="source-link" href="${esc(chosen.url)}" target="_blank" rel="noopener">${esc(label)} <span>↗</span></a>`}
   function head(label,title,text=""){return `<p class="section-label">${esc(label)}</p><div class="section-heading"><h2>${esc(title)}</h2>${text?`<p>${esc(text)}</p>`:""}</div>`}
-  const previewIds={literature:["paperscout","paper-ingest","alphaxiv-mcp"],ideation:["research-ideation","grill-me","lab-knowledge-hypothesis"],calls:["brain-call","call-notes","yonote-call"],experiments:["hermes","experiment-log","run-monitoring"],results:["results-analysis","results-report","evidence-mcp"],writing:["astar-paper-review","review-response","ml-paper-writing"],presentation:["presentation-skill","paper-to-social"],"paper-qa":["literature-reviewer","citation-verification"]};
+  const previewIds={literature:["jev","paperscout","paper-ingest"],ideation:["research-ideation","grill-me","lab-knowledge-hypothesis"],calls:["brain-call","call-notes","gitlab-issues-call"],experiments:["lab-run","hermes","run-guard"],results:["lab-run","results-analysis","proposal-gates"],writing:["astar-paper-review","review-response","ml-paper-writing"],presentation:["presentation-skill","paper-to-social"],"paper-qa":["literature-reviewer","citation-verification"]};
   const supportPreviewIds={access:["server-access-bot","server-fleet","server-status"]};
-  function previews(p){const ids=p.mapFeatured||previewIds[p.id]||[],picked=ids.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean),shown=[...picked,...(p.tools||[]).filter(t=>!picked.includes(t))].slice(0,3);return `${shown.slice(0,2).map(t=>`<button data-open="${esc(p.id)}" data-tool="${esc(t.id)}" type="button"><small>${esc(t.type||"tool")}</small>${esc(t.title)}</button>`).join("")}${(p.tools||[]).length>2?`<button class="more" data-open="${esc(p.id)}" type="button">Все ${p.tools.length} →</button>`:""}`}
+  // Подписи под карточками цикла читает гость: человеческое название вместо имени навыка.
+  const SAT_LABEL={"create-project":"Завести работу","lab-knowledge":"Перенос проекта",paperscout:"Конвейер статей",jev:"Джев",
+    "research-ideation":"Генерация идей","grill-me":"Допрос плана","brain-call":"Brain Call","call-notes":"Разбор созвона",
+    "lab-run":"Рекордер прогонов",hermes:"Гермес","results-analysis":"Анализ результатов","astar-paper-review":"Рецензия до подачи",
+    "review-response":"Ответ рецензентам","paper-to-social":"Посты о статье","presentation-skill":"Слайды"};
+  function previews(p){const ids=p.mapFeatured||previewIds[p.id]||[],picked=ids.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean),shown=[...picked,...(p.tools||[]).filter(t=>!picked.includes(t))].slice(0,3);return `${shown.slice(0,2).map(t=>`<button data-open="${esc(p.id)}" data-tool="${esc(t.id)}" type="button"><small>${esc(t.type||"tool")}</small><span class="sat-label">${esc(SAT_LABEL[t.id]||String(t.title).replace(/-/g,"\u2011"))}</span></button>`).join("")}${(p.tools||[]).length>2?`<button class="more" data-open="${esc(p.id)}" type="button">Все ${p.tools.length} →</button>`:""}`}
 
   // Одна установка на весь набор. Владелец: «нужно, чтобы человек мог условно одной
   // кнопкой себе его скачать полностью». Стоит на первом экране, под опорными разделами.
@@ -29,7 +35,7 @@
     const box=$("toolkit"),k=model.meta?.toolkit;if(!box)return;
     if(!k){box.hidden=true;return}
     const pieces=(k.pieces||[]).map(x=>{const u=safe(x.url);
-      return `<li><b>${esc(x.name)}</b><span>${esc(x.what)}</span><i>${esc(x.access)}</i>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>`:`<em>ссылки пока нет</em>`}</li>`}).join("");
+      return `<li><b>${esc(x.name)}</b><span>${esc(x.what)}</span><i>${esc(x.access)}</i>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(/github\.com/.test(u)?"GitHub":/miro\.com/.test(u)?"Miro":/zotero/.test(u)?"Zotero":"Открыть")} <span aria-hidden="true">↗</span></a>`:""}</li>`}).join("");
     box.innerHTML=`<div class="toolkit-head"><p class="overline">Забрать себе</p><h2 id="toolkit-title">${esc(k.title)}</h2><p>${esc(k.lead)}</p></div>
       <div class="toolkit-body"><pre><code>${(k.install||[]).map(esc).join("\n")}</code></pre>
       ${k.after?`<p class="toolkit-after">${esc(k.after)}</p>`:""}
@@ -43,22 +49,34 @@
     // Опорного слоя больше нет: код уехал в эксперименты, доступ к серверам — в нулевую точку.
     document.querySelectorAll("#overview [data-open]").forEach(b=>b.onclick=()=>b.dataset.tool?openQuickTool(b.dataset.open,b.dataset.tool,b):openProcess(b.dataset.open));
     document.querySelectorAll("#overview [data-surface]").forEach(b=>b.onclick=()=>showSurface(b.dataset.surface));
-    $("knowledge-core").onclick=()=>openProcess("memory");
+    document.querySelectorAll("#overview [data-sat-process]").forEach(b=>b.onclick=()=>openProcess(b.dataset.satProcess,b.dataset.satTool));
+    $("knowledge-core").onclick=()=>showIdeas();
     renderTally();
   }
   function renderTally(){
     const tally=$("loop-tally");
     if(!tally)return;
-    const base=window.LAB_BASE,lib=window.LAB_LIBRARY;
+    const base=window.LAB_BASE,lib=window.LAB_LIBRARY,c=window.LAB_COUNTS;
+    if(!(base&&lib)&&c){
+      const num=x=>Number(x||0).toLocaleString(window.LAB_I18N?.language==="en"?"en-US":"ru-RU");
+      tally.hidden=false;
+      tally.innerHTML=[[c.works,"работ"],[c.claims,"утверждений"],[c.series,"серий"],[c.runs,"прогонов"],[c.derivations,"выкладок"],[c.papers,"статей разобрано"]]
+        .map(([v,l])=>`<span><b>${esc(num(v))}</b>${esc(l)}</span>`).join("")
+        +`<em>Это живая база лаборатории в GitLab: каждая запись — файл, который проверили и принял человек. <button type="button" data-view-jump="ideas">Открыть базу →</button></em>`;
+      tally.querySelector("[data-view-jump]").onclick=()=>showIdeas();
+      return;
+    }
     tally.hidden=!(base&&lib);
     if(base&&lib){
       const n=k=>(base.records||[]).filter(r=>r.k===k).length;
-      const both=(base.records||[]).filter(r=>r.k==="hypothesis"&&r.sup==="proof_and_numbers").length;
-      const rows=[[n("hypothesis"),"утверждений",""],[n("experiment"),"прогонов",""],
-        [n("evidence"),"измерений",""],[(lib.papers||[]).length,"статей разобрано",""],
-        [both,"закрыты выкладкой и числами","is-lit"]].filter(([v])=>v);
+      // Утверждение закрыто и выкладкой, и числами, если под ним есть и theory/, и прогоны.
+      const both=(base.records||[]).filter(r=>r.k==="hypothesis"&&/^[1-9]\d* · \d+ · [1-9]/.test(((r.f||[]).find(f=>f[0]==="выкладок · серий · прогонов")||[])[1]||"")).length;
+      const refuted=(base.records||[]).filter(r=>r.k==="hypothesis"&&r.st==="refuted").length;
+      const rows=[[n("hypothesis"),"утверждений",""],[n("series"),"серий",""],[n("experiment"),"прогонов",""],
+        [n("derivation"),"выкладок",""],[(lib.papers||[]).length,"статей разобрано",""],
+        [both,"закрыты выкладкой и числами","is-lit"],[refuted,"честно опровергнуты",""]].filter(([v])=>v);
       tally.innerHTML=rows.map(([v,label,cls])=>`<span class="${cls}"><b>${esc(String(v))}</b>${esc(label)}</span>`).join("")
-        +`<em>Столько лежит в общей базе на сегодня. Каждая запись вошла слитым предложением и связана с тем, из чего выросла.</em>`;
+        +`<em>Столько лежит в базе лаборатории на сегодня. Каждая запись — файл в git, вошедший слитым предложением, и связана с тем, из чего выросла.</em>`;
     }
   }
 
@@ -78,7 +96,7 @@
   function dossierSection(title,values,cls="",ordered=false){const xs=uniqueText(values);if(!xs.length)return "";const tag=ordered?"ol":"ul";return `<section class="dossier-section ${cls}"><h3>${esc(title)}</h3><${tag}>${xs.map(x=>`<li>${esc(x)}</li>`).join("")}</${tag}></section>`}
   function dossierHead(t,p,titleId=""){return `<header class="dossier-head"><p class="dossier-kicker">${esc(t.type||"Инструмент")} · ${esc(p.title||"Atlas")}</p><h2${titleId?` id="${esc(titleId)}"`:""} tabindex="-1">${esc(t.title)}</h2><p class="dossier-lead">${esc(toolStory(t).value)}</p>${t.status==='in-development'?'<p class="sky-pending">В доработке</p>':''}</header>`}
   function dossierBody(t){
-    const story=toolStory(t),start=t.start||t.adoption?.invoke||'',invoke=t.skillId?`$${t.skillId}`:'',src=(t.links||[]).map(liveSource).filter(x=>x.url),install=arr(t.adoption?.install);
+    const story=toolStory(t),start=t.start||t.adoption?.invoke||'',invoke=t.skillId?`/${t.skillId}`:'',src=(t.links||[]).map(liveSource).filter(x=>x.url),install=arr(t.adoption?.install);
     return `<div class="dossier-body"><div class="dossier-entry">${dossierSection("Когда пригодится",story.useCases)}<section class="dossier-section dossier-start"><h3>С чего начать</h3><p>${esc(start)}</p>${invoke?`<code>${esc(invoke)}</code>`:''}</section></div><div class="dossier-flow">${dossierSection("Как проходит работа",story.capabilities,"dossier-steps",true)}<aside class="dossier-result">${dossierSection("Результат",story.outcomes)}${dossierSection("Куда сохраняется",t.writes)}</aside></div>${dossierSection("Данные и хранение",t.storage,"dossier-storage")}${window.LAB_OBSIDIAN_SETUP?.render(t.id)||''}${t.adoption?.installNote||install.length||src.length?`<footer class="dossier-footer">${install.length?`<details class="dossier-install"><summary>Команды подключения</summary>${t.adoption?.installNote?`<p>${esc(t.adoption.installNote)}</p>`:''}<pre class="setup-install"><code>${install.map(esc).join("\n")}</code></pre></details>`:t.adoption?.installNote?`<p>${esc(t.adoption.installNote)}</p>`:''}${src.length?`<div class="dossier-links">${src.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label||"Исходный код")} ↗</a>`).join('')}</div>`:''}</footer>`:''}</div>`;
   }
   function adoptionLabel(kind="internal"){return ({"toolkit-skill":"Навык из набора BRAIn Lab","toolkit-command":"Команда из набора BRAIn Lab","toolkit-agent":"Агент из набора BRAIn Lab","toolkit-qa":"Проверка из набора BRAIn Lab",mempalace:"Публичный пакет MemPalace",zotero:"Zotero MCP","connector-unpackaged":"Отдельное подключение AlphaXiv","brain-call":"Отдельный закрытый репозиторий Brain Call",hermes:"Среда Hermes Agent","hermes-profile-missing":"Профиль Hermes пока не опубликован","lab-hermes-component":"Агент проекта на сервере",privileged:"Только через заявку и одобрение","source-only":"Ставится по документации источника",private:"Нужен доступ к лаборатории",internal:"Внутренний компонент"})[kind]||"Отдельный компонент"}
@@ -126,17 +144,17 @@
     const boundary=km.boundary||{},cards=[
       {title:"Что является системой",text:boundary.mcp,items:(km.corpora||[]).map(x=>`${x.title}: ${arr(x.contains).join(", ")}`)},
       {title:"Что делает навык lab-knowledge",text:boundary.skill,items:[km.read?.default,...arr(km.read?.behavior)]},
-      {title:"Как читать",text:"Сначала область и права, затем поиск и только потом ответ с происхождением.",items:arr(km.read?.tools)},
-      {title:"Как записывать",text:"Личный черновик не уезжает в общую память сам: сначала показать человеку, потом подтверждение, потом запись нужного типа, потом перечитывание записанного.",items:[...arr(km.write?.tools),...arr(km.write?.behavior)]},
+      {title:"Как читать",text:"Дерево лаборатории на машине или GitLab в браузере: найти работу, утверждение и путь до прогона, из которого взято число.",items:arr(km.read?.tools)},
+      {title:"Как записывать",text:"Личный черновик в базу сам не уезжает: агент открывает предложение, его проверяют ворота, и только ведущий работы решает, слить ли его.",items:[...arr(km.write?.tools),...arr(km.write?.behavior)]},
       {title:"Как подключить агента",text:boundary.personal,items:arr(km.agentConnection)},
-      {title:"Права и происхождение",text:"Политика применяется до поиска и записи; скрытые записи не угадываются по ответам сервиса.",items:[...arr(km.acl),...arr(km.provenance)]}
+      {title:"Права и происхождение",text:"Роль в GitLab решает, что человек видит и куда может предложить правку; у каждой строки базы есть коммит, автор и предложение, через которое она вошла.",items:[...arr(km.acl),...arr(km.provenance)]}
     ].filter(x=>x.text||x.items.some(Boolean));
     return `<div class="knowledge-runtime">${cards.map(x=>`<details><summary>${esc(x.title)}</summary>${x.text?`<p>${esc(x.text)}</p>`:""}<ul>${x.items.filter(Boolean).map(v=>`<li>${esc(v)}</li>`).join("")}</ul></details>`).join("")}</div><div class="knowledge-source-links">${links(km.sources||[],"Lab Knowledge")}</div>`;
   }
 
   function compactSectionMap(p){
     const map=normalizedMap(p),tools=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),qas=qualityProcesses().filter(q=>q.id!==p.id&&arr(q.touches).includes(p.id));
-    const journey=`<nav class="journey-strip" style="--steps:${Math.min(map.stages.length,7)}" aria-label="Путь работы">${map.stages.map((s,i)=>`<button class="journey-step${s.human?" is-gate":""}" data-node="stage:${esc(s.id)}" aria-pressed="false" type="button"><small>${String(i+1).padStart(2,"0")}${s.human?" · решение человека":""}</small><strong>${esc(s.title)}</strong><span>${esc(s.result)}</span></button>`).join("")}</nav>`;
+    const journey=`<nav class="journey-strip" style="--steps:${map.stages.length>7?Math.ceil(map.stages.length/2):map.stages.length}" aria-label="Путь работы">${map.stages.map((s,i)=>`<button class="journey-step${s.human?" is-gate":""}" data-node="stage:${esc(s.id)}" aria-pressed="false" type="button"><small>${String(i+1).padStart(2,"0")}${s.human?" · решение человека":""}</small><strong>${esc(s.title)}</strong><span>${esc(s.result)}</span></button>`).join("")}</nav>`;
     const clusters=clustersFor(p).map(c=>`<section class="tool-cluster" data-cluster="${esc(c.id)}"><h3>${esc(c.title)}</h3><div>${arr(c.toolIds).map(id=>tools[id]).filter(Boolean).map(t=>{const story=toolStory(t),steps=arr(t.visual?.nodes).slice(0,5);return `<button class="tool-node${steps.length?" tool-node-major":""}" data-node="tool:${esc(t.id)}" aria-pressed="false" type="button"><small>${esc(t.type||"Инструмент")}</small><strong>${esc(t.title)}</strong><span>${esc(compactRole(story.value))}</span>${steps.length?`<ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}<i aria-hidden="true">↗</i></button>`}).join("")}</div></section>`).join("");
     const destinations=`<aside class="destination-cluster"><h3>Результаты и места хранения</h3>${map.destinations.map(d=>`<button class="destination-node" data-node="destination:${esc(d.id)}" aria-pressed="false" type="button"><strong>${esc(d.name)}</strong><span>${esc(d.what)}</span></button>`).join("")}<div class="outcome-nodes"><p class="overline">Остаётся на этом этапе</p>${map.outcomes.map(o=>`<button data-node="outcome:${esc(o.id)}" aria-pressed="false" type="button">${esc(o.text)}</button>`).join("")}</div></aside>`;
     return `<section class="section-overview process-section" id="map" data-layout="${esc(layouts[p.id]||"system")}" data-process="${esc(p.id)}"><div class="map-heading"><div><p class="section-label">Интерактивная карта раздела</p><h2>${esc(p.verb)}</h2></div><div class="map-legend"><span><i class="legend-tool"></i>инструмент</span><span><i class="legend-stage"></i>этап</span><span><i class="legend-gate"></i>решение</span><span><i class="legend-destination"></i>хранилище</span></div></div>${journey}<div class="system-map"><div class="map-context-compact"><span>Когда включается</span>${arr(p.when).map(x=>`<p>${esc(x)}</p>`).join("")}</div><button class="process-hub" data-map-reset type="button"><small>${esc(p.number)}</small><strong>${esc(p.title)}</strong><span>${esc(p.result)}</span></button><div class="tool-clusters">${clusters}</div>${destinations}<i class="map-orbit one" aria-hidden="true"></i><i class="map-orbit two" aria-hidden="true"></i></div><aside class="map-focus graph-focus" id="map-focus-${esc(p.id)}" role="dialog" aria-modal="false" aria-label="Досье выбранного узла" tabindex="-1" aria-live="polite">${focusDefault(p)}</aside></section>`;
@@ -158,7 +176,7 @@
     return `<section class="km-block km-rail-block"><header><p class="section-label">Форма системы</p><h3>Четыре входа, одна база, три потребителя</h3></header>
       <div class="km-rail">
         <aside class="km-side"><span>Откуда приходит</span>${src.map(x=>`<button class="km-node" data-knowledge="producer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
-        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Единая точка чтения и записи</small><strong>GitLab лаборатории</strong><em>общая проверяемая история лаборатории</em></button></div>
+        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Одно место чтения и записи</small><strong>База знаний</strong><em>общая проверяемая история лаборатории в git</em></button></div>
         <aside class="km-side"><span>Кто использует</span>${dst.map(x=>`<button class="km-node" data-knowledge="consumer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
       </div></section>`;
   }
@@ -191,12 +209,12 @@
   function knowledgeArchitecture(p){
     const km=p.knowledgeModel||{},objects=km.objectTypes||[],flow=km.publishFlow||[],producers=km.producers||[],consumers=km.consumers||[],friendly={hypothesis:"Утверждение",experiment:"Прогон",evidence:"Измерение",derivation:"Доказательство",decision:"Правило","paper-claim":"Утверждение статьи","paper-chunk":"Раздел статьи",paper:"Статья",journal:"Наблюдение",term:"Термин",resource:"Ресурс",project:"Работа",theme:"Тема","source-ref":"Источник"},objectById=Object.fromEntries(objects.map(x=>[x.id,x]));
     const objectButton=(id,kind="Запись")=>{const x=objectById[id];return x?`<button class="knowledge-record" data-knowledge="object:${esc(x.id)}" type="button"><small>${esc(kind)}</small><strong>${esc(friendly[x.id]||x.label||x.title_ru||x.title)}</strong><span>${esc(x.plain||x.summary||"")}</span></button>`:""};
-    const personal=[{id:"obsidian",title:"Obsidian",action:"Личный черновик. В общую память попадает только после показа человеку и подтверждения."},{id:"mempalace",title:"MemPalace",action:"Память агента и история сессий. Помогает продолжить работу, но не является научным результатом."},{id:"tasks",title:"Задачи GitLab",action:"Общие задачи и доски работ. Ссылаются на знание, но не заменяют его."}];
-    const readSteps=[{id:"question",title:"Задать вопрос",summary:"Что уже проверяли?"},{id:"scope",title:"Определить область",summary:"Проект, тип записи и время"},{id:"policy",title:"Проверить доступ",summary:"Ответ по всей общей базе"},{id:"search",title:"Найти и пройти связи",summary:"Текст + граф отношений"},{id:"answer",title:"Ответить с источниками",summary:"коды записей, их происхождение и границы"}];
+    const personal=[{id:"obsidian",title:"Obsidian",action:"Дерево ~/brainlab целиком. Личные notes/, daily/, runs/ остаются на машине, в GitLab уезжает только общее."},{id:"mempalace",title:"MemPalace",action:"Память агента и история сессий. Помогает продолжить работу, но не является научным результатом."},{id:"yonote",title:"Задачи GitLab",action:"Задачи и доски работ. Ссылаются на утверждения, но не заменяют их: закрытая задача не значит подтверждённое."}];
+    const readSteps=[{id:"question",title:"Задать вопрос",summary:"Что уже проверяли?"},{id:"scope",title:"Найти место в дереве",summary:"Направление, тема, работа"},{id:"policy",title:"Доступ",summary:"Видно то, к чему есть роль в GitLab"},{id:"search",title:"Найти и пройти ссылки",summary:"Утверждение → серия → прогон → лог"},{id:"answer",title:"Ответить с источниками",summary:"Код записи, коммит и предложение, через которое она вошла"}];
     const lc=km.lifecycle||{};
     const lifecycleBlock=lc.tracks?`<section class="knowledge-lifecycle process-section"><header><p class="section-label">Жизненный цикл записи</p><h2>Два пути от утверждения до правила</h2><p>${esc(lc.intro||"")}</p></header><div class="lifecycle-tracks">${lc.tracks.map(t=>`<article class="lifecycle-track"><h3>${esc(t.title)}</h3><span class="lifecycle-chain">${esc(t.chain)}</span><ol>${t.steps.map(x=>`<li><code>${esc(x.op)}</code><strong>${esc(x.title)}</strong><span class="lifecycle-needs">${esc(x.needs)}</span><em>${esc(x.gives)}</em><p>${esc(x.note)}</p></li>`).join("")}</ol></article>`).join("")}</div>${lc.verdictOnEdge?`<p class="lifecycle-verdict">${esc(lc.verdictOnEdge)}</p>`:""}<details class="lifecycle-statuses"><summary>Статусы и их переходы <span>${(lc.statuses||[]).length} рода записей</span></summary><div>${(lc.statuses||[]).map(g=>`<article><h4>${esc(g.title)}<code>${esc(g.tool)}</code></h4><p>${esc(g.rule)}</p><dl>${g.values.map(v=>`<dt><code>${esc(v.value)}</code> ${esc(v.means)}</dt>${v.exit?`<dd>Выход: ${esc(v.exit)}</dd>`:""}`).join("")}</dl></article>`).join("")}</div></details><details class="lifecycle-kinds"><summary>Роды внутри типов <span>чем один род отличается от другого</span></summary><table><thead><tr><th>Род чего</th><th>Значения</th><th>Зачем различать</th></tr></thead><tbody>${(lc.kinds||[]).map(k=>`<tr><td>${esc(k.of)}</td><td><code>${esc(k.values)}</code></td><td>${esc(k.why)}</td></tr>`).join("")}</tbody></table></details></section>`:"";
     const route=(name,kind,items)=>`<nav class="knowledge-route ${kind}-route" aria-label="${esc(name)}"><h3>${esc(name)}</h3>${items.map((x,i)=>`<button data-knowledge="${kind}:${esc(x.id)}" type="button"><small>${String(i+1).padStart(2,"0")}</small><strong>${esc(x.title)}</strong><span>${esc(x.summary||"")}</span></button>`).join("")}</nav>`;
-    return `<section class="knowledge-architecture knowledge-atlas-v3 process-section" id="map"><header class="knowledge-intro"><p class="section-label">Центральная карта</p><h2>Как знание проходит через лабораторию</h2><p>Запись проходит две обязательные границы: доступ до действия и происхождение после сохранения. Чтение возвращает не только ответ, но и проверяемые источники.</p></header><div class="knowledge-map-frame"><div class="knowledge-stack"><div class="km-gates"><button class="km-gate" data-knowledge="guard:access" type="button"><small>До чтения и записи</small><strong>Доступ</strong><span>Личность по ключу · роль в лаборатории · роль в работе для записи</span></button><button class="km-gate" data-knowledge="guard:provenance" type="button"><small>Для каждой сохранённой записи</small><strong>Происхождение</strong><span>Источник · автор или агент · время · история изменений</span></button></div>${kmOverview(km)}${kmRecordTree(km,objectById,friendly)}${kmIntake(km)}${kmHook(km)}<section class="km-block km-read"><header><p class="section-label">Как из базы читают</p><h3>Вопрос ничего не меняет</h3></header>${route("Прочитать","read",readSteps)}</section><section class="km-block km-neighbours"><header><p class="section-label">Соседние системы</p><h3>Не вторая копия общей памяти</h3></header><div>${personal.map(x=>`<button data-knowledge="personal:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><span>${esc(x.action)}</span></button>`).join("")}</div><p class="km-blocked">Обмен идёт ссылками и явными сценариями: изменяемая копия у каждого типа данных остаётся одна.</p></section></div><aside class="knowledge-inspector" id="knowledge-inspector" role="region" aria-label="Досье выбранного узла Lab Knowledge" tabindex="-1" aria-live="polite"></aside></div>${lifecycleBlock}<details class="knowledge-technical"><summary>Техническое устройство и подключение <span>PostgreSQL · MCP · права доступа · журнал изменений</span></summary>${knowledgeRuntime(km)}</details></section>`;
+    return `<section class="knowledge-architecture knowledge-atlas-v3 process-section" id="map"><header class="knowledge-intro"><p class="section-label">Центральная карта</p><h2>Как знание проходит через лабораторию</h2><p>Запись проходит две границы: ворота предложения до слияния и человека, который сливает. Происхождение каждой строки хранит сам git: коммит, автор, предложение. Чтение возвращает не только ответ, но и путь к его источнику.</p></header><div class="knowledge-map-frame"><div class="knowledge-stack"><div class="km-gates"><button class="km-gate" data-knowledge="guard:access" type="button"><small>До чтения и записи</small><strong>Доступ</strong><span>Роль в GitLab · ведущий работы сливает · агент не сливает</span></button><button class="km-gate" data-knowledge="guard:provenance" type="button"><small>Для каждой сохранённой записи</small><strong>Происхождение</strong><span>Коммит · автор или агент · предложение · вердикт ворот</span></button></div>${kmOverview(km)}${kmRecordTree(km,objectById,friendly)}${kmIntake(km)}${kmHook(km)}<section class="km-block km-read"><header><p class="section-label">Как из базы читают</p><h3>Вопрос ничего не меняет</h3></header>${route("Прочитать","read",readSteps)}</section><section class="km-block km-neighbours"><header><p class="section-label">Соседние системы</p><h3>Не вторая копия общей памяти</h3></header><div>${personal.map(x=>`<button data-knowledge="personal:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><span>${esc(x.action)}</span></button>`).join("")}</div><p class="km-blocked">Обмен идёт ссылками и явными сценариями: изменяемая копия у каждого типа данных остаётся одна.</p></section></div><aside class="knowledge-inspector" id="knowledge-inspector" role="region" aria-label="Досье выбранного узла Lab Knowledge" tabindex="-1" aria-live="polite"></aside></div>${lifecycleBlock}<details class="knowledge-technical"><summary>Техническое устройство и подключение <span>PostgreSQL · MCP · права доступа · журнал изменений</span></summary>${knowledgeRuntime(km)}</details></section>`;
   }
 
   function glossaryBlock(p){
@@ -220,38 +238,43 @@
     return TAKEABLE.has(k)?`<span class="take-badge is-open">можно забрать</span>`:k==="privileged"?`<span class="take-badge is-gated">по заявке</span>`:`<span class="take-badge is-closed">внутреннее</span>`};
   function toolCard(t){return `<details class="tool" id="tool-${esc(t.id)}"><summary><span class="tool-type">${esc(t.type||"Инструмент")}</span>${takeBadge(t)}<strong>${esc(t.title)}</strong><span class="tool-role">${esc(toolStory(t).value)}</span><i class="tool-toggle">+</i></summary><div class="tool-body dossier">${dossierBody(t)}</div></details>`}
   // Владелец: «команды не нужны, оставляем только навыки, потому что по факту это дубликат».
-  function related(p){const ids=new Set(p.registryProcessIds||[]);return (registry.capabilities||[]).filter(c=>c.type!=="command"&&arr(c.process_ids).some(id=>ids.has(id)))}
+  // В реестре остались навыки прежней модели хранилища (проектные базы Obsidian, карточки
+  // Staff/Papers) и инструменты не по делу этапа. Гостю их не показываем.
+  const RELATED_HIDE=/^(skill|agent):(obsidian-(hub-creator|project-bootstrap|project-lifecycle|research-log|literature-workflow|synthesis-map|link-graph|project-memory)|zotero-obsidian-bridge|kaggle-(miner|learner)|dev-planner|story-generator|ui-sketcher|literature-reviewer-obsidian|research-knowledge-curator-obsidian)$/;
+  function related(p){const ids=new Set(p.registryProcessIds||[]),own=new Set((p.tools||[]).map(t=>t.skillId||t.id));return (registry.capabilities||[]).filter(c=>c.type!=="command"&&!RELATED_HIDE.test(c.id)&&!own.has(String(c.id).split(":")[1])&&arr(c.process_ids).some(id=>ids.has(id)))}
   function capCard(c){return `<button class="capability" data-capability="${esc(c.id)}" type="button"><span>${esc(capType(c.type))}</span><strong>${esc(c.title_ru||c.name)}</strong><p>${esc(c.description_ru||c.description||"")}</p><i>Подробно →</i></button>`}
   // Тип возможности приходит из машинного реестра по-английски. На витрине он
   // стоит подписью над названием, поэтому переводится здесь, а не в данных.
   const CAP_TYPE={agent:"Агент",skill:"Навык",command:"Команда",hook:"Хук","mcp-tool":"Инструмент MCP",service:"Служба",documentation:"Документация",repository:"Репозиторий"};
   const capType=t=>CAP_TYPE[t]||t||"Возможность";
   function capabilityGroups(caps){const labels={agent:"Агенты",skill:"Навыки",command:"Команды",hook:"Хуки","mcp-tool":"Инструменты MCP",service:"Службы",documentation:"Документация",repository:"Репозитории"},groups=caps.reduce((out,c)=>{const archived=c.current_status==="archived"?"archived":c.type||"other";(out[archived]||=[]).push(c);return out},{});return `<div class="capability-groups">${Object.entries(groups).map(([key,xs])=>`<details class="capability-group"><summary>${esc(key==="archived"?"Архивные и устаревшие":labels[key]||key)} <span>${xs.length}</span></summary><div class="capability-list">${xs.map(capCard).join("")}</div></details>`).join("")}</div>`}
-  function tools(p){const caps=related(p);return `<section class="process-section" id="tools">${head("Инструменты","Досье инструментов")}<div class="tools-intro"><span class="tools-count">${(p.tools||[]).length} основных${caps.length?` · ${caps.length} в полном реестре`:""}</span></div><div class="tool-list">${(p.tools||[]).map(toolCard).join("")}</div>${caps.length?`<details class="all-capabilities"><summary>Всё, что связано с этим разделом в репозитории <span>${caps.length}</span></summary>${capabilityGroups(caps)}</details>`:""}</section>`}
+  // Формы числа на верхнем уровне: plural живёт внутри страницы базы и отсюда не виден.
+  function pluralTop(n,f){const a=Math.abs(n)%100,b=a%10;return a>10&&a<20?f[2]:b===1?f[0]:b>=2&&b<=4?f[1]:f[2]}
+  function tools(p){const caps=related(p);return `<section class="process-section" id="tools">${head("Инструменты","Досье инструментов")}<div class="tools-intro"><span class="tools-count">${(p.tools||[]).length} ${pluralTop((p.tools||[]).length,["инструмент","инструмента","инструментов"])}</span></div><div class="tool-list">${(p.tools||[]).map(toolCard).join("")}</div></section>`}
   function implementation(p){return p.implementation?`<details class="implementation"><summary>Техническая реализация <span>для поддержки и отладки</span></summary><div class="implementation-box"><p>${esc(p.implementation.summary)}</p><ul>${arr(p.implementation.items).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${p.implementation.links?.length?`<div class="tool-links">${links(p.implementation.links)}</div>`:""}</div></details>`:""}
-  function nav(p){const seq=[...(model.processes||[]),...(model.contours||[])],i=seq.findIndex(x=>x.id===p.id);if(i<0)return `<nav class="process-nav"><button data-back type="button"><small>Вернуться</small><strong>← Карта работы</strong></button></nav>`;const prev=seq[(i-1+seq.length)%seq.length],next=seq[(i+1)%seq.length];return `<nav class="process-nav"><button data-open="${esc(prev.id)}" type="button"><small>Предыдущий этап</small><strong>← ${esc(prev.title)}</strong></button><button data-open="${esc(next.id)}" type="button"><small>Следующий этап</small><strong>${esc(next.title)} →</strong></button></nav>`}
+  function nav(p){const seq=[...(model.processes||[]),...(model.contours||[])],i=seq.findIndex(x=>x.id===p.id);if(i<0)return `<nav class="process-nav"><button data-back type="button"><small>Вернуться</small><strong>← Карта работы</strong></button></nav>`;const prev=i>0?seq[i-1]:null,next=i<seq.length-1?seq[i+1]:null;return `<nav class="process-nav">${prev?`<button data-open="${esc(prev.id)}" type="button"><small>Предыдущий этап</small><strong>← ${esc(prev.title)}</strong></button>`:`<button data-back type="button"><small>Вернуться</small><strong>← Карта работы</strong></button>`}${next?`<button data-open="${esc(next.id)}" type="button"><small>Следующий этап</small><strong>${esc(next.title)} →</strong></button>`:""}</nav>`}
   // ============ «Что уходит в общую базу» ============
   // Владелец: «нужно прям подробно расписать, прям подробный путь прохождения туда и как
   // это всё работает». Та же форма, что у пути статьи в поиске по базе: шаг = операция плюс
   // что именно на этом шаге появляется и по каким правилам. Ничего не сворачиваем.
-  const TOMCP_TYPE={skill:"навык",command:"команда",mcp:"операция MCP",script:"скрипт",hook:"хук"};
+  const TOMCP_TYPE={skill:"навык",command:"команда",mcp:"git",script:"скрипт",hook:"хук",classifier:"классификатор"};
   function toMcpStep(l,k){
     const cls=l.lane==="record"?"is-rec":l.lane==="tie"?"is-tie":"is-work";
-    const op=k===0?"—":(l.via?.tool||"—");
+    const op=k===0?"":(l.via?.tool||"");
     const kind=l.kind?`<em>${esc(l.kind)}${l.code&&l.code!=="—"?" · "+esc(l.code):""}</em>`:"";
     const items=(l.items||[]).length?`<ul>${l.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
     const via=k===0?"":`<small>${esc(TOMCP_TYPE[l.via?.type]||"")}${l.via?.gate?" · "+esc(l.via.gate):""}</small>`;
     // Тип шага стоит рядом с именем операции, а не последней строкой под описанием: там он
     // читался обрывком текста. Поэтому <small> — прямой ребёнок <li>, и сетка кладёт его
     // во вторую строку левой колонки, под <code>.
-    return `<li class="${cls}"><code>${esc(op)}</code><div><strong>${esc(l.title||"")}</strong>${kind}${l.detail?`<span>${esc(l.detail)}</span>`:""}${items}</div>${via}</li>`;
+    return `<li class="${cls}">${op?`<code>${esc(op)}</code>`:`<code class="is-empty" aria-hidden="true"></code>`}<div><strong>${esc(l.title||"")}</strong>${kind}${l.detail?`<span>${esc(l.detail)}</span>`:""}${items}</div>${via}</li>`;
   }
   function toMcpBlock(p){
     const t=p.toMcp;if(!t)return "";
     const paths=(t.paths||[]).map(x=>`<article class="tomcp-path">
       <header><small>${esc(x.actor||"")}</small><strong>${esc(x.title||"")}</strong>${x.line?`<span>${esc(x.line)}</span>`:""}</header>
       <ol class="tomcp-steps">${(x.chain||[]).map(toMcpStep).join("")}</ol></article>`).join("");
-    const none=t.nothing?`<div class="tomcp-none"><strong>Отсюда в общую базу не уходит ничего</strong><p>${esc(t.nothing.why||"")}</p>${t.nothing.back?`<p>${esc(t.nothing.back)}</p>`:""}${t.nothing.instead?`<button data-open-process="${esc(String(t.nothing.instead).replace(/^process:/,""))}" type="button">${esc(t.nothing.insteadLabel||"Раздел, который пишет")}</button>`:""}</div>`:"";
+    const none=t.nothing?`<div class="tomcp-none">${t.nothing.title?`<strong>${esc(t.nothing.title)}</strong>`:""}<p>${esc(t.nothing.why||"")}</p>${t.nothing.back?`<p>${esc(t.nothing.back)}</p>`:""}${t.nothing.instead?`<button data-open-process="${esc(String(t.nothing.instead).replace(/^process:/,""))}" type="button">${esc(t.nothing.insteadLabel||"Раздел, который пишет")}</button>`:""}</div>`:"";
     const kept=(t.kept||[]).length?`<p class="tomcp-kept"><b>Остаётся на месте:</b> ${esc(t.kept.join("; "))}.</p>`:"";
     return `<section class="process-section tomcp" id="mcp">
       <p class="section-label">Что уходит в общую базу</p>
@@ -277,7 +300,7 @@
     const sp=p.spotlight;if(!sp?.toolIds?.length)return "";
     const picked=sp.toolIds.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean);
     if(!picked.length)return "";
-    return `<section class="process-section spotlight" id="spotlight"><p class="section-label">Пользуйтесь только этим</p>
+    return `<section class="process-section spotlight" id="spotlight"><p class="section-label">Сделано в лаборатории</p>
       <p class="spotlight-lead">${esc(sp.lead||"")}</p>
       <div class="spotlight-grid">${picked.map(t=>{const src=(t.links||[]).map(liveSource).find(x=>x.url);
         return `<article><span>${esc(t.type||"Навык")}</span><h3>${esc(t.title)}</h3><p>${esc(compactRole(toolStory(t).value))}</p>
@@ -285,11 +308,11 @@
   }
   function galleryBlock(p){
     const g=p.gallery;if(!(g||[]).length)return "";
-    return `<section class="process-section gallery" id="gallery"><div class="gallery-head"><p class="section-label">Как это выглядит</p><h2>Учебные примеры из навыка</h2></div>
+    return `<section class="process-section gallery" id="gallery"><div class="gallery-head"><p class="section-label">Как это выглядит</p><h2>Как это выглядит у нас</h2></div>
       <div class="gallery-grid">${g.map(x=>`<figure><img src="${esc(x.src)}" alt="${esc(x.caption||"")}" loading="lazy" width="1200" height="675"><figcaption><strong>${esc(x.caption||"")}</strong>${x.note?`<span>${esc(x.note)}</span>`:""}</figcaption></figure>`).join("")}</div></section>`;
   }
-  function skyName(t){return t.skyTitle||(t.id==='paperscout'?'Hermes Agent':t.skillId||t.title)}
-  function skyKind(t){return t.skillId?'skill':/Агент|Среда|Agent|Environment/i.test(t.type||'')||t.id==='hermes'?'agent':/MCP|Интеграция|Хук|Integration|Hook/i.test(t.type||'')?'connection':'system'}
+  function skyName(t){return t.skyTitle||(t.id==='paperscout'?'Гермес':t.skillId||t.title)}
+  function skyKind(t){return t.skillId?'skill':/Агент|Среда/.test(t.type||'')||t.id==='hermes'?'agent':/MCP|Интеграция|Хук/.test(t.type||'')?'connection':'system'}
   function skyNode(t,p,index){
     const major=p.mapFeatured.includes(t.id),kind=skyKind(t);
     return `<button class="sky-node${major?' is-major':''}${index===0?' is-anchor':''}" data-skill="${esc(t.id)}" data-kind="${kind}" type="button" aria-haspopup="dialog" title="${esc(toolStory(t).value)}"><i class="star-pin" aria-hidden="true"></i><span><strong>${esc(skyName(t))}</strong>${t.status==='in-development'?'<span class="sky-pending">В доработке</span>':major?`<span class="sky-node-description">${esc(t.skySummary||t.catalogSummary||compactRole(toolStory(t).value))}</span>`:''}</span></button>`;
@@ -372,8 +395,8 @@
     dialog.addEventListener('close',()=>{if(root.hidden||!dialog.isConnected)return;replaceHash(p.id);trigger?.focus({preventScroll:true});if(savedScroll)window.scrollTo(savedScroll)});
   }
 
-  function page(p){if(p.id==="memory"&&window.LAB_MEMORY_MAP)return window.LAB_MEMORY_MAP.render(p,model.processes);if(p.constellation)return constellationPage(p);const map=p.id==="memory"?knowledgeArchitecture(p):`${compactSectionMap(p)}`;return `<div class="process-shell${p.id==="memory"?" memory-shell":""}" style="--accent:${esc(p.color||"#426aff")}"><button class="back-button" data-back type="button">← Вернуться к общей карте</button><header class="process-hero compact"><div class="process-index">${esc(p.number)}</div><div class="process-title"><h1 tabindex="-1">${esc(p.title)}</h1><p class="verb">${esc(p.verb)}</p></div><div class="process-purpose"><p>${esc(p.purpose)}</p></div></header><nav class="process-jump" aria-label="Разделы процесса"><a href="#map">Карта раздела</a>${p.pipeline?'<a href="#pipeline">Как это устроено внутри</a>':""}${p.spotlight?'<a href="#spotlight">Пользуйтесь только этим</a>':""}${p.toMcp?'<a href="#mcp">Что уходит в базу</a>':""}${(p.gallery||[]).length?'<a href="#gallery">Как это выглядит</a>':""}<a href="#tools">Досье инструментов</a></nav>${map}${pipelineBlock(p)}${spotlightBlock(p)}${toMcpBlock(p)}${galleryBlock(p)}${tools(p)}${implementation(p)}${nav(p)}</div>`}
-  function bind(root,p){root.querySelectorAll("[data-back]").forEach(b=>b.onclick=showOverview);root.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openProcess(b.dataset.open,b.dataset.tool));root.querySelectorAll("[data-capability]").forEach(b=>b.onclick=()=>showCapability(b.dataset.capability));root.querySelectorAll(".process-jump a").forEach(a=>a.onclick=e=>{e.preventDefault();root.querySelector(a.hash)?.scrollIntoView({behavior:"smooth"})});if(p){const focus=root.querySelector(".map-focus"),toolsById=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),reset=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));focus?.classList.remove("is-open");if(focus)focus.innerHTML=focusDefault(p);replaceHash(p.id)};root.querySelectorAll("[data-focus-tool]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".map-tool").forEach(x=>x.classList.toggle("is-dim",x!==b));b.classList.remove("is-dim");b.classList.add("is-active");if(focus){focus.innerHTML=focusTool(toolsById[b.dataset.focusTool]);focus.classList.add("is-open")}replaceHash(`${p.id}/${b.dataset.focusTool}`)});root.querySelector("[data-map-reset]")?.addEventListener("click",reset);root.querySelectorAll("[data-map-title]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));b.classList.add("is-active");replaceHash(p.id)});root.onclick=e=>{const dossier=e.target.closest("[data-open-dossier]"),openSetup=e.target.closest("[data-open-setup]");if(e.target.closest("[data-reset-focus]"))reset();if(dossier||openSetup){const id=(dossier||openSetup).dataset.openDossier||(dossier||openSetup).dataset.openSetup,d=root.querySelector(`#tool-${CSS.escape(id)}`);if(d){d.open=true;let focusTarget=d.querySelector("summary"),scrollTarget=d;if(openSetup){const s=root.querySelector(`#setup-${CSS.escape(id)}`);if(s){s.open=true;focusTarget=s.querySelector("summary");scrollTarget=s}}focus?.classList.remove("is-open");scrollTarget.scrollIntoView({behavior:"smooth",block:"start"});focusTarget?.focus({preventScroll:true})}}}}}
+  function page(p){if(p.id==="memory"&&window.LAB_MEMORY_MAP)return window.LAB_MEMORY_MAP.render(p,model.processes);if(p.constellation)return constellationPage(p);const map=p.id==="memory"?knowledgeArchitecture(p):`${compactSectionMap(p)}`;return `<div class="process-shell${p.id==="memory"?" memory-shell":""}" style="--accent:${esc(p.color||"#426aff")}"><button class="back-button" data-back type="button">← Вернуться к общей карте</button><header class="process-hero compact"><div class="process-index">${esc(p.number)}</div><div class="process-title"><h1 tabindex="-1">${esc(p.title)}</h1><p class="verb">${esc(p.verb)}</p></div><div class="process-purpose"><p>${esc(p.purpose)}</p></div></header><nav class="process-jump" aria-label="Разделы процесса"><a href="#map">Карта раздела</a>${p.pipeline?'<a href="#pipeline">Как это устроено внутри</a>':""}${p.spotlight?'<a href="#spotlight">Сделано в лаборатории</a>':""}${p.toMcp?'<a href="#mcp">Что уходит в базу</a>':""}${(p.gallery||[]).length?'<a href="#gallery">Как это выглядит</a>':""}<a href="#tools">Досье инструментов</a></nav>${map}${pipelineBlock(p)}${spotlightBlock(p)}${toMcpBlock(p)}${galleryBlock(p)}${tools(p)}${nav(p)}</div>`}
+  function bind(root,p){root.querySelectorAll("[data-back]").forEach(b=>b.onclick=showOverview);root.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openProcess(b.dataset.open,b.dataset.tool));root.querySelectorAll("[data-capability]").forEach(b=>b.onclick=()=>showCapability(b.dataset.capability));root.querySelectorAll(".process-jump a").forEach(a=>a.onclick=e=>{e.preventDefault();root.querySelector(a.getAttribute("href"))?.scrollIntoView({behavior:"smooth"})});if(p){const focus=root.querySelector(".map-focus"),toolsById=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),reset=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));focus?.classList.remove("is-open");if(focus)focus.innerHTML=focusDefault(p);replaceHash(p.id)};root.querySelectorAll("[data-focus-tool]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".map-tool").forEach(x=>x.classList.toggle("is-dim",x!==b));b.classList.remove("is-dim");b.classList.add("is-active");if(focus){focus.innerHTML=focusTool(toolsById[b.dataset.focusTool]);focus.classList.add("is-open")}replaceHash(`${p.id}/${b.dataset.focusTool}`)});root.querySelector("[data-map-reset]")?.addEventListener("click",reset);root.querySelectorAll("[data-map-title]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));b.classList.add("is-active");replaceHash(p.id)});root.onclick=e=>{const dossier=e.target.closest("[data-open-dossier]"),openSetup=e.target.closest("[data-open-setup]");if(e.target.closest("[data-reset-focus]"))reset();if(dossier||openSetup){const id=(dossier||openSetup).dataset.openDossier||(dossier||openSetup).dataset.openSetup,d=root.querySelector(`#tool-${CSS.escape(id)}`);if(d){d.open=true;let focusTarget=d.querySelector("summary"),scrollTarget=d;if(openSetup){const s=root.querySelector(`#setup-${CSS.escape(id)}`);if(s){s.open=true;focusTarget=s.querySelector("summary");scrollTarget=s}}focus?.classList.remove("is-open");scrollTarget.scrollIntoView({behavior:"smooth",block:"start"});focusTarget?.focus({preventScroll:true})}}}}}
 
   function relationIndex(p){
     const map=normalizedMap(p),index=new Map();
@@ -405,8 +428,8 @@
 
   function bindKnowledgeMap(root,p){
     const scope=root.querySelector(".knowledge-architecture"),focus=scope?.querySelector(".knowledge-inspector"),km=p.knowledgeModel||{};if(!scope||!focus)return;
-    const boundary={mcp:{title:"Lab Knowledge MCP",detail:km.boundary?.mcp,operations:[...arr(km.read?.tools),...arr(km.write?.tools)],behavior:km.agentConnection,links:km.sources},skill:{title:"навык lab-knowledge",detail:km.boundary?.skill,behavior:[km.read?.default,...arr(km.write?.behavior)],links:(p.tools||[]).find(x=>x.id==="lab-knowledge-skill")?.links||[]}},personal={obsidian:{title:"Obsidian",detail:"Личные заметки, полные разборы и черновики сотрудника. Публикуются в общую память только после показа человеку и подтверждения.",connections:[{to:"flow:preview",label:"передаёт только после показа человеку"}]},mempalace:{title:"MemPalace",detail:"История сессий и рабочий контекст агента. Помогает продолжать работу, но не считается научным доказательством.",connections:[{to:"producer:agents",label:"возвращает контекст агенту"}]},yonote:{title:"Yonote",detail:"Рабочие задачи, сроки и исполнители. Статус задачи не меняет статус научной гипотезы.",connections:[{to:"consumer:public",label:"показывает человеческую проекцию"}]}},read={question:{title:"Задать вопрос",detail:"Сформулировать, какое прошлое знание нужно для следующего решения.",connections:[{to:"read:scope",label:"уточнить область"}]},scope:{title:"Определить область",detail:"Ограничить чтение проектом, типом записи и временным срезом.",connections:[{to:"read:policy",label:"проверить доступ"}]},policy:{title:"Проверить доступ",detail:"Проверить ключ до поиска. Читать общую базу может любой участник лаборатории: закрытого контура для чтения нет.",connections:[{to:"guard:access",label:"проходит через общую проверку"},{to:"read:search",label:"разрешает поиск"}]},search:{title:"Найти и пройти связи",detail:"Совместить текстовый поиск с типизированными связями между гипотезами, экспериментами, результатами и статьями.",operations:arr(km.read?.tools),connections:[{to:"boundary:mcp",label:"читает общую память"},{to:"read:answer",label:"собирает ответ"}]},answer:{title:"Ответить с источниками",detail:"Вернуть короткий ответ вместе с кодами записей, их происхождением и границами найденного.",connections:(km.consumers||[]).map(x=>({to:`consumer:${x.id}`,label:"передает ответ"}))}},guard={access:{title:"Доступ",detail:"Проверяется до любого чтения или записи. Чтение открыто всем участникам, а запись в чужую работу требует роли в ней.",required:["действующий ключ и человек за ним","глобальная роль","роль в проекте — только для записи"],connections:[...arr(km.publishFlow).map(x=>({to:`flow:${x.id}`,label:"защищает запись"})),{to:"read:policy",label:"защищает чтение"}]},provenance:{title:"Происхождение записи",detail:"Позволяет восстановить, откуда взялся факт, кто его опубликовал и что изменялось.",required:arr(km.provenance),connections:(km.objectTypes||[]).map(x=>({to:`object:${x.id}`,label:"сопровождает запись"}))}},bridge={"paper-to-work":{title:"Как статья связывается с нашей работой",detail:"Утверждение внешней статьи получает типизированную связь prior art, supports, contradicts, baseline, inspired или reproduces. Эта связь не превращает чужое утверждение в наш результат.",connections:[{to:"object:paper-claim",label:"начинается с проверенного утверждения"},{to:"object:hypothesis",label:"может мотивировать гипотезу"},{to:"object:experiment",label:"может задать точку отсчёта"},{to:"object:evidence",label:"может дать контекст сравнения"},{to:"object:decision",label:"может лечь в обоснование"}]}},groups={intake:Object.fromEntries([...(km.intake||[]).flatMap(l=>(l.steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",operations:x.ops||[],connections:[{to:"boundary:mcp",label:"кончается записью в базе"}]}])),...((km.hook||{}).steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",connections:[{to:"boundary:mcp",label:"хук предлагает записать"}]}])]),object:Object.fromEntries((km.objectTypes||[]).map(x=>[x.id,x])),flow:Object.fromEntries((km.publishFlow||[]).map(x=>[x.id,x])),read,guard,bridge,producer:Object.fromEntries((km.producers||[]).map(x=>[x.id,x])),consumer:Object.fromEntries((km.consumers||[]).map(x=>[x.id,x])),corpus:Object.fromEntries((km.corpora||[]).map(x=>[x.id,x])),boundary,personal};
-    personal.yonote.connections=[{to:"consumer:projections",label:"показывает человеческую проекцию"}];
+    const boundary={mcp:{title:"База знаний в GitLab",detail:km.boundary?.mcp,operations:[...arr(km.read?.tools),...arr(km.write?.tools)],behavior:km.agentConnection,links:km.sources},skill:{title:"Навык lab-knowledge",detail:km.boundary?.skill,behavior:[km.read?.default,...arr(km.write?.behavior)],links:(p.tools||[]).find(x=>x.id==="lab-knowledge-skill")?.links||[]}},personal={obsidian:{title:"Obsidian",detail:"Хранилище и есть дерево ~/brainlab. Личные заметки, дневник и логи прогонов закрыты от git и остаются на машине; общее уходит в GitLab только предложением.",connections:[{to:"flow:preview",label:"общее уходит только предложением"}]},mempalace:{title:"MemPalace",detail:"История сессий и рабочий контекст агента. Помогает продолжать работу, но не считается научным доказательством.",connections:[{to:"producer:agents",label:"возвращает контекст агенту"}]},yonote:{title:"Задачи GitLab",detail:"Задачи, сроки и доски работ в GitLab. Ссылаются на утверждения, но научным результатом не являются",connections:[{to:"consumer:public",label:"ссылается на утверждения"}]}},read={question:{title:"Задать вопрос",detail:"Понять, что уже проверяли, прежде чем решать, что делать дальше.",connections:[{to:"read:scope",label:"найти место в дереве"}]},scope:{title:"Найти место в дереве",detail:"Направление, тема, работа: путь в дереве сам говорит, чьё это знание.",connections:[{to:"read:policy",label:"видно то, к чему есть доступ"}]},policy:{title:"Доступ",detail:"Видно то, к чему у человека есть роль в GitLab. Читать работы может любой участник лаборатории.",connections:[{to:"guard:access",label:"роль в GitLab"},{to:"read:search",label:"открывает работы"}]},search:{title:"Найти и пройти ссылки",detail:"Поиск по файлам и переход по ссылкам: утверждение → серия → прогон → лог, статья → то, что она утверждает.",operations:arr(km.read?.tools),connections:[{to:"boundary:mcp",label:"читает базу"},{to:"read:answer",label:"собирает ответ"}]},answer:{title:"Ответить с источниками",detail:"Короткий ответ вместе с путём к файлу, коммитом и предложением, через которое запись вошла в базу.",connections:(km.consumers||[]).map(x=>({to:`consumer:${x.id}`,label:"передаёт ответ"}))}},guard={access:{title:"Доступ",detail:"Решает GitLab: читать работы может любой участник, предложить правку — участник работы, слить её — только ведущий.",required:["действующий ключ и человек за ним","глобальная роль","роль в проекте — только для записи"],connections:[...arr(km.publishFlow).map(x=>({to:`flow:${x.id}`,label:"защищает запись"})),{to:"read:policy",label:"защищает чтение"}]},provenance:{title:"Происхождение записи",detail:"У каждой строки базы есть коммит, автор и предложение: видно, откуда взялся факт, кто его принял и что менялось.",required:arr(km.provenance),connections:(km.objectTypes||[]).map(x=>({to:`object:${x.id}`,label:"сопровождает запись"}))}},bridge={"paper-to-work":{title:"Как статья связывается с нашей работой",detail:"Утверждение чужой статьи лежит на её странице в литературе темы, а работа ссылается на него по роли: опора, опровержение, точка отсчёта. Чужое утверждение от этого не становится нашим результатом.",connections:[{to:"object:paper-claim",label:"начинается с проверенного утверждения"},{to:"object:hypothesis",label:"может мотивировать гипотезу"},{to:"object:experiment",label:"может задать точку отсчёта"},{to:"object:evidence",label:"может дать контекст сравнения"},{to:"object:decision",label:"может лечь в обоснование"}]}},groups={intake:Object.fromEntries([...(km.intake||[]).flatMap(l=>(l.steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",operations:x.ops||[],connections:[{to:"boundary:mcp",label:"кончается слиянием в базу"}]}])),...((km.hook||{}).steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",connections:[{to:"boundary:mcp",label:"хук предлагает записать"}]}])]),object:Object.fromEntries((km.objectTypes||[]).map(x=>[x.id,x])),flow:Object.fromEntries((km.publishFlow||[]).map(x=>[x.id,x])),read,guard,bridge,producer:Object.fromEntries((km.producers||[]).map(x=>[x.id,x])),consumer:Object.fromEntries((km.consumers||[]).map(x=>[x.id,x])),corpus:Object.fromEntries((km.corpora||[]).map(x=>[x.id,x])),boundary,personal};
+    personal.yonote.connections=[{to:"consumer:projections",label:"ссылается на утверждения"}];
     guard.provenance.connections=(km.objectTypes||[]).filter(x=>!["journal","term","resource","paper","paper-claim"].includes(x.id)).map(x=>({to:`object:${x.id}`,label:"сопровождает строгую научную запись"}));
     let lastTrigger=null;
     scope.querySelectorAll("[data-knowledge]").forEach(x=>{x.setAttribute("aria-pressed","false");x.setAttribute("aria-controls","knowledge-inspector")});
@@ -416,10 +439,12 @@
   }
   function sourceButtons(items=[]){return `<div class="special-links">${items.map(x=>{const url=safe(x.url);return url?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(x.label)} <span>↗</span></a>`:""}).join("")}</div>`}
   let navigationRevision=0;
-  function hidePrimaryViews(){navigationRevision++;window.LAB_SURFACE_PAGES?.disconnect();document.querySelectorAll('.skill-dialog[open]').forEach(d=>d.close());$("overview").hidden=true;$("process-view").hidden=true;$("dykaf-view").hidden=true;$("examples-view").hidden=true}
+  function hidePrimaryViews(){navigationRevision++;window.LAB_SURFACE_PAGES?.disconnect();document.querySelectorAll('.skill-dialog[open]').forEach(d=>d.close());$("overview").hidden=true;$("process-view").hidden=true;$("dykaf-view").hidden=true;$("mcp-live-view").hidden=true;$("examples-view").hidden=true;$("setup-view").hidden=true;$("hub-view").hidden=true}
+  // Страница задач GitLab внутри по-прежнему ключ «yonote», а в адресе — «gitlab».
   function showSurface(id,navigate=true){
+    if(id==="gitlab")id="yonote";
     if(!systemData.surfaces?.[id])return;
-    if(navigate)updateHash(`surface/${id}`);
+    if(navigate)updateHash(`surface/${id==="yonote"?"gitlab":id}`);
     hidePrimaryViews();active("none");
     const view=$("process-view");view.hidden=false;
     const content=id==="obsidian"?window.LAB_OBSIDIAN_SETUP.page():window.LAB_SURFACE_PAGES.page(id);
@@ -429,7 +454,10 @@
     window.scrollTo({top:0,behavior:"instant"});
     view.querySelector("h1")?.focus({preventScroll:true});
   }
-  // The existing MCP renderer and all its indexes are initialized only after data arrives.
+  // Частичная подгрузка жила рядом со службой (scripts/serve.py). Теперь снимок дерева — обычные
+  // файлы, и витрина берёт их целиком: на стенде нет сервера, который отдал бы куски.
+  const liveSnapshotMode=false;
+  // Live search starts without snapshots; details are fetched when opened.
   function createMcpWorkspace(){
   // ============ Страница MCP: поиск по содержимому базы ============
   // Владелец: «я должен написать, когда выигрывает Muon… по этим связям… нужно максимально
@@ -443,18 +471,16 @@
   // Снимок собирается локально из живой базы и наружу не публикуется: в нём имена
   // проектов, неопубликованные утверждения и внутренние адреса.
   const base=window.LAB_BASE||{records:[],relations:[]};
-  const KIND={project:"проект",hypothesis:"утверждение",experiment:"прогон",evidence:"измерение",
-    derivation:"доказательство",decision:"правило",journal:"журнал",term:"термин",
+  const KIND={project:"работа",hypothesis:"утверждение",experiment:"прогон",series:"серия",evidence:"измерение",
+    derivation:"выкладка",decision:"правило",journal:"журнал",term:"термин",
     resource:"ресурс",source:"источник",source_ref:"источник",
     paper:"статья",paper_chunk:"раздел статьи",paper_claim:"утверждение статьи"};
-  // Каждая запись в базе появляется ровно одной операцией MCP. Это и есть ответ на вопрос
-  // «как она сюда попала», поэтому операция стоит на карточке, а не в пояснении.
-  const KIND_OP={project:"upsert_project",hypothesis:"create_hypothesis",experiment:"record_experiment",
-    evidence:"record_evidence",derivation:"record_derivation",decision:"propose_decision",
-    journal:"record_journal",term:"upsert_term",resource:"upsert_resource",source:"attach_source_ref",
-    source_ref:"attach_source_ref",paper:"upsert_paper",paper_chunk:"add_paper_section",
-    paper_claim:"record_paper_claim"};
-  const KIND_ORDER=["project","hypothesis","derivation","experiment","evidence","decision","journal","term","resource","source"];
+  // С 07-10-2026 база живёт в git: каждая запись это файл в репозитории работы, и попадает
+  // она туда слиянием предложения. Поэтому на карточке стоит путь файла, а не вызов службы.
+  const KIND_OP={project:"README.md работы",hypothesis:"claims/<КОД>/README.md",experiment:"claims/<H>/runs/<E>.md",
+    series:"claims/<H>/series/<S>.md",derivation:"claims/<H>/theory/<D>.md",
+    paper:"<тема>/literature/<статья>.md",paper_claim:"<тема>/literature/<статья>.md"};
+  const KIND_ORDER=["project","hypothesis","derivation","series","experiment","evidence","decision","journal","term","resource","source"];
   // Владелец: «есть и доказательства, и эксперимент — это вообще идеальный вариант».
   // Из 709 утверждений так закрыты 146, и это должно читаться прямо с карточки.
   const SUPPORT={proof_and_numbers:["и выкладка, и числа","is-both"],proof:["выкладка","is-proof"],
@@ -598,7 +624,7 @@
       <header><span class="base-kind">${esc(KIND[r.k]||r.k)}</span>${r.code?`<code class="base-code">${esc(r.code)}</code>`:""}${supportBadge(r)}${r.st?`<span class="base-status">${esc(r.st)}</span>`:""}${r.pj?`<span class="base-proj">${esc(r.pn||r.pj)} · ${esc(r.pj)}</span>`:""}</header>
       <h3>${mark(r.t||"без названия",q)}</h3>
       ${r.s&&r.s!==r.t?`<p>${mark(r.s,q)}</p>`:""}
-      <p class="base-op">попала в базу вызовом <code>${esc(KIND_OP[r.k]||"—")}</code></p>
+      <p class="base-op">лежит в git: <code>${esc(KIND_OP[r.k]||"—")}</code></p>
       ${fields?`<details class="base-fields"><summary>Все поля записи <span>${(r.f||[]).length}</span></summary><dl>${fields}</dl></details>`:""}
       ${rels.length?`<div class="base-rels"><b>Связано в базе</b>${rels.map(y=>`<button type="button" data-base-jump="${esc(y.o.code||y.o.t||"")}"><small>${esc(y.dir)} ${esc(y.label)} · ${esc(KIND[y.o.k]||y.o.k)}</small>${esc(y.o.code||"")} ${esc((y.o.t||"").slice(0,70))}</button>`).join("")}</div>`:""}
     </article>`;
@@ -663,7 +689,7 @@
       <header>${place?`<span class="base-place">${esc(String(place))}</span>`:""}<span class="base-kind">${esc(KIND.paper_claim)}</span><span class="base-score" title="оценка кросс-энкодера">${esc(score)}</span>${x.library_folder?`<button class="base-folder" type="button" data-open-folder="${esc(x.library_folder)}">${esc(x.library_folder)}</button>`:""}</header>
       <h3>${mark(claim,q)}</h3>
       <p class="claim-of">${paper?`<button type="button" data-open-paper="${esc(shortId(x.paper_id))}">${esc(paper)}</button>`:""}${x.section?`<span>раздел «${esc(x.section)}»</span>`:""}</p>
-      <p class="base-op">попала в базу вызовом <code>record_paper_claim</code></p>
+      <p class="base-op">лежит в git: <code>record_paper_claim</code></p>
       <div class="claim-links">${x.paper_id?`<button type="button" data-open-paper="${esc(shortId(x.paper_id))}">Все утверждения этой статьи →</button>`:""}${x.arxiv_id?`<a href="https://arxiv.org/abs/${esc(x.arxiv_id)}" target="_blank" rel="noopener">arXiv ${esc(x.arxiv_id)} ↗</a>`:""}</div>
     </article>`;
   }
@@ -680,7 +706,7 @@
       <header>${place?`<span class="base-place">${esc(String(place))}</span>`:""}<span class="base-kind">${esc(KIND[kind]||kind)}</span>${code?`<code class="base-code">${esc(code)}</code>`:""}<span class="base-score" title="оценка кросс-энкодера: насколько запись отвечает на вопрос">${esc(score)}</span>${supportBadge(snap)}${snap?.pn?`<span class="base-proj">${esc(snap.pn)}</span>`:""}</header>
       <h3>${mark(item.title||"без названия",q)}</h3>
       <p>${mark(body,q)}</p>
-      <p class="base-op">попала в базу вызовом <code>${esc(KIND_OP[kind]||"—")}</code></p>
+      <p class="base-op">лежит в git: <code>${esc(KIND_OP[kind]||"—")}</code></p>
       ${fields?`<details class="base-fields"><summary>Все поля записи <span>${(snap.f||[]).length}</span></summary><dl>${fields}</dl></details>`:""}
       ${rels.length?`<div class="base-rels"><b>Связано в базе</b>${rels.map(y=>`<button type="button" data-base-jump="${esc(y.o.code||y.o.t||"")}"><small>${esc(y.dir)} ${esc(y.label)} · ${esc(KIND[y.o.k]||y.o.k)}</small>${esc(y.o.code||"")} ${esc((y.o.t||"").slice(0,70))}</button>`).join("")}</div>`:""}
     </article>`;
@@ -752,19 +778,26 @@
   // 1.1 секунды у быстрого и 27 из 30 за 7.5 секунды у тщательного. Шесть лишних секунд
   // против шести правильных ответов — выбор в пользу правильного, и делать его каждый раз
   // заново человеку незачем.
-  const MCP_CALL={mode:"semantic",scope:"all",limit:20};
-  let liveOk=demo?false:null,mcpSeq=0;
+  // Режим ровно тот, каким `search_lab` отвечает агентам по умолчанию: значок рядом
+  // обещает «тот же ответ и порядок, что получают агенты», и витрина обязана этому
+  // обещанию соответствовать. Владелец 14-09-2026: «получают агенты — так и надо, так
+  // что сделай чтобы на сайте реально мы получали данные как агенты».
+  //
+  // Размен известен и принят. Мерка на 64 вопросах: hybrid лучше в среднем — nDCG@10
+  // 0.9542 против 0.9488 у semantic, MRR 0.9204 против 0.903. Но на вопросе «как
+  // выбрать оптимизатор в претрейне» hybrid уводит «Fantastic Pretraining Optimizers»
+  // за пределы первых двадцати, где semantic давал её четвёртой.
+  const MCP_CALL={mode:"hybrid",scope:"all",limit:20};
+  // Службы MCP с 07-10-2026 нет: база это git, и витрина читает её из дерева через scripts/live.py.
+  let liveOk=false,mcpSeq=0;
+  let lastLiveAnswer=null;
   function callLine(q){
-    if(demo)return `<p class="mcp-call is-local">${demoScenario(q)?"Подборка по теме · публичная демобаза":"Поиск по открытой демобазе в браузере"}</p>`;
-    const args=`query: "${q}", mode: "${MCP_CALL.mode}", scope: "${MCP_CALL.scope}", `
-      +`limit: ${MCP_CALL.limit}`;
-    return `<pre class="mcp-call"><code>search_lab(${esc(args)})</code></pre>`;
+    if(demo)return `<p class="mcp-call is-local">Поиск по учебным данным в браузере</p>`;
+    // То же самое у себя в дереве: поиск идёт по файлам, вызывать нечего.
+    return `<pre class="mcp-call"><code>rg -i ${esc(JSON.stringify(q))} ~/brainlab</code></pre>`;
   }
   async function liveHealth(){
-    if(demo){liveOk=false;return false}
-    try{const r=await proxyFetch(`${PROXY}/health`,{cache:"no-store"});liveOk=r.ok}
-    catch{liveOk=false}
-    return liveOk;
+    liveOk=false;return false;
   }
   // Туннель к brain_lab рвётся под нагрузкой сервера: прокси это видит и поднимает его
   // заново, но запрос, попавший в разрыв, уже провалился. Одна такая осечка не значит, что
@@ -792,7 +825,7 @@
     const out=()=>$("mcp-results");
     const ask=value=>{const inp=$("mcp-search-input");inp.value=value;runSearch(value);
       window.scrollTo({top:0,behavior:"smooth"})};
-    const show=html=>{const box=out();if(!box)return;box.innerHTML=html;bindResults(box);
+    const show=html=>{const box=out();if(!box)return;++mcpSeq;box.innerHTML=html;bindResults(box);
       // Поле поиска прилипшее: без запаса заголовок карточки уезжает под него.
       const top=box.getBoundingClientRect().top+scrollY-150;
       window.scrollTo({top:Math.max(0,top),behavior:"smooth"})};
@@ -800,12 +833,12 @@
     // поиск по коду ничего не находил, и переход выглядел как поломка.
     scope.querySelectorAll("[data-base-jump]").forEach(b=>b.onclick=()=>{
       const code=b.dataset.baseJump;
-      if(byCode[code])show(recordCard(code));else ask(code)});
+      if(byCode[code])openDetail("record",code);else ask(code)});
     scope.querySelectorAll("[data-open-record]").forEach(b=>b.onclick=()=>{
       const code=b.dataset.openRecord;
       if(!code)return;
       replaceHash(`mcp-live/${code}`);
-      show(byCode[code]?.k==="project"?projectCard(code):recordCard(code))});
+      openDetail("record",code)});
     scope.querySelectorAll("[data-ask-tool]").forEach(b=>b.onclick=()=>{
       const box=$("mcp-agent");if(box)box.open=true;
       $("mcp-agent-name").value=b.dataset.askTool;
@@ -817,7 +850,7 @@
       try{await navigator.clipboard.writeText(link);b.textContent="ссылка скопирована"}
       catch{b.textContent=link}});
     scope.querySelectorAll("[data-open-term]").forEach(b=>b.onclick=()=>ask(b.dataset.openTerm.replace(/_/g," ")));
-    scope.querySelectorAll("[data-open-paper]").forEach(b=>b.onclick=()=>{replaceHash(`mcp-live/paper/${b.dataset.openPaper}`);show(paperCard(b.dataset.openPaper))});
+    scope.querySelectorAll("[data-open-paper]").forEach(b=>b.onclick=()=>openDetail("paper",b.dataset.openPaper));
     scope.querySelectorAll("[data-open-folder]").forEach(b=>b.onclick=()=>show(folderPage(b.dataset.openFolder)));
     scope.querySelectorAll("[data-open-theme]").forEach(b=>b.onclick=()=>show(themePage(b.dataset.openTheme)));
     scope.querySelectorAll("[data-open-section]").forEach(b=>b.onclick=()=>show(sectionPage(b.dataset.openSection)));
@@ -840,38 +873,8 @@
   // снимка приводятся к форме ответа службы: род, идентификатор, заголовок, текст, оценка.
   // Оценки у снимка нет — вместо неё ставится пусто, и на карточке её просто не видно.
   function snapshotItems(q){
-    const scenario=demoScenario(q);
-    if(scenario)return scenarioItems(scenario,q);
     if(searchIndex)return snapshotRanked(q);
     return snapshotLegacy(q);
-  }
-
-  // Curated examples belong only to the public showcase, never to live MCP ranking.
-  function demoScenario(q){
-    const normalize=value=>String(value).toLowerCase().trim().replace(/[?!.]+$/u,"").trim().replace(/\s+/g," ");
-    return demo?.scenarios?.find(s=>normalize(s.text)===normalize(q));
-  }
-
-  function scenarioItems(scenario,q){
-    return [scenario.paper,...scenario.related].flatMap(id=>{
-      const paper=papersById[id];
-      if(!paper)return [];
-      const featured=id===scenario.paper;
-      const extra={paper_id:id,library_folder:paper.f,demo_featured:featured};
-      const claims=featured?paper.c:[paperClaim(paper,q)].filter(Boolean);
-      return [{entity_type:"paper",entity_id:id,title:paper.t,snippet:paper.s,extra},
-        ...claims.map(claim=>({entity_type:"paper_claim",entity_id:id,
-          title:paper.t+" — "+claim.s,snippet:"",
-          extra:{...extra,claim_kind:claim.k}}))];
-    });
-  }
-
-  function paperClaim(paper,q){
-    const claims=paper?.c||[];
-    if(!window.LabSearch)return claims[0];
-    const index=new window.LabSearch.Index();
-    for(const claim of claims)index.add(claim,[[claim.s,1]]);
-    return index.build().search(q,1)[0]||claims[0];
   }
 
   // Записи из общего индекса в форме ответа службы. Оценка BM25 приводится к 0…1 делением на
@@ -884,10 +887,7 @@
     for(const item of searchIndex.search(q,8)){
       if(!NODE_KINDS.has(item.kind))continue;
       if(item.kind==="project"||item.kind==="theme"){context.add(item.title);context.add(item.code)}
-      else{
-        context.add(item.id);
-        if(item.kind==="subtopic"&&item.folder)context.add(item.folder);
-      }
+      else context.add(item.id);
     }
     const found=searchIndex.search(q,40,{context}).filter(x=>!NODE_KINDS.has(x.kind));
     if(!found.length)return [];
@@ -899,7 +899,7 @@
       const snap=x.code?byCode[x.code]:null;
       if(x.kind==="paper"){
         const paper=papersById[x.id];
-        const claim=paperClaim(paper,q);
+        const claim=(paper?.c||[]).slice().sort((a,b)=>(b.s||"").length-(a.s||"").length)[0];
         return {entity_type:"paper_claim",entity_id:x.id,
                 title:`${x.title} — ${claim?claim.s:x.text||""}`,
                 snippet:claim?claim.s:(x.text||""),score:x.score/best,
@@ -919,7 +919,9 @@
     }
     for(const x of libSearch(q,8)){
       const p=x.p||x;
-      const claim=paperClaim(p,q);
+      // У статьи в снимке показываем её самое длинное разобранное утверждение: именно оно
+      // отвечает на вопрос, а не название статьи.
+      const claim=(p.c||[]).slice().sort((a,b)=>(b.s||"").length-(a.s||"").length)[0];
       out.push({entity_type:"paper_claim",entity_id:p.id,
                 title:`${p.t} — ${claim?claim.s:p.sr||p.s||""}`,
                 snippet:claim?claim.s:(p.sr||p.s||""),score:null,
@@ -938,11 +940,11 @@
       return;
     }
     const code=(q.trim().match(/^[A-ZА-Я]-[A-Z]{2,4}-\d{2,4}$/i)||[])[0];
-    if(code&&byCode[code.toUpperCase()]){
-      const record=byCode[code.toUpperCase()];
-      box.innerHTML=record.k==="project"?projectCard(code.toUpperCase()):recordCard(code.toUpperCase());
+    if(code){
+      await openDetail("record",code.toUpperCase());
+      if(seq+1!==mcpSeq||!box.isConnected)return;
       if(found)found.textContent="запись по коду";
-      if(call)call.innerHTML=`<p class="mcp-call is-local">Открыто по коду из локального снимка: искать смысл в коде записи незачем.</p>`;
+      if(call)call.innerHTML=`<p class="mcp-call is-local">Открыто по коду записи.</p>`;
       bindResults(box);scrollToResults();return;
     }
     /* Развилки «карта или записи» здесь больше нет.
@@ -966,10 +968,11 @@
       // Служба падает часто (общий сервер), и в эти минуты витрина не должна выглядеть
       // хуже, чем обычно. Поэтому снимок приводится к тому же виду, что живой ответ:
       // источник сверху, его записи внутри.
-      const items=snapshotItems(q);
-      if(found)found.textContent=items.length?`${items.length} по снимку`:"ничего";
+      const items=await fallbackItems(q,seq);
+      if(!items)return;
+      if(found)found.textContent=items.length?`${items.length} найдено`:"ничего";
       box.innerHTML=items.length?answerPage(items,q)
-        :demo?`<p class="mcp-empty">В демобазе нет ответа. Попробуйте один из примеров выше.</p>`:`<p class="mcp-empty">По снимку ничего не нашлось, и это ожидаемо: снимок ищет словами, а не по смыслу. Поднимите живой поиск, и та же строка уйдёт в службу так, как её отправляет агент.</p>`;
+        :demo?`<p class="mcp-empty">В учебном наборе нет ответа. Попробуйте один из примеров выше.</p>`:`<p class="mcp-empty">Ничего не нашлось. Попробуйте другими словами или пройдите по темам справа.</p>`;
       bindResults(box);scrollToResults();return;
     }
     // Кросс-энкодер отвечает 6-14 секунд, и на такой паузе молчащий экран читается как
@@ -1005,6 +1008,7 @@
       const warn=lexicalOnly
         ? `<p class="mcp-warn">Служба отвечала без векторного поиска: сервис эмбеддингов не успел, и она перешла на совпадение слов. На русском запросе это даёт мимо: в базе термины записаны латиницей. Спросите ещё раз — обычно со второй попытки вектор считается.</p>`
         : "";
+      lastLiveAnswer=items.length?{items,q,seq,warn}:null;
       box.innerHTML=items.length?warn+answerPage(items,q)
         : warn+`<p class="mcp-empty">Служба по этому вопросу ничего не нашла. База знает только то, что кто-то записал явно.</p>`;
       bindResults(box);scrollToResults();
@@ -1014,11 +1018,12 @@
       // Показываем ответ по снимку, но службу мёртвой не объявляем: следующий вопрос снова
       // пойдёт в неё. Раньше одна осечка сажала витрину на снимок до перезагрузки страницы,
       // и человек этого не замечал — он видел просто плохие ответы.
-      liveOk=demo?false:null;syncLiveBadge();
-      const items=snapshotItems(q);
+      liveOk=false;syncLiveBadge();
+      const items=await fallbackItems(q,seq);
+      if(!items)return;
       box.innerHTML=`<p class="mcp-warn">Служба не ответила (${esc(String(error.message||error))}). Ниже — ответ по локальному снимку: он ищет словами, а не по смыслу. Следующий вопрос снова уйдёт в службу.</p>`
         +(items.length?answerPage(items,q):"");
-      if(found)found.textContent=`${items.length} по снимку`;
+      if(found)found.textContent=`${items.length} найдено`;
       bindResults(box);scrollToResults();
     }
   }
@@ -1115,14 +1120,14 @@
 
   const folderStats=folder=>{
     const ps=(lib.papers||[]).filter(p=>p.f===folder);
-    return {papers:ps.length,claims:ps.reduce((n,p)=>n+(p.c||[]).length,0)};
+    return {papers:ps.length,claims:ps.reduce((n,p)=>n+claimCount(p),0)};
   };
 
   // Что нашлось в карте базы по этому запросу: подразделы, подтемы, направления, проекты.
   // Единый индекс: узлы дерева, записи базы и статьи в одной коллекции, ранжирование BM25.
   // Пока индекс не построен, витрина работает по-старому — это лишь на случай, если файл
   // ядра не загрузился.
-  let searchIndex=(window.LabSearch&&window.LAB_TREE)
+  let searchIndex=(!window.LAB_PARTIAL&&window.LabSearch&&window.LAB_TREE)
     ? window.LabSearch.build({tree,base,lib}) : null;
 
   /* Подменить дерево на то, что отдала служба, и пересобрать всё, что от него зависит.
@@ -1139,7 +1144,7 @@
       tree.sections=fresh.sections;tree.folders=fresh.folders;
       treeFolders={};for(const f of tree.folders)treeFolders[f.f]=f;
       treeSections={};for(const x of tree.sections)treeSections[x.name]=x;
-      if(window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
+      if(!window.LAB_PARTIAL&&window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
       treeIsLive=true;
       const view=$("mcp-live-view"),areas=view?.querySelector(".way-areas");
       if(areas&&!view.hidden){
@@ -1218,6 +1223,7 @@
     paper_claim:["утверждение из статьи","утверждения из статей","утверждений из статей"],
     evidence:["измерение","измерения","измерений"],
     experiment:["прогон","прогона","прогонов"],
+    series:["серия","серии","серий"],
     derivation:["выкладка","выкладки","выкладок"],
     decision:["решение","решения","решений"],
     project:["проект","проекта","проектов"],
@@ -1233,7 +1239,6 @@
     paper_chunk:["раздел статьи","раздела статьи","разделов статей"]};
   function plural(n,forms){
     if(!forms)return "";
-    if(document.documentElement.lang==="en")return forms[Math.abs(n)===1?0:2];
     const a=Math.abs(n)%100,b=a%10;
     if(a>10&&a<20)return forms[2];
     if(b>1&&b<5)return forms[1];
@@ -1283,6 +1288,7 @@
               abstract:snippet.startsWith(whole)?snippet.slice(whole.length).trim():snippet};
     }
     const snap=snapById[String(x.entity_id||"").slice(0,8)];
+    if(!snap&&e.project?.code)return {key:"project:"+e.project.code,kind:"project",id:e.project.code,title:e.project.name,folder:""};
     if(x.entity_type==="project"){
       const code=snap?.code||snap?.pj||"";
       return {key:"project:"+(code||whole),kind:"project",id:code,title:whole,folder:""};
@@ -1321,8 +1327,7 @@
     const tally=parts.map(k=>`<span><b>${esc(String(by[k].length))}</b> ${esc(plural(by[k].length,ANSWER_FORMS[k])||KIND[k]||k)}</span>`).join("");
     const ours=(by.hypothesis||[]).length+(by.evidence||[]).length+(by.experiment||[]).length;
     const theirs=(by.paper_claim||[]).length+(by.paper||[]).length;
-    const gist=demoScenario(q)?`Работа лаборатории и статьи по теме.`
-      :ours&&theirs?`Отвечает и своя работа, и разобранные статьи.`
+    const gist=ours&&theirs?`Отвечает и своя работа, и разобранные статьи.`
       :ours?`Отвечает своя работа: записи из прогонов и измерений.`
       :theirs?`В своей работе ответа нет — отвечают разобранные статьи.`:"";
     const head=`<div class="answer-head"><p class="answer-tally">${tally}</p>${gist?`<p class="answer-gist">${esc(gist)}</p>`:""}</div>`;
@@ -1342,9 +1347,9 @@
 
   function sourceGroup(group,q){
     const {src,items}=group;
-    const snap=src.kind==="project"?byCode[src.id]:null;
+    const reported=items.find(({item})=>item.extra?.project)?.item.extra.project;
+    const snap=src.kind==="project"?(byCode[src.id]||{s:reported?.abstract,st:reported?.status,who:{leads:reported?.leads||[],members:reported?.members||[]}}):null;
     const paper=src.kind==="paper"?papersById[src.id]:null;
-    const featured=!!(demo&&paper&&items.some(({item})=>item.extra?.demo_featured));
     const node=src.kind==="folder"?treeFolders[src.id]:null;
     const [subFolder,subSlug]=src.kind==="subtopic"?String(src.id).split("|"):[];
     const topic=src.kind==="subtopic"
@@ -1356,14 +1361,13 @@
       ? (node?.sub||[]).map(t=>`<button type="button" data-open-subtopic="${esc(src.id)}|${esc(t.slug)}">${esc(t.t)}<span>${esc(String(t.p.length))}</span></button>`).join("")
       : src.kind==="subtopic"
       ? (topic?.p||[]).map(id=>papersById[id]).filter(Boolean)
-          .sort((a,b)=>(b.c||[]).length-(a.c||[]).length).slice(0,8)
+          .sort((a,b)=>claimCount(b)-claimCount(a)).slice(0,8)
           .map(p=>`<button type="button" data-open-paper="${esc(p.id)}">${esc(p.t)}${p.y?`<span>${esc(String(p.y))}</span>`:""}</button>`).join("")
       : "";
     const abstract=unmark(
       src.kind==="project"?(snap?.s||"")
       :src.kind==="folder"?shorten(node?.a||"",320)
       :src.kind==="subtopic"?shorten(topic?.a||src.abstract||"",320)
-      :featured?(paper?.sr||paper?.s||paper?.ab||"")
       :shorten(paper?.sr||paper?.s||paper?.ab||"",320));
     const who=snap?.who||{};
     const team=[...(who.leads||[]),...(who.members||[])];
@@ -1373,7 +1377,7 @@
       ? `${(node?.sub||[]).length} подтем`
       : src.kind==="subtopic"
       ? [subFolder,topic?`${(topic.p||[]).length} ${plural((topic.p||[]).length,["статья","статьи","статей"])}`:""].filter(Boolean).join(" · ")
-      : [paper?.au?authorLine(paper.au):"",paper?.v||paper?.y,featured?"":src.folder].filter(Boolean).join(" · ");
+      : [paper?.au?authorLine(paper.au):"",paper?.y,src.folder].filter(Boolean).join(" · ");
     const open=src.kind==="project"
       ? `<button type="button" data-open-record="${esc(src.id)}">Открыть проект: аннотация, все утверждения, терминология →</button>`
       : src.kind==="folder"
@@ -1381,16 +1385,16 @@
       : src.kind==="subtopic"&&topic
       ? `<button type="button" data-open-subtopic="${esc(subFolder)}|${esc(subSlug)}">Открыть подтему: все её статьи →</button>`
       : src.kind==="paper"&&src.id
-      ? `<button type="button" data-open-paper="${esc(src.id)}">${featured?"Открыть работу":"Открыть статью: аннотация и все её утверждения"} →</button>`:"";
+      ? `<button type="button" data-open-paper="${esc(src.id)}">Открыть статью: аннотация и все её утверждения →</button>`:"";
     // Строки утверждений — только те, что не сам источник: карточка статьи, найденной
     // целиком, не должна показывать саму себя ещё и строкой внутри себя.
     const rows=items.filter(({item})=>!SELF_HIT.has(item.entity_type));
     const count=rows.length
       ? `${rows.length} ${plural(rows.length,["утверждение по запросу","утверждения по запросу","утверждений по запросу"])}`
       : "нашлось целиком";
-    return `<article class="src-group is-${featured?"project is-publication":esc(src.kind)}" data-source-id="${esc(src.id)}" data-source-kind="${esc(src.kind)}">
+    return `<article class="src-group is-${esc(src.kind)}">
       <header>
-        <span class="src-kind">${featured?"Работа лаборатории · статья":esc(SRC_KIND[src.kind]||src.kind)}</span>
+        <span class="src-kind">${esc(SRC_KIND[src.kind]||src.kind)}</span>
         ${src.kind==="project"&&src.id?`<code>${esc(src.id)}</code>`:""}
         <span class="src-count">${esc(count)}</span>
       </header>
@@ -1461,6 +1465,7 @@
   // theme_slug в базе почти пустой, поэтому осей три настоящие: папки библиотеки (38),
   // темы проектов (23) и термины (59).
   const papersById={};for(const x of (lib.papers||[]))papersById[x.id]=x;
+  const claimCount=p=>p.claim_count??(p.c||[]).length;
   const CLAIM_KIND={empirical:"эмпирические",theoretical:"теоретические",method:"о методе",definition:"определения"};
   const CLAIM_ORDER=["theoretical","empirical","method","definition"];
 
@@ -1510,7 +1515,7 @@
     const terms=(base.terms||[]).slice(0,40).map(t=>
       `<button type="button" data-open-term="${esc(t.t)}">${esc(t.t.replace(/_/g," "))}<span>${esc(String(t.n))}</span></button>`).join("");
     const subtopics=(tree.folders||[]).reduce((n,f)=>n+(f.sub||[]).length,0);
-    return `<details class="mcp-browse" id="mcp-browse"><summary>Смотреть по разделам, не спрашивая <span>${esc(String((tree.directions||[]).length))} направлений · ${esc(String((tree.sections||[]).length))} разделов · ${esc(String((tree.folders||[]).length))} подразделов · ${esc(String(subtopics))} подтем</span></summary>
+    return `<details class="mcp-browse" id="mcp-browse"><summary>Смотреть по темам, не спрашивая <span>${esc(String((tree.directions||[]).length))} направлений · ${esc(String((tree.folders||[]).length))} тем с литературой · ${esc(String((tree.folders||[]).reduce((n,f)=>n+(f.sub||[]).length,0)))} подтем</span></summary>
       <section><b>Направления лаборатории</b><p>Своя работа: направление объединяет темы, тема — проекты, у проекта свои утверждения, состав и терминология.</p><div class="browse-tree">${dirs}</div></section>
       <section><b>Разделы библиотеки</b><p>Чужие работы в вашей же раскладке. Большие подразделы разбиты на подтемы, у каждого узла аннотация.</p><div class="browse-tree">${sections}</div></section>
       <section><b>Термины</b><p>Поперечная ось: сколько раз термин встречается в утверждениях статей, наших утверждениях и измерениях.</p><div class="mcp-chips is-terms">${terms}</div></section></details>`;
@@ -1541,7 +1546,7 @@
   // гипотез, экспериментов, теорем в этой статье».
   function paperCard(id,q=""){
     const p=papersById[id];
-    if(!p)return `<p class="mcp-empty">Этой статьи нет в локальном снимке. Обновить: <code>bash scripts/refresh-snapshots.sh</code></p>`;
+    if(!p)return `<p class="mcp-empty">Этой статьи нет в литературе тем. Принести: <code>lab sync</code></p>`;
     const groups=CLAIM_ORDER.map(k=>{
       const xs=(p.c||[]).filter(c=>c.k===k);
       if(!xs.length)return "";
@@ -1550,13 +1555,13 @@
     }).join("");
     const body=p.sr||p.ab||p.s||"";
     return `<article class="paper-page">
-      <header><span class="base-kind">${["author-publication","related-publication"].includes(p.origin)?"открытая публикация":demo?"учебная статья":"статья"}</span>${p.f?`<button class="base-folder" type="button" data-open-folder="${esc(p.f)}">${esc(p.f)}</button>`:""}${p.y?`<span class="base-status">${esc(String(p.y))}</span>`:""}</header>
+      <header><span class="base-kind">статья</span>${p.f?`<button class="base-folder" type="button" data-open-folder="${esc(p.f)}">${esc(p.f)}</button>`:""}${p.y?`<span class="base-status">${esc(String(p.y))}</span>`:""}</header>
       <h2>${esc(p.t)}</h2>
       <p class="paper-authors">${esc(p.au||"")}${p.v?` · ${esc(p.v)}`:""}</p>
-      ${body?`<p class="paper-abstract">${mark(body,q)}</p>`:""}${p.reading_scope?`<p class="paper-authors">Краткий разбор: ${esc(p.reading_scope)}. Утверждения изложены своими словами.</p>`:""}
-      <div class="paper-counts"><span>утверждений <b>${esc(String((p.c||[]).length))}</b></span><span>разделов <b>${esc(String(p.ns??p.nc??0))}</b></span>${p.key?`<span>ключ <b>${esc(p.key)}</b></span>`:""}</div>
-      <div class="claim-links">${p.ax?`<a href="https://arxiv.org/abs/${esc(p.ax)}" target="_blank" rel="noopener">arXiv ${esc(p.ax)} ↗</a>`:p.source_url?`<a href="${esc(p.source_url)}" target="_blank" rel="noopener">Оригинал статьи ↗</a>`:""}${p.venue_url&&p.venue_url!==p.source_url?`<a href="${esc(p.venue_url)}" target="_blank" rel="noopener">${esc(p.v)} ↗</a>`:""}${p.code_url?`<a href="${esc(p.code_url)}" target="_blank" rel="noopener">Код ↗</a>`:""}<button type="button" data-mcp-home>← к поиску</button></div>
-      ${groups||`<p class="mcp-empty">У этой статьи в снимке нет разобранных утверждений.</p>`}</article>`;
+      ${body?`<p class="paper-abstract">${mark(body,q)}</p>`:""}
+      <div class="paper-counts"><span>утверждений <b>${esc(String(claimCount(p)))}</b></span><span>разделов <b>${esc(String(p.ns??p.nc??0))}</b></span>${p.key?`<span>ключ <b>${esc(p.key)}</b></span>`:""}</div>
+      <div class="claim-links">${p.ax?`<a href="https://arxiv.org/abs/${esc(p.ax)}" target="_blank" rel="noopener">arXiv ${esc(p.ax)} ↗</a>`:""}<button type="button" data-mcp-home>← к поиску</button></div>
+      ${groups||`<p class="mcp-empty">У этой статьи нет разобранных утверждений.</p>`}</article>`;
   }
 
   // Страница подтемы: третий уровень библиотеки. Владелец: «надо в больших разделах добавлять
@@ -1566,8 +1571,8 @@
     const topic=(node?.sub||[]).find(t=>t.slug===slug);
     if(!topic)return `<p class="mcp-empty">Такой подтемы в дереве нет. Пересобрать: <code>python3 scripts/build_tree.py</code></p>`;
     const xs=topic.p.map(id=>papersById[id]).filter(Boolean)
-      .sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
-    const claims=xs.reduce((n,p)=>n+(p.c||[]).length,0);
+      .sort((a,b)=>claimCount(b)-claimCount(a));
+    const claims=xs.reduce((n,p)=>n+claimCount(p),0);
     const siblings=(node.sub||[]).filter(t=>t.slug!==slug).map(t=>
       `<button type="button" data-open-subtopic="${esc(folder)}|${esc(t.slug)}">${esc(t.t)}<span>${esc(String(t.p.length))}</span></button>`).join("");
     return `<article class="paper-page is-node">
@@ -1577,7 +1582,7 @@
       <p class="node-abstract">${esc(unmark(topic.a||""))}</p>
       <div class="paper-counts"><span>статей <b>${esc(String(xs.length))}</b></span><span>их утверждений <b>${esc(String(claims))}</b></span></div>
       <div class="claim-links"><button type="button" data-open-folder="${esc(folder)}">Весь подраздел ${esc(folder)} →</button><button type="button" data-mcp-home>← к поиску</button></div>
-      <ol class="folder-list is-rich">${xs.map(p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String((p.c||[]).length))} ${esc(plural((p.c||[]).length,["утверждение","утверждения","утверждений"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`).join("")}</ol>
+      <ol class="folder-list is-rich">${xs.map(p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String(claimCount(p)))} ${esc(plural(claimCount(p),["утверждение","утверждения","утверждений"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`).join("")}</ol>
       ${siblings?`<div class="node-siblings"><b>Другие подтемы этого подраздела</b>${siblings}</div>`:""}
     </article>`;
   }
@@ -1613,21 +1618,21 @@
   function folderPage(folder){
     const node=treeFolders[folder];
     const all=(lib.papers||[]).filter(p=>p.f===folder);
-    const claims=all.reduce((n,p)=>n+(p.c||[]).length,0);
+    const claims=all.reduce((n,p)=>n+claimCount(p),0);
     // У большого подраздела статьи показываются не одним списком на 67 строк, а по подтемам:
     // сначала аннотация подтемы, потом её статьи. Список без подтем остаётся у маленьких
     // папок, где дробить нечего.
     const subs=(node?.sub||[]);
-    const paperRow=p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String((p.c||[]).length))} ${esc(plural((p.c||[]).length,["утверждение","утверждения","утверждений"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`;
+    const paperRow=p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String(claimCount(p)))} ${esc(plural(claimCount(p),["утверждение","утверждения","утверждений"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`;
     const groups=subs.map(t=>{
-      const xs=t.p.map(id=>papersById[id]).filter(Boolean).sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
+      const xs=t.p.map(id=>papersById[id]).filter(Boolean).sort((a,b)=>claimCount(b)-claimCount(a));
       return `<section class="paper-claims"><h4>${esc(t.t)}<span>${xs.length}</span></h4>
         <p class="node-abstract is-sub">${esc(unmark(t.a||""))}</p>
         <ol class="folder-list is-rich">${xs.map(paperRow).join("")}</ol></section>`}).join("");
     const restIds=new Set((node?.rest)||[]);
     const rest=subs.length
-      ? all.filter(p=>restIds.has(p.id)).sort((a,b)=>(b.c||[]).length-(a.c||[]).length)
-      : all.slice().sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
+      ? all.filter(p=>restIds.has(p.id)).sort((a,b)=>claimCount(b)-claimCount(a))
+      : all.slice().sort((a,b)=>claimCount(b)-claimCount(a));
     const restBlock=rest.length
       ? `<section class="paper-claims">${subs.length?`<h4>Вне подтем<span>${rest.length}</span></h4>
           <p class="node-abstract is-sub">Эти статьи не попали ни в одну подтему: по отдельности сюжета не образуют, но из папки их не убирали.</p>`:""}
@@ -1655,15 +1660,15 @@
         return `<section class="theme-project"><h3><code class="base-code">${esc(pr.code||"")}</code> <button type="button" data-open-record="${esc(pr.code||"")}">${esc(pr.t)}</button></h3>
           ${pr.s?`<p>${esc(pr.s)}</p>`:""}
           ${hyp.length?`<ol class="folder-list is-rich">${hyp.map(h=>recordRow(h)).join("")}</ol>`
-            :`<p class="mcp-empty">У проекта пока нет утверждений в снимке.</p>`}</section>`}).join("")}</article>`;
+            :`<p class="mcp-empty">У работы пока нет утверждений.</p>`}</section>`}).join("")}</article>`;
   }
   // ============ Карточка проекта ============
   // Владелец: «аналогично с проектом лабы, только там будет сильно больше». Всё берётся из
   // снимка, поэтому открывается мгновенно; рядом кнопка спросить живую службу вызовом
   // get_project_by_slug — тем же, которым пользуется агент.
   const byCode={};for(const r of (base.records||[]))if(r.code)byCode[r.code]=r;
-  const PROJECT_PARTS=[["hypothesis","Утверждения"],["derivation","Доказательства"],
-    ["experiment","Прогоны"],["evidence","Измерения"],["decision","Правила"],
+  const PROJECT_PARTS=[["hypothesis","Утверждения"],["derivation","Выкладки"],
+    ["series","Серии"],["experiment","Прогоны"],["evidence","Измерения"],["decision","Правила"],
     ["journal","Журнал"],["term","Термины"],["source","Источники"]];
   const field=(r,name)=>((r.f||[]).find(f=>f[0]===name)||[])[1]||"";
 
@@ -1727,9 +1732,9 @@
       .map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
     const tasks=demo?(workspace?.example_tasks||[]):[];
     return `<section class="project-workspace" aria-label="Работа команды"><div class="project-workspace-heading"><div><span>Работа команды</span><h3>Задачи проекта</h3></div>${links.length?`<nav aria-label="Ссылки проекта">${links.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>`).join("")}</nav>`:""}</div>
-      <p>${demo?"Пример общей доски: человек остаётся исполнителем, Hermes помогает выполнять порученную ему работу.":links.length?"Задачи, исполнители и сроки — в задачах репозитория работы в GitLab.":!window.LAB_PROJECT_WORKSPACES?"Загружаю ссылки на задачи…":window.LAB_PROJECT_WORKSPACES.unavailable?"Ссылки на задачи сейчас не загрузились.":"Задачи этой работы ещё не заведены."}</p>
+      <p>${demo?"Пример общей доски: человек остаётся исполнителем, Hermes помогает выполнять порученную ему работу.":links.length?"Задачи, исполнители и сроки — на доске работы в GitLab. Предложения в работу назначаются её ведущему.":!window.LAB_PROJECT_WORKSPACES?"Загружаю ссылки на GitLab…":window.LAB_PROJECT_WORKSPACES.unavailable?"Ссылки на GitLab сейчас не загрузились.":"Работа пока не связана с репозиторием GitLab."}</p>
       ${tasks.length?`<ul class="project-task-preview">${tasks.map(t=>`<li><span class="project-task-state">${esc(t.status)}</span><strong>${esc(t.title)}</strong><span>${esc(t.assignee)}</span></li>`).join("")}</ul><small>Учебный пример. Карточки выдуманы; действия с настоящей доской здесь недоступны.</small>`:""}
-      ${!demo&&links.length?"<small>Ссылка открывает доску работы в GitLab.</small>":""}</section>`;
+      </section>`;
   }
 
   function projectCard(code,q=""){
@@ -1759,14 +1764,14 @@
       ${termsBlock(code)}
       <div class="paper-counts">${PROJECT_PARTS.map(([k,label])=>{const n=own.filter(r=>r.k===k).length;
         return n?`<span>${esc(label.toLowerCase())} <b>${n}</b></span>`:""}).join("")}</div>
-      <div class="claim-links">${slug?`<button type="button" data-ask-tool="get_project_by_slug" data-ask-args='{"slug":"${esc(slug)}"}'>Спросить службу: get_project_by_slug ↗</button>`:""}<button type="button" data-mcp-home>← к поиску</button></div>
+      <div class="claim-links">${slug&&window.LAB_PROJECT_WORKSPACES?.projects?.[slug]?.page_url?`<a href="${esc(window.LAB_PROJECT_WORKSPACES.projects[slug].page_url)}" target="_blank" rel="noopener">Открыть работу в GitLab ↗</a>`:""}<button type="button" data-mcp-home>← к поиску</button></div>
       ${parts}</article>`;
   }
 
-  // Постоянная ссылка на одну запись по её коду: #mcp-live/H-WBD-001
+  // Постоянная ссылка на одну запись по её коду: #mcp-live/H-MMU-001
   function recordCard(code,q=""){
     const r=byCode[code];
-    if(!r)return `<p class="mcp-empty">Записи с кодом ${esc(code)} в снимке нет. Обновить: <code>bash scripts/refresh-snapshots.sh</code></p>`;
+    if(!r)return `<p class="mcp-empty">Записи с кодом ${esc(code)} в базе нет. Принести свежее: <code>lab sync</code></p>`;
     if(r.k==="project")return projectCard(code,q);
     const rels=baseRelations(r);
     const fields=(r.f||[]).map(f=>`<div><dt>${esc(f[0])}</dt><dd>${mark(f[1],q)}</dd></div>`).join("");
@@ -1774,7 +1779,7 @@
       <header><span class="base-kind">${esc(KIND[r.k]||r.k)}</span><code class="base-code">${esc(r.code||"")}</code>${supportBadge(r)}${r.st?`<span class="base-status">${esc(r.st)}</span>`:""}${r.pj?`<button class="base-folder" type="button" data-open-record="${esc(r.pj)}">${esc(r.pn||r.pj)}</button>`:""}</header>
       <h2>${mark(r.t||"",q)}</h2>
       ${r.s&&r.s!==r.t?`<p class="paper-abstract">${mark(r.s,q)}</p>`:""}
-      <p class="base-op">попала в базу вызовом <code>${esc(KIND_OP[r.k]||"—")}</code></p>
+      <p class="base-op">лежит в git: <code>${esc(KIND_OP[r.k]||"—")}</code></p>
       <div class="claim-links"><button type="button" data-copy-link="${esc(r.code||"")}">Скопировать ссылку на запись</button><button type="button" data-mcp-home>← к поиску</button></div>
       ${fields?`<dl class="project-about">${fields}</dl>`:""}
       ${rels.length?`<section class="paper-claims"><h4>Связано в базе<span>${rels.length}</span></h4>
@@ -1805,20 +1810,33 @@
       if(out)out.textContent=JSON.stringify(data,null,1).slice(0,20000);
     }catch(error){if(out)out.textContent=String(error)}
   }
+  // База на странице живая: сервер атласа (scripts/live.py) пересобирает её, как только в клоны
+  // дерева приходит коммит, и сам подтягивает дерево из GitLab. Поэтому на плашке не дата
+  // сборки, а последнее слияние в базе.
+  function liveBadge(){
+    const last=base.last||{},when=last.t?new Date(last.t*1000):null;
+    const fmt=d=>`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")} в ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+    const n=k=>(base.records||[]).filter(r=>r.k===k).length;
+    const works=(base.records||[]).filter(r=>r.k==="project"&&String(r.id||"").startsWith("work:")).length;
+    const num=x=>x.toLocaleString(window.LAB_I18N?.language==="en"?"en-US":"ru-RU");
+    return `<b>база вживую${when?` · обновлено ${esc(fmt(when))}`:""}</b><span>${num(works)} работ · ${num(n("hypothesis"))} утверждений · ${num(n("experiment"))} прогонов · ${num((lib.papers||[]).length)} разобранных статей. Страница читает GitLab лаборатории и обновляется сама, когда в базу сливают новое.</span>`;
+  }
   function syncLiveBadge(){
     const badge=$("mcp-live-badge");if(!badge)return;
     badge.className=`mcp-live-badge ${!demo&&liveOk?"is-live":"is-snapshot"}`;
-    // Public papers and teaching records are served locally without the private MCP.
+    // В публичной сборке живой службы нет и быть не может: там выдуманная лаборатория.
     // Предлагать поднять прокси к чужому серверу нечестно, поэтому текст другой.
-    badge.innerHTML=!demo&&liveOk
+    badge.innerHTML=!demo&&liveOk===null
+      ? `<b>подключаемся к службе</b><span>Можно задать вопрос, не дожидаясь каталога.</span>`
+      : !demo&&liveOk
       ? `<b>живая служба</b><span>Поиск по смыслу. Тот же ответ и порядок, что получают агенты.</span>`
       : demo
-      ? `<b>показательная сборка</b><span>${esc(demo.note)}</span>`
+      ? `<b>показательная сборка</b><span>${esc(demo.lab||"выдуманная лаборатория")}: одно направление, один проект и учебные статьи. Данные выдуманы, живой службы здесь нет. У себя ставите ту же витрину на свою базу и получаете эту страницу на своих записях.</span>`
       // Раньше здесь стояло «Поднять: python3 scripts/mcp-proxy.py». Это требование к
       // человеку, которому делать нечего: туннель держит служба входа в систему и поднимает
       // его сама, как только brain_lab начнёт отвечать. Сервер общий и под нагрузкой иногда
       // не успевает даже на ssh-приветствие — это его состояние, а не поломка витрины.
-      : `<b>ищу по снимку</b><span>Общая база лаборатории сейчас не отвечает: сервер занят. Витрина ищет по локальной выгрузке — она полная, но подбирает по словам, а не по смыслу. Связь восстановится сама, обновите страницу через несколько минут.</span>`;
+      : liveBadge();
   }
   // ============ Что вообще есть в базе ============
   // Владелец: «дизайн MCP не созвездие, а просто удобная юзер-френдли штука, где можно
@@ -1826,22 +1844,25 @@
   // сколько чего лежит и в какой форме. Цвет несёт смысл — тёплый белый наше знание,
   // холодный синий чужие работы, янтарь то, что ещё не закрыто.
   function tallyBlock(){
-    const claims=(lib.papers||[]).reduce((n,p)=>n+(p.c||[]).length,0);
+    if(window.LAB_PARTIAL&&!window.LAB_CATALOG_READY)return `<div data-snapshot-tally></div>`;
+    const claims=(lib.papers||[]).reduce((n,p)=>n+claimCount(p),0);
     const hyp=(base.records||[]).filter(r=>r.k==="hypothesis");
-    const both=hyp.filter(r=>r.sup==="proof_and_numbers").length;
-    const open=hyp.filter(r=>r.sup==="open").length;
+    // Под утверждением есть и выкладка (theory/), и прогоны: так его закрывают с двух сторон.
+    const parts=r=>(((r.f||[]).find(f=>f[0]==="выкладок · серий · прогонов")||[])[1]||"0 · 0 · 0").split(" · ").map(Number);
+    const both=hyp.filter(r=>{const [d,,e]=parts(r);return d>0&&e>0}).length;
+    const st=s=>hyp.filter(r=>r.st===s).length;
     const count=k=>(base.records||[]).filter(r=>r.k===k).length;
-    return `<section class="tally" aria-label="Состав снимка базы"><p class="tally-caption">В доступном снимке базы</p>
+    return `<section class="tally" aria-label="Состав базы"><p class="tally-caption">Сейчас в базе</p>
       <div class="tally-row">
-        <div class="is-their"><b>${esc(String((lib.papers||[]).length))}</b><span>статей в подборке</span></div>
+        <div class="is-their"><b>${esc(String((lib.papers||[]).length))}</b><span>статей разобрано</span></div>
         <div class="is-their"><b>${esc(String(claims))}</b><span>утверждений из статей</span></div>
         <div class="is-our"><b>${esc(String(hyp.length))}</b><span>наших утверждений</span></div>
         <div class="is-our"><b>${esc(String(count("experiment")))}</b><span>прогонов</span></div>
-        <div class="is-our"><b>${esc(String(count("evidence")))}</b><span>измерений</span></div>
-        <div class="is-our"><b>${esc(String(count("derivation")))}</b><span>доказательств</span></div>
+        <div class="is-our"><b>${esc(String(count("series")))}</b><span>серий с выводом</span></div>
+        <div class="is-our"><b>${esc(String(count("derivation")))}</b><span>выкладок</span></div>
       </div>
-      <p class="tally-note"><b class="is-our">${esc(String(both))}</b> утверждений закрыты и выкладкой, и числами.
-        ${demo?"Прогоны и измерения здесь вымышлены. Настоящие публикации находятся в разделах «Публикации Андрея» и «Другие исследования».":"Всё, что ниже, читает ту же базу, что и агенты лаборатории."}</p>
+      <p class="tally-note">Из ${esc(String(hyp.length))} наших утверждений <b class="is-our">${esc(String(st("supported")))}</b> подтверждены и <b class="is-our">${esc(String(st("refuted")))}</b> честно опровергнуты: проигрыш метода из базы не выкидывается. ${esc(String(both))} закрыты с двух сторон — и доказательством, и прогонами.
+        ${demo?"Это выдуманные учебные записи, а не результаты лаборатории.":"Это те же файлы, которые читают и пишут агенты лаборатории."}</p>
       ${openBlock(hyp)}
     </section>`;
   }
@@ -1881,8 +1902,22 @@
 
   // Search and topic navigation use the active dataset.
   // The public demo supplies its own questions.
-  const WAY_QUESTIONS=demo?.hints||["нужен ли прогрев и когда он помогает","когда выигрывает Muon",
+  const WAY_QUESTIONS=demo?.hints||["нужен ли warmup и когда он помогает","когда выигрывает Muon",
     "что мы знаем про квантование по кривизне","где метод не сработал"];
+  // Свежее в базе: утверждения, которые правили последними. Пустое место под поиском
+  // занимает не картинка, а то, чем база живёт прямо сейчас, и каждая строка открывается.
+  const CLAIM_STATE={supported:"подтверждено",refuted:"опровергнуто",inconclusive:"без вывода",testing:"проверяется",draft:"черновик"};
+  function recentClaims(){
+    if(demo)return "";
+    const upd=r=>((r.f||[]).find(f=>f[0]==="обновлено")||[])[1]||"";
+    const rows=(base.records||[]).filter(r=>r.k==="hypothesis"&&upd(r)&&(r.st==="supported"||r.st==="refuted"))
+      .sort((a,b)=>upd(b).localeCompare(upd(a))).slice(0,4);
+    const plain=s=>String(s||"").replace(/\$([^$]+)\$/g,"$1").replace(/\\sqrt\{([^}]*)\}/g,"√$1").replace(/\\/g,"");
+    if(!rows.length)return "";
+    return `<div class="way-recent"><span>Последние выводы</span><ol>${rows.map(r=>
+      `<li><button type="button" data-open-record="${esc(r.code)}"><code>${esc(String(r.pn||"").split(/[:—]/)[0].trim()||r.code)}</code><strong>${esc(plain(r.t))}</strong>
+        <em class="is-${esc(r.st||"")}">${esc(CLAIM_STATE[r.st]||r.st||"")} · ${esc(upd(r).split("-").reverse().join("."))}</em></button></li>`).join("")}</ol></div>`;
+  }
   function waysBlock(){
     // Здесь стояли первые семь подпапок по алфавиту — то есть случайная выборка одного
     // уровня. Владелец: «надо в больших разделах добавлять ещё разбиение, чтобы было
@@ -1905,14 +1940,15 @@
     return `<div class="ways">
       <section class="way way-search"><span>Поиск по общей базе</span>
         <h3>Что хотите узнать?</h3>
-        <p>${demo?"Найдите метод или результат из статьи. Поиск по словам работает прямо в браузере.":"Задайте вопрос своими словами. В ответе — утверждения, результаты и их источники."}</p>
+        <p>${demo?"Поиск по словам в учебном наборе. Вопрос остаётся в браузере.":"Задайте вопрос своими словами. В ответе — утверждения, результаты и их источники."}</p>
         <div class="way-body">
           <form class="way-form" id="mcp-search-form" role="search">
             <label class="sr-only" for="mcp-search-input">Вопрос к общей базе</label>
-            <input id="mcp-search-input" type="search" autocomplete="off" placeholder="${esc(demo?WAY_QUESTIONS[0]:"Например, когда помогает прогрев?")}">
+            <input id="mcp-search-input" type="search" autocomplete="off" placeholder="Например, когда помогает warmup?">
             <button type="submit">Спросить</button></form>
           <div class="way-examples">${WAY_QUESTIONS.map(q=>`<button type="button" data-way-ask="${esc(q)}">${esc(q)}</button>`).join("")}</div>
         </div>
+        ${recentClaims()}
         <div id="mcp-call-line" class="way-call"></div></section>
 
       <section class="way way-explore"><span>От общего к частному</span>
@@ -1924,6 +1960,108 @@
             ${a.examples.length?`<small class="way-area-topics">${a.examples.map(t=>`<span>${esc(t)}</span>`).join("")}</small>`:""}</button>`).join("")}
         </div></div></section></div>`;
   }
+  // Владелец 17-09-2026, второй заход: «как-то не очень нравится, типа четыре разных
+  // поиска — они один, почему так долго. Надо короче название делать. И слишком много,
+  // 8 штук это дохера, это какие-то сценарии скорее. Тебе нужно делать большой поиск, и
+  // вот каждый поиск расписать цепочками. Как в литературе: там внизу такие аккуратненькие
+  // подписи».
+  //
+  // Поэтому имена точек в одно слово, а поиск раскрыт цепочками: у каждого способа спросить
+  // — свой вопрос, своя форма ответа и свой вызов. Первый заход делал восемь точек с фразами
+  // вместо имён («Пройти по базе, не спрашивая»), и в крупной вёрстке это читалось как
+  // оглавление статьи, а не как названия.
+  //
+  // Точек стало пять: 18-09-2026 в базу приехали карты репозиториев, и у кода появился свой
+  // вопрос — «чем запустить, где править», — на который ни одна из прежних точек не отвечала.
+  // Способов спросить тоже пять, а не четыре: добавились search_grouped, search_claims и
+  // search_code, и здесь они названы ровно так же, как в `instructions` самой службы.
+  // С 07-10-2026 службы нет: каждая «точка» базы теперь это файл, команда или проверка git.
+  // Поле op оставлено прежним, чтобы вёрстка цепочки не менялась.
+  const MCP_SEARCHES=[
+    {op:"поле поиска",t:"Спросить словами",m:"утверждения, прогоны, статьи",
+     d:"Когда не знаешь, где смотреть. Поле выше ищет по всему дереву: утверждения работ, их прогоны, серии и выкладки, разобранные статьи и то, что статьи утверждают.",
+     n:["Один индекс на всё: своя работа и чужие статьи отвечают в одном списке.",
+        "Индекс собирается из файлов базы автоматически, руками его никто не ведёт."]},
+    {op:"~/brainlab",t:"Пройти по дереву",m:"направление → тема → работа",
+     d:"Когда вопрос «что у нас вообще есть про X». Дерево повторяет GitLab, и Obsidian открывает его как хранилище: тема, её литература и все работы рядом.",
+     n:["Путь сам говорит, чьё это и откуда: таблица соответствий не нужна.",
+        "Личные заметки лежат там же, но в GitLab не уезжают."]},
+    {op:"rg · git grep",t:"Найти точно",m:"слово или число по всем клонам",
+     d:"Когда известно, что искать: код утверждения, имя метода, число из таблицы. Обычный поиск по файлам находит его во всех работах и литературе сразу.",
+     n:["Число из статьи находится рядом с прогоном, который его дал."]},
+    {op:"git log -S · blame",t:"Спросить историю",m:"кто, когда и каким предложением",
+     d:"Когда важно, откуда взялась запись. Каждая строка базы пришла коммитом в предложении, которое прошло ворота и которое слил человек.",
+     n:["История не теряется: ни одна правка не бывает анонимной.",
+        "Предложение показывает и обсуждение, и вердикт ворот."]},
+    {op:"GitLab",t:"Искать в вебе",m:"по всем репозиториям, куда есть доступ",
+     d:"Когда дерева на машине нет: поиск GitLab идёт по всем работам и литературе, к которым у человека есть доступ.",
+     n:["Работает прямо в браузере: ставить ничего не нужно."]},
+  ];
+  const MCP_POINTS=[
+    {id:"record",n:"01",title:"Запись",
+     lead:"Знание лежит не в базе данных, а файлами в репозитории работы. Утверждение это папка claims/<КОД>/, и в ней всё, чем его проверяли. Род записи решает, чего от неё требуют: у утверждения обязателен критерий опровержения, у прогона числа пишет код, у серии есть вывод.",
+     bullets:["Утверждение — одна проверяемая мысль о методе с критерием, по которому её можно опровергнуть.",
+              "Прогон — страница, которую пишет рекордер lab_run.py: гиперпараметры, метрики, окружение, коммит, железо.",
+              "Серия — набор прогонов, отвечающий на один вопрос, с выводом «что видно».",
+              "Выкладка — допущения, доказательство и то, что осталось незакрытым.",
+              "Рисунок — рядом с серией, из которой он построен."],
+     tools:["claims/<H>/README.md","runs/<E>.md","series/<S>.md","theory/<D>.md","figures/","lab_run.py","canon.md"]},
+    {id:"search",n:"02",title:"Поиск",searches:MCP_SEARCHES,
+     lead:"База это файлы, поэтому найти в ней можно всем, чем ищут файлы. Способы различаются формой ответа: список по смыслу вопроса, место в дереве, точное совпадение или история появления записи.",
+     tools:["lab sync","lab here","rg","git grep","git log -S","git blame","Obsidian"]},
+    {id:"library",n:"03",title:"Литература",
+     lead:"У каждой темы свой репозиторий литературы: одна страница на статью, названная статьёй. На странице разбор, BibTeX с ключом цитирования и раздел «Что статья утверждает» — утверждения самой статьи с нашей оценкой, чему в них верить.",
+     bullets:["Джев отбирает свежие статьи по описаниям наших работ, а не по тому, «хорошая ли статья вообще».",
+              "Разбор пишет навык paper-ingest и отправляет страницу в литературу темы обычным git push.",
+              "Ссылку в статье можно поставить только по ключу, который уже есть в references.bib: хук блокирует выдуманный."],
+     tools:["paper-ingest","bibtex_fetch.py","paper_claims_verify.py","citation-validator.py","Джев"]},
+    {id:"code",n:"04",title:"Код",
+     lead:"Код работы лежит в ней вложенным репозиторием code/ с веткой и коммитом, рукопись — в paper/. lab here приносит работу вместе с ними. Что работа поменяла в чужом коде, сказано в её README, а не в голове у того, кто запускал.",
+     bullets:["Прогон помнит коммит, на котором считался: число можно повторить.",
+              "Карта чужого репозитория строится один раз навыком code-ingest: без копии кода, ссылками на строки."],
+     tools:["code/","paper/","lab here","code-ingest","code-library"]},
+    {id:"gate",n:"05",title:"Проверки",
+     lead:"В работу знание входит только слиянием предложения, и сливает его человек — ведущий работы. Агент делает ветку и git push, предложение открывается само и назначается ведущему. До человека его читают автоматические проверки, и если они нашли ошибку, агент видит это сам на следующем ходе.",
+     bullets:["Число, которого нет в прогонах, проверка не пропустит: выдумать результат нельзя.",
+              "Код записи не может быть занят дважды, чужие файлы нельзя удалить незаметно.",
+              "Судья прозы читает текст утверждения: обозначения без смысла и пересказ не проходят.",
+              "Вторую копию правила свода ловит canon_check.",
+              "Агент не сливает: запись это решение человека."],
+     tools:["git push","lab checks","check_numbers","check_codes","check_deletions","судья прозы","canon_check"]},
+    {id:"skills",n:"06",title:"Навыки",
+     lead:"Навык это записанный способ делать работу. 77 навыков, 15 агентов и 34 команды лежат в одном репозитории обвязки и ставятся всем одной командой. На каждом запросе хук сверяет его с каталогом и подкладывает подходящий навык.",
+     bullets:["Правка навыка делается в репозитории и раздаётся всем, а не живёт на одной машине.",
+              "Справочник лаборатории описывает, чем и как работаем, для людей."],
+     tools:["SKILLS.md","skill-forced-eval.js","claude_home_drift.py","handbook"]},
+    {id:"people",n:"07",title:"Люди и доступ",
+     lead:"У работы есть ведущий и команда, они названы в её README. Ведущий сливает предложения в свою работу, доступ выдаёт бот в Telegram вместе с ключом git. Агент на сервере ходит под своей учётной записью, а не под человеческой.",
+     bullets:["Кто ведёт работу, видно из README: туда и назначается предложение.",
+              "Задачи людей — issues и доски GitLab, отдельно от науки: закрытая задача не значит подтверждённое утверждение.",
+              "lab tasks показывает свои задачи, lab take берёт задачу в работу."],
+     tools:["README «Ведут»","бот доступа","Maintainer","lab tasks","lab take","issues · boards"]},
+  ];
+  function mcpSearchChain(list){
+    return `<ol class="mcp-chain">${list.map(x=>`<li>
+      <code>${esc(x.op)}</code>
+      <div><strong>${esc(x.t)}</strong><em>${esc(x.m)}</em><p>${esc(x.d)}</p>
+      ${(x.n||[]).length?`<ul>${x.n.map(y=>`<li>${esc(y)}</li>`).join("")}</ul>`:""}</div></li>`).join("")}</ol>`;
+  }
+  function mcpCapabilities(){
+    return `<section class="mcp-points" id="mcp-can">
+      <p class="section-label">Что умеет эта база</p>
+      <h2>Как устроена база: семь частей, и каждую можно проверить руками</h2>
+      <p class="mcp-points-lead">Человеку хватит поиска выше. Это для тех, кто хочет понять устройство: часть раскрывается, и внутри стоят настоящие пути, команды и проверки. Между человеком и знанием ничего лишнего: это обычный git.</p>
+      <div class="mcp-points-list">${MCP_POINTS.map(p=>`
+        <details class="mcp-point" id="mcp-point-${esc(p.id)}"${p.id==="search"?" open":""}>
+          <summary><i>${esc(p.n)}</i><strong>${esc(p.title)}</strong><em>${p.searches?`${esc(String(p.searches.length))} ${esc(plural(p.searches.length,["способ","способа","способов"]))}`:`${esc(String(p.tools.length))} ${esc(plural(p.tools.length,["инструмент","инструмента","инструментов"]))}`}</em></summary>
+          <div class="mcp-point-body">
+            <p class="mcp-point-lead">${esc(p.lead)}</p>
+            ${p.searches?mcpSearchChain(p.searches):""}
+            ${(p.bullets||[]).length?`<ul class="mcp-point-bullets">${p.bullets.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`:""}
+            <div class="mcp-point-tools">${p.tools.map(t=>`<code>${esc(t)}</code>`).join("")}</div>
+          </div></details>`).join("")}</div></section>`;
+  }
+
   function showMcpLive(navigate=true){
     const m=systemData.liveMcp;if(!m)return;
     if(navigate)updateHash("mcp-live");
@@ -1931,17 +2069,18 @@
     const view=$("mcp-live-view");
     view.hidden=false;
     view.innerHTML=`<div class="special-shell mcp-page knowledge-workspace">
-      <header class="mcp-hero"><p>${esc(demo?.label||"Lab Knowledge · BRAIn Lab")}</p><h1>Спросите лабораторию<span aria-hidden="true">.</span></h1>
-        <strong>${demo?"Статьи Андрея Веприкова и соавторов: что предложено, как это работает и где прочитать оригинал.":"Что уже проверяли, чем это закончилось и на какие работы опирались."}</strong>
-        ${sourceButtons(m.links)}${demo?.publication_folder?`<div class="claim-links"><button type="button" data-open-folder="${esc(demo.publication_folder)}">Все публикации <span>${esc(String(demo.publication_count))}</span> →</button></div>`:""}</header>
+      <header class="mcp-hero"><p>${demo?"Учебная база":"База знаний · BRAIn Lab"}</p><h1>Спросите лабораторию<span aria-hidden="true">.</span></h1>
+        <strong>${demo?"Выдуманный проект и учебные статьи. Посмотрите связи между записями, откройте область или найдите запись по коду.":"Что уже проверяли, чем это закончилось и на какие работы опирались."}</strong>
+        ${sourceButtons(m.links)}</header>
       <div class="mcp-live-badge" id="mcp-live-badge"></div>
       ${waysBlock()}
       <output id="mcp-found" class="mcp-found"></output>
       <div id="mcp-results"></div>
       ${tallyBlock()}
       ${browseBlock()}
-      ${demo?'':mcpPipeline()}
-      ${demo?'':`<details class="for-agents" id="mcp-agent"><summary>Для агентов: те же 17 читающих вызовов службы</summary>
+      ${mcpCapabilities()}
+      <!-- Конвейер одного вызова службы снят вместе со службой 07-10-2026. -->
+      ${true?'':`<details class="for-agents" id="mcp-agent"><summary>Для агентов: те же 17 читающих вызовов службы</summary>
         <p>Человеку это не нужно: выше то же самое обычными словами. Ничего не меняют, писать со страницы нельзя.</p>
         <p class="agent-map">Карта базы, по которой построена навигация выше — разделы, подразделы, подтемы и их аннотации — приходит из самой службы: <code>library_tree</code>, с <code>full: true</code> ещё и подтемы со статьями. Агенту она отвечает на тот же вопрос, что человеку: с чего начинать, если запрос широкий.</p>
         <div class="mcp-chips" id="mcp-agent-tools"></div>
@@ -1986,23 +2125,126 @@
     }
     loadAgentTools();
     syncLiveBadge();
-    // Ссылка вида #mcp-live/H-WBD-001 открывает саму запись, а не пустой поиск.
-    const [,deep="",paperId=""]=location.hash.slice(1).split("/");
-    if(deep==="paper"&&papersById[paperId]){
-      const box=$("mcp-results");
-      box.innerHTML=paperCard(paperId);
-      bindResults(box);
-    }else if(deep&&byCode[deep]){
-      const box=$("mcp-results");
-      box.innerHTML=byCode[deep].k==="project"?projectCard(deep):recordCard(deep);
-      bindResults(box);
-    }else runSearch("");
-    liveHealth().then(()=>{syncLiveBadge();if(input.value.trim())runSearch(input.value)});
+    // Ссылка вида #mcp-live/H-MMU-001 открывает саму запись, а не пустой поиск.
+    const deep=(location.hash.slice(1).split("/")[1]||"").trim();
+    if(deep)openDetail("record",deep);else runSearch("");
+    liveHealth().then(()=>{syncLiveBadge()});
     // Форму базы спрашиваем у службы тем же вызовом, каким её спросил бы агент. Снимок на
     // странице остаётся только запасным: если службы нет, обзор рисуется по нему.
-    adoptServiceTree().then(live=>{if(live)redrawBrowse()});
+    ensureCatalog().then(()=>adoptServiceTree()).then(live=>{if(live)redrawBrowse()}).catch(()=>{});
     window.scrollTo({top:0,behavior:"instant"});
     input.focus({preventScroll:true});
+  }
+  let catalogLoading=null,fullLoading=null;
+  const detailLoads=new Map(),fullRecords=new Set(),fullPapers=new Set();
+  function reindexSnapshots(){
+    for(const obj of [baseById,relIndex,baseCounts,linksByPaper,snapById,papersById,byCode,themeAbstract,dirOf])
+      for(const key of Object.keys(obj))delete obj[key];
+    for(const r of base.records||[]){
+      if(r.id){baseById[r.k+":"+r.id]=r;snapById[r.id]=r}
+      if(r.code)byCode[r.code]=r;
+      baseCounts[r.k]=(baseCounts[r.k]||0)+1;
+    }
+    for(const r of base.relations||[]){
+      (relIndex[r.a+":"+r.ai]||=[]).push({ref:r.b+":"+r.bi,label:r.r,dir:"→"});
+      (relIndex[r.b+":"+r.bi]||=[]).push({ref:r.a+":"+r.ai,label:r.r,dir:"←"});
+    }
+    for(const p of lib.papers||[])papersById[p.id]=p;
+    for(const link of lib.links||[])(linksByPaper[link.p]||=[]).push(link);
+    treeFolders={};for(const f of tree.folders||[])treeFolders[f.f]=f;
+    treeSections={};for(const x of tree.sections||[])treeSections[x.name]=x;
+    for(const x of tree.themes||[])themeAbstract[x.code]=x.a;
+    for(const d of tree.directions||[])for(const raw of d.raw||[])dirOf[raw]=d;
+    if(!window.LAB_PARTIAL&&window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
+  }
+  function refreshCatalogViews(){
+    renderTally();
+    if($("mcp-live-view")?.hidden)return;
+    const fragment=document.createElement("div");fragment.innerHTML=waysBlock();
+    for(const selector of [".way-areas"]){
+      const old=$("mcp-live-view").querySelector(selector),fresh=fragment.querySelector(selector);
+      if(old&&fresh){old.replaceWith(fresh);bindResults(fresh)}
+    }
+    const tally=$("mcp-live-view").querySelector(".tally,[data-snapshot-tally]");
+    if(tally){tally.outerHTML=tallyBlock();const fresh=$("mcp-live-view").querySelector(".tally");if(fresh)bindResults(fresh)}
+    redrawBrowse();
+    // Enrich the current answer only; never replace a newer question or an open card.
+    if(lastLiveAnswer?.seq===mcpSeq){
+      const box=$("mcp-results");
+      box.innerHTML=lastLiveAnswer.warn+answerPage(lastLiveAnswer.items,lastLiveAnswer.q);bindResults(box);
+    }
+  }
+  async function snapshotRequest(kind,id=""){
+    const response=await fetch(`atlas-data?kind=${encodeURIComponent(kind)}&id=${encodeURIComponent(id)}`);
+    if(!response.ok)throw new Error(`Не удалось загрузить данные (${response.status})`);
+    return response.json();
+  }
+  function ensureCatalog(){
+    if(!liveSnapshotMode||!window.LAB_PARTIAL||window.LAB_CATALOG_READY)return Promise.resolve();
+    if(!catalogLoading)catalogLoading=snapshotRequest("catalog").then(data=>{
+      if(!window.LAB_PARTIAL)return;
+      Object.assign(base,data.base);Object.assign(lib,data.lib);Object.assign(tree,data.tree);
+      window.LAB_BASE=base;window.LAB_LIBRARY=lib;window.LAB_TREE=tree;window.LAB_CATALOG_READY=true;
+      reindexSnapshots();refreshCatalogViews();
+    }).catch(error=>{catalogLoading=null;throw error});
+    return catalogLoading;
+  }
+  async function ensureFullSnapshots(){
+    if(!window.LAB_PARTIAL)return;
+    if(!fullLoading)fullLoading=Promise.all([
+      loadSnapshot("data/library-snapshot.js?v=20261019w","LAB_LIBRARY",true),
+      loadSnapshot("data/base-snapshot.js?v=20261019w","LAB_BASE",true),
+      loadSnapshot("data/atlas-tree.js?v=20261019w","LAB_TREE",true),
+    ]).then(([fullLib,fullBase,fullTree])=>{
+      Object.assign(base,fullBase);Object.assign(lib,fullLib);
+      if(!treeIsLive)Object.assign(tree,fullTree);
+      window.LAB_BASE=base;window.LAB_LIBRARY=lib;window.LAB_TREE=tree;
+      window.LAB_PARTIAL=false;window.LAB_CATALOG_READY=true;reindexSnapshots();refreshCatalogViews();
+    }).catch(error=>{fullLoading=null;throw error});
+    return fullLoading;
+  }
+  async function fallbackItems(q,seq){
+    const box=$("mcp-results");
+    if(window.LAB_PARTIAL)box.innerHTML=`<p class="mcp-wait">Загружаем базу для поиска…</p>`;
+    try{await ensureFullSnapshots();return seq===mcpSeq?snapshotItems(q):null}
+    catch(error){if(seq===mcpSeq)box.innerHTML=`<p class="mcp-empty">База не загрузилась. Повторите запрос, чтобы попробовать снова.</p>`;return null}
+  }
+  async function ensureDetail(kind,key){
+    if(!liveSnapshotMode||!window.LAB_PARTIAL)return;
+    await ensureCatalog();
+    const loaded=kind==="paper"?fullPapers:fullRecords;
+    if(loaded.has(key))return;
+    const cacheKey=kind+":"+key;
+    if(!detailLoads.has(cacheKey))detailLoads.set(cacheKey,snapshotRequest(kind,key).then(data=>{
+      if(kind==="paper"){
+        const p=papersById[key];if(p)Object.assign(p,data.paper);else lib.papers.push(data.paper);
+        fullPapers.add(key);
+      }else{
+        for(const r of data.records){
+          const old=byCode[r.code]||snapById[r.id];if(old)Object.assign(old,r);else base.records.push(r);
+          if(r.code)fullRecords.add(r.code);
+        }
+        const seen=new Set(base.relations.map(r=>JSON.stringify(r)));
+        for(const r of data.relations)if(!seen.has(JSON.stringify(r))){base.relations.push(r);seen.add(JSON.stringify(r))}
+      }
+      reindexSnapshots();
+    }).catch(error=>{detailLoads.delete(cacheKey);throw error}));
+    await detailLoads.get(cacheKey);
+  }
+  async function openDetail(kind,key){
+    const box=$("mcp-results");if(!box)return;
+    const seq=++mcpSeq,revision=navigationRevision;
+    box.innerHTML=`<p class="mcp-wait">Загружаем карточку…</p>`;
+    try{
+      await ensureDetail(kind,key);
+      if(seq!==mcpSeq||revision!==navigationRevision||!box.isConnected)return;
+      box.innerHTML=kind==="paper"?paperCard(key):recordCard(key);bindResults(box);
+      window.scrollTo({top:Math.max(0,box.getBoundingClientRect().top+scrollY-150),behavior:"smooth"});
+    }catch(error){
+      if(seq!==mcpSeq||revision!==navigationRevision||!box.isConnected)return;
+      box.innerHTML=`<p class="mcp-empty">${esc(error.message)}</p><button type="button" data-detail-retry>Повторить</button>`;
+      box.querySelector("[data-detail-retry]").onclick=()=>openDetail(kind,key);
+    }
   }
     showMcpLive.refreshWorkspace=()=>{
       const article=$("mcp-results")?.querySelector(".paper-page[data-project]");
@@ -2014,13 +2256,13 @@
 
   let mcpRenderer=null,mcpLoading=null;
   const snapshotLoads=new Map();
-  function loadSnapshot(src,globalName){
-    if(window[globalName])return Promise.resolve();
+  function loadSnapshot(src,globalName,force=false){
+    if(window[globalName]&&!force)return Promise.resolve(window[globalName]);
     if(!snapshotLoads.has(src)){
       const promise=new Promise((resolve,reject)=>{
         const script=document.createElement("script");
-        script.src=window.LAB_I18N?.asset(src)||src;script.async=true;
-        script.onload=()=>window[globalName]?resolve():reject(new Error("Snapshot did not initialize"));
+        script.src=src;script.async=true;
+        script.onload=()=>window[globalName]?resolve(window[globalName]):reject(new Error("Snapshot did not initialize"));
         script.onerror=()=>{script.remove();reject(new Error("Snapshot could not be loaded"))};
         document.head.appendChild(script);
       }).catch(error=>{snapshotLoads.delete(src);throw error});
@@ -2030,13 +2272,18 @@
   }
   function prepareMcpWorkspace(){
     if(!mcpLoading){
-      loadSnapshot("data/project-workspaces.js","LAB_PROJECT_WORKSPACES")
+      loadSnapshot("data/project-workspaces.js?v=20261019w","LAB_PROJECT_WORKSPACES")
         .catch(()=>{window.LAB_PROJECT_WORKSPACES={projects:{},unavailable:true}})
         .then(()=>mcpRenderer?.refreshWorkspace());
+      if(liveSnapshotMode){
+        window.LAB_PARTIAL=true;
+        mcpRenderer=createMcpWorkspace();
+        return Promise.resolve();
+      }
       mcpLoading=Promise.all([
-        loadSnapshot("data/library-snapshot.js?v=general-questions-20260916","LAB_LIBRARY"),
-        loadSnapshot("data/base-snapshot.js","LAB_BASE"),
-        loadSnapshot("data/atlas-tree.js?v=general-questions-20260916","LAB_TREE"),
+        loadSnapshot("data/library-snapshot.js?v=20261019w","LAB_LIBRARY"),
+        loadSnapshot("data/base-snapshot.js?v=20261019w","LAB_BASE"),
+        loadSnapshot("data/atlas-tree.js?v=20261019w","LAB_TREE"),
       ]).then(()=>{mcpRenderer=createMcpWorkspace();renderTally()})
         .catch(error=>{mcpLoading=null;throw error});
     }
@@ -2049,7 +2296,7 @@
     const revision=navigationRevision,view=$("mcp-live-view");
     view.hidden=false;
     view.innerHTML=`<div class="special-shell mcp-page knowledge-workspace">
-      <header class="mcp-hero"><p>${esc(window.LAB_DEMO?.label||"Lab Knowledge · BRAIn Lab")}</p><h1>Спросите лабораторию<span aria-hidden="true">.</span></h1></header>
+      <header class="mcp-hero"><p>${window.LAB_DEMO?"Учебная база":"База знаний · BRAIn Lab"}</p><h1>Спросите лабораторию<span aria-hidden="true">.</span></h1></header>
       <div class="mcp-load-state" data-mcp-loading><span aria-hidden="true">◌</span><p role="status">Загружаем библиотеку и записи для поиска…</p></div>
       <button class="back-button" data-loading-back type="button">← Вернуться к общей карте</button></div>`;
     view.querySelector("[data-loading-back]").onclick=showOverview;
@@ -2062,6 +2309,21 @@
       view.querySelector("[data-mcp-loading]").innerHTML=`<p role="alert">Не удалось загрузить данные. Проверьте соединение и попробуйте ещё раз.</p><button type="button" data-mcp-retry>Повторить загрузку</button>`;
       view.querySelector("[data-mcp-retry]").onclick=()=>showMcpLive(false);
     }
+  }
+  // Первая страница: база как GitHub для идей.
+  function showIdeas(navigate=true){
+    if(navigate)updateHash("ideas");
+    hidePrimaryViews();active("ideas");
+    const view=$("hub-view");view.hidden=false;window.LAB_HUB_PAGE?.render(view);
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+  function showSetup(navigate=true){
+    const section=location.hash.slice(1).split("/")[1];
+    if(navigate)updateHash("setup");
+    hidePrimaryViews();active("setup");
+    const view=$("setup-view");view.hidden=false;window.LAB_SETUP_PAGE?.render(view);
+    const target=!navigate&&section&&view.querySelector(`#setup-${CSS.escape(section)}`);
+    target?target.scrollIntoView({block:"start"}):window.scrollTo({top:0,behavior:"instant"});
   }
   // Journey links retain the selected stage when returning from a tool dossier.
   function showExamples(navigate=true,journeyId="",stageId=""){
@@ -2094,11 +2356,13 @@
                 </button></li>`).join("")}</ol>
           </div>
           <p class="journey-note">${esc(journey.note)}</p>
+          <div class="journey-visual" aria-live="polite"></div>
         </div>
         <section id="journey-detail" class="journey-detail" aria-labelledby="journey-stage-title"></section>
       </div></div>`;
     function selectStage(id,navigate=false){
       const selected=journey.stages.find(x=>x.id===id);if(!selected)return;
+      view.querySelector(".journey-visual").innerHTML=(STAGE_VISUAL[id]||(()=>""))();
       if(navigate)updateHash(`examples/${journey.id}/${id}`);
       view.querySelectorAll("[data-stage]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.stage===id)));
       const detail=view.querySelector(".journey-detail");
@@ -2133,7 +2397,7 @@
     });
     window.scrollTo({top:0,behavior:"instant"});
   }
-  function active(v){document.querySelectorAll("[data-view]").forEach(b=>{const selected=b.dataset.view===v;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected))});if(v==="mcp-live"||v==="examples")requestAnimationFrame(()=>{const heading=document.querySelector(`#${v==="mcp-live"?"mcp-live-view":"examples-view"} h1`);if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true})}})}
+  function active(v){document.querySelectorAll("[data-view]").forEach(b=>{const selected=b.dataset.view===v;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected))});if(v==="mcp-live"||v==="examples"||v==="setup"||v==="ideas")requestAnimationFrame(()=>{const heading=document.querySelector(`#${v==="mcp-live"?"mcp-live-view":v==="setup"?"setup-view":v==="ideas"?"hub-view":"examples-view"} h1`);if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true})}})}
   function openProcess(id,toolId,navigate=true){const p=byId[id];if(!p)return;if(toolId&&!p.tools?.some(t=>t.id===toolId)){toolId="";replaceHash(id)}if(navigate)updateHash(`${id}${toolId?`/${toolId}`:""}`);hidePrimaryViews();$("process-view").hidden=false;$("process-view").innerHTML=page(p);bind($("process-view"),p);bindGraphMap($("process-view"),p);active("none");window.scrollTo({top:0,behavior:"instant"});$("process-view").querySelector("h1")?.focus({preventScroll:true});if(toolId)setTimeout(()=>{
     const view=$("process-view"),skill=view.querySelector(`[data-skill="${CSS.escape(toolId)}"]`);
     if(skill){let parent=skill.parentElement;while(parent&&parent!==view){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}skill.click();return}
@@ -2182,7 +2446,7 @@ addEventListener("resize",fitLoopMap);
   const processNames={"agent-orchestration":"нужно поручить работу отдельному агенту","code-engineering":"нужно изменить или проверить код","discussion":"нужно разобрать обсуждение","experiment-design":"нужно спроектировать проверку идеи","experiment-run":"нужно провести эксперимент","external-review":"нужна независимая проверка","knowledge-maintenance":"нужно сохранить или восстановить знание","literature-discovery":"нужно найти релевантные статьи","literature-ingest":"нужно добавить статью в библиотеку","presentation":"нужно подготовить научный доклад","project-lifecycle":"нужно создать, связать или закрыть проект","publication":"нужно подготовить результат к публикации","research-direction":"нужно уточнить исследовательское направление","results":"нужно разобраться в результатах","theory":"нужно проверить теоретическое рассуждение","writing":"нужно написать или проверить научный текст"};
   const mcpTitles={add_paper_section:"Добавить раздел статьи",assign_public_code:"Назначить публичный код",create_hypothesis:"Сохранить гипотезу",create_project:"Создать проект знаний",define_term:"Определить термин проекта",delete_project:"Удалить пустой проект",delete_record:"Удалить запись",find_related_papers:"Найти связанные статьи",find_similar:"Найти похожие записи",get_hypothesis:"Открыть гипотезу",get_paper:"Открыть статью",get_project_by_slug:"Открыть проект по адресу",get_project_context:"Получить контекст проекта",get_related:"Посмотреть связанные записи",get_theme_context:"Получить контекст темы",get_timeline:"Посмотреть историю изменений",invite_member:"Пригласить участника",issue_agent_token:"Выдать доступ агенту",lab_health:"Проверить состояние лабораторного знания",link_paper:"Связать статью с работой",list_agent_tokens:"Посмотреть доступы агентов",list_derivations:"Посмотреть теоретические выводы",list_hypotheses:"Посмотреть гипотезы",list_journal:"Посмотреть журнал",list_lab_resources:"Посмотреть ресурсы лаборатории",list_paper_claims:"Посмотреть утверждения статьи",list_projects:"Посмотреть проекты",list_recent_papers:"Посмотреть новые статьи",list_terms:"Посмотреть термины",list_themes:"Посмотреть исследовательские темы",list_yonote_tasks:"Посмотреть задачи Yonote",preview_yonote_task:"Проверить задачу перед записью",propose_decision:"Предложить решение",provision_project_workspace:"Подготовить рабочее пространство проекта",publish_source_note:"Опубликовать ссылку на заметку",recent_changes:"Посмотреть последние изменения",record_derivation:"Сохранить теоретический вывод",record_evidence:"Сохранить результат эксперимента",record_experiment:"Сохранить эксперимент",record_journal:"Добавить запись в журнал",record_paper_claim:"Сохранить утверждение статьи",related_by_terms:"Найти связи по терминам",revoke_agent_token:"Отозвать доступ агента",search_lab:"Найти знание лаборатории",set_project_links:"Сохранить ссылки проекта",set_project_open_questions:"Сохранить открытые вопросы",set_project_status:"Изменить статус проекта",set_project_theme:"Связать проект с темой",set_record_papers:"Связать запись со статьями",update_decision:"Утвердить или заменить решение",update_derivation_status:"Обновить статус теоретического вывода",update_experiment_status:"Обновить статус эксперимента",update_hypothesis:"Обновить гипотезу",upsert_call_note:"Сохранить конспект созвона",upsert_paper:"Сохранить статью",upsert_projection_ref:"Связать запись с публичной страницей",upsert_resource:"Сохранить ресурс лаборатории",upsert_yonote_task:"Сохранить задачу Yonote",who_works_on_what:"Понять, кто над чем работает"};
   function humanCapabilityTitle(c){if(c.type!=="mcp-tool"||mcpTitles[c.name])return mcpTitles[c.name]||c.title_ru||c.name;const names={hypothesis:"гипотезу",experiment:"эксперимент",evidence:"результат",claim:"утверждение",paper:"статью",decision:"решение",project:"проект",member:"участника",resource:"ресурс",context:"контекст",journal:"журнал"},parts=String(c.name||"").split("_"),verbs={create:"Сохранить",record:"Сохранить",upsert:"Сохранить",get:"Посмотреть",list:"Посмотреть",search:"Найти",find:"Найти",update:"Обновить",set:"Обновить",assign:"Связать",link:"Связать",preview:"Проверить",validate:"Проверить",issue:"Выдать",invite:"Пригласить",provision:"Подключить",delete:"Удалить",revoke:"Отозвать"},verb=verbs[parts.shift()]||"Выполнить",object=parts.map(x=>names[x]||x).join(" ");return `${verb} ${object}`.trim()}
-  function capabilityStory(c){const purpose=c.description_ru||c.description||"Подробный сценарий использования пока не описан.",special=String(c.what_is_special||"").split(/Связан с процессами:|Минимальная проверка:|Назначение:|Related processes:|Related workflows?:|Minimum check:|Purpose:/)[0].trim(),plainSpecial=/ACL|provenance|типизирован|схем|entrypoint|ограниченной ответственностью|typed|schema|defined scope/i.test(special)?"":special,contexts=arr(c.process_ids).map(id=>processNames[id]).filter(Boolean).slice(0,3),type=c.type||"возможность",action=humanCapabilityTitle(c),lowerPurpose=purpose.charAt(0).toLowerCase()+purpose.slice(1),after=type==="agent"?`Сможете поручить агенту конкретную задачу: ${lowerPurpose}`:type==="skill"?`Сможете попросить агента провести весь сценарий: ${lowerPurpose}`:type==="command"?`Сможете одним действием запустить процесс: ${lowerPurpose}`:type==="hook"?`Проверка будет срабатывать автоматически и остановит ошибочное действие до изменения проекта.`:type==="mcp-tool"?`Агенты с подходящими правами смогут ${action.charAt(0).toLowerCase()+action.slice(1)} через общую лабораторную систему.`:type==="documentation"?`Сможете быстро найти актуальный порядок действий и сверить свою настройку.`:type==="repository"?`Сможете использовать и обновлять лабораторные инструменты из одного версионированного источника.`:type==="service"?`Подключенные агенты и приложения получат эту возможность как общий сервис.`:`Сможете использовать эту возможность в своем рабочем процессе.`,categoryCapability=type==="agent"?"самостоятельно выполнить ограниченную задачу и вернуть результат для проверки":type==="skill"?"провести повторяемый рабочий сценарий от исходных данных до проверенного итога":type==="command"?"собрать несколько шагов работы в один управляемый запуск":type==="hook"?"автоматически проверить действие до того, как оно изменит проект":type==="mcp-tool"?"выполнить это действие через общую систему без ручного редактирования базы":type==="documentation"?"сверить порядок действий и ограничения по актуальному источнику":type==="repository"?"работать с версионированными исходниками и видеть историю изменений":type==="service"?"дать нескольким инструментам одну общую возможность и состояние":"использовать возможность в связанном рабочем процессе",rawOutputs=arr(c.outputs_ru||c.outputs).filter(x=>!/типизированный результат|квитанция записи|проверенный профильный артефакт|выводы специалиста или артефакт|typed result|write receipt|verified artifact appropriate to the task|specialist findings or an artifact/i.test(x)),fallbackOutcome=type==="agent"?`Проверенный результат работы агента «${action}»`:type==="skill"?`Завершенный рабочий сценарий «${action}»`:type==="command"?`Результат процесса «${action}»`:type==="hook"?"Автоматическая проверка с понятным решением":type==="mcp-tool"?`Ответ или сохраненное изменение: «${action}»`:type==="documentation"?`Понятный порядок действий по теме «${action}»`:type==="repository"?"Доступ к версионированным исходникам":type==="service"?"Доступный ответ или сохраненное состояние сервиса":`Практический результат по задаче «${action}»`,outcomes=rawOutputs.length?rawOutputs:[fallbackOutcome],capabilities=[purpose,categoryCapability,...(plainSpecial&&plainSpecial!==purpose?[plainSpecial]:[])];return {purpose,capabilities,useCases:contexts.length?contexts:[`когда требуется именно это действие в исследовательском процессе`],outcomes,after}}
+  function capabilityStory(c){const purpose=c.description_ru||c.description||"Подробный сценарий использования пока не описан.",special=String(c.what_is_special||"").split(/Связан с процессами:|Минимальная проверка:|Назначение:/)[0].trim(),plainSpecial=/ACL|provenance|типизирован|схем|entrypoint|ограниченной ответственностью/i.test(special)?"":special,contexts=arr(c.process_ids).map(id=>processNames[id]).filter(Boolean).slice(0,3),type=c.type||"возможность",action=humanCapabilityTitle(c),lowerPurpose=purpose.charAt(0).toLowerCase()+purpose.slice(1),after=type==="agent"?`Сможете поручить агенту конкретную задачу: ${lowerPurpose}`:type==="skill"?`Сможете попросить агента провести весь сценарий: ${lowerPurpose}`:type==="command"?`Сможете одним действием запустить процесс: ${lowerPurpose}`:type==="hook"?`Проверка будет срабатывать автоматически и остановит ошибочное действие до изменения проекта.`:type==="mcp-tool"?`Агенты с подходящими правами смогут ${action.charAt(0).toLowerCase()+action.slice(1)} через общую лабораторную систему.`:type==="documentation"?`Сможете быстро найти актуальный порядок действий и сверить свою настройку.`:type==="repository"?`Сможете использовать и обновлять лабораторные инструменты из одного версионированного источника.`:type==="service"?`Подключенные агенты и приложения получат эту возможность как общий сервис.`:`Сможете использовать эту возможность в своем рабочем процессе.`,categoryCapability=type==="agent"?"самостоятельно выполнить ограниченную задачу и вернуть результат для проверки":type==="skill"?"провести повторяемый рабочий сценарий от исходных данных до проверенного итога":type==="command"?"собрать несколько шагов работы в один управляемый запуск":type==="hook"?"автоматически проверить действие до того, как оно изменит проект":type==="mcp-tool"?"выполнить это действие через общую систему без ручного редактирования базы":type==="documentation"?"сверить порядок действий и ограничения по актуальному источнику":type==="repository"?"работать с версионированными исходниками и видеть историю изменений":type==="service"?"дать нескольким инструментам одну общую возможность и состояние":"использовать возможность в связанном рабочем процессе",rawOutputs=arr(c.outputs_ru||c.outputs).filter(x=>!/типизированный результат|квитанция записи|проверенный профильный артефакт|выводы специалиста или артефакт/i.test(x)),fallbackOutcome=type==="agent"?`Проверенный результат работы агента «${action}»`:type==="skill"?`Завершенный рабочий сценарий «${action}»`:type==="command"?`Результат процесса «${action}»`:type==="hook"?"Автоматическая проверка с понятным решением":type==="mcp-tool"?`Ответ или сохраненное изменение: «${action}»`:type==="documentation"?`Понятный порядок действий по теме «${action}»`:type==="repository"?"Доступ к версионированным исходникам":type==="service"?"Доступный ответ или сохраненное состояние сервиса":`Практический результат по задаче «${action}»`,outcomes=rawOutputs.length?rawOutputs:[fallbackOutcome],capabilities=[purpose,categoryCapability,...(plainSpecial&&plainSpecial!==purpose?[plainSpecial]:[])];return {purpose,capabilities,useCases:contexts.length?contexts:[`когда требуется именно это действие в исследовательском процессе`],outcomes,after}}
   function capSources(c){const own=arr(c.github_urls);if(own.length)return own;const query=encodeURIComponent(c.name||c.source_path||"");return [{label:`Найти ${c.name||"исходник"} в repository`,url:`https://github.com/Vepricov/claude-brainlab/search?q=${query}&type=code`,canonical:true}]}
   function capDetails(c){const match=all.flatMap(p=>(p.tools||[]).map(t=>({p,t}))).find(({t})=>t.skillId===c.name||t.id===c.id||t.id===c.name);if(match)return `<article class="dossier capability-dossier">${dossierHead(match.t,match.p)}${dossierBody(match.t)}</article>`;const story=capabilityStory(c),t={id:c.id,title:humanCapabilityTitle(c),type:capType(c.type),purpose:story.purpose,inside:story.capabilities,outputs:story.outcomes,inputs:c.inputs_ru||c.inputs,gates:c.quality_gates_ru||c.quality_gates,limits:c.known_limitations_ru||c.known_limitations,links:capSources(c),start:story.after};return `<article class="dossier capability-dossier">${dossierHead(t,{title:"Реестр возможностей"})}${dossierBody(t)}</article>`}
   function showCapability(id){const c=(registry.capabilities||[]).find(x=>x.id===id);if(!c)return;$("search-input").value="";$("search-results").innerHTML=capDetails(c);if(!$("search-dialog").open)$("search-dialog").showModal();const heading=$("search-results").querySelector("h2");if(heading){heading.tabIndex=-1;heading.focus()}}
@@ -2191,14 +2455,42 @@ addEventListener("resize",fitLoopMap);
   const searchConcepts=[{words:["созвон","разговор","встреч","аудио"],expand:["brain call","call-notes","transcript","решения","задачи"]},{words:["стать","литератур","paper","arxiv"],expand:["paper-search","paper-ingest","literature","zotero","alphaxiv"]},{words:["эксперимент","запуск","обучен","run"],expand:["hermes","experiment","monitoring","protocol","gpu"]},{words:["цитат","ссылк","bibtex"],expand:["citation-verification","paperclaim","references.bib","проверка статей"]},{words:["сервер","доступ","gpu","аккаунт"],expand:["server access bot","managed host","credentials","mlsub"]},{words:["rebuttal","реценз","ответ"],expand:["review-response","writing","paper-self-review"]}];
   const searchIntents={"разобрать созвон":["calls","brain-call","call-notes"],"найти статьи про метод":["literature","paper-search","paperscout"],"запустить эксперимент через Hermes":["experiments","hermes","hermes-experiment-launch"],"проверить цитату":["paper-qa","citation-verification","literature-reviewer"],"добавить доступ к серверу":["access","server-access-bot","hermes-add-user"],"ответить рецензентам":["writing","review-response","rebuttal-command","rebuttal-writer"]};
   function searchScore(item,query){const normalized=query.toLowerCase(),base=`${item.title} ${item.text}`.toLowerCase(),tokens=normalized.match(/[a-zа-яё0-9-]+/g)||[],expanded=[...tokens];for(const concept of searchConcepts)if(concept.words.some(word=>tokens.some(token=>token.includes(word))))expanded.push(...concept.expand);const preferred=searchIntents[normalized]||[],position=preferred.indexOf(item.key),intentBoost=position<0?0:120-position*12;return intentBoost+[...new Set(expanded)].reduce((score,token)=>score+(item.title.toLowerCase().includes(token)?8:base.includes(token)?2:0),0)}
-  function renderSearch(q=""){const s=q.trim(),items=searchItems(),exact=items.filter(item=>item.key?.toLowerCase()===s.toLowerCase()),ranked=(exact.length?exact:items.map(item=>({...item,score:s?searchScore(item,s):0})).filter(item=>!s||item.score>0).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title,document.documentElement.lang)).slice(0,s?15:18)),groups=ranked.reduce((a,x)=>((a[x.kind]||=[]).push(x),a),{}),examples=`<div class="search-examples"><span>Попробуйте описать задачу</span>${searchExamples.map(x=>`<button data-search-example="${esc(x)}" type="button">${esc(x)}</button>`).join("")}</div>`;$("search-results").innerHTML=examples+(ranked.length?Object.entries(groups).map(([kind,xs])=>`<section class="search-group"><h3>${esc(kind)} <span>${xs.length}</span></h3>${xs.map((x,i)=>`<button class="search-item" data-key="${esc(kind)}-${i}" type="button"><strong>${esc(x.title)}</strong><p>${esc(x.text)}</p><i>Открыть →</i></button>`).join("")}</section>`).join(""):`<p class="empty-search">Совпадений нет. Опишите действие другими словами.</p>`);$("search-results").querySelectorAll("[data-search-example]").forEach(b=>b.onclick=()=>{$("search-input").value=b.dataset.searchExample;renderSearch(b.dataset.searchExample)});Object.entries(groups).forEach(([kind,xs])=>xs.forEach((x,i)=>{const b=document.querySelector(`[data-key="${CSS.escape(`${kind}-${i}`)}"]`);if(b)b.onclick=()=>{$("search-dialog").close();x.go()}}))}
+  function renderSearch(q=""){const s=q.trim(),items=searchItems(),exact=items.filter(item=>item.key?.toLowerCase()===s.toLowerCase()),ranked=(exact.length?exact:items.map(item=>({...item,score:s?searchScore(item,s):0})).filter(item=>!s||item.score>0).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title,"ru")).slice(0,s?15:18)),groups=ranked.reduce((a,x)=>((a[x.kind]||=[]).push(x),a),{}),examples=`<div class="search-examples"><span>Попробуйте описать задачу</span>${searchExamples.map(x=>`<button data-search-example="${esc(x)}" type="button">${esc(x)}</button>`).join("")}</div>`;$("search-results").innerHTML=examples+(ranked.length?Object.entries(groups).map(([kind,xs])=>`<section class="search-group"><h3>${esc(kind)} <span>${xs.length}</span></h3>${xs.map((x,i)=>`<button class="search-item" data-key="${esc(kind)}-${i}" type="button"><strong>${esc(x.title)}</strong><p>${esc(x.text)}</p><i>Открыть →</i></button>`).join("")}</section>`).join(""):`<p class="empty-search">Совпадений нет. Опишите действие другими словами.</p>`);$("search-results").querySelectorAll("[data-search-example]").forEach(b=>b.onclick=()=>{$("search-input").value=b.dataset.searchExample;renderSearch(b.dataset.searchExample)});Object.entries(groups).forEach(([kind,xs])=>xs.forEach((x,i)=>{const b=document.querySelector(`[data-key="${CSS.escape(`${kind}-${i}`)}"]`);if(b)b.onclick=()=>{$("search-dialog").close();x.go()}}))}
   function openSearch(){renderSearch();if(!$("search-dialog").open)$("search-dialog").showModal();requestAnimationFrame(()=>$("search-input").focus())}
 
-  renderLoop();renderToolkit();fitLoopMap();$("home").onclick=showOverview;$("search-open").onclick=openSearch;$("search-input").oninput=e=>renderSearch(e.target.value);document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>b.dataset.view==="mcp-live"?showMcpLive():b.dataset.view==="examples"?showExamples():showOverview());document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}});
+  renderLoop();renderToolkit();fitLoopMap();$("home").onclick=()=>showOverview();$("search-open").onclick=openSearch;$("search-input").oninput=e=>renderSearch(e.target.value);document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>b.dataset.view==="ideas"?showIdeas():b.dataset.view==="mcp-live"?showMcpLive():b.dataset.view==="examples"?showExamples():b.dataset.view==="setup"?showSetup():showOverview());document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}});
   // Разделы слились, но ссылки на прежние адреса могли уже разойтись по чатам.
-  const MOVED={"paper-qa":"writing","orchestration":"experiments","engineering":"experiments","access":"projects"};
-  let [initial,initialTool]=location.hash.slice(1).split("/");if(MOVED[initial])initial=MOVED[initial];if(initial==="examples")showExamples(false);else if(initial==="surface")showSurface(initialTool,false);else if(byId[initial])openProcess(initial,initialTool);
-  const routeLocation=()=>{let [route,tool]=location.hash.slice(1).split("/");if(MOVED[route])route=MOVED[route];if(route==="examples")showExamples(false);else if(route==="surface")showSurface(tool,false);else if(byId[route])openProcess(route,tool,false);else showOverview(false)};
+  // Рисунок под картой маршрута для шага: как агент работает в общем git лаборатории.
+  const STAGE_VISUAL={project:()=>{
+    const shared=[["claims/","утверждения, прогоны, серии, выкладки"],["paper/","рукопись"],["code/","код, которым считали"],["calls/","итоги созвонов"],["README.md","о чём работа и кто ведёт"]];
+    const own=[["notes/","черновики, мысли, заметки агента"],["daily/","дневник работы"],["runs/","сырые логи прогонов"],["paper/drafts/","наброски текста"],["calls/raw/","расшифровки созвонов"],["code/local/","локальные правки кода"]];
+    return `<div class="repo-split">
+      <div class="repo-split-head"><span class="overline">Как агент работает в общем git</span><h3>Одна папка, две судьбы у файлов</h3>
+        <p>Клон работы лежит в дереве лаборатории, его открывает Obsidian. Агент пишет всё в одном месте, а git сам разводит: общее уходит в GitLab предложением, личное закрыто через <code>.git/info/exclude</code> и не покидает машину.</p></div>
+      <div class="repo-split-body">
+        <div class="repo-tree"><header>~/brainlab / zero-order / zo-estimators / <b>zo-jaguar</b></header>
+          ${shared.map(([f,d])=>`<div class="is-shared"><code>${f}</code><em>${d}</em><span>↑ GitLab</span></div>`).join("")}
+          ${own.map(([f,d])=>`<div class="is-own"><code>${f}</code><em>${d}</em><span>🔒 на машине</span></div>`).join("")}
+        </div>
+        <div class="repo-flow">
+          <div class="repo-term"><header>агент · терминал</header><pre><b>$</b> git status
+  изменён: claims/H-ZJG-040/runs/E-ZJG-047.md
+  <i># notes/ и daily/ git не видит</i>
+<b>$</b> git switch -c claim/H-ZJG-040
+<b>$</b> git commit -m "E-ZJG-047: прогон под утверждением"
+<b>$</b> git push
+  <u>открыто предложение · назначено ведущему</u></pre></div>
+          <div class="repo-dest">
+            <div class="is-shared"><b>GitLab лаборатории</b><p>предложение → проверки → ведущий принимает → знание видно всем</p></div>
+            <div class="is-own"><b>Только у тебя</b><p>заметки и логи в Obsidian, рядом с общим, но в git их нет</p></div>
+          </div>
+        </div>
+      </div></div>`;
+  }};
+  // Отдельная страница поиска по базе снята: базу показывает первая страница «GitHub для идей».
+  const MOVED={"paper-qa":"writing","orchestration":"experiments","engineering":"experiments","access":"projects","mcp-live":"ideas","examples":"loop"};
+  let [initial,initialTool]=location.hash.slice(1).split("/");if(MOVED[initial])initial=MOVED[initial];if(initial==="mcp-live")showMcpLive(false);else if(initial==="examples")showExamples(false);else if(initial==="setup")showSetup(false);else if(initial==="surface")showSurface(initialTool,false);else if(byId[initial])openProcess(initial,initialTool);else if(initial==="ideas")showIdeas(false);else if(!initial||initial==="loop")showOverview(false);
+  const routeLocation=()=>{let [route,tool]=location.hash.slice(1).split("/");if(MOVED[route])route=MOVED[route];if(route==="mcp-live")showMcpLive(false);else if(route==="examples")showExamples(false);else if(route==="setup")showSetup(false);else if(route==="surface")showSurface(tool,false);else if(byId[route])openProcess(route,tool,false);else if(route==="ideas")showIdeas(false);else showOverview(false)};
   window.addEventListener("popstate",routeLocation);
   document.addEventListener("click",e=>{if(e.target.closest("[data-obsidian-surface]")){e.preventDefault();showSurface("obsidian")}});
 

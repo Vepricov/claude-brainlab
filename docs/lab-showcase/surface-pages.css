@@ -211,3 +211,13 @@
 .sp-page>.sp-under-map{max-width:1100px}
 .sp-personal .sp-hero>div:first-child{max-width:750px}
 @media(max-width:540px){.sp-map:before{inset:-20px 0}}
+/* review 19-10: raised facts, no stray line above the work card */
+.sp-project-sheet:before{display:none}
+.sp-hero p .sp-hero-fact{display:inline-block;margin-top:14px;font-size:.72em;font-weight:500;letter-spacing:0;color:var(--sp-accent)}
+.sp-team-actors .sp-fact{margin-bottom:10px}
+.sp-team-actors .sp-fact b{font-weight:500;color:var(--sp-accent)}
+.sp-operon-lanes article>div{justify-content:flex-start;gap:22px;flex-wrap:wrap}
+.sp-hermes-preview>header,.sp-status{font-family:var(--body);letter-spacing:.02em}
+.sp-hermes-preview>header{font-size:11px}
+.sp-status{font-size:12px}
+.sp-address-example,.sp-drawer p{font-family:var(--body);font-size:12px}

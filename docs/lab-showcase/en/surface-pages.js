@@ -7,63 +7,63 @@ window.LAB_SURFACE_PAGES = (() => {
 
   function mempalace() {
     return `<div class="sp-page sp-memory" data-surface-page="mempalace">
-      ${header('MemPalace', "Context between sessions", "A new conversation.<br>Continue where you left off.", '✧')}
+      ${header('MemPalace', "The agent's personal long-term memory", "A new conversation.<br>The work picks up where it left off.<br><b class=\"sp-hero-fact\">Over 37,600 entries as of 19-10-2026.</b>", '✧')}
       <section class="sp-memory-map sp-map" data-sp-map data-sp-links='[["session","diary"],["session","fragment"],["session","relation"],["diary","resume"],["fragment","resume"],["relation","resume"]]' aria-label="From a working turn to memory and the next session">
         ${wires}
-        ${node('session', "Now", "Working turn", "A conversation, the cause of a bug, or an agreed decision. The agent chooses what will be useful later.", 'sp-session')}
+        ${node('session', "Now", "Working turn", "A conversation, the root cause of a bug, a decision taken, a measured number. The agent decides what is worth keeping.", 'sp-session')}
         <div class="sp-memory-channels">
-          ${node('diary', "Agent diary", "Brief summary", "What is done, what remains, and where to continue. Each entry has a date and topic.")}
-          ${node('fragment', "Project fragments", "Exact context", "The original wording of a decision, command, or code, with its source and the record's author.")}
+          ${node('diary', "Agent diary", "Compressed summary", "What was done, what is left and where to resume. Written compactly, with a date and a topic.")}
+          ${node('fragment', "Project drawers", "Verbatim", "The owner's words, a decision with its reason, a command, a code snippet. Not a paraphrase: a paraphrase loses exactly what you come back for.")}
           ${node('relation', "Knowledge graph", "Relationships and facts", "Who leads the project, what a decision relates to, and when a fact was valid.")}
         </div>
-        <article class="sp-resume" data-sp-node="resume"><span class="sp-label">Next session</span><h3>“Where did we leave off?”</h3><p>The agent reads its diary, searches project history, and opens the relevant fragments.</p><div class="sp-resume-result"><i class="sp-star" aria-hidden="true"></i><strong>Context restored</strong><span>Decision · reason · next step</span></div></article>
+        <article class="sp-resume" data-sp-node="resume"><span class="sp-label">Next session</span><h3>“Where did we leave off?”</h3><p>The agent reads its diary, searches the project history and opens the fragments it needs.</p><div class="sp-resume-result"><i class="sp-star" aria-hidden="true"></i><strong>Context restored</strong><span>Decision · reason · next step</span></div></article>
       </section>
-      <p class="sp-under-map"><b>The hook reminds the agent to save results.</b> The agent chooses and writes the content. A successful save is verified by reading the record back.</p>
+      <p class="sp-under-map"><b>The end of each turn is checked by Jev, a fast model.</b> If the turn has something worth saving, the agent gets one line: what to record and where. The agent itself chooses the content and writes it.</p>
       <section class="sp-section">
         ${section("How the palace is organized", "Every fragment has an address.", "The hierarchy narrows the search: first the project, then an aspect of the work, then the specific source.")}
         <div class="sp-palace-address">
-          <article><span class="sp-label">Wing</span><h3>Project</h3><p>The shared context of one project.</p><span class="sp-address-example">example-project</span></article>
+          <article><span class="sp-label">Wing</span><h3>Project</h3><p>The shared context of one work.</p><span class="sp-address-example">example-project</span></article>
           <span class="sp-arrow" aria-hidden="true">→</span>
-          <article><span class="sp-label">Room</span><h3>Aspect</h3><p>Decisions, bugs, meetings, or technical details.</p><span class="sp-address-example">decisions</span></article>
+          <article><span class="sp-label">Room</span><h3>Aspect</h3><p>Decisions, bugs, meetings, technical details.</p><span class="sp-address-example">decisions</span></article>
           <span class="sp-arrow" aria-hidden="true">→</span>
-          <article class="sp-drawer"><span class="sp-label">Drawer · fragment</span><blockquote>“Keep the training budget equal for this comparison.”</blockquote><p>Text + source + date + ID</p></article>
+          <article class="sp-drawer"><span class="sp-label">Drawer</span><blockquote>“For the comparison we fix the same training budget.”</blockquote><p>Text, source, date and number</p></article>
         </div>
-        <p class="sp-small">An illustrative example. The diary is stored separately under the agent's name; one agent can work with several projects' memory.</p>
+        <p class="sp-small">Illustrative example.</p>
       </section>
       <section class="sp-section">
-        ${section("How the agent recalls", "From a question to the original context.", "Search returns saved fragments. The agent reads them and checks them against the current work.")}
-        <ol class="sp-recall-path"><li><span>Short query</span><p>Keywords, project, and the topic you need.</p></li><li><span>Meaning and words</span><p>Vector candidates; word matches refine the order.</p></li><li><span>Source fragment</span><p>Text, its place in memory, and a link to the source.</p></li><li><span>Check now</span><p>Server status, code, and results may have changed.</p></li></ol>
-        <div class="sp-memory-foot"><div><h3>Need to pick up quickly?</h3><p>The latest diary entries give the next actions. Project search helps recover an older decision.</p></div><div><h3>Need to understand a connection?</h3><p>A graph query finds relations between entities and their history. An old fact can be closed in time while keeping its provenance.</p></div></div>
-        <details class="sp-fold"><summary>Storage and tools <span>Technical details</span></summary><div class="sp-fold-body"><p>In the tested setup, texts and vectors live in a local Chroma. Search first gets candidates by meaning; topic summaries can bring up related sources, and BM25 refines the order by words. This is a search over saved material, with no new text generated inside the search tool.</p><p>Typed relations with a validity period are stored separately in SQLite. The diary can be written in the compact AAAK format; source fragments are saved as plain text so they can be read and checked.</p><dl class="sp-api"><dt>Write</dt><dd>mempalace_diary_write · mempalace_add_drawer · mempalace_kg_add</dd><dt>Recall</dt><dd>mempalace_diary_read · mempalace_search · mempalace_get_drawer · mempalace_kg_query</dd></dl></div></details>
+        ${section("How the agent recalls", "From a question to the original context.", "Search returns the saved drawers. The agent reads them and checks them against the current state of the work.")}
+        <ol class="sp-recall-path"><li><span>Short query</span><p>Keywords, the project and the topic you need.</p></li><li><span>Meaning and words</span><p>Search goes by meaning, and exact words refine the ranking.</p></li><li><span>Source fragment</span><p>The text, its place in memory and a link to the source.</p></li><li><span>Check against today</span><p>Memory may be stale, so the agent checks it against the current code and server.</p></li></ol>
+        <div class="sp-memory-foot"><div><h3>Need to resume fast?</h3><p>The latest diary entries give the next actions. Project search helps recover an older decision.</p></div><div><h3>Need to see a connection?</h3><p>A graph query finds relations between entities and their history. An old fact can be closed off in time while keeping its provenance.</p></div></div>
+        <details class="sp-fold"><summary>Storage and tools <span>Technical details</span></summary><div class="sp-fold-body"><p>Texts and their semantic fingerprints are stored locally, on the researcher's machine. Search first finds candidates by meaning, then refines the ranking by words. It returns what was saved and never makes up anything new.</p><p>Relations between people, projects and decisions are stored separately, with the period when each fact held. Source fragments are kept as plain text so they can be read and checked.</p><dl class="sp-api"><dt>Write</dt><dd>summary to the diary · verbatim fragment · relation to the graph</dd><dt>Recall</dt><dd>diary · search · full fragment · relations</dd></dl></div></details>
       </section>
-      <footer class="sp-footer"><p>MemPalace returns the history of work. Shared scientific claims and their grounds live in the Lab GitLab.</p><nav><a href="#memory">Map of shared knowledge ↗</a><a href="https://github.com/MemPalace/mempalace" target="_blank" rel="noopener">MemPalace on GitHub ↗</a></nav></footer>
+      <footer class="sp-footer"><p>MemPalace is the memory of one agent, not the lab base. Shared knowledge (claims, runs, paper reviews) lives in GitLab and gets there only through a merged proposal.</p><nav><a href="#memory">Map of shared knowledge ↗</a><a href="https://github.com/MemPalace/mempalace" target="_blank" rel="noopener">MemPalace on GitHub ↗</a></nav></footer>
     </div>`;
   }
 
-  function tasks() {
-    return `<div class="sp-page sp-team" data-surface-page="tasks">
-      ${header("GitLab issues", "Shared team workspace", "Every work has its own repository.<br>Every issue has a clear result.", '⌘')}
-      <section class="sp-team-map sp-map" data-sp-map data-sp-links='[["research","theme"],["theme","area"],["area","project"],["management","delivery"],["delivery","project"]]' aria-label="Research and management sides of a work">
+  function yonote() {
+    return `<div class="sp-page sp-team" data-surface-page="yonote">
+      ${header('GitLab', "Tasks, boards and proposals", "Task, check and record in one repository.<br>A human has the final say.", '⎇')}
+      <section class="sp-team-map sp-map" data-sp-map data-sp-links='[["research","theme"],["theme","area"],["area","project"],["management","delivery"],["delivery","project"]]' aria-label="Research and operations in the lab GitLab">
         ${wires}
-        ${node('research', "Top-level group", "Direction", "An area of the lab: what we study and which questions we answer.")}
-        ${node('theme', "Inside a direction", "Theme", "Related works and a shared literature repository.")}
-        ${node('area', "Within a topic", "Work", "One repository: claims, manuscript, and code.")}
-        <article class="sp-project-sheet" data-sp-node="project"><span class="sp-label">Work repository</span><h3>Question → result</h3><p>README: what we claim, who leads, who is on the team, and what is open.</p><div><b>Issues</b><span>The work's board: what is being done and by whom</span></div><div><b>Merge requests</b><span>Every record in a work is a merge request</span></div></article>
-        ${node('management', "Operations", "Commitments", "Grants, commercial projects, stages, and acceptance: the ops group.", 'sp-management')}
-        <article class="sp-delivery" data-sp-node="delivery"><span class="sp-label">Commitment repository</span><h3>What we deliver and when</h3><p>Client or program, stages, deadlines, documents, and acceptance criteria.</p><span class="sp-crosslink">Links to the works the result comes from ↗</span></article>
+        ${node('research', "The brainlab group", "Direction", "The lab's seven research directions.")}
+        ${node('theme', "Inside a direction", "Theme", "Related works and the theme's shared literature.")}
+        ${node('area', "Within a topic", "Work", "A separate repository. The leads are listed on the work's front page, and only they merge.")}
+        <article class="sp-project-sheet" data-sp-node="project"><span class="sp-label">Inside a work</span><h3>Task → record</h3><p>Tasks, the board and proposals live next to the knowledge itself: claims, the paper and the code.</p><div><b>Tasks and board</b><span>Board columns are built from labels</span></div><div><b>Edit proposals</b><span>Checks verify, the lead merges</span></div></article>
+        ${node('management', "The ops group", "Operations", "Grants, management, education, communications. A closed group, separate from research.", 'sp-management')}
+        <article class="sp-delivery" data-sp-node="delivery"><span class="sp-label">Stream = label</span><h3>What we deliver and when</h3><p>Operations tasks are sorted into label streams, such as the content plan and paper reviews. The label filter works both in the list and on the board.</p><span class="sp-crosslink">Progress: “in progress” → “in review”</span></article>
       </section>
-      <p class="sp-under-map"><b>Commercial research uses both sides.</b> The scientific work stays in the lab tree, contract materials stay in operations. A work has one issue board.</p>
+      <p class="sp-under-map"><b>Research and operations share one GitLab, but sit in different groups.</b> Access to research gives no access to operations. A work has one board, in its own repository.</p>
       <section class="sp-section">
-        ${section("Inside a work", "From an agreement to a task.", "A person sees the expected result, the assignee, and how the work moves. Details stay in the issue itself.")}
-        <div class="sp-task-layout"><article class="sp-task-example"><span class="sp-label">Illustrative issue</span><h3>Compare two methods<br>at the same budget</h3><dl><dt>Assignee</dt><dd>A member of the work</dd><dt>Claim</dt><dd>The issue names the claim it affects</dd><dt>Done when</dt><dd>There is a series of runs and a link to it in the claim</dd><dt>Result</dt><dd>A merged merge request with the line “Closes #N”</dd></dl></article><div class="sp-task-explainer"><h3>The status reflects how the work goes.</h3><ol class="sp-task-path"><li><b>Open</b><span>The goal and the assignee are clear</span></li><li><b>In progress</b><span>There is progress or a specific blocker</span></li><li><b>In review</b><span>The merge request is open and can be assessed</span></li><li><b>Closed</b><span>The merge request is merged and the issue closed itself</span></li></ol><p class="sp-small">Board columns are issue labels. An issue is closed by merging the merge request, not by a manual tick.</p></div></div>
+        ${section("Inside a work", "From an agreement to a task.", "A task lives in the work repository. Its body carries the claim code, so you see at once which claim the result will go under.")}
+        <div class="sp-task-layout"><article class="sp-task-example"><span class="sp-label">Illustrative task</span><h3>Compare two methods<br>at the same budget</h3><dl><dt>Assignee</dt><dd>Whoever took the task with one command</dd><dt>Claim</dt><dd>The code of the claim the task will support or refute</dd><dt>Done when</dt><dd>The runs are written by the run recorder and filed under the claim</dd><dt>Closing</dt><dd>Merging the proposal closes the task by itself</dd></dl></article><div class="sp-task-explainer"><h3>Status tracks the work.</h3><ol class="sp-task-path"><li><b>Open</b><span>Goal and claim are clear</span></li><li><b>In progress</b><span>Whoever took the task is the assignee</span></li><li><b>In review</b><span>Proposal open, checks running</span></li><li><b>Closed</b><span>The lead merged the proposal</span></li></ol><p class="sp-small">Board columns are built from the “in progress” and “in review” labels.</p></div></div>
       </section>
       <section class="sp-section">
-        ${section("People and agents", "Work on one board.", "Issues live in the same work repository that knowledge is written to. There is no second board next to it.")}
-        <div class="sp-team-actors"><article><span class="sp-label">Person</span><h3>Sets and checks</h3><p>Defines the result, assigns the assignee, discusses progress, and merges the merge request that closes the issue.</p></article><article><span class="sp-label">Agent in a clone</span><h3>Prepares and submits</h3><p>At session start it sees what it has been assigned. It takes the issue, does the work in the clone, and opens a merge request that links the issue.</p></article><article><span class="sp-label">Agent on the server</span><h3>Handles long jobs</h3><p>Watches runs and reports what came out in the same issue. The person stays the assignee.</p></article></div>
-        <p class="sp-under-map">A closed issue and the assessment of a scientific claim are different results: the issue says the work is done, the claim's state says what follows from it.</p>
+        ${section("People and agents", "They work in one repository.", "The agent never writes to the base directly. It opens a proposal, automated checks verify it, a human merges. The merge is the record.")}
+        <div class="sp-team-actors"><article><span class="sp-label">Human</span><h3>Assigns and merges</h3><p>Sets the task and picks the assignee. The work lead reads the proposal and decides whether it enters the base.</p></article><article><span class="sp-label">Claude Code</span><h3>Prepares the proposal</h3><p>At the start of a session it pulls the latest changes and shows what is assigned. It takes a task, works on a separate branch, opens a proposal to the lead with one command and sees the checks' verdict.</p></article><article><span class="sp-label">Hermes</span><h3>Runs its own board</h3><p class="sp-fact"><b>On its board for a single project, Hermes has closed 381 tasks.</b></p><p>The server agent has its own task board, shared across all its projects: take, block, comment. A board overview arrives in Obsidian, in the work folder.</p></article></div>
+        <p class="sp-under-map">The checks are computed by code: a number absent from every run blocks the merge, and a judge model can hold it until the text is fixed. GitLab will not merge what has not passed. A closed task and an accepted claim are different outcomes.</p>
       </section>
-      <aside class="sp-common"><span class="sp-label">General information</span><h3>An entry point for everyone.</h3><p>The lab's front page in GitLab, the handbook, and the journal: how everything is set up, how to join a work, and what changed recently.</p></aside>
-      <footer class="sp-footer"><p>Personal tasks are in Operon. Team work is the work's issues and boards in GitLab. Drafts stay in the notes/ of your work.</p><nav><a href="https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md" target="_blank" rel="noopener">How to set it up ↗</a></nav><small>The base address comes in a message from the access bot.</small></footer>
+      <aside class="sp-common"><span class="sp-label">Shared information</span><h3>One entry point for everyone.</h3><p>The handbook: how everything works and the rulebook for records. The journal: what changed in how we work, and when. Servers: where to compute and how to get access. All three are open to anyone signed in.</p></aside>
+      <footer class="sp-footer"><p>Personal tasks and drafts live in Obsidian. Team work means tasks and proposals in GitLab.</p><nav><a href="#surface/obsidian">Obsidian and the lab tree ↗</a><a href="#memory">Map of shared knowledge ↗</a></nav><small>Access is granted by the lab's Telegram bot: guest, student, researcher or direction lead.</small></footer>
     </div>`;
   }
 
@@ -122,5 +122,5 @@ window.LAB_SURFACE_PAGES = (() => {
     root.querySelectorAll('[data-sp-map]').forEach(map => observer.observe(map));
     frame = requestAnimationFrame(draw);
   }
-  return {header, node, wires, section, page:id => ({mempalace, tasks}[id]?.() || ''), bind, disconnect};
+  return {header, node, wires, section, page:id => ({mempalace, yonote}[id]?.() || ''), bind, disconnect};
 })();

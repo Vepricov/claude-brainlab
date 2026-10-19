@@ -66,6 +66,8 @@ function build() {
   for (const [file, globalName, group] of [
     ["research-loop-data", "RESEARCH_LOOP", "research-shared"],
     ["atlas-public", "LAB_ATLAS_DATA", "registry"],
+    ["setup-data", "LAB_SETUP", "setup"],
+    ["hub-data", "LAB_HUB", "hub-data"],
   ]) {
     const source = fs.readFileSync(path.join(site, `data/${file}.js`), "utf8");
     const data = JSON.parse(source.slice(source.indexOf("=") + 1).trim().replace(/;$/, ""));
@@ -86,6 +88,9 @@ function build() {
     english = english.replaceAll(ru, en);
   }
   english = english.replace(/<script src="(?!language\.js)([^"]+)"/g, '<script src="en/$1"');
+  // Scripts without Russian text are served from en/ unchanged, so every script tag resolves.
+  for (const [, src] of template.matchAll(/<script src="(?!language\.js)([^"]+)"/g))
+    if (!outputs.has(`en/${src}`)) outputs.set(`en/${src}`, fs.readFileSync(path.join(site, src), "utf8"));
   outputs.set("index.html", english);
   outputs.set("ru/index.html", template.replace("<!-- LOCALE_BASE -->", '<base href="../">'));
   if (missing.size && !preview) throw new Error(`Incomplete translations: ${[...missing].map(([g, ids]) => `${g}: ${ids.size}`).join(", ")}`);

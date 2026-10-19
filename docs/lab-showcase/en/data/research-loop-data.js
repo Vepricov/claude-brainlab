@@ -3,181 +3,186 @@ window.RESEARCH_LOOP = {
   "shared": {
     "id": "memory",
     "number": "00",
-    "title": "Lab GitLab",
-    "verb": "A shared GitHub for ideas",
-    "result": "A verifiable history of hypotheses, experiments, proofs, and decisions",
+    "title": "Knowledge base in GitLab",
+    "verb": "Shared laboratory knowledge",
+    "result": "Claims, runs and proofs as files in git: every number has an address, and everything enters main through a proposal",
     "color": "#b9ff66",
     "registryProcessIds": [
       "knowledge-maintenance"
     ],
-    "purpose": "The Lab GitLab connects research and literature. Personal notes live in Obsidian, agent context in MemPalace, shared assignments in the work's issues in GitLab.",
+    "purpose": "The lab knowledge base is git and nothing but git: every work has its own repository in the lab GitLab, a claim is a folder claims/<CODE>/, and runs, series and derivations are files inside it. The agent never writes to the base directly: it opens a proposal, checks review it, and the work lead merges it. The merge is the record. There is no separate database on the side.",
     "when": [
-      "Before starting new work, to avoid repeating what has already been done.",
-      "After a confirmed result, decision, or theoretical derivation.",
-      "When a researcher or agent needs the full context of a research area."
+      "Before new work: see what has already been tested and how it ended, instead of repeating it.",
+      "After a run, a series or a proof: put the result under its claim through a proposal.",
+      "When a person or an agent needs the full context of a work: it all lives in the work's clone, with log addresses."
     ],
     "destinations": [
       {
-        "name": "Lab GitLab",
-        "what": "Shared scientific records with explicit types",
-        "why": "The laboratory's authoritative record of knowledge and its supporting evidence"
+        "name": "Work in GitLab",
+        "what": "claims/: claims, series, runs, derivations, figures",
+        "why": "Shared knowledge that entered only by merging a proposal"
       },
       {
-        "name": "Obsidian",
-        "what": "Personal explanations, drafts, and a research journal",
-        "why": "An individual researcher's memory"
+        "name": "Private folders of a work",
+        "what": "notes/, daily/, runs/ in the same ~/brainlab clone",
+        "why": "Drafts and logs next to the work, excluded from git"
       },
       {
         "name": "MemPalace",
-        "what": "The agent's working context and history",
-        "why": "Continuity between sessions"
+        "what": "Agent diary, verbatim words and decisions, a graph of links",
+        "why": "The agent's private memory across sessions, not the shared base"
       }
     ],
     "tools": [
       {
         "id": "lab-knowledge",
-        "title": "Lab GitLab",
+        "title": "Knowledge base in GitLab",
         "type": "Shared system",
-        "role": "The lab's shared research memory in git: a person reads it in GitLab and in Obsidian, an agent in the ~/brainlab clone. Here you can find out what has already been tried, what a conclusion rests on, and which questions are open. The base brings together paper analyses and the lab's own work, keeping the source and state of each piece of knowledge.",
-        "when": "Before new work, to avoid repeating completed checks. After a result, to save it with its relationships and provenance when the record type requires them.",
+        "role": "The shared base answers what the lab hypothesized, how it tested it and what it got, and gives the address of every number.",
+        "when": "Before new work, so as not to repeat what was tested; after a run or a proof, to put it under a claim through a proposal.",
         "inputs": [
-          "A question, topic, or project ID. A project filter is optional when searching the entire library.",
-          "For a new record: its content and actual type, such as a claim, experiment, measurement, proof, decision, or journal entry.",
-          "A source and related records when the type requires them. A draft hypothesis or unfinished experiment does not need an invented result.",
-          "Access to the project. Retrying a write uses the same operation key."
+          "work and claim",
+          "branch claim/<H-code>",
+          "run pages from the recorder",
+          "Developer role for writing"
         ],
         "inside": [
-          "A paper gets a record with bibliographic details and sections grouped by meaning. Its claims are stored separately with their wording, conditions, location in the paper, and relationships. A quotation is optional; a paraphrase is acceptable.",
-          "The laboratory's work starts with a testable claim. An experiment stores its protocol and status, a measurement stores numbers and their provenance, and a proof stores assumptions and a conclusion. These records link to the claim and help assess it.",
-          "Decisions, observations, terms, and resources have their own types. Failed runs and unfinished checks are also saved with their actual status.",
-          "There is no separate service or index: search runs over the tree itself. That is git grep or ripgrep over ~/brainlab, Obsidian search, and GitLab search.",
-          "Results from both search branches are merged. A Jina reranker refines their order, and graph traversal adds related records, such as the experiment and measurement behind a claim.",
-          "Search returns files: claims claims/H-XXX/, runs, series, and paper analyses. The agent can open the needed file in full, compare results, or check the grounds for a decision in git log and in merge request discussions. The agent's model writes the connected explanation.",
-          "Writes are checked for permissions, fields, and relationships. Each record receives an ID and a change history, and the calling agent reads it back. A failed operation cannot count as successful completion of the whole workflow."
+          "every work has its own repository, a claim is a folder claims/<CODE>/",
+          "push to main is closed to everyone: a change enters only by merging a proposal",
+          "git push from a branch opens a proposal by itself and assigns the work lead",
+          "on a GitLab event, the gates check numbers against runs, plus codes, links and deletions",
+          "a prose judge, as a separate status, blocks the merge on filler or a stretched conclusion",
+          "group front pages are rebuilt from the repositories after every push to main"
         ],
         "outputs": [
-          "A finding with an ID, source, and status: a draft, a claim being tested, or a conclusion with supporting grounds.",
-          "A chain from the question and protocol to the result, with links to claims in external papers.",
-          "A new record with its contents verified, or a specific reason the write failed."
+          "a claim with series, runs and log addresses",
+          "a merged proposal as the record",
+          "a gate verdict with a named finding"
         ],
-        "writes": "Two kinds of shared repositories: lab works and theme literature. Personal notes/, daily/, and runs/ are excluded through .git/info/exclude and stay on the machine.",
+        "writes": "Work repositories in the lab GitLab; theme literature and service repositories take a direct push to main. Private notes/, daily/, runs/ stay on the machine.",
         "gates": [
-          "Writes are limited to accessible projects. Personal drafts are not shared automatically.",
-          "Saving a claim does not make it true. Its status depends on the supporting grounds.",
-          "After a write, check the fields and relationships, not just the existence of an ID."
+          "Only the work lead, or an agent on their word, can merge",
+          "Red gates and unresolved findings block the merge; the full list is in the “What the base rejects” block"
         ],
         "limits": [
-          "Compare search results with their sources and record status.",
-          "The shared database holds project knowledge. Personal drafts are not shared automatically."
+          "tasks, boards and private memory are not the base: they are GitLab issues, hermes kanban and MemPalace",
+          "someone else's paper or a closed task does not support our claim",
+          "the gates judge the change, not the whole work: the sweep.py pass hunts for a work's old debts",
+          "green gates do not catch a change made on a stale clone: git pull before review"
         ],
         "links": [
           {
-            "label": "Guide to connecting to the Lab GitLab",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+            "label": "Why the base lives in git: the owner's words",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/%D0%97%D0%90%D0%A7%D0%95%D0%9C.md"
+          },
+          {
+            "label": "lab-knowledge skill",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
           }
         ],
         "adoption": {
           "kind": "internal",
-          "invoke": "Through a connected runtime",
-          "installNote": "The laboratory service is private. Only its contract in docs/knowledge-base.md is public; the owner provides the connection address and key."
+          "invoke": "lab sync, then plain git",
+          "installNote": "The lab GitLab is closed to outsiders: the access bot in Telegram issues the account and the git key, and the installer docs/lab/install.sh from the open repository adds the lab command and builds the tree."
         },
-        "purpose": "The lab's shared research memory in git: a person reads it in GitLab and in Obsidian, an agent in the ~/brainlab clone. Here you can find out what has already been tried, what a conclusion rests on, and which questions are open. The base brings together paper analyses and the lab's own work, keeping the source and state of each piece of knowledge.",
+        "purpose": "The shared base answers what the lab hypothesized, how it tested it and what it got, and gives the address of every number.",
         "capabilities": [
-          "A paper gets a record with bibliographic details and sections grouped by meaning. Its claims are stored separately with their wording, conditions, location in the paper, and relationships. A quotation is optional; a paraphrase is acceptable.",
-          "The laboratory's work starts with a testable claim. An experiment stores its protocol and status, a measurement stores numbers and their provenance, and a proof stores assumptions and a conclusion. These records link to the claim and help assess it.",
-          "Decisions, observations, terms, and resources have their own types. Failed runs and unfinished checks are also saved with their actual status.",
-          "There is no separate service or index: search runs over the tree itself. That is git grep or ripgrep over ~/brainlab, Obsidian search, and GitLab search.",
-          "Results from both search branches are merged. A Jina reranker refines their order, and graph traversal adds related records, such as the experiment and measurement behind a claim.",
-          "Search returns files: claims claims/H-XXX/, runs, series, and paper analyses. The agent can open the needed file in full, compare results, or check the grounds for a decision in git log and in merge request discussions. The agent's model writes the connected explanation.",
-          "Writes are checked for permissions, fields, and relationships. Each record receives an ID and a change history, and the calling agent reads it back. A failed operation cannot count as successful completion of the whole workflow."
+          "every work has its own repository, a claim is a folder claims/<CODE>/",
+          "push to main is closed to everyone: a change enters only by merging a proposal",
+          "git push from a branch opens a proposal by itself and assigns the work lead",
+          "on a GitLab event, the gates check numbers against runs, plus codes, links and deletions",
+          "a prose judge, as a separate status, blocks the merge on filler or a stretched conclusion",
+          "group front pages are rebuilt from the repositories after every push to main"
         ],
-        "useCases": "Before new work, to avoid repeating completed checks. After a result, to save it with its relationships and provenance when the record type requires them.",
+        "useCases": [
+          "Before new work, so as not to repeat what was tested; after a run or a proof, to put it under a claim through a proposal."
+        ],
         "outcomes": [
-          "A finding with an ID, source, and status: a draft, a claim being tested, or a conclusion with supporting grounds.",
-          "A chain from the question and protocol to the result, with links to claims in external papers.",
-          "A new record with its contents verified, or a specific reason the write failed."
+          "a claim with series, runs and log addresses",
+          "a merged proposal as the record",
+          "a gate verdict with a named finding"
         ],
-        "afterSetup": "Linked project history with accessible sources",
+        "afterSetup": "a claim with series, runs and log addresses",
         "important": [
-          "Compare search results with their sources and record status.",
-          "The shared database holds project knowledge. Personal drafts are not shared automatically."
+          "tasks, boards and private memory are not the base: they are GitLab issues, hermes kanban and MemPalace",
+          "someone else's paper or a closed task does not support our claim"
         ],
         "nonInstallable": false,
         "usedBy": [
           {
             "name": "All laboratory members",
-            "role": "Read shared history and publish only the verified part of their personal work"
+            "role": "read the tree of works and send their own changes as proposals"
           },
           {
-            "name": "Codex, Claude, and Hermes",
-            "role": "Restore context before planning and write only within their assigned scope"
+            "name": "Claude Code, Codex and Hermes",
+            "role": "read the clone before planning and write on branches; a human merges"
           }
         ],
         "relations": [
           {
             "toolId": "lab-knowledge-skill",
-            "label": "the skill makes the record through a merge request",
+            "label": "the skill teaches the agent to write to the base",
             "title": "lab-knowledge"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
         "visual": {
           "kind": "topology",
-          "label": "The retrieval model and the response model do different jobs",
+          "label": "One work, one repository; a record is a merge",
           "nodes": [
-            "The agent's question and an accessible project",
-            "git grep and ripgrep: search over the tree",
-            "Record relationships and Jina: candidate ranking",
-            "Result: files, H/E/S codes, and history",
-            "The calling agent's model: an explanation of the findings",
-            "Publication: confirmed object → contract validation → save → read back"
+            "Clone in ~/brainlab",
+            "Branch claim/<H-code>",
+            "Proposal",
+            "Gates: numbers and prose",
+            "Merge by the work lead",
+            "the work's main"
           ]
         },
         "storage": [
-          "Git stores claims, runs, series, links between them, and the history of changes.",
-          "The search index adds vectors to the text; it does not replace the original records.",
-          "Search and write scope are limited by the calling user's or agent's access."
-        ],
-        "start": "Run lab here <work> and tell the agent the work. Ask it to find earlier results or to write up a new fact as a merge request with a source."
+          "GitLab CE 17.11 on the lab server; measured 18-10-2026: 1.6 GB of data, 1 GB of it repositories",
+          "every member, and Hermes on do-vpn, has the same ~/brainlab tree of clones at the same paths",
+          "nightly GitLab backup: seven nights on the server and the last three on do-vpn",
+          "private notes/, daily/, runs/ are excluded via .git/info/exclude and never reach GitLab"
+        ]
       },
       {
         "id": "obsidian-project-memory",
         "title": "Obsidian project memory",
         "type": "Skill",
-        "role": "Maintains human-readable project memory and connects it to ongoing research.",
-        "when": "When you need to restore or update your personal project context.",
+        "role": "Maintains the human-readable project memory: the card, the plan and the decisions.",
+        "when": "When the private context of a work needs to be restored or updated.",
         "inputs": [
-          "Project path",
+          "path of the work in the tree",
           "Current state",
           "Decisions and next steps"
         ],
         "inside": [
-          "Finds the canonical project hub",
-          "Updates only confirmed sections",
-          "Preserves wikilinks and project structure"
+          "finds the project card",
+          "updates only confirmed sections",
+          "keeps wikilinks and note structure intact"
         ],
         "outputs": [
-          "An up-to-date project note"
+          "an up-to-date project note"
         ],
-        "writes": "The member's personal Obsidian vault",
+        "writes": "Private folders of a work in the ~/brainlab tree: notes/ and daily/, excluded from git",
         "gates": [
-          "Correct routing through obsidian-projects.json"
+          "the note path follows from the work path: <work>/notes/"
         ],
         "limits": [
-          "A personal note is not shared evidence"
+          "a private note is not a base record: only a proposal to claims/ goes to GitLab"
         ],
         "links": [
           {
@@ -187,7 +192,7 @@ window.RESEARCH_LOOP = {
         ],
         "adoption": {
           "kind": "toolkit-skill",
-          "invoke": "$obsidian-project-memory",
+          "invoke": "/obsidian-project-memory",
           "install": [
             "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
             "mkdir -p ~/.claude/skills",
@@ -195,86 +200,81 @@ window.RESEARCH_LOOP = {
             "# restart Claude Code, then use /obsidian-project-memory"
           ]
         },
-        "purpose": "Maintains readable project memory and connects it to ongoing research.",
+        "purpose": "Maintains the human-readable project memory: the card, the plan and the decisions.",
         "capabilities": [
-          "Finds the canonical project hub",
-          "Updates only confirmed sections",
-          "Preserves wikilinks and project structure"
+          "finds the project card",
+          "updates only confirmed sections",
+          "keeps wikilinks and note structure intact"
         ],
-        "useCases": "When you need to restore or update your personal project context.",
+        "useCases": [
+          "When the private context of a work needs to be restored or updated."
+        ],
         "outcomes": [
-          "An up-to-date project note"
+          "an up-to-date project note"
         ],
-        "afterSetup": "An up-to-date project note",
+        "afterSetup": "an up-to-date project note",
         "important": [
-          "A personal note is not shared evidence"
+          "a private note is not a base record: only a proposal to claims/ goes to GitLab"
         ],
         "nonInstallable": false,
         "usedBy": [
           {
             "name": "All laboratory members",
-            "role": "Read shared history and publish only the verified part of their personal work"
+            "role": "read the tree of works and send their own changes as proposals"
           },
           {
-            "name": "Codex, Claude, and Hermes",
-            "role": "Restore context before planning and write only within their assigned scope"
+            "name": "Claude Code, Codex and Hermes",
+            "role": "read the clone before planning and write on branches; a human merges"
           }
         ],
         "relations": [
           {
             "toolId": "lab-knowledge-skill",
-            "label": "Passes only explicitly approved material to the shared database",
+            "label": "sends shared things as a proposal, keeps private ones in notes/",
             "title": "lab-knowledge"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
-        },
-        "skillId": "obsidian-project-memory",
-        "skyTitle": "Obsidian",
-        "cardTitle": "obsidian-project-memory",
-        "start": "Name the project and ask the agent to save its current state, decisions, and next steps."
+        }
       },
       {
         "id": "mempalace",
         "title": "MemPalace",
         "type": "Agent memory",
-        "role": "Long-term agent memory of your work. It helps a new conversation recover a decision, the cause of a bug, or an unfinished plan along with the original context. The connected agent chooses what to save and what to search for.",
+        "role": "The agent's private long-term memory: a session diary, verbatim words and decisions, a graph of links.",
         "when": "Before answering questions about past work and when resuming a long task.",
         "inputs": [
-          "A meaningful event: a decision, the cause of a bug, a result, or a next step.",
-          "For retrieval: a short query and, if known, the project and aspect of the work."
+          "search query",
+          "project wing"
         ],
         "inside": [
-          "During work, the agent saves material it will need later. A checkpoint hook reminds it to do so; the reminder itself is not a saved record.",
-          "The diary receives a short dated summary. A separate fragment can hold the exact wording of a decision or command. The graph stores relationships between methods, projects, and events.",
-          "Fragments have addresses: a wing identifies the project, a room the aspect of work, and a drawer the individual record. These boundaries help retrieve the right history without mixing projects.",
-          "The query is compared with vectors of saved text. Word matches refine the ranking; a separate graph query retrieves relationships between entities.",
-          "The tool returns saved text and its provenance. The agent reads the source, checks changeable facts against the current files, and then resumes work."
+          "diary: one compressed line per session",
+          "drawers of verbatim content: the owner's words, decisions with reasons, numbers",
+          "knowledge graph: links between entities",
+          "wings are named after folders of the ~/brainlab tree"
         ],
         "outputs": [
-          "A recovered decision with its rationale and original wording.",
-          "A diary summary and separate fragments with IDs, plus confirmed relationships between entities."
+          "Relevant context for the agent"
         ],
-        "writes": "Separate long-term memory",
+        "writes": "The agent's own local memory",
         "gates": [
-          "After saving, the agent reads the record back.",
-          "Each retrieved fact is checked for its source, date, and current relevance."
+          "changing facts are rechecked against the current source"
         ],
         "limits": [
-          "Memory contains only what was actually saved. It does not guarantee a complete archive of every conversation.",
-          "An old message or decision does not confirm the current state of an experiment. Scientific grounds are checked in the source artifacts and in the Lab GitLab."
+          "not the shared base: science goes into the work as a proposal",
+          "a paraphrase loses exactly what people come back for, so what matters is stored verbatim"
         ],
         "links": [
           {
@@ -291,154 +291,148 @@ window.RESEARCH_LOOP = {
           ],
           "installNote": "If the toolkit was installed through install/setup.sh, the mempalace server is already configured in settings.json and the second line is unnecessary."
         },
-        "purpose": "Long-term agent memory of your work. It helps a new conversation recover a decision, the cause of a bug, or an unfinished plan along with the original context. The connected agent chooses what to save and what to search for.",
+        "purpose": "The agent's private long-term memory: a session diary, verbatim words and decisions, a graph of links.",
         "capabilities": [
-          "During work, the agent saves material it will need later. A checkpoint hook reminds it to do so; the reminder itself is not a saved record.",
-          "The diary receives a short dated summary. A separate fragment can hold the exact wording of a decision or command. The graph stores relationships between methods, projects, and events.",
-          "Fragments have addresses: a wing identifies the project, a room the aspect of work, and a drawer the individual record. These boundaries help retrieve the right history without mixing projects.",
-          "The query is compared with vectors of saved text. Word matches refine the ranking; a separate graph query retrieves relationships between entities.",
-          "The tool returns saved text and its provenance. The agent reads the source, checks changeable facts against the current files, and then resumes work."
+          "diary: one compressed line per session",
+          "drawers of verbatim content: the owner's words, decisions with reasons, numbers",
+          "knowledge graph: links between entities",
+          "wings are named after folders of the ~/brainlab tree"
         ],
-        "useCases": "Before answering questions about past work and when resuming a long task.",
+        "useCases": [
+          "Before answering questions about past work and when resuming a long task."
+        ],
         "outcomes": [
-          "A recovered decision with its rationale and original wording.",
-          "A diary summary and separate fragments with IDs, plus confirmed relationships between entities."
+          "Relevant context for the agent"
         ],
         "afterSetup": "Relevant context for the agent",
         "important": [
-          "Memory contains only what was actually saved. It does not guarantee a complete archive of every conversation.",
-          "An old message or decision does not confirm the current state of an experiment. Scientific grounds are checked in the source artifacts and in the Lab GitLab."
+          "not the shared base: science goes into the work as a proposal",
+          "a paraphrase loses exactly what people come back for, so what matters is stored verbatim"
         ],
         "nonInstallable": false,
         "usedBy": [
           {
             "name": "All laboratory members",
-            "role": "Read shared history and publish only the verified part of their personal work"
+            "role": "read the tree of works and send their own changes as proposals"
           },
           {
-            "name": "Codex, Claude, and Hermes",
-            "role": "Restore context before planning and write only within their assigned scope"
+            "name": "Claude Code, Codex and Hermes",
+            "role": "read the clone before planning and write on branches; a human merges"
           }
         ],
         "relations": [
           {
             "toolId": "lab-knowledge",
-            "label": "Used together in the same workflow",
-            "title": "Lab GitLab"
+            "label": "private memory next to the shared base",
+            "title": "Knowledge base in GitLab"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
-        },
-        "start": "For example: “Recall why we rejected this approach and find the original decision.” The agent finds the event, reads it, and checks what has changed since then.",
-        "storage": [
-          "In the verified installation, text and vectors are stored in local Chroma, while the graph and the validity periods of its relationships are stored in SQLite.",
-          "The diary supports the compact AAAK format. Exact source fragments are saved as readable text.",
-          "MemPalace keeps the agent's history separate from Obsidian Markdown notes and from shared scientific records in the Lab GitLab."
-        ]
+        }
       },
       {
         "id": "capability-registry",
-        "title": "Capability Registry",
-        "type": "Machine-readable registry",
-        "role": "Gives people and agents a shared map of available skills, agents, commands, MCP tools, services, and the rules for using them.",
-        "when": "When starting a new agent, choosing who should do the work, or finding the right tool.",
+        "title": "Skill catalog",
+        "type": "Kit registry",
+        "role": "Gives people and agents one map of the skills, agents, commands and hooks in the claude-brainlab kit: what each does and when it fires.",
+        "when": "When starting a new agent, choosing who does a task, or looking for the right tool.",
         "inputs": [
-          "Audited repository manifests",
-          "Skill and agent descriptions",
-          "MCP schemas",
-          "project bindings"
+          "the skills/, agents/, commands/, hooks/ folders of the claude-brainlab repository",
+          "each skill's description in SKILL.md"
         ],
         "inside": [
-          "Builds a unified inventory",
-          "Links each capability to research workflows",
-          "Preserves the owner, inputs, outputs, checks, limitations, and source URL",
-          "Marks local-only, archived, and unverified components"
+          "as of 19-10-2026 the kit has 77 skills, 15 agents, 34 commands and 9 hook files",
+          "SKILLS.md describes every skill: what it does and which words trigger it",
+          "the skill-forced-eval.js hook picks a matching skill on every prompt",
+          "this site builds its own registry from the same folders"
         ],
         "outputs": [
-          "A searchable registry of 206 capabilities",
+          "skill catalog with triggers",
           "Context for choosing a tool"
         ],
-        "writes": "Static atlas inventory",
+        "writes": "Files of the claude-brainlab repository; the installer lays them out in ~/.claude",
         "gates": [
-          "Data is rebuilt from source",
-          "Outdated components are marked separately"
+          "a skill is edited in the repository, not in ~/.claude: the next install overwrites a manual edit"
         ],
         "limits": [
-          "The site currently reads the registry directly, but Hermes does not yet receive it automatically at startup",
-          "The registry describes availability, not whether a component has actually run"
+          "the catalog describes availability, not whether something actually ran",
+          "Hermes on do-vpn has its own profile skills"
         ],
         "links": [
           {
-            "label": "Knowledge model · exact source is private",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+            "label": "SKILLS.md catalog",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/SKILLS.md"
           },
           {
             "label": "GitHub repository",
-            "url": "https://github.com/Vepricov/claude-brainlab"
+            "url": "https://github.com/brain-lab-research/claude-brainlab"
           }
         ],
         "adoption": {
           "kind": "internal",
-          "invoke": "Through a connected runtime"
+          "invoke": "Open SKILLS.md in the repository",
+          "installNote": "The catalog lives in the open claude-brainlab repository and is installed with the kit."
         },
-        "purpose": "Gives people and agents a shared map of available skills, agents, commands, MCP tools, services, and the rules for using them.",
+        "purpose": "Gives people and agents one map of the skills, agents, commands and hooks in the claude-brainlab kit: what each does and when it fires.",
         "capabilities": [
-          "Builds a unified inventory",
-          "Links each capability to research workflows",
-          "Preserves the owner, inputs, outputs, checks, limitations, and source URL",
-          "Marks local-only, archived, and unverified components"
+          "as of 19-10-2026 the kit has 77 skills, 15 agents, 34 commands and 9 hook files",
+          "SKILLS.md describes every skill: what it does and which words trigger it",
+          "the skill-forced-eval.js hook picks a matching skill on every prompt",
+          "this site builds its own registry from the same folders"
         ],
-        "useCases": "When starting a new agent, choosing who should do the work, or finding the right tool.",
+        "useCases": [
+          "When starting a new agent, choosing who does a task, or looking for the right tool."
+        ],
         "outcomes": [
-          "A searchable registry of 206 capabilities",
+          "skill catalog with triggers",
           "Context for choosing a tool"
         ],
-        "afterSetup": "A searchable registry of 206 capabilities",
+        "afterSetup": "skill catalog with triggers",
         "important": [
-          "The site currently reads the registry directly, but Hermes does not yet receive it automatically at startup",
-          "The registry describes availability, not whether a component has actually run"
+          "the catalog describes availability, not whether something actually ran",
+          "Hermes on do-vpn has its own profile skills"
         ],
         "nonInstallable": false,
         "usedBy": [
           {
             "name": "All laboratory members",
-            "role": "Read shared history and publish only the verified part of their personal work"
+            "role": "read the tree of works and send their own changes as proposals"
           },
           {
-            "name": "Codex, Claude, and Hermes",
-            "role": "Restore context before planning and write only within their assigned scope"
+            "name": "Claude Code, Codex and Hermes",
+            "role": "read the clone before planning and write on branches; a human merges"
           }
         ],
         "relations": [
           {
             "toolId": "lab-knowledge",
-            "label": "Used together in the same workflow",
-            "title": "Lab GitLab"
+            "label": "kit skills write to the base through git",
+            "title": "Knowledge base in GitLab"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
@@ -446,273 +440,259 @@ window.RESEARCH_LOOP = {
           "kind": "routes",
           "label": "How an agent finds the right capability",
           "nodes": [
-            "Capability registry",
-            "Processes",
-            "Project constraints",
+            "Human request",
+            "skill-forced-eval.js",
+            "Skill catalog",
             "Executor"
           ]
-        },
-        "start": "Open Atlas search and describe the action in your own words. The resulting dossier shows a suitable tool, when to use it, and its source."
+        }
       },
       {
         "id": "lab-knowledge-skill",
         "title": "lab-knowledge",
         "type": "Skill",
-        "role": "Instructions for safely using the shared database: read by default, show an exact preview before writing, and read the result back afterward.",
-        "when": "When querying the laboratory's shared memory or explicitly publishing the verified part of a personal draft.",
+        "role": "The instructions the agent follows to read and write the base: search the clone, a page under the claim, a proposal, the gates.",
+        "when": "When you need to ask what the lab knows, or put a run, a series, a derivation or a new claim into a work.",
         "inputs": [
-          "A human question or draft",
-          "The exact project",
-          "Current permissions",
-          "Explicit confirmation for every write"
+          "a question or a work result",
+          "the work's clone in the tree",
+          "run pages from the recorder",
+          "a human's word to merge"
         ],
         "inside": [
-          "Chooses search or context retrieval",
-          "Separates shared scientific knowledge from personal notes and tasks",
-          "Checks for a possible duplicate",
-          "Shows the project, type, wording, and provenance when required",
-          "after confirmation it commits and runs git push, and the merge request opens by itself"
+          "searches the clone with grep and git log, not through a service",
+          "finds the work, the claim, the series and the open claim/<H-code> branch",
+          "moves runs from the _runs/ shelf under the claim and adds what is seen",
+          "takes the next free code as the highest across all branches",
+          "runs git push and reads the gate verdict via lab checks"
         ],
         "outputs": [
-          "An answer with relationships, gaps, and accessible sources",
-          "A confirmed record and its ID or public code",
-          "A specific blocker when the project is ambiguous, a duplicate exists, or access is denied"
+          "an answer with links to pages and addresses of numbers",
+          "a proposal to the work, assigned to the work lead",
+          "a named finding if the gates are red"
         ],
-        "writes": "Only merge requests into a work, merged by a person; the source Obsidian draft stays in place.",
+        "writes": "Files in the work's claims/ via a proposal; the skill stores nothing itself.",
         "gates": [
-          "Queries do not change the database",
-          "Frontmatter does not count as permission",
-          "Access denial is not bypassed with another key",
-          "Every write is verified by reading it back"
+          "a question to the base changes nothing",
+          "the canon.md rulebook is read before writing",
+          "a run without the recorder is not retyped by hand",
+          "a human merges, or an agent on their word"
         ],
         "limits": [
-          "The skill stores nothing itself",
-          "does not create a second copy: Obsidian and GitLab are the same ~/brainlab tree"
+          "the skill stores nothing itself",
+          "does not paraphrase the rules: refers to the rulebook by rule name"
         ],
         "links": [
           {
-            "label": "Skill instructions · exact source is private",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+            "label": "lab-knowledge skill",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
           },
           {
-            "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+            "label": "How to write in git: branch, page, proposal",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/references/writing-in-git.md"
+          },
+          {
+            "label": "Run recorder lab_run.py",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
           }
         ],
         "adoption": {
-          "kind": "internal",
-          "invoke": "Through a connected runtime",
-          "installNote": "The skills/lab-knowledge/ skill works with the Lab GitLab; access to it is granted by the Telegram bot."
+          "kind": "toolkit-skill",
+          "invoke": "/lab-knowledge",
+          "installNote": "Lives in the open claude-brainlab repository together with the run recorder lab_run.py and is installed by the installer. There is deliberately no copy in the handbook: two copies would drift apart."
         },
-        "purpose": "Instructions for safely using the shared database: read by default, show an exact preview before writing, and read the result back afterward.",
+        "purpose": "The instructions the agent follows to read and write the base: search the clone, a page under the claim, a proposal, the gates.",
         "capabilities": [
-          "Chooses search or context retrieval",
-          "Separates shared scientific knowledge from personal notes and tasks",
-          "Checks for a possible duplicate",
-          "Shows the project, type, wording, and provenance when required",
-          "after confirmation it commits and runs git push, and the merge request opens by itself"
+          "searches the clone with grep and git log, not through a service",
+          "finds the work, the claim, the series and the open claim/<H-code> branch",
+          "moves runs from the _runs/ shelf under the claim and adds what is seen",
+          "takes the next free code as the highest across all branches",
+          "runs git push and reads the gate verdict via lab checks"
         ],
-        "useCases": "When querying the laboratory's shared memory or explicitly publishing the verified part of a personal draft.",
+        "useCases": [
+          "When you need to ask what the lab knows, or put a run, a series, a derivation or a new claim into a work."
+        ],
         "outcomes": [
-          "An answer with relationships, gaps, and accessible sources",
-          "A confirmed record and its ID or public code",
-          "A specific blocker when the project is ambiguous, a duplicate exists, or access is denied"
+          "an answer with links to pages and addresses of numbers",
+          "a proposal to the work, assigned to the work lead",
+          "a named finding if the gates are red"
         ],
-        "afterSetup": "An answer with relationships, gaps, and accessible sources",
+        "afterSetup": "an answer with links to pages and addresses of numbers",
         "important": [
-          "The skill stores nothing itself",
-          "does not create a second copy: Obsidian and GitLab are the same ~/brainlab tree"
+          "the skill stores nothing itself",
+          "does not paraphrase the rules: refers to the rulebook by rule name"
         ],
         "nonInstallable": false,
         "usedBy": [
           {
             "name": "All laboratory members",
-            "role": "Read shared history and publish only the verified part of their personal work"
+            "role": "read the tree of works and send their own changes as proposals"
           },
           {
-            "name": "Codex, Claude, and Hermes",
-            "role": "Restore context before planning and write only within their assigned scope"
+            "name": "Claude Code, Codex and Hermes",
+            "role": "read the clone before planning and write on branches; a human merges"
           }
         ],
         "relations": [
           {
             "toolId": "lab-knowledge",
-            "label": "reads the tree and writes through a merge request",
-            "title": "Lab GitLab"
+            "label": "reads the clone and writes through a proposal",
+            "title": "Knowledge base in GitLab"
           },
           {
             "toolId": "obsidian-project-memory",
-            "label": "Keeps the personal draft in Obsidian",
+            "label": "keeps private things in the work's notes/",
             "title": "Obsidian project memory"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "",
             "stageTitle": "Ask what is already known"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "",
           "stageTitle": "Ask what is already known"
         },
         "visual": {
           "kind": "path",
-          "label": "The skill controls calls but stores nothing itself",
+          "label": "The skill carries a change through to the merge but stores nothing itself",
           "nodes": [
-            "A question for shared memory or a personal draft",
-            "Search without writing",
-            "Preview and confirm the proposed record",
-            "Write the correct record type",
-            "Read the saved record back"
+            "Question or result",
+            "Reading the clone",
+            "Page under the claim",
+            "git push and gates",
+            "Merge by a human"
           ]
-        },
-        "skillId": "lab-knowledge",
-        "start": "Name the project and ask the agent to find earlier results or save a new claim with its source."
+        }
       },
       {
         "id": "memory-hooks",
         "title": "Memory hooks",
         "type": "Session hooks",
-        "role": "Remind the agent to save a meaningful result in the right place and verify the write. A checkpoint request does not itself mean the data has been saved.",
-        "when": "On session events configured in the current Codex or Claude Code client.",
+        "role": "They fire on their own, unasked: at session start they say where to write from here, and at the end of a turn they stop the agent and demand that what matters gets recorded.",
+        "when": "On every session: at start, on every prompt, before a file edit, at the end of a turn and on close.",
         "inputs": [
           "The current session and its working directory",
-          "Project routing from obsidian-projects.json"
+          "clones of the ~/brainlab tree and the descriptions of write locations in their READMEs"
         ],
         "inside": [
-          "session-start.js restores context at the start of a session",
-          "mempalace-obsidian-hook.py interrupts the workflow and asks the agent to record what happened; the agent decides what is worth saving",
-          "obsidian-daily-sync.py adds an entry to the correct project's vault diary",
-          "export-conversation.py saves a readable transcript to ~/.claude/logs/conversations",
-          "security-guard.js checks edits for exposed keys before a file is written"
+          "session-start.js and lab-where-am-i.py: path, time, git and which repository to write to from here",
+          "skill-forced-eval.js picks a skill for the prompt",
+          "security-guard.js, citation-validator.py and no-old-paths.py check an edit before the file is written",
+          "mempalace-obsidian-hook.py at the end of a turn: facts without a model, then Jev decides whether to interrupt",
+          "export-conversation.py saves a readable session transcript"
         ],
         "outputs": [
-          "A request to save meaningful context",
-          "Confirmed records in available stores, or an explicit pending status"
+          "a “what to record and where” line",
+          "a MemPalace entry",
+          "session transcript in markdown"
         ],
-        "writes": "The agent saves personal context in MemPalace and in the notes/ of its work. Only shared knowledge goes to the Lab GitLab, through a merge request that a person merges.",
+        "writes": "MemPalace and the local session log; the agent itself writes to the base, prompted by the hint",
         "gates": [
-          "What to save and where depends on the result and the owner's instructions.",
-          "After publication, the agent reads the object back. A failed write remains pending.",
-          "Personal tasks stay in Operon, and the Hermes queue is shown privately in Obsidian."
+          "what exactly to save is decided by the agent, which has the full context; the hook only stops it"
         ],
         "limits": [
-          "The hook writes nothing and does not confirm a record: the record is the merge of the merge request.",
-          "Installed configuration applies to new client connections. An existing session may need to reconnect."
+          "the hook prints only what changes; the standing rules live in ~/.claude/rules/checkpoint.md",
+          "the old transcript parsing by markup almost never fired in practice and was removed"
         ],
         "links": [
           {
-            "label": "Memory hook source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
+            "label": "Source of the end-of-turn hook",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
           },
           {
-            "label": "Project diary entry",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/obsidian-daily-sync.py"
+            "label": "Where to write from here",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/hooks/lab-where-am-i.py"
+          },
+          {
+            "label": "Old-path guard",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/hooks/no-old-paths.py"
           },
           {
             "label": "Session export",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/export-conversation.py"
-          },
-          {
-            "label": "How to enable it",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/hooks.json"
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/scripts/export-conversation.py"
           }
         ],
         "adoption": {
           "kind": "toolkit-qa",
-          "invoke": "Through the current client's hooks",
+          "invoke": "Registered in settings.json as SessionStart, UserPromptSubmit, PreToolUse, Stop and SessionEnd",
           "install": [
-            "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+            "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
             "cd ~/claude-brainlab",
             "bash install/bootstrap.sh",
             "bash install/setup.sh"
           ],
-          "installNote": "This requires the full installer: settings.json entries enable the hooks, and setup.sh fills in vault paths in scripts/mempalace-obsidian-hook.py."
+          "installNote": "Hooks are enabled by entries in settings.json, which setup.sh renders from a template; an edit made directly in ~/.claude lasts only until the next install."
         },
         "usedBy": [
           {
             "name": "Any agent in this setup",
-            "role": "Pauses and records the result"
+            "role": "learns where to write and stops to record the outcome"
           }
         ],
         "visual": {
           "kind": "path",
-          "label": "From a session event to a verified record",
+          "label": "Session start names the place, turn end demands a record",
           "nodes": [
-            "Session event",
-            "Select meaningful context",
-            "Choose the appropriate personal or shared store",
-            "Write within the assignment's scope",
-            "Read-back verification or pending status"
+            "Session start: where to write from here",
+            "Checking an edit before it is written",
+            "Turn end: facts and Jev",
+            "The agent identifies what to save",
+            "Base or MemPalace"
           ]
         },
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "After installing the hooks, continue working normally in your client. At a checkpoint, the agent receives a reminder to save a meaningful result.",
-        "capabilities": [
-          "session-start.js restores context at the start of a session",
-          "mempalace-obsidian-hook.py interrupts the workflow and asks the agent to record what happened; the agent decides what is worth saving",
-          "obsidian-daily-sync.py adds an entry to the correct project's vault diary",
-          "export-conversation.py saves a readable transcript to ~/.claude/logs/conversations",
-          "security-guard.js checks edits for exposed keys before a file is written"
-        ],
-        "outcomes": [
-          "A request to save meaningful context",
-          "Confirmed records in available stores, or an explicit pending status"
-        ],
-        "useCases": "On session events configured in the current Codex or Claude Code client.",
-        "important": [
-          "The hook writes nothing and does not confirm a record: the record is the merge of the merge request.",
-          "Installed configuration applies to new client connections. An existing session may need to reconnect."
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       },
       {
         "id": "obsidian-knowledge",
-        "title": "Setup documentation",
-        "type": "Vault structure",
-        "role": "Canonical instructions, incident analyses, and rules for using tools. They help reconstruct how a particular project or personal setup works.",
+        "title": "Handbook and journal",
+        "type": "Service repositories",
+        "role": "brainlab/handbook answers “how it is now”: tools, pipelines, the canon.md rulebook. brainlab/journal answers “what changed and when” in how we work.",
         "when": "Before changing an unfamiliar part of the system, and after learning something that may otherwise be forgotten.",
         "inputs": [
           "A question such as “How do we do this here?” or “Why was it built this way?”"
         ],
         "inside": [
-          "How workflows are organized: paper analysis, project watchers, experiment reporting, and the run queue",
-          "Incident analyses and pitfalls that required configuration changes",
-          "Vault conventions: obsidian-conventions.md",
-          "The canonical server list: general/servers.md"
+          "handbook/tools: GitLab, the lab command and git, proposal gates, Jev, Hermes",
+          "handbook/pipelines: how to enter a claim, literature, code and the work's manuscript",
+          "canon.md: 55 named writing rules, each with a “checked by” line",
+          "journal: what it was, what it is now, what to do differently, newest first"
         ],
         "outputs": [
-          "A practical answer explaining the established procedure, with a link to the analysis"
+          "a ready answer on how things are done here, with a link to the case analysis"
         ],
-        "writes": "Personal Obsidian: project knowledge goes to the mapped project in obsidian-projects.json; general instructions go to existing shared notes.",
+        "writes": "Direct push to main after git pull --rebase; the canon.md rulebook only through a proposal",
         "gates": [
-          "A note is added when work changes the state of the project, not after every task"
+          "write down what someone will be looking for a month from now: a number and its conditions, a decision and why, a dead end, a changed rule"
         ],
         "limits": [
-          "This is a personal vault. Only explicitly published material enters the laboratory's shared database"
+          "an outdated answer in the handbook is a bug, an outdated entry in the journal is history",
+          "direct writes have no gates and no judge: pull --rebase is the only protection against overwriting"
         ],
         "links": [],
         "adoption": {
-          "kind": "private",
-          "invoke": "Personal Obsidian vault",
-          "installNote": "The personal vault is not published. Use your existing notes and project mapping."
+          "kind": "internal",
+          "invoke": "~/brainlab/handbook and ~/brainlab/journal after lab sync",
+          "installNote": "Both repositories live in the lab GitLab and are open to everyone signed in; lab sync puts them at the root of the tree."
         },
         "usedBy": [
           {
@@ -723,37 +703,23 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "Open the relevant project's Knowledge folder, or ask the agent to find instructions for a particular setup.",
-        "capabilities": [
-          "How workflows are organized: paper analysis, project watchers, experiment reporting, and the run queue",
-          "Incident analyses and pitfalls that required configuration changes",
-          "Vault conventions: obsidian-conventions.md",
-          "The canonical server list: general/servers.md"
-        ],
-        "outcomes": [
-          "A practical answer explaining the established procedure, with a link to the analysis"
-        ],
-        "useCases": "Before changing an unfamiliar part of the system, and after learning something that may otherwise be forgotten.",
-        "important": [
-          "This is a personal vault. Only explicitly published material enters the laboratory's shared database"
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       },
       {
         "id": "connected-mcp",
         "title": "Connected MCP services",
         "type": "MCP servers",
-        "role": "Connections that let the agent use external systems: the Zotero library, MemPalace memory, Google documents, Miro boards, and the AlphaXiv catalog. Each connection has its own tools and permissions.",
+        "role": "Five external services the agent sees as tools: the Zotero library, MemPalace memory, Google documents, Miro boards and the AlphaXiv paper catalog.",
         "when": "When work extends beyond files on disk.",
         "inputs": [
           "A server configured in ~/.claude.json",
@@ -774,8 +740,8 @@ window.RESEARCH_LOOP = {
           "Each server is connected explicitly, and the agent sees only its permitted tools"
         ],
         "limits": [
-          "The laboratory's shared database is separate from this list: the local agent reaches it through a dedicated connection",
-          "Each service has its own pricing and limitations, which can interrupt work"
+          "the lab knowledge base is not on this list: it is git, not a service",
+          "every service has its own pricing and its own limits, and they surface at the worst possible moment"
         ],
         "links": [
           {
@@ -800,52 +766,36 @@ window.RESEARCH_LOOP = {
         },
         "usedBy": [
           {
-            "name": "local agent",
+            "name": "Local agent",
             "role": "Calls external services as regular tools"
           }
         ],
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "Choose a service, connect it to your client, and try a read operation. The available tools depend on your connections.",
-        "purpose": "Connections that let the agent use external systems: the Zotero library, MemPalace memory, Google documents, Miro boards, and the AlphaXiv catalog. Each connection has its own tools and permissions.",
-        "capabilities": [
-          "zotero: records, full text, PDF sections, and BibTeX without reading the live database directly",
-          "mempalace: agent memory and previous session history",
-          "google-workspace: documents and Drive, limited to document reading and writing",
-          "miro: boards for diagrams and alternatives",
-          "alphaXiv: paper search and a library mirror"
-        ],
-        "outcomes": [
-          "An external service response through a regular agent tool"
-        ],
-        "useCases": "When work extends beyond files on disk.",
-        "important": [
-          "The laboratory's shared database is separate from this list: the local agent reaches it through a dedicated connection",
-          "Each service has its own pricing and limitations, which can interrupt work"
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       },
       {
         "id": "plugins",
         "title": "Claude Code plugins",
         "type": "Plugins",
-        "role": "Client extensions that add skills and connections for documents, GitHub, the terminal, and language tooling. The set depends on the user's installation.",
+        "role": "Five enabled extensions: context compaction by Jev, office documents, GitHub, the Warp terminal and the Swift language server.",
         "when": "Always: they add tools to every session.",
         "inputs": [
           "The list of enabled plugins in settings.json"
         ],
         "inside": [
+          "fast-jev-compaction: instead of summarizing old turns, Jev scores every tool call (keep, trim or drop); the human's and the agent's text stay verbatim",
           "document-skills: read and edit docx, pptx, xlsx, and pdf files",
           "github: work with issues and pull requests",
           "warp: terminal integration",
@@ -859,7 +809,8 @@ window.RESEARCH_LOOP = {
           "Enable plugins individually, not all at once"
         ],
         "limits": [
-          "A plugin expands the tool manifest, so unnecessary enabled plugins consume context"
+          "A plugin expands the tool manifest, so unnecessary enabled plugins consume context",
+          "until 18-10-2026 reinstalling the kit silently disabled all plugins; now setup.sh carries over the person's choice"
         ],
         "links": [],
         "adoption": {
@@ -871,7 +822,7 @@ window.RESEARCH_LOOP = {
             "claude plugin marketplace add warpdotdev/claude-code-warp",
             "claude plugin install warp@claude-code-warp"
           ],
-          "installNote": "swift-lsp@claude-plugins-official uses the same installation command and is needed only for Swift development."
+          "installNote": "swift-lsp@claude-plugins-official installs with the same command and is needed only by those who write Swift. fast-jev-compaction is loaded from a local directory and is not distributed publicly."
         },
         "usedBy": [
           {
@@ -882,48 +833,33 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "Install the extension you need in your client and check which commands and tools it adds.",
-        "purpose": "Client extensions that add skills and connections for documents, GitHub, the terminal, and language tooling. The set depends on the user's installation.",
-        "capabilities": [
-          "document-skills: read and edit docx, pptx, xlsx, and pdf files",
-          "github: work with issues and pull requests",
-          "warp: terminal integration",
-          "swift-lsp: Swift code assistance"
-        ],
-        "outcomes": [
-          "Additional tools in every session"
-        ],
-        "useCases": "Always: they add tools to every session.",
-        "important": [
-          "A plugin expands the tool manifest, so unnecessary enabled plugins consume context"
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       },
       {
         "id": "agent-rules",
         "title": "Agent rules",
         "type": "Rules",
-        "role": "Nine files the agent reads before working: code style, note placement, what must never be committed, and conduct on shared servers. These are acceptance requirements for the work, not optional suggestions.",
+        "role": "Eleven files the agent reads before working: where to write knowledge, when to stop and record, how to split work with Hermes, how to format code and behave on shared servers. Not hints, but the conditions under which a result is accepted.",
         "when": "Always: rules load into every session from ~/.claude/rules/.",
         "inputs": [
           "The ~/.claude/rules/ directory and CLAUDE.md file"
         ],
         "inside": [
-          "agents.md: which agents to run and what can run in parallel",
-          "coding-style.md: file size, frozen configuration, types, model registry, and prohibited practices",
-          "security.md: what must never enter source code and where secrets belong",
-          "claude-scholar-core.md: writing standards and the default stack",
-          "code-workflow.md, server-hygiene.md, alphaxiv-sync.md, autoresearch.md, and obsidian-frontmatter.md: internal rules for specific workflows"
+          "lab.md: the base is a git tree, a run is wrapped in the recorder before launch, what goes where",
+          "checkpoint.md: what to do when the end-of-turn hook stops you: MemPalace, work notes, the base",
+          "hermes-team.md: the boundary with Hermes: he owns state and execution, the local agent owns judgment and text",
+          "coding-style.md, security.md, agents.md, claude-scholar-core.md: code, secrets, agents, writing standard",
+          "code-workflow.md, server-hygiene.md, autoresearch.md, obsidian-frontmatter.md: rules for specific loops"
         ],
         "outputs": [
           "Consistent agent behavior across projects"
@@ -933,25 +869,33 @@ window.RESEARCH_LOOP = {
           "A rule states a verifiable condition, not a preference"
         ],
         "limits": [
-          "Four active rules and two disabled rules are in the public repository. The other five are internal because they name internal addresses and the vault layout",
+          "the rules live in the open claude-brainlab repository, two disabled ones in rules/disabled/",
           "Rules are read in full in every session, so long rules consume context"
         ],
         "links": [
           {
             "label": "Agent orchestration",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/agents.md"
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/agents.md"
           },
           {
             "label": "Code style",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/coding-style.md"
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/coding-style.md"
           },
           {
             "label": "Secrets",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/security.md"
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/security.md"
           },
           {
             "label": "Work requirements",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/claude-scholar-core.md"
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/claude-scholar-core.md"
+          },
+          {
+            "label": "Base and git",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/lab.md"
+          },
+          {
+            "label": "Working with Hermes",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/hermes-team.md"
           }
         ],
         "adoption": {
@@ -963,7 +907,7 @@ window.RESEARCH_LOOP = {
             "cp ~/claude-brainlab/rules/*.md ~/.claude/rules/",
             "# restart Claude Code: rules are read at the start of each session"
           ],
-          "installNote": "The public repository contains four active rules and two disabled ones in rules/disabled/. The other five are internal because they name internal addresses and the vault layout."
+          "installNote": "The open repository holds all eleven rules plus two disabled ones in rules/disabled/; the installer lays them out in ~/.claude/rules/."
         },
         "usedBy": [
           {
@@ -974,266 +918,251 @@ window.RESEARCH_LOOP = {
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "Save rules in the location supported by your client and set their scope: the whole profile or one project.",
-        "capabilities": [
-          "agents.md: which agents to run and what can run in parallel",
-          "coding-style.md: file size, frozen configuration, types, model registry, and prohibited practices",
-          "security.md: what must never enter source code and where secrets belong",
-          "claude-scholar-core.md: writing standards and the default stack",
-          "code-workflow.md, server-hygiene.md, alphaxiv-sync.md, autoresearch.md, and obsidian-frontmatter.md: internal rules for specific workflows"
-        ],
-        "outcomes": [
-          "Consistent agent behavior across projects"
-        ],
-        "useCases": "Always: rules load into every session from ~/.claude/rules/.",
-        "important": [
-          "Four active rules and two disabled rules are in the public repository. The other five are internal because they name internal addresses and the vault layout",
-          "Rules are read in full in every session, so long rules consume context"
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       },
       {
         "id": "lab-knowledge-ops",
-        "title": "Database backup and watchdog",
-        "type": "Cron jobs",
-        "role": "Two jobs keep the shared database available: a nightly logical backup and a response check every five minutes.",
+        "title": "Event receiver and backup",
+        "type": "Services on the server",
+        "role": "One service keeps the gates and settings live on GitLab events, and a nightly backup preserves GitLab itself: people, permissions, proposals, issues and repositories.",
         "when": "Continuously, on the laboratory server.",
         "inputs": [
-          "The database itself",
-          "A key for a test request"
+          "GitLab system hook",
+          "GitLab repositories on disk"
         ],
         "inside": [
-          "At 03:17, a logical backup saves table rows without search vectors. Vectors can be rebuilt during warm-up and are larger than the underlying data",
-          "Backups are kept for two weeks. The database is small, but the shared disk is nearly full",
-          "Every five minutes, the watchdog sends a real request to the service and waits for HTTP 200",
-          "One missed response does not trigger a restart: under load, a response may be late, so the watchdog retries after 20 seconds"
+          "a proposal opened or updated gets a verdict; a push to a work's main updates front pages with numbers",
+          "a work created gets main protection, labels and board columns; a person added gets roles and agent permissions",
+          "no schedules: on start the service catches up on proposals without a verdict and goes quiet",
+          "the pass writes to settings and statuses, but not to a work's content, and never merges on a human's behalf",
+          "nightly GitLab backup: seven nights on the server, the last three pulled to do-vpn"
         ],
         "outputs": [
-          "A daily archive retained for two weeks",
-          "A stalled service is restarted and the event is logged"
+          "a verdict on the commit within tens of seconds",
+          "GitLab archive for the last few nights"
         ],
-        "writes": "The backup directory and log on the laboratory server",
+        "writes": "Commit statuses, GitLab settings and the backup directory",
         "gates": [
-          "Availability is checked through a response, not merely a running process"
+          "liveness is checked by a verdict on a test proposal, not by whether a process exists"
         ],
         "limits": [
-          "Restarting an unresponsive service was added after the night of 01-09-2026: the process existed and systemd considered it healthy, but model loading was stuck on an unreachable network. Restart-on-failure alone does not catch that situation"
+          "until 15-10-2026 the gates polled proposals every five minutes, an average wait of two and a half; on events the verdict came in 28 seconds",
+          "until 18-10-2026 the nightly backup captured the database of the remote MCP service, while GitLab itself was not backed up at all"
         ],
         "links": [],
         "adoption": {
           "kind": "private",
-          "invoke": "Cron jobs on the laboratory server",
-          "installNote": "Database backups and the watchdog run on the laboratory server. Only its administrator has access."
+          "invoke": "The service and the backup job on the lab server",
+          "installNote": "They live on the lab server; the gate and pass code is in the brainlab/services repository, open to everyone signed in."
         },
         "usedBy": [
           {
-            "name": "Everyone who writes to the shared database",
-            "role": "Relies on being able to restore yesterday's state"
+            "name": "Everyone who writes to the base",
+            "role": "get a verdict right away and can restore yesterday's state"
           }
         ],
         "visual": {
           "kind": "cycle",
-          "label": "Check for a response, not just a running process",
+          "label": "An event, not a schedule",
           "nodes": [
-            "Request to the service",
-            "HTTP 200 response",
-            "Wait 20 seconds and retry",
-            "Restart",
-            "Log entry"
+            "GitLab event",
+            "Receiver",
+            "Verdict or settings",
+            "Status on the commit",
+            "Nightly backup"
           ]
         },
         "processRelations": [
           {
             "processId": "memory",
-            "processTitle": "Lab GitLab",
+            "processTitle": "Knowledge base in GitLab",
             "stageRef": "s1",
-            "stageTitle": "Lab GitLab"
+            "stageTitle": "Knowledge base in GitLab"
           }
         ],
         "processRelation": {
           "processId": "memory",
-          "processTitle": "Lab GitLab",
+          "processTitle": "Knowledge base in GitLab",
           "stageRef": "s1",
-          "stageTitle": "Lab GitLab"
-        },
-        "start": "The administrator sets up nightly GitLab backups: 7 nights on the server and a second copy on a separate machine. Users keep working through plain git.",
-        "capabilities": [
-          "At 03:17, a logical backup saves table rows without search vectors. Vectors can be rebuilt during warm-up and are larger than the underlying data",
-          "Backups are kept for two weeks. The database is small, but the shared disk is nearly full",
-          "Every five minutes, the watchdog sends a real request to the service and waits for HTTP 200",
-          "One missed response does not trigger a restart: under load, a response may be late, so the watchdog retries after 20 seconds"
-        ],
-        "outcomes": [
-          "A daily archive retained for two weeks",
-          "A stalled service is restarted and the event is logged"
-        ],
-        "useCases": "Continuously, on the laboratory server.",
-        "important": [
-          "Restarting an unresponsive service was added after the night of 01-09-2026: the process existed and systemd considered it healthy, but model loading was stuck on an unreachable network. Restart-on-failure alone does not catch that situation"
-        ]
+          "stageTitle": "Knowledge base in GitLab"
+        }
       }
     ],
     "implementation": {
-      "summary": "One self-hosted GitLab CE: the brainlab group, directions, themes, and works.",
+      "summary": "The lab's own GitLab, plus the same ~/brainlab tree of clones for everyone. Measured 18-10-2026.",
       "items": [
-        "47 projects and themes: 24 laboratory papers and 23 parent themes",
-        "707 claims: 292 supported, 93 inconclusive, 33 refuted, with the rest still under investigation",
-        "721 runs and 870 measurements; 153 proofs, including 145 completed proofs",
-        "345 rules, 497 journal entries, 129 terms, and 22 resources",
-        "A shared library of papers, meaningful sections, and individual claims. Claims may be paraphrased; an explicitly supplied quotation is checked against the saved text.",
-        "lab_health reports six categories: 121 measurements without a rule, 111 runs without numbers, 90 claims without a run, one scientific rule without support, zero measurements without values, and zero projects without a glossary",
-        "Personal drafts stay in notes/ on the machine, agent history in MemPalace, shared tasks in GitLab issues, personal ones in Operon; there is no two-way sync"
+        "GitLab CE 17.11 on the lab server: 7 directions, 33 works, 24 literature repositories, about 40 people; 1.6 GB of GitLab data",
+        "In every work main is protected: push is forbidden to everyone, admins included, and a record enters only by merging a proposal",
+        "The gates fire on GitLab events, with no schedules: on a test proposal the verdict came 28 seconds after it was opened",
+        "A commit carries two statuses: “base” (numbers, codes, links, deletions, checked by code) and “lab/prose” (the prose judge, threshold 0.70)",
+        "The prose judge costs about $0.0005 per ten-file proposal, about $0.3 a month for the whole stream of proposals",
+        "Nightly GitLab backup: seven nights on the server, the last three pulled to do-vpn; the 736 MB backup takes about a minute",
+        "A member builds the ~/brainlab tree with lab sync; the owner's tree updates itself every three hours, and Hermes's on do-vpn by cron",
+        "The MCP service with PostgreSQL was removed 07-10-2026, Gitea and the Yonote wiring on 18-10-2026: there is no second copy of the knowledge"
       ]
     },
     "glossary": [
       {
         "id": "hypothesis",
         "term": "Claim",
-        "definition": "A statement the laboratory considers true, with a recorded observation that would falsify it.",
-        "not": "Completing a task or linking to someone else's paper does not establish the claim."
+        "definition": "One testable idea about a method, with everything it was tested by: a theorem, runs, ablations. A folder claims/H-XXX-NNN/. A paper usually has three to seven.",
+        "not": "Not a note without a refutation criterion, and not a single number from a table: a claim that dies with one number is a run."
       },
       {
         "id": "evidence",
-        "term": "Measurement",
-        "definition": "What a particular run produced: numbers, an artifact, or a diagnostic observation with a source.",
-        "not": "Interpretation is stored separately, and the claim's status does not change automatically."
+        "term": "Run",
+        "definition": "The page of a single launch: settings, numbers, commit, environment, hardware and log address. The run recorder lab_run.py writes it; the agent adds only what is seen in the numbers.",
+        "not": "A planned run is not a run: it has measured nothing and does not move the state of a claim."
       },
       {
         "id": "derivation",
-        "term": "Proof",
-        "definition": "Assumptions, reasoning, and a conclusion that establish a theoretical claim without running an experiment.",
-        "not": "This is not an experimental run: it has no seeds, hardware, or execution status."
+        "term": "Derivation",
+        "definition": "A theorem with a “Proof” section in claims/<H>/theory/D-….md. The statement reads from scratch and carries no numbers from a particular run.",
+        "not": "Not a statement without a proof: if there is no proof, it says so, along with the missing step."
       },
       {
         "id": "decision",
-        "term": "Rule",
-        "definition": "How the laboratory has decided to proceed, with a rationale and measurement support when required.",
-        "not": "A proposed rule does not become accepted automatically."
+        "term": "Rulebook rule",
+        "definition": "A named writing rule in canon.md with a “checked by” line: what holds it in place, the gates or only the fact that it was read.",
+        "not": "Not a paraphrase: the skill, hooks and gates refer to a rule by name, and a second copy of the rulebook is forbidden."
+      },
+      {
+        "id": "series",
+        "term": "Series",
+        "definition": "A group of runs answering one question: a shared setup, an axis of comparison, a table of launches and a verdict.",
+        "not": "Not a folder of runs: a series without a verdict is just a list, and “no difference visible” is a legitimate verdict."
+      },
+      {
+        "id": "proposal",
+        "term": "Proposal",
+        "definition": "A merge request in GitLab: a branch claim/<H-code>, a body from the commit message, a gate verdict on the commit. A merged proposal is the record in the base.",
+        "not": "An open or red proposal is not a record, and neither is a local edit or a checkpoint."
       }
     ],
     "knowledgeModel": {
       "boundary": {
-        "mcp": "The Lab GitLab is the shared base of the lab's verifiable work. It answers what was assumed, how it was tested, what came out, and which rule follows from it.",
-        "skill": "lab-knowledge is an instruction for the agent: first restore context and check for duplicates, then write up the claim, runs, and series according to the canon canon.md and open a merge request. The skill itself stores nothing.",
-        "personal": "Obsidian keeps personal explanations and drafts, MemPalace the agent's history, GitLab issues the shared tasks. Nothing is copied automatically into every system."
+        "mcp": "The lab knowledge base is git. Every work has its own repository in GitLab, a claim is a folder claims/<CODE>/, and a run, series, derivation and figure are files inside it. There is no other base on the side, and the only way to write to it is a merged proposal.",
+        "skill": "lab-knowledge is the agent's instruction: where to search (grep and git log over the clone), how to record (branch, page, git push) and what the gates will check. It does not paraphrase the writing rules; it refers to the canon.md rulebook. The skill stores nothing itself.",
+        "personal": "Private material lives in the same work but never goes to GitLab: notes/, daily/ and runs/ are excluded via .git/info/exclude. The agent's memory is MemPalace. Tasks are GitLab issues and boards, and for Hermes, hermes kanban."
       },
       "corpora": [
         {
           "id": "lab",
-          "title": "The laboratory's own work",
+          "title": "Lab works",
           "contains": [
-            "Hypotheses",
-            "Experiments",
-            "Measurement results",
-            "Theoretical conclusions",
-            "Decisions",
-            "Observations",
-            "Terms",
-            "Resources"
+            "Claims",
+            "Series",
+            "Runs",
+            "Derivations",
+            "Figures",
+            "Manuscript as a submodule",
+            "Code as a submodule",
+            "Call summaries"
           ],
-          "access": "All members can read: there is no restricted reading area. Writing to someone else's project requires a role in that project; writes are also constrained by the project role."
+          "access": "The list of works is visible to everyone signed in, files from the Reporter role up. Writing takes Developer, on a branch with a proposal; the work lead merges. The reference work dykaf is open to everyone signed in."
         },
         {
           "id": "library",
-          "title": "Shared paper library",
+          "title": "Theme literature",
           "contains": [
-            "Papers",
-            "Paper claims",
-            "Links between papers and our work"
+            "Paper reviews, one page per paper",
+            "BibTeX with citation_key",
+            "The paper's claims inside the review",
+            "Theme glossary in the wiki"
           ],
-          "access": "A paper belongs to the whole laboratory, not to one project. A new record must have a stable external identifier, and any claim quotation is checked against the stored text."
+          "access": "Every theme has its own literature repository, open to everyone signed in. Reviews are written straight to main: the file name is the paper title, and the stable name inside is the citation key."
         }
       ],
       "read": {
-        "default": "Querying the database changes nothing.",
+        "default": "A question changes nothing: reading is files on disk, not a service call.",
         "tools": [
-          "git grep over ~/brainlab: find a topic in lab works and theme literature at once",
-          "get_project_context: the complete history of one project, including claims, runs, measurements, rules, derivations, and terms",
-          "get_related: follow the relationships of one record",
-          "get_paper: a paper with its sections, claims, and links to our work",
-          "lab_health: six categories of structural gaps across the laboratory",
-          "recent_changes: changes over the last 1 to 90 days"
+          "git pull: what arrived in the work's main; the agent does not need it, the session-start hook does it",
+          "lab sync: build or update your whole ~/brainlab tree",
+          "lab here <work>: one work into its place in the tree, together with code and paper",
+          "rg -i 'muon' ~/brainlab: search all works at once",
+          "git grep -n 'H-WSD-009': search within one clone",
+          "git log -S 'E-WSD-031': when a number or code first appeared",
+          "git blame claims/H-WSD-009/README.md: who wrote a line",
+          "lab tasks: a work's open tasks and the claim each one touches"
         ],
         "behavior": [
-          "Every laboratory member can read everything: the visible project list includes every project in the database. There is deliberately no restricted reading area, so the person asking “Has anyone tried this?” can find the answer.",
-          "Private and early-stage material stays in personal notes. This database contains material the laboratory has chosen to share.",
-          "The key is checked before parsing the request, not afterward.",
-          "Search follows relationships. Ask about warm-up and you can get the relevant claim, its run, and the value produced by that run, even if the value's record does not contain the word “warm-up”.",
-          "The library and laboratory knowledge share one search. The scope selects where to look: all, lab, or library."
+          "The answer is the same bytes a reviewer sees in GitLab: no stale index or snapshot.",
+          "The claims/ directory is the list of claims, and the first line of each README is the claim itself.",
+          "Obsidian opens the same tree: private notes/ and shared claims/ in one window, and only the shared part goes to GitLab.",
+          "The tree and theme literature are open to everyone signed in right away; work files are readable from the Reporter role up.",
+          "The reference for everyone is the dykaf work: its claims, series and runs show how things are written here."
         ]
       },
       "write": {
         "tools": [
-          "claims/H-XXX/README.md: write down a testable claim",
-          "lab_run.py: the recorder writes the run from launch",
-          "runs/E-XXX.md and series/S-XXX.md: write down what came out",
-          "theory/D-XXX.md: write down a derivation with its proof",
-          "propose_decision: propose a rule",
-          "paper-ingest: a paper page in the theme literature with a citation key and BibTeX",
-          "brainlab/journal, literature/glossary/, brainlab/handbook: keep the working context",
-          "delete_record: remove a record of any of the six types"
+          "git switch -c claim/<H-code>: one branch per claim",
+          "lab_run.py, the run recorder: the training code writes the run page, not the agent",
+          "git commit -F -: the proposal body: what changed, what disappeared, how it was checked",
+          "git push: opens a proposal by itself and assigns the work lead",
+          "lab checks: the gate verdict and the findings to resolve",
+          "git merge --no-edit origin/main: merge main in before sending, no rebase"
         ],
         "behavior": [
-          "Writing to someone else's project requires contributor or lead status in that project. A global lead can write everywhere. A global manager still needs a project role, like everyone else.",
-          "The paper library and laboratory resources are exceptions: they have no owning project, and any member can write to them. Protection comes from the update rules: empty values cannot overwrite populated ones, and every edit is logged.",
-          "Strict records require an idempotency key. Repeating the same call returns the same record rather than creating a second one. Reusing the key with a different payload is rejected.",
-          "Unknown request fields are rejected rather than ignored. Silently discarding a field would make it appear to have been accepted.",
-          "If no source is supplied, one is assigned automatically for each project and day.",
-          "The server assigns a record code at creation. It never changes."
+          "A push to a work's main is rejected for everyone, admins included: a record is a merge, and only a merge.",
+          "A human merges, or an agent on their word in the same turn; then the agent writes in the proposal whose word it is merging on, with a quote.",
+          "An agent never merges someone else's work, red gates, unresolved findings, or its own proposal the human did not know about.",
+          "Red is fixed by an edit on the same branch, not by an explanation: a new push lands in the already open proposal.",
+          "The gates judge the change, not the whole work, so a work's old debt does not block a new record.",
+          "Theme literature and service repositories (handbook, journal, servers, ops/*) accept a direct push to main after git pull --rebase.",
+          "What has been pushed is undone only with git revert: main's history is never rewritten."
         ]
       },
       "acl": [
-        "The key is checked before parsing the request. A person may have several keys, one per agent, so the audit log shows which agent wrote a record.",
-        "Reading is open to all laboratory members, with no project or theme restrictions.",
-        "Writing to a project requires contributor or lead status in that project. Global leads are the only exception.",
-        "Anyone allowed to write to a project may also remove records from it. There is no separate author-only permission, because most record schemas do not store an author.",
-        "Assessing another person's claim or accepting their rule is reserved for a lead or manager, providing an independent check. Members may finalize their own work.",
-        "Any member can issue a token for themselves. Only a lead or manager can issue one for another person or invite a member. Only a lead can assign a project role.",
-        "Keys can be revoked. Audit events retain the person, client, and time."
+        "A role in the lab is a role in GitLab, with the same name: there is no separate permission system.",
+        "Guest sees the tree of themes and works and all literature; Reporter reads works in full; Developer pushes branches, opens proposals and can create a work in a theme; Maintainer merges.",
+        "The work lead is whoever is named in the “Leads” line of its README: every proposal is assigned to them, and they decide requests to join the work.",
+        "The role at the root is the floor for the whole tree: GitLab will not grant less than what is inherited, so the role pass only raises roles.",
+        "The access bot in Telegram issues the account, a temporary password and a git key valid for a year; any lead can admit a new person to the lab.",
+        "An agent uses its human's key; the lab agent has its own account, whose memberships mirror the human's, capped at Maintainer.",
+        "Operations ops/* are fully closed; handbook, journal and servers are open to everyone signed in."
       ],
       "provenance": [
-        "A SourceRef is stored where the record type requires it. It may be a URL, content hash, or internal session reference.",
-        "Journal, Term, and Resource do not require a SourceRef.",
-        "Every change records the author, client, and audit event.",
-        "A hypothesis links to its test, and the test links to its result. The result's implications for the hypothesis are stored on the relationship itself.",
-        "A paper claim stores a standalone statement and a locator. A quotation is optional. quote_verified means the quotation matches stored text, not that the original publication has been verified.",
-        "Scientific records with a public code get a readable identifier. Journal and PaperClaim records are returned by UUID."
+        "The address of a record is the file path in the repository, and the record is a merged proposal.",
+        "Every edit is a commit with an author and a time: git log --follow and git blame show the history of any line.",
+        "A proposal keeps the discussion, the prose judge's findings and, if an agent merged it, the human's verbatim word.",
+        "The gate verdict sits on the commit as the “base” and “lab/prose” statuses.",
+        "A run page carries the code commit, launch command, environment, hardware and log address: the code wrote it.",
+        "The verification chain: claim → series → run → deterministic source, meaning our log or a table in a paper."
       ],
       "agentConnection": [
-        "Obtain a separate revocable key for your agent.",
-        "Run lab sync: the command builds the ~/brainlab tree as it is laid out in GitLab, and lab here <work> fetches a single work.",
-        "First read the project context or run a search.",
-        "Before writing, check for a possible duplicate, choose the correct record type, and show the exact change to the user.",
-        "After confirmation, save the object, return its identifier, and read it back with the same permissions."
+        "git clone https://github.com/brain-lab-research/claude-brainlab and bash claude-brainlab/docs/lab/install.sh: the lab command, a rule and a hook for the agent, the Obsidian setup; rerunning is safe.",
+        "The access bot issues the git key; the installer asks for it once.",
+        "lab sync builds the tree: the works where the person is listed under “Leads” or “Team”, their literature, handbook, journal, servers.",
+        "The session-start hook runs git pull in the work's clone and prints what changed, what is open and where to write from here.",
+        "Before writing, the agent reads the lab-knowledge skill and the canon.md rulebook, and wraps a run in the recorder before launch."
       ],
       "objectTypes": [
         {
           "id": "project",
           "title": "Project",
-          "plain": "One laboratory paper with its own three-letter code",
-          "detail": "The scope containing claims, runs, measurements, and rules. The project code appears inside every record code: H-WBD-027 means the twenty-seventh claim in project SWD. There are eleven statuses from idea to archived; paused, completed, and archived count as closed.",
+          "plain": "One GitLab repository: one work, usually one paper",
+          "detail": "Lives at the path direction/theme/work, and the same way in everyone's ~/brainlab. Inside: claims/ (knowledge), paper/ and code/ (manuscript and code as nested repositories), socials/, calls/. notes/, daily/ and runs/ stay on the machine. A work can appear in other themes via the topics field in its README while remaining one repository.",
           "required": [
-            "name"
+            "README with “Leads” and “Team” lines",
+            "the “In short” paragraph",
+            "claims/"
           ],
-          "note": "The server supplies a slug and three-letter code if omitted. Any member may create a project and immediately receives its lead role. Claims and runs require a project, so waiting for a lead could mean losing a finding.",
-          "who": "Any laboratory member",
+          "note": "A work without a “Leads” line is a work without an owner: there is no one to assign a proposal to, and requests go to the base owner. The creator does not become the lead; the lead is whoever is listed under “Leads”.",
+          "who": "A Developer in a theme creates a work themselves; only a lead creates a new theme",
           "operations": [
-            "create_project",
-            "set_project_status",
-            "set_project_links",
-            "set_project_theme",
-            "set_project_open_questions",
-            "delete_project"
+            "create-project skill",
+            "lab here <work>",
+            "git submodule add"
           ],
           "connections": [
             {
@@ -1249,137 +1178,142 @@ window.RESEARCH_LOOP = {
         {
           "id": "theme",
           "title": "Theme",
-          "plain": "A research area that groups several projects",
-          "detail": "Stored in the same table as projects, with kind=theme. A theme has no assignee, so it is excluded from “Who should do this?” results. A project belongs to one theme and may be referenced by others through referenced_by_themes. A record inherits its theme from the project; an explicit theme_slug overrides it, allowing the theme to change without moving the record or changing its code.",
+          "plain": "A GitLab group: a research subject and the works under it",
+          "detail": "A theme is named after a subject, not a property: “adaptive methods and their convergence”, not “theory” or “misc”. Every theme has its own literature repository with paper reviews and a wiki glossary. A client or a grant is never a theme.",
           "required": [
-            "name",
-            "kind=theme"
+            "a subject, not a property",
+            "literature repository"
           ],
-          "note": "If omitted, theme_slug is derived from the slug or name. Without it, neither get_theme_context nor list filters can find the theme. The service rejects unknown theme slugs in papers, resources, and journal entries.",
-          "who": "Any laboratory member",
+          "note": "The theme lead is the Owner of its group: only they admit people to the theme. A theme Maintainer merges in all its works but cannot decide a request to join the theme; that is how GitLab works.",
+          "who": "created by a lead",
           "operations": [
-            "create_project",
-            "list_themes",
-            "get_theme_context"
+            "lab sync <theme>",
+            "Request Access on the theme page"
           ],
           "connections": [
             {
               "to": "object:project",
               "label": "Groups projects"
+            },
+            {
+              "to": "object:paper",
+              "label": "holds the literature"
             }
           ]
         },
         {
           "id": "hypothesis",
           "title": "Claim",
-          "plain": "What we consider true and what can be falsified",
-          "detail": "The basic unit of this database. It must state an observation that would make us reject the claim. Without that observation, it is an opinion. Its kind specifies how it can be established: an empirical claim needs a run and measurements; a theoretical claim needs a proof.",
+          "plain": "One testable idea about a method, with everything it was tested by",
+          "detail": "A folder claims/H-XXX-NNN/ with a README and, next to it, runs/, series/, theory/, figures/. The page sections are fixed: Hypothesis, Why we think so, Test conditions, What refutes it, What we tested it with, Results of testing the hypothesis, Open questions. The title is one sentence you can read aloud.",
           "required": [
-            "project_id",
-            "statement",
-            "falsification_criteria",
-            "idempotency_key"
+            "Hypothesis",
+            "What refutes it: written before testing",
+            "Test conditions",
+            "status in the header"
           ],
-          "note": "A source may be omitted. If source_ref_id is empty, the service creates one source per project per day: “Working session <date>”.",
-          "who": "A member with contributor or lead status in this project",
+          "note": "A theorem about a technique and experiments on the same technique are one claim; different datasets are axes inside it. A dataset name in a claim title is a defect. The next free code is taken from the clone: the highest number across all branches, not the count.",
+          "who": "A Developer writes on a branch; main is entered only by a merge",
           "operations": [
-            "claims/H-XXX/README.md",
-            "update_hypothesis",
-            "get_hypothesis",
-            "list_hypotheses"
+            "git switch -c claim/<H-code>",
+            "git grep -n 'H-WSD-009'",
+            "git log --follow -p claims/<H>/README.md"
+          ],
+          "connections": [
+            {
+              "to": "object:series",
+              "label": "tested by series"
+            },
+            {
+              "to": "object:derivation",
+              "label": "or closed by a derivation"
+            },
+            {
+              "to": "object:paper-claim",
+              "label": "may rest on someone else's result"
+            }
+          ]
+        },
+        {
+          "id": "series",
+          "title": "Series",
+          "plain": "An answer to one question from a group of runs",
+          "detail": "Five required things: a question, a shared setup, an axis of comparison, a table of launches linking to runs, and a verdict. A run belongs to a series by the series table, not by the run header. After a series, a paragraph is added to the claim: what was tested, what came out, a link.",
+          "required": [
+            "Question",
+            "shared setup",
+            "axis of comparison",
+            "table of launches",
+            "verdict"
+          ],
+          "note": "“No win established” and “no difference visible” are full verdicts. Incomparable runs are not pulled into a series, and a one-run series is legitimate if it says so honestly.",
+          "who": "A Developer on the claim branch",
+          "operations": [
+            "claims/<H>/series/S-….md",
+            "sweep.py"
           ],
           "connections": [
             {
               "to": "object:experiment",
-              "label": "Tested by a run"
+              "label": "groups the runs"
             },
             {
-              "to": "object:derivation",
-              "label": "Or established by a proof"
+              "to": "object:hypothesis",
+              "label": "enters the claim as a paragraph"
             },
             {
-              "to": "object:paper-claim",
-              "label": "May arise from an external result"
+              "to": "object:figure",
+              "label": "shows the conclusion as a figure"
             }
           ]
         },
         {
           "id": "experiment",
           "title": "Run",
-          "plain": "An experiment created to test a claim",
-          "detail": "A reproducible protocol and execution status. It contains neither raw checkpoints nor an interpretation of the result. The project is inherited from the claim rather than passed separately, so a run cannot end up in another project.",
+          "plain": "A launch page written by the training code, not the agent",
+          "detail": "The run recorder lab_run.py wraps training before launch and itself puts hyperparameters, metrics, environment, commit, hardware and log address on the _runs/ shelf of the proposal branch. The agent moves the page under the claim and adds one thing: what is seen in these numbers. It does not retype the numbers or setting names.",
           "required": [
-            "hypothesis_id",
-            "protocol",
-            "idempotency_key"
+            "lab_run.py wrapper before launch",
+            "code commit and launch command",
+            "the address where the number can be seen",
+            "the claim field in the header"
           ],
-          "note": "Created only with planned or running status. A run cannot attach to a closed claim. This rule followed an incident where an agent attached three SOAP runs to a refuted Muon claim overnight: the links were structurally valid but scientifically misleading.",
-          "who": "A member with contributor or lead status in this project",
+          "note": "Forgot to wrap it: lab_run.py --adopt picks up a running or finished run and marks it adopted: true. A crashed run is closed with status failed and its reason, and is not lost. A proposal with a non-empty _runs/ shelf does not merge.",
+          "who": "the training code; the agent only moves and comments",
           "operations": [
-            "lab_run.py",
-            "update_experiment_status"
+            "from lab_run import LabRun",
+            "lab_run.py --adopt",
+            "claims/<H>/runs/E-….md"
           ],
           "connections": [
             {
-              "to": "object:hypothesis",
-              "label": "Tests"
+              "to": "object:series",
+              "label": "enters a series"
             },
             {
-              "to": "object:evidence",
-              "label": "Produces a measurement"
-            }
-          ]
-        },
-        {
-          "id": "evidence",
-          "apiName": "Evidence",
-          "title": "Measurement",
-          "plain": "What the run produced",
-          "detail": "Numbers, an artifact, or a diagnostic observation with its source and scope of applicability. Its meaning for a claim is stored on the relationship, not in the text. One measurement may support one claim and undermine another; a single “experiment confirmed the hypothesis” flag cannot express that.",
-          "required": [
-            "experiment_id",
-            "summary",
-            "kind",
-            "idempotency_key"
-          ],
-          "note": "If kind implies a numerical value (metric or measurement), metrics must contain at least one number such as {\"name\":\"val_loss\",\"value\":2.71}. A number left only in prose cannot be compared reliably.",
-          "who": "A member with contributor or lead status in this project",
-          "operations": [
-            "runs/E-XXX.md",
-            "update_evidence"
-          ],
-          "connections": [
-            {
-              "to": "object:experiment",
-              "label": "Obtained in"
+              "to": "object:source-ref",
+              "label": "names its log"
             },
             {
               "to": "object:hypothesis",
-              "label": "Records its assessment through hypothesis_effects"
-            },
-            {
-              "to": "object:decision",
-              "label": "May support a rule"
+              "label": "lives under a claim"
             }
           ]
         },
         {
           "id": "derivation",
-          "title": "Proof",
-          "plain": "What supports theory in place of an experimental run",
-          "detail": "Assumptions, reasoning, the established result, and completeness. Previously, proofs had to be represented as experiments, making a project with twenty-four derivations and no runs look experimental. There is no direct link to a rule: theoretical support passes through the shared claim.",
+          "title": "Derivation",
+          "plain": "A theorem with a proof instead of a run",
+          "detail": "A file claims/<H>/theory/D-….md, one file per storyline, not per lemma. The statement reads from scratch and carries no numbers from a particular run. A derivation names its place in the work: which claim it supports.",
           "required": [
-            "hypothesis_id",
-            "result",
-            "argument",
-            "idempotency_key"
+            "statement",
+            "“Proof” section"
           ],
-          "note": "The gap status requires an explanation. An unstated gap looks like a completed proof. A derivation may depend on another derivation through depends_on, but only within the same project.",
-          "who": "A member with contributor or lead status in this project",
+          "note": "No proof yet: it says so, in the words “no proof”, with the missing step. The checks count this as a work debt, not an error; inserting a formula just to get a green verdict is not allowed.",
+          "who": "A Developer on the claim branch",
           "operations": [
-            "theory/D-XXX.md",
-            "update_derivation_status",
-            "list_derivations"
+            "claims/<H>/theory/D-….md",
+            "sweep.py"
           ],
           "connections": [
             {
@@ -1389,172 +1323,188 @@ window.RESEARCH_LOOP = {
           ]
         },
         {
-          "id": "decision",
-          "title": "Rule",
-          "plain": "How the laboratory has decided to proceed",
-          "detail": "A chosen action and an explanation of why it is preferable to alternatives. The API calls it a decision. Its kind distinguishes a scientific rule, such as requiring at least three seeds before claiming a win, from an operational agreement, such as a paper's page count. lab_health requires measurement support only for scientific rules.",
+          "id": "figure",
+          "title": "Figure",
+          "plain": "An image whose caption says what it shows",
+          "detail": "Lives in claims/<H>/figures/ and is embedded twice: in the series, where it explains the conclusion, and on the claim page. The caption is “WSD beats cosine up to 300 steps and matches it after”, not “loss curves of three schedules”. Data only from runs of this series.",
           "required": [
-            "project_id",
-            "statement",
-            "why",
-            "idempotency_key"
+            "file in figures/",
+            "caption: what is seen",
+            "embed on the claim page"
           ],
-          "note": "References may point only to claims and measurements in the same project. A member can create a rule only as proposed; a lead or manager changes someone else's rule to accepted.",
-          "who": "A member with contributor or lead status in this project",
+          "note": "A figure not embedded on the claim page gives a red verdict. A link to a missing figure is not redirected to another image: the figure is brought over from the manuscript.",
+          "who": "A Developer on the claim branch",
           "operations": [
-            "propose_decision",
-            "update_decision"
+            "claims/<H>/figures/"
           ],
           "connections": [
             {
-              "to": "object:evidence",
-              "label": "Supported by measurements"
+              "to": "object:series",
+              "label": "explains the series verdict"
             },
             {
               "to": "object:hypothesis",
-              "label": "Applies to a claim"
+              "label": "shows what the claim rests on"
+            }
+          ]
+        },
+        {
+          "id": "source-ref",
+          "apiName": "where_to_check",
+          "title": "Source",
+          "plain": "An address where you can see the number with your own eyes",
+          "detail": "Our log on the server, a W&B page, a table file or a spot in our submitted paper. A person should be able to follow the chain claim → series → run → source and check for themselves.",
+          "required": [
+            "an address, not prose"
+          ],
+          "note": "No source: this is stated plainly, in the words “no source” or “numbers not confirmed”. The checks count such a mark as a work debt: an honest mark beats a made-up link.",
+          "who": "whoever did the run",
+          "operations": [
+            "where() in lab_run.py",
+            "check_numbers"
+          ],
+          "connections": [
+            {
+              "to": "object:experiment",
+              "label": "holds the provenance of the run's numbers"
+            }
+          ]
+        },
+        {
+          "id": "decision",
+          "title": "Rulebook rule",
+          "plain": "A named writing rule and what holds it in place",
+          "detail": "The canon.md rulebook in the handbook: 55 rules with Latin-script names, such as run-is-written-by-code, merge-is-the-record, no-invented-numbers. Each has a “checked by” line: the gates, the sweep.py pass, or an honest “not machine-checked”.",
+          "required": [
+            "rule name",
+            "“checked by” line"
+          ],
+          "note": "The rulebook is edited only through a proposal. A machine has one copy, ~/.claude/rules/lab-canon.md, and the canon_check.py guard says when it has drifted from the source.",
+          "who": "anyone proposes, a human merges",
+          "operations": [
+            "canon.md",
+            "canon_sync.py --pull",
+            "canon_check.py"
+          ],
+          "connections": [
+            {
+              "to": "object:hypothesis",
+              "label": "sets the shape of a record"
+            },
+            {
+              "to": "object:experiment",
+              "label": "forbids retyping numbers by hand"
             }
           ]
         },
         {
           "id": "journal",
-          "title": "Observation",
-          "plain": "A factual note that does not amount to a claim",
-          "detail": "“The run has been stuck for three hours; the process is alive, but there are no numbers” is a useful observation without a falsification test. It needs no falsification criterion, run chain, or record code. There are five kinds: observation, incident, measurement, onboarding, and organisational.",
+          "title": "Journal entry",
+          "plain": "What changed in how we work, and when",
+          "detail": "brainlab/journal is a chronicle, newest first: a decision and why, a dead end that cost time, a changed rule or tool. The handbook answers “how it is now”, the journal “what changed and when”.",
           "required": [
-            "body"
+            "what it was",
+            "what it is now",
+            "what to do differently"
           ],
-          "note": "The project is optional because many entries concern the laboratory rather than a paper project. If a project is specified, its permissions apply. If no idempotency key is supplied, one is derived from the text so a retried hook does not create a duplicate.",
-          "who": "Any member; if a project is specified, the member must have write access to it",
+          "note": "Written straight to main after git pull --rebase: direct writes have no gates and no human, entries sit on adjacent lines of one file, and a push without a pull silently removes someone else's.",
+          "who": "any member and their agent",
           "operations": [
-            "brainlab/journal",
-            "list_journal"
+            "git pull --rebase",
+            "git push"
           ],
           "connections": [
             {
               "to": "object:resource",
-              "label": "Often describes a resource failure"
+              "label": "often describes a server outage"
             }
           ]
         },
         {
           "id": "term",
-          "title": "Project term",
-          "plain": "What “dose”, “window”, or “frame” means in this project",
-          "detail": "An internal name with a definition, used for terminology absent from the laboratory's general glossary. Defining it now makes every earlier record using that name readable without rewriting those records. Spellings normalize to one key, so exact-old124, exact_old124, and “Exact old124” refer to the same name.",
+          "title": "Theme term",
+          "plain": "What an internal name means in this theme",
+          "detail": "The glossary lives in the wiki of the theme's literature repository. An internal name is defined before its first use, otherwise a record cannot be read without its author.",
           "required": [
-            "project_id",
-            "term",
+            "name",
             "definition"
           ],
-          "note": "Empty definitions are rejected. Redefining a term refines the existing definition without deleting collected references and aliases.",
-          "who": "A member with contributor or lead status in this project",
+          "note": "Measured: 189 terms in 13 of 24 themes.",
+          "who": "a member with write access to the theme",
           "operations": [
-            "define_term",
-            "list_terms",
-            "related_by_terms"
+            "literature repository wiki"
           ],
           "connections": [
             {
               "to": "consumer:execution-agents",
-              "label": "Makes earlier records understandable"
+              "label": "makes records readable without their author"
             }
           ]
         },
         {
           "id": "resource",
-          "title": "Resource",
-          "plain": "A server, quota, account, license, dataset, or budget",
-          "detail": "Shared across the laboratory, like a paper. A machine can serve multiple projects, and assigning it to one would hide it from the others. The most useful field records pitfalls: CUDA numbering, a small root partition, or missing systemd. Read these before a run rather than after it fails.",
+          "title": "Server",
+          "plain": "What changed, what is broken, where access is",
+          "detail": "brainlab/servers holds only what is important and durable: an address or node changed, something broke, a server was retired. Whether a GPU is free and who is computing what right now does not go there: the team checks that live.",
           "required": [
-            "slug",
-            "title"
+            "server name as in the access bot",
+            "what changed"
           ],
-          "note": "No secrets belong here: this is a multiuser database whose records outlast team changes. The service rejects passwords or tokens alongside addresses. Empty values cannot overwrite populated ones, so a short record saying “this machine exists” cannot erase someone else's findings.",
-          "who": "Any laboratory member",
+          "note": "No secrets here: the key lives in the git credential helper and in private files, not in the record.",
+          "who": "any member",
           "operations": [
-            "upsert_resource",
-            "list_lab_resources"
+            "git pull --rebase",
+            "git push"
           ],
           "connections": [
             {
               "to": "object:journal",
-              "label": "Collects observations about failures"
+              "label": "builds up the outage history"
             }
           ]
         },
         {
           "id": "paper",
-          "title": "Paper",
-          "plain": "One canonical record of an external work",
-          "detail": "A paper has no owning project because it can inform several projects at once, and the library belongs to the whole laboratory. The corpus itself is authoritative. Obsidian and Zotero are optional ways to add material to it.",
+          "title": "Paper review",
+          "plain": "One page per paper in the theme literature",
+          "detail": "A file <theme>/literature/<Paper title>.md, figures next to it. The citation key lives in the header and in the BibTeX block, and that is what the paper is cited and searched by: git grep over BibTeX.",
           "required": [
-            "title",
-            "At least one of arxiv_id, doi, or zotero_key"
+            "arXiv ID or DOI",
+            "BibTeX with citation_key",
+            "theme by subject"
           ],
-          "note": "A natural key is required so the next submission recognizes the paper instead of creating a duplicate. Empty values cannot overwrite populated ones, and identifiers accumulate. Unknown theme slugs are rejected.",
-          "who": "Any laboratory member",
+          "note": "A review is written straight to main of the literature clone. Before sending, fix_page.py brings the page into a form GitLab renders correctly: formulas, figures alongside, PDF figures converted to PNG.",
+          "who": "any member; the paper pipeline on do-vpn",
           "operations": [
-            "upsert_paper",
-            "get_paper",
-            "find_related_papers",
-            "list_recent_papers"
+            "paper-ingest skill",
+            "fix_page.py --arxiv <id>",
+            "git push"
           ],
           "connections": [
             {
-              "to": "object:paper-chunk",
-              "label": "Consists of sections"
+              "to": "object:paper-claim",
+              "label": "carries the paper's claims"
             },
             {
-              "to": "object:paper-claim",
-              "label": "Contains testable claims"
-            }
-          ]
-        },
-        {
-          "id": "paper-chunk",
-          "apiName": "PaperChunk",
-          "title": "Paper section",
-          "plain": "A portion of the analysis used for search and quotation checks",
-          "detail": "Boundaries follow the sections of the analysis. Search uses their text, and any explicitly supplied quotation is checked against it. A paraphrased claim does not have to match the section's wording.",
-          "required": [
-            "paper_id",
-            "section",
-            "content"
-          ],
-          "note": "Empty sections are rejected: they would imply available source text and allow quotation checks against empty content. upsert_paper replaces all sections; add_paper_section appends one without changing the others and rechecks quotations.",
-          "who": "Any laboratory member",
-          "operations": [
-            "add_paper_section",
-            "upsert_paper"
-          ],
-          "connections": [
-            {
-              "to": "object:paper",
-              "label": "Belongs to a paper"
-            },
-            {
-              "to": "object:paper-claim",
-              "label": "Used to check a quotation"
+              "to": "object:term",
+              "label": "adds to the theme glossary"
             }
           ]
         },
         {
           "id": "paper-claim",
-          "apiName": "PaperClaim",
-          "title": "A claim from a paper",
-          "plain": "A specific idea from an external work, not our own result",
-          "detail": "A standalone claim from a paper, with a type and source location. It may be paraphrased. Linking to an individual claim is more precise than linking to the whole paper. The service checks only an explicitly supplied quotation, and only against saved text, which may be a summary.",
+          "title": "Paper claim",
+          "plain": "What the paper claims and what to believe here",
+          "detail": "A “What the paper claims” section inside the review: what it rests on (numbers with their address in the paper), the setup, what refutes it, our assessment. No folders, no codes: we have not reproduced someone else's work and do not equate it with what we have tested.",
           "required": [
-            "paper_id",
-            "statement"
+            "address in the paper",
+            "setup",
+            "our assessment"
           ],
-          "note": "There is no required quotation, minimum length, or quota for mixing claim types. The claim's author checks its substance, numerical conditions, and limits against the source. Existing quotations do not need to be removed.",
-          "who": "Any laboratory member",
+          "note": "A number read off a curve by eye is never evidence. It can be cited only as an argument against, marked as our reading.",
+          "who": "any member",
           "operations": [
-            "paper-ingest",
-            "list_paper_claims",
-            "link_paper"
+            "git grep -l '<citation_key>'"
           ],
           "connections": [
             {
@@ -1563,31 +1513,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "to": "object:hypothesis",
-              "label": "Connected by a typed relationship, without becoming a measurement itself"
-            }
-          ]
-        },
-        {
-          "id": "source-ref",
-          "apiName": "SourceRef",
-          "title": "Source",
-          "plain": "Where a record came from: a call, note, paper, or working session",
-          "detail": "An address, title, and optional content hash. Strict scientific records carry a source reference; observations, terms, and resources may omit it. Some sources are public arXiv links, so a paper added to the library can automatically find claims that already relied on it.",
-          "required": [
-            "project_id",
-            "uri",
-            "title"
-          ],
-          "note": "A separate call is optional. If a record omits its source, the service creates one per project per day at brainlab-source://<project>/session-<date>. The same address with different metadata is rejected; the same address with new text updates the pointer.",
-          "who": "A member with write access to this project",
-          "operations": [
-            "publish_source_note",
-            "upsert_call_note"
-          ],
-          "connections": [
-            {
-              "to": "object:hypothesis",
-              "label": "Preserves the provenance of a strict record"
+              "label": "linked by a line on the work page, never becomes our measurement"
             }
           ]
         }
@@ -1595,173 +1521,167 @@ window.RESEARCH_LOOP = {
       "publishFlow": [
         {
           "id": "scope",
-          "title": "Decide where to look",
-          "summary": "Choose a project and part of the database.",
-          "detail": "The agent identifies the project and decides whether to search the laboratory's own work, the paper library, or both. It does not silently widen the search scope.",
+          "title": "Figure out which work and which claim",
+          "summary": "Work, claim, series, open proposal.",
+          "detail": "The session-start hook has already named the work and the path to its clone. The agent reads claims/: the list of folders is the list of claims. New runs at a new scale are almost never a new claim, but support for an existing one.",
           "required": [
-            "Question",
-            "Project, if the question concerns one",
-            "Search scope"
+            "work",
+            "claim",
+            "whether a claim/<H-code> branch already exists"
           ],
           "operations": [
-            "git grep",
-            "get_project_context"
+            "git pull",
+            "ls claims/",
+            "git branch -r --list 'origin/claim/*'"
           ],
           "connections": [
             {
               "to": "flow:classify",
-              "label": "Passes on the retrieved context"
+              "label": "passes on the context found"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "lab-knowledge skill",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ]
         },
         {
           "id": "classify",
-          "title": "Choose the correct record type",
-          "summary": "Keep assumptions, runs, results, and external papers distinct.",
-          "detail": "The type determines required data and permitted relationships. A simple observation without a test remains an observation; it does not become a hypothesis merely to fill the database.",
+          "title": "Decide what kind of record this is",
+          "summary": "A run, a series, a derivation, a figure or a new claim.",
+          "detail": "A conclusion from your own runs is a series verdict and a paragraph in the claim, not a new page. A claim that no measurement can refute is a note in notes/. There is no record without a claim.",
           "required": [
-            "One testable idea or observation",
-            "Whether this is our own knowledge or an external paper"
+            "one testable idea or support for an existing one",
+            "knowing whether it is ours or someone else's paper"
           ],
           "operations": [
-            "list_hypotheses",
-            "get_paper",
-            "list_terms"
+            "no-record-without-claim",
+            "conclusion-from-own-runs-is-not-a-new-claim"
           ],
           "connections": [
             {
               "to": "flow:source",
-              "label": "After classification, check provenance"
+              "label": "provenance is checked next"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "How runs become a series",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
             }
           ]
         },
         {
           "id": "source",
-          "title": "Check provenance and duplicates",
-          "summary": "Find any existing record and enough support for the chosen type.",
-          "detail": "For a strict scientific record, the agent checks semantic duplicates and a SourceRef. The source may be a shared link, content hash, or internal session reference. Journal, Term, and Resource allow records without a SourceRef.",
+          "title": "Take numbers from the code and a free code from the clone",
+          "summary": "The recorder puts in the numbers, codes never repeat.",
+          "detail": "A run arrives as a page from lab_run.py, and the agent moves it from _runs/ under the claim. The free code is the highest number across all branches, because a code in an unmerged proposal is not visible in main.",
           "required": [
-            "The proposed record's text",
-            "For a strict scientific record: a SourceRef or an existing object"
+            "a run page from the recorder or an --adopt pickup",
+            "free code across all branches"
           ],
           "operations": [
-            "find_similar",
-            "git grep",
-            "publish_source_note"
+            "lab_run.py",
+            "git fetch --all --prune",
+            "git log --all --name-only"
           ],
           "connections": [
             {
               "to": "flow:preview",
-              "label": "Prepares an exact publication draft"
+              "label": "prepares the change"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "Run recorder lab_run.py",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
             }
           ]
         },
         {
           "id": "preview",
-          "title": "Show the proposed record to the user",
-          "summary": "The user can see what will be written and where before anything changes.",
-          "detail": "The skill shows the work, the claim, the wording, the source, and whether a new folder is created or an existing one is edited. This is a workflow rule; after that the gates check the merge request.",
+          "title": "The human sees the change before it is sent",
+          "summary": "The agent edits the clone in the owner's tree, not its own.",
+          "detail": "The work's clone lives in ~/brainlab, and Obsidian opens the same tree: the owner sees the change immediately, and it is sent once what was written has been looked at. Before the push, main is merged into the branch and the diff is read by eye.",
           "required": [
-            "Exact payload",
-            "Project and owner",
-            "Explicit human confirmation"
+            "an edit in the tree clone",
+            "git diff --stat origin/main..HEAD with only your own files"
           ],
           "operations": [
-            "skill: lab-knowledge, branch claim/H-XXX"
+            "git merge --no-edit origin/main",
+            "git diff --stat origin/main..HEAD"
           ],
           "connections": [
             {
               "to": "flow:write",
-              "label": "only a confirmed commit goes to git push"
+              "label": "sent as a proposal"
             }
           ],
           "links": [
             {
-              "label": "lab-knowledge skill · exact source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "How to write in git: branch, page, proposal",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/references/writing-in-git.md"
             }
           ]
         },
         {
           "id": "write",
-          "title": "Write with validation",
-          "summary": "The gates count numbers and links, the prose judge judges the text; the verdict comes in about a minute.",
-          "detail": "The service rejects extra fields, invalid state transitions, writes to inaccessible projects, and incomplete scientific objects. Repeating the same request with the same key does not create another object.",
+          "title": "Send: the push opens a proposal",
+          "summary": "The gates check the change with code and a prose judge.",
+          "detail": "git push from a branch opens a proposal by itself and assigns it to the work lead. The gates check every number against runs, codes against the tree, links, deletions against the proposal body, and that the _runs/ shelf is empty; the prose judge asks whether there is filler and whether the conclusion follows from what is written.",
           "required": [
-            "Confirmed payload",
-            "Appropriate permissions",
-            "An idempotency key if the operation requires it"
+            "branch claim/<H-code>",
+            "body: what changed, what disappeared, how it was checked",
+            "empty _runs/ shelf"
           ],
           "operations": [
-            "claims/H-XXX/README.md",
-            "lab_run.py",
-            "runs/E-XXX.md",
-            "theory/D-XXX.md",
-            "propose_decision",
-            "upsert_paper",
-            "paper-ingest"
+            "git commit -F -",
+            "git push",
+            "lab checks"
           ],
           "connections": [
             {
               "to": "flow:readback",
-              "label": "Verify success by reading the record back"
+              "label": "awaits merge"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "How to write in git: branch, page, proposal",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/references/writing-in-git.md"
             },
             {
-              "label": "Public guide · live source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "The agent's rule about the base",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/lab.md"
             }
           ]
         },
         {
           "id": "readback",
-          "title": "Read back and return the result",
-          "summary": "The created record is checked with the same permissions.",
-          "detail": "The agent returns a stable identifier, the fields actually saved, and provenance when required by the type. Errors, partial writes, and access denials are not reported as success.",
+          "title": "A merge by the work lead is the record",
+          "summary": "Green gates, resolved findings, a human's word.",
+          "detail": "The work lead merges, or an agent on their word in the same turn, with a quote in the proposal. Red, or with unresolved findings, cannot be merged: GitLab will refuse. After the merge, the push to main updates the front pages with numbers.",
           "required": [
-            "The write operation's response",
-            "The created object's identifier",
-            "The same credentials"
+            "“base” and “lab/prose” statuses are green",
+            "findings resolved",
+            "the work lead's decision"
           ],
           "operations": [
-            "get_hypothesis",
-            "get_project_context",
-            "get_paper",
-            "get_related"
+            "lab checks",
+            "Merge in GitLab"
           ],
           "connections": [
             {
               "to": "consumer:ask-lab",
-              "label": "After verification, the record is available to authorized search"
+              "label": "after the merge the record is visible to everyone with access"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "lab-knowledge skill",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ]
         }
@@ -1770,223 +1690,205 @@ window.RESEARCH_LOOP = {
         {
           "id": "researcher",
           "title": "Researcher",
-          "action": "Decides what personal work becomes shared",
-          "detail": "Keeps a free-form draft in Obsidian, checks the wording, and explicitly confirms publication. Frontmatter or a link alone does not authorize a write.",
+          "action": "Edits files in their own tree and decides what to send",
+          "detail": "Works in the ~/brainlab clone with a regular editor or in Obsidian. Private material in notes/ stays on the machine, only what is sent goes to GitLab, and the work lead merges.",
           "required": [
-            "Project",
-            "Clear wording",
-            "Source",
-            "Explicit confirmation"
+            "branch claim/<H-code>",
+            "a three-part commit message",
+            "the work lead's word to merge"
           ],
           "operations": [
-            "lab-knowledge: branch and commit",
-            "claims/H-XXX/README.md",
-            "runs/E-XXX.md",
-            "propose_decision"
+            "git switch -c claim/<H-code>",
+            "git commit -F -",
+            "git push"
           ],
           "connections": [
             {
               "to": "flow:preview",
-              "label": "Confirms publication"
+              "label": "reviews the change before it is sent"
             },
             {
               "to": "object:hypothesis",
-              "label": "Creates the project's own scientific records"
+              "label": "writes their own claims"
             }
           ],
           "links": [
             {
-              "label": "lab-knowledge skill · exact source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "How to write in git: branch, page, proposal",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/references/writing-in-git.md"
             }
           ],
           "short": "Decides what to share"
         },
         {
           "id": "agents",
-          "title": "Hermes, Codex, and Claude agents",
-          "action": "Read shared context and work within assigned boundaries",
-          "detail": "Each agent uses a separate revocable key. Permissions belong to the person and their project role; retries or a different client do not expand them.",
+          "title": "Agents: Claude Code, Codex, Hermes",
+          "action": "Write to the tree clone and send as a proposal",
+          "detail": "The agent edits the clone in the owner's tree, not a temporary one of its own: the owner sees the work before it is sent. Hermes on do-vpn works in the same tree, built under the lab agent's account. The end-of-turn hook reminds by itself when an edit sits in the clone unsent.",
           "required": [
-            "Separate token",
-            "Client identity",
-            "project scope"
+            "clone in the ~/brainlab tree",
+            "the recorder on every run",
+            "green gates"
           ],
           "operations": [
-            "git grep",
-            "get_project_context",
-            "get_related",
-            "Permitted write operations"
+            "lab_run.py",
+            "git push",
+            "lab checks"
           ],
           "connections": [
             {
               "to": "flow:scope",
-              "label": "Start by reading"
+              "label": "start by reading the clone"
             },
             {
               "to": "producer:researcher",
-              "label": "Show a preview before writing"
+              "label": "merge only on a human's word"
             }
           ],
           "links": [
             {
-              "label": "Agent connection · exact source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "lab-knowledge skill",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             },
             {
-              "label": "lab-knowledge skill · exact source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "The agent's rule about the base",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/lab.md"
             }
           ],
-          "short": "The hook requires the work to be saved"
+          "short": "write on branches, a human merges"
         },
         {
           "id": "calls",
           "title": "Brain Call and call-notes",
-          "action": "Turn a confirmed conversation into separate scientific records",
-          "detail": "The complete meeting notes remain in Obsidian. Only approved hypotheses, experiment plans, results, and decisions are published as separate records, so the conversation does not become one opaque entry.",
+          "action": "Turn a call into a summary and claim edits",
+          "detail": "The recording and transcript live in calls/raw/ and never go to GitLab. The agreed summary is calls/<DD-MM-YYYY>.md, approved claims and runs go into claims/, and all of it enters through a proposal like any other change.",
           "required": [
             "transcript",
-            "project dossier",
-            "A preview split into separate records",
+            "the work's README and its claims/",
             "Participant confirmation"
           ],
           "operations": [
-            "publish_source_note",
-            "upsert_call_note",
-            "claims/H-XXX/README.md",
-            "lab_run.py",
-            "runs/E-XXX.md",
-            "propose_decision"
+            "call-notes skill",
+            "calls/<DD-MM-YYYY>.md",
+            "git push"
           ],
           "connections": [
             {
               "to": "object:hypothesis",
-              "label": "May produce a hypothesis"
+              "label": "may amend a claim"
             },
             {
-              "to": "object:experiment",
-              "label": "Or a test plan"
-            },
-            {
-              "to": "object:decision",
-              "label": "Or a decision"
+              "to": "object:project",
+              "label": "puts the summary into the work's calls/"
             }
           ],
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/call-notes/SKILL.md"
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/call-notes/SKILL.md"
             },
             {
               "label": "Brain Call owner · request access",
               "url": "https://github.com/Vepricov"
             }
           ],
-          "short": "The call is split into records"
+          "short": "a call becomes a summary"
         },
         {
           "id": "literature",
-          "title": "Paper tools",
-          "action": "Add to the shared library and check external claims",
-          "detail": "paper-ingest saves the paper and its meaningful sections. A literature Hermes or another agent formulates claims, checks the original source, and then reads the saved records back.",
+          "title": "Paper pipeline",
+          "action": "Selects papers and reviews them into the theme literature",
+          "detail": "On do-vpn: a scripted funnel (dedup against everything known, then Jev on title and abstract with examples from the board), cards in Telegram, a review by the paper-ingest skill, a page in the theme literature clone and a plain git push. Jev selects against the descriptions of our works: at judging “is this a good paper at all” he does worse than a coin flip.",
           "required": [
-            "Canonical paper",
-            "Verified metadata",
-            "A source for checking the substance of claims"
+            "arXiv ID or DOI",
+            "theme by subject",
+            "BibTeX with citation_key"
           ],
           "operations": [
-            "upsert_paper",
-            "paper-ingest",
-            "link_paper"
+            "paper-ingest skill",
+            "fix_page.py",
+            "git push"
           ],
           "connections": [
             {
               "to": "object:paper",
-              "label": "Creates a paper record"
+              "label": "files the review"
             },
             {
               "to": "object:paper-claim",
-              "label": "Creates a claim after checking it"
+              "label": "extracts the paper's claims"
             },
             {
-              "to": "process:writing",
-              "label": "Passes through stage 08"
+              "to": "process:literature",
+              "label": "details in part 01"
             }
           ],
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
-            },
-            {
-              "label": "Paper QA model · exact source is private",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
             }
           ],
-          "short": "The paper is split into claims"
+          "short": "a paper becomes a page"
         }
       ],
       "consumers": [
         {
           "id": "ask-lab",
           "title": "Laboratory member",
-          "action": "Asks what has been tried and how it turned out",
-          "detail": "Gets a linked history: the proposal, test method, observed result, contradictions, and decision. The answer shows sources and gaps rather than only a short summary.",
+          "action": "Asks whether this was tried and how it ended",
+          "detail": "Searches the tree or GitLab search and gets the claim page: the hypothesis, what refutes it, series with verdicts and runs with log addresses. Every number can be opened.",
           "required": [
             "Question",
-            "Project or theme",
-            "An understanding of the answer's limits"
+            "work or theme",
+            "Reporter role for work files"
           ],
           "operations": [
+            "rg",
             "git grep",
-            "get_project_context",
-            "get_related",
-            "lab_health"
+            "git log -S"
           ],
           "connections": [
             {
               "to": "object:hypothesis",
-              "label": "Reads the original proposal"
+              "label": "reads the claim"
             },
             {
-              "to": "object:evidence",
-              "label": "Checks it against the result"
+              "to": "object:series",
+              "label": "sees the verdict"
             },
             {
-              "to": "object:decision",
-              "label": "Sees the accepted rule"
+              "to": "object:experiment",
+              "label": "opens the numbers and the log"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "lab-knowledge skill",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
           "short": "Asks whether this has been tried"
         },
         {
           "id": "execution-agents",
-          "title": "Project agents and watchers",
-          "action": "Check earlier attempts before making a new plan or starting a run",
-          "detail": "Before working, they read hypotheses, experiments, results, decisions, the project glossary, and resource constraints. This reduces the risk of repeating a closed line of work or choosing an unsuitable server.",
+          "title": "Agents before a launch",
+          "action": "Read past attempts before a new plan",
+          "detail": "The session-start hook names the work and what is open in it; the agent reads claims/ and the tasks before starting a run. Hermes remembers killed hypotheses in his persistent session, and the base keeps them for everyone.",
           "required": [
-            "Project context",
-            "Current decisions",
-            "Terms and resources"
+            "work clone",
+            "open tasks",
+            "servers from brainlab/servers"
           ],
           "operations": [
-            "get_project_context",
-            "list_hypotheses",
-            "get_related",
-            "list_terms",
-            "list_lab_resources"
+            "git pull",
+            "ls claims/",
+            "lab tasks"
           ],
           "connections": [
             {
               "to": "object:experiment",
-              "label": "Do not repeat an earlier protocol blindly"
+              "label": "do not blindly repeat a previous run"
             },
             {
               "to": "object:term",
@@ -1994,13 +1896,13 @@ window.RESEARCH_LOOP = {
             },
             {
               "to": "object:resource",
-              "label": "Account for environment constraints"
+              "label": "take server state into account"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "The agent's rule about the base",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/lab.md"
             }
           ],
           "short": "Read before starting a new run"
@@ -2008,402 +1910,272 @@ window.RESEARCH_LOOP = {
         {
           "id": "writing",
           "title": "Paper writing and reviewer responses",
-          "action": "Keeps wording within the available support",
-          "detail": "An external claim provides context and related work. The laboratory's own measurements and theoretical derivations support its scientific claims. These roles remain distinct.",
+          "action": "Take from the base only what has an address",
+          "detail": "Our own claims provide the evidence, literature reviews the related work. \\cite is written only with a key already in references.bib: a hook blocks a made-up key.",
           "required": [
             "The exact statement in the manuscript",
-            "A reference to an external paper or our own result",
-            "Limits of the evidence"
+            "a run or derivation under it",
+            "citation_key from the review"
           ],
           "operations": [
-            "git grep",
-            "get_related",
-            "get_paper",
-            "list_paper_claims"
+            "git grep -l '<citation_key>'",
+            "citation-validator.py",
+            "paper/ as a submodule"
           ],
           "connections": [
             {
               "to": "object:paper-claim",
-              "label": "Used for related work"
+              "label": "related work"
             },
             {
-              "to": "object:evidence",
-              "label": "Used for empirical claims"
+              "to": "object:experiment",
+              "label": "empirical statements"
             },
             {
               "to": "object:derivation",
-              "label": "Used for theoretical claims"
+              "label": "theoretical statements"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "lab-knowledge skill",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
-          "short": "Support for statements in the paper"
+          "short": "every number with an address"
         },
         {
           "id": "projections",
-          "title": "GitLab issues and the lab's public website",
-          "action": "Show tasks and public views without maintaining a second copy",
-          "detail": "The work keeps a link to an issue or an external object and its purpose. An issue or a public card does not become evidence and cannot silently rewrite the scientific history.",
+          "title": "Front pages and GitLab issues",
+          "action": "Show numbers and tasks, but keep no second copy of the knowledge",
+          "detail": "Group front pages are built by a pass straight from the repositories after a push to main. Tasks are the work's issues, and the issue body names the claim it touches. A closed task does not support a claim.",
           "required": [
-            "Stable external link",
-            "Projection type",
-            "Related record or project"
+            "merged into main",
+            "a task with the claim in its body"
           ],
           "operations": [
-            "upsert_yonote_task",
-            "preview_yonote_task",
-            "upsert_projection_ref"
+            "lab tasks",
+            "lab take <number>",
+            "Closes #N in the commit"
           ],
           "connections": [
             {
-              "to": "object:decision",
-              "label": "May display an accepted rule"
+              "to": "object:hypothesis",
+              "label": "the task names the claim"
             },
             {
               "to": "consumer:ask-lab",
-              "label": "Links back to the canonical record"
+              "label": "leads to the page in the repository"
             }
           ],
           "links": [
             {
-              "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "The agent's rule about the base",
+              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/lab.md"
             }
           ],
-          "short": "Show a link without keeping a copy"
+          "short": "they show, they hold no copy"
         }
       ],
       "sources": [
         {
-          "label": "Public guide: a snapshot from when there were 44 calls; the service now has 59, including 17 read operations",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+          "label": "Why the base lives in git: the owner's words",
+          "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/%D0%97%D0%90%D0%A7%D0%95%D0%9C.md"
         },
         {
-          "label": "Live contract verified on the deployment; source is private",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+          "label": "lab-knowledge skill",
+          "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
         }
       ],
       "lifecycle": {
-        "intro": "A claim can be resolved in one of two ways, and the service distinguishes them. An empirical claim requires a run and measurements; a theoretical claim requires a proof. There is no third route: a transition to supported, refuted, or inconclusive requires either a measurement linked through the run chain or a derivation with complete or verified status.",
+        "intro": "A claim is closed by runs or a proof, and its state changes only by its own criterion. A refutation criterion that did not fire means “not refuted”, not “supported”. supported requires one of three things: the recorded support criterion is met, our recomputation reproduced the numbers, or the number appears in our paper that has already passed an external bar.",
         "tracks": [
           {
             "id": "measured",
-            "title": "Through measurement",
-            "chain": "Claim → run → measurement → rule",
+            "title": "Through runs",
+            "chain": "claim → run → series → merge",
             "steps": [
               {
-                "op": "claims/H-XXX/README.md",
+                "op": "claims/H-XXX-NNN/README.md",
                 "title": "Claim",
-                "gives": "Code such as H-WBD-027",
-                "needs": "project_id, statement, falsification_criteria, idempotency_key",
-                "note": "The falsification criterion is a separate required field. The record cannot be created without it."
+                "gives": "a code like H-WSD-009, state draft",
+                "needs": "Hypothesis, Test conditions, What refutes it",
+                "note": "The refutation criterion is written before testing. Without it this is a note, and it belongs in notes/."
               },
               {
                 "op": "lab_run.py",
                 "title": "Run",
-                "gives": "Code such as E-WBD-033",
-                "needs": "hypothesis_id, protocol, idempotency_key",
-                "note": "The project is inherited from the claim rather than passed separately. A new run can only be planned or running. It cannot attach to a closed claim."
+                "gives": "a page in _runs/, then claims/<H>/runs/E-….md",
+                "needs": "wrapper before launch, log address",
+                "note": "Numbers, settings, commit and hardware are put in by the code. The agent adds only what is seen."
               },
               {
-                "op": "runs/E-XXX.md",
-                "title": "Measurement",
-                "gives": "Code such as R-WBD-023",
-                "needs": "experiment_id, summary, kind, idempotency_key",
-                "note": "A measurement may be recorded for a run in any state, including planned. If kind implies a number (metric or measurement), metrics must contain at least one value."
+                "op": "claims/<H>/series/S-….md",
+                "title": "Series",
+                "gives": "a verdict and a paragraph in the claim",
+                "needs": "question, setup, axis, table of launches",
+                "note": "With the first series the state becomes testing, then it follows the criterion on the page."
               },
               {
-                "op": "propose_decision",
-                "title": "Rule",
-                "gives": "Code such as P-WBD-001",
-                "needs": "project_id, statement, rationale, idempotency_key",
-                "note": "The default kind is scientific. Supporting measurements are optional, but lab_health reports their absence for a scientific rule."
+                "op": "git push",
+                "title": "Merge",
+                "gives": "a record in main",
+                "needs": "green gates, resolved findings, the work lead's word",
+                "note": "A proposal is not a stage of knowledge but a way of recording: the chain ends at a claim."
               }
             ]
           },
           {
             "id": "proved",
             "title": "Through proof",
-            "chain": "Claim → proof → rule",
+            "chain": "claim → derivation → merge",
             "steps": [
               {
-                "op": "claims/H-XXX/README.md",
+                "op": "claims/H-XXX-NNN/README.md",
                 "title": "Claim",
-                "gives": "H-* code",
-                "needs": "The same fields, with kind=theoretical",
-                "note": "The claim's kind specifies the expected support. A theorem has no seeds or dataset, and the absence of a run does not count as a broken chain."
+                "gives": "code H-…",
+                "needs": "the same",
+                "note": "A theorem about a technique and experiments on the same technique live in one claim, not two."
               },
               {
-                "op": "theory/D-XXX.md",
-                "title": "Proof",
-                "gives": "Code such as D-WBD-007",
-                "needs": "hypothesis_id, result, argument, idempotency_key",
-                "note": "A separate record type, not an experiment containing a derivation. It stores assumptions, reasoning, the established result, and completeness, with no protocol, hardware, or seeds."
+                "op": "claims/<H>/theory/D-….md",
+                "title": "Derivation",
+                "gives": "a code like D-ALS-012",
+                "needs": "a statement from scratch, a “Proof” section",
+                "note": "This is how H-ALS-039 was closed on 14-10-2026: the manuscript was not yet submitted, but the derivation passed as a proof and gave the same results."
               },
               {
-                "op": "propose_decision",
-                "title": "Rule",
-                "gives": "P-* code",
-                "needs": "project_id, statement, rationale, idempotency_key",
-                "note": "The schema has no direct “rule ↔ proof” edge. Theoretical support passes through the shared claim."
+                "op": "git push",
+                "title": "Merge",
+                "gives": "a record in main",
+                "needs": "green gates, the work lead's word",
+                "note": "The work supports a claim, not the publication: our own derivation legitimately gives supported."
               }
             ]
           }
         ],
-        "verdictOnEdge": "The verdict lives in the series, not in a single run. A series series/S-XXX.md gathers the runs that answer one question and gives a verdict; the claim's state moves from testing to supported, refuted, or inconclusive only by its own falsification criterion.",
+        "verdictOnEdge": "The verdict is written in the series, not in the claim: “no win established” is a full verdict. The state lives in three places: the status field in the header, the “state” line and a row in the work README's table; if they diverge, the status field is right, and the passes count by it.",
         "statuses": [
           {
             "id": "hypothesis",
             "title": "Claim",
-            "tool": "update_hypothesis",
-            "rule": "Transitions are fixed, and a rejection lists the permitted ones. Moving to supported, refuted, or inconclusive requires either a measurement linked through the run chain or a derivation marked complete or verified. Authors may finalize their own claims; only a lead or manager may finalize someone else's.",
+            "tool": "status in the README header",
+            "rule": "The set is closed, do not invent your own words: confirmed, verified, proposed are not states. A “Conclusion” section exists only for a claim that has been seen through.",
             "values": [
               {
                 "value": "draft",
-                "means": "The record exists but has not yet been proposed to the laboratory",
-                "exit": "To proposed or archived"
-              },
-              {
-                "value": "proposed",
-                "means": "Proposed to the laboratory; testing has not started",
-                "exit": "To testing or archived"
+                "means": "draft: the claim is written, no series yet",
+                "exit": "to testing with the first series"
               },
               {
                 "value": "testing",
-                "means": "Testing is underway: a run exists or a proof is being developed",
-                "exit": "To supported, refuted, inconclusive, or archived"
+                "means": "under test: series are running, no “Conclusion” section",
+                "exit": "to supported, refuted or inconclusive by the criterion"
               },
               {
                 "value": "supported",
-                "means": "Supporting grounds have been obtained and the claim holds",
-                "exit": "To inconclusive if new data weakens the conclusion, or to archived"
+                "means": "supported: the support criterion is met, a recomputation reproduced the numbers, or the number is in our submitted paper",
+                "exit": "changes only through a proposal, a “Conclusion” section is required"
               },
               {
                 "value": "refuted",
-                "means": "Refuted; this line of work is not reopened",
-                "exit": "Only to archived"
+                "means": "refuted: the recorded criterion fired",
+                "exit": "changes only through a proposal, a “Conclusion” section is required"
               },
               {
                 "value": "inconclusive",
-                "means": "Tested without a clear answer: noise, too few seeds, or an unsuitable test setup",
-                "exit": "Only to archived"
-              },
-              {
-                "value": "archived",
-                "means": "Hidden from active view; the record and code are preserved",
-                "exit": "No outgoing transition; this is a final status"
+                "means": "inconclusive: the criterion did not fire, but there was not enough for supported, for example the numbers come only from someone else's report",
+                "exit": "changes only through a proposal; the series says what was missing"
               }
             ]
           },
           {
             "id": "experiment",
             "title": "Run",
-            "tool": "update_experiment_status",
-            "rule": "Created only as planned or running. Four final statuses have no outgoing transitions: a new attempt gets a new run record.",
+            "tool": "lab_run.py",
+            "rule": "The recorder sets the status. A page with status planned is not part of the corpus: it does not enter a series and does not move the claim's state.",
             "values": [
               {
-                "value": "planned",
-                "means": "The work plan is described; nothing has run yet",
-                "exit": "To running or cancelled"
-              },
-              {
                 "value": "running",
-                "means": "Currently running",
-                "exit": "To completed, cancelled, interrupted, or failed"
+                "means": "computing now; a sheet picked up with --adopt is created right away",
+                "exit": "to completed, failed or interrupted"
               },
               {
                 "value": "completed",
-                "means": "Finished running",
-                "exit": "Final"
-              },
-              {
-                "value": "cancelled",
-                "means": "Cancelled by a person",
-                "exit": "Final"
-              },
-              {
-                "value": "interrupted",
-                "means": "Interrupted externally, for example by a server failure or exhausted quota",
-                "exit": "Final"
+                "means": "finished, numbers and address on the page",
+                "exit": "moved under the claim"
               },
               {
                 "value": "failed",
-                "means": "Failed internally, for example due to a code error or divergent loss",
-                "exit": "Final"
+                "means": "crashed on its own; the record is kept along with the reason",
+                "exit": "a new launch is a new run"
+              },
+              {
+                "value": "interrupted",
+                "means": "interrupted from outside: server, quota, disconnect",
+                "exit": "a new launch is a new run"
               }
             ]
           },
           {
-            "id": "derivation",
-            "title": "Proof",
-            "tool": "update_derivation_status",
-            "rule": "This describes the derivation's completeness, not the project's status. There is no transition chain; any status can be assigned directly. The service rejects gap unless the gap is explained, because an unnamed gap looks like a completed proof.",
+            "id": "proposal",
+            "title": "Proposal",
+            "tool": "lab checks",
+            "rule": "One proposal per claim, branch claim/<H-code>. A new change is a commit to the same branch, not a second proposal.",
             "values": [
               {
-                "value": "sketch",
-                "means": "A derivation plan without detailed steps",
-                "exit": "To complete once the steps are written, or to gap if a gap is found"
+                "value": "Public",
+                "means": "git push from the branch opened it and assigned the work lead",
+                "exit": "the gate verdict arrives on an event"
               },
               {
-                "value": "complete",
-                "means": "A complete derivation that has not yet been reviewed",
-                "exit": "To verified after independent review"
+                "value": "red",
+                "means": "“base” or “lab/prose” found an issue",
+                "exit": "an edit on the same branch and a new push"
               },
               {
-                "value": "verified",
-                "means": "Someone other than the author has checked the derivation",
-                "exit": "To gap if the reviewer finds a missing step"
+                "value": "green",
+                "means": "the gates are quiet, findings resolved",
+                "exit": "merge by the work lead or an agent on their word"
               },
               {
-                "value": "gap",
-                "means": "A named gap in the proof",
-                "exit": "To complete when the gap is closed; status_reason is required"
-              }
-            ]
-          },
-          {
-            "id": "decision",
-            "title": "Rule",
-            "tool": "update_decision",
-            "rule": "There is no transition graph, only permission constraints. Members create rules as proposed and may advance only their own; a lead or manager finalizes someone else's.",
-            "values": [
-              {
-                "value": "proposed",
-                "means": "Proposed but not yet accepted by the laboratory",
-                "exit": "To accepted"
-              },
-              {
-                "value": "accepted",
-                "means": "Accepted and in use",
-                "exit": "To superseded when replaced by a newer rule"
-              },
-              {
-                "value": "superseded",
-                "means": "Replaced by a newer rule; its text is retained for history",
-                "exit": "No outgoing transition"
-              }
-            ]
-          },
-          {
-            "id": "project",
-            "title": "Project",
-            "tool": "set_project_status",
-            "values": [
-              {
-                "value": "idea",
-                "means": "The idea is recorded; work has not started"
-              },
-              {
-                "value": "planning",
-                "means": "Deciding what to test and how"
-              },
-              {
-                "value": "draft",
-                "means": "Writing the manuscript"
-              },
-              {
-                "value": "evaluation",
-                "means": "Evaluating results"
-              },
-              {
-                "value": "active",
-                "means": "Work is underway"
-              },
-              {
-                "value": "almost_done",
-                "means": "Nearly ready for submission"
-              },
-              {
-                "value": "submitted",
-                "means": "Submitted to a venue and awaiting a response"
-              },
-              {
-                "value": "ready",
-                "means": "Ready for submission"
-              },
-              {
-                "value": "paused",
-                "means": "Paused; no tasks or calls are expected"
-              },
-              {
-                "value": "completed",
-                "means": "Completed"
-              },
-              {
-                "value": "archived",
-                "means": "Archived"
-              }
-            ]
-          },
-          {
-            "id": "resource",
-            "title": "Resource",
-            "tool": "upsert_resource",
-            "rule": "The service does not validate transitions here: access to a machine can disappear and return unpredictably.",
-            "values": [
-              {
-                "value": "requested",
-                "means": "Access requested but not yet granted"
-              },
-              {
-                "value": "active",
-                "means": "Available and in use"
-              },
-              {
-                "value": "expired",
-                "means": "Expired and eligible for renewal"
-              },
-              {
-                "value": "retired",
-                "means": "Permanently retired"
+                "value": "merged",
+                "means": "a record in main; the front pages update",
+                "exit": "undone only by git revert"
               }
             ]
           }
         ],
         "kinds": [
           {
-            "of": "Claim",
-            "values": "empirical, theoretical, unspecified",
-            "why": "Determines what counts as support: a measurement or a proof. unspecified is used for records created before kinds were introduced."
+            "of": "repositories",
+            "values": "work · theme literature · service (handbook, journal, servers, ops/*)",
+            "why": "a work is written to through a proposal with gates, literature and service repositories straight to main after git pull --rebase."
           },
           {
-            "of": "Rule",
-            "values": "scientific, operational, unspecified",
-            "why": "lab_health checks scientific rules for supporting measurements, but not operational rules. Before kinds were introduced, all 63 reported findings were false positives."
+            "of": "runs",
+            "values": "self-recording by lab_run.py · --adopt pickup · re-analysis of saved numbers",
+            "why": "a pickup is honestly weaker than the wrapper and is marked adopted: true; a re-analysis without new computation also gets its own run page."
           },
           {
-            "of": "Measurement",
-            "values": "A free-form string; metric and measurement imply a numerical value",
-            "why": "A kind that implies a numerical value is rejected without metrics. artifact, manuscript, and diagnostic do not imply numerical values."
+            "of": "numbers",
+            "values": "printed in a document · read off a figure by eye",
+            "why": "printed numbers can be recorded; a number read from a point's position is never evidence."
           },
           {
-            "of": "Journal entry",
-            "values": "observation, incident, measurement, onboarding, organisational",
-            "why": "Distinguishes an observation from an incident or a measurement."
+            "of": "sources for supported",
+            "values": "our submitted or accepted paper, a delivered report · an unsubmitted draft · someone else's paper",
+            "why": "only the first has passed an external bar; a draft would support a claim with itself."
           },
           {
-            "of": "Term",
-            "values": "implementation, run, protocol, metric, dataset, artifact, other",
-            "why": "Readers can match an implementation to a commit, find a run in the tracker, and compare a protocol with their own."
+            "of": "paper-to-work links",
+            "values": "baseline, prior art, supports, contradicts",
+            "why": "a line on the work page with the citation key; no link is made on the strength of a shared word in the title."
           },
           {
-            "of": "Resource",
-            "values": "server, cluster, quota, account, license, dataset, budget, service",
-            "why": "The list is closed; an unrestricted field would accumulate synonyms."
-          },
-          {
-            "of": "Paper relationship",
-            "values": "prior_art, supports, contradicts, baseline, inspired, reproduces",
-            "why": "Without a type, a link only means “mentioned nearby”, and a report cannot distinguish support from contradiction."
-          },
-          {
-            "of": "A claim from a paper",
-            "values": "empirical, theoretical, method, definition",
-            "why": "An empirical claim rests on external measurements; a theoretical claim rests on an external proof. They require different kinds of scrutiny."
+            "of": "roles",
+            "values": "Guest, Reporter, Developer, Maintainer, Owner",
+            "why": "the GitLab role is the lab role; the role at the root is the floor for the whole tree."
           }
         ]
       },
@@ -2411,37 +2183,37 @@ window.RESEARCH_LOOP = {
         "roots": [
           {
             "id": "lab",
-            "title": "Our own work",
-            "note": "Belongs to a project, and writing requires a role in that project.",
+            "title": "Project",
+            "note": "One repository; a record enters only by merging a proposal.",
             "chains": [
               {
                 "label": "Empirical work",
                 "objectIds": [
-                  "a hypothesis",
-                  "an experiment",
-                  "evidence",
-                  "a decision"
+                  "hypothesis",
+                  "series",
+                  "experiment",
+                  "source-ref"
                 ]
               },
               {
                 "label": "Theory",
                 "objectIds": [
-                  "a hypothesis",
-                  "derivation"
+                  "hypothesis",
+                  "derivation",
+                  "figure"
                 ]
               }
             ]
           },
           {
             "id": "library",
-            "title": "Paper library",
-            "note": "Belongs to the whole laboratory, has no owning project, and accepts writes from any member.",
+            "title": "Theme literature",
+            "note": "Each theme has its own, open to everyone signed in, written straight to main.",
             "chains": [
               {
                 "label": "Analysis",
                 "objectIds": [
-                  "a paper",
-                  "paper-chunk",
+                  "paper",
                   "paper-claim"
                 ]
               }
@@ -2449,75 +2221,74 @@ window.RESEARCH_LOOP = {
           }
         ],
         "contextIds": [
-          "of the project",
+          "project",
           "theme",
+          "decision",
           "journal",
           "term",
-          "resource",
-          "source-ref"
+          "resource"
         ],
         "bridge": {
           "fromId": "paper-claim",
           "toIds": [
-            "a hypothesis"
+            "hypothesis"
           ],
-          "label": "A typed relationship, not our own result"
+          "label": "a line with the citation key, not our result"
         }
       },
       "intake": [
         {
           "id": "by-human",
-          "title": "A person publishes directly",
-          "who": "Researcher",
-          "decides": "Human approval: no write without confirmation",
+          "title": "A person or an agent edits a work",
+          "who": "a researcher and their agent",
+          "decides": "the work lead: no merge, no record",
           "steps": [
             {
               "id": "human-draft",
-              "title": "Draft in Obsidian",
-              "note": "Free-form text. Neither a link nor note frontmatter counts as consent to write.",
+              "title": "An edit in the tree clone",
+              "note": "The file is open in an editor or in Obsidian. Private material stays in notes/ and never enters git.",
               "ops": []
             },
             {
               "id": "human-lookup",
-              "title": "Find the project and check for duplicates",
-              "note": "Read first: does the record already exist, and which project should contain it?",
+              "title": "Work and claim",
+              "note": "Read first: does this claim exist, and is there an open branch for it.",
               "ops": [
-                "git grep",
-                "get_project_context"
+                "ls claims/",
+                "git grep"
               ]
             },
             {
               "id": "human-kind",
-              "title": "Choose the record kind",
-              "note": "The kind determines required fields. An observation does not become a claim just to populate the database.",
+              "title": "A branch per claim",
+              "note": "One claim/<H-code> branch; the free code is the highest across all branches.",
               "ops": [
-                "list_hypotheses",
-                "list_terms"
+                "git switch -c claim/<H-code>"
               ]
             },
             {
               "id": "human-preview",
-              "title": "Preview the exact record",
-              "note": "Shows the project, kind, wording, source, and whether this is a new record or an edit.",
-              "ops": []
-            },
-            {
-              "id": "human-confirm",
-              "title": "Human confirmation",
-              "human": true,
-              "note": "A skill rule; the record is still only the merge of the merge request by a person.",
-              "ops": []
+              "title": "Sending",
+              "note": "The proposal body comes from the commit message: what changed, what disappeared, how it was checked.",
+              "ops": [
+                "git commit -F -",
+                "git push"
+              ]
             },
             {
               "id": "human-write",
-              "title": "Write and read back",
-              "note": "The service returns a record code, and the agent reads it back with the same permissions.",
+              "title": "Gates and verdict",
+              "note": "Numbers are checked against runs, prose is judged separately; red cannot be merged.",
               "ops": [
-                "claims/H-XXX/README.md",
-                "runs/E-XXX.md",
-                "propose_decision",
-                "get_project_context"
+                "lab checks"
               ]
+            },
+            {
+              "id": "human-confirm",
+              "title": "Merge by the work lead",
+              "human": true,
+              "note": "Or by an agent on a human's word given in the same turn, with a quote in the proposal.",
+              "ops": []
             }
           ]
         },
@@ -2525,7 +2296,7 @@ window.RESEARCH_LOOP = {
           "id": "by-hook",
           "title": "End-of-turn hook",
           "who": "An agent in any session",
-          "decides": "The agent has the full session context",
+          "decides": "the agent: it has the full context, and Jev suggests what goes where",
           "steps": [
             {
               "id": "hook-work",
@@ -2535,39 +2306,35 @@ window.RESEARCH_LOOP = {
             },
             {
               "id": "hook-count",
-              "title": "The tenth human turn",
-              "note": "The hook counts actual user messages, excluding tool results and its own reminders.",
+              "title": "Facts first, without a model",
+              "note": "A launch without the recorder, red gates on an open proposal, an edit in the clone that was never sent: each case is reported once.",
               "ops": []
             },
             {
               "id": "hook-block",
-              "title": "Prevents the turn from ending",
-              "note": "Instead of extracting text, it pauses the agent and asks it to save what is worth keeping.",
+              "title": "Jev decides whether to interrupt",
+              "note": "A fast classifier assesses the turn and names the place: work, journal, handbook, grant or MemPalace.",
               "ops": []
             },
             {
               "id": "hook-pick",
               "title": "The agent identifies the findings",
-              "note": "The agent decides what to record and which type to use, rather than a string-matching rule.",
+              "note": "What to record is up to the agent; the hook line is advice, not an order.",
               "ops": []
             },
             {
               "id": "hook-write",
-              "title": "Appropriate storage locations",
-              "note": "The agent saves meaningful results in MemPalace, in the notes/ of its work, and, if the lab cares about it, through a merge request into the Lab GitLab. An empty checkpoint creates no records.",
+              "title": "Recording to the address",
+              "note": "To a work through a proposal, to service repositories by direct push, to MemPalace as a diary entry and verbatim content.",
               "ops": [
-                "claims/H-XXX/README.md",
-                "lab_run.py",
-                "runs/E-XXX.md",
-                "propose_decision",
-                "upsert_resource",
-                "brainlab/journal"
+                "git push",
+                "mempalace_diary_write"
               ]
             },
             {
               "id": "hook-report",
               "title": "One line for the user",
-              "note": "What was saved and where, or that nothing qualified. The turn then ends.",
+              "note": "What was recorded and where, or that there is nothing to record.",
               "ops": []
             }
           ]
@@ -2581,448 +2348,399 @@ window.RESEARCH_LOOP = {
             {
               "id": "call-record",
               "title": "Participant audio tracks are recorded",
-              "note": "A separate track for each person helps identify who proposed what.",
+              "note": "A separate track per person, so it is clear who proposed what.",
               "ops": []
             },
             {
               "id": "call-text",
-              "title": "Transcript with names",
-              "note": "The complete meeting notes remain in Obsidian and are not copied wholesale into the database.",
+              "title": "Transcript in calls/raw/",
+              "note": "Excluded from git in every clone and never sent anywhere.",
               "ops": []
             },
             {
               "id": "call-split",
-              "title": "Agents split the conversation",
-              "note": "The conversation is divided into claims, run plans, measurements, and rules for the relevant projects.",
+              "title": "The agent splits up the conversation",
+              "note": "Checks against the work's README, its claims/ and open tasks.",
               "ops": [
-                "get_project_context",
-                "git grep"
+                "call-notes skill"
               ]
             },
             {
               "id": "call-preview",
-              "title": "A preview for every record",
-              "note": "Several records may result, so they are confirmed individually rather than approving the whole conversation as one block.",
+              "title": "Summary and edits separately",
+              "note": "The meeting summary is calls/<DD-MM-YYYY>.md, claims go into claims/.",
               "ops": []
             },
             {
               "id": "call-confirm",
               "title": "Participant confirmation",
               "human": true,
-              "note": "Saying something aloud does not make it a laboratory decision. A rule enters the database as proposed.",
+              "note": "Something said out loud is not yet a lab decision.",
               "ops": []
             },
             {
               "id": "call-write",
-              "title": "Source first, then records",
-              "note": "First create a source linking to the meeting notes, then the records that rely on it.",
+              "title": "Through a proposal, like everything else",
+              "note": "A merge by the work lead is the record.",
               "ops": [
-                "publish_source_note",
-                "upsert_call_note",
-                "claims/H-XXX/README.md",
-                "lab_run.py",
-                "propose_decision"
+                "git push"
               ]
             }
           ]
         },
         {
           "id": "by-paper",
-          "title": "A paper enters the library",
-          "who": "paper-ingest skill",
-          "decides": "The agent formulates and checks claims; the service validates the record",
+          "title": "A paper enters the literature",
+          "who": "the paper pipeline and the paper-ingest skill",
+          "decides": "the owner: takes the card or discards it",
           "steps": [
             {
               "id": "paper-key",
-              "title": "External paper identifier",
-              "note": "An arXiv ID, DOI, or Zotero key. Without it, the next submission creates a duplicate.",
-              "ops": [
-                "find_related_papers"
-              ]
+              "title": "Selection on do-vpn",
+              "note": "Dedup against everything known, then Jev on title and abstract with examples from the board.",
+              "ops": []
             },
             {
               "id": "paper-upsert",
-              "title": "The paper and its sections",
-              "note": "Section boundaries follow the analysis, not fixed windows of N characters.",
-              "ops": [
-                "upsert_paper",
-                "add_paper_section"
-              ]
+              "title": "Cards in Telegram",
+              "human": true,
+              "note": "A human decides to take or discard; the taken and discarded cards from the board serve Jev as examples.",
+              "ops": []
             },
             {
               "id": "paper-claims",
-              "title": "Individual paper claims",
-              "note": "A paraphrase, claim type, and locator. Add a quotation only when needed.",
+              "title": "Review by the canon",
+              "note": "The page is named after the paper, BibTeX with citation_key, the paper's claims with their address in it.",
               "ops": [
-                "paper-ingest"
+                "paper-ingest skill"
               ]
             },
             {
               "id": "paper-verify",
-              "title": "Check the record and source",
-              "note": "The agent checks the meaning against the original and reads the record back. quote_verified applies only to an optional quotation matched against saved text.",
-              "ops": []
+              "title": "Page into GitLab form",
+              "note": "Formulas, figures alongside, PDF figures to PNG.",
+              "ops": [
+                "fix_page.py"
+              ]
             },
             {
               "id": "paper-link",
-              "title": "Link to our work",
-              "note": "An external claim may support or challenge ours, but it does not become our own measurement.",
+              "title": "Push to the theme literature",
+              "note": "Straight to main; others get the paper with a plain git pull.",
               "ops": [
-                "link_paper",
-                "get_paper"
+                "git push"
               ]
             }
           ]
         }
       ],
       "hook": {
-        "trigger": "Every tenth actual human message",
-        "where": "The Stop event in Claude Code and Codex",
-        "decides": "The agent with the full context, rather than a text parser",
+        "trigger": "end of every agent turn",
+        "where": "Stop event, ~/.claude/settings.json",
+        "decides": "code for facts and Jev for meaning, while the agent does the wording",
         "steps": [
           {
             "id": "count",
-            "title": "Counts actual turns",
-            "note": "The harness labels almost everything as a user message. In one session, 5,283 records included 4,722 tool results, 177 hook responses, and only 384 actual human messages."
+            "title": "Checks facts without a model",
+            "note": "A training launch without the recorder is found by the entry-point file, red gates by the commit statuses of open proposals, an unsent edit by git status."
           },
           {
             "id": "block",
-            "title": "Prevents the turn from ending",
-            "note": "The hook returns block. The turn cannot end until the agent saves the result and reports it."
+            "title": "Asks Jev",
+            "note": "The classifier sees the session path and the descriptions of write locations from the service repositories' READMEs, and decides whether to interrupt the turn and where it belongs."
           },
           {
             "id": "agent",
             "title": "The agent identifies what to save",
             "human": false,
-            "note": "The hook does not extract knowledge from text. It pauses the workflow and requests a save; the agent with the full context writes the content."
+            "note": "The hook does not extract knowledge from text. It stops the agent, and the wording comes from whoever has the full context."
           },
           {
             "id": "report",
             "title": "Reports in one line",
-            "note": "The agent reports actual results and IDs of records it has read back. The hook marker records a checkpoint request, not a successful write."
+            "note": "What was recorded and where, or that nothing fit. Each fact is reported once."
           }
         ],
         "outputs": [
           {
             "id": "mempalace",
             "title": "MemPalace",
-            "what": "A drawer with verbatim excerpts, decisions, and code, plus one compressed session diary line."
-          },
-          {
-            "id": "obsidian",
-            "title": "Obsidian",
-            "what": "Canonical project notes selected through filesystem mapping: protocols, results, decisions, and open questions."
+            "what": "A compressed session diary line and a drawer of verbatim content: the owner's words, a decision with its reason, a measured number."
           },
           {
             "id": "lab",
-            "title": "Lab GitLab",
-            "what": "Only material the laboratory can later cite: a claim, run, measurement, rule, resource, or journal entry.",
-            "conditional": "the hook only names where to write, based on the descriptions of the service repositories; it writes nothing itself"
+            "title": "The lab base",
+            "what": "Science goes to a work through a proposal; how we work goes to journal, instructions to handbook, grants to ops/grants: by direct push to main."
           }
         ],
         "ops": [
-          "claims/H-XXX/README.md",
-          "lab_run.py",
-          "update_experiment_status",
-          "runs/E-XXX.md",
-          "propose_decision",
-          "upsert_resource",
-          "brainlab/journal"
+          "claims/<H>/ in the work",
+          "brainlab/journal",
+          "brainlab/handbook",
+          "ops/grants/<grant>",
+          "MemPalace"
         ],
         "rules": [
-          "The project is resolved using its existing stable ID and aliases. If the binding is unknown, the write stays pending; no arbitrary project or board is created.",
-          "A claim is not written without an observation that would require rejecting it.",
-          "A measurement is not written without a source, or a run without a status.",
-          "Material that fits no strict type belongs in the journal, rather than an invented claim.",
-          "Record machine-specific pitfalls in a resource, never passwords or tokens.",
-          "Private and early-stage work stays in Obsidian. This database holds what the laboratory shares.",
-          "Once per ten messages, not every turn: each trigger costs an extra model call. Counting all turns triggered 552 saves instead of 38 and consumed 8.6% of the session's output tokens.",
+          "Facts do not wait for a model: a launch without the recorder, red gates and an unsent edit interrupt the turn on their own.",
+          "The hook prints only what changes from turn to turn; the standing rules live in ~/.claude/rules/checkpoint.md and are read once per session.",
+          "If Jev does not answer, the old counter kicks in: once every ten real human messages.",
+          "The messages are counted by the hook itself: in one long session, of 5283 entries with the human role, 4722 were tool results and only 384 were actual messages.",
           "A blocking save hook cannot run before context compaction: blocking PreCompact cancels compaction rather than postponing it.",
-          "The hook skips its own interruption to avoid a loop."
+          "The hook skips its own interruption to avoid a loop.",
+          "The hook line is an observation, not an order: if there is nothing to record, the agent says so in one line."
         ],
         "history": {
           "title": "What we tried and discarded",
-          "what": "The previous hook parsed transcript markers such as “LAB-HYPOTHESIS: … | falsified by: …” and wrote directly to the database without a model call. Parsing cost nothing, and it wrote exactly the marked text, queuing writes when the database was unavailable.",
-          "why": "Nobody was required to add those markers, so it rarely triggered in practice. It is no longer connected to Stop; its last log entry is dated 17-08-2026."
+          "what": "The old hook parsed the transcript by markup like “LAB-WORK: …” and wrote on its own, without a model. Later the hook named three addresses: the base, MemPalace and Obsidian.",
+          "why": "Nobody was obliged to write the markup, and the hook almost never fired; it was removed 03-10-2026. The third address was dropped 16-10-2026: the Obsidian vault became the ~/brainlab tree itself, so “to the base” and “to Obsidian” pointed to the same files."
         },
         "links": [
           {
-            "label": "Hook source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
+            "label": "Source of the end-of-turn hook",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
+          },
+          {
+            "label": "The stop-and-record rule",
+            "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/rules/checkpoint.md"
           }
         ]
       }
     },
     "controls": [
       {
-        "id": "c-falsification",
-        "kind": "Claim",
-        "title": "No falsification criterion",
-        "explanation": "falsification_criteria is required. Without an observation that would rule out the claim, it is an opinion with no way to test or resolve it. State exactly what you would observe if you were wrong."
+        "id": "c-push-main",
+        "kind": "GitLab",
+        "title": "Push straight to a work's main",
+        "explanation": "Branch protection rejects it for everyone, admins included. A record enters only by merging a proposal: branch, git push, gates, the work lead's decision."
       },
       {
-        "id": "c-status-chain",
-        "kind": "Claim",
-        "title": "A status transition outside the permitted chain",
-        "explanation": "Permitted transitions follow draft → proposed → testing → supported, refuted, or inconclusive → archived, with supported → inconclusive and archiving from any state also allowed. A rejection lists the permitted values.",
-        "example": "draft → supported is rejected: first proposed, then testing."
+        "id": "c-red-merge",
+        "kind": "GitLab",
+        "title": "Merging with red gates",
+        "explanation": "GitLab will not merge a red proposal. It is fixed by an edit on the same branch, not by an explanation in the discussion: a new push lands in the same proposal."
       },
       {
-        "id": "c-no-support",
-        "kind": "Claim",
-        "title": "A conclusion without support",
-        "explanation": "Moving to supported, refuted, or inconclusive requires either a measurement linked through the run chain or a derivation marked complete or verified. Without that support, the status stays testing."
+        "id": "c-number",
+        "kind": "Gates",
+        "title": "The number is in no run",
+        "explanation": "check_numbers checks every number on the page against the run corpus of this claim. A number that is not there gives a red verdict listing every one found.",
+        "example": "“number 13.37 is not in any run”"
       },
       {
-        "id": "c-foreign-close",
-        "kind": "Permissions",
-        "title": "A member cannot finalize someone else's conclusion",
-        "explanation": "Members may finalize their own claims and rules. A lead or manager finalizes someone else's, providing an independent check."
+        "id": "c-foreign-number",
+        "kind": "Gates",
+        "title": "A number from a run of a neighboring claim",
+        "explanation": "The corpus is counted per claim, so someone else's number on your page is just as made up. A fact from a neighboring claim is stated in words with a link, without digits.",
+        "example": "2381 on the H-LST-018 page turned red: it lives in a run of H-LST-012."
       },
       {
-        "id": "c-closed-hyp",
-        "kind": "Run",
-        "title": "A run attached to a closed claim",
-        "explanation": "Claims marked supported, refuted, inconclusive, or archived cannot accept new runs. Otherwise, numbers about one question can enter another question's chain, leaving valid links but misleading scientific content."
+        "id": "c-shelf",
+        "kind": "Gates",
+        "title": "A non-empty _runs/ shelf",
+        "explanation": "The recorder puts runs on a temporary shelf. Until the agent has moved each one under a claim, the proposal does not merge."
       },
       {
-        "id": "c-terminal-start",
-        "kind": "Run",
-        "title": "A new run created in a final state",
-        "explanation": "A run is created only as planned or running, then advanced through update_experiment_status. The four final states have no outgoing transitions; another attempt requires a new run record."
+        "id": "c-codes",
+        "kind": "Gates",
+        "title": "A code taken twice",
+        "explanation": "check_codes checks codes against the tree. The free code is taken as the highest number across all branches, because a code in an unmerged proposal is not visible in main."
       },
       {
-        "id": "c-no-metrics",
-        "kind": "Measurement",
-        "title": "The kind implies a number, but no numbers are supplied",
-        "explanation": "The gates count numbers and links: a number the text relies on must appear on a run page written by code. Otherwise the verdict is red."
+        "id": "c-deletions",
+        "kind": "Gates",
+        "title": "Deleted and not named",
+        "explanation": "check_deletions checks deleted files against the proposal body. The body is the gates' input, so the list of deletions goes at its start."
       },
       {
-        "id": "c-effect-target",
-        "kind": "Measurement",
-        "title": "The assessment references the wrong hypothesis",
-        "explanation": "hypothesis_effects requires the UUID of a claim in the same project. The service cannot resolve a public code alone. An assessment pointing nowhere is worse than an absent one because it makes later reports misleading."
+        "id": "c-vanished",
+        "kind": "Gates",
+        "title": "Fewer records than before",
+        "explanation": "check_vanished catches records that disappear. Most often it is a branch off a stale main: before sending, merge main in and read git diff --stat by eye."
       },
       {
-        "id": "c-unnamed-gap",
-        "kind": "Proof",
-        "title": "An unexplained gap",
-        "explanation": "gap requires a populated status_reason. An unnamed gap looks like a complete proof and may be cited as an established result."
+        "id": "c-links",
+        "kind": "Gates",
+        "title": "A link or figure that does not exist",
+        "explanation": "check_links checks links. A missing figure is brought over from the manuscript, not fixed by pointing the link at another image."
       },
       {
-        "id": "c-no-argument",
-        "kind": "Proof",
-        "title": "A missing result or argument",
-        "explanation": "result states what was established; argument gives steps another reader can follow. Without either, the entry is a heading rather than a proof. depends_on accepts only derivations from the same project."
+        "id": "c-prose",
+        "kind": "Prose judge",
+        "title": "Filler, a conclusion that does not follow, text another agent cannot read",
+        "explanation": "Three questions, one per call; the 0.70 threshold sits in a measured gap. A finding blocks the merge with a separate lab/prose status, even when the mechanical checks are green.",
+        "example": "H-LAG-001: it said supported, while the “what came out” column in the proof table was empty."
       },
       {
-        "id": "c-foreign-basis",
-        "kind": "Rule",
-        "title": "Support from another project",
-        "explanation": "Claims and measurements supporting a rule must belong to the same project. A cross-project reference would create a rule whose support cannot be checked within that project."
+        "id": "c-unicode-math",
+        "kind": "Pass",
+        "title": "Unicode math outside formulas",
+        "explanation": "R², ≈, ≤ and Greek letters in prose get a finding: numbers in a run's formulas count as measured, in a derivation as conditions, so prose must be told apart from formulas. ±, × and · are allowed."
       },
       {
-        "id": "c-no-key",
-        "kind": "Library",
-        "title": "A paper without a stable key",
-        "explanation": "At least one of arxiv_id, doi, or zotero_key is required. Without it, the next submission cannot recognize the paper and creates a duplicate. Titles and author names are unsuitable because their spelling varies."
+        "id": "c-sections",
+        "kind": "Pass",
+        "title": "Claim page sections out of order",
+        "explanation": "The sections are fixed, and you do not append your own at the end. “Conclusion” exists only with supported, refuted or inconclusive, and is never empty."
       },
       {
-        "id": "c-quote-missing",
-        "kind": "Library",
-        "title": "The quotation is absent from the stored paper text",
-        "explanation": "A claim may be paraphrased without a quotation. If a quotation is explicitly supplied and stored text exists, the service checks the match. Matching a Russian summary does not verify the original publication."
+        "id": "c-series-verdict",
+        "kind": "Pass",
+        "title": "A series without a verdict",
+        "explanation": "A series without a verdict is just a list of launches. “No difference visible” is a legitimate verdict, an empty one is not."
       },
       {
-        "id": "c-fragment",
-        "kind": "Library",
-        "title": "A fragment instead of a paper claim",
-        "explanation": "A claim must express a complete idea. A single character, table heading, or unfinished phrase does not explain what the paper showed."
+        "id": "c-no-proof",
+        "kind": "Pass",
+        "title": "A derivation without a “Proof” section",
+        "explanation": "A statement without a proof is an assertion. If there is no proof, say so, with the missing step: the checks will count it as a debt, not an error."
       },
       {
-        "id": "c-no-magnitude",
-        "kind": "Library",
-        "title": "An empirical claim without a value",
-        "explanation": "A quantitative conclusion needs its value, comparison conditions, and source. Saying “better” without explaining the measure and data loses the substance of the result."
+        "id": "c-figure",
+        "kind": "Pass",
+        "title": "A figure not embedded on the claim page",
+        "explanation": "A figure is embedded twice: in the series and on the claim page. One embed in the series is not enough."
       },
       {
-        "id": "c-short-quote",
-        "kind": "Library",
-        "title": "An empty section or statement",
-        "explanation": "Empty statements and sections are rejected. There are no arbitrary quotas for quotation length, statement length, or the number of claim types."
+        "id": "c-no-claim",
+        "kind": "Pass",
+        "title": "A record without a claim",
+        "explanation": "A log, a table, a run, a derivation is support for a claim. No claim: either state one, or do not write."
+      },
+      {
+        "id": "c-trash",
+        "kind": "Pass",
+        "title": "Junk drawers and new folders",
+        "explanation": "archive/, old/, tmp/ are forbidden under any name, and folders outside the reference work's list are not created without a line of explanation in the README."
+      },
+      {
+        "id": "c-stale-clone",
+        "kind": "Work judge",
+        "title": "Review on a stale clone",
+        "explanation": "Green gates do not catch a change made on a stale clone: the findings are about things already closed. sudya.py fetches by itself and refuses to build the package, naming the number of commits behind."
+      },
+      {
+        "id": "c-unwrapped-run",
+        "kind": "Hook",
+        "title": "Training launched without the recorder",
+        "explanation": "The end-of-turn hook sees the launch in the transcript and checks the entry-point file. The run is not abandoned and the numbers are not retyped by hand; it is picked up: lab_run.py --adopt."
+      },
+      {
+        "id": "c-cite",
+        "kind": "Hook",
+        "title": "\\cite with a key missing from references.bib",
+        "explanation": "citation-validator.py blocks a .tex edit before the file is written. The key is taken from the BibTeX in the paper review; there are no made-up keys."
+      },
+      {
+        "id": "c-old-paths",
+        "kind": "Hook",
+        "title": "Writing to old vault paths",
+        "explanation": "Since 16-10-2026 the vault is the ~/brainlab tree. no-old-paths.py rejects writes to the old roots, so an edit does not land where no one will see it."
       },
       {
         "id": "c-secret",
-        "kind": "Resource",
-        "title": "A password or token in the access description",
-        "explanation": "This is a multiuser database, and records outlast changes in laboratory membership. State where the secret is stored and whom to ask, not the secret itself."
-      },
-      {
-        "id": "c-disabled-token",
-        "kind": "Keys",
-        "title": "A token for a disabled member",
-        "explanation": "Such a key would appear usable but return an unexplained 401. The rejection is explicit: re-enable the person first, then issue the key."
-      },
-      {
-        "id": "c-read-only",
-        "kind": "Permissions",
-        "title": "Writing to a project without a role in it",
-        "explanation": "You can read this project, as all members can, but cannot write to it. Ask the project's lead for the contributor role."
-      },
-      {
-        "id": "c-idem",
-        "kind": "Retries",
-        "title": "The same key with a different payload",
-        "explanation": "An idempotency key stores a receipt. Repeating the same arguments returns the same record; different arguments are rejected. An empty key is also rejected."
-      },
-      {
-        "id": "c-unknown-field",
-        "kind": "Schema",
-        "title": "An unknown field in the call",
-        "explanation": "An extra request field is rejected, not silently ignored. A discarded field looks accepted, leaving the caller believing more was saved than actually was."
-      },
-      {
-        "id": "c-cascade",
-        "kind": "Deletion",
-        "title": "Dependent records exist, but cascade was not supplied",
-        "explanation": "The rejection lists what would be removed with the record: runs, measurements, derivations, and links to rules and papers. Deleting a claim while retaining its runs would leave them without a subject. The deletion event and the removed record's code remain in the log."
+        "kind": "Hook",
+        "title": "A key or password in an edit",
+        "explanation": "security-guard.js checks edits for leaked keys before the file is written. The git key lives in the git credential helper, not in a URL or a file."
       }
-    ],
-    "mapFeatured": [
-      "lab-knowledge",
-      "obsidian-project-memory",
-      "mempalace"
-    ],
-    "constellation": {
-      "cores": [
-        {
-          "toolId": "obsidian-project-memory",
-          "area": "personal",
-          "caption": "Personal notes and project context"
-        },
-        {
-          "toolId": "lab-knowledge",
-          "area": "shared",
-          "caption": "Research, literature, and relationships"
-        },
-        {
-          "toolId": "mempalace",
-          "area": "agent",
-          "caption": "Agent memory between sessions"
-        }
-      ],
-      "links": [
-        [
-          "obsidian-project-memory",
-          "lab-knowledge"
-        ],
-        [
-          "lab-knowledge",
-          "mempalace"
-        ]
-      ],
-      "groups": [
-        {
-          "area": "notes",
-          "core": "obsidian-project-memory",
-          "title": "Working context",
-          "toolIds": [
-            "obsidian-knowledge",
-            "agent-rules"
-          ]
-        },
-        {
-          "area": "contract",
-          "core": "lab-knowledge",
-          "title": "Access and saving",
-          "toolIds": [
-            "lab-knowledge-skill",
-            "connected-mcp",
-            "lab-knowledge-ops"
-          ]
-        },
-        {
-          "area": "recall",
-          "core": "mempalace",
-          "title": "Resume the work",
-          "toolIds": [
-            "memory-hooks",
-            "capability-registry",
-            "plugins"
-          ]
-        }
-      ]
-    }
+    ]
   },
   "support": [],
   "contours": [],
   "meta": {
-    "verified": "06.09.2026",
-    "registryCount": 138,
+    "verified": "19.10.2026",
+    "registryCount": 206,
     "toolkit": {
-      "title": "Get the source code",
-      "lead": "Lab tools, Hermes prompts, and third-party projects. Clone the repositories you need and follow their READMEs.",
+      "title": "Install the complete toolkit",
+      "lead": "One install puts skills, commands, agents, hooks, scripts and rules for Claude Code into ~/.claude. A third command sets up the ~/brainlab tree and the lab command for a lab member. The other parts of the system live separately and install from their own links.",
       "install": [
-        "git clone https://github.com/brain-lab-research/claude-brainlab.git",
-        "bash claude-brainlab/docs/lab/install.sh",
-        "git clone https://github.com/brain-lab-research/brain-call.git",
-        "git clone https://github.com/brain-lab-research/hermes-prompts.git",
-        "git clone https://github.com/NousResearch/hermes-agent.git",
-        "git clone https://github.com/MemPalace/mempalace.git",
-        "git clone https://github.com/54yyyu/zotero-mcp.git"
+        "git clone https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+        "cd ~/claude-brainlab",
+        "bash install/bootstrap.sh    # asks about the vault and keys",
+        "bash install/setup.sh        # lays everything out in ~/.claude",
+        "bash docs/lab/install.sh     # for lab members: the ~/brainlab tree and the lab command"
       ],
-      "after": "Cloning Brain Call requires access to its private repository; access to the Lab GitLab is granted by the Telegram bot.",
+      "after": "Restart Claude Code and the kit is ready. Roll back with one command: bash install/uninstall.sh.",
       "components": "skills · commands · agents · hooks · scripts · rules",
-      "links": [],
+      "links": [
+        {
+          "label": "Repository",
+          "url": "https://github.com/Vepricov/claude-brainlab"
+        },
+        {
+          "label": "What bootstrap.sh asks",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/install/bootstrap.sh"
+        },
+        {
+          "label": "What setup.sh does",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/install/setup.sh"
+        },
+        {
+          "label": "Lab install",
+          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/lab/install.sh"
+        }
+      ],
       "pieces": [
         {
           "name": "claude-brainlab",
-          "what": "72 public skills, agents, hooks, and rules",
+          "what": "77 skills, 34 commands, 15 agents, hooks and 11 rules",
           "access": "Public",
-          "url": "https://github.com/brain-lab-research/claude-brainlab"
+          "url": "https://github.com/Vepricov/claude-brainlab"
         },
         {
-          "name": "Hermes Agent",
-          "what": "Project agent environment: profile, task queue, and scheduler",
-          "access": "third-party open-source project",
+          "name": "Hermes",
+          "what": "an agent on the server: each project has its own persistent session in Telegram, weeks of memory, a task board, and it wakes up by itself when a run finishes",
+          "access": "an open project by Nous Research",
           "url": "https://github.com/NousResearch/hermes-agent"
         },
         {
-          "name": "Hermes prompts",
-          "what": "Production agent profiles: SOUL.md and scheduler jobs",
-          "access": "Public",
-          "url": "https://github.com/brain-lab-research/hermes-prompts"
-        },
-        {
-          "name": "Lab GitLab",
-          "what": "a shared GitHub for ideas: works, claims, runs, and merge requests",
+          "name": "The lab base in GitLab",
+          "what": "works, claims, runs and theme literature in plain git; a record is a merged proposal",
           "access": "By approved request",
-          "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md"
+          "url": "https://github.com/Vepricov/claude-brainlab#lab-knowledge-the-shared-research-base"
         },
         {
           "name": "Brain Call",
-          "what": "Calls, from recording to publication of confirmed content",
+          "what": "calls: recording, a transcript with who said what, and a breakdown into the work's decisions and tasks",
           "access": "By approved request",
-          "url": "https://github.com/brain-lab-research/brain-call"
+          "url": "https://github.com/Vepricov/brain-call"
         },
         {
           "name": "MemPalace",
-          "what": "Agent memory between sessions",
-          "access": "third-party open-source project",
+          "what": "the agent's private memory across sessions",
+          "access": "Public",
           "url": "https://github.com/MemPalace/mempalace"
         },
         {
-          "name": "Zotero MCP",
-          "what": "Paper library and full texts for the agent",
-          "access": "third-party open-source project",
+          "name": "fast-jev-compaction",
+          "what": "context compaction driven by Jev's decisions: text kept verbatim, unneeded tool calls dropped",
+          "access": "Public",
+          "url": "https://github.com/brain-lab-research/fast-jev-compaction"
+        },
+        {
+          "name": "Zotero",
+          "what": "an agent connector: a library of papers and their full texts",
+          "access": "Public",
           "url": "https://github.com/54yyyu/zotero-mcp"
+        },
+        {
+          "name": "Miro",
+          "what": "an agent connector: boards for diagrams and working through ideas",
+          "access": "requires a Miro account",
+          "url": "https://mcp.miro.com/"
+        },
+        {
+          "name": "autoresearch",
+          "what": "an autonomous idea loop: picks which idea to test next and filters out repeats",
+          "access": "Public",
+          "url": "https://github.com/Vepricov/claude-brainlab/tree/main/autoresearch"
+        },
+        {
+          "name": "Hermes prompts",
+          "what": "server agent profiles: each one's character and instructions",
+          "access": "Public",
+          "url": "https://github.com/Vepricov/claude-brainlab/tree/main/hermes"
         }
       ]
-    },
-    "skillCatalog": {
-      "publicCount": 74,
-      "privateCount": 2,
-      "reviewed": "09-09-2026"
     }
   },
   "processes": [
@@ -3030,85 +2748,80 @@ window.RESEARCH_LOOP = {
       "id": "projects",
       "number": "00",
       "title": "Project setup",
-      "verb": "Connect code, memory, and tasks",
-      "result": "One project name across all systems",
+      "verb": "Create a work in the lab tree",
+      "result": "One work: a GitLab repository and a clone at the same path",
       "color": "#d9decc",
       "registryProcessIds": [
         "project-lifecycle",
         "people-access",
         "infrastructure"
       ],
-      "purpose": "Bring the project down to one name: a work is one repository in the Lab GitLab, its clone lives in ~/brainlab and opens in Obsidian, and personal notes are excluded from git and stay on the machine.",
+      "purpose": "Turn a project into a lab work: one repository in its GitLab theme and its clone on the laptop at the same path. The README names the leads and the team, testable claims live in separate folders, and the code and manuscript are attached as nested repositories. The path is the binding: no mapping files, no second copy. 33 works across 7 directions are already set up this way (measured 18-10-2026).",
       "when": [
-        "A new line of research is starting.",
-        "An existing repository is not yet connected to the laboratory's memory.",
-        "The project is ready to be shared with participants."
+        "A new work begins: a future paper or a research line.",
+        "The project already lives as a folder (manuscript, logs, code, calls), but the lab base does not have it.",
+        "The work is missing its README, the “Leads” line, private folders or clone settings."
       ],
       "stages": [
         {
-          "title": "Check whether the project exists",
-          "summary": "Search all three locations by the project's short name.",
-          "result": "Verified short name",
+          "title": "Check whether such a work already exists",
+          "summary": "Search by meaning, not by name: the tree, GitLab, group issues, notes of neighboring works.",
+          "result": "Anything similar is shown to the owner, or the places searched are named",
           "ref": "s1"
         },
         {
-          "title": "Set up local files",
-          "summary": "A repository, a project page in the vault, and an entry in the routing file.",
-          "result": "Code and personal context",
+          "title": "Show a preview",
+          "summary": "Theme, short name, three-letter code, a paragraph about the work, leads and team. The lead is asked from the owner, never guessed.",
+          "result": "An agreed plan",
           "ref": "s2"
         },
         {
-          "title": "Create a shared database record",
-          "summary": "One project ID, its topic, and verified publication sources.",
-          "result": "The laboratory can find the project",
+          "title": "Create the repository and clone",
+          "summary": "An empty project in the theme group; the lab command puts the clone at the same path and closes private folders off from git.",
+          "result": "A clone in the lab tree at “direction / theme / work”",
           "ref": "s3"
         },
         {
-          "title": "Open the project to participants",
-          "summary": "A page under the topic, a task board, and meeting pages if needed.",
-          "result": "Work issues and boards in GitLab",
+          "title": "Add the README and scaffold",
+          "summary": "A header with the code, “Leads” and “Team”, a claims folder, code and manuscript as nested repositories. The first push goes straight into the empty main branch.",
+          "result": "From then on, any push from a branch opens a proposal for the lead",
           "ref": "s4"
         },
         {
-          "title": "Read back every link",
-          "summary": "Read back everything created or reused.",
+          "title": "Move existing material in and verify",
+          "summary": "Knowledge from the old project goes into claims via a proposal, private material lands in the closed folders of the same clone. The commit contents are checked, not the message.",
           "result": "Complete, or a specific gap reported",
           "ref": "s5"
-        },
-        {
-          "ref": "s-plan",
-          "title": "Clarify the plan",
-          "summary": "Discuss assumptions and decisions before implementation."
         }
       ],
       "outcomes": [
-        "Local: a repository and a project page in the vault.",
-        "Local: an entry in the note-routing file.",
-        "Shared database: a project record with its topic and sources.",
-        "In GitLab: the work's README and issues with members' task boards."
+        "In GitLab: the work repository in its theme, main branch protected.",
+        "Locally: a clone at the same path, with private notes, diary and logs closed off from git.",
+        "In the README: the work code, “Leads” and “Team”, which drive permissions and proposals.",
+        "Claims, with everything used to test them, enter via a proposal."
       ],
       "destinations": [
         {
-          "name": "Local: repository",
-          "what": "Code, paper files, and the project's AGENTS.md",
-          "why": "Executable work",
+          "name": "GitLab: the work repository",
+          "what": "README, claims, GitLab settings, nested code and manuscript",
+          "why": "Shared knowledge: the whole lab reads it",
           "ref": "d1"
         },
         {
-          "name": "Local: Obsidian vault",
-          "what": "Project page, plan, folder icon, and color",
-          "why": "The author's personal context",
+          "name": "The lab tree",
+          "what": "The work clone at its GitLab path; Obsidian opens this same tree",
+          "why": "Private and shared in one window",
           "ref": "d2"
         },
         {
-          "name": "Shared laboratory database",
-          "what": "Project record, topic, and publication sources",
-          "why": "Connections to other work",
+          "name": "Closed folders of the clone",
+          "what": "Notes, diary, local logs, manuscript drafts, working code, raw call recordings",
+          "why": "Private stays on the machine",
           "ref": "d3"
         },
         {
-          "name": "Issues GitLab",
-          "what": "A page under the topic and a “CODE · Tasks” board",
+          "name": "GitLab issues and board",
+          "what": "Issues of the work repository; main-branch protection, labels and board columns are set up automatically",
           "why": "Coordination between participants",
           "ref": "d4"
         }
@@ -3116,29 +2829,29 @@ window.RESEARCH_LOOP = {
       "controls": [
         {
           "id": "dedup",
-          "title": "Search all three locations first",
-          "explanation": "Before creating records, the short name is searched in the ~/brainlab tree and in the Lab GitLab. A duplicate project splits one work into two memories.",
+          "title": "Search first, and by meaning",
+          "explanation": "The same work may sit under a different slug, under the method name or under a student's surname. The search covers the tree, GitLab, group issues and notes of neighboring works; anything similar is shown to the owner. One work in two places cannot be merged later.",
           "example": "",
           "links": []
         },
         {
           "id": "routing",
-          "title": "The routing file determines where notes go",
-          "explanation": "Resolve the vault path from obsidian-projects.json using the project's filesystem root. Do not guess the paper's topic: it is recorded in the same file.",
+          "title": "The path is the binding",
+          "explanation": "The work sits on the laptop at the same path as in GitLab: direction, theme, work. There is no mapping file, and a hook rejects writes to the old vault paths.",
           "example": "",
           "links": []
         },
         {
           "id": "no-local-paths",
-          "title": "Local paths stay local",
-          "explanation": "The work's README gets only the name, theme, leads, team, and verified links. A disk path and an access key are never published.",
+          "title": "Private material never goes to GitLab",
+          "explanation": "The lab command closes the clone's private folders off from git, and moving private material refuses to copy until the destination is closed. The README has no local paths, and the access key sits neither in the URL nor in a file.",
           "example": "",
           "links": []
         },
         {
           "id": "bindings-readback",
-          "title": "Complete only after reading back",
-          "explanation": "Read back every link created or reused. Report a partial result as an unresolved issue, not as a success.",
+          "title": "Done is checked by the tree, not by the message",
+          "explanation": "After the first push, we check the commit contents (only README, claims, GitLab settings and nested repositories), the clone settings and the lead lines. Anything blocked by permissions is reported separately.",
           "example": "",
           "links": []
         }
@@ -3148,32 +2861,38 @@ window.RESEARCH_LOOP = {
           "id": "create-project",
           "title": "create-project",
           "type": "Skill",
-          "role": "Sets up a project in every required system and shows one plan before creating folders or records.",
-          "when": "When creating a new research project.",
+          "role": "Creates a work: an empty repository in the GitLab theme, a clone at the same path in the tree, a README with leads and team, a scaffold of claims and GitLab settings. Repairs the setup of an existing work.",
+          "when": "A new work, or an existing one missing its README, the “Leads” line, private folders or clone settings.",
           "inputs": [
-            "name and short name",
-            "owner and participants",
-            "whether this is a laboratory project"
+            "direction and theme",
+            "short name, title and three-letter code",
+            "a paragraph about the work",
+            "leads and team: GitLab logins",
+            "code and manuscript repositories, if any"
           ],
           "inside": [
-            "uses ~/.Codex/obsidian-projects.json as the authoritative path mapping",
-            "shows one plan covering paths, clones, the project page, participants, and the onboarding handoff",
-            "creates folders and the repository only after approval",
-            "preserves the build and layout of an existing repository",
-            "adds the project to the routing file without changing neighboring entries",
-            "sets an icon and color for the project folder in the vault"
+            "searches for the work in four places by meaning: the tree, GitLab, group issues, notes of neighboring works",
+            "shows a single preview: paths, code, the full README, leads and team",
+            "creates an empty project in the theme group; access is inherited from the group",
+            "lab here puts the clone in place and closes private folders off from git",
+            "the “Leads” and “Team” lines are filled by a script from the people registry, never typed by hand",
+            "the first push goes straight into the empty main branch; after that, everything goes through proposals",
+            "re-running lab here assigns proposals to the first of the “Leads”"
           ],
           "outputs": [
-            "a project linked across all systems"
+            "the work in GitLab and its clone in the tree",
+            "a push from a branch opens a proposal for the lead by itself"
           ],
-          "writes": "Work repository in GitLab, clone in ~/brainlab, the work's README",
+          "writes": "GitLab (empty project and first push), a clone in the lab tree",
           "gates": [
-            "plan first, then approval, then writes",
-            "local paths do not go into the work's README and issues"
+            "something similar found: stop and show the owner",
+            "the lead is asked, not guessed from who made the request",
+            "created only after the preview is approved",
+            "permission denied means stop, no broader key"
           ],
           "limits": [
-            "does not guess the owner or visibility",
-            "treats the routing file in ~/.claude as a mirror, not the authoritative copy"
+            "a new theme is the owner's decision, and it is never created without someone responsible",
+            "the claims scaffold is built from the manuscript by a model, so only with the owner's consent"
           ],
           "links": [
             {
@@ -3183,7 +2902,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$create-project",
+            "invoke": "/create-project",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -3194,282 +2913,20 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
+              "name": "Work lead or direction lead",
+              "role": "names the theme, leads and team, approves the preview"
             }
           ],
           "relations": [
             {
-              "toolId": "obsidian-project-bootstrap",
-              "label": "works alongside it at the same stage",
-              "title": "obsidian-project-bootstrap"
+              "toolId": "lab-command",
+              "label": "puts the clone in place via lab here",
+              "title": "lab"
             },
             {
-              "toolId": "lab-project-onboarding",
-              "label": "passes the result to the next stage",
-              "title": "lab-project-onboarding"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s2",
-              "stageTitle": "Set up local files"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s2",
-            "stageTitle": "Set up local files"
-          },
-          "cardTitle": "Start a research project",
-          "catalogSummary": "A repository and workspaces sharing one project name.",
-          "skillId": "create-project",
-          "start": "Specify the project name, owner, and participants. State whether it belongs to the laboratory.",
-          "capabilities": [
-            "uses ~/.Codex/obsidian-projects.json as the authoritative path mapping",
-            "shows one plan covering paths, clones, the project page, participants, and the onboarding handoff",
-            "creates folders and the repository only after approval",
-            "preserves the build and layout of an existing repository",
-            "adds the project to the routing file without changing neighboring entries",
-            "sets an icon and color for the project folder in the vault"
-          ],
-          "outcomes": [
-            "a project linked across all systems"
-          ],
-          "useCases": "When creating a new research project.",
-          "important": [
-            "does not guess the owner or visibility",
-            "treats the routing file in ~/.claude as a mirror, not the authoritative copy"
-          ]
-        },
-        {
-          "id": "obsidian-project-bootstrap",
-          "title": "obsidian-project-bootstrap",
-          "type": "Skill",
-          "role": "Creates a compact knowledge base for a repository that does not yet have one. obsidian-project-memory handles the main workflow; this skill establishes the initial connection.",
-          "when": "When a repository containing code and notes has no linked vault yet.",
-          "inputs": [
-            "repository root",
-            "vault path from the input or OBSIDIAN_VAULT_PATH"
-          ],
-          "inside": [
-            "runs project_kb.py detect first and only modifies an unlinked repository",
-            "creates .claude/project-memory/registry.yaml and a project card",
-            "creates 00-Hub.md, 01-Plan.md, and the Knowledge/ folder",
-            "transfers structure and summaries, not datasets, caches, or model weights"
-          ],
-          "outputs": [
-            "a working project knowledge base"
-          ],
-          "writes": "Personal Obsidian vault and .claude/project-memory/ in the repository",
-          "gates": [
-            "The destination folder is checked against the current mapping before the first write.",
-            "Existing notes and project history are preserved."
-          ],
-          "limits": [
-            "Before running, check the target folder against the project's current Obsidian mapping.",
-            "If a template suggests Research/<slug> or another folder outside the mapping, stop and correct the destination before creating notes."
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-project-bootstrap/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-project-bootstrap",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-project-bootstrap ~/.claude/skills/",
-              "# restart Claude Code, then run /obsidian-project-bootstrap"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "create-project",
-              "label": "works alongside it at the same stage",
-              "title": "create-project"
-            },
-            {
-              "toolId": "lab-project-onboarding",
-              "label": "passes the result to the next stage",
-              "title": "lab-project-onboarding"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s2",
-              "stageTitle": "Set up local files"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s2",
-            "stageTitle": "Set up local files"
-          },
-          "skillId": "obsidian-project-bootstrap",
-          "start": "Specify the repository and check its target Obsidian folder against the current mapping. Ask for any missing notes to be prepared in that folder.",
-          "capabilities": [
-            "runs project_kb.py detect first and only modifies an unlinked repository",
-            "creates .claude/project-memory/registry.yaml and a project card",
-            "creates 00-Hub.md, 01-Plan.md, and the Knowledge/ folder",
-            "transfers structure and summaries, not datasets, caches, or model weights"
-          ],
-          "outcomes": [
-            "a working project knowledge base"
-          ],
-          "useCases": "When a repository containing code and notes has no linked vault yet.",
-          "important": [
-            "Before running, check the target folder against the project's current Obsidian mapping.",
-            "If a template suggests Research/<slug> or another folder outside the mapping, stop and correct the destination before creating notes."
-          ]
-        },
-        {
-          "id": "obsidian-projects-registry",
-          "title": "obsidian-projects.json",
-          "type": "Routing file",
-          "role": "Maps the project's filesystem root to a folder in the Obsidian vault. Without this mapping, note-writing skills do not know where to write.",
-          "when": "Before the first project note and when setting up a new project.",
-          "inputs": [
-            "work filesystem root: ~/brainlab/<direction>/<theme>/<work>",
-            "project short name"
-          ],
-          "inside": [
-            "Maps repository roots to note folders in Obsidian.",
-            "Stores explicit project and topic mappings so the agent does not guess where to write.",
-            "Adds the new project's mapping while preserving neighboring entries.",
-            "If a mapping is missing, first find the canonical folder and verify the choice."
-          ],
-          "outputs": [
-            "note path in the vault"
-          ],
-          "writes": "~/.Codex/obsidian-projects.json as the authoritative file and ~/.claude/obsidian-projects.json as its mirror",
-          "gates": [
-            "the path comes from the file, not the project name",
-            "project notes are not written to a shared Research/ folder"
-          ],
-          "limits": [
-            "the two copies can diverge: the ~/.claude mirror currently has more entries than the authoritative file",
-            "the public repository contains only a template; each user fills in their own projects"
-          ],
-          "links": [
-            {
-              "label": "Template: obsidian-projects.example.json",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/obsidian-projects.example.json"
-            }
-          ],
-          "adoption": {
-            "kind": "source-only",
-            "invoke": "Copy obsidian-projects.example.json to ~/.claude/obsidian-projects.json and fill in roots",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "cp ~/claude-brainlab/obsidian-projects.example.json ~/.claude/obsidian-projects.json",
-              "# open the file and fill in roots with your project roots and vault folders"
-            ],
-            "installNote": "install/setup.sh creates this file if it is missing and does not overwrite an existing configuration."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs it and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s2",
-              "stageTitle": "Set up local files"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s2",
-            "stageTitle": "Set up local files"
-          },
-          "start": "Map the repository folder to its notes folder. Then ask the agent to find the project note and check the path it selects.",
-          "capabilities": [
-            "Maps repository roots to note folders in Obsidian.",
-            "Stores explicit project and topic mappings so the agent does not guess where to write.",
-            "Adds the new project's mapping while preserving neighboring entries.",
-            "If a mapping is missing, first find the canonical folder and verify the choice."
-          ],
-          "outcomes": [
-            "note path in the vault"
-          ],
-          "useCases": "Before the first project note and when setting up a new project.",
-          "important": [
-            "the two copies can diverge: the ~/.claude mirror currently has more entries than the authoritative file",
-            "the public repository contains only a template; each user fills in their own projects"
-          ],
-          "relations": []
-        },
-        {
-          "id": "lab-project-onboarding",
-          "title": "lab-project-onboarding",
-          "type": "Skill",
-          "role": "Links an existing working folder to the work repository in GitLab and its clone in ~/brainlab, which Obsidian opens as a vault. Running it again duplicates nothing.",
-          "when": "After creating a new laboratory project, or when an existing project's links have become inconsistent.",
-          "inputs": [
-            "project short name and three-letter code",
-            "title, section, stage, leads, and participants",
-            "paper and repository links"
-          ],
-          "inside": [
-            "searches the database by short name, title, code, and known sources",
-            "shows one plan with each operation labeled: create, reuse, update, or blocked",
-            "access is granted by the Telegram bot according to GitLab roles, not by a local agent: a Request access request goes to the lead",
-            "creates or reuses the project page and “CODE · Tasks” board",
-            "checks publication links on arxiv.org and the venue's official page first"
-          ],
-          "outputs": [
-            "one folder: the repository in GitLab, the clone in ~/brainlab, and the Obsidian vault"
-          ],
-          "writes": "Lab GitLab, clone in ~/brainlab",
-          "gates": [
-            "safe to rerun without creating a second record",
-            "any shared record is changed only after human approval",
-            "does not broaden access just to make provisioning succeed"
-          ],
-          "limits": [
-            "a new project's board is visible only to participants unless broader access is explicitly requested",
-            "does not write research content on the owner's behalf",
-            "does not create placeholder accounts for unidentified people"
-          ],
-          "links": [],
-          "adoption": {
-            "kind": "private",
-            "invoke": "The skill is installed at ~/.claude/skills/lab-project-onboarding/ and is not in the public repository",
-            "installNote": "The skills/lab-project-onboarding/ skill is excluded in .gitignore: it comes with access to the Lab GitLab, and access is granted by the Telegram bot."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "yonote-project-view",
-              "label": "passes the result to the next stage",
-              "title": "The work's README in GitLab"
+              "toolId": "lab-knowledge",
+              "label": "hands the work on: moving existing material and claims",
+              "title": "lab-knowledge"
             }
           ],
           "processRelations": [
@@ -3477,285 +2934,102 @@ window.RESEARCH_LOOP = {
               "processId": "projects",
               "processTitle": "Project setup",
               "stageRef": "s3",
-              "stageTitle": "Create a shared database record"
+              "stageTitle": "Create the repository and clone"
             }
           ],
           "processRelation": {
             "processId": "projects",
             "processTitle": "Project setup",
             "stageRef": "s3",
-            "stageTitle": "Create a shared database record"
-          },
-          "skillId": "lab-project-onboarding",
-          "start": "Specify the project, its topic, and participants. Provide paper and repository links if available.",
-          "capabilities": [
-            "searches the database by short name, title, code, and known sources",
-            "shows one plan with each operation labeled: create, reuse, update, or blocked",
-            "access is granted by the Telegram bot according to GitLab roles, not by a local agent: a Request access request goes to the lead",
-            "creates or reuses the project page and “CODE · Tasks” board",
-            "checks publication links on arxiv.org and the venue's official page first"
-          ],
-          "outcomes": [
-            "one folder: the repository in GitLab, the clone in ~/brainlab, and the Obsidian vault"
-          ],
-          "useCases": "After creating a new laboratory project, or when an existing project's links have become inconsistent.",
-          "important": [
-            "a new project's board is visible only to participants unless broader access is explicitly requested",
-            "does not write research content on the owner's behalf",
-            "does not create placeholder accounts for unidentified people"
-          ]
+            "stageTitle": "Create the repository and clone"
+          }
         },
         {
-          "id": "yonote-project-view",
-          "title": "The work's README in GitLab",
-          "type": "Projection",
-          "role": "A compact work page with the lines “Leads” and “Team”. The full history and claims stay in claims/ and in git log.",
-          "when": "After the shared project record has been created and its links verified.",
-          "inputs": [
-            "project links",
-            "team and verified publication links",
-            "approved stage, claims, results, and limitations"
-          ],
-          "inside": [
-            "resolves the section only from project links, not from its name",
-            "places the team and paper materials above the general description",
-            "shows the current stage in three parts: completed, in progress, and next milestone",
-            "shows only meaningful claims and verified results",
-            "links to one connected “CODE · Tasks” board"
-          ],
-          "outputs": [
-            "a human-readable project page",
-            "direct links to the page and board"
-          ],
-          "writes": "The work's README in GitLab. Scientific truth stays in claims/",
-          "gates": [
-            "local paths and raw diagnostics are not published",
-            "page and board URLs are read from project links"
-          ],
-          "limits": [
-            "older sections have a different layout",
-            "the page does not replace the database record or constitute evidence"
-          ],
-          "links": [
-            {
-              "label": "Issues GitLab",
-              "url": "https://brain-lab.yonote.ru"
-            }
-          ],
-          "adoption": {
-            "kind": "internal",
-            "invoke": "Through git: a README edit and a merge request",
-            "installNote": "The work is open to members according to GitLab roles: access is granted by the Telegram bot, and the work itself has a Request access button."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "yonote-task-broker",
-              "label": "works alongside it at the same stage",
-              "title": "Issues GitLab"
-            },
-            {
-              "toolId": "obsidian-project-lifecycle",
-              "label": "passes the result to the next stage",
-              "title": "obsidian-project-lifecycle"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s4",
-              "stageTitle": "Open the project to participants"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s4",
-            "stageTitle": "Open the project to participants"
-          },
-          "start": "Open the link to the work repository in GitLab on the project card next to GitHub and Overleaf. It has the README and a way to the issues and task boards.",
-          "capabilities": [
-            "resolves the section only from project links, not from its name",
-            "places the team and paper materials above the general description",
-            "shows the current stage in three parts: completed, in progress, and next milestone",
-            "shows only meaningful claims and verified results",
-            "links to one connected “CODE · Tasks” board"
-          ],
-          "outcomes": [
-            "a human-readable project page",
-            "direct links to the page and board"
-          ],
-          "useCases": "After the shared project record has been created and its links verified.",
-          "important": [
-            "older sections have a different layout",
-            "the page does not replace the database record or constitute evidence"
-          ]
-        },
-        {
-          "id": "yonote-task-broker",
-          "title": "Work issues in GitLab",
-          "type": "GitLab issues and boards",
-          "role": "Creates and updates tasks only on the project's own board, repairs an outdated board schema before writing, and reads back the result.",
-          "when": "When an approved action needs an assignee, status, and optionally a deadline.",
-          "inputs": [
-            "exact project binding",
-            "task title",
-            "assignee",
-            "creation date",
-            "optional deadline"
-          ],
-          "inside": [
-            "checks the board schema and repairs it if needed",
-            "shows a preview and computes a fingerprint of the approved plan",
-            "checks whether an equivalent task already exists",
-            "applies the change safely even if repeated",
-            "reads back the created row"
-          ],
-          "outputs": [
-            "a task row on the correct board",
-            "verified link and status"
-          ],
-          "writes": "“CODE · Tasks” board",
-          "gates": [
-            "the project binding is specified exactly",
-            "preview, fingerprint approval, write, read back",
-            "rights come from a GitLab role, not from a key held by a local agent"
-          ],
-          "limits": [
-            "the canonical statuses are “Backlog,” “In progress,” and “Done”",
-            "older boards may have different columns",
-            "the assignee is sometimes temporarily stored as text"
-          ],
-          "links": [
-            {
-              "label": "Issues GitLab",
-              "url": "https://brain-lab.yonote.ru"
-            }
-          ],
-          "adoption": {
-            "kind": "internal",
-            "invoke": "Through git: a README edit and a merge request",
-            "installNote": "Issues and boards live in the work repository in GitLab: member access is granted by the Telegram bot."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "yonote-project-view",
-              "label": "works alongside it at the same stage",
-              "title": "The work's README in GitLab"
-            },
-            {
-              "toolId": "obsidian-project-lifecycle",
-              "label": "passes the result to the next stage",
-              "title": "obsidian-project-lifecycle"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s4",
-              "stageTitle": "Open the project to participants"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s4",
-            "stageTitle": "Open the project to participants"
-          },
-          "start": "Specify the project, task, assignee, and expected result. The agent uses the linked board and shows a change plan when approval is required.",
-          "capabilities": [
-            "checks the board schema and repairs it if needed",
-            "shows a preview and computes a fingerprint of the approved plan",
-            "checks whether an equivalent task already exists",
-            "applies the change safely even if repeated",
-            "reads back the created row"
-          ],
-          "outcomes": [
-            "a task row on the correct board",
-            "verified link and status"
-          ],
-          "useCases": "When an approved action needs an assignee, status, and optionally a deadline.",
-          "important": [
-            "the canonical statuses are “Backlog,” “In progress,” and “Done”",
-            "older boards may have different columns",
-            "the assignee is sometimes temporarily stored as text"
-          ]
-        },
-        {
-          "id": "obsidian-project-lifecycle",
-          "title": "obsidian-project-lifecycle",
+          "id": "lab-knowledge",
+          "title": "lab-knowledge: existing project → work",
           "type": "Skill",
-          "role": "Unlinks, archives, deletes, or renames a project's knowledge base through the shared project_kb.py workflow.",
-          "when": "When changing the state of an entire project knowledge base or a single note.",
+          "role": "Turns a project that lives as a folder into a work: knowledge goes into claims via a proposal, private material lands in the closed folders of the clone in the tree. The same skill holds the canon of writing rules.",
+          "when": "The work was done before its repository existed: manuscript, logs, code and calls sit in a folder.",
           "inputs": [
-            "linked project folder",
-            "mode: unlink, archive, delete, or rename",
-            "note and destination for a note-level operation"
+            "project folder",
+            "a work in GitLab with a README and a “Leads” line",
+            "the .tex manuscript, if any"
           ],
           "inside": [
-            "calls project_kb.py lifecycle or note-lifecycle",
-            "unlinking stops synchronization and keeps the content",
-            "archiving moves the project to Archive and disables synchronization",
-            "renaming repairs links as an update, not a delete-and-create operation",
-            "performs permanent deletion only on explicit request"
+            "sorts by a single table: claims, plus runs, series and derivations under claims; manuscript and code as nested repositories; posts and call decisions into their own folders",
+            "puts notes, diary, raw logs, old revisions and call recordings into the clone's closed folders",
+            "copying private material first shows a plan, never deletes the source, never overwrites a file in the clone",
+            "refuses to copy until the destination is closed off from git, and names what it could not sort",
+            "builds claims, series, runs, proofs and figures from the manuscript on a separate branch",
+            "pushes only if the check found zero issues"
           ],
           "outputs": [
-            "new project state",
-            "summary of what was deleted, preserved, and the synchronization status"
+            "a proposal with claims for the work lead",
+            "private material on the machine, in the same clone",
+            "a list of what could not be sorted"
           ],
-          "writes": "The linked project in the vault and its binding state",
+          "writes": "A branch and proposal in the work repository; closed folders of the clone",
           "gates": [
-            "a general request to remove something means archive it",
-            "permanent deletion requires a specific, explicit request",
-            "renaming includes repairing links"
+            "a record enters a work only when a human merges the proposal",
+            "checks on the proposal match numbers against the run corpus and judge the prose",
+            "not a single private folder may end up in git"
           ],
           "limits": [
-            "this is not the main project-memory workflow",
-            "never permanently deletes anything based on an ambiguous request"
+            "parsing the manuscript costs model calls",
+            "what could not be sorted is decided by hand, not guessed",
+            "the work must already exist: create-project creates it"
           ],
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-project-lifecycle/SKILL.md"
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$obsidian-project-lifecycle",
+            "invoke": "/lab-knowledge",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-project-lifecycle ~/.claude/skills/",
-              "# restart Claude Code, then run /obsidian-project-lifecycle"
+              "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/"
             ]
           },
           "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "New participant or project lead",
-              "role": "create one consistent set of project links"
-            }
+          "capabilities": [
+            "Splits the project folder into shared and private by a single table.",
+            "Builds claims from the manuscript and submits them as a proposal.",
+            "Never loses or publishes private material: copies without deleting, and only into closed folders."
           ],
+          "useCases": "So that work done before the repository becomes visible to the lab, while private material stays on the machine in the same clone.",
+          "outcomes": [
+            "The work in the tree looks like any other: shared in GitLab, private right next to it."
+          ],
+          "purpose": "Catch up on the backlog: an Overleaf manuscript, server logs, notes and calls become one work in a single pass.",
+          "important": [
+            "Ongoing work is recorded as it happens: a run is wrapped in the recorder before launch",
+            "The canon is read before writing: half its rules are enforced by the gates"
+          ],
+          "start": "Say “turn the project into a work” and give the folder path.",
           "relations": [
             {
               "toolId": "create-project",
-              "label": "used together within one workflow",
+              "label": "takes the work it created",
               "title": "create-project"
+            },
+            {
+              "toolId": "gitlab-work",
+              "label": "submits claims as a proposal",
+              "title": "Work in GitLab"
+            }
+          ],
+          "usedBy": [
+            {
+              "name": "Researcher",
+              "role": "provides the folder and approves the layout"
+            },
+            {
+              "name": "Work lead",
+              "role": "merges the proposal: the merge is the record"
             }
           ],
           "processRelations": [
@@ -3763,71 +3037,300 @@ window.RESEARCH_LOOP = {
               "processId": "projects",
               "processTitle": "Project setup",
               "stageRef": "s5",
-              "stageTitle": "Read back every link"
+              "stageTitle": "Move existing material in and verify"
             }
           ],
           "processRelation": {
             "processId": "projects",
             "processTitle": "Project setup",
             "stageRef": "s5",
-            "stageTitle": "Read back every link"
+            "stageTitle": "Move existing material in and verify"
           },
-          "skillId": "obsidian-project-lifecycle",
-          "start": "Specify the project and action: rename, archive, unlink, or delete. To move a note, provide its new destination.",
-          "capabilities": [
-            "calls project_kb.py lifecycle or note-lifecycle",
-            "unlinking stops synchronization and keeps the content",
-            "archiving moves the project to Archive and disables synchronization",
-            "renaming repairs links as an update, not a delete-and-create operation",
-            "performs permanent deletion only on explicit request"
+          "visual": {
+            "kind": "path",
+            "label": "From a project folder path to a work",
+            "nodes": [
+              "Project folder",
+              "Clone in the tree",
+              "Private into closed folders",
+              "Claims on a branch",
+              "Gates",
+              "Proposal for the lead"
+            ]
+          },
+          "skillId": "lab-knowledge"
+        },
+        {
+          "id": "lab-command",
+          "title": "lab",
+          "type": "Command",
+          "role": "The only wrapper on top of git: it assembles the lab tree and puts each work in its place. Everything else is plain git — no wrappers, on purpose.",
+          "when": "At install time, when creating a work, and whenever something is missing from the tree.",
+          "inputs": [
+            "your agent's account key from the installer",
+            "the “Leads” and “Team” lines in work READMEs",
+            "a list of what else to pull into the tree"
           ],
-          "outcomes": [
-            "new project state",
-            "summary of what was deleted, preserved, and the synchronization status"
+          "inside": [
+            "lab sync assembles and updates the tree: your works, the literature of their themes, the handbook, the journal, the servers",
+            "membership comes from the README, not from GitLab membership",
+            "lab here finds a work by name, puts it at its path and updates its code and paper",
+            "configures clones: private material closed, a push in a work opens a proposal for the lead",
+            "never touches a clone with local edits or on a branch, only names it",
+            "lab tasks, lab take, lab checks: issues and the gate verdict"
           ],
-          "useCases": "When changing the state of an entire project knowledge base or a single note.",
-          "important": [
-            "this is not the main project-memory workflow",
-            "never permanently deletes anything based on an ambiguous request"
-          ]
+          "outputs": [
+            "the ~/brainlab tree in the same layout as GitLab"
+          ],
+          "writes": "Clones in ~/brainlab and their git settings",
+          "gates": [
+            "nothing is pulled on top of someone else's work",
+            "no second clone “somewhere for myself”"
+          ],
+          "limits": [
+            "the first sync is up to 1.5 GB and about an hour: literature comes last",
+            "no new command on top of git while git can already do it"
+          ],
+          "links": [
+            {
+              "label": "Source: scripts/lab",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/lab"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-command",
+            "invoke": "lab sync",
+            "install": [
+              "git clone https://github.com/brain-lab-research/claude-brainlab",
+              "bash claude-brainlab/docs/lab/install.sh"
+            ],
+            "installNote": "The installer sets up the lab command, the agent's rule and hook, the Obsidian configuration, and assembles the tree. The key it asks for belongs to your agent's account. Re-running is safe."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Laboratory participant",
+              "role": "assembles the tree and keeps it fresh"
+            },
+            {
+              "name": "Agent",
+              "role": "puts the work in place before editing"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "create-project",
+              "label": "puts the clone of a new work in place",
+              "title": "create-project"
+            },
+            {
+              "toolId": "lab-where-am-i",
+              "label": "installed by a single installer",
+              "title": "lab-where-am-i.py"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "projects",
+              "processTitle": "Project setup",
+              "stageRef": "s3",
+              "stageTitle": "Create the repository and clone"
+            }
+          ],
+          "processRelation": {
+            "processId": "projects",
+            "processTitle": "Project setup",
+            "stageRef": "s3",
+            "stageTitle": "Create the repository and clone"
+          }
+        },
+        {
+          "id": "lab-where-am-i",
+          "title": "lab-where-am-i.py",
+          "type": "Hook",
+          "role": "At the start of every session, tells the agent where it is: which work, its claims, what has landed in the main branch, what is open and what it has been assigned.",
+          "when": "Automatically, at the start of every Claude Code session.",
+          "inputs": [
+            "the folder where the session is opened",
+            "the work clone in the tree"
+          ],
+          "inside": [
+            "identifies the work by its path: direction, theme, work",
+            "prints only the state that changes from session to session",
+            "does not repeat the writing rules: they live in the agent's rule and are read once",
+            "no search, no calls: reads files from disk"
+          ],
+          "outputs": [
+            "a few lines in the agent's context: where to write from here and what is pending"
+          ],
+          "writes": "Writes nothing",
+          "gates": [
+            "the agent spends no calls asking “where am I”"
+          ],
+          "limits": [
+            "outside the tree, it cannot see the work without a marker file"
+          ],
+          "links": [
+            {
+              "label": "Hook source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/lab-where-am-i.py"
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "Fires on its own on the SessionStart event",
+            "install": [
+              "git clone https://github.com/brain-lab-research/claude-brainlab",
+              "bash claude-brainlab/docs/lab/install.sh"
+            ],
+            "installNote": "The member installer sets up this hook and the agent's rule together with the lab command."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Agent",
+              "role": "knows the work and what is open in it from the first turn"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-command",
+              "label": "installed by a single installer",
+              "title": "lab"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "projects",
+              "processTitle": "Project setup",
+              "stageRef": "s5",
+              "stageTitle": "Move existing material in and verify"
+            }
+          ],
+          "processRelation": {
+            "processId": "projects",
+            "processTitle": "Project setup",
+            "stageRef": "s5",
+            "stageTitle": "Move existing material in and verify"
+          }
+        },
+        {
+          "id": "gitlab-work",
+          "title": "Work in GitLab",
+          "type": "Repository and gates",
+          "role": "The work itself in GitLab: a protected main branch, issues and a board, gates on every proposal. Only a merge by a human counts as a record.",
+          "when": "From the first push and for the whole life of the work.",
+          "inputs": [
+            "README with the code, “Leads” and “Team”",
+            "members' branches and proposals",
+            "members' issues"
+          ],
+          "inside": [
+            "the service reacts to GitLab events instead of polling it on a schedule",
+            "work created: main-branch protection, labels, board columns",
+            "proposal opened or updated: the gate verdict, which arrived in 28 seconds on a trial run",
+            "gates match numbers against the run corpus and judge the prose",
+            "a write to the main branch updates the project face and the front pages with numbers",
+            "the “Leads” line gives the lead permissions in the work, and proposals are assigned to them",
+            "a work's issues are its repository's issues: whoever can open a proposal can create issues and assign them"
+          ],
+          "outputs": [
+            "a verdict on every proposal",
+            "issues with assignees",
+            "front pages with the base's numbers"
+          ],
+          "writes": "Settings and statuses in GitLab; the service never writes into the work's contents and never merges on a human's behalf",
+          "gates": [
+            "direct writes to a work's main branch are closed to everyone, including the admin",
+            "a human merges: the work lead, not the service and not an agent",
+            "a number missing from the run corpus gives a red verdict"
+          ],
+          "limits": [
+            "work contents are closed below the Reporter role: a guest can see the work exists but not its files",
+            "a group board appears only when a human first opens it"
+          ],
+          "links": [],
+          "adoption": {
+            "kind": "private",
+            "invoke": "Through a lab GitLab account",
+            "installNote": "The lab GitLab is closed: the account and role are granted by the access bot on request, and the direction lead decides."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Work lead",
+              "role": "merges proposals and assigns issues"
+            },
+            {
+              "name": "A member and their agent",
+              "role": "push branches and read the verdict via lab checks"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-knowledge",
+              "label": "accepts claims via proposals",
+              "title": "lab-knowledge"
+            },
+            {
+              "toolId": "server-access-bot",
+              "label": "receives people and roles",
+              "title": "Access bot in Telegram"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "projects",
+              "processTitle": "Project setup",
+              "stageRef": "s4",
+              "stageTitle": "Add the README and scaffold"
+            }
+          ],
+          "processRelation": {
+            "processId": "projects",
+            "processTitle": "Project setup",
+            "stageRef": "s4",
+            "stageTitle": "Add the README and scaffold"
+          }
         },
         {
           "id": "server-access-bot",
-          "title": "Server Access Bot",
+          "title": "Access bot in Telegram",
           "type": "Telegram bot",
-          "role": "A Telegram interface for applications, approvals, account provisioning, and resource monitoring.",
-          "when": "For initial access, adding a server, viewing a password, or checking server status.",
+          "role": "The Telegram entry point to the lab: request, a one-tap decision by the direction lead, accounts on servers and in GitLab, resource monitoring.",
+          "when": "A new person arrives, or someone needs a server, a GitLab role or GPU status.",
           "inputs": [
             "immutable Telegram ID",
-            "profile",
+            "profile and tier: guest, student, researcher, direction lead",
             "Unix username",
-            "selected services",
+            "selected servers",
             "access duration"
           ],
           "inside": [
-            "links the profile and existing spreadsheet row to an immutable Telegram ID",
-            "does not provision access that has already been granted",
-            "requests approval for a new identity, missing mlsub access, and Alibaba",
-            "calls only allowlisted helpers",
-            "encrypts the password and sends it to its owner",
+            "binds the profile to an immutable Telegram ID and never grants the same thing twice",
+            "sends the request to the owner and all direction leads with buttons: approve with a role, pick another, reject; whoever taps first decides",
+            "the tier immediately becomes a role at the GitLab root: Guest, Reporter, Developer or Maintainer",
+            "“Request Access” on a theme or work goes to Telegram, to whoever is responsible for it",
+            "reports on proposals: awaiting a decision, turned red, got a reply",
+            "creates server accounts only with vetted scripts from an allowlist, and encrypts the password",
             "shows GPU and disk status; stops a process only with the owner's approval"
           ],
           "outputs": [
-            "accounts and service access within authorized limits",
-            "protected password message",
+            "a GitLab account with a role",
+            "accounts on allowed servers",
             "server status and notifications",
             "a record of every decision"
           ],
-          "writes": "Encrypted SQLite, managed servers, Google Sheet mirror",
+          "writes": "The lab GitLab, managed servers, its own request database and a Google Sheet mirror",
           "gates": [
-            "approval for a new identity, mlsub, and Alibaba",
-            "allowlisted helpers only",
+            "the direction lead makes the decision, and the bot executes it with its own key after checking the permissions of whoever tapped",
+            "only scripts from the allowlist",
             "rechecks ownership before signaling a process"
           ],
           "limits": [
-            "Yandex is listed as a contact route; the bot does not provision access",
+            "the bot no longer creates accounts on Alibaba: access is granted manually",
             "more servers are monitored than can be provisioned",
-            "demo state is separate from production"
+            "the bot takes the list of direction leads from GitLab and refreshes it every three minutes"
           ],
           "links": [
             {
@@ -3841,1854 +3344,101 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "private",
-            "invoke": "Private source; request access from the owner",
-            "installNote": "The bot's source is private. The owner grants access to the bot."
+            "invoke": "Source in the lab servers repository",
+            "installNote": "The lab bot: access to it and its code is granted by the owner."
           },
-          "purpose": "Handles a new participant's request from application to safely provisioned access to authorized laboratory servers and services.",
+          "purpose": "Takes a new person from request to a GitLab role and accounts on the right servers, and hands the decision to any direction lead, not just the owner.",
           "capabilities": [
-            "links the profile and existing spreadsheet row to an immutable Telegram ID",
-            "does not provision access that has already been granted",
-            "requests approval for a new identity, missing mlsub access, and Alibaba",
-            "calls only allowlisted helpers",
-            "encrypts the password and sends it to its owner",
-            "shows GPU and disk status; stops a process only with the owner's approval"
+            "collect the member's details and the required tier",
+            "never create a duplicate account",
+            "hand the decision to any direction lead with a button",
+            "grant only approved permissions",
+            "keep a history of the request and the decision"
           ],
-          "useCases": "For initial access, adding a server, viewing a password, or checking server status.",
+          "useCases": [
+            "A new member joins the lab",
+            "A member needs access to a theme, work or server",
+            "You need to check who got permissions, and on what grounds"
+          ],
           "outcomes": [
-            "accounts and service access within authorized limits",
-            "protected password message",
-            "server status and notifications",
-            "a record of every decision"
+            "an approved account with no duplicates",
+            "a GitLab role and access only to allowed resources",
+            "history of the request and decision"
           ],
-          "afterSetup": "Manage participant access through one controlled workflow and see which permissions were granted and why.",
+          "afterSetup": "A request is decided by whichever direction lead sees it first, not by the owner alone, and the full history of decisions stays on record.",
           "nonInstallable": false,
           "usedBy": [
             {
               "name": "Laboratory participant",
-              "role": "requests access with the required scope"
+              "role": "requests a tier and servers"
             },
             {
-              "name": "Server Access Bot and administrator",
-              "role": "verify identity and approval, then perform a strictly scoped write"
+              "name": "Direction leads and the owner",
+              "role": "decide the request with a button"
             }
           ],
           "processRelations": [
             {
               "processId": "projects",
               "processTitle": "Project setup",
-              "stageRef": "s2",
-              "stageTitle": "Set up local files"
+              "stageRef": "s3",
+              "stageTitle": "Create the repository and clone"
             }
           ],
           "processRelation": {
             "processId": "projects",
             "processTitle": "Project setup",
-            "stageRef": "s2",
-            "stageTitle": "Set up local files"
+            "stageRef": "s3",
+            "stageTitle": "Create the repository and clone"
           },
           "visual": {
             "kind": "path",
-            "label": "Access provisioning workflow",
+            "label": "From request to access",
             "nodes": [
               "Telegram identity",
-              "Server access request",
-              "Administrator approval",
-              "Unix account",
-              "Access and audit entry"
+              "Request and tier",
+              "Lead's decision",
+              "GitLab role",
+              "Server account",
+              "Journal entry"
             ]
-          },
-          "skySummary": "Compute access by application.",
-          "start": "Open the access bot in Telegram and choose a server access request or available resources. Access is granted through the established approval process.",
-          "important": [
-            "Yandex is listed as a contact route; the bot does not provision access",
-            "more servers are monitored than can be provisioned",
-            "demo state is separate from production"
-          ],
-          "relations": []
-        },
-        {
-          "id": "handoff",
-          "title": "handoff",
-          "type": "Skill",
-          "role": "Prepares a handoff for the next agent: objective, decisions, verified state, constraints, and next step, with links to working files.",
-          "when": "Before a new conversation or handing work to another agent.",
-          "inside": [
-            "Collects the objective, decisions, completed work, and unresolved questions from the current task.",
-            "Links to canonical files, checks, and ownership constraints.",
-            "Writes a compact handoff with a specific next action so the next agent can resume at the right point."
-          ],
-          "outputs": [
-            "A handoff with decisions, current state, and the next step."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/handoff"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$handoff",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/handoff ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A handoff with decisions, current state, and the next step.",
-          "cardTitle": "Hand context to the next agent",
-          "skillId": "handoff",
-          "inputs": [
-            "Current conversation, decisions, unfinished work"
-          ],
-          "writes": "Handoff document with canonical links",
-          "gates": [
-            "Paths and the next step are clear to the next agent"
-          ],
-          "limits": [
-            "A handoff transfers context; it does not complete the remaining work"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Hand context to the next agent"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Hand context to the next agent"
-            }
-          ],
-          "start": "Ask for a handoff of the current task and specify who will take it over.",
-          "capabilities": [
-            "Collects the objective, decisions, completed work, and unresolved questions from the current task.",
-            "Links to canonical files, checks, and ownership constraints.",
-            "Writes a compact handoff with a specific next action so the next agent can resume at the right point."
-          ],
-          "useCases": "Before a new conversation or handing work to another agent.",
-          "outcomes": [
-            "A handoff with decisions, current state, and the next step."
-          ],
-          "purpose": "Prepares a handoff for the next agent: objective, decisions, verified state, constraints, and next step, with links to working files.",
-          "important": [
-            "A handoff transfers context; it does not complete the remaining work"
-          ],
-          "relations": []
-        },
-        {
-          "id": "restore-session",
-          "title": "restore-session",
-          "type": "Skill",
-          "role": "Finds a saved conversation and restores its context so an unfinished task can continue in a new session.",
-          "when": "When you need to resume work from a previous conversation.",
-          "inside": [
-            "Finds saved conversations and helps select the right one.",
-            "Reads the selected conversation and identifies decisions, working files, and unfinished actions.",
-            "Restores context for continuation; the current state of files and processes must be checked again."
-          ],
-          "outputs": [
-            "Restored conversation context and links to working files."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/restore-session"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$restore-session",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/restore-session ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Restored conversation context and links to working files.",
-          "cardTitle": "Return to a previous session",
-          "skillId": "restore-session",
-          "inputs": [
-            "A reference to a previous task or session"
-          ],
-          "writes": "Context for the current session",
-          "gates": [
-            "The relevant conversation and current files have been found"
-          ],
-          "limits": [
-            "History must be checked against the project's current state"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Return to a previous session"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Return to a previous session"
-            }
-          ],
-          "start": "Specify the topic or date of the previous session if you remember it.",
-          "capabilities": [
-            "Finds saved conversations and helps select the right one.",
-            "Reads the selected conversation and identifies decisions, working files, and unfinished actions.",
-            "Restores context for continuation; the current state of files and processes must be checked again."
-          ],
-          "useCases": "When you need to resume work from a previous conversation.",
-          "outcomes": [
-            "Restored conversation context and links to working files."
-          ],
-          "purpose": "Finds a saved conversation and restores its context so an unfinished task can continue in a new session.",
-          "important": [
-            "History must be checked against the project's current state"
-          ],
-          "relations": []
-        },
-        {
-          "id": "planning-with-files",
-          "title": "planning-with-files",
-          "type": "Skill",
-          "role": "Keeps plans and findings in files: breaks a large task into stages and preserves progress across agent sessions.",
-          "when": "For a task with several stages or one that may span multiple sessions.",
-          "inside": [
-            "Breaks work into verifiable stages and records their status.",
-            "Stores findings and results in working notes so they do not live only in the chat.",
-            "Rereads the plan before the next decision; after each stage, records the result and remaining questions."
-          ],
-          "outputs": [
-            "A plan and progress log that survive a session change."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/planning-with-files"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$planning-with-files",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/planning-with-files ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A plan and progress log that survive a session change.",
-          "cardTitle": "Keep a plan for a long task",
-          "skillId": "planning-with-files",
-          "inputs": [
-            "Objective, constraints, and progress of a long task"
-          ],
-          "writes": "Plan and progress files in the project's established location",
-          "gates": [
-            "A step's result is recorded after verification"
-          ],
-          "limits": [
-            "Does not replace verification of the work itself"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Keep a plan for a long task"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Keep a plan for a long task"
-            }
-          ],
-          "start": "Provide the objective and completion criterion, and ask for a plan maintained in files.",
-          "capabilities": [
-            "Breaks work into verifiable stages and records their status.",
-            "Stores findings and results in working notes so they do not live only in the chat.",
-            "Rereads the plan before the next decision; after each stage, records the result and remaining questions."
-          ],
-          "useCases": "For a task with several stages or one that may span multiple sessions.",
-          "outcomes": [
-            "A plan and progress log that survive a session change."
-          ],
-          "purpose": "Keeps plans and findings in files: breaks a large task into stages and preserves progress across agent sessions.",
-          "important": [
-            "Does not replace verification of the work itself"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-research-log",
-          "title": "obsidian-research-log",
-          "type": "Skill",
-          "role": "Updates a research project's Obsidian log: what was done, what was learned, and which question remains open.",
-          "when": "When the project has new results, a decision, or a next step.",
-          "inside": [
-            "Finds existing project records and the established log format.",
-            "Adds facts, result links, and unresolved questions without duplicating earlier entries.",
-            "Brings the log into line with the project's current state while preserving its history."
-          ],
-          "outputs": [
-            "Consistent records of project progress, plans, and open questions."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/obsidian-research-log"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-research-log",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-research-log ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Consistent records of project progress, plans, and open questions.",
-          "cardTitle": "Update the work log",
-          "skillId": "obsidian-research-log",
-          "inputs": [
-            "Work facts, plans, open questions"
-          ],
-          "writes": "Log and plan in the existing Obsidian knowledge base",
-          "gates": [
-            "The entry is linked to the canonical project"
-          ],
-          "limits": [
-            "Does not replace the log for a specific experiment"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Update the work log"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Update the work log"
-            }
-          ],
-          "start": "Specify the project and the event to save in its log.",
-          "capabilities": [
-            "Finds existing project records and the established log format.",
-            "Adds facts, result links, and unresolved questions without duplicating earlier entries.",
-            "Brings the log into line with the project's current state while preserving its history."
-          ],
-          "useCases": "When the project has new results, a decision, or a next step.",
-          "outcomes": [
-            "Consistent records of project progress, plans, and open questions."
-          ],
-          "purpose": "Updates a research project's Obsidian log: what was done, what was learned, and which question remains open.",
-          "important": [
-            "Does not replace the log for a specific experiment"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-link-graph",
-          "title": "obsidian-link-graph",
-          "type": "Skill",
-          "role": "Checks and repairs links between Obsidian notes so a result leads back to its project, source, and related analysis.",
-          "when": "When related notes are hard to find or internal links are broken.",
-          "inside": [
-            "Finds canonical notes and existing links between them.",
-            "Fixes incorrect targets and adds meaningful wikilinks.",
-            "Checks that links resolve without creating duplicate copies of a note."
-          ],
-          "outputs": [
-            "Repaired wikilinks between canonical notes. A supporting compatibility skill."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/obsidian-link-graph"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-link-graph",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-link-graph ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Repaired wikilinks between canonical notes. A supporting compatibility skill.",
-          "cardTitle": "Link existing notes",
-          "skillId": "obsidian-link-graph",
-          "inputs": [
-            "Existing project notes"
-          ],
-          "writes": "Wikilinks between canonical notes",
-          "gates": [
-            "The link points to the correct existing object"
-          ],
-          "limits": [
-            "Compatibility helper; does not create Canvas or Bases by default"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Link existing notes"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Link existing notes"
-            }
-          ],
-          "start": "Specify the folder or note whose links need checking.",
-          "capabilities": [
-            "Finds canonical notes and existing links between them.",
-            "Fixes incorrect targets and adds meaningful wikilinks.",
-            "Checks that links resolve without creating duplicate copies of a note."
-          ],
-          "useCases": "When related notes are hard to find or internal links are broken.",
-          "outcomes": [
-            "Repaired wikilinks between canonical notes. A supporting compatibility skill."
-          ],
-          "purpose": "Checks and repairs links between Obsidian notes so a result leads back to its project, source, and related analysis.",
-          "important": [
-            "Compatibility helper; does not create Canvas or Bases by default"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-markdown",
-          "title": "obsidian-markdown",
-          "type": "Skill",
-          "role": "Helps the agent format a note using Obsidian syntax: properties, internal links, attachments, tables, formulas, and callouts.",
-          "when": "When creating or formatting an Obsidian note.",
-          "inside": [
-            "Adds properties, headings, and internal links using Obsidian syntax.",
-            "Formats formulas, tables, blockquotes, and attachments where they aid reading.",
-            "Checks syntax and the note's appearance in reading view."
-          ],
-          "outputs": [
-            "Valid links, properties, tables, and callouts in Markdown."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/obsidian-markdown"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-markdown",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-markdown ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Valid links, properties, tables, and callouts in Markdown.",
-          "cardTitle": "Format an Obsidian note",
-          "skillId": "obsidian-markdown",
-          "inputs": [
-            "The note's text and structure"
-          ],
-          "writes": "Markdown file in the Obsidian vault",
-          "gates": [
-            "Links, properties, and tables are valid"
-          ],
-          "limits": [
-            "Formatting does not validate scientific content"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Format an Obsidian note"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Format an Obsidian note"
-            }
-          ],
-          "start": "Provide the text, target note, and layout preferences.",
-          "capabilities": [
-            "Adds properties, headings, and internal links using Obsidian syntax.",
-            "Formats formulas, tables, blockquotes, and attachments where they aid reading.",
-            "Checks syntax and the note's appearance in reading view."
-          ],
-          "useCases": "When creating or formatting an Obsidian note.",
-          "outcomes": [
-            "Valid links, properties, tables, and callouts in Markdown."
-          ],
-          "purpose": "Helps the agent format a note using Obsidian syntax: properties, internal links, attachments, tables, formulas, and callouts.",
-          "important": [
-            "Formatting does not validate scientific content"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-bases",
-          "title": "obsidian-bases",
-          "type": "Skill",
-          "role": "Builds live views over Obsidian notes. A .base file defines which records appear and how to filter, sort, and compute their properties.",
-          "when": "When you need a table or cards based on existing notes.",
-          "inside": [
-            "Creates a .base file filtered by folder, tags, or note properties.",
-            "Configures computed fields, sorting, and the required views.",
-            "Checks YAML, formulas, and property references, then opens the view in Obsidian."
-          ],
-          "outputs": [
-            "A .base file with the required selection, filters, and formulas."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/obsidian-bases"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-bases",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-bases ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A .base file with the required selection, filters, and formulas.",
-          "cardTitle": "Build an Obsidian Bases view",
-          "skillId": "obsidian-bases",
-          "inputs": [
-            "Notes, selection criteria, required columns"
-          ],
-          "writes": "A .base file in the vault",
-          "gates": [
-            "YAML, filters, and formulas are valid"
-          ],
-          "limits": [
-            "Creating a view does not validate the underlying notes"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Build an Obsidian Bases view"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Build an Obsidian Bases view"
-            }
-          ],
-          "start": "Describe which notes to select and which properties to show.",
-          "capabilities": [
-            "Creates a .base file filtered by folder, tags, or note properties.",
-            "Configures computed fields, sorting, and the required views.",
-            "Checks YAML, formulas, and property references, then opens the view in Obsidian."
-          ],
-          "useCases": "When you need a table or cards based on existing notes.",
-          "outcomes": [
-            "A .base file with the required selection, filters, and formulas."
-          ],
-          "purpose": "Builds live views over Obsidian notes. A .base file defines which records appear and how to filter, sort, and compute their properties.",
-          "important": [
-            "Creating a view does not validate the underlying notes"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-cli",
-          "title": "obsidian-cli",
-          "type": "Skill",
-          "role": "Lets the agent work with a running Obsidian application through the command line: search and open notes, perform vault operations, and check plugins.",
-          "when": "For operations that need access to a running Obsidian application.",
-          "inside": [
-            "Checks the commands available in the installed Obsidian CLI.",
-            "Performs the operation in the specified vault, selecting the file precisely.",
-            "Checks the result; when debugging a plugin, inspects errors and rendering after reload."
-          ],
-          "outputs": [
-            "Vault operations and plugin checks in the running application."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/obsidian-cli"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-cli",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-cli ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Vault operations and plugin checks in the running application.",
-          "cardTitle": "Work with Obsidian through the CLI",
-          "skillId": "obsidian-cli",
-          "inputs": [
-            "The task and a running Obsidian application"
-          ],
-          "writes": "Vault or state of the plugin under inspection",
-          "gates": [
-            "The command returned the expected result"
-          ],
-          "limits": [
-            "The CLI requires the Obsidian application to be open"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Work with Obsidian through the CLI"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Work with Obsidian through the CLI"
-            }
-          ],
-          "start": "Specify the vault and action: find a note, open a file, or check a plugin.",
-          "capabilities": [
-            "Checks the commands available in the installed Obsidian CLI.",
-            "Performs the operation in the specified vault, selecting the file precisely.",
-            "Checks the result; when debugging a plugin, inspects errors and rendering after reload."
-          ],
-          "useCases": "For operations that need access to a running Obsidian application.",
-          "outcomes": [
-            "Vault operations and plugin checks in the running application."
-          ],
-          "purpose": "Lets the agent work with a running Obsidian application through the command line: search and open notes, perform vault operations, and check plugins.",
-          "important": [
-            "The CLI requires the Obsidian application to be open"
-          ],
-          "relations": []
-        },
-        {
-          "id": "json-canvas",
-          "title": "json-canvas",
-          "type": "Skill",
-          "role": "Creates an Obsidian Canvas map: notes, text blocks, and links arranged on a canvas and connected by meaning.",
-          "when": "To show connections between ideas, notes, or stages on a free-form canvas.",
-          "inside": [
-            "Creates text, file, and link nodes and groups in .canvas format.",
-            "Arranges elements without overlaps and connects them with labeled lines.",
-            "Checks that IDs are unique and that edge targets exist."
-          ],
-          "outputs": [
-            "A .canvas file with nodes, edges, and groups."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/json-canvas"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$json-canvas",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/json-canvas ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A .canvas file with nodes, edges, and groups.",
-          "cardTitle": "Draw a map of notes",
-          "skillId": "json-canvas",
-          "inputs": [
-            "Nodes, connections, and required grouping"
-          ],
-          "writes": "A .canvas file",
-          "gates": [
-            "IDs are unique and edges reference existing nodes"
-          ],
-          "limits": [
-            "Canvas is created on request, not as a mandatory project layer"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Draw a map of notes"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Draw a map of notes"
-            }
-          ],
-          "start": "Provide the notes and explain the connections to draw.",
-          "capabilities": [
-            "Creates text, file, and link nodes and groups in .canvas format.",
-            "Arranges elements without overlaps and connects them with labeled lines.",
-            "Checks that IDs are unique and that edge targets exist."
-          ],
-          "useCases": "To show connections between ideas, notes, or stages on a free-form canvas.",
-          "outcomes": [
-            "A .canvas file with nodes, edges, and groups."
-          ],
-          "purpose": "Creates an Obsidian Canvas map: notes, text blocks, and links arranged on a canvas and connected by meaning.",
-          "important": [
-            "Canvas is created on request, not as a mandatory project layer"
-          ],
-          "relations": []
-        },
-        {
-          "id": "operon-obsidian-setup",
-          "title": "operon-obsidian-setup",
-          "type": "Skill",
-          "role": "Configures a personal task workspace in Obsidian: Operon boards, project and assignee properties, templates, and views.",
-          "when": "When setting up personal tasks and project views in Obsidian.",
-          "inside": [
-            "Checks the Operon and Dataview installations, folder structure, and current settings.",
-            "Prepares templates, statuses, assignee properties, and views using the laboratory's schema.",
-            "Backs up the configuration and checks the boards after restarting the application."
-          ],
-          "outputs": [
-            "Task boards and project views using the laboratory's established schema."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/operon-obsidian-setup"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$operon-obsidian-setup",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/operon-obsidian-setup ~/.claude/skills/"
-            ],
-            "installNote": "The current complete Operon 3.0.1 package is available above. The old 2.2.1 instructions apply only to that version. The new installer works with a clean vault."
-          },
-          "catalogSummary": "Task boards and project views using the laboratory's established schema.",
-          "cardTitle": "Set up Operon boards",
-          "skillId": "operon-obsidian-setup",
-          "inputs": [
-            "Vault and existing task schema"
-          ],
-          "writes": "Operon configuration and Obsidian views",
-          "gates": [
-            "Existing tasks and links are preserved"
-          ],
-          "limits": [
-            "Installation depends on the current state of Obsidian and the plugin"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Set up Operon boards"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Set up Operon boards"
-            }
-          ],
-          "start": "Open the Obsidian guide in Atlas and specify a new or existing vault folder.",
-          "capabilities": [
-            "Checks the Operon and Dataview installations, folder structure, and current settings.",
-            "Prepares templates, statuses, assignee properties, and views using the laboratory's schema.",
-            "Backs up the configuration and checks the boards after restarting the application."
-          ],
-          "useCases": "When setting up personal tasks and project views in Obsidian.",
-          "outcomes": [
-            "Task boards and project views using the laboratory's established schema."
-          ],
-          "purpose": "Configures a personal task workspace in Obsidian: Operon boards, project and assignee properties, templates, and views.",
-          "important": [
-            "Installation depends on the current state of Obsidian and the plugin"
-          ],
-          "relations": []
-        },
-        {
-          "id": "agent-identifier",
-          "title": "agent-identifier",
-          "type": "Skill",
-          "role": "Helps define a specialized Claude Code agent: its responsibilities, when it is invoked, and which tools it may use.",
-          "when": "When creating a dedicated agent role in Claude Code.",
-          "inside": [
-            "Defines the agent's responsibilities and when it should be involved.",
-            "Writes the system instructions and frontmatter: name, description, model, and tools.",
-            "Adds invocation examples and checks that the role does not duplicate neighboring roles."
-          ],
-          "outputs": [
-            "A Claude Code agent definition with invocation criteria and valid frontmatter."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/agent-identifier"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$agent-identifier",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/agent-identifier ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A Claude Code agent definition with invocation criteria and valid frontmatter.",
-          "cardTitle": "Configure an agent role",
-          "skillId": "agent-identifier",
-          "inputs": [
-            "Agent purpose and invocation criteria"
-          ],
-          "writes": "Markdown definition of a Claude Code agent",
-          "gates": [
-            "Frontmatter and invocation criteria match the role"
-          ],
-          "limits": [
-            "A role file alone does not start an agent"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Configure an agent role"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Configure an agent role"
-            }
-          ],
-          "start": "Describe the role's task, invocation criteria, and permitted tools.",
-          "capabilities": [
-            "Defines the agent's responsibilities and when it should be involved.",
-            "Writes the system instructions and frontmatter: name, description, model, and tools.",
-            "Adds invocation examples and checks that the role does not duplicate neighboring roles."
-          ],
-          "useCases": "When creating a dedicated agent role in Claude Code.",
-          "outcomes": [
-            "A Claude Code agent definition with invocation criteria and valid frontmatter."
-          ],
-          "purpose": "Helps define a specialized Claude Code agent: its responsibilities, when it is invoked, and which tools it may use.",
-          "important": [
-            "A role file alone does not start an agent"
-          ],
-          "relations": []
-        },
-        {
-          "id": "command-development",
-          "title": "command-development",
-          "type": "Skill",
-          "role": "Creates a slash command for a repeatable task: the agent receives prepared instructions, arguments, and links to the required resources.",
-          "when": "When a recurring action is convenient to run as a slash command.",
-          "inside": [
-            "Chooses where the command belongs: project, user configuration, or plugin.",
-            "Defines agent instructions, arguments, and permitted tools.",
-            "Checks resource links and argument substitution with an example invocation."
-          ],
-          "outputs": [
-            "A slash command with arguments, a prompt, and local file references."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/command-development"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$command-development",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/command-development ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A slash command with arguments, a prompt, and local file references.",
-          "cardTitle": "Create a Claude Code command",
-          "skillId": "command-development",
-          "inputs": [
-            "Recurring workflow, arguments, and links"
-          ],
-          "writes": "Claude Code slash-command file",
-          "gates": [
-            "Arguments and local links resolve correctly"
-          ],
-          "limits": [
-            "The format targets Claude Code"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Create a Claude Code command"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Create a Claude Code command"
-            }
-          ],
-          "start": "Provide the command name, its arguments, and the expected result.",
-          "capabilities": [
-            "Chooses where the command belongs: project, user configuration, or plugin.",
-            "Defines agent instructions, arguments, and permitted tools.",
-            "Checks resource links and argument substitution with an example invocation."
-          ],
-          "useCases": "When a recurring action is convenient to run as a slash command.",
-          "outcomes": [
-            "A slash command with arguments, a prompt, and local file references."
-          ],
-          "purpose": "Creates a slash command for a repeatable task: the agent receives prepared instructions, arguments, and links to the required resources.",
-          "important": [
-            "The format targets Claude Code"
-          ],
-          "relations": []
-        },
-        {
-          "id": "hook-development",
-          "title": "hook-development",
-          "type": "Skill",
-          "role": "Creates a Claude Code event handler. It can check an action before execution, process its result, or remind the agent to save context.",
-          "when": "When a check should run automatically on a client event.",
-          "inside": [
-            "Chooses a Claude Code event and a handler type: command or prompt.",
-            "Configures input data, response format, timeout, and registration scope.",
-            "Tests both allow and block cases so the hook does not interfere with unrelated actions."
-          ],
-          "outputs": [
-            "A Claude Code event handler with verified responses and registration."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/hook-development"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$hook-development",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/hook-development ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A Claude Code event handler with verified responses and registration.",
-          "cardTitle": "Configure an agent hook",
-          "skillId": "hook-development",
-          "inputs": [
-            "Claude Code event and required response"
-          ],
-          "writes": "Hook script and registration",
-          "gates": [
-            "Input payload and response match the event contract"
-          ],
-          "limits": [
-            "Hooks depend on the client's contract"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Configure an agent hook"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Configure an agent hook"
-            }
-          ],
-          "start": "Specify the event, trigger condition, and desired response.",
-          "capabilities": [
-            "Chooses a Claude Code event and a handler type: command or prompt.",
-            "Configures input data, response format, timeout, and registration scope.",
-            "Tests both allow and block cases so the hook does not interfere with unrelated actions."
-          ],
-          "useCases": "When a check should run automatically on a client event.",
-          "outcomes": [
-            "A Claude Code event handler with verified responses and registration."
-          ],
-          "purpose": "Creates a Claude Code event handler. It can check an action before execution, process its result, or remind the agent to save context.",
-          "important": [
-            "Hooks depend on the client's contract"
-          ],
-          "relations": []
-        },
-        {
-          "id": "plugin-structure",
-          "title": "plugin-structure",
-          "type": "Skill",
-          "role": "Packages related skills, commands, agents, hooks, and MCP connections into an installable plugin with a valid manifest and portable paths.",
-          "when": "To package related skills, commands, agents, and hooks.",
-          "inside": [
-            "Creates the manifest and only the component directories actually needed.",
-            "Links resources using portable paths relative to the plugin root.",
-            "Checks structure, names, MCP configuration, and client discovery of components."
-          ],
-          "outputs": [
-            "A consistent layout for the manifest, commands, agents, skills, and hooks."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/plugin-structure"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$plugin-structure",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/plugin-structure ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A consistent layout for the manifest, commands, agents, skills, and hooks.",
-          "cardTitle": "Set up a plugin structure",
-          "skillId": "plugin-structure",
-          "inputs": [
-            "Components for the new plugin"
-          ],
-          "writes": "Plugin directory and manifest",
-          "gates": [
-            "Components are discovered through the established structure"
-          ],
-          "limits": [
-            "Structure does not replace testing component behavior"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Set up a plugin structure"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Set up a plugin structure"
-            }
-          ],
-          "start": "List the plugin's components and installation method.",
-          "capabilities": [
-            "Creates the manifest and only the component directories actually needed.",
-            "Links resources using portable paths relative to the plugin root.",
-            "Checks structure, names, MCP configuration, and client discovery of components."
-          ],
-          "useCases": "To package related skills, commands, agents, and hooks.",
-          "outcomes": [
-            "A consistent layout for the manifest, commands, agents, skills, and hooks."
-          ],
-          "purpose": "Packages related skills, commands, agents, hooks, and MCP connections into an installable plugin with a valid manifest and portable paths.",
-          "important": [
-            "Structure does not replace testing component behavior"
-          ],
-          "relations": []
-        },
-        {
-          "id": "mcp-integration",
-          "title": "mcp-integration",
-          "type": "Skill",
-          "role": "Connects an agent to an MCP server so external data and operations become available as callable tools.",
-          "when": "When connecting an external service to an agent through MCP.",
-          "inside": [
-            "Checks process or network connection configuration and environment variables.",
-            "Configures tool discovery and authentication.",
-            "Tests an actual tool call and disconnect behavior; a configuration entry alone does not prove the connection works."
-          ],
-          "outputs": [
-            "Client or plugin configuration and a connection check."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/mcp-integration"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$mcp-integration",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/mcp-integration ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Client or plugin configuration and a connection check.",
-          "cardTitle": "Connect an MCP server",
-          "skillId": "mcp-integration",
-          "inputs": [
-            "MCP server, client, and connection method"
-          ],
-          "writes": "MCP client or plugin configuration",
-          "gates": [
-            "Connection and available tools have been verified"
-          ],
-          "limits": [
-            "Requires a working server and the appropriate access"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Connect an MCP server"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Connect an MCP server"
-            }
-          ],
-          "start": "Specify the MCP server, client, and connection method from the server documentation.",
-          "capabilities": [
-            "Checks process or network connection configuration and environment variables.",
-            "Configures tool discovery and authentication.",
-            "Tests an actual tool call and disconnect behavior; a configuration entry alone does not prove the connection works."
-          ],
-          "useCases": "When connecting an external service to an agent through MCP.",
-          "outcomes": [
-            "Client or plugin configuration and a connection check."
-          ],
-          "purpose": "Connects an agent to an MCP server so external data and operations become available as callable tools.",
-          "important": [
-            "Requires a working server and the appropriate access"
-          ],
-          "relations": []
-        },
-        {
-          "id": "skill-development",
-          "title": "skill-development",
-          "type": "Skill",
-          "role": "Creates or repairs an agent skill: when to use it, which steps to follow, which resources to read, and how to verify the result.",
-          "when": "To create a useful skill or repair an existing one.",
-          "inside": [
-            "Studies installed skills and defines a clear scope of responsibility.",
-            "Writes invocation criteria and a compact workflow, moving reference material into resources.",
-            "Checks frontmatter, links, scripts, and duplicate instructions."
-          ],
-          "outputs": [
-            "A skill with clear invocation criteria, scope, and resources."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/skill-development"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$skill-development",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/skill-development ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A skill with clear invocation criteria, scope, and resources.",
-          "cardTitle": "Create or repair a skill",
-          "skillId": "skill-development",
-          "inputs": [
-            "Recurring task and skill scope"
-          ],
-          "writes": "SKILL.md and required resources",
-          "gates": [
-            "The description makes invocation criteria unambiguous"
-          ],
-          "limits": [
-            "Creates instructions; does not guarantee the quality of every future run"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Create or repair a skill"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Create or repair a skill"
-            }
-          ],
-          "start": "Describe the recurring task and provide the current SKILL.md if one exists.",
-          "capabilities": [
-            "Studies installed skills and defines a clear scope of responsibility.",
-            "Writes invocation criteria and a compact workflow, moving reference material into resources.",
-            "Checks frontmatter, links, scripts, and duplicate instructions."
-          ],
-          "useCases": "To create a useful skill or repair an existing one.",
-          "outcomes": [
-            "A skill with clear invocation criteria, scope, and resources."
-          ],
-          "purpose": "Creates or repairs an agent skill: when to use it, which steps to follow, which resources to read, and how to verify the result.",
-          "important": [
-            "Creates instructions; does not guarantee the quality of every future run"
-          ],
-          "relations": []
-        },
-        {
-          "id": "skill-quality-reviewer",
-          "title": "skill-quality-reviewer",
-          "type": "Skill",
-          "role": "Reviews skills for clear invocation criteria, complete instructions, sound structure, and intact resources.",
-          "when": "To review one skill or the whole collection.",
-          "inside": [
-            "Reads instructions and resources, then checks invocation criteria and structure.",
-            "Scores completeness, clarity, and link integrity on a consistent scale.",
-            "Provides a score and a specific list of issues; making the corrections is a separate step."
-          ],
-          "outputs": [
-            "A report on the skill's content, structure, and specific improvements."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/skill-quality-reviewer"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$skill-quality-reviewer",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/skill-quality-reviewer ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A report on the skill's content, structure, and specific improvements.",
-          "cardTitle": "Review skill quality",
-          "skillId": "skill-quality-reviewer",
-          "inputs": [
-            "Existing skill directory"
-          ],
-          "writes": "Skill report and improvement plan",
-          "gates": [
-            "Findings cite specific locations in files"
-          ],
-          "limits": [
-            "Reviewing instruction quality is not the same as testing a skill on a real task"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Review skill quality"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Review skill quality"
-            }
-          ],
-          "start": "Specify the skills and review mode: scoring, a correction list, or a collection overview.",
-          "capabilities": [
-            "Reads instructions and resources, then checks invocation criteria and structure.",
-            "Scores completeness, clarity, and link integrity on a consistent scale.",
-            "Provides a score and a specific list of issues; making the corrections is a separate step."
-          ],
-          "useCases": "To review one skill or the whole collection.",
-          "outcomes": [
-            "A report on the skill's content, structure, and specific improvements."
-          ],
-          "purpose": "Reviews skills for clear invocation criteria, complete instructions, sound structure, and intact resources.",
-          "important": [
-            "Reviewing instruction quality is not the same as testing a skill on a real task"
-          ],
-          "relations": []
-        },
-        {
-          "id": "skill-improver",
-          "title": "skill-improver",
-          "type": "Skill",
-          "role": "Applies approved skill improvements from an existing plan, resolves conflicting proposals, and verifies each change.",
-          "when": "When an approved list of skill improvements already exists.",
-          "inside": [
-            "Prioritizes proposals and checks for conflicts between them.",
-            "Preserves the original state and applies approved changes in sequence.",
-            "Checks YAML, links, and the final diff, then reports against the plan."
-          ],
-          "outputs": [
-            "Skill changes based on an existing improvement plan."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/skill-improver"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$skill-improver",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/skill-improver ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Skill changes based on an existing improvement plan.",
-          "cardTitle": "Apply approved improvements",
-          "skillId": "skill-improver",
-          "inputs": [
-            "Skill and prepared improvement plan"
-          ],
-          "writes": "Modified skill files",
-          "gates": [
-            "Every change follows the approved plan"
-          ],
-          "limits": [
-            "An improvement plan is required first"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Apply approved improvements"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Apply approved improvements"
-            }
-          ],
-          "start": "Provide the correction plan and the set of files that may be changed.",
-          "capabilities": [
-            "Prioritizes proposals and checks for conflicts between them.",
-            "Preserves the original state and applies approved changes in sequence.",
-            "Checks YAML, links, and the final diff, then reports against the plan."
-          ],
-          "useCases": "When an approved list of skill improvements already exists.",
-          "outcomes": [
-            "Skill changes based on an existing improvement plan."
-          ],
-          "purpose": "Applies approved skill improvements from an existing plan, resolves conflicting proposals, and verifies each change.",
-          "important": [
-            "An improvement plan is required first"
-          ],
-          "relations": []
-        },
-        {
-          "id": "caveman",
-          "title": "caveman",
-          "type": "Skill",
-          "role": "Enables concise agent responses. Removes introductory filler and repetition while keeping facts and necessary explanations.",
-          "when": "When you need very short agent responses.",
-          "inside": [
-            "Cuts introductory filler and repetition.",
-            "Keeps the action, essential fact, and necessary limitation.",
-            "Retains detail where shortening would make instructions unsafe or unclear."
-          ],
-          "outputs": [
-            "Concise communication at the user's explicit request."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/caveman"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$caveman",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/caveman ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Concise communication at the user's explicit request.",
-          "cardTitle": "Enable very short responses",
-          "skillId": "caveman",
-          "inputs": [
-            "An explicit request for an extremely concise style"
-          ],
-          "writes": "Response in the current conversation",
-          "gates": [
-            "Technical meaning is preserved"
-          ],
-          "limits": [
-            "A communication mode, not a reduction in necessary checks"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Enable very short responses"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "role": "Enable very short responses"
-            }
-          ],
-          "start": "Ask to enable concise mode for the current conversation.",
-          "capabilities": [
-            "Cuts introductory filler and repetition.",
-            "Keeps the action, essential fact, and necessary limitation.",
-            "Retains detail where shortening would make instructions unsafe or unclear."
-          ],
-          "useCases": "When you need very short agent responses.",
-          "outcomes": [
-            "Concise communication at the user's explicit request."
-          ],
-          "purpose": "Enables concise agent responses. Removes introductory filler and repetition while keeping facts and necessary explanations.",
-          "important": [
-            "A communication mode, not a reduction in necessary checks"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-project-memory",
-          "title": "Obsidian project memory",
-          "type": "Skill",
-          "role": "Maintains human-readable project memory and connects it to ongoing research.",
-          "when": "When you need to restore or update personal project context.",
-          "inputs": [
-            "project path",
-            "current state",
-            "decisions and next steps"
-          ],
-          "inside": [
-            "finds the canonical hub",
-            "updates only verified sections",
-            "preserves wikilinks and project structure"
-          ],
-          "outputs": [
-            "up-to-date project note"
-          ],
-          "writes": "The team member's personal Obsidian vault",
-          "gates": [
-            "correct routing through obsidian-projects.json"
-          ],
-          "limits": [
-            "a personal note is not shared evidence"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-project-memory/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-project-memory",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-project-memory ~/.claude/skills/",
-              "# restart Claude Code, then run /obsidian-project-memory"
-            ]
-          },
-          "purpose": "Maintains human-readable project memory and connects it to ongoing research.",
-          "capabilities": [
-            "finds the canonical hub",
-            "updates only verified sections",
-            "preserves wikilinks and project structure"
-          ],
-          "useCases": "When you need to restore or update personal project context.",
-          "outcomes": [
-            "up-to-date project note"
-          ],
-          "afterSetup": "up-to-date project note",
-          "important": [
-            "a personal note is not shared evidence"
-          ],
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "All laboratory participants",
-              "role": "read the shared history and publish only the verified part of their personal work"
-            },
-            {
-              "name": "Codex, Claude, and Hermes",
-              "role": "restore context before planning and write only within their granted scope"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "lab-knowledge-skill",
-              "label": "sends only the explicitly approved portion to the shared database",
-              "title": "lab-knowledge"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "memory",
-              "processTitle": "Lab GitLab",
-              "stageRef": "",
-              "stageTitle": "Ask what is already known"
-            }
-          ],
-          "processRelation": {
-            "processId": "memory",
-            "processTitle": "Lab GitLab",
-            "stageRef": "",
-            "stageTitle": "Ask what is already known"
-          },
-          "cardTitle": "Continue without losing context",
-          "catalogSummary": "Decisions, plans, and results in canonical project notes.",
-          "skillId": "obsidian-project-memory",
-          "start": "Specify the project and ask to save its current state, decisions, and next steps."
-        },
-        {
-          "id": "grill-me",
-          "title": "grill-me",
-          "type": "Skill",
-          "role": "Questions the author about a plan until there is a shared understanding, one question at a time, with a recommended answer for each.",
-          "when": "You have a plan with decisions and assumptions to clarify.",
-          "inputs": [
-            "draft claim or plan",
-            "assumptions",
-            "proposed validation method"
-          ],
-          "inside": [
-            "walks the decision tree, resolving dependencies in order",
-            "asks strictly one question at a time",
-            "offers a recommended answer to each question",
-            "checks the code for answers it can provide instead of asking"
-          ],
-          "outputs": [
-            "resolved decision points in the plan",
-            "clarified formulation"
-          ],
-          "writes": "Current personal draft",
-          "gates": [
-            "does not ask a question if the answer is in the code"
-          ],
-          "limits": [
-            "does not replace validation through a run",
-            "writes nothing to the shared database"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-me/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$grill-me",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/grill-me ~/.claude/skills/",
-              "# restart Claude Code, then run /grill-me"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Researcher and research agent",
-              "role": "examine the plan's decision points until ambiguities are resolved"
-            }
-          ],
-          "relations": [],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s-plan",
-              "stageTitle": "Clarify the plan"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s-plan",
-            "stageTitle": "Clarify the plan"
-          },
-          "cardTitle": "Examine an idea through questions",
-          "catalogSummary": "Clarify assumptions and make decisions before implementation.",
-          "skillId": "grill-me",
-          "start": "Describe the idea or provide the plan you want to examine through questions.",
-          "capabilities": [
-            "walks the decision tree, resolving dependencies in order",
-            "asks strictly one question at a time",
-            "offers a recommended answer to each question",
-            "checks the code for answers it can provide instead of asking"
-          ],
-          "outcomes": [
-            "resolved decision points in the plan",
-            "clarified formulation"
-          ],
-          "useCases": "You have a plan with decisions and assumptions to clarify.",
-          "important": [
-            "does not replace validation through a run",
-            "writes nothing to the shared database"
-          ]
-        },
-        {
-          "id": "grill-with-docs",
-          "title": "grill-with-docs",
-          "type": "Skill",
-          "role": "Examines the plan one question at a time and checks each answer against the project's glossary, code, and existing decisions.",
-          "when": "You have a plan with decisions and assumptions to clarify.",
-          "inputs": [
-            "draft plan",
-            "CONTEXT.md or CONTEXT-MAP.md",
-            "code and decision records"
-          ],
-          "inside": [
-            "checks the plan's wording against the CONTEXT.md glossary",
-            "proposes a precise term in place of a vague one",
-            "tests disputed points against specific edge cases",
-            "looks for discrepancies between the author's description and the code's behavior",
-            "records an agreed term in CONTEXT.md immediately rather than accumulating pending edits"
-          ],
-          "outputs": [
-            "clarified plan",
-            "updated project glossary",
-            "decision record when justified"
-          ],
-          "writes": "CONTEXT.md and docs/adr in the current repository",
-          "gates": [
-            "does not ask a question if the answer is in the code",
-            "CONTEXT.md stores only domain terminology",
-            "proposes a decision record only when all three conditions hold: hard to reverse, unclear without context, and a real choice was made"
-          ],
-          "limits": [
-            "does not turn the glossary into a technical specification",
-            "does not make product decisions for the author"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-with-docs/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$grill-with-docs",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/grill-with-docs ~/.claude/skills/",
-              "# restart Claude Code, then run /grill-with-docs"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Researcher and research agent",
-              "role": "check a new plan against the project's terminology and decisions"
-            }
-          ],
-          "relations": [],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Project setup",
-              "stageRef": "s-plan",
-              "stageTitle": "Clarify the plan"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Project setup",
-            "stageRef": "s-plan",
-            "stageTitle": "Clarify the plan"
-          },
-          "skillId": "grill-with-docs",
-          "start": "Provide the draft plan and project materials: code, notes, and prior decisions.",
-          "capabilities": [
-            "checks the plan's wording against the CONTEXT.md glossary",
-            "proposes a precise term in place of a vague one",
-            "tests disputed points against specific edge cases",
-            "looks for discrepancies between the author's description and the code's behavior",
-            "records an agreed term in CONTEXT.md immediately rather than accumulating pending edits"
-          ],
-          "outcomes": [
-            "clarified plan",
-            "updated project glossary",
-            "decision record when justified"
-          ],
-          "useCases": "You have a plan with decisions and assumptions to clarify.",
-          "important": [
-            "does not turn the glossary into a technical specification",
-            "does not make product decisions for the author"
-          ]
-        },
-        {
-          "id": "project-to-lab",
-          "title": "project-to-lab",
-          "type": "Skill",
-          "role": "Brings work that is already done into the shared base from an archive or a folder: reads the material, shows its reading of it, and after you agree writes the hypotheses, runs, measurements, derivations and decisions with links to the source.",
-          "when": "The work was done before the base existed and is not in it. For someone with no Hermes and no configured Obsidian: pack a .zip, hand it over, get records.",
-          "inputs": [
-            "a .zip archive or a project folder",
-            "what the files do not say: how many seeds, what horizon, what exactly was measured"
-          ],
-          "inside": [
-            "unpacks into a temporary directory, not into the vault and not into a repository",
-            "builds an inventory and reads from intent to result: README, paper draft, tables, logs, configs",
-            "looks for the work in the base by title and method names, extends the existing one or starts a new one",
-            "defines internal names through define_term before they appear in any record",
-            "shows its reading and what the material is missing, then waits for you to agree",
-            "writes in dependency order: source, hypotheses, runs, measurements, derivations, decisions",
-            "reads back what it wrote and names the IDs"
-          ],
-          "outputs": [
-            "the work in the shared base with its own records",
-            "the terms without which the records cannot be read",
-            "a list of what stayed unfilled"
-          ],
-          "writes": "Lab GitLab",
-          "gates": [
-            "shows what it intends to write before the first write and waits for consent",
-            "what the material does not say is written as «не указано», never invented",
-            "an existing work is extended, a second one is not created",
-            "every record is read back and its ID is named"
-          ],
-          "limits": [
-            "draws no conclusion the person did not draw: a table with one seed is not a conclusion",
-            "does not call a run successful without measurements",
-            "someone else's paper goes to an analysis in the theme literature with a pointer to the location, not into our claim",
-            "does not read weights, checkpoints or data: it notes them in one line of the inventory"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/project-to-lab/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$project-to-lab",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/project-to-lab ~/.claude/skills/"
-            ]
-          },
-          "nonInstallable": false,
-          "capabilities": [
-            "Reads a project archive and works out what is in it.",
-            "Shows its reading before writing and names the gaps honestly.",
-            "Writes the work into the shared base in the right order, with links to the source."
-          ],
-          "useCases": "So that work done before the base existed stops being invisible to the laboratory.",
-          "outcomes": [
-            "The work in the shared base, reachable by search and linked to the literature."
-          ],
-          "purpose": "Catch up on what has piled up: results in notebooks, a draft in Overleaf, logs on a server — into the shared base in one pass.",
-          "important": [
-            "This is not for daily work: along the way, records are written right away through the lab-knowledge skill, as a merge request",
-            "Somebody else's work is easy to read wrong, so consent is required"
-          ],
-          "start": "Hand over the .zip or the path to the folder and say “put it into the base”.",
-          "relations": [
-            {
-              "toolId": "lab-knowledge",
-              "label": "writes through its calls",
-              "title": "Lab GitLab"
-            }
-          ],
-          "usedBy": [
-            {
-              "name": "Researcher",
-              "role": "hands over the archive, answers what the files do not say, and confirms the reading"
-            },
-            {
-              "name": "A new member of the laboratory",
-              "role": "brings in work done before joining the laboratory"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "projects",
-              "processTitle": "Projects",
-              "stageRef": "s1",
-              "stageTitle": "Start a work"
-            }
-          ],
-          "processRelation": {
-            "processId": "projects",
-            "processTitle": "Projects",
-            "stageRef": "s1",
-            "stageTitle": "Start a work"
-          },
-          "visual": {
-            "kind": "path",
-            "label": "An archive's path into the shared base",
-            "nodes": [
-              "Archive or folder",
-              "Inventory and reading",
-              "The reading, for you to agree",
-              "Terms",
-              "Records with links to the source",
-              "Read back, IDs named"
-            ]
-          },
-          "skillId": "project-to-lab"
+          }
         }
       ],
       "outcomeRefs": [
         {
           "ref": "o1",
-          "label": "Local: a repository and a project page in the vault."
+          "label": "In GitLab: the work repository in its theme, main branch protected."
         },
         {
           "ref": "o2",
-          "label": "Local: an entry in the note-routing file."
+          "label": "Locally: a clone at the same path, with private notes, diary and logs closed off from git."
         },
         {
           "ref": "o3",
-          "label": "Shared database: a project record with its topic and sources."
+          "label": "In the README: the work code, “Leads” and “Team”, which drive permissions and proposals."
         },
         {
           "ref": "o4",
-          "label": "In GitLab: the work's README and issues with members' task boards."
+          "label": "Claims, with everything used to test them, enter via a proposal."
         }
       ],
       "toolClusters": [
         {
           "id": "local",
-          "title": "Local: code and notes",
-          "stageRef": "s2",
+          "title": "A work and its clone",
+          "stageRef": "s3",
           "toolIds": [
-            "create-project"
+            "create-project",
+            "lab-command"
           ]
         },
         {
           "id": "access",
-          "title": "Server access",
-          "stageRef": "s2",
+          "title": "Access: GitLab and servers",
+          "stageRef": "s3",
           "toolIds": [
             "server-access-bot"
-          ]
-        },
-        {
-          "id": "grill-me",
-          "title": "Clarify the plan",
-          "stageRef": "s-plan",
-          "toolIds": [
-            "grill-me"
-          ]
-        },
-        {
-          "id": "grill-with-docs",
-          "title": "Clarify the plan",
-          "stageRef": "s-plan",
-          "toolIds": [
-            "grill-with-docs"
           ]
         }
       ],
@@ -5697,9 +3447,7 @@ window.RESEARCH_LOOP = {
           "id": "r1",
           "stage": "s1",
           "tools": [
-            "create-project",
-            "obsidian-projects-registry",
-            "lab-project-onboarding"
+            "create-project"
           ],
           "destinations": [],
           "outcomes": [],
@@ -5709,14 +3457,24 @@ window.RESEARCH_LOOP = {
           "id": "r2",
           "stage": "s2",
           "tools": [
+            "create-project"
+          ],
+          "destinations": [],
+          "outcomes": [],
+          "qa": []
+        },
+        {
+          "id": "r3",
+          "stage": "s3",
+          "tools": [
             "create-project",
-            "obsidian-project-bootstrap",
-            "obsidian-projects-registry",
+            "lab-command",
             "server-access-bot"
           ],
           "destinations": [
             "d1",
-            "d2"
+            "d2",
+            "d3"
           ],
           "outcomes": [
             "o1",
@@ -5725,13 +3483,15 @@ window.RESEARCH_LOOP = {
           "qa": []
         },
         {
-          "id": "r3",
-          "stage": "s3",
+          "id": "r4",
+          "stage": "s4",
           "tools": [
-            "lab-project-onboarding"
+            "create-project",
+            "gitlab-work"
           ],
           "destinations": [
-            "d3"
+            "d1",
+            "d4"
           ],
           "outcomes": [
             "o3"
@@ -5739,303 +3499,215 @@ window.RESEARCH_LOOP = {
           "qa": []
         },
         {
-          "id": "r4",
-          "stage": "s4",
+          "id": "r5",
+          "stage": "s5",
           "tools": [
-            "yonote-project-view",
-            "yonote-task-broker"
+            "lab-knowledge",
+            "lab-where-am-i",
+            "gitlab-work"
           ],
           "destinations": [
-            "d4"
+            "d1",
+            "d3"
           ],
           "outcomes": [
             "o4"
           ],
           "qa": []
-        },
-        {
-          "id": "r5",
-          "stage": "s5",
-          "tools": [
-            "lab-project-onboarding",
-            "obsidian-project-lifecycle"
-          ],
-          "destinations": [],
-          "outcomes": [],
-          "qa": []
-        },
-        {
-          "id": "plan-review",
-          "stage": "s-plan",
-          "tools": [
-            "grill-me",
-            "grill-with-docs"
-          ],
-          "destinations": [],
-          "outcomes": [],
-          "qa": []
         }
       ],
       "example": {
-        "title": "One project name, end to end",
-        "text": "The project already has a repository and a folder in ~/brainlab, but there is no work in the Lab GitLab. Onboarding finds what exists by the short name and shows one plan with the marks “create”, “reuse”, “blocked”: GitLab gets a work repository inside its theme with a README that records the lines “Leads” and “Team”, and shared tasks are created as the work's issues. After confirmation only what is missing is created, and the Telegram bot grants members access according to GitLab roles. At the end every link is read back: whatever was not confirmed by reading stays a named gap."
+        "title": "The path of one work",
+        "text": "The owner asks to create a work. The agent searches for anything similar in the tree, in GitLab and in group issues, and names where it looked. The preview: theme, short name, three-letter code, a paragraph about the work and the lead named by the owner. After approval, an empty project appears in the theme group, and the lab command puts the clone at the same path in the lab tree and closes the private folders. The README with “Leads” goes in the first push straight to the main branch, and GitLab sets up its protection, labels and board columns on its own. From then on, any push from a branch opens a proposal for the lead. The old project folder moves over via the lab-knowledge skill: claims through a proposal, notes and logs into the closed folders of the same clone."
       },
       "toMcp": {
-        "lead": "The work itself becomes shared: its three-letter code, terms, and laboratory topic.",
+        "lead": "What becomes shared is the work itself: the repository, its README and its testable claims.",
         "paths": [
           {
             "id": "setup",
-            "actor": "person",
-            "title": "Set up the work locally, then in the database",
-            "line": "duplicate check → local foundation → project and code → terms → laboratory topic",
+            "actor": "human and agent",
+            "title": "The work is created in GitLab, the clone lands in the tree",
+            "line": "check → empty project → clone in place → README and scaffold → claims via proposal",
             "chain": [
               {
                 "lane": "work",
-                "title": "Duplicate check",
+                "title": "Check that the work does not exist",
                 "stageRef": "s1",
-                "detail": "search the ~/brainlab tree and GitLab before creating: a second work costs more than a miss."
+                "detail": "The tree, GitLab, group issues, notes of neighboring works: a duplicate work costs more than a miss."
               },
               {
                 "lane": "work",
-                "title": "Local foundation",
+                "title": "Empty project in the theme",
                 "destRef": "d1",
-                "detail": "Repository, Obsidian folder, and an entry in obsidian-projects.json.",
+                "detail": "An empty work repository is created in GitLab, with access inherited from the theme group.",
                 "via": {
                   "tool": "create-project",
                   "type": "skill"
                 }
               },
               {
-                "lane": "record",
-                "kind": "project",
-                "code": "—",
-                "title": "Project and its code",
-                "ref": "object:project",
-                "destRef": "d3",
-                "items": [
-                  "a title and retry key are required",
-                  "the topic comes from list_themes, not guesswork",
-                  "the three-letter code prefixes all future records"
-                ],
+                "lane": "work",
+                "title": "Clone in its place",
+                "destRef": "d2",
+                "detail": "Private folders are closed off from git, and a push from a branch opens a proposal by itself.",
                 "via": {
-                  "tool": "create_project",
-                  "type": "mcp"
+                  "tool": "lab here",
+                  "type": "command"
                 }
               },
               {
                 "lane": "record",
-                "kind": "term",
+                "kind": "project",
                 "code": "—",
-                "title": "Project terminology",
-                "ref": "object:term",
-                "destRef": "d3",
-                "detail": "Internal names: definitions also make older records understandable.",
+                "title": "README and scaffold",
+                "ref": "object:project",
+                "destRef": "d1",
+                "items": [
+                  "three-letter code: the prefix of every future record in the work",
+                  "“Leads” and “Team” are filled from the people registry",
+                  "claims folder, GitLab settings, nested code and manuscript",
+                  "first push straight into the empty main branch, proposals only from then on"
+                ],
                 "via": {
-                  "tool": "define_term",
-                  "type": "mcp"
+                  "tool": "git push",
+                  "type": "command"
+                }
+              },
+              {
+                "lane": "record",
+                "kind": "claim",
+                "code": "—",
+                "title": "The work's claims",
+                "ref": "object:hypothesis",
+                "destRef": "d1",
+                "detail": "Each claim is its own folder and goes in via a proposal: the gates check the numbers, the lead merges.",
+                "via": {
+                  "tool": "git push",
+                  "type": "command"
                 }
               },
               {
                 "lane": "tie",
-                "title": "Laboratory topic",
-                "ref": "object:theme",
-                "detail": "A topic helps people discover work they did not already know about.",
+                "title": "Work lead",
+                "ref": "object:project",
+                "detail": "The “Leads” line gives the lead permissions in the work, proposals are assigned to them, and the bot sends them requests.",
                 "via": {
-                  "tool": "set_project_theme",
-                  "type": "mcp"
+                  "tool": "create-project",
+                  "type": "skill"
                 }
               }
             ]
           }
         ],
         "kept": [
-          "repository, project folder in Obsidian, obsidian-projects.json, and .claude/",
-          "GitLab issues and boards: a working surface, not knowledge",
-          "agent keys and roles: issue_agent_token and invite_member grant write access but are not knowledge records"
+          "private notes, diary, local logs and the clone's other closed folders",
+          "manuscript drafts and working code"
         ],
         "hook": true
       },
       "mapFeatured": [
         "create-project",
-        "obsidian-project-memory",
+        "lab-knowledge",
         "server-access-bot"
-      ],
-      "constellation": {
-        "core": "create-project",
-        "caption": "One connected workspace",
-        "groups": [
-          {
-            "area": "north",
-            "title": "Compute access",
-            "toolIds": [
-              "server-access-bot"
-            ]
-          },
-          {
-            "area": "nw",
-            "title": "Workspaces",
-            "toolIds": [
-              "lab-project-onboarding",
-              "yonote-project-view",
-              "yonote-task-broker",
-              "obsidian-projects-registry"
-            ]
-          },
-          {
-            "area": "ne",
-            "title": "Project memory",
-            "toolIds": [
-              "obsidian-project-memory",
-              "obsidian-project-bootstrap",
-              "obsidian-project-lifecycle",
-              "obsidian-markdown",
-              "obsidian-link-graph",
-              "project-to-lab"
-            ]
-          },
-          {
-            "area": "west",
-            "title": "Context and plan",
-            "toolIds": [
-              "restore-session",
-              "handoff",
-              "planning-with-files",
-              "obsidian-research-log",
-              "caveman",
-              "grill-me",
-              "grill-with-docs"
-            ]
-          },
-          {
-            "area": "east",
-            "title": "Note navigation",
-            "toolIds": [
-              "operon-obsidian-setup",
-              "obsidian-bases",
-              "json-canvas",
-              "obsidian-cli"
-            ]
-          },
-          {
-            "area": "sw",
-            "title": "Agent setup",
-            "toolIds": [
-              "agent-identifier",
-              "command-development",
-              "hook-development",
-              "plugin-structure",
-              "mcp-integration"
-            ]
-          },
-          {
-            "area": "se",
-            "title": "Custom skills",
-            "toolIds": [
-              "skill-development",
-              "skill-quality-reviewer",
-              "skill-improver"
-            ]
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "literature",
       "number": "01",
       "title": "Literature",
       "verb": "Find what matters",
-      "result": "Verified paper claims and ideas for your own research",
+      "result": "A paper review in the theme literature, and a citation key you can trust",
       "color": "#ffd66b",
       "registryProcessIds": [
         "literature-discovery",
         "literature-ingest"
       ],
-      "purpose": "Take a paper from discovery to a note and a verifiable paper claim that can be cited.",
+      "purpose": "Take a paper from fresh arXiv to a review in its theme's literature. Every morning, scripts and Jev, a fast classifier on the server, cut thousands of fresh papers down to a short list: on 15-10-2026 the title gate passed 1294 of 6161 papers, about fifteen made the morning list, and the selection took 163 seconds and cost $0.12. The owner decides what to review with a single reply in Telegram, and Claude writes the review to the lab canon. Only the citation key from this page goes into lab papers: an automated check will not let a made-up reference through.",
       "when": [
-        "A new research question has emerged.",
+        "Every morning, fresh arXiv is collected and filtered for our works automatically.",
         "You need to assess novelty or find a comparison baseline.",
-        "The overnight scout has added a card to Inbox."
+        "A paper is dropped into “Want to read” on AlphaXiv from a phone, or given as a link."
       ],
       "stages": [
         {
-          "title": "Find candidates",
-          "summary": "paper-scout runs overnight and paper-search runs on request; both add cards to the Reading board's Inbox column.",
-          "result": "Candidates excluding papers already read",
+          "title": "Collect and filter",
+          "summary": "At 06:30 on the server, scripts pull fresh arXiv and drop everything already known. Jev ranks by similarity to our works, and DeepSeek strikes out obvious junk and writes explanations.",
+          "result": "A short list with explanations",
           "ref": "s1"
         },
         {
-          "title": "Select manually",
-          "summary": "The owner moves a card from Inbox to Queue. Inbox means candidate; Queue means permission.",
+          "title": "Pick in Telegram",
+          "summary": "Around 7:00 the list arrives in the “Papers” topic in Telegram. The owner replies with numbers, and the cards move into the reading board's “Queue” by themselves. From a phone, “Want to read” on AlphaXiv does the same.",
           "result": "Approved queue",
           "human": true,
           "ref": "s2"
         },
         {
           "title": "Fetch the paper",
-          "summary": "paper-ingest creates a Zotero record with the PDF, a Literature note, and BibTeX from an external source.",
-          "result": "Complete local package",
+          "summary": "Once an hour the pipeline takes the queue: BibTeX from an external source, PDF and LaTeX sources, a Zotero card in the theme collection.",
+          "result": "The full source bundle",
           "ref": "s3"
         },
         {
-          "title": "Read and analyze",
-          "summary": "An eight-section note covering the method, mathematics, data, figures, and critical analysis. An abstract paraphrase is not sufficient.",
-          "result": "An analytical note in Russian",
+          "title": "Review to the canon",
+          "summary": "Claude writes the review: the mechanism step by step, formulas, numbers from the authors' tables, ablations, limitations and a “What the paper claims” section. Figures are the authors' own, TikZ is built from the sources.",
+          "result": "A page that explains the paper without the PDF",
           "ref": "s4"
         },
         {
-          "title": "Send to the shared database",
-          "summary": "Configured synchronization sends the paper, sections, and prepared claims to the shared corpus and reads back the result.",
-          "result": "The paper appears in shared search",
+          "title": "Store and push",
+          "summary": "The review lands as a page in its theme's literature and goes to GitLab with a plain git push. AlphaXiv files the paper into the folder for the same theme.",
+          "result": "The paper is visible to the whole lab",
           "ref": "s5"
         },
         {
-          "title": "Connect to your own work",
-          "summary": "A paper claim receives a typed link to our claim, run, or rule.",
-          "result": "The statement we rely on is visible",
+          "title": "Cite",
+          "summary": "Only the citation key from the page's BibTeX goes into the manuscript. A hook blocks any citation whose key is not in the work's bibliography.",
+          "result": "A citation that will not break the build",
           "ref": "s6"
         }
       ],
       "outcomes": [
-        "One Zotero record with an attached PDF and BibTeX.",
-        "A paper note in Literature and a mirror on AlphaXiv.",
-        "The paper and its sections in the laboratory's shared corpus.",
-        "Links to our claims and runs."
+        "A Zotero entry with the PDF in the theme collection.",
+        "A review in the theme literature: one file in the tree and in GitLab.",
+        "The paper in the theme folder on AlphaXiv, for reading on a phone.",
+        "A citation key that is safe to put into the manuscript bibliography."
       ],
       "destinations": [
         {
           "name": "Zotero",
-          "what": "PDF, authors, publication venue, BibTeX",
-          "why": "Canonical bibliography",
+          "what": "PDF, metadata, theme collection",
+          "why": "Bibliography for manuscripts",
           "ref": "d1"
         },
         {
-          "name": "Obsidian",
-          "what": "An eight-section note in Literature/",
-          "why": "Personal understanding of the paper",
+          "name": "Theme literature",
+          "what": "The theme literature repository: one page per paper, figures alongside",
+          "why": "Shared knowledge: the whole lab reads it, Obsidian opens it",
           "ref": "d2"
         },
         {
-          "name": "Lab GitLab",
-          "what": "Paper, sections, and paper claims",
-          "why": "Shared laboratory search",
+          "name": "Telegram, “Papers” topic",
+          "what": "The morning list, “starting the review”, “reviewed, it's here”",
+          "why": "Pick and report without logging into the server",
           "ref": "d3"
         },
         {
           "name": "AlphaXiv",
-          "what": "A mirror of topic folders and the Want to read queue",
-          "why": "Your library on your phone",
+          "what": "Theme folders and the “Want to read” queue",
+          "why": "Reading and picking from a phone",
           "ref": "d4"
         }
       ],
       "controls": [
         {
           "id": "owner-gate",
-          "title": "A person decides what to read",
-          "explanation": "paper-scout and paper-search only add Inbox cards and do not change their status. Analysis starts after the owner moves a card to Queue.",
-          "example": "The scout found ten papers. Two entered Queue; the rest remained cards, with no PDF, note, or shared database record.",
+          "title": "A human decides what to review",
+          "explanation": "Scripts and Jev only shrink the pool. What gets reviewed is what the owner replied to by number, what sits in the board's “Queue”, or what was dropped into “Want to read”. Jev is asked about similarity to what the owner has taken before, not about quality: asked “is this a strong paper”, it scored AUC 0.443, worse than a coin flip, while descriptions of our works raised the selection AUC from 0.679 to 0.718.",
+          "example": "On 15-10-2026 the title gate passed 1294 of 6161 papers. About fifteen go into the morning list, and what the owner picks gets reviewed.",
           "links": [
             {
-              "label": "Skill source",
+              "label": "Source of the want-2-read skill",
               "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
             }
           ]
@@ -6043,7 +3715,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "full-text",
           "title": "Analysis uses the full text",
-          "explanation": "The note is based on the PDF and TeX sources. If the full text is unavailable, it contains metadata only, and both the note and card say so.",
+          "explanation": "The review is built from the PDF and the LaTeX sources: figures and tables come from the sources, and TikZ figures are built separately. If the full text is missing, that is stated both in the review and on the card.",
           "example": "A paper has been accepted at a conference but has no public version. Its card stays in “Awaiting publication” until a link becomes available.",
           "links": [
             {
@@ -6055,127 +3727,122 @@ window.RESEARCH_LOOP = {
         {
           "id": "citation-identity",
           "title": "Citation keys are never recalled from memory",
-          "explanation": "bibtex_fetch.py retrieves BibTeX from an external source, using keys of the form {surname}{year}{firstword}. A .tex file may use only keys already present in the project's references.bib.",
-          "example": "The preprint and conference version have different years. The discrepancy is stated explicitly rather than becoming a second record with a new key.",
+          "explanation": "BibTeX is fetched by a script from an external source, not by a model; the key looks like {lastname}{year}{firstword}. Only the key from the page's BibTeX block that is already in the work's bibliography goes into the manuscript: a hook rejects an edit with any other key.",
+          "example": "Keys are not unique: wang2026why turned out to belong to two different papers. So the file is named after the paper's title, and a paper is found by key with a BibTeX search across all themes at once.",
           "links": [
             {
               "label": "bibtex_fetch.py",
               "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
+            },
+            {
+              "label": "citation-validator.py",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/citation-validator.py"
             }
           ]
         },
         {
           "id": "foreign-claim",
           "title": "Someone else's claim is not our proof",
-          "explanation": "A paper claim preserves its meaning, source, and location in the text. Quotations are optional. An external result can be linked to our work, but does not replace testing our own claim.",
-          "example": "A paper reports lower error. The statement is stored as a paper claim and motivates our own run, but does not count as confirmation of our hypothesis.",
+          "explanation": "The “What the paper claims” section sits above the section-by-section review: each claim has its evidence, conditions, what would refute it, and our assessment. We did not reproduce them, and the status of our own claim changes only through our own runs and derivations.",
+          "example": "08-10-2026 literature sweep: 672 pages, 2069 paper claims, each with all four blocks in place.",
           "links": [
             {
-              "label": "docs/knowledge-base.md",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "The review canon",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/canon-ingest.md"
             }
           ]
         }
       ],
       "example": {
         "title": "One paper's path",
-        "text": "The literature Hermes suggests a paper. After the owner selects it, paper-ingest retrieves the PDF and bibliography and creates a canonical analytical note with self-contained claims. Configured synchronization sends the paper, sections, and claims to the shared database. Reading them back shows what was saved and what needs reprocessing. The paper claim is linked to our work, for example as a comparison source.",
-        "story": "The literature Hermes suggests a paper. After the owner selects it, paper-ingest retrieves the PDF and bibliography and creates a canonical analytical note with self-contained claims. Configured synchronization sends the paper, sections, and claims to the shared database. Reading them back shows what was saved and what needs reprocessing. The paper claim is linked to our work, for example as a comparison source.",
+        "text": "At 06:30 on the server, scripts pull fresh arXiv and drop everything already seen. Jev keeps about a fifth of the pool by title, then ranks by abstract on similarity to our works and to what the owner has taken before. Then DeepSeek strikes out obvious junk and writes explanations. Around seven the list arrives in the “Papers” topic in Telegram, the owner replies “3 7”, and the cards move into the “Queue” by themselves. The next hourly pass picks them up: BibTeX, PDF, sources, a Zotero entry, a review by Claude to the canon, a page in the theme literature and a push to GitLab. Telegram gets “reviewed, it's here”, and AlphaXiv files the paper into the folder for the same theme.",
+        "story": "In the morning Jev cuts fresh arXiv down to a short list for our works, and the owner replies with numbers in Telegram. From there, code does everything: Zotero, Claude's review to the canon, a page in the theme literature, a push to GitLab, a folder on AlphaXiv. The paper's claims live inside the review itself and stay someone else's until we run it ourselves.",
         "links": [
           {
-            "label": "Skill source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
+            "label": "Source of the paper-ingest skill",
+            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
           },
           {
-            "label": "docs/knowledge-base.md",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+            "label": "AlphaXiv mirror rule",
+            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/alphaxiv-sync.md"
           }
         ]
       },
       "tools": [
         {
           "id": "paperscout",
-          "title": "Hermes Agent · literature",
-          "type": "Hermes agent",
-          "role": "A literature assistant that finds relevant papers, recommends them to its owner, and analyzes selected work. In our setup, Hermes handles content-based selection and explanation; separate scripts fetch materials, manage the queue, and verify that results were saved.",
-          "when": "When you want regular updates on new papers in your area and analysis of selected work without gathering the materials manually.",
+          "title": "Paper pipeline on the server",
+          "type": "Jobs on the Hermes server",
+          "role": "Morning selection and hourly paper reviews on the server. Code handles the mechanics without a model, Jev does the selection, Claude writes the review text.",
+          "when": "Every day: selection at 06:30, the list in Telegram around 7:00, the queue processed once an hour.",
           "inputs": [
-            "Your library and the topics you want to follow. Previous choices guide selection without excluding adjacent fields.",
-            "A Hermes profile with model access and search and analysis jobs.",
-            "Connections to your own Obsidian and Zotero, a clone of the theme literature; scripts for fetching materials and finishing processing."
+            "fresh arXiv and the “Want to read” folder on AlphaXiv",
+            "the “In short” paragraphs from our works' READMEs",
+            "examples from the board: what the owner took and what they threw out"
           ],
           "inside": [
-            "Search starts on a schedule. A script reads the latest arXiv announcement, current library folders, and previous cards; it removes previously seen papers before calling the model.",
-            "Hermes reads abstracts and selects papers by their content. For each, it explains what is new and why it may be relevant. The selection can include strong papers from adjacent fields.",
-            "A script creates cards in Operon's Inbox and sends the selection to Telegram. The owner chooses papers; a recommendation alone does not start analysis of the entire selection.",
-            "A separate job takes one accepted paper from the queue. A preparation script fetches the text, PDF, and figures, creates a Zotero record, and prepares a note outline in the selected Literature folder.",
-            "The agent writes a coherent analysis covering the problem and assumptions, method and mathematical claims, experimental setup, results, and limitations. It recomputes available numbers and clearly separates its own checks from the authors' conclusions.",
-            "A paper page is saved in the theme literature: the citation key and BibTeX in the header, the analysis, and the paper's claims with conditions and location in the original. A verbatim quote is optional; links to our work are added based on content.",
-            "A completion script checks the note, figure links, and shared database records. A failure leaves processing incomplete. On success, the note is delivered to the owner and the entry leaves the analysis queue.",
-            "Analysis completion and personal reading status are different. The agent adds links to the card, but only the owner sets “Reading” or “Read.”"
+            "first, with no model at all, everything known is dropped: the library, the board, everything sent before, our own papers",
+            "Jev by title: about the mechanics of neural network training, or about a mechanism that transfers to it",
+            "Jev ranks by abstract on similarity to our works and to the board examples",
+            "the DeepSeek model strikes out junk in a single request using a closed list of reasons and writes explanations, without changing the order",
+            "a reply with numbers in Telegram moves the cards into the “Queue” by itself",
+            "once an hour the pipeline processes the queue: Zotero, Claude's review to the canon, a page in the theme literature, a push to GitLab, an AlphaXiv folder",
+            "the “starting the review” and “reviewed, it's here” messages are written by code"
           ],
           "outputs": [
-            "A selection explaining each paper's value, with a way to choose it.",
-            "A note with bibliography, figures, method analysis, and checks; a linked Zotero record and PDF.",
-            "A paper page in the theme literature, with the citation key in the header. It can be found by searching the tree and linked to your own research."
+            "a numbered list of papers with explanations in Telegram",
+            "reviewed papers in the literature of their themes"
           ],
-          "writes": [
-            "Operon in Obsidian: reading card; the technical analysis queue is stored separately.",
-            "Literature in Obsidian: the note and its materials. Zotero: bibliographic record and PDF.",
-            "Theme literature: a paper page with the analysis, claims, and links to research."
-          ],
+          "writes": "Reading board, Zotero, clones of theme literature in the tree on the server, AlphaXiv, the “Papers” topic in Telegram",
           "gates": [
-            "Only owner-selected papers are analyzed. Successful processing does not imply a personal status of “Read.”",
-            "Finishing requires checking the artifacts and a page that actually sits in main of the literature; a sent request does not yet mean it is saved."
+            "a review starts only after the owner picks",
+            "a paper without an explanation is not printed in the list and will come in the next one",
+            "DeepSeek does not pick: its own picks gave 45-55% taken versus 68-70% for Jev's ranking"
           ],
           "limits": [
-            "Job instructions are public, but your library, credentials, and supporting scripts require configuration. Importing SOUL.md alone does not reproduce the full workflow.",
-            "An accepted paper is analyzed by paper-ingest: a card, a detailed note, a page in the theme literature, and a readiness check.",
-            "An automated review does not guarantee completeness. Important claims are checked against the original."
+            "the list of works for Jev does not update itself: it is edited when the works change",
+            "the scripts are written for the lab library and are not in the open set",
+            "Claude writes the reviews on the owner's subscription: about 0.9% of its usage"
           ],
           "links": [
             {
-              "label": "Morning scheduled job",
-              "url": "https://github.com/brain-lab-research/hermes-prompts/blob/main/paper-scout/prompts/daily.md"
+              "label": "The review canon the pipeline writes by",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md",
+              "canonical": true
             },
             {
-              "label": "Paper analysis: full writing standard",
-              "url": "https://github.com/brain-lab-research/hermes-prompts/blob/main/paper-scout/prompts/ingest.md"
-            },
-            {
-              "label": "Hermes Agent: the agent environment",
+              "label": "Hermes: an open NousResearch project",
               "url": "https://github.com/NousResearch/hermes-agent"
             }
           ],
           "adoption": {
             "kind": "hermes",
-            "invoke": "The paper-scout profile in Hermes Agent",
+            "invoke": "Hermes job schedule on the server, no agent call",
             "install": [
-              "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash",
-              "hermes profile create paperscout --description \"Literature assistant\""
+              "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash"
             ],
-            "installNote": "Create your own Hermes profile and configure the library, queue, and access. Connect papers-daily for recommendations and papers-ingest for accepted papers. The main instructions and jobs cover different stages of one workflow."
+            "installNote": "Hermes is built on an open NousResearch project. The selection and review scripts are written for the lab library and are not in the set; Jev goes through the same OpenRouter key."
           },
           "usedBy": [
             {
               "name": "Owner",
-              "role": "reviews the digest and chooses what to take"
+              "role": "replies with numbers to the morning list"
             },
             {
-              "name": "Reading queue",
-              "role": "receives cards for accepted papers"
+              "name": "Theme literature",
+              "role": "receives reviews via plain git"
             }
           ],
           "relations": [
             {
-              "toolId": "paper-search",
-              "label": "jointly broaden and rank the search",
-              "title": "paper-search"
+              "toolId": "jev",
+              "label": "filters and ranks",
+              "title": "Jev"
             },
             {
-              "toolId": "want-2-read",
-              "label": "passes a shortlist to the queue for human approval",
-              "title": "want-2-read"
+              "toolId": "paper-ingest",
+              "label": "writes the review to its canon",
+              "title": "paper-ingest"
             }
           ],
           "processRelations": [
@@ -6183,77 +3850,125 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s1",
-              "stageTitle": "Find candidates"
+              "stageTitle": "Collect and filter"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s1",
-            "stageTitle": "Find candidates"
+            "stageTitle": "Collect and filter"
           },
           "visual": {
             "kind": "cycle",
-            "label": "Daily scan",
+            "label": "A day in the pipeline",
             "nodes": [
-              "Topics",
-              "Fresh preprints",
-              "Selection and deduplication",
-              "Telegram digest",
-              "Inbox column"
+              "Fresh arXiv",
+              "No repeats",
+              "Jev",
+              "List in Telegram",
+              "Owner's selection",
+              "Review and git push"
             ]
+          }
+        },
+        {
+          "id": "jev",
+          "title": "Jev",
+          "type": "Classifier",
+          "role": "A fast classifier model: it answers yes-or-no questions with probabilities and assigns scores, but writes no text. In literature, it cuts fresh arXiv down to what is worth showing the owner.",
+          "when": "Every morning in paper selection; anywhere you have to choose from many and the decision is simple.",
+          "inputs": [
+            "paper title and abstract",
+            "a list of current works from the “In short” paragraphs of their READMEs",
+            "examples from the board: what the owner took and what they threw out"
+          ],
+          "inside": [
+            "a title gate with two questions: is this our area, and is it adjacent; the threshold keeps 95% recall on what the owner took",
+            "the gate on 6161 papers: 163 seconds and $0.12, a same-day rerun $0 (cached by arXiv ID)",
+            "ranking by abstract with examples: the top 10 of 40 give 68-70% taken",
+            "descriptions of our works instead of a verbal portrait of the themes raised AUC from 0.679 to 0.718",
+            "it is never asked about paper quality: “is this a strong paper” gave 0.443, worse than a coin flip"
+          ],
+          "outputs": [
+            "a filtered pool and a paper ranking"
+          ],
+          "writes": "Nothing: only scores; code makes the threshold decision",
+          "gates": [
+            "Jev does not decide, it narrows the choice",
+            "it is given only reversible tasks: a skipped paper is not lost"
+          ],
+          "limits": [
+            "within a theme it cannot tell the essential from the routine: on the 19-10 list, 2 of 15 were taken",
+            "highly sensitive to which examples it is shown"
+          ],
+          "links": [
+            {
+              "label": "Context compaction on Jev: plugin",
+              "url": "https://github.com/brain-lab-research/fast-jev-compaction"
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "A request to OpenRouter, model typesafe/jev-1.13",
+            "installNote": "All you need is an OpenRouter key: $0.042 per million input tokens, output is free, latency 70-500 ms."
           },
-          "start": "Open a conversation with your configured literature Hermes. For example: “I'll take the second and fifth papers from the selection.” They enter the analysis queue; the completed note arrives separately after verification.",
-          "purpose": "A literature assistant that finds relevant papers, recommends them to its owner, and analyzes selected work. In our setup, Hermes handles content-based selection and explanation; separate scripts fetch materials, manage the queue, and verify that results were saved.",
-          "capabilities": [
-            "Search starts on a schedule. A script reads the latest arXiv announcement, current library folders, and previous cards; it removes previously seen papers before calling the model.",
-            "Hermes reads abstracts and selects papers by their content. For each, it explains what is new and why it may be relevant. The selection can include strong papers from adjacent fields.",
-            "A script creates cards in Operon's Inbox and sends the selection to Telegram. The owner chooses papers; a recommendation alone does not start analysis of the entire selection.",
-            "A separate job takes one accepted paper from the queue. A preparation script fetches the text, PDF, and figures, creates a Zotero record, and prepares a note outline in the selected Literature folder.",
-            "The agent writes a coherent analysis covering the problem and assumptions, method and mathematical claims, experimental setup, results, and limitations. It recomputes available numbers and clearly separates its own checks from the authors' conclusions.",
-            "A paper page is saved in the theme literature: the citation key and BibTeX in the header, the analysis, and the paper's claims with conditions and location in the original. A verbatim quote is optional; links to our work are added based on content.",
-            "A completion script checks the note, figure links, and shared database records. A failure leaves processing incomplete. On success, the note is delivered to the owner and the entry leaves the analysis queue.",
-            "Analysis completion and personal reading status are different. The agent adds links to the card, but only the owner sets “Reading” or “Read.”"
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Paper pipeline on the server",
+              "role": "calls it at two morning stages of selection"
+            }
           ],
-          "outcomes": [
-            "A selection explaining each paper's value, with a way to choose it.",
-            "A note with bibliography, figures, method analysis, and checks; a linked Zotero record and PDF.",
-            "A paper page in the theme literature, with the citation key in the header. It can be found by searching the tree and linked to your own research."
+          "relations": [
+            {
+              "toolId": "paperscout",
+              "label": "sits inside the morning selection",
+              "title": "Paper pipeline on the server"
+            }
           ],
-          "important": [
-            "Job instructions are public, but your library, credentials, and supporting scripts require configuration. Importing SOUL.md alone does not reproduce the full workflow.",
-            "An accepted paper is analyzed by paper-ingest: a card, a detailed note, a page in the theme literature, and a readiness check.",
-            "An automated review does not guarantee completeness. Important claims are checked against the original."
+          "processRelations": [
+            {
+              "processId": "literature",
+              "processTitle": "Literature",
+              "stageRef": "s1",
+              "stageTitle": "Collect and filter"
+            }
           ],
-          "useCases": "When you want regular updates on new papers in your area and analysis of selected work without gathering the materials manually."
+          "processRelation": {
+            "processId": "literature",
+            "processTitle": "Literature",
+            "stageRef": "s1",
+            "stageTitle": "Collect and filter"
+          }
         },
         {
           "id": "paper-search",
           "title": "paper-search",
           "type": "Skill",
-          "role": "Finds fresh preprints using topics inferred from the current library structure and creates a card for each find.",
+          "role": "Searches for fresh preprints on topics derived from the live structure of the literature, and creates a card for each find. Manual search alongside the morning pipeline.",
           "when": "When you want to see new publications relevant to project topics.",
           "inputs": [
-            "current Literature/ structure and note tags",
-            "project cards in Papers, Projects, Staff",
+            "the live structure of theme literature",
+            "work READMEs",
             "previously seen arXiv IDs"
           ],
           "inside": [
             "rechecks the “Awaiting publication” column first",
-            "infers topics from folders, tags, and notes",
-            "starts 3–6 parallel agents across research areas",
+            "derives topics from the literature folders and the work cards",
+            "launches parallel agents per direction",
             "retrieves arXiv papers from the past 30 days",
             "excludes papers already in the library, trash, or archive"
           ],
           "outputs": [
-            "overview file Literature/_inbox/papers_DD-MM-YYYY.md",
-            "cards in the Inbox column, usually 8–15"
+            "a summary file with the day's selection",
+            "cards in the “Inbox” column, usually 8-15"
           ],
-          "writes": "Literature/_inbox, Literature/_trash, and Operon/Reading in the vault",
+          "writes": "Personal inbox folder for papers and the reading board",
           "gates": [
             "does not advance status beyond Inbox",
             "reports every board change in the chat",
-            "rejected papers are recorded in _trash/paper-search_rejected.md"
+            "rejected papers are logged separately so they do not resurface"
           ],
           "limits": [
             "does not fetch the paper or create a Zotero record",
@@ -6268,7 +3983,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$paper-search",
+            "invoke": "/paper-search",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -6278,34 +3993,35 @@ window.RESEARCH_LOOP = {
           },
           "purpose": "Finds fresh papers on the project's current topics and filters out work already in the library.",
           "capabilities": [
-            "rechecks the “Awaiting publication” column first",
-            "infers topics from folders, tags, and notes",
-            "starts 3–6 parallel agents across research areas",
-            "retrieves arXiv papers from the past 30 days",
-            "excludes papers already in the library, trash, or archive"
+            "understand the active topics from works and literature",
+            "search for papers along several independent directions",
+            "remove duplicates and already reviewed works",
+            "assemble a short list with a relevance explanation",
+            "put candidates into the reading queue"
           ],
-          "useCases": "When you want to see new publications relevant to project topics.",
+          "useCases": [
+            "You need a quick check of what's new on a topic",
+            "You are looking for a baseline to compare against or a close work for a new idea",
+            "You want to keep the reading queue topped up without browsing arXiv by hand"
+          ],
           "outcomes": [
-            "overview file Literature/_inbox/papers_DD-MM-YYYY.md",
-            "cards in the Inbox column, usually 8–15"
+            "a short list of new relevant papers",
+            "an explanation of why each work matters",
+            "ready cards in the reading queue"
           ],
           "afterSetup": "Get a deduplicated selection of new papers on your topics in one request, then send the most relevant ones to the reading queue.",
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
-            },
-            {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
+              "name": "Researcher",
+              "role": "asks the question and picks papers"
             }
           ],
           "relations": [
             {
               "toolId": "paperscout",
-              "label": "complements regular scouting with targeted search",
-              "title": "Hermes Literature Scout"
+              "label": "complements the morning selection with targeted search",
+              "title": "Paper pipeline on the server"
             },
             {
               "toolId": "want-2-read",
@@ -6318,14 +4034,14 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s1",
-              "stageTitle": "Find candidates"
+              "stageTitle": "Collect and filter"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s1",
-            "stageTitle": "Find candidates"
+            "stageTitle": "Collect and filter"
           },
           "visual": {
             "kind": "routes",
@@ -6336,50 +4052,40 @@ window.RESEARCH_LOOP = {
               "Methods and comparison baselines",
               "Gaps and contradictions"
             ]
-          },
-          "cardTitle": "Find papers on your topic",
-          "catalogSummary": "Reading candidates informed by the literature you already know.",
-          "skillId": "paper-search",
-          "start": "Specify the research topic and ask for new papers that account for your existing library.",
-          "important": [
-            "does not fetch the paper or create a Zotero record",
-            "has no fixed list of topics",
-            "does not place discoveries in Want to read"
-          ]
+          }
         },
         {
           "id": "want-2-read",
           "title": "want-2-read",
           "type": "Skill",
-          "role": "Processes cards the owner moved to Queue, running each through paper-ingest.",
+          "role": "Reviews on the laptop the papers the owner marked from a phone in “Want to read” or moved into the reading board's “Queue”: each one goes through paper-ingest with the same canon as the pipeline.",
           "when": "When cards accumulate in Queue or papers appear in AlphaXiv's Want to read folder.",
           "inputs": [
             "cards in the Queue column",
             "Want to read folder on AlphaXiv",
-            "“Awaiting publication” cards marked [found]"
+            "“Awaiting publication” cards that now have a public version"
           ],
           "inside": [
-            "Checks the Zotero access method. For a configured direct SQLite write, releases the database by closing the application normally, subject to the owner's constraints.",
-            "transfers Want to read items to the Queue column",
-            "rechecks “Awaiting publication” and adds the [found] marker",
+            "closes Zotero: on a batch of five papers the agent was spending about 16 minutes instead of 2-3",
+            "moves “Want to read” into the “Queue” column",
+            "rechecks “Awaiting publication” and flags papers that now have a public version",
             "one agent per paper, each running paper-ingest",
-            "organizes papers into Literature folders and mirrors them on AlphaXiv",
-            "a final agent checks the batch and improves weak notes"
+            "puts reviews into the theme literature, pushes to GitLab and mirrors to AlphaXiv"
           ],
           "outputs": [
-            "a card linking to the note, Zotero, and folder",
-            "an analyzed paper in all four locations"
+            "a card with links to the review and Zotero",
+            "a reviewed paper in the theme literature, in Zotero and on AlphaXiv"
           ],
-          "writes": "Operon/Reading, Zotero, Literature/, AlphaXiv, shared corpus",
+          "writes": "Reading board, Zotero, theme literature in the tree and GitLab, AlphaXiv",
           "gates": [
             "leaves Inbox cards untouched",
-            "changes status once: an analyzed [found] item moves to Queue",
+            "changes status once: a card with a found publication moves to the Queue",
             "preserves the owner's card text and only adds to it"
           ],
           "limits": [
             "does not analyze a card without a reliable public source",
             "does not mirror papers without arXiv IDs on AlphaXiv",
-            "if the corpus is unavailable, analysis remains local"
+            "without an AlphaXiv login, local work goes ahead and the skip is named"
           ],
           "links": [
             {
@@ -6389,7 +4095,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$want-2-read",
+            "invoke": "/want-2-read",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -6400,24 +4106,24 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
+              "name": "Researcher",
+              "role": "picks papers and confirms the review"
             },
             {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
+              "name": "Paper pipeline on the server",
+              "role": "reviews with the same canon on the server"
             }
           ],
           "relations": [
             {
               "toolId": "paper-ingest",
-              "label": "starts ingestion after the owner's selection",
+              "label": "starts the review after the owner picks",
               "title": "paper-ingest"
             },
             {
               "toolId": "alphaxiv-mcp",
               "label": "works alongside it at the same stage",
-              "title": "AlphaXiv MCP"
+              "title": "AlphaXiv"
             }
           ],
           "processRelations": [
@@ -6425,72 +4131,50 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s2",
-              "stageTitle": "Select manually"
+              "stageTitle": "Pick in Telegram"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s2",
-            "stageTitle": "Select manually"
-          },
-          "cardTitle": "Process the reading queue",
-          "catalogSummary": "Processing owner-selected Operon cards.",
-          "skillId": "want-2-read",
-          "start": "Select papers in the Operon queue or AlphaXiv's Want to read folder and ask to process them.",
-          "capabilities": [
-            "Checks the Zotero access method. For a configured direct SQLite write, releases the database by closing the application normally, subject to the owner's constraints.",
-            "transfers Want to read items to the Queue column",
-            "rechecks “Awaiting publication” and adds the [found] marker",
-            "one agent per paper, each running paper-ingest",
-            "organizes papers into Literature folders and mirrors them on AlphaXiv",
-            "a final agent checks the batch and improves weak notes"
-          ],
-          "outcomes": [
-            "a card linking to the note, Zotero, and folder",
-            "an analyzed paper in all four locations"
-          ],
-          "useCases": "When cards accumulate in Queue or papers appear in AlphaXiv's Want to read folder.",
-          "important": [
-            "does not analyze a card without a reliable public source",
-            "does not mirror papers without arXiv IDs on AlphaXiv",
-            "if the corpus is unavailable, analysis remains local"
-          ]
+            "stageTitle": "Pick in Telegram"
+          }
         },
         {
           "id": "paper-ingest",
           "title": "paper-ingest",
           "type": "Skill",
-          "role": "Takes one paper through a Zotero record with PDF, an eight-section Literature note, and an AlphaXiv mirror.",
-          "when": "After the owner approves a paper, or when a local PDF needs to be linked to Zotero before reading.",
+          "role": "Takes one paper all the way to a review to the lab canon: BibTeX, PDF and sources, a Zotero entry, a page in the theme literature, a folder on AlphaXiv. The same canon text the server pipeline reviews by.",
+          "when": "There is a specific paper, and it needs to be added in full: from a link, from the “Queue”, or from the morning pick.",
           "inputs": [
-            "arXiv or AlphaXiv URL, or a local PDF",
-            "target Literature folders and Zotero collections"
+            "an arXiv or AlphaXiv link, or a PDF",
+            "the paper's theme"
           ],
           "inside": [
-            "Checks for duplicates using stable identifiers in Zotero, Obsidian, and the shared database.",
-            "Retrieves bibliography from an external source, downloads the PDF, and fetches sources with tables and figures when needed.",
-            "Creates or updates the Zotero bibliographic record and PDF attachment, linking them to the canonical Obsidian note.",
-            "Prepares a detailed analysis of the method, theory, and results. In the currently installed workflow, a separate “Paper claims” section contains verifiable claims in the agent's own words.",
-            "The analysis is written straight into main of the theme literature, next to other members' analyses.",
-            "Reads back submitted objects and reports partial failures. A paper with sections but missing expected claims needs further checking."
+            "checks whether the paper is already there: in Zotero and in the literature of all themes",
+            "BibTeX is fetched by a script from an external source",
+            "extracts figures and tables from the LaTeX sources; a separate script builds the TikZ figures",
+            "creates a parent card in Zotero with the PDF as its attachment",
+            "a review to the canon: mechanism, formulas, numbers from tables, ablations, limitations, “What the paper claims”",
+            "prepares the page for GitLab and pushes it to the theme literature repository"
           ],
           "outputs": [
-            "A Zotero record with bibliography and a PDF attachment.",
-            "A canonical Literature note with detailed analysis and separate claims.",
-            "In the connected shared database: paper, sections, and claims, with read-back verification results."
+            "the paper's page in the theme literature with BibTeX and figures",
+            "a Zotero entry with the PDF",
+            "the paper in the theme folder on AlphaXiv"
           ],
-          "writes": "Zotero, Literature/ in Obsidian, AlphaXiv, the theme literature repository in GitLab",
+          "writes": "Zotero, the theme literature clone in the tree and, via push, GitLab, AlphaXiv",
           "gates": [
-            "does not create a second Zotero record or note",
+            "no second Zotero entry and no second page is created",
             "retrieves BibTeX from an external source, not from the model",
-            "the link targets the parent record, not the attachment",
-            "one paper in two folders uses a hard link",
-            "the final review reads back everything written"
+            "the header carries the parent's key, not the attachment's",
+            "success is checked by contents: the page opens, sections and figures are in place"
           ],
           "limits": [
-            "Access to the Lab GitLab is granted separately, through the Telegram bot. Installing the skill does not give access to the lab base.",
-            "A discrepancy or failed write remains explicitly reported; the existence of a paper record does not prove its analysis is complete."
+            "a repeat review starts from scratch: the agent does not see the previous version",
+            "does not mirror papers without arXiv IDs on AlphaXiv",
+            "special characters are stripped from titles with formulas: they break files and sync"
           ],
           "links": [
             {
@@ -6500,11 +4184,15 @@ window.RESEARCH_LOOP = {
             {
               "label": "bibtex_fetch.py",
               "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
+            },
+            {
+              "label": "Literature and git",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$paper-ingest",
+            "invoke": "/paper-ingest",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -6515,19 +4203,24 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
+              "name": "Researcher",
+              "role": "picks papers and confirms the review"
             },
             {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
+              "name": "Paper pipeline on the server",
+              "role": "reviews with the same canon on the server"
             }
           ],
           "relations": [
             {
               "toolId": "zotero-mcp",
-              "label": "creates or reuses the canonical paper record",
-              "title": "Zotero MCP"
+              "label": "creates or reuses the paper's entry",
+              "title": "Zotero"
+            },
+            {
+              "toolId": "literature-library",
+              "label": "puts the page into the theme literature",
+              "title": "Theme literature"
             }
           ],
           "processRelations": [
@@ -6549,40 +4242,106 @@ window.RESEARCH_LOOP = {
             "label": "One selected paper's path",
             "nodes": [
               "arXiv or AlphaXiv",
-              "PDF, source, BibTeX",
-              "Record and file in Zotero",
-              "Obsidian note",
-              "Paper and its sections in the shared database"
+              "PDF, sources, BibTeX",
+              "Zotero card",
+              "Review to the canon",
+              "Page in the theme literature",
+              "Push to GitLab"
             ]
+          }
+        },
+        {
+          "id": "paper-claims",
+          "title": "The paper's claims and their cross-check",
+          "type": "Review section and check",
+          "role": "A paper's claims are pulled straight into the review: what the paper claims, what it rests on, and what to trust here. A script checks the numbers against the paper's own text: on 07-10-2026 it found two real errors across 17 reviews.",
+          "when": "On every review; the cross-check runs when the paper texts are at hand.",
+          "inputs": [
+            "the paper's full text",
+            "a review in the theme literature",
+            "paper texts extracted from PDFs"
+          ],
+          "inside": [
+            "the “What the paper claims” section sits above the section-by-section review",
+            "four lines: what it rests on, conditions, what would refute it, our assessment",
+            "“what it rests on” holds only numbers printed in the paper; our own arithmetic lives in “our assessment”",
+            "the script looks up every number in the paper's text; anything not on disk is labeled unverified",
+            "on 07-10-2026 the cross-check over 17 reviews in one theme found two real errors, both in “what it rests on”"
+          ],
+          "outputs": [
+            "the paper's claims inside its review",
+            "a list of numbers not found in the paper"
+          ],
+          "writes": "A review in the theme literature; our claims and runs stay unchanged",
+          "gates": [
+            "someone else's claim does not close ours",
+            "our remark is never attributed to the authors",
+            "“what refutes it” is a concrete observation, not general words"
+          ],
+          "limits": [
+            "numbers inside a raster figure never reach the text layer, so “not in the paper” is not a verdict for them",
+            "a matching number confirms provenance, not the quality of the work"
+          ],
+          "links": [
+            {
+              "label": "paper_claims_verify.py",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/paper_claims_verify.py"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-qa",
+            "invoke": "python3 scripts/paper_claims_verify.py <literature clone> <folder with texts>",
+            "installNote": "The script lives in the claude-brainlab repository. The claims section is written by the paper review itself, following the paper-ingest canon."
           },
-          "cardTitle": "Analyze a paper in detail",
-          "catalogSummary": "Verified sources, Zotero, and a linked Obsidian note.",
-          "skillId": "paper-ingest",
-          "start": "Provide an arXiv or AlphaXiv URL, or a local PDF. Specify the Literature folder and Zotero collection.",
-          "capabilities": [
-            "Checks for duplicates using stable identifiers in Zotero, Obsidian, and the shared database.",
-            "Retrieves bibliography from an external source, downloads the PDF, and fetches sources with tables and figures when needed.",
-            "Creates or updates the Zotero bibliographic record and PDF attachment, linking them to the canonical Obsidian note.",
-            "Prepares a detailed analysis of the method, theory, and results. In the currently installed workflow, a separate “Paper claims” section contains verifiable claims in the agent's own words.",
-            "The analysis is written straight into main of the theme literature, next to other members' analyses.",
-            "Reads back submitted objects and reports partial failures. A paper with sections but missing expected claims needs further checking."
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Paper reviewer",
+              "role": "writes the claims and our assessment"
+            },
+            {
+              "name": "Manuscript agents",
+              "role": "build on the papers' claims and the allowed citation keys"
+            }
           ],
-          "outcomes": [
-            "A Zotero record with bibliography and a PDF attachment.",
-            "A canonical Literature note with detailed analysis and separate claims.",
-            "In the connected shared database: paper, sections, and claims, with read-back verification results."
+          "relations": [
+            {
+              "toolId": "project-bibliography-gate",
+              "label": "works alongside it at the same stage",
+              "title": "citation-validator.py"
+            }
           ],
-          "useCases": "After the owner approves a paper, or when a local PDF needs to be linked to Zotero before reading.",
-          "important": [
-            "Access to the Lab GitLab is granted separately, through the Telegram bot. Installing the skill does not give access to the lab base.",
-            "A discrepancy or failed write remains explicitly reported; the existence of a paper record does not prove its analysis is complete."
-          ]
+          "processRelations": [
+            {
+              "processId": "literature",
+              "processTitle": "Literature",
+              "stageRef": "s4",
+              "stageTitle": "Review to the canon"
+            }
+          ],
+          "processRelation": {
+            "processId": "literature",
+            "processTitle": "Literature",
+            "stageRef": "s4",
+            "stageTitle": "Review to the canon"
+          },
+          "visual": {
+            "kind": "path",
+            "label": "Another paper's claim stays separate from our own derivation",
+            "nodes": [
+              "Full text of the paper",
+              "Claim and conditions",
+              "What refutes it",
+              "Our assessment",
+              "Script-based number check"
+            ]
+          }
         },
         {
           "id": "zotero-mcp",
-          "title": "Zotero MCP",
-          "type": "MCP and application",
-          "role": "Agent access to your Zotero library: find a saved paper, read available text, and retrieve bibliography. Connects the researcher's existing library to work in the conversation.",
+          "title": "Zotero",
+          "type": "App and agent connection",
+          "role": "The lab bibliography: one entry per paper with its PDF, collections named with the same slugs as the literature themes. Through the Zotero connection the agent gets entries, full text and BibTeX without touching Zotero files directly.",
           "when": "When you need to find a paper, read its text, or retrieve a citation key.",
           "inputs": [
             "query, citation key, or item key",
@@ -6590,31 +4349,25 @@ window.RESEARCH_LOOP = {
             "PDF page range"
           ],
           "inside": [
-            "Finds Zotero records by title, authors, DOI, or collection. Opens metadata, bibliography, and available attachments; the paper and attached PDF have different keys.",
-            "For a passage, reads the available full text or attachment pages. Retrieves citation information from the record. Library changes require a separate write operation.",
-            "Semantic search uses a separate local Chroma index. In the verified profile, embedding_model=default corresponds to ONNX all-MiniLM-L6-v2; cross-encoder/ms-marco-MiniLM-L-6-v2 reranks candidates. This is retrieval and ranking, not language-model answer generation. Auto-indexing is disabled in the current installation, so the index must be updated separately to search new papers.",
-            "The shared BRAIn Lab launcher connects lightweight stdio clients to one search process per configuration over a private Unix socket. The model is not reloaded for every agent. Different keys, libraries, or settings may require separate processes.",
-            "Library selection is isolated between clients. The configuration key includes index parameters and credentials but does not change with each indexing timestamp.",
-            "The client forwards request cancellation and releases its session on exit. Write requests are not retried automatically after a disconnect. Metadata search and semantic index updates are checked separately."
+            "each collection is named exactly like its literature theme, letter for letter",
+            "finds entries and citation keys through the Zotero API",
+            "returns the full text or selected PDF pages",
+            "separates the parent entry from the attached PDF",
+            "on the server the pipeline writes to Zotero only through the Web API: editing the database behind the app's back breaks sync"
           ],
           "outputs": [
             "record metadata",
             "full text or PDF pages",
             "BibTeX and collection keys"
           ],
-          "writes": "Zotero, only when a write tool is explicitly called",
+          "writes": "Zotero only on an explicit call to a writing tool; on the server through the Web API",
           "gates": [
-            "the parent record key is not replaced with an attachment key",
-            "after a collection changes, its contents are read back",
-            "one client cannot change another client's selected library",
-            "no automatic write retry after a disconnect"
+            "the parent key is never swapped for the attachment key",
+            "after a write, the collection contents are read back"
           ],
           "limits": [
-            "The shared launcher is installed and verified on the working Mac: six concurrent clients, one backend, and working metadata and semantic search. The shared installer connects the launcher when a compatible uv runtime is available; older installations retain the previous CLI. Both routes and paths containing spaces have been tested.",
-            "In the check, each client used about 20 MB; the shared warm backend used about 1.5 GB. This is an observation from this installation, not a guaranteed limit on another computer.",
-            "The first semantic query may load the models. In the check, it took 12.43 s; the next took 0.96 s. These are observations, not response-time guarantees.",
-            "The index must be updated separately. Auto-indexing is disabled on the checked Mac; semantic search may omit recent additions even when normal API search already finds them.",
-            "Existing MCP connections may require client reconnection after the process is replaced. Local Zotero Desktop features may require the application to be open; web API access depends on its key and permissions."
+            "semantic search is enabled by a separate add-on",
+            "while Zotero is open, its database is locked for writing"
           ],
           "links": [
             {
@@ -6629,17 +4382,17 @@ window.RESEARCH_LOOP = {
               "pipx install zotero-mcp-server",
               "zotero-mcp setup"
             ],
-            "installNote": "Get the key and library ID at zotero.org/settings/keys; install/bootstrap.sh asks for them and adds the server to settings.json."
+            "installNote": "The key and library ID come from zotero.org/settings/keys. The lab installer asks for them and connects Zotero to the agent itself."
           },
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
+              "name": "Researcher",
+              "role": "picks papers and confirms the review"
             },
             {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
+              "name": "Paper pipeline on the server",
+              "role": "reviews with the same canon on the server"
             }
           ],
           "relations": [
@@ -6662,65 +4415,31 @@ window.RESEARCH_LOOP = {
             "processTitle": "Literature",
             "stageRef": "s3",
             "stageTitle": "Fetch the paper"
-          },
-          "skySummary": "Papers, BibTeX, and full text for the agent.",
-          "visual": {
-            "kind": "routes",
-            "label": "Search without a separate model for every agent",
-            "nodes": [
-              "Agent → lightweight stdio connection",
-              "One configuration → shared local backend",
-              "Metadata → Zotero API",
-              "Semantic search → MiniLM embedding → Chroma → MiniLM cross-encoder",
-              "Result → records, PDFs, and links to the original library"
-            ]
-          },
-          "catalogSummary": "Zotero API for records and PDFs; local MiniLM search with a shared backend for multiple agents.",
-          "capabilities": [
-            "Finds Zotero records by title, authors, DOI, or collection. Opens metadata, bibliography, and available attachments; the paper and attached PDF have different keys.",
-            "For a passage, reads the available full text or attachment pages. Retrieves citation information from the record. Library changes require a separate write operation.",
-            "Semantic search uses a separate local Chroma index. In the verified profile, embedding_model=default corresponds to ONNX all-MiniLM-L6-v2; cross-encoder/ms-marco-MiniLM-L-6-v2 reranks candidates. This is retrieval and ranking, not language-model answer generation. Auto-indexing is disabled in the current installation, so the index must be updated separately to search new papers.",
-            "The shared BRAIn Lab launcher connects lightweight stdio clients to one search process per configuration over a private Unix socket. The model is not reloaded for every agent. Different keys, libraries, or settings may require separate processes.",
-            "Library selection is isolated between clients. The configuration key includes index parameters and credentials but does not change with each indexing timestamp.",
-            "The client forwards request cancellation and releases its session on exit. Write requests are not retried automatically after a disconnect. Metadata search and semantic index updates are checked separately."
-          ],
-          "start": "Connect Zotero MCP and ask for a paper by title, authors, or DOI. Reading the full text requires an accessible attachment.",
-          "outcomes": [
-            "record metadata",
-            "full text or PDF pages",
-            "BibTeX and collection keys"
-          ],
-          "useCases": "When you need to find a paper, read its text, or retrieve a citation key.",
-          "important": [
-            "The shared launcher is installed and verified on the working Mac: six concurrent clients, one backend, and working metadata and semantic search. The shared installer connects the launcher when a compatible uv runtime is available; older installations retain the previous CLI. Both routes and paths containing spaces have been tested.",
-            "In the check, each client used about 20 MB; the shared warm backend used about 1.5 GB. This is an observation from this installation, not a guaranteed limit on another computer.",
-            "The first semantic query may load the models. In the check, it took 12.43 s; the next took 0.96 s. These are observations, not response-time guarantees.",
-            "The index must be updated separately. Auto-indexing is disabled on the checked Mac; semantic search may omit recent additions even when normal API search already finds them.",
-            "Existing MCP connections may require client reconnection after the process is replaced. Local Zotero Desktop features may require the application to be open; web API access depends on its key and permissions."
-          ],
-          "purpose": "Agent access to your Zotero library: find a saved paper, read available text, and retrieve bibliography. Connects the researcher's existing library to work in the conversation."
+          }
         },
         {
           "id": "alphaxiv-mcp",
-          "title": "AlphaXiv MCP",
-          "type": "MCP integration",
-          "role": "Connects an agent to your AlphaXiv library. In the laboratory workflow, links Want to read to the reading queue and maintains a topic-based mirror of analyzed papers.",
+          "title": "AlphaXiv",
+          "type": "Agent connection",
+          "role": "Keeps a mirror of the literature on AlphaXiv and takes in papers picked on the phone.",
           "when": "When a paper is selected in Want to read, or needs to be placed in a topic folder after analysis.",
           "inputs": [
-            "Agent access to your AlphaXiv library.",
-            "A paper with an arXiv ID and a configured mapping between AlphaXiv and Obsidian folders."
+            "the “Want to read” folder",
+            "arXiv ID",
+            "map of theme folders"
           ],
           "inside": [
-            "Reads papers in Want to read. This list represents the owner's choices and is checked against queue cards in Obsidian.",
-            "Finds the paper by arXiv ID so rerunning does not create a second card. The reading workflow handles full-text analysis; moving an AlphaXiv entry does not.",
-            "After processing, places the link in the corresponding topic folder in the mirror. The structure follows the Obsidian library.",
-            "On rejection, removes the link from the queue through the defined workflow. New topic folders require the owner's approval; existing system folders are preserved."
+            "the library has two parts: the lab's theme folders and “Want to read”; folder names match theme names",
+            "a paper from “Want to read” enters the pipeline on its own",
+            "after review, the paper moves to its theme folder",
+            "mismatches are fixed by code on the server: a daily reconciliation and every pipeline pass",
+            "a move between folders is verified by folder contents, not by the service's response"
           ],
           "outputs": [
-            "The selected paper appears in the reading queue without duplication.",
-            "The analyzed paper is available in AlphaXiv's topic-based mirror."
+            "a card in the “Queue” column",
+            "the paper in its theme folder"
           ],
-          "writes": "AlphaXiv library; local Obsidian remains authoritative",
+          "writes": "AlphaXiv library; the primary copy is the theme literature in the tree",
           "gates": [
             "a paper in Want to read counts as the owner's choice",
             "a new folder is created only after human approval"
@@ -6728,7 +4447,7 @@ window.RESEARCH_LOOP = {
           "limits": [
             "adds only papers with arXiv IDs; no PDF upload",
             "leaves the My publications and Private Papers system folders unchanged",
-            "if MCP is not connected, analysis proceeds locally and the skipped step is reported"
+            "without the AlphaXiv connection the review runs locally, and the skip is stated"
           ],
           "links": [
             {
@@ -6742,7 +4461,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "connector-unpackaged",
-            "invoke": "Through the connected AlphaXiv MCP",
+            "invoke": "Through the AlphaXiv connection to the agent",
             "install": [
               "claude mcp add --transport http alphaxiv https://api.alphaxiv.org/mcp/v1",
               "# then open /mcp and authorize your AlphaXiv account"
@@ -6752,12 +4471,12 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
+              "name": "Researcher",
+              "role": "picks papers and confirms the review"
             },
             {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
+              "name": "Paper pipeline on the server",
+              "role": "reviews with the same canon on the server"
             }
           ],
           "relations": [
@@ -6777,18 +4496,18 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s2",
-              "stageTitle": "Select manually"
+              "stageTitle": "Pick in Telegram"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s2",
-            "stageTitle": "Select manually"
+            "stageTitle": "Pick in Telegram"
           },
           "visual": {
             "kind": "cycle",
-            "label": "A two-way workflow with one authoritative copy",
+            "label": "A two-way loop without two primary copies",
             "nodes": [
               "Saved for reading",
               "Connected AlphaXiv",
@@ -6796,271 +4515,56 @@ window.RESEARCH_LOOP = {
               "Full analysis",
               "Topic folder"
             ]
-          },
-          "start": "Put a paper in AlphaXiv's Want to read folder and run want-2-read through the connected agent. This is one way to say “I want this paper analyzed.”",
-          "capabilities": [
-            "Reads papers in Want to read. This list represents the owner's choices and is checked against queue cards in Obsidian.",
-            "Finds the paper by arXiv ID so rerunning does not create a second card. The reading workflow handles full-text analysis; moving an AlphaXiv entry does not.",
-            "After processing, places the link in the corresponding topic folder in the mirror. The structure follows the Obsidian library.",
-            "On rejection, removes the link from the queue through the defined workflow. New topic folders require the owner's approval; existing system folders are preserved."
-          ],
-          "outcomes": [
-            "The selected paper appears in the reading queue without duplication.",
-            "The analyzed paper is available in AlphaXiv's topic-based mirror."
-          ],
-          "useCases": "When a paper is selected in Want to read, or needs to be placed in a topic folder after analysis.",
-          "important": [
-            "adds only papers with arXiv IDs; no PDF upload",
-            "leaves the My publications and Private Papers system folders unchanged",
-            "if MCP is not connected, analysis proceeds locally and the skipped step is reported"
-          ],
-          "purpose": "Connects an agent to your AlphaXiv library. In the laboratory workflow, links Want to read to the reading queue and maintains a topic-based mirror of analyzed papers."
-        },
-        {
-          "id": "obsidian-literature-workflow",
-          "title": "obsidian-literature-workflow",
-          "type": "Skill",
-          "role": "Keeps paper notes within the linked project, with a consistent analysis structure, summaries, and a literature map.",
-          "when": "When project literature lives in its own Papers/ folder rather than the shared library.",
-          "inputs": [
-            "project binding from .claude/project-memory/registry.yaml",
-            "Papers/ notes or a Zotero collection",
-            "research question"
-          ],
-          "inside": [
-            "standardizes notes around claim, method, data, and limitation",
-            "adds links to the repository and related work",
-            "consolidates established findings in Knowledge/Literature-Overview and Research-Gaps",
-            "updates Maps/literature.canvas after major changes"
-          ],
-          "outputs": [
-            "Papers/ notes following one structure",
-            "Knowledge/ summaries and a literature map"
-          ],
-          "writes": "Papers/, Knowledge/, Maps/, and Daily/ in the linked project",
-          "gates": [
-            "updates an existing note rather than duplicating it",
-            "does not write summaries to Experiments or Results"
-          ],
-          "limits": [
-            "works with the project's Papers/ folder, not the shared Literature/ library",
-            "uses the filesystem, not Obsidian MCP",
-            "does not create Concepts/ and Datasets/ trees by default"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-literature-workflow/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-literature-workflow",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-literature-workflow ~/.claude/skills/",
-              "# restart Claude Code, then run /obsidian-literature-workflow"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
-            },
-            {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "zotero-obsidian-bridge",
-              "label": "works alongside it at the same stage",
-              "title": "zotero-obsidian-bridge"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "processTitle": "Literature",
-              "stageRef": "s4",
-              "stageTitle": "Read and analyze"
-            }
-          ],
-          "processRelation": {
-            "processId": "literature",
-            "processTitle": "Literature",
-            "stageRef": "s4",
-            "stageTitle": "Read and analyze"
-          },
-          "skillId": "obsidian-literature-workflow",
-          "start": "Specify the project and research question. Provide the notes or Zotero collection to analyze.",
-          "capabilities": [
-            "standardizes notes around claim, method, data, and limitation",
-            "adds links to the repository and related work",
-            "consolidates established findings in Knowledge/Literature-Overview and Research-Gaps",
-            "updates Maps/literature.canvas after major changes"
-          ],
-          "outcomes": [
-            "Papers/ notes following one structure",
-            "Knowledge/ summaries and a literature map"
-          ],
-          "useCases": "When project literature lives in its own Papers/ folder rather than the shared library.",
-          "important": [
-            "works with the project's Papers/ folder, not the shared Literature/ library",
-            "uses the filesystem, not Obsidian MCP",
-            "does not create Concepts/ and Datasets/ trees by default"
-          ]
-        },
-        {
-          "id": "zotero-obsidian-bridge",
-          "title": "zotero-obsidian-bridge",
-          "type": "Skill",
-          "role": "Transfers a Zotero collection into project notes and tracks coverage: how many papers in the collection have been analyzed.",
-          "when": "When papers are collected in Zotero and the project needs notes and a summary.",
-          "inputs": [
-            "linked project",
-            "Zotero collection or query",
-            "existing Papers/ notes"
-          ],
-          "inside": [
-            "reads metadata, full text, and annotations from Zotero",
-            "matches each Zotero record to an existing note",
-            "creates or completes missing notes",
-            "keeps a coverage inventory such as “16 of 16”",
-            "verify_paper_notes.py checks the schema and Zotero keys"
-          ],
-          "outputs": [
-            "Papers/ notes with Zotero keys",
-            "collection coverage inventory",
-            "Knowledge/ summaries and a literature map"
-          ],
-          "writes": "The linked Obsidian project; Zotero remains the metadata source",
-          "gates": [
-            "each note is linked to a real Zotero record",
-            "runs a deterministic check after the batch"
-          ],
-          "limits": [
-            "does not guess missing citation keys",
-            "does not dump the entire full text into a note",
-            "does not substitute a sample for a full-collection review"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/zotero-obsidian-bridge/SKILL.md"
-            },
-            {
-              "label": "verify_paper_notes.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/zotero-obsidian-bridge/scripts/verify_paper_notes.py"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$zotero-obsidian-bridge",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/zotero-obsidian-bridge ~/.claude/skills/",
-              "# restart Claude Code, then run /zotero-obsidian-bridge"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "asks the question, selects papers, and approves full ingestion"
-            },
-            {
-              "name": "Hermes Literature Scout",
-              "role": "runs regular scouting and sends candidates to a queue requiring human approval"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "obsidian-literature-workflow",
-              "label": "works alongside it at the same stage",
-              "title": "obsidian-literature-workflow"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "processTitle": "Literature",
-              "stageRef": "s4",
-              "stageTitle": "Read and analyze"
-            }
-          ],
-          "processRelation": {
-            "processId": "literature",
-            "processTitle": "Literature",
-            "stageRef": "s4",
-            "stageTitle": "Read and analyze"
-          },
-          "skillId": "zotero-obsidian-bridge",
-          "start": "Specify the project and Zotero collection to connect to its notes.",
-          "capabilities": [
-            "reads metadata, full text, and annotations from Zotero",
-            "matches each Zotero record to an existing note",
-            "creates or completes missing notes",
-            "keeps a coverage inventory such as “16 of 16”",
-            "verify_paper_notes.py checks the schema and Zotero keys"
-          ],
-          "outcomes": [
-            "Papers/ notes with Zotero keys",
-            "collection coverage inventory",
-            "Knowledge/ summaries and a literature map"
-          ],
-          "useCases": "When papers are collected in Zotero and the project needs notes and a summary.",
-          "important": [
-            "does not guess missing citation keys",
-            "does not dump the entire full text into a note",
-            "does not substitute a sample for a full-collection review"
-          ]
+          }
         },
         {
           "id": "literature-library",
-          "title": "Literature/ in Obsidian",
-          "type": "Vault layout",
-          "role": "Canonical library: one note per paper, six topic sections, and supporting folders alongside them.",
-          "when": "Continuously: paper-ingest writes here, and citation keys are taken from here.",
+          "title": "Theme literature",
+          "type": "Theme repository in the tree",
+          "role": "The lab's shared library: each theme has its own literature repository, one page per paper, figures alongside. It lives in the lab tree, which Obsidian also opens. As of 19-10-2026 it holds about 730 reviews across 25 themes.",
+          "when": "Always on: the pipeline and paper-ingest write here, and citation keys are taken from here.",
           "inputs": [
-            "notes created by paper-ingest",
-            "search overviews from paper-search"
+            "reviews from the server pipeline and from paper-ingest",
+            "edits by members"
           ],
           "inside": [
-            "Applied, LLM, Optimization, PEFT, RL, Reference sections",
-            "topic subfolders inside them, for example Optimization/muon",
-            "_inbox stores search overviews; _trash stores rejections",
-            "the conference is a note label, not a folder: papers are filed by subject",
-            "_index.jsonl is a compact index with one line per note"
+            "the file is named after the paper, the citation key is in the header and in the BibTeX block",
+            "figures sit alongside, converted from PDF to PNG, otherwise GitLab does not show them",
+            "theme glossary",
+            "the index is built from the pages and the subtopic breakdown, never edited by hand",
+            "literature accepts writes straight into the main branch: a review is shared knowledge",
+            "a paper is found by key across all themes at once, in one search"
           ],
           "outputs": [
-            "556 paper notes, each with a BibTeX block",
-            "citation key for the project's references.bib"
+            "about 730 reviews across 25 themes as of 19-10-2026",
+            "citation key for the manuscript bibliography"
           ],
-          "writes": "Writes nothing on its own: paper-ingest and want-2-read write here",
+          "writes": "Writes nothing itself: the pipeline, paper-ingest and want-2-read write here with plain git",
           "gates": [
-            "one paper in two folders uses a hard link",
-            "the citation key comes from the note's BibTeX block"
+            "one paper, one file",
+            "the citation key is taken from the page's BibTeX block",
+            "the source holds only what cannot be computed"
           ],
           "limits": [
-            "_index.jsonl is rebuilt on demand and currently lags behind",
-            "the structure is not fixed: skills inspect the tree again",
-            "lives in the personal vault, not in the repository"
+            "a theme's literature is not all literature: a review lives where it was filed",
+            "a key of the form {lastname}{year}{firstword} is not unique: four keys turned out to be shared by different papers",
+            "a formula in the title breaks the file name: the name uses a cleaned-up title"
           ],
-          "links": [],
+          "links": [
+            {
+              "label": "Literature and git: rules",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
+            }
+          ],
           "adoption": {
             "kind": "private",
-            "invoke": "Literature/ folder in the personal Obsidian vault; not included in the public repository",
-            "installNote": "Literature/ lives in the personal Obsidian vault and is not published. Populate your own library with your papers through paper-ingest."
+            "invoke": "lab sync puts the theme literature of your works into the tree",
+            "installNote": "The literature lives in the lab GitLab and is open to anyone signed in; lab sync brings it to your machine."
           },
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "runs it and checks the result"
+              "name": "The whole lab",
+              "role": "reads reviews and takes citation keys"
             }
           ],
           "processRelations": [
@@ -7068,66 +4572,45 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s5",
-              "stageTitle": "Send to the shared database"
+              "stageTitle": "Store and push"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s5",
-            "stageTitle": "Send to the shared database"
-          },
-          "start": "Find a paper in your Obsidian Literature section. Its note connects the bibliography, analysis, and projects that use the work.",
-          "capabilities": [
-            "Applied, LLM, Optimization, PEFT, RL, Reference sections",
-            "topic subfolders inside them, for example Optimization/muon",
-            "_inbox stores search overviews; _trash stores rejections",
-            "the conference is a note label, not a folder: papers are filed by subject",
-            "_index.jsonl is a compact index with one line per note"
-          ],
-          "outcomes": [
-            "556 paper notes, each with a BibTeX block",
-            "citation key for the project's references.bib"
-          ],
-          "useCases": "Continuously: paper-ingest writes here, and citation keys are taken from here.",
-          "important": [
-            "_index.jsonl is rebuilt on demand and currently lags behind",
-            "the structure is not fixed: skills inspect the tree again",
-            "lives in the personal vault, not in the repository"
-          ],
-          "relations": []
+            "stageTitle": "Store and push"
+          }
         },
         {
           "id": "reading-board",
-          "title": "Operon Reading board",
+          "title": "Operon reading board",
           "type": "Obsidian board and nightly archiver",
           "role": "One reading queue for all sources: a card is a file, and a column is a status.",
           "when": "Between finding a paper and analyzing it; afterward, the card remains as a log.",
           "inputs": [
-            "cards from paper-scout and paper-search",
-            "papers from AlphaXiv's Want to read folder",
-            "cards created manually on the board"
+            "cards from the morning pipeline and paper-search",
+            "papers from “Want to read” on AlphaXiv",
+            "cards added by hand"
           ],
           "inside": [
-            "Inbox, Awaiting publication, Queue, Reading, Read, and _Trash columns",
-            "each card is an Operon/Reading/operon-<id>.md file",
-            "four sections: Note, arXiv, Topic, Comments",
+            "columns Inbox, Awaiting publication, Queue, Reading, Read, Trash",
+            "a card is a plain file in the Obsidian vault",
+            "replying with numbers in Telegram moves a card from “Inbox” to “Queue”",
             "an empty “Note” section means the paper has not been analyzed",
-            "at 00:05, launchd job com.andrey.operon-archive moves completed items to Operon/Archives"
+            "a nightly archiver moves finished items to the archive"
           ],
           "outputs": [
-            "129 active cards and 195 archived",
-            "moving to Queue grants permission to analyze"
+            "a move to “Queue” as permission to review"
           ],
-          "writes": "Operon/Reading and Operon/Archives in the vault",
+          "writes": "The board's personal folder in the tree; Syncthing keeps a copy on the server",
           "gates": [
             "a person changes the column, except for one permitted case",
-            "rejected items remain archived and are included in deduplication"
+            "rejected items stay in the archive and take part in duplicate filtering"
           ],
           "limits": [
-            "the archiver is installed only on the laptop, not the personal server",
-            "cancelled items are archived immediately: --cancelled-grace-days 0",
-            "archiveHold: true on a card prevents archiving"
+            "rejected items stay visible on the board for 14 more days; Read is archived the next day",
+            "a flag in the card cancels archiving"
           ],
           "links": [
             {
@@ -7141,18 +4624,18 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$operon-obsidian-setup",
+            "invoke": "/operon-obsidian-setup",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/operon-obsidian-setup ~/.claude/skills/",
               "# restart Claude Code, then run /operon-obsidian-setup"
             ],
-            "installNote": "This requires the full installer: install/setup.sh fills in the vault paths (${OBSIDIAN_VAULT}, ${VAULT_NAME}); manual copying leaves the placeholders in the skill text."
+            "installNote": "This needs the full installer: it fills in the vault paths, and a manual copy would leave them as is in the skill text."
           },
           "usedBy": [
             {
-              "name": "researcher",
+              "name": "Researcher",
               "role": "runs it and checks the result"
             }
           ],
@@ -7161,147 +4644,51 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s1",
-              "stageTitle": "Find candidates"
+              "stageTitle": "Collect and filter"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s1",
-            "stageTitle": "Find candidates"
-          },
-          "start": "Open your personal Operon reading board and select a paper for processing. The card's status shows what should happen next.",
-          "capabilities": [
-            "Inbox, Awaiting publication, Queue, Reading, Read, and _Trash columns",
-            "each card is an Operon/Reading/operon-<id>.md file",
-            "four sections: Note, arXiv, Topic, Comments",
-            "an empty “Note” section means the paper has not been analyzed",
-            "at 00:05, launchd job com.andrey.operon-archive moves completed items to Operon/Archives"
-          ],
-          "outcomes": [
-            "129 active cards and 195 archived",
-            "moving to Queue grants permission to analyze"
-          ],
-          "useCases": "Between finding a paper and analyzing it; afterward, the card remains as a log.",
-          "important": [
-            "the archiver is installed only on the laptop, not the personal server",
-            "cancelled items are archived immediately: --cancelled-grace-days 0",
-            "archiveHold: true on a card prevents archiving"
-          ],
-          "relations": []
-        },
-        {
-          "id": "alphaxiv-sync-rule",
-          "title": "alphaxiv-sync.md",
-          "type": "Agent rule",
-          "role": "Keeps AlphaXiv as a mirror of the local library rather than a second independent copy.",
-          "when": "Whenever an agent adds, moves, or deletes a paper in the library.",
-          "inputs": [
-            "local Literature/ layout",
-            "folder map at ~/.claude/alphaxiv-library-map.json"
-          ],
-          "inside": [
-            "the local library is authoritative; AlphaXiv is a mirror",
-            "paper added to a folder: save_papers_to_folder",
-            "paper moved between folders: move_papers_between_folders",
-            "paper deleted locally: remove_papers_from_folder on the mirror",
-            "card filename is operon-<operonId>.md, not the paper title"
-          ],
-          "outputs": [
-            "a mirror matching the local folders"
-          ],
-          "writes": "Writes nothing itself: defines agent behavior",
-          "gates": [
-            "a new folder is proposed to a person before creation",
-            "never invents an arXiv ID to populate the mirror"
-          ],
-          "limits": [
-            "a paper without an arXiv ID cannot be mirrored",
-            "the “Awaiting publication” column has no mirror",
-            "if MCP is disconnected, the skipped step is reported, not hidden"
-          ],
-          "links": [],
-          "adoption": {
-            "kind": "private",
-            "invoke": "File ~/.claude/rules/alphaxiv-sync.md; not included in the public repository",
-            "installNote": "The rules/alphaxiv-sync.md rule is internal: it contains personal AlphaXiv folder IDs. Ask the owner."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs it and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "processTitle": "Literature",
-              "stageRef": "s5",
-              "stageTitle": "Send to the shared database"
-            }
-          ],
-          "processRelation": {
-            "processId": "literature",
-            "processTitle": "Literature",
-            "stageRef": "s5",
-            "stageTitle": "Send to the shared database"
-          },
-          "start": "After adding a paper, run the configured synchronization and check its status. AlphaXiv requires your own authorization.",
-          "capabilities": [
-            "the local library is authoritative; AlphaXiv is a mirror",
-            "paper added to a folder: save_papers_to_folder",
-            "paper moved between folders: move_papers_between_folders",
-            "paper deleted locally: remove_papers_from_folder on the mirror",
-            "card filename is operon-<operonId>.md, not the paper title"
-          ],
-          "outcomes": [
-            "a mirror matching the local folders"
-          ],
-          "useCases": "Whenever an agent adds, moves, or deletes a paper in the library.",
-          "important": [
-            "a paper without an arXiv ID cannot be mirrored",
-            "the “Awaiting publication” column has no mirror",
-            "if MCP is disconnected, the skipped step is reported, not hidden"
-          ],
-          "relations": []
+            "stageTitle": "Collect and filter"
+          }
         },
         {
           "id": "syncthing",
           "title": "Syncthing",
           "type": "Device synchronization",
-          "role": "Keeps the same Obsidian vault on the laptop and personal server so server-side agents write to the same board.",
+          "role": "Keeps the personal part of the lab tree and the reading board identical on the laptop and the server, so the pipeline and Hermes write where the owner reads.",
           "when": "Continuously, in the background.",
           "inputs": [
-            "the entire Obsidian vault",
-            "the ~/brainlab tree"
+            "personal notes, diaries and local work logs",
+            "reading board"
           ],
           "inside": [
-            "launchd job homebrew.mxcl.syncthing on the laptop",
-            "systemd unit syncthing@root on the personal server",
-            "four shared folders between two devices",
-            ".stignore excludes the Obsidian window layout from synchronization"
+            "runs as a background service on the laptop and the server",
+            "two shared folders between the laptop and the server",
+            "shared content needs no sync: it travels through git"
           ],
           "outputs": [
-            "the same Reading board on both machines"
+            "the same reading board and the same personal notes on both machines"
           ],
           "writes": "Files on both devices",
           "gates": [
             "window layout and conflict files are not synchronized"
           ],
           "limits": [
-            "each device has its own .stignore, which is not itself synchronized",
-            "the rule excludes iCloud duplicate files such as “operon-xxx 2.md”",
+            "deleting a folder does not remove the sync pair: that is removed separately",
             "Syncthing configuration is not included in the public repository"
           ],
           "links": [],
           "adoption": {
             "kind": "private",
-            "invoke": "Syncthing on the laptop (homebrew.mxcl.syncthing) and personal server (syncthing@root)",
+            "invoke": "Syncthing on the laptop and the server",
             "installNote": "Synchronization connects the owner's laptop and server using the owner's keys. Other people's nodes are not added; set up your own Syncthing installation."
           },
           "usedBy": [
             {
-              "name": "researcher",
+              "name": "Researcher",
               "role": "runs it and checks the result"
             }
           ],
@@ -7310,371 +4697,43 @@ window.RESEARCH_LOOP = {
               "processId": "literature",
               "processTitle": "Literature",
               "stageRef": "s2",
-              "stageTitle": "Select manually"
+              "stageTitle": "Pick in Telegram"
             }
           ],
           "processRelation": {
             "processId": "literature",
             "processTitle": "Literature",
             "stageRef": "s2",
-            "stageTitle": "Select manually"
-          },
-          "start": "Connect trusted devices to the same Syncthing folder and wait for the initial synchronization to finish.",
-          "capabilities": [
-            "launchd job homebrew.mxcl.syncthing on the laptop",
-            "systemd unit syncthing@root on the personal server",
-            "four shared folders between two devices",
-            ".stignore excludes the Obsidian window layout from synchronization"
-          ],
-          "outcomes": [
-            "the same Reading board on both machines"
-          ],
-          "useCases": "Continuously, in the background.",
-          "important": [
-            "each device has its own .stignore, which is not itself synchronized",
-            "the rule excludes iCloud duplicate files such as “operon-xxx 2.md”",
-            "Syncthing configuration is not included in the public repository"
-          ],
-          "relations": []
-        },
-        {
-          "id": "defuddle",
-          "title": "defuddle",
-          "type": "Skill",
-          "role": "Extracts a web page's main text without menus, ads, or navigation blocks so the agent can focus on its content.",
-          "when": "To read a web page's content without menus and ads.",
-          "inside": [
-            "Runs Defuddle on the specified page.",
-            "Extracts the main text and metadata, removing navigation clutter.",
-            "Returns Markdown, plain text, or JSON for the agent to read and process."
-          ],
-          "outputs": [
-            "Readable Markdown without menus or page boilerplate."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/defuddle"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$defuddle",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/defuddle ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Readable Markdown without menus or page boilerplate.",
-          "cardTitle": "Extract a web page's text",
-          "skillId": "defuddle",
-          "inputs": [
-            "URL of an accessible web page"
-          ],
-          "writes": "Extracted Markdown",
-          "gates": [
-            "Main text is preserved during cleanup"
-          ],
-          "limits": [
-            "Requires Defuddle CLI; complex interactive pages may need a different reading method"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Extract a web page's text"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "role": "Extract a web page's text"
-            }
-          ],
-          "start": "Provide the page URL and desired text format.",
-          "capabilities": [
-            "Runs Defuddle on the specified page.",
-            "Extracts the main text and metadata, removing navigation clutter.",
-            "Returns Markdown, plain text, or JSON for the agent to read and process."
-          ],
-          "useCases": "To read a web page's content without menus and ads.",
-          "outcomes": [
-            "Readable Markdown without menus or page boilerplate."
-          ],
-          "purpose": "Extracts a web page's main text without menus, ads, or navigation blocks so the agent can focus on its content.",
-          "important": [
-            "Requires Defuddle CLI; complex interactive pages may need a different reading method"
-          ],
-          "relations": []
-        },
-        {
-          "id": "pdf-reader",
-          "title": "pdf-reader",
-          "type": "Skill",
-          "role": "Reads a local PDF page by page with PyMuPDF and helps verify passages where ordinary extraction distorts text, formulas, or tables.",
-          "when": "When a document is available as a PDF and you need to read its contents.",
-          "inside": [
-            "Extracts text with a local PyMuPDF script, reading long documents in sections.",
-            "Checks extraction quality: columns, formulas, and tables may require viewing the pages.",
-            "For scans, uses an available OCR route and flags uncertain readings."
-          ],
-          "outputs": [
-            "Extracted text and checks of individual page contents."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/pdf-reader"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$pdf-reader",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/pdf-reader ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Extracted text and checks of individual page contents.",
-          "cardTitle": "Read a PDF",
-          "skillId": "pdf-reader",
-          "inputs": [
-            "Local PDF or accessible document"
-          ],
-          "writes": "Extracted text and page inspection materials",
-          "gates": [
-            "Pages with important tables and formulas have been checked"
-          ],
-          "limits": [
-            "Text extraction can lose the structure of a complex page"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Read a PDF"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "role": "Read a PDF"
-            }
-          ],
-          "start": "Specify the PDF file and the pages or question of interest.",
-          "capabilities": [
-            "Extracts text with a local PyMuPDF script, reading long documents in sections.",
-            "Checks extraction quality: columns, formulas, and tables may require viewing the pages.",
-            "For scans, uses an available OCR route and flags uncertain readings."
-          ],
-          "useCases": "When a document is available as a PDF and you need to read its contents.",
-          "outcomes": [
-            "Extracted text and checks of individual page contents."
-          ],
-          "purpose": "Reads a local PDF page by page with PyMuPDF and helps verify passages where ordinary extraction distorts text, formulas, or tables.",
-          "important": [
-            "Text extraction can lose the structure of a complex page"
-          ],
-          "relations": []
-        },
-        {
-          "id": "kaggle-learner",
-          "title": "kaggle-learner",
-          "type": "Skill",
-          "role": "Analyzes leading Kaggle solutions and saves practical techniques for data processing, training, validation, and ensembles.",
-          "when": "To adapt tested techniques from competition solutions.",
-          "inside": [
-            "Finds descriptions of leading solutions and their source materials.",
-            "Examines data, features, training, validation, ensembles, and compute costs.",
-            "Saves a technical analysis and explains which techniques apply to your task and under what conditions."
-          ],
-          "outputs": [
-            "Competition techniques with an explanation of where they apply."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/kaggle-learner"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$kaggle-learner",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/kaggle-learner ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/; for Claude Code, to ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Competition techniques with an explanation of where they apply.",
-          "cardTitle": "Analyze Kaggle solutions",
-          "skillId": "kaggle-learner",
-          "inputs": [
-            "Competition and participant solutions"
-          ],
-          "writes": "Notes on techniques and applicability",
-          "gates": [
-            "Each technique is traced to the original solution"
-          ],
-          "limits": [
-            "Competition success does not guarantee transfer to another task"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Analyze Kaggle solutions"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "role": "Analyze Kaggle solutions"
-            }
-          ],
-          "start": "Provide the competition URL and the model or data type of interest.",
-          "capabilities": [
-            "Finds descriptions of leading solutions and their source materials.",
-            "Examines data, features, training, validation, ensembles, and compute costs.",
-            "Saves a technical analysis and explains which techniques apply to your task and under what conditions."
-          ],
-          "useCases": "To adapt tested techniques from competition solutions.",
-          "outcomes": [
-            "Competition techniques with an explanation of where they apply."
-          ],
-          "purpose": "Analyzes leading Kaggle solutions and saves practical techniques for data processing, training, validation, and ensembles.",
-          "important": [
-            "Competition success does not guarantee transfer to another task"
-          ],
-          "relations": []
-        },
-        {
-          "id": "paper-claim-validator",
-          "title": "Paper claim record",
-          "type": "Files in git",
-          "role": "Helps turn an idea from a paper you have read into a separate claim in the shared database. Preserves the meaning in your own words, identifies the source and location in the paper, then links the claim to our work.",
-          "when": "After reading the full text, when a specific statement should become support, a comparison or a counterargument.",
-          "inputs": [
-            "The source you have read and the paper's identifier.",
-            "A claim in your own words and a location in the paper where it can be checked."
-          ],
-          "inside": [
-            "Checks that the paper page exists in the theme literature and that the source for the statement is available.",
-            "Formulates one self-contained claim: what was shown, under which conditions and with which limitations.",
-            "Writes a paraphrase and a pointer to the location in the paper on its page in the theme literature. A verbatim quote is optional; it is added only when it helps.",
-            "If a quotation is included, its provenance and verification cannot be replaced by a match against someone else's summary.",
-            "Links the claim to a project or record as prior art, comparison, support or contradiction. Reads the saved object back."
-          ],
-          "outputs": [
-            "A paper claim with a source and stable ID.",
-            "A link to our work and explicit limits on the claim."
-          ],
-          "writes": "Theme literature; our claims and runs do not change",
-          "gates": [
-            "The paraphrase must reflect the source's meaning.",
-            "Verbatim accuracy is checked only for an actual quotation."
-          ],
-          "limits": [
-            "A paper's presence in the library does not validate every conclusion attributed to it.",
-            "There is no need to add a quotation or artificially lengthen a claim to meet a formal threshold."
-          ],
-          "links": [
-            {
-              "label": "Documentation",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
-            }
-          ],
-          "adoption": {
-            "kind": "internal",
-            "invoke": "Through the paper-ingest skill",
-            "installNote": "The record goes into main of the theme literature if you have access to the Lab GitLab."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Researcher and literature agent",
-              "role": "Save claims from papers they have read, with sources and established relationships."
-            }
-          ],
-          "relations": [],
-          "processRelations": [
-            {
-              "processId": "literature",
-              "processTitle": "Literature",
-              "stageRef": "s5",
-              "stageTitle": "Send to the shared database"
-            },
-            {
-              "processId": "literature",
-              "processTitle": "Literature",
-              "stageRef": "s6",
-              "stageTitle": "Connect to your own work"
-            }
-          ],
-          "processRelation": {
-            "processId": "literature",
-            "processTitle": "Literature",
-            "stageRef": "s5",
-            "stageTitle": "Send to the shared database"
-          },
-          "visual": {
-            "kind": "path",
-            "label": "Another paper's claim stays separate from our own derivation",
-            "nodes": [
-              "Paper and its saved text",
-              "Claim and source",
-              "Check the meaning against the source",
-              "A claim from a paper",
-              "Typed relationship"
-            ]
-          },
-          "start": "Provide the claim in your own words, the paper and the location supporting it. The agent saves the paper claim and links it to the project.",
-          "purpose": "Helps turn an idea from a paper you have read into a separate claim in the shared database. Preserves the meaning in your own words, identifies the source and location in the paper, then links the claim to our work.",
-          "capabilities": [
-            "Checks that the paper page exists in the theme literature and that the source for the statement is available.",
-            "Formulates one self-contained claim: what was shown, under which conditions and with which limitations.",
-            "Writes a paraphrase and a pointer to the location in the paper on its page in the theme literature. A verbatim quote is optional; it is added only when it helps.",
-            "If a quotation is included, its provenance and verification cannot be replaced by a match against someone else's summary.",
-            "Links the claim to a project or record as prior art, comparison, support or contradiction. Reads the saved object back."
-          ],
-          "outcomes": [
-            "A paper claim with a source and stable ID.",
-            "A link to our work and explicit limits on the claim."
-          ],
-          "important": [
-            "A paper's presence in the library does not validate every conclusion attributed to it.",
-            "There is no need to add a quotation or artificially lengthen a claim to meet a formal threshold."
-          ],
-          "useCases": "After reading the full text, when a specific statement should become support, a comparison or a counterargument."
+            "stageTitle": "Pick in Telegram"
+          }
         }
       ],
       "outcomeRefs": [
         {
           "ref": "o1",
-          "label": "One Zotero record with an attached PDF and BibTeX."
+          "label": "A Zotero entry with the PDF in the theme collection."
         },
         {
           "ref": "o2",
-          "label": "A paper note in Literature and a mirror on AlphaXiv."
+          "label": "A review in the theme literature: one file in the tree and in GitLab."
         },
         {
           "ref": "o3",
-          "label": "The paper and its sections in the laboratory's shared corpus."
+          "label": "The paper in the theme folder on AlphaXiv, for reading on a phone."
         },
         {
           "ref": "o4",
-          "label": "Links to our claims and runs."
+          "label": "A citation key that is safe to put into the manuscript bibliography."
         }
       ],
       "toolClusters": [
         {
           "id": "discovery",
-          "title": "Scouting: scheduled and on demand",
+          "title": "Selection: every morning and on request",
           "stageRef": "s1",
           "toolIds": [
             "paperscout",
+            "jev",
             "paper-search"
           ]
         },
@@ -7688,18 +4747,10 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "ingest",
-          "title": "Fetching the source",
+          "title": "Paper review",
           "stageRef": "s3",
           "toolIds": [
             "paper-ingest"
-          ]
-        },
-        {
-          "id": "claims",
-          "title": "Save a paper claim",
-          "stageRef": "s5",
-          "toolIds": [
-            "paper-claim-validator"
           ]
         }
       ],
@@ -7709,6 +4760,7 @@ window.RESEARCH_LOOP = {
           "stage": "s1",
           "tools": [
             "paperscout",
+            "jev",
             "paper-search",
             "reading-board"
           ],
@@ -7722,9 +4774,12 @@ window.RESEARCH_LOOP = {
           "tools": [
             "want-2-read",
             "alphaxiv-mcp",
+            "reading-board",
             "syncthing"
           ],
-          "destinations": [],
+          "destinations": [
+            "d3"
+          ],
           "outcomes": [],
           "qa": []
         },
@@ -7747,8 +4802,8 @@ window.RESEARCH_LOOP = {
           "id": "r4",
           "stage": "s4",
           "tools": [
-            "obsidian-literature-workflow",
-            "zotero-obsidian-bridge"
+            "paper-ingest",
+            "paper-claims"
           ],
           "destinations": [
             "d2"
@@ -7763,13 +4818,14 @@ window.RESEARCH_LOOP = {
           "stage": "s5",
           "tools": [
             "literature-library",
-            "alphaxiv-sync-rule",
-            "paper-claim-validator"
+            "alphaxiv-mcp"
           ],
           "destinations": [
-            "d3"
+            "d2",
+            "d4"
           ],
           "outcomes": [
+            "o2",
             "o3"
           ],
           "qa": []
@@ -7778,11 +4834,9 @@ window.RESEARCH_LOOP = {
           "id": "r6",
           "stage": "s6",
           "tools": [
-            "paper-claim-validator"
+            "literature-library"
           ],
-          "destinations": [
-            "d4"
-          ],
+          "destinations": [],
           "outcomes": [
             "o4"
           ],
@@ -7790,25 +4844,95 @@ window.RESEARCH_LOOP = {
         }
       ],
       "toMcp": {
-        "lead": "The paper, its sections, and its claims become shared records.",
+        "lead": "What becomes shared here is the paper review: a page in the theme literature that the whole lab reads. As of 19-10-2026 there are about 730 of them across 25 themes.",
         "paths": [
           {
             "id": "deep",
-            "actor": "agent",
-            "title": "Full analysis, one paper per pass",
-            "line": "card → local package → paper and sections → paper claims → our claim",
+            "actor": "code, Jev and Claude",
+            "title": "Morning selection, review, publication in the theme literature",
+            "line": "fresh arXiv → Jev → owner's pick → review → theme page",
             "chain": [
               {
                 "lane": "work",
-                "title": "Card in the Reading board's Queue",
-                "stageRef": "s2",
-                "detail": "The pipeline waits only for the owner's permission."
+                "title": "Fresh arXiv, no repeats",
+                "stageRef": "s1",
+                "detail": "Everything already in the library, on the board or sent before is dropped."
               },
               {
                 "lane": "work",
-                "title": "Local package",
+                "title": "Selection by Jev",
+                "detail": "Ranked by similarity to our works. Then DeepSeek strikes out obvious junk and writes a note for each paper, without changing the order.",
+                "via": {
+                  "tool": "Jev",
+                  "type": "classifier"
+                }
+              },
+              {
+                "lane": "work",
+                "title": "Owner's selection",
+                "stageRef": "s2",
+                "detail": "A reply with numbers in Telegram: the only permission the pipeline waits for.",
+                "via": {
+                  "tool": "pipeline",
+                  "type": "script"
+                }
+              },
+              {
+                "lane": "work",
+                "title": "Zotero, PDF, sources",
                 "destRef": "d1",
-                "detail": "Zotero record with PDF, eight-section note, AlphaXiv mirror.",
+                "detail": "An hourly pass over the queue, no human involved: BibTeX, PDF and sources are collected automatically.",
+                "via": {
+                  "tool": "pipeline",
+                  "type": "script"
+                }
+              },
+              {
+                "lane": "record",
+                "kind": "review",
+                "code": "—",
+                "title": "Paper page",
+                "ref": "object:paper",
+                "destRef": "d2",
+                "items": [
+                  "the file is named after the paper, the citation key is in the BibTeX",
+                  "the “What the paper claims” section sits above the section-by-section review",
+                  "the authors' own figures, converted from PDF to PNG",
+                  "literature accepts the write immediately, without a proposal: a review is shared knowledge"
+                ],
+                "via": {
+                  "tool": "git push",
+                  "type": "command"
+                }
+              },
+              {
+                "lane": "tie",
+                "title": "Citation from our work",
+                "ref": "object:paper-claim",
+                "detail": "Only the citation key from the page goes into the manuscript. A key missing from the work's bibliography is rejected by a hook.",
+                "via": {
+                  "tool": "citation-validator.py",
+                  "type": "hook"
+                }
+              }
+            ]
+          },
+          {
+            "id": "fast",
+            "actor": "human and agent",
+            "title": "One paper by link",
+            "line": "link → paper-ingest → theme page",
+            "chain": [
+              {
+                "lane": "work",
+                "title": "An arXiv or AlphaXiv link",
+                "detail": "Or a paper dropped into “Want to read” from the phone."
+              },
+              {
+                "lane": "work",
+                "title": "Review under the same canon",
+                "destRef": "d1",
+                "detail": "Zotero, PDF, sources, review.",
                 "via": {
                   "tool": "paper-ingest",
                   "type": "skill"
@@ -7816,99 +4940,15 @@ window.RESEARCH_LOOP = {
               },
               {
                 "lane": "record",
-                "kind": "paper",
+                "kind": "review",
                 "code": "—",
-                "title": "Paper and its sections",
+                "title": "Paper page",
                 "ref": "object:paper",
-                "destRef": "d3",
-                "detail": "The key is arxiv_id, doi, or zotero_key; without one, a duplicate could be created.",
-                "via": {
-                  "tool": "upsert_paper",
-                  "type": "mcp"
-                }
-              },
-              {
-                "lane": "record",
-                "kind": "paper claim",
-                "code": "—",
-                "title": "Paper claims ×N",
-                "ref": "object:paper-claim",
-                "destRef": "d3",
-                "items": [
-                  "one self-contained claim in your own words",
-                  "source and location in the paper; quotation optional",
-                  "an explicitly added quotation is checked against its source",
-                  "a saved paraphrase is checked for meaning and provenance"
-                ],
+                "destRef": "d2",
+                "detail": "The page is prepared for GitLab and goes into the theme's literature repository.",
                 "via": {
                   "tool": "paper-ingest",
-                  "type": "mcp"
-                }
-              },
-              {
-                "lane": "tie",
-                "title": "Our claim or run",
-                "ref": "object:hypothesis",
-                "detail": "prior_art, supports, contradicts, baseline, inspired, reproduces.",
-                "via": {
-                  "tool": "link_paper",
-                  "type": "mcp"
-                }
-              }
-            ]
-          },
-          {
-            "id": "fast",
-            "actor": "person",
-            "title": "Quick entry: one minute, no tokens",
-            "line": "arXiv ID and topic → paper with abstract",
-            "chain": [
-              {
-                "lane": "work",
-                "title": "arXiv ID and topic",
-                "detail": "Nothing else is required."
-              },
-              {
-                "lane": "record",
-                "kind": "paper",
-                "code": "—",
-                "title": "Paper with abstract",
-                "ref": "object:paper",
-                "destRef": "d3",
-                "detail": "Title, authors, year, abstract, and citation key from the public arXiv API.",
-                "items": [
-                  "this route does not produce paper claims",
-                  "the topic is specified explicitly"
-                ],
-                "via": {
-                  "tool": "fast_ingest",
-                  "type": "script"
-                }
-              }
-            ]
-          },
-          {
-            "id": "backfill",
-            "actor": "agent",
-            "title": "Add missing claims to a partly analyzed paper",
-            "line": "paper with sections in the database → paper claims",
-            "chain": [
-              {
-                "lane": "work",
-                "title": "Paper and sections already in the database",
-                "detail": "The material is stored; claims have not yet been extracted."
-              },
-              {
-                "lane": "record",
-                "kind": "paper claim",
-                "code": "—",
-                "title": "Paper claims ×N",
-                "ref": "object:paper-claim",
-                "destRef": "d3",
-                "detail": "The same quotation check applies; verification queries the database, not the agent's report.",
-                "via": {
-                  "tool": "claims_backfill",
-                  "type": "script"
+                  "type": "skill"
                 }
               }
             ]
@@ -7916,82 +4956,31 @@ window.RESEARCH_LOOP = {
         ],
         "kept": [
           "PDFs and Zotero files",
-          "Reading queue and _inbox, _trash folders",
-          "AlphaXiv mirror",
-          "the complete personal note: only its sections go into the database"
+          "the reading board and the personal folder of incoming papers",
+          "AlphaXiv folders: a mirror for the phone",
+          "pipeline logs on the server"
         ],
         "hook": true
       },
       "mapFeatured": [
         "paperscout",
-        "paper-search",
-        "paper-ingest",
-        "zotero-mcp"
-      ],
-      "constellation": {
-        "core": "paperscout",
-        "caption": "paper-scout profile · literature review",
-        "groups": [
-          {
-            "area": "north",
-            "title": "Find and select",
-            "toolIds": [
-              "paper-search",
-              "want-2-read",
-              "reading-board"
-            ]
-          },
-          {
-            "area": "west",
-            "title": "Read the source",
-            "toolIds": [
-              "paper-ingest",
-              "pdf-reader",
-              "defuddle"
-            ]
-          },
-          {
-            "area": "east",
-            "title": "Library and notes",
-            "toolIds": [
-              "zotero-mcp",
-              "obsidian-literature-workflow",
-              "zotero-obsidian-bridge",
-              "literature-library",
-              "paper-claim-validator"
-            ]
-          },
-          {
-            "area": "sw",
-            "title": "External sources",
-            "toolIds": [
-              "alphaxiv-mcp",
-              "alphaxiv-sync-rule",
-              "syncthing"
-            ]
-          },
-          {
-            "area": "se",
-            "title": "Competition experience",
-            "toolIds": [
-              "kaggle-learner"
-            ]
-          }
-        ]
-      }
+        "jev",
+        "want-2-read",
+        "paper-ingest"
+      ]
     },
     {
       "id": "ideation",
       "number": "02",
       "title": "Ideas and hypotheses",
-      "verb": "Propose an idea and choose a test",
-      "result": "A research candidate and a plan to test it",
+      "verb": "Define what to test",
+      "result": "A refutable claim in the work repository, and a way to tell it apart from its neighbors",
       "color": "#ff9478",
       "registryProcessIds": [
         "research-direction",
         "theory"
       ],
-      "purpose": "The lab’s autoresearch develops and checks branches of ideas. Alongside it are a skill for framing research questions and an independent external research project.",
+      "purpose": "Turn an observation or someone else's claim into a question with a prediction, assumptions and a refutation criterion. The criterion is written before the first run, so the result cannot be fitted to the hypothesis after the fact.",
       "when": [
         "After finding conflicting literature.",
         "When a run produces an unexpected result.",
@@ -7999,93 +4988,93 @@ window.RESEARCH_LOOP = {
       ],
       "stages": [
         {
-          "ref": "s1",
-          "title": "Frame the question",
-          "summary": "Identify a gap in current knowledge and what a useful answer would look like."
+          "title": "Gather the basis",
+          "summary": "Paper reviews from the theme literature, past runs, call records, open questions on claims.",
+          "result": "A basis with recorded provenance",
+          "ref": "s1"
         },
         {
-          "ref": "s2",
-          "title": "Develop ideas",
-          "summary": "Build a graph of ideas, select branches, and check prior work."
+          "title": "Develop alternatives",
+          "summary": "Several mechanisms rather than one favored account.",
+          "result": "Competing explanations",
+          "ref": "s2"
         },
         {
-          "ref": "s3",
-          "title": "Choose a test",
-          "summary": "Distinguish mathematical reasoning, verification code, and empirical experiments."
+          "title": "Find a discriminating test",
+          "summary": "An observation on which the alternatives disagree.",
+          "result": "Falsification criterion",
+          "ref": "s3"
+        },
+        {
+          "title": "Check the formulation",
+          "summary": "grill-me interrogates the wording one question at a time, with a recommended answer to each.",
+          "result": "Revised draft",
+          "ref": "s4"
+        },
+        {
+          "title": "File the claim as a proposal",
+          "summary": "The claim gets its own folder in the work repository. Pushing opens a proposal, and the work lead reads and merges it.",
+          "result": "The claim in the shared base after the merge",
+          "human": true,
+          "ref": "s5"
+        },
+        {
+          "title": "Choose the validation route",
+          "summary": "A run for empirical work, a proof for theory.",
+          "result": "Validation plan",
+          "ref": "s6"
         }
       ],
       "outcomes": [
-        "A question, alternatives, and the next testable step."
+        "A claim with a permanent code in the work repository.",
+        "Explicit assumptions and competing explanations.",
+        "A “What refutes it” section, written before the test.",
+        "A link to a paper review, a run or a call record."
       ],
-      "destinations": [],
-      "controls": [],
-      "example": "",
-      "tools": [
+      "destinations": [
         {
-          "id": "autoresearch",
-          "title": "autoresearch",
-          "type": "Lab package · autoresearch",
-          "role": "Stores ideas in a graph, selects promising branches, and assigns agents to develop and review them.",
-          "links": [
-            {
-              "label": "Source code and README",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/autoresearch"
-            }
-          ],
-          "adoption": {
-            "kind": "source-only",
-            "installNote": "In development. Requires project configuration and access to agent CLIs. Without research_cycle_path, round skips automatic idea evaluation; the empirical loop is disabled by default."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "sets the question, project, and evaluation criteria"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "ideation",
-              "processTitle": "Ideas and hypotheses",
-              "stageRef": "s2",
-              "stageTitle": "Develop ideas"
-            }
-          ],
-          "processRelation": {
-            "processId": "ideation",
-            "processTitle": "Ideas and hypotheses",
-            "stageRef": "s2",
-            "stageTitle": "Develop ideas"
-          },
-          "status": "in-development",
-          "externalResources": [
-            {
-              "label": "ResearcherOS",
-              "url": "https://github.com/ZoyaV/ReseacherOS/tree/main",
-              "note": "Independent open-source project · GitHub"
-            }
-          ],
-          "when": "You have a research question and several directions to investigate systematically.",
-          "start": "Connect the package to a project using its README, then configure the research domain and agent tools. Start by inspecting the graph and selected ideas with ar status.",
-          "inside": [
-            "Idea graph. Stores proposals, connections, attempts, and failure reasons; previously investigated branches remain in the history.",
-            "Selection. Chooses the next graph nodes and checks available material for similar ideas and prior work.",
-            "Agent work. Develops an idea in a separate Git branch through reasoning, verification code, and critical review.",
-            "Review. Separates mathematical reasoning, implementation correctness, and empirical results. An experimental claim needs its own protocol and run results.",
-            "Next round. Incorporates criticism, combines promising branches, and filters duplicates.",
-            "Paper material. Collects reviewed results into reports and draft text."
-          ],
-          "outputs": [
-            "A graph recording ideas, reviews, and rejected branches",
-            "Verification code, reports, and paper drafts"
-          ],
-          "writes": "Project files and branches; IdeaGraph or a configured koi store.",
-          "relations": []
+          "name": "The work's personal notes",
+          "what": "Hypothesis drafts, alternatives, rejected options",
+          "why": "Personal: hidden from git and kept on the machine, but open in Obsidian next to the shared part",
+          "ref": "d1"
         },
+        {
+          "name": "The work's claims in GitLab",
+          "what": "A claim with a refutation criterion and its derivations",
+          "why": "A shared object of testing: it enters only by merge, and the whole lab sees it",
+          "ref": "d2"
+        }
+      ],
+      "controls": [
+        {
+          "id": "alternatives",
+          "title": "Start with competing explanations",
+          "explanation": "One plausible account is not yet a testable claim. It needs alternatives and an observation on which they differ.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "foreign-boundary",
+          "title": "Keep external claims separate from our own",
+          "explanation": "A claim from a paper can motivate our wording and appear in the “Why we think so” section, but it does not replace the refutation criterion. Under the canon, someone else's paper never supports our claim: that takes our run, our derivation or our submitted paper.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "publish-preview",
+          "title": "A shared record enters only by merge",
+          "explanation": "Direct writes to a work's main branch are forbidden for everyone, admins included. The agent opens a proposal, the checks verify it in code (a claim code taken twice gives a red verdict), and a human, the work lead, merges it. A draft in personal notes does not count as a record.",
+          "example": "",
+          "links": []
+        }
+      ],
+      "example": "A paper claims an advantage for a new step geometry. research-ideation offers two alternatives, grill-me hones the chosen wording, and it goes to the work repository as a proposal with a refutation criterion written before the first run.",
+      "tools": [
         {
           "id": "research-ideation",
           "title": "research-ideation",
-          "type": "Third-party skill · claude-scholar",
-          "role": "Helps turn a broad topic into a research question, method, and plan. A skill by Gaorui Zhang from claude-scholar.",
+          "type": "Skill",
+          "role": "Runs the project's starting phase: working through the idea with six questions (who, what, where, when, why, how), a literature review, gap finding, a concrete and measurable question, choice of method, and a plan.",
           "when": "When the research direction is not yet fixed.",
           "inputs": [
             "topic or interest",
@@ -8093,15 +5082,18 @@ window.RESEARCH_LOOP = {
             "Zotero collection"
           ],
           "inside": [
-            "Examines the topic: what, why, who, where, when, and how.",
-            "Uses available papers to identify gaps in topics, methods, applications, or connections between fields.",
-            "Narrows the question and assesses novelty, importance, and feasibility.",
-            "Compares methods and drafts a research plan. Library operations depend on the connected tools."
+            "works through the idea with six questions: who, what, where, when, why, how",
+            "looks for five kinds of gaps: topic, method, application, disciplinary intersection, and time",
+            "formulates a concrete, measurable, time-bound question and assesses novelty and feasibility",
+            "compares methods and estimates required resources",
+            "collects discovered papers in Zotero and attaches openly available PDFs"
           ],
           "outputs": [
-            "A research question, a review of the supporting literature, and a research plan"
+            "literature review",
+            "research plan",
+            "bibliography"
           ],
-          "writes": "Project documents; the reference library when the required tools are connected.",
+          "writes": "Project files and Zotero collection",
           "gates": [
             "the question is assessed for importance, novelty, and feasibility",
             "the collection is checked for duplicates before additions"
@@ -8112,24 +5104,23 @@ window.RESEARCH_LOOP = {
           ],
           "links": [
             {
-              "label": "Author and original skill",
-              "url": "https://github.com/Galaxy-Dawn/claude-scholar/tree/main/skills/research-ideation"
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/research-ideation/SKILL.md"
             },
             {
-              "label": "Version in the lab toolkit",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/blob/main/skills/research-ideation/SKILL.md"
+              "label": "Gap analysis",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/research-ideation/references/gap-analysis-guide.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$research-ideation",
+            "invoke": "/research-ideation",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/research-ideation ~/.claude/skills/",
               "# restart Claude Code, then run /research-ideation"
-            ],
-            "installNote": "Adapted from claude-scholar by Gaorui Zhang, licensed under MIT. This is an instruction for an agent; it does not run experiments by itself."
+            ]
           },
           "nonInstallable": false,
           "usedBy": [
@@ -8139,11 +5130,6 @@ window.RESEARCH_LOOP = {
             }
           ],
           "relations": [
-            {
-              "toolId": "hypothesize",
-              "label": "works alongside it at the same stage",
-              "title": "/hypothesize"
-            },
             {
               "toolId": "grill-with-docs",
               "label": "works alongside it at the same stage",
@@ -8160,92 +5146,81 @@ window.RESEARCH_LOOP = {
               "processId": "ideation",
               "processTitle": "Ideas and hypotheses",
               "stageRef": "s1",
-              "stageTitle": "Frame the question"
+              "stageTitle": "Gather the basis"
             }
           ],
           "processRelation": {
             "processId": "ideation",
             "processTitle": "Ideas and hypotheses",
             "stageRef": "s1",
-            "stageTitle": "Frame the question"
+            "stageTitle": "Gather the basis"
           },
           "visual": {
             "kind": "routes",
             "label": "From an interest to a testable question",
             "nodes": [
               "Interest",
-              "5W1H analysis",
+              "Six questions to the idea",
               "Literature review",
-              "Gap",
+              "Gap in the literature",
               "Question and plan"
             ]
-          },
-          "cardTitle": "Formulate a research question",
-          "catalogSummary": "Topic → knowledge gap → question → plan",
-          "skillId": "research-ideation",
-          "start": "Describe your topic and what is already known. The skill guides a discussion from a question to a research plan.",
-          "capabilities": [
-            "examines the idea through the six 5W1H questions",
-            "looks for five kinds of gaps: topic, method, application, disciplinary intersection, and time",
-            "formulates a SMART question and assesses novelty and feasibility",
-            "compares methods and estimates required resources",
-            "collects discovered papers in Zotero and attaches openly available PDFs"
-          ],
-          "outcomes": [
-            "literature-review.md",
-            "research-proposal.md",
-            "references.bib"
-          ],
-          "useCases": "When the research direction is not yet fixed.",
-          "important": [
-            "does not test the claim or launch runs",
-            "search defaults to the past three years"
-          ],
-          "skySummary": "Topic → knowledge gap → question → plan",
-          "purpose": "Helps turn a broad topic into a research question, method, and plan. A skill by Gaorui Zhang from claude-scholar."
+          }
         },
         {
-          "id": "hypothesize",
-          "title": "/hypothesize",
-          "type": "Command",
-          "role": "Collects project context and proposes five testable claims, ordered from the cheapest informative test.",
-          "when": "When a project needs ideas before any code is written.",
+          "id": "grill-with-docs",
+          "title": "grill-with-docs",
+          "type": "Skill",
+          "role": "Examines the plan one question at a time and checks each answer against the project's glossary, code, and existing decisions.",
+          "when": "When a plan uses vague terms or may conflict with existing decisions.",
           "inputs": [
-            "project slug from ~/.claude/obsidian-projects.json",
-            "optional focus topic"
+            "draft plan",
+            "project glossary",
+            "code and decision records"
           ],
           "inside": [
-            "collects context through research-context: project card, code overview, server",
-            "does not propose what is already cited in the literature section",
-            "gives each claim a criterion, files, expected effect, budget, and risk",
-            "orders ideas from the cheapest informative test",
-            "includes both theoretical and empirical ideas unless the focus is restricted"
+            "checks the plan's vocabulary against the project glossary",
+            "proposes a precise term in place of a vague one",
+            "tests disputed points against specific edge cases",
+            "looks for discrepancies between the author's description and the code's behavior",
+            "writes an agreed term to the glossary right away, without batching edits"
           ],
           "outputs": [
-            "Hypotheses/YYYY-MM-DD-hypotheses.md file in the project folder",
-            "a list of five formulations in the response"
+            "clarified plan",
+            "updated project glossary",
+            "decision record when justified"
           ],
-          "writes": "Project Hypotheses folder",
+          "writes": "Project glossary and decision records in the current repository",
           "gates": [
-            "each claim can be tested separately",
-            "marks a new reference as needing a source rather than inventing one",
-            "cost estimates must be realistic: a 583M-model run is not a cheap test"
+            "does not ask a question if the answer is in the code",
+            "the glossary holds only the domain language",
+            "proposes a decision record only when all three conditions hold: hard to reverse, unclear without context, and a real choice was made"
           ],
           "limits": [
-            "does not launch anything",
-            "requires a slug registered in project routing",
-            "uses only literature already in the project card"
+            "does not turn the glossary into a technical specification",
+            "does not make product decisions for the author"
           ],
-          "links": [],
+          "links": [
+            {
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-with-docs/SKILL.md"
+            }
+          ],
           "adoption": {
-            "kind": "private",
-            "invoke": "/hypothesize <slug> [focus]; the command file is not published in the public repository and lives locally at ~/.claude/commands/hypothesize.md",
-            "installNote": "The commands/hypothesize.md file is not published in the public repository. Ask the owner."
+            "kind": "toolkit-skill",
+            "invoke": "/grill-with-docs",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/grill-with-docs ~/.claude/skills/",
+              "# restart Claude Code, then run /grill-with-docs"
+            ]
           },
+          "nonInstallable": false,
           "usedBy": [
             {
               "name": "Researcher and research agent",
-              "role": "receive ideas with estimated test costs without changing code"
+              "role": "check a new plan against the project's terminology and decisions"
             }
           ],
           "relations": [
@@ -8255,9 +5230,9 @@ window.RESEARCH_LOOP = {
               "title": "research-ideation"
             },
             {
-              "toolId": "autoresearch",
-              "label": "provides nodes that the loop later selects and combines",
-              "title": "autoresearch and ar"
+              "toolId": "grill-me",
+              "label": "the same questioning without a project glossary",
+              "title": "grill-me"
             }
           ],
           "processRelations": [
@@ -8265,65 +5240,395 @@ window.RESEARCH_LOOP = {
               "processId": "ideation",
               "processTitle": "Ideas and hypotheses",
               "stageRef": "s1",
-              "stageTitle": "Frame the question"
+              "stageTitle": "Gather the basis"
             }
           ],
           "processRelation": {
             "processId": "ideation",
             "processTitle": "Ideas and hypotheses",
             "stageRef": "s1",
-            "stageTitle": "Frame the question"
+            "stageTitle": "Gather the basis"
+          }
+        },
+        {
+          "id": "miro",
+          "title": "Miro",
+          "type": "Agent connection",
+          "role": "Gives the agent Miro boards, so the map of alternatives is built straight from the conversation instead of being copied over by hand.",
+          "when": "When alternatives and their connections are easier to see than to read.",
+          "inputs": [
+            "idea structure: nodes, groups, links",
+            "sign-in to your Miro account"
+          ],
+          "inside": [
+            "draws a board from one diagram description: nodes, groups and links in a single call",
+            "reads the board back, so human edits are visible to the agent",
+            "edits an existing board, searches it, handles comments and tables",
+            "creates boards and shares them"
+          ],
+          "outputs": [
+            "Miro board with an idea diagram",
+            "board link"
+          ],
+          "writes": "A signed-in Miro account",
+          "gates": [
+            "access is granted by Miro itself via OAuth: the agent sees only what the account is allowed to see"
+          ],
+          "limits": [
+            "requires a Miro account",
+            "the board stays a working surface: it never enters the lab base"
+          ],
+          "links": [
+            {
+              "label": "Miro for agents",
+              "url": "https://mcp.miro.com/"
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "claude mcp add --transport http miro https://mcp.miro.com/",
+            "install": [
+              "claude mcp add --transport http miro https://mcp.miro.com/",
+              "# on the first call, Claude Code opens the Miro sign-in"
+            ],
+            "installNote": "Miro's official remote server; no key is stored in files, sign-in goes through OAuth."
+          },
+          "usedBy": [
+            {
+              "name": "Researcher and research agent",
+              "role": "arrange competing explanations and their connections on one board"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "grill-me",
+              "label": "passes the organized alternatives for examination",
+              "title": "grill-me"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "ideation",
+              "processTitle": "Ideas and hypotheses",
+              "stageRef": "s2",
+              "stageTitle": "Develop alternatives"
+            }
+          ],
+          "processRelation": {
+            "processId": "ideation",
+            "processTitle": "Ideas and hypotheses",
+            "stageRef": "s2",
+            "stageTitle": "Develop alternatives"
           },
           "visual": {
-            "kind": "path",
-            "label": "Project context becomes five assessed ideas",
+            "kind": "routes",
+            "label": "Alternatives become a visible diagram",
             "nodes": [
-              "project slug",
-              "Project card, code, literature",
-              "Five claims",
-              "Ordered by test cost"
+              "Idea nodes",
+              "Connections between them",
+              "Miro board",
+              "Human edits are read back"
+            ]
+          }
+        },
+        {
+          "id": "grill-me",
+          "title": "grill-me",
+          "type": "Skill",
+          "role": "Questions the author about a plan until there is a shared understanding, one question at a time, with a recommended answer for each.",
+          "when": "Before committing to a claim or an expensive plan.",
+          "inputs": [
+            "draft claim or plan",
+            "assumptions",
+            "proposed validation method"
+          ],
+          "inside": [
+            "walks the decision tree, resolving dependencies in order",
+            "asks strictly one question at a time",
+            "offers a recommended answer to each question",
+            "checks the code for answers it can provide instead of asking"
+          ],
+          "outputs": [
+            "resolved decision points in the plan",
+            "clarified formulation"
+          ],
+          "writes": "Nothing: the result stays in the conversation and in a personal draft",
+          "gates": [
+            "does not ask a question if the answer is in the code"
+          ],
+          "limits": [
+            "does not replace validation through a run",
+            "writes nothing to the shared database"
+          ],
+          "links": [
+            {
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-me/SKILL.md"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-skill",
+            "invoke": "/grill-me",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/grill-me ~/.claude/skills/",
+              "# restart Claude Code, then run /grill-me"
             ]
           },
-          "start": "Ask the agent to formulate a testable hypothesis from an observation or problem. Specify what is already known and how the idea could be tested.",
-          "capabilities": [
-            "collects context through research-context: project card, code overview, server",
-            "does not propose what is already cited in the literature section",
-            "gives each claim a criterion, files, expected effect, budget, and risk",
-            "orders ideas from the cheapest informative test",
-            "includes both theoretical and empirical ideas unless the focus is restricted"
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Researcher and research agent",
+              "role": "examine the plan's decision points until ambiguities are resolved"
+            }
           ],
-          "outcomes": [
-            "Hypotheses/YYYY-MM-DD-hypotheses.md file in the project folder",
-            "a list of five formulations in the response"
+          "relations": [
+            {
+              "toolId": "grill-with-docs",
+              "label": "the same questioning workflow, grounded in the project glossary",
+              "title": "grill-with-docs"
+            },
+            {
+              "toolId": "lab-knowledge-hypothesis",
+              "label": "hands the wording over to be recorded as a claim",
+              "title": "lab-knowledge: claim"
+            }
           ],
-          "useCases": "When a project needs ideas before any code is written.",
-          "important": [
-            "does not launch anything",
-            "requires a slug registered in project routing",
-            "uses only literature already in the project card"
-          ]
+          "processRelations": [
+            {
+              "processId": "ideation",
+              "processTitle": "Ideas and hypotheses",
+              "stageRef": "s4",
+              "stageTitle": "Check the formulation"
+            }
+          ],
+          "processRelation": {
+            "processId": "ideation",
+            "processTitle": "Ideas and hypotheses",
+            "stageRef": "s4",
+            "stageTitle": "Check the formulation"
+          }
+        },
+        {
+          "id": "autoresearch",
+          "title": "autoresearch",
+          "type": "Agent harness package",
+          "role": "All of a project's ideas live in one graph: the root is the theme, branches are storylines, leaves are tested results. The package decides which branch to dig next and never lets you test an already tested variant twice.",
+          "when": "When there are more idea branches than you can track by hand.",
+          "inputs": [
+            "project idea graph",
+            "a short description of the domain",
+            "verdicts on dead nodes"
+          ],
+          "inside": [
+            "a round is one pass: pick nodes, test them, write the conclusions into the graph, redraw the board",
+            "Elo rating: nodes are compared against each other, not taken in the order they were written",
+            "duplicate check: a variant that was already tested is not taken a second time",
+            "evolution: crosses strong nodes from different branches into a new hypothesis",
+            "meta-review: extracts hard rules for the next rounds from the accumulated critique"
+          ],
+          "outputs": [
+            "updated idea graph and redrawn board",
+            "list of nodes for the next round",
+            "paper section stubs"
+          ],
+          "writes": "Idea graph files in the project folder, with a backup",
+          "gates": [
+            "a duplicate check is mandatory before a new angle",
+            "which node to dig is decided by the selector, not by a guess",
+            "a backup is made before the graph changes"
+          ],
+          "limits": [
+            "requires a project idea graph",
+            "without a connected test loop, a round only picks nodes, and the agent runs them"
+          ],
+          "links": [
+            {
+              "label": "autoresearch: package and README",
+              "url": "https://github.com/Vepricov/claude-brainlab/tree/main/autoresearch",
+              "canonical": true
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "ar <command> --project <path>",
+            "install": [
+              "bash install/setup.sh    # puts the package into ~/.claude/autoresearch",
+              "ar init --project <path> --name <slug> --domain \"what the project is about\"",
+              "ar status --project <path>"
+            ],
+            "installNote": "Installed together with the whole harness. A project needs an idea graph; the package sets up everything else itself."
+          },
+          "usedBy": [
+            {
+              "name": "Researcher and lead agent",
+              "role": "run many idea branches in rounds without resurrecting what was already rejected"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-knowledge-hypothesis",
+              "label": "a surviving node becomes a claim of the work",
+              "title": "lab-knowledge: claim"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "ideation",
+              "processTitle": "Ideas and hypotheses",
+              "stageRef": "s6",
+              "stageTitle": "Choose the validation route"
+            }
+          ],
+          "processRelation": {
+            "processId": "ideation",
+            "processTitle": "Ideas and hypotheses",
+            "stageRef": "s6",
+            "stageTitle": "Choose the validation route"
+          },
+          "visual": {
+            "kind": "routes",
+            "label": "One round of the loop",
+            "nodes": [
+              "Picking the next idea",
+              "“Already done” check",
+              "Test loop",
+              "Lessons from critique become rules",
+              "Hybrids from strong branches",
+              "Draft and a new board"
+            ]
+          },
+          "purpose": "All of a project's ideas live in one graph: the root is the theme, branches are storylines, leaves are tested results. The package decides which branch to dig next and never lets you test an already tested variant twice."
+        },
+        {
+          "id": "lab-knowledge-hypothesis",
+          "title": "lab-knowledge: claim",
+          "type": "Skill",
+          "role": "Records an approved wording as a claim in the work repository: its own folder, a push, a proposal, a merge by a human.",
+          "when": "When a human has checked the wording and it has a refutation criterion.",
+          "inputs": [
+            "work (the path in the tree is the binding)",
+            "formulation",
+            "falsification criterion",
+            "grounds and source"
+          ],
+          "inside": [
+            "first reads the work's claims; a second claim about the same thing is not filed",
+            "gives the claim a permanent code not taken in any branch",
+            "writes the page in fixed sections: Hypothesis, Why we think so, Test conditions, What refutes it",
+            "the “What refutes it” section is written before the test: without it this is a note, and it belongs in personal notes",
+            "on a separate branch, pushing opens a proposal by itself and assigns the work lead"
+          ],
+          "outputs": [
+            "claim page in the “draft” state",
+            "a proposal with green or red checks",
+            "after the merge: the claim is in the work's main branch"
+          ],
+          "writes": "The work repository in GitLab, by proposal only; the personal draft stays in personal notes",
+          "gates": [
+            "direct writes to the main branch are forbidden for everyone; a record enters only by merge",
+            "checks: a code taken twice gives a red verdict",
+            "the order of page sections is verified by a separate pass",
+            "the end-of-turn hook shows red checks to the agent by itself"
+          ],
+          "limits": [
+            "a merge does not mean the claim is supported: its state changes only by its criterion",
+            "the machine does not check that a refutation criterion exists; the reader checks it",
+            "a work has only a handful of claims: a new scale of runs almost always goes under an existing one"
+          ],
+          "links": [
+            {
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+            },
+            {
+              "label": "How a claim page is written",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-skill",
+            "invoke": "/lab-knowledge",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
+              "# restart Claude Code, then /lab-knowledge"
+            ],
+            "installNote": "The skill is open. You can write to a work once you have a role in its GitLab group: access is granted by the access bot in Telegram."
+          },
+          "purpose": "",
+          "afterSetup": "You will be able to file testable claims in the shared base and see how each one ended.",
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Researcher and research agent",
+              "role": "place an approved claim where others can find it"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "grill-me",
+              "label": "takes a wording honed by interrogation",
+              "title": "grill-me"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "ideation",
+              "processTitle": "Ideas and hypotheses",
+              "stageRef": "s5",
+              "stageTitle": "File the claim as a proposal"
+            }
+          ],
+          "processRelation": {
+            "processId": "ideation",
+            "processTitle": "Ideas and hypotheses",
+            "stageRef": "s5",
+            "stageTitle": "File the claim as a proposal"
+          }
         }
       ],
       "outcomeRefs": [
         {
           "ref": "o1",
-          "label": "A question, alternatives, and the next testable step."
+          "label": "A claim with a permanent code in the work repository."
+        },
+        {
+          "ref": "o2",
+          "label": "Explicit assumptions and competing explanations."
+        },
+        {
+          "ref": "o3",
+          "label": "A “What refutes it” section, written before the test."
+        },
+        {
+          "ref": "o4",
+          "label": "A link to a paper review, a run or a call record."
         }
       ],
       "toolClusters": [
         {
-          "id": "question",
-          "title": "Frame a research question",
+          "id": "explore",
+          "title": "Basis and question",
           "stageRef": "s1",
           "toolIds": [
-            "research-ideation",
-            "hypothesize"
+            "research-ideation"
           ]
         },
         {
-          "id": "research",
-          "title": "Develop ideas",
-          "stageRef": "s2",
+          "id": "challenge",
+          "title": "Checking the formulation",
+          "stageRef": "s4",
+          "toolIds": [
+            "grill-me"
+          ]
+        },
+        {
+          "id": "loop",
+          "title": "Autonomous loop",
+          "stageRef": "s6",
           "toolIds": [
             "autoresearch"
           ]
@@ -8335,7 +5640,7 @@ window.RESEARCH_LOOP = {
           "stage": "s1",
           "tools": [
             "research-ideation",
-            "hypothesize"
+            "grill-with-docs"
           ],
           "destinations": [],
           "outcomes": [],
@@ -8345,52 +5650,173 @@ window.RESEARCH_LOOP = {
           "id": "r2",
           "stage": "s2",
           "tools": [
+            "miro",
+            "autoresearch"
+          ],
+          "destinations": [],
+          "outcomes": [],
+          "qa": []
+        },
+        {
+          "id": "r3",
+          "stage": "s3",
+          "tools": [
             "autoresearch"
           ],
           "destinations": [],
           "outcomes": [
+            "o2",
+            "o3"
+          ],
+          "qa": []
+        },
+        {
+          "id": "r4",
+          "stage": "s4",
+          "tools": [
+            "grill-me"
+          ],
+          "destinations": [
+            "d1"
+          ],
+          "outcomes": [],
+          "qa": []
+        },
+        {
+          "id": "r5",
+          "stage": "s5",
+          "tools": [
+            "lab-knowledge-hypothesis"
+          ],
+          "destinations": [
+            "d2"
+          ],
+          "outcomes": [
             "o1"
+          ],
+          "qa": []
+        },
+        {
+          "id": "r6",
+          "stage": "s6",
+          "tools": [
+            "autoresearch"
+          ],
+          "destinations": [],
+          "outcomes": [
+            "o4"
           ],
           "qa": []
         }
       ],
-      "mapFeatured": [
-        "autoresearch",
-        "research-ideation"
-      ],
-      "constellation": {
-        "core": "autoresearch",
-        "caption": "Idea graph · development · review",
-        "groups": [
+      "toMcp": {
+        "lead": "What becomes shared is a claim with a refutation criterion and a derivation with a proof: files in the work repository, through a proposal.",
+        "paths": [
           {
-            "area": "west",
-            "title": "Frame a research question",
-            "independent": true,
-            "toolIds": [
-              "research-ideation",
-              "hypothesize"
+            "id": "hypothesis",
+            "actor": "person",
+            "title": "Claim with a falsification criterion",
+            "line": "draft in personal notes → duplicate check → claim page → proposal and checks → merge by the lead",
+            "chain": [
+              {
+                "lane": "work",
+                "title": "Draft in personal notes",
+                "stageRef": "s1",
+                "destRef": "d1",
+                "detail": "Wording, mechanism, assumptions and refutation criterion. Hidden from git."
+              },
+              {
+                "lane": "work",
+                "title": "Duplicate check",
+                "stageRef": "s4",
+                "detail": "Checked against all of the work's claims and its open proposals.",
+                "via": {
+                  "tool": "lab-knowledge",
+                  "type": "skill"
+                }
+              },
+              {
+                "lane": "record",
+                "kind": "claim",
+                "code": "—",
+                "title": "Claim page",
+                "ref": "object:hypothesis",
+                "destRef": "d2",
+                "items": [
+                  "the “What refutes it” section is written before the test",
+                  "state: draft, then under test, supported, refuted or inconclusive, strictly by the criterion"
+                ],
+                "via": {
+                  "tool": "git push",
+                  "type": "command",
+                  "gate": "checks and a merge by the lead"
+                }
+              },
+              {
+                "lane": "tie",
+                "title": "External paper as a basis",
+                "ref": "object:paper",
+                "detail": "A link to the review in the theme literature, in the “Why we think so” section. Someone else's paper explains where the idea came from, but it does not count as evidence for our claim."
+              }
             ]
           },
           {
-            "area": "east",
-            "title": "",
-            "externalFrom": "autoresearch",
-            "toolIds": []
+            "id": "derivation",
+            "actor": "person",
+            "title": "Proof instead of a run",
+            "line": "derivation on paper → derivation under the claim → proposal",
+            "chain": [
+              {
+                "lane": "work",
+                "title": "Written derivation",
+                "destRef": "d1",
+                "detail": "Assumptions, reasoning, and established result."
+              },
+              {
+                "lane": "record",
+                "kind": "derivation",
+                "code": "—",
+                "title": "Claim derivation",
+                "ref": "object:derivation",
+                "destRef": "d2",
+                "items": [
+                  "lives in its claim's folder: there is no derivation apart from a claim",
+                  "the section is named exactly “Proof” and contains formulas",
+                  "a missing step is written as “no proof”, not hidden"
+                ],
+                "via": {
+                  "tool": "lab-knowledge",
+                  "type": "skill",
+                  "gate": "checks and a merge by the lead"
+                }
+              }
+            ]
           }
-        ]
-      }
+        ],
+        "kept": [
+          "hypothesis drafts and rejected options",
+          "autoresearch idea graph",
+          "Miro board and grill-me answers"
+        ],
+        "hook": true
+      },
+      "mapFeatured": [
+        "research-ideation",
+        "grill-me",
+        "lab-knowledge-hypothesis"
+      ]
     },
     {
       "id": "calls",
       "number": "03",
       "title": "Meetings",
       "verb": "Turn a conversation into decisions",
-      "result": "Verified notes, research records, and tasks",
+      "result": "Call summary in the work, claims and tasks",
       "color": "#8dd8ff",
       "registryProcessIds": [
         "discussion"
       ],
-      "purpose": "Turn a research meeting into verifiable notes, research records, and tasks. Each stage preserves the source utterance, uncertainty, and publication status.",
+      "purpose": "After a research call, save the outcome, not the raw transcript: what was decided, which claims with refutation criteria came up, which runs were agreed, and who does what next. The outcome goes into the repository of the work that was discussed. The criterion is carried over verbatim: a measurement on 14-10-2026 showed that of five hypotheses from a call, manual transfer to the base kept only the two weakest, and both had their criterion changed.",
       "when": [
         "After an internal research meeting.",
         "When a saved recording needs analysis.",
@@ -8398,67 +5824,67 @@ window.RESEARCH_LOOP = {
       ],
       "stages": [
         {
-          "title": "Record and link the tab",
-          "summary": "The application records microphone and system audio separately. The extension links the recording to the Telemost room and saves activity from named participant tiles.",
-          "result": "Two tracks, recording timestamps, and browser events",
+          "title": "Record the conversation",
+          "summary": "Brain Call records the microphone and system audio separately.",
+          "result": "A recording that can be recovered",
           "ref": "s1"
         },
         {
-          "title": "Transcribe and identify speakers",
-          "summary": "Transcription turns audio into timestamped utterances. Acoustic groups and named-tile events provide separate evidence for speaker attribution.",
-          "result": "Timestamped text with evidence for speaker names",
+          "title": "Recover the conversation",
+          "summary": "Utterances with timestamps; an uncertain name is never guessed.",
+          "result": "Readable transcript",
           "ref": "s2"
         },
         {
-          "title": "Analyze with project context",
-          "summary": "The analyzer reads the transcript, available project documents, and participant list. It prepares decisions, research records, tasks, and questions.",
-          "result": "Local notes and JSON preview",
+          "title": "Analyze the content",
+          "summary": "Decisions, claims, runs, tasks and questions, each kept apart.",
+          "result": "Parsed draft",
           "ref": "s3"
         },
         {
-          "title": "Review the preview",
-          "summary": "The owner sees the content, assignees, uncertainties, and destinations. An edit creates a new version; publication requires approval.",
-          "result": "Approved version with a verifiable hash",
+          "title": "Check the draft",
+          "summary": "One preview: every record and the place it will land.",
+          "result": "Approved version or an edit",
           "human": true,
           "ref": "s4"
         },
         {
-          "title": "Publish to the right destinations",
-          "summary": "The private summary is saved in Obsidian. Approved scientific records go to the Lab GitLab as a merge request, shared tasks and the agreed report go to the work's issues.",
-          "result": "Saved objects with their IDs",
+          "title": "Route the result",
+          "summary": "The call summary goes into the work repository, tasks into GitLab, claims as a proposal.",
+          "result": "Agreed records",
           "ref": "s5"
         },
         {
-          "title": "Read back and complete",
-          "summary": "The courier checks records at their destinations. After a partial failure, it preserves completed writes and fills in missing ones when safe; incorrect permissions, bindings, or version conflicts require correction.",
-          "result": "A complete receipt or an exact list of unfinished items",
+          "title": "Check the publication",
+          "summary": "Created records are read back at their destinations; a record enters the work by merge.",
+          "result": "Verified that what was written can be read",
           "ref": "s6"
         }
       ],
       "outcomes": [
-        "Full private notes with timestamps.",
-        "Decisions and the reasons behind them.",
-        "Claims and agreed validation methods.",
-        "Tasks with assignees and deadlines.",
+        "The original transcript stays in the work's private folder and never goes to git.",
+        "Call summary in the work repository: decisions and reasons.",
+        "Claims together with their refutation criterion, as stated on the call.",
+        "GitLab tasks with assignees and deadlines.",
         "Links to records that were actually created."
       ],
       "destinations": [
         {
-          "name": "Obsidian",
-          "what": "Full notes and private context",
-          "why": "Personal working memory",
+          "name": "Work calls",
+          "what": "Call summary as its own page; the original recording in a private folder, never sent to git",
+          "why": "A call lives next to the work it was about",
           "ref": "d1"
         },
         {
-          "name": "Lab GitLab",
-          "what": "Approved claims, runs, measurements, and rules",
-          "why": "Shared research memory",
+          "name": "The work's claims",
+          "what": "Approved claims, with runs and decisions under them",
+          "why": "Shared scientific memory: enters by merging a proposal",
           "ref": "d2"
         },
         {
-          "name": "Issues GitLab",
-          "what": "Agreed tasks with assignees and deadlines",
-          "why": "Team workspace",
+          "name": "GitLab tasks",
+          "what": "Agreed tasks with assignees, deadlines and the claim they affect",
+          "why": "The work's board, shared by the team",
           "ref": "d3"
         }
       ],
@@ -8466,7 +5892,7 @@ window.RESEARCH_LOOP = {
         {
           "id": "approval",
           "title": "Publish only after approval",
-          "explanation": "Transcription and analysis are saved locally immediately. Shared records and tasks are created only from an approved preview through the connected courier.",
+          "explanation": "The transcript and the parse are saved locally right away. Shared records and tasks appear only from an approved preview, and a record enters the work only after the lead merges the proposal.",
           "example": "",
           "links": []
         },
@@ -8480,22 +5906,29 @@ window.RESEARCH_LOOP = {
         {
           "id": "speaker-identity",
           "title": "An unknown speaker stays unknown",
-          "explanation": "A confirmed participant list tells us who attended. Naming a specific utterance requires evidence for that interval: the speaker's own track, reliable browser activity, or another verified basis.",
+          "explanation": "A track label does not turn into a person's name until it matches the confirmed list of participants.",
           "example": "",
           "links": []
         },
         {
           "id": "read-back verification",
           "title": "Every publication is read back",
-          "explanation": "The receipt is built from the Obsidian notes, git files, and GitLab issues that were actually read, not from the server response code.",
+          "explanation": "The write report is built from records actually read back at their destinations, not from the server's response code.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "criterion-carried",
+          "title": "A claim travels with its criterion",
+          "explanation": "A measurement on 14-10-2026 for muon-muon: the call had five hypotheses, each with its own criterion, yet only the two weakest reached the base, and both had their criterion changed in transfer. Since then the criterion travels with the wording, and claims are checked against the call record.",
           "example": "",
           "links": []
         }
       ],
-      "example": "On the call we agreed to test a new claim. The summary stays in Obsidian, the claim and the plan appear in claims/ through a merge request, and the launch task goes to the work's issues.",
+      "example": "On a call, the team agreed to test a new claim. The outcome goes into the work as a call page, the claim with its refutation criterion goes to the repository as a proposal, and the launch becomes a GitLab task with an assignee and a deadline.",
       "links": [
         {
-          "label": "Brain Call owner: request access",
+          "label": "Access to Brain Call: on request to the owner",
           "url": "https://github.com/Vepricov"
         }
       ],
@@ -8504,60 +5937,56 @@ window.RESEARCH_LOOP = {
           "id": "brain-call",
           "title": "Brain Call",
           "type": "System",
-          "role": "An application for recording and analyzing work meetings. It saves the conversation, transcribes utterances, and prepares notes covering agreements, assignments, hypotheses, and questions. You review the result before anything is sent to shared systems.",
+          "role": "One tool from audio to parse: it records two tracks, transcribes with speakers, and sorts the content by record type. The audio and the full text stay on the laptop.",
           "when": "During a live meeting or for a saved recording.",
           "inputs": [
-            "A Mac with permission to record microphone and system audio.",
-            "A configured speech recognition service and access to an analysis model.",
-            "The meeting's project and available participant information, or an explicitly selected personal-note mode."
+            "conversation audio",
+            "participants",
+            "project context"
           ],
           "inside": [
-            "Records microphone and system audio on separate tracks. This distinguishes your voice from other participants; the original recording remains a local artifact.",
-            "Sends audio segments to the configured speech recognition service. The current profile uses Gemini 3.5 Flash through OpenRouter. The output is a sequence of utterances with start and end times.",
-            "A local voice model groups similar utterances. Names are matched using supporting evidence: your own track, a participant's introduction, or meeting events. Without enough evidence, the speaker remains “Participant” rather than receiving a guessed name.",
-            "The analysis agent reads the transcript and project context. The current profile uses GPT-5.6-Sol through Codex. It distinguishes decisions from proposals, tasks from questions, and research claims from everyday remarks.",
-            "Preserves each proposed record's origin in the conversation. A task needs an action and assignee; a hypothesis needs a testable formulation and a way to refute it. Gaps are stated explicitly.",
-            "Shows the owner a preview. You can correct meaning, participants, and destinations. In project mode, sending to shared systems starts after approval; a personal note is not published there.",
-            "In project mode it saves the summary in Obsidian, scientific records into the work as a merge request, and the shared outcome and assignments in GitLab issues, if access is set up. In personal mode it creates only a local note. It reads back the results; partial errors stay open."
+            "the microphone and system audio are recorded as two separate tracks: a mixed file cannot tell you who spoke, while two tracks reduce the hard problem of “separate everyone” to the easy one of “tell my voice from the others”. No virtual audio driver is installed",
+            "transcription is done by google/gemini-3.5-flash via OpenRouter: the only step where audio leaves the laptop",
+            "speakers are told apart by the 29 MB CAM++ model, entirely on the laptop: each speech segment becomes a voice vector, and segments are grouped into speakers by how close those vectors are",
+            "the parse is done by gpt-5.6-sol via Codex on the laptop: it reads the transcript and never the audio",
+            "the diarization model was chosen by measurement, and the right measurement: on our own Russian call, voice separation quality (silhouette) was 0.47 for CAM++, 0.18 for ERes2Net and 0.27 for TitaNet, and CAM++ also runs about twice as fast. On synthetic audio the order was reversed, and it would have picked the wrong one",
+            "audio is cut at silences, not by the clock, so an utterance never breaks mid-sentence. The speaker label goes on a sentence, not on a 75-second block: on a nine-person call, block-level labeling gave every chunk to one voice",
+            "a speaker's name always carries its evidence path: own track, name from the tile in the call client, self-introduction, being addressed by name, sole candidate. If none applies, it stays “Participant 2”, and that is said out loud",
+            "an empty field blocks its own record instead of being filled with something plausible; disagreements between passes are kept, not averaged",
+            "one entry point for every path: recording, recovery and re-parsing all arrive at it the same way",
+            "source materials always stay on the laptop; only what is confirmed goes into shared memory"
           ],
           "outputs": [
-            "Audio recording and timestamped transcript for returning to individual utterances.",
-            "Readable analysis: justified decisions, assignments, hypotheses, and open questions.",
-            "A personal Markdown note or, in project mode after approval, notes and separate records in connected systems with source links."
+            "two local tracks and a transcript",
+            "parse and preview for a human"
           ],
-          "writes": [
-            "Personal note: Markdown next to the source recording, not published to GitLab.",
-            "Project mode, Obsidian: notes in the corresponding project.",
-            "Project mode, Lab GitLab: claims, runs, and decisions that actually follow from the meeting.",
-            "Project mode, GitLab: the approved shared outcome and tasks in the work's issues."
-          ],
+          "writes": "The call folder on the laptop; call-notes puts the summary into the work repository",
           "gates": [
-            "Check disputed names and conclusions against the transcript and timestamps.",
-            "Approve publication and task assignments.",
-            "Success is confirmed by a saved object, not merely a sent request."
+            "an unknown speaker stays unknown",
+            "an empty field blocks only its own record",
+            "confirmation is required before writing to shared memory"
           ],
           "limits": [
-            "Speech recognition and name attribution can be wrong. The quality of full research analysis and reliability of names in live meetings are still being evaluated.",
-            "Not every research record or relationship type is published automatically. An unsupported operation or unverified source remains an open item; the agent does not substitute a different entity.",
-            "Access to the application and source is provided separately from the shared skill collection."
+            "call-notes is not a required stage of Brain Call",
+            "recording works only on macOS 14 and later: capture goes through ScreenCaptureKit",
+            "transcription requires an OpenRouter key",
+            "you can plug in your own parser through the preview format"
           ],
           "links": [
             {
               "label": "Brain Call repository",
-              "url": "https://github.com/brain-lab-research/brain-call"
+              "url": "https://github.com/Vepricov/brain-call"
             }
           ],
           "adoption": {
             "kind": "privileged",
             "installNote": "Private repository: request access from the owner.",
-            "invoke": "Brain Call application on Mac"
+            "invoke": "A private repository; recording starts with one command, Ctrl+C ends the call, and everything else runs on its own"
           },
-          "purpose": "An application for recording and analyzing work meetings. It saves the conversation, transcribes utterances, and prepares notes covering agreements, assignments, hypotheses, and questions. You review the result before anything is sent to shared systems.",
-          "afterSetup": "Recording, transcription, and verifiable analysis; publication to shared systems depends on the selected mode.",
+          "purpose": "One tool from audio to parse: it records two tracks, transcribes with speakers, and sorts the content by record type. The audio and the full text stay on the laptop.",
+          "afterSetup": "You will take a call from recording to a finished parse on your laptop.",
           "important": [
-            "Speech recognition and name attribution can be wrong. The quality of full research analysis and reliability of names in live meetings are still being evaluated.",
-            "Not every research record or relationship type is published automatically. An unsupported operation or unverified source remains an open item; the agent does not substitute a different entity.",
-            "Access to the application and source is provided separately from the shared skill collection."
+            "call-notes is a separate skill for ready transcripts: it distributes the call summary across the work repository"
           ],
           "nonInstallable": false,
           "usedBy": [
@@ -8593,83 +6022,63 @@ window.RESEARCH_LOOP = {
           },
           "visual": {
             "kind": "routes",
-            "label": "Where each stage runs",
+            "label": "Five steps of one call",
             "nodes": [
-              "Mac: two audio tracks and recording timestamps",
-              "Extension: room, names, and tile activity",
-              "OpenRouter / Gemini 3.5 Flash: text and timestamps",
-              "Mac / CAM++: acoustic groups; browser events: evidence for names",
-              "Codex / GPT-5.6-Sol: transcript analysis with project context",
-              "Telegram: owner's decision",
-              "Obsidian, Lab GitLab: saving and read-back check"
+              "Recording: microphone and system audio as two tracks, everything stays on the laptop",
+              "Transcription: utterances with timing and speaker labels",
+              "Who spoke: voices are told apart on the laptop",
+              "Parse: candidate records by kind of knowledge",
+              "Distribution: after confirmation, call-notes puts the summary in the work, tasks in GitLab, claims as a proposal"
             ]
           },
           "storage": [
-            "Audio tracks, transcripts, and processing materials are saved locally. Speech recognition sends audio to its provider; analysis through Codex sends text to the model.",
-            "In “Personal note” mode the analysis stays a Markdown file next to the recording and is not published to GitLab. This mode limits publication, not the call to the model.",
-            "Every new meeting has its own ID. Its source, note, and shared project document are linked to that ID so meetings on the same day do not overwrite one another."
-          ],
-          "cardTitle": "Keep a conversation useful",
-          "catalogSummary": "Two tracks, browser evidence for names, Gemini for ASR, and GPT-5.6-Sol for analysis with publication approval.",
-          "capabilities": [
-            "Records microphone and system audio on separate tracks. This distinguishes your voice from other participants; the original recording remains a local artifact.",
-            "Sends audio segments to the configured speech recognition service. The current profile uses Gemini 3.5 Flash through OpenRouter. The output is a sequence of utterances with start and end times.",
-            "A local voice model groups similar utterances. Names are matched using supporting evidence: your own track, a participant's introduction, or meeting events. Without enough evidence, the speaker remains “Participant” rather than receiving a guessed name.",
-            "The analysis agent reads the transcript and project context. The current profile uses GPT-5.6-Sol through Codex. It distinguishes decisions from proposals, tasks from questions, and research claims from everyday remarks.",
-            "Preserves each proposed record's origin in the conversation. A task needs an action and assignee; a hypothesis needs a testable formulation and a way to refute it. Gaps are stated explicitly.",
-            "Shows the owner a preview. You can correct meaning, participants, and destinations. In project mode, sending to shared systems starts after approval; a personal note is not published there.",
-            "In project mode it saves the summary in Obsidian, scientific records into the work as a merge request, and the shared outcome and assignments in GitLab issues, if access is set up. In personal mode it creates only a local note. It reads back the results; partial errors stay open."
-          ],
-          "start": "Open Brain Call on Mac and click “Record meeting.” Allow microphone and system audio access. Choose a project or “Personal note” mode. After stopping, review the analysis in Telegram; for a project, you can approve, revise, or cancel publication.",
-          "outcomes": [
-            "Audio recording and timestamped transcript for returning to individual utterances.",
-            "Readable analysis: justified decisions, assignments, hypotheses, and open questions.",
-            "A personal Markdown note or, in project mode after approval, notes and separate records in connected systems with source links."
-          ],
-          "useCases": "During a live meeting or for a saved recording."
+            "a call is a folder on the laptop: two tracks, transcript, parse and preview",
+            "recorded at 24 kHz mono; a compressed copy is kept alongside, and the raw audio is never deleted",
+            "all calls share one history, one line per call",
+            "not a single secret in the repository files"
+          ]
         },
         {
           "id": "call-notes",
           "title": "call-notes",
           "type": "Skill",
-          "role": "Analyzes an existing transcript with several independent agents, preserves disagreements, and routes approved records to their canonical destinations.",
+          "role": "Parses a ready transcript with several independent agents, keeps their disagreements, and after confirmation files the records in their places in the work repository.",
           "when": "When a transcript already exists: from Brain Call, Zoom, Telemost, or a VTT or TXT file.",
           "inputs": [
             "transcript",
-            "project context",
+            "work: the path in the tree is the binding",
             "confirmed participant list"
           ],
           "inside": [
-            "collects a bounded ProjectDossier: project knowledge, papers, participants, and current tasks",
+            "builds a bounded dossier: the work's README, its claims, the manuscript, open GitLab tasks, the list of participants",
             "starts three independent tracks: research content, actions, and chronology/privacy",
-            "a separate integrator assembles one CallBundle and preserves disagreements",
+            "a separate integrator merges everything into one package and keeps the disagreements",
             "a fresh independent reviewer can block any candidate record",
+            "looks for duplicates before writing: the work's claims, open tasks and proposals",
             "shows one preview with fact provenance, missing fields, and destinations",
             "after explicit approval, writes the records and reads each one back"
           ],
           "outputs": [
-            "personal meeting note with project history",
-            "the history of each GitLab issue with the assignee, dates, and context",
-            "updated project hypothesis list with bidirectional links",
-            "separate candidates: claim, run, measurement, rule",
-            "GitLab issues with the assignee and the date assigned",
+            "the original and corrected transcript in a private folder, never sent to git",
+            "call summary as its own page, by proposal",
+            "GitLab tasks: assignee, deadline, the claim the task affects",
+            "claims and runs by proposal",
             "blocked items and one set of questions",
-            "receipt after read-back verification"
+            "report after a verification read"
           ],
-          "writes": "Audio and transcript stay local; the meeting note in Obsidian; approved scientific records into the work as a merge request; actions in the work's issues in GitLab",
+          "writes": "Audio and transcript stay in the private folder; the call summary, approved claims and tasks go into the work repository. Everything shared enters by proposal",
           "gates": [
-            "canonical writes are blocked without the required multi-agent workflow",
-            "every task requires an assignee and assignment date",
+            "without the multi-agent setup, shared writes are blocked and the mode is stated out loud",
+            "an assignee and a deadline are required for every task",
             "an incomplete launch specification blocks a run task",
             "an edit changes the preview but is not itself approval",
-            "the transcript's SHA-256 is the retry key: the same file cannot create a second set of records",
+            "re-parsing the same transcript does not create a second set of records",
             "each record is read back at its destination"
           ],
           "limits": [
-            "does not create a second task tracker in Obsidian",
+            "does not create tasks as checkboxes in notes and does not mirror a task as a file",
             "does not publish the transcript, personal comments, or local paths",
-            "a speaker label does not become a name without a match to the participant list",
-            "a completed task is not a measurement"
+            "a speaker label does not become a name without a match to the participant list"
           ],
           "links": [
             {
@@ -8679,17 +6088,17 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$call-notes",
+            "invoke": "/call-notes",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/call-notes ~/.claude/skills/",
               "# restart Claude Code, then run /call-notes"
             ],
-            "installNote": "The public repository installs a self-contained version of the skill. Multi-agent analysis, note templates, and scripts/normalize_transcript.py are excluded by .gitignore and supplied with laboratory access."
+            "installNote": "The skill itself installs from the open repository; the multi-agent parsing rules, the reference note and the transcript correction script come with lab access."
           },
           "purpose": "",
-          "afterSetup": "Turn an existing transcript into verified notes, tasks, and research records.",
+          "afterSetup": "You will be able to turn any ready transcript into a call summary, tasks and claims in the work repository.",
           "nonInstallable": false,
           "usedBy": [
             {
@@ -8704,8 +6113,8 @@ window.RESEARCH_LOOP = {
           "relations": [
             {
               "toolId": "lab-knowledge-call",
-              "label": "routes approved research records by kind",
-              "title": "Lab GitLab"
+              "label": "puts approved claims and runs into the work repository",
+              "title": "lab-knowledge"
             }
           ],
           "processRelations": [
@@ -8726,85 +6135,66 @@ window.RESEARCH_LOOP = {
             "kind": "topology",
             "label": "Required multi-agent workflow",
             "nodes": [
-              "One project dossier",
-              "Research track",
-              "Action track",
-              "Chronology and privacy",
-              "Integrator",
+              "Work dossier",
+              "Agent: scientific content",
+              "Agent: tasks and actions",
+              "Agent: timeline and personal",
+              "Reconciling disagreements",
               "Independent reviewer",
               "Approval and write"
             ]
-          },
-          "cardTitle": "Turn a discussion into a note",
-          "catalogSummary": "Notes, decisions, and tasks with human review.",
-          "skillId": "call-notes",
-          "start": "Provide the transcript or meeting notes and name the project.",
-          "capabilities": [
-            "collects a bounded ProjectDossier: project knowledge, papers, participants, and current tasks",
-            "starts three independent tracks: research content, actions, and chronology/privacy",
-            "a separate integrator assembles one CallBundle and preserves disagreements",
-            "a fresh independent reviewer can block any candidate record",
-            "shows one preview with fact provenance, missing fields, and destinations",
-            "after explicit approval, writes the records and reads each one back"
-          ],
-          "outcomes": [
-            "personal meeting note with project history",
-            "the history of each GitLab issue with the assignee, dates, and context",
-            "updated project hypothesis list with bidirectional links",
-            "separate candidates: claim, run, measurement, rule",
-            "GitLab issues with the assignee and the date assigned",
-            "blocked items and one set of questions",
-            "receipt after read-back verification"
-          ],
-          "useCases": "When a transcript already exists: from Brain Call, Zoom, Telemost, or a VTT or TXT file.",
-          "important": [
-            "does not create a second task tracker in Obsidian",
-            "does not publish the transcript, personal comments, or local paths",
-            "a speaker label does not become a name without a match to the participant list",
-            "a completed task is not a measurement"
-          ]
+          }
         },
         {
           "id": "lab-knowledge-call",
-          "title": "Lab GitLab",
-          "type": "Shared system",
-          "role": "Provides project context for analysis and accepts only approved research records.",
+          "title": "lab-knowledge",
+          "type": "Skill",
+          "role": "Gives the parse the work's context straight from its clone and records what was approved under the canon: claims and runs under them, everything by proposal.",
           "when": "Before analysis for context; after approval for writes.",
           "inputs": [
-            "project binding",
+            "a work in the lab tree",
             "approved records"
           ],
           "inside": [
-            "returns the project's claims, runs, measurements, and rules",
-            "writes different kinds into different files: a claim in claims/H-XXX/, a run in runs/, a series in series/, a derivation in theory/",
-            "checks provenance and relationships",
-            "assigns a code to the new record: H-*, E-*, R-*, P-*"
+            "context is files: the list of claim folders is the list of the work's claims, and the first line of each is the claim itself",
+            "a claim is a page with a “What refutes it” section",
+            "a run lives under its claim and is written by the recorder, not by the agent",
+            "a decision people will live with is a “What we decided” paragraph on the claim page, not a separate record",
+            "on a separate branch, pushing opens a proposal by itself and assigns the work lead"
           ],
           "outputs": [
-            "project context before analysis",
-            "shared research records with codes"
+            "work context before the parse",
+            "a proposal with claims and runs"
           ],
-          "writes": "Lab GitLab through a merge request",
+          "writes": "The work repository in GitLab, by proposal only",
           "gates": [
             "no writes before human approval",
-            "a new measurement does not automatically change a claim's status"
+            "the checks match numbers against the run corpus: a number not in the corpus does not pass",
+            "a human, the work lead, merges: the merge is the record",
+            "a claim's state does not change automatically when a number appears"
           ],
           "limits": [
-            "full conversations and personal notes are not stored here",
-            "a completed task is not a measurement"
+            "the full conversation and personal notes never enter the base",
+            "a call page is a note on what was discussed: the checks do not judge it"
           ],
           "links": [
             {
-              "label": "Database structure",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
           "adoption": {
-            "kind": "internal",
-            "invoke": "Through the connected shared laboratory database",
-            "installNote": "Call records go into the work as a merge request: access to GitLab is granted by the Telegram bot."
+            "kind": "toolkit-skill",
+            "invoke": "/lab-knowledge",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
+              "# restart Claude Code, then /lab-knowledge"
+            ],
+            "installNote": "The skill is open. You can write to a work once you have a role in its GitLab group: access is granted by the access bot in Telegram."
           },
-          "nonInstallable": true,
+          "nonInstallable": false,
           "usedBy": [
             {
               "name": "Meeting participant",
@@ -8817,9 +6207,9 @@ window.RESEARCH_LOOP = {
           ],
           "relations": [
             {
-              "toolId": "yonote-call",
+              "toolId": "gitlab-issues-call",
               "label": "works alongside it at the same stage",
-              "title": "Issues GitLab"
+              "title": "GitLab tasks"
             }
           ],
           "processRelations": [
@@ -8841,73 +6231,50 @@ window.RESEARCH_LOOP = {
             "label": "Different kinds of meeting content remain separate records",
             "nodes": [
               "Approved meeting analysis",
+              "Call page",
               "Claim",
               "Run",
-              "measurements",
-              "Rule"
+              "Decision as a paragraph under the claim"
             ]
-          },
-          "start": "After going through the meeting, ask to save its scientific outcomes in the Lab GitLab. Name the work and check which records actually follow from the conversation.",
-          "capabilities": [
-            "returns the project's claims, runs, measurements, and rules",
-            "writes different kinds into different files: a claim in claims/H-XXX/, a run in runs/, a series in series/, a derivation in theory/",
-            "checks provenance and relationships",
-            "assigns a code to the new record: H-*, E-*, R-*, P-*"
-          ],
-          "outcomes": [
-            "project context before analysis",
-            "shared research records with codes"
-          ],
-          "useCases": "Before analysis for context; after approval for writes.",
-          "important": [
-            "full conversations and personal notes are not stored here",
-            "a completed task is not a measurement"
-          ]
+          }
         },
         {
-          "id": "yonote-call",
-          "title": "Issues GitLab",
+          "id": "gitlab-issues-call",
+          "title": "GitLab tasks",
           "type": "Work system",
-          "role": "After approval, publishes two separate outputs: a short meeting note and individual tasks with assignees and deadlines.",
-          "when": "After the call outcome and task assignments are approved, once the work repository in GitLab is confirmed.",
+          "role": "Actions agreed on a call become tasks in the work repository: an assignee, a deadline and the claim the task affects.",
+          "when": "After the action list is approved.",
           "inputs": [
-            "a confirmed work repository in GitLab",
-            "Approved meeting summary, date, and source meeting.",
-            "Agreed tasks, assignees, and explicitly stated deadlines."
+            "task title",
+            "assignee",
+            "deadline",
+            "the claim it affects"
           ],
           "inside": [
-            "Checks the project and board binding and the assignees.",
-            "Creates or reuses the CODE · Calls section.",
-            "Saves the approved summary in CODE · Call DD-MM-YYYY without duplicating it on a repeated publication.",
-            "Adds a link to the meeting summary on the project page.",
-            "Saves agreed actions separately as tasks on the project's existing board.",
-            "Reads back the document, the link on the project page, and the saved tasks."
+            "a task lives on the work's board, not in note files",
+            "the task body names the claim code: it shows which claim the record will go under",
+            "a task is taken with the lab take command",
+            "merging the proposal closes the task by itself",
+            "open questions are not filed as tasks: they live on the claim page"
           ],
           "outputs": [
-            "A link to the approved meeting summary.",
-            "A link to the meeting summary from the project page.",
-            "Verified tasks with assignees and any stated deadlines."
+            "verified tasks with an assignee and a deadline",
+            "links to them in the report"
           ],
-          "writes": "The calls/ folder, README, and the work's issues in GitLab",
+          "writes": "The work repository's tasks in the lab GitLab",
           "gates": [
-            "board binding and assignee are verified",
-            "if the shared database offers no task operation, tasks remain incomplete rather than being reported as created",
-            "A person approves the meeting summary and assignments before publication."
+            "assignee and deadline are checked",
+            "if there is no access to tasks, the item is marked as not done rather than declared created"
           ],
           "limits": [
-            "the full transcript and private discussion stay in Obsidian",
-            "a meeting note or completed task is not a research measurement"
+            "a closed task is not a scientific measurement",
+            "the lab's GitLab edition has no second assignee and no epics"
           ],
-          "links": [
-            {
-              "label": "Work repository in GitLab",
-              "url": "https://brain-lab.yonote.ru"
-            }
-          ],
+          "links": [],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through the connected laboratory workspace",
-            "installNote": "Meeting outcomes and tasks are stored in the work repository in GitLab; access to the work is required."
+            "invoke": "Through the work repository in the lab GitLab",
+            "installNote": "Access to the lab GitLab and a git key are issued by the access bot in Telegram."
           },
           "nonInstallable": false,
           "usedBy": [
@@ -8924,7 +6291,7 @@ window.RESEARCH_LOOP = {
             {
               "toolId": "lab-knowledge-call",
               "label": "works alongside it at the same stage",
-              "title": "Lab GitLab"
+              "title": "lab-knowledge"
             }
           ],
           "processRelations": [
@@ -8932,49 +6299,29 @@ window.RESEARCH_LOOP = {
               "processId": "calls",
               "processTitle": "Meetings",
               "stageRef": "s5",
-              "stageTitle": "Publish to the right destinations"
+              "stageTitle": "Route the result"
             }
           ],
           "processRelation": {
             "processId": "calls",
             "processTitle": "Meetings",
             "stageRef": "s5",
-            "stageTitle": "Publish to the right destinations"
-          },
-          "start": "Confirm a meeting outcome the team can understand and the task assignments. The agent will record them in the work's issues in GitLab.",
-          "capabilities": [
-            "Checks the project and board binding and the assignees.",
-            "Creates or reuses the CODE · Calls section.",
-            "Saves the approved summary in CODE · Call DD-MM-YYYY without duplicating it on a repeated publication.",
-            "Adds a link to the meeting summary on the project page.",
-            "Saves agreed actions separately as tasks on the project's existing board.",
-            "Reads back the document, the link on the project page, and the saved tasks."
-          ],
-          "outcomes": [
-            "A link to the approved meeting summary.",
-            "A link to the meeting summary from the project page.",
-            "Verified tasks with assignees and any stated deadlines."
-          ],
-          "useCases": "After the call outcome and task assignments are approved, once the work repository in GitLab is confirmed.",
-          "important": [
-            "the full transcript and private discussion stay in Obsidian",
-            "a meeting note or completed task is not a research measurement"
-          ]
+            "stageTitle": "Route the result"
+          }
         }
       ],
       "implementation": {
-        "summary": "Models, context, and data-transfer boundaries are described from the current code.",
+        "summary": "How Brain Call and call-notes work inside.",
         "items": [
-          "Native capture: separate microphone and system audio; the extension records Telemost tile activity.",
-          "ASR: Gemini 3.5 Flash through OpenRouter receives audio, a term glossary, and name-spelling hints.",
-          "Acoustic groups: CAM++ on CPU. Browser activity and time alignment provide separate evidence for an utterance's speaker name.",
-          "Analysis: GPT-5.6-Sol through Codex, one pass by default; extended staged mode is enabled separately.",
-          "Courier: Telegram preview, owner's decision, publication step, and read-back verification.",
-          "Brain Call and call-notes are independent entry points: recording a conversation and working with an existing transcript."
+          "Recording: separate tracks for the owner and the other speakers, no virtual audio driver",
+          "Transcription into timestamped utterances through an external recognition service",
+          "Speakers are told apart on the laptop, the audio goes nowhere for this; a project term glossary",
+          "A ready transcript is parsed by several independent agents, and disagreements are kept",
+          "Brain Call and call-notes are two independent entry points: the first runs the path from audio, the second parses a ready transcript and distributes the outcome across the work"
         ],
         "links": [
           {
-            "label": "Brain Call owner: request access",
+            "label": "Access to Brain Call: on request to the owner",
             "url": "https://github.com/Vepricov"
           }
         ]
@@ -8982,19 +6329,19 @@ window.RESEARCH_LOOP = {
       "outcomeRefs": [
         {
           "ref": "o1",
-          "label": "Full private notes with timestamps."
+          "label": "The original transcript stays in the work's private folder and never goes to git."
         },
         {
           "ref": "o2",
-          "label": "Decisions and the reasons behind them."
+          "label": "Call summary in the work repository: decisions and reasons."
         },
         {
           "ref": "o3",
-          "label": "Claims and agreed validation methods."
+          "label": "Claims together with their refutation criterion, as stated on the call."
         },
         {
           "ref": "o4",
-          "label": "Tasks with assignees and deadlines."
+          "label": "GitLab tasks with assignees and deadlines."
         },
         {
           "ref": "o5",
@@ -9016,14 +6363,6 @@ window.RESEARCH_LOOP = {
           "stageRef": "s5",
           "toolIds": [
             "call-notes"
-          ]
-        },
-        {
-          "id": "meeting-publication",
-          "title": "Meeting summary and tasks",
-          "stageRef": "s5",
-          "toolIds": [
-            "yonote-call"
           ]
         }
       ],
@@ -9078,9 +6417,9 @@ window.RESEARCH_LOOP = {
           "id": "r5",
           "stage": "s5",
           "tools": [
-            "brain-call",
+            "call-notes",
             "lab-knowledge-call",
-            "yonote-call"
+            "gitlab-issues-call"
           ],
           "destinations": [
             "d1",
@@ -9096,9 +6435,9 @@ window.RESEARCH_LOOP = {
           "id": "r6",
           "stage": "s6",
           "tools": [
-            "brain-call",
+            "call-notes",
             "lab-knowledge-call",
-            "yonote-call"
+            "gitlab-issues-call"
           ],
           "destinations": [],
           "outcomes": [
@@ -9108,26 +6447,25 @@ window.RESEARCH_LOOP = {
         }
       ],
       "toMcp": {
-        "lead": "The conversation's outcomes become shared: source, claims, rules, agreed runs, and numbers.",
+        "lead": "What becomes shared is the outcome of the conversation: the call record in the work, claims with criteria, agreed runs and tasks.",
         "paths": [
           {
             "id": "decisions",
             "actor": "agent",
-            "title": "Conversation outcomes: claims and rules",
-            "line": "tracks → agent analysis → source → H-* claim → P-* rule",
+            "title": "Conversation outcome: call record and claims",
+            "line": "tracks → parse by agents → call page → claim → decision as a paragraph",
             "chain": [
               {
                 "lane": "work",
                 "title": "Tracks and transcript",
                 "stageRef": "s2",
-                "detail": "A separate track for each participant; the transcript remains private."
+                "detail": "A separate track for each side; the transcript sits in a private folder and never goes to git."
               },
               {
                 "lane": "work",
                 "title": "Agent analysis and preview",
                 "stageRef": "s4",
-                "destRef": "d1",
-                "detail": "Integrator and independent reviewer; a person previews the exact records.",
+                "detail": "One agent merges the proposals, a second checks independently; a human sees the exact records before publication.",
                 "via": {
                   "tool": "call-notes",
                   "type": "skill"
@@ -9135,42 +6473,43 @@ window.RESEARCH_LOOP = {
               },
               {
                 "lane": "record",
-                "kind": "source",
+                "kind": "call record",
                 "code": "—",
-                "title": "Meeting as a source",
+                "title": "Call summary",
                 "ref": "object:source-ref",
-                "destRef": "d2",
-                "detail": "The bundle key is the transcript hash: a repeat updates the preview rather than duplicating records.",
+                "destRef": "d1",
+                "detail": "Call page: what was decided and why. Re-parsing the same call does not create duplicates.",
                 "via": {
-                  "tool": "publish_source_note",
-                  "type": "mcp",
+                  "tool": "git push",
+                  "type": "command",
                   "gate": "human approval"
                 }
               },
               {
                 "lane": "record",
                 "kind": "claim",
-                "code": "H-*",
+                "code": "—",
                 "title": "Claim from the conversation",
                 "ref": "object:hypothesis",
                 "destRef": "d2",
-                "detail": "A meeting claim also requires a falsification criterion; without one, the record is rejected.",
+                "detail": "Carried over together with the refutation criterion, as it was stated; no criterion means the record is not ready.",
                 "via": {
-                  "tool": "claims/H-XXX/README.md",
-                  "type": "mcp"
+                  "tool": "lab-knowledge",
+                  "type": "skill",
+                  "gate": "checks and a merge by the lead"
                 }
               },
               {
                 "lane": "record",
-                "kind": "rule",
-                "code": "P-*",
-                "title": "Agreed rule",
+                "kind": "decision",
+                "code": "—",
+                "title": "Agreed decision",
                 "ref": "object:decision",
                 "destRef": "d2",
-                "detail": "Formulation and justification are required; the kind is scientific or operational.",
+                "detail": "Recorded as a “What we decided” paragraph on the claim page.",
                 "via": {
-                  "tool": "propose_decision",
-                  "type": "mcp"
+                  "tool": "lab-knowledge",
+                  "type": "skill"
                 }
               }
             ]
@@ -9179,7 +6518,7 @@ window.RESEARCH_LOOP = {
             "id": "agreed-runs",
             "actor": "agent",
             "title": "Agreed runs and numbers",
-            "line": "agreed run → E-* run → R-* measurement",
+            "line": "agreed run → GitLab task → run from the recorder → number in the corpus",
             "chain": [
               {
                 "lane": "work",
@@ -9189,115 +6528,95 @@ window.RESEARCH_LOOP = {
               },
               {
                 "lane": "record",
-                "kind": "run",
-                "code": "E-*",
-                "title": "Run from an agreement",
-                "ref": "object:experiment",
-                "destRef": "d2",
-                "detail": "hypothesis_id is required: the run inherits its project from its claim.",
+                "kind": "task",
+                "code": "—",
+                "title": "Launch task",
+                "destRef": "d3",
+                "detail": "Assignee, deadline and claim code in the task body.",
                 "via": {
-                  "tool": "lab_run.py",
-                  "type": "mcp"
+                  "tool": "call-notes",
+                  "type": "skill",
+                  "gate": "human approval"
                 }
               },
               {
                 "lane": "record",
-                "kind": "measurement",
-                "code": "R-*",
+                "kind": "run",
+                "code": "—",
+                "title": "Run from an agreement",
+                "ref": "object:experiment",
+                "destRef": "d2",
+                "detail": "The run sheet is written by the recorder, attached before launch; the agent adds only “what is seen”.",
+                "via": {
+                  "tool": "recorder",
+                  "type": "script"
+                }
+              },
+              {
+                "lane": "tie",
                 "title": "A number reported in the meeting",
                 "ref": "object:evidence",
-                "destRef": "d2",
-                "detail": "metric and measurement kinds require numbers; otherwise the write is rejected.",
-                "via": {
-                  "tool": "runs/E-XXX.md",
-                  "type": "mcp"
-                }
+                "detail": "Not a measurement on its own: the checks pass only a number that is in the run corpus."
               }
             ]
           }
         ],
         "kept": [
-          "audio and full transcript",
-          "personal and non-work content",
-          "call outcomes in calls/ and tasks in GitLab issues: a working surface, not knowledge",
-          "a closed issue is not a measurement"
+          "audio and full transcript in the work's private folder",
+          "personal and non-work content"
         ],
         "hook": true
       },
       "pipeline": {
-        "title": "From audio and a named tile to an approved record",
-        "note": "Audio and hints are sent to OpenRouter for ASR; text and limited context go to the Codex model service for analysis. The extension reads tile activity, and acoustic diarization runs on the Mac. The preview is sent to Telegram; approved records go to the Lab GitLab. Synthetic tests do not confirm name accuracy on a live call.",
+        "title": "What happens to a call recording",
+        "note": "Recognition goes outside, speaker separation is computed on the laptop. The original audio and full text stay local: only what is confirmed goes into the shared base, and it enters the work by merging a proposal.",
         "steps": [
           {
-            "op": "capture",
-            "t": "Save audio and timing",
-            "m": "macOS 14+ · native capture · two tracks",
-            "d": "Microphone and system audio are recorded separately. The remote track's start time is saved to align the recording with browser events.",
+            "op": "recording",
+            "t": "Two tracks, not one",
+            "m": "microphone separate from system audio",
+            "d": "Your own speech is recorded on its own track, so the owner's voice is later identified from the audio, not guessed.",
             "n": [
-              "after an interruption, the saved usable segment is retained",
-              "the archiver may replace WAV with Opus; permanent retention of the original WAV is not guaranteed"
+              "works on macOS 14 and later",
+              "audio is compressed and never deleted"
             ]
           },
           {
-            "op": "browser-vad",
-            "t": "See which tile is speaking",
-            "m": "Brain Call extension · Telemost web · no model",
-            "d": "The log connects the room, participant list, and changes in tile highlighting. Snapshots on activity changes are supplemented by polling every second.",
+            "op": "transcript",
+            "t": "Transcription into utterances",
+            "m": "google/gemini-3.5-flash via OpenRouter",
+            "d": "Audio is cut into chunks at silences so an utterance never breaks mid-sentence, then sent for recognition.",
             "n": [
-              "identical names on simultaneously present tiles create ambiguity",
-              "a tile identifies an account, not individual people sharing a microphone"
+              "this is the only step that leaves the laptop",
+              "utterances get start and end times"
             ]
           },
           {
-            "op": "asr",
-            "t": "Get utterances and timestamps",
-            "m": "google/gemini-3.5-flash · OpenRouter",
-            "d": "Audio is sent with a limited set of term and name-spelling hints. These help transcription, but do not turn a participant list into speaker annotations.",
+            "op": "speakers",
+            "t": "Who exactly spoke",
+            "m": "CAM++ model · entirely on the laptop",
+            "d": "The model turns each speech segment into a voice vector, and segments are grouped into speakers by how close those vectors are. The audio goes nowhere for this.",
             "n": [
-              "up to 80 terms and 12 names; the key is stored in Keychain",
-              "a long segment without precise boundaries retains the coarse label"
+              "the model was chosen by measurement on a real Russian call: voice separation quality (silhouette) was 0.47 for CAM++ against 0.18 for ERes2Net and 0.27 for TitaNet, and it also runs twice as fast. On synthetic audio the wrong one would have been picked",
+              "with only one track, speakers are told apart by voice alone, and such passages are marked as less reliable"
             ]
           },
           {
-            "op": "diarize",
-            "t": "Separate voices and verify names",
-            "m": "wespeaker_en_voxceleb_CAM++.onnx · local CPU",
-            "d": "The model produces voice embeddings, and clustering groups segments. Browser events separately provide evidence for the name attached to a specific utterance.",
+            "op": "review",
+            "t": "Parse by record type",
+            "m": "call-notes skill, several independent agents",
+            "d": "A ready transcript is parsed by several agents separately: each proposes candidate records by type — claim, run, measurement, rule. Disagreements between them are kept, not averaged.",
             "n": [
-              "an ONNX file of about 29 MB does not imply the same RAM usage",
-              "browser-based attribution requires matching room, timing, and enough unambiguous coverage",
-              "a mixed coarse segment is not attributed entirely to one person"
+              "a human sees the exact records before publication and approves them"
             ]
           },
           {
-            "op": "analysis",
-            "t": "Analyze meaning with project context",
-            "m": "gpt-5.6-sol · Codex CLI · one pass by default",
-            "d": "The model receives the transcript and available context for the selected project: materials, participants, history, and tasks. It prepares notes and candidate records with sources; the speaker and assignee may be different people.",
+            "op": "distribution",
+            "t": "Distribution and check",
+            "m": "call-notes: call page, GitLab tasks, claims",
+            "d": "Confirmed content goes to its places, each independently: the call summary to the work repository, tasks to GitLab, claims as a proposal. After writing, each place is read back: the report confirms that what was written is really there.",
             "n": [
-              "the CLI runs on the Mac; the model service generates the response; this stage receives no audio",
-              "context bundle up to 220 KB, materials up to 48,000 characters",
-              "multi-track staged mode is enabled separately; call-notes is an independent workflow"
-            ]
-          },
-          {
-            "op": "courier",
-            "t": "Approve a version",
-            "m": "Local courier · Telegram",
-            "d": "The owner receives a preview, resolves uncertainties, and approves a specific version. A comment alone does not authorize publication.",
-            "n": [
-              "without the courier, the automated chain stops at the local stage",
-              "an unconfirmed assignee is not recorded as an established fact"
-            ]
-          },
-          {
-            "op": "apply",
-            "t": "Save and read back",
-            "m": "Obsidian · Lab GitLab",
-            "d": "Approved records are linked to existing projects and boards. The receipt records IDs, the version hash, and results actually read back.",
-            "n": [
-              "partial success is shown separately; saved records are not recreated",
-              "a safe retry fills in missing items; permission failures or incorrect bindings require fixing their cause"
+              "an unavailable destination does not block the others"
             ]
           }
         ]
@@ -9305,41 +6624,14 @@ window.RESEARCH_LOOP = {
       "mapFeatured": [
         "brain-call",
         "call-notes"
-      ],
-      "constellation": {
-        "core": "brain-call",
-        "caption": "Recording · transcription · approval",
-        "groups": [
-          {
-            "area": "west",
-            "title": "Discussion note",
-            "toolIds": [
-              "call-notes"
-            ]
-          },
-          {
-            "area": "east",
-            "title": "Research records",
-            "toolIds": [
-              "lab-knowledge-call"
-            ]
-          },
-          {
-            "area": "south",
-            "title": "Documents and tasks",
-            "toolIds": [
-              "yonote-call"
-            ]
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "experiments",
       "number": "04",
       "title": "Experiments",
       "verb": "Test a hypothesis",
-      "result": "Reproducible runs with a complete record of each",
+      "result": "Reproducible runs, each one recorded by the code itself",
       "color": "#a99bff",
       "registryProcessIds": [
         "experiment-design",
@@ -9347,11 +6639,11 @@ window.RESEARCH_LOOP = {
         "agent-orchestration",
         "code-engineering"
       ],
-      "purpose": "Obtain a measurement you can trust: define the comparison in advance, launch the runs and keep them running. A person or a project agent on the server can manage the series. Both follow the same protocol, monitoring and recordkeeping.",
+      "purpose": "Get a measurement you can trust: name the comparison up front, wrap training in the recorder before launch, and keep runs alive. Settings, numbers, environment, commit and hardware are recorded by the code, not by a person. At night Hermes runs the series on the server: he wakes up on his own when a run finishes and reports to the project chat. Judging the result stays with the human.",
       "when": [
         "A new mechanism or claim needs testing.",
         "You need a baseline, ablations, controls and multiple seeds.",
-        "A long series needs to run unattended."
+        "A long series has to run overnight while the laptop is closed."
       ],
       "stages": [
         {
@@ -9368,71 +6660,65 @@ window.RESEARCH_LOOP = {
         },
         {
           "title": "Break the series into runs",
-          "summary": "Configurations, order and who is responsible: a person or the project agent.",
+          "summary": "Configurations, order and executor: a human, a local agent or Hermes.",
           "result": "Run queue",
           "ref": "s3"
         },
         {
-          "ref": "s-code",
-          "title": "Check code changes",
-          "summary": "If the code changed, run the relevant project checks before starting the series.",
-          "result": "A checked diff or specific failures"
-        },
-        {
-          "title": "Launch and confirm progress",
-          "summary": "After 60–90 seconds, check that training steps are advancing.",
-          "result": "A run confirmed to be making progress",
+          "title": "Wrap and launch",
+          "summary": "The recorder is attached before launch; within 60–90 seconds the log shows training steps.",
+          "result": "A live run that records itself",
           "ref": "s4"
         },
         {
           "title": "Leave it under supervision",
-          "summary": "Hand the series to the project agent: goal, thresholds, restrictions and probe.",
+          "summary": "Hand the series to Hermes as a task with a completion criterion: goal, thresholds, prohibitions.",
           "result": "The series runs unattended",
           "ref": "s5"
         },
         {
           "title": "Monitor and respond",
-          "summary": "Check the training step, metrics, log age and failures.",
+          "summary": "Hermes wakes up when the process ends, not on a timer; a crash is investigated before any restart.",
           "result": "Progress snapshots and investigated failures",
           "ref": "s6"
         },
         {
-          "title": "Record the final state accurately and hand off for analysis",
-          "summary": "Distinguish completed, failed, stalled and interrupted runs.",
-          "result": "Complete run record",
+          "title": "Close honestly and hand over to the base",
+          "summary": "The run page goes under a claim with its real status, and runs are assembled into a series with a verdict.",
+          "result": "A run under a claim and a series with a verdict",
           "ref": "s7"
         }
       ],
       "outcomes": [
         "Fixed protocol and configurations for every run.",
-        "Logs, checkpoints and metrics for each seed.",
+        "A page for every run: settings, metrics, environment, commit and hardware, all recorded by the code.",
         "History of launches, failures and decisions.",
-        "An explicit final status for every run.",
-        "A link from the run to the original claim."
+        "An explicit final status: a crashed run is not thrown away but kept, marked “crashed” with the reason.",
+        "The run sits under its claim and belongs to a series with a verdict."
       ],
       "destinations": [
         {
           "name": "Logs and checkpoints on the server",
-          "what": "Configurations, logs, checkpoints and raw metrics",
-          "why": "The original files behind every calculation",
+          "what": "Configs, logs, checkpoints and recorder files",
+          "why": "Primary files, referenced by “where to check this”",
           "ref": "d1"
         },
         {
-          "name": "Obsidian, Experiments folder",
-          "what": "Protocol, timeline, failures and decisions",
-          "why": "A history people can read",
+          "name": "The researcher's series log",
+          "what": "Timeline, progress snapshots, final tables and a plot",
+          "why": "A history for humans to read; stays on their machine and is not published to GitLab",
           "ref": "d2"
         },
         {
-          "name": "Project agent queue",
-          "what": "Run cards, dependencies and statuses",
-          "why": "The order of work while unattended",
+          "name": "Hermes: project chat and task board",
+          "what": "Tasks with completion criteria, statuses, deviation reports",
+          "why": "Work order without a human, and memory that lasts for weeks",
           "ref": "d3"
         },
         {
-          "name": "Shared lab knowledge base",
-          "what": "The run, followed by its measurement",
-          "why": "Shared research memory",
+          "name": "Lab base: the work's claim",
+          "what": "Run page, series with a verdict",
+          "why": "Shared scientific memory: a record enters by merging a proposal",
           "ref": "d4"
         }
       ],
@@ -9452,62 +6738,251 @@ window.RESEARCH_LOOP = {
           "links": []
         },
         {
+          "id": "recorder-first",
+          "title": "The run is wrapped before launch",
+          "explanation": "Numbers and settings are written by the code that knows them, not by an agent from memory. A forgotten wrapper is caught by an automatic guard: at the end of every agent turn it spots training launches and checks whether the recorder is attached. A run already in progress is adopted after the fact and marked as adopted.",
+          "example": "",
+          "links": []
+        },
+        {
           "id": "liveness",
           "title": "A running process does not yet mean training is progressing",
-          "explanation": "A launch counts when the panel shows a line such as >Eval: Iter=, the log grows and result files appear. A process still showing only optimizer initialization has usually stalled.",
+          "explanation": "A launch counts once a training-step line appears in the log, the log keeps growing and result files are being created. If after a minute you only see optimizer initialization, the run is most likely stuck.",
           "example": "",
           "links": []
         },
         {
           "id": "ownership",
-          "title": "The agent stops only its own runs",
-          "explanation": "Other people's processes on a shared server remain untouched. Permission to stop its own failed run must be explicit, with conditions and a numerical failure threshold. An unconditional prohibition leaves the agent unable to act and the GPU occupied until morning.",
+          "title": "Hands off what isn't yours on the server",
+          "explanation": "Other people's processes on a shared server are never killed, even when they get in the way, and the rule applies equally to humans and agents. Low disk space is solved by cleaning up your own footprint: temp files and caches move off the small system disk onto the large one.",
           "example": "",
           "links": []
         },
         {
           "id": "terminal-state",
           "title": "Interrupted trajectories are labeled accurately",
-          "explanation": "A crash or interruption is not a completed result. It limits the conclusions that can later be drawn.",
+          "explanation": "A crash never becomes a finished result: the recorder closes a crashed run marked “crashed” with the reason. A planned run is not a result, and non-comparable runs are not admitted into a series.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "numbers-gate",
+          "title": "No run, no number",
+          "explanation": "An automatic check matches every number on the page against the claim's runs: a number that is not in any run gives a red verdict. A proposal with unprocessed runs is not accepted, and acceptance is done by a human — the work lead.",
           "example": "",
           "links": []
         }
       ],
       "example": {
         "title": "The path of a run series",
-        "text": "The series fixes the effective batch size, budget, evaluation points and seeds before receiving a run code in the shared database. A person launches the runs, confirms training progress after a minute and a half, then hands the series to the project agent with a goal, queue order, failure thresholds and restrictions. A probe running as root collects the numbers for each cycle, rather than the agent itself. A stalled run is therefore detectable from the age of the status file, regardless of an upbeat report. An interrupted trajectory is marked as interrupted. Only comparable completed runs proceed to analysis."
+        "text": "The series pins down effective batch, budget, evaluation points and seeds. The training code is wrapped in the recorder before launch, with what we are testing written into it. Runs go in the background on the server, and a live training step is confirmed within a minute and a half. From there Hermes runs the series in the project chat: the process is launched with a completion notification, and Hermes wakes up three seconds after it ends, with no timer-based watcher. The recorder writes each run's page itself; the agent moves it under the claim, adds what the numbers show and assembles a series with a verdict. A crashed run stays, marked “crashed”, only comparable runs go into the series, and the check matches every number against the runs."
       },
       "tools": [
+        {
+          "id": "lab-run",
+          "title": "lab_run.py",
+          "type": "Script",
+          "role": "Run recorder. Wraps the training code before launch and writes the run page itself: settings, metrics, environment (Python, PyTorch, CUDA, GPU model and count), repository and commit, log location. One file, no dependencies.",
+          "when": "Before launching any training whose result may end up in the base.",
+          "inputs": [
+            "work and run name",
+            "settings: vars(args) or a config",
+            "metrics from the training loop",
+            "goal: why this run exists"
+          ],
+          "inside": [
+            "saves the run record to disk: it survives even without a network",
+            "pushes the run page with metrics to the claim branch, not to main",
+            "closes a crashed run marked “crashed” with the reason",
+            "adopts a run already in progress and marks it as adopted",
+            "leaves the run number and claim empty: the agent fills them in"
+          ],
+          "outputs": [
+            "run page",
+            "full metrics table and attached files",
+            "run record on disk"
+          ],
+          "writes": "A work branch in the lab base and a local copy of the run record",
+          "gates": [
+            "pushing never crashes training",
+            "a proposal is not accepted while it has unprocessed runs",
+            "a number that is not in any run gives a red verdict"
+          ],
+          "limits": [
+            "does not know which claim the run belongs to",
+            "the “what is seen” observation is added by the agent",
+            "an unwrapped run can only be adopted: retyping numbers by hand is forbidden"
+          ],
+          "links": [
+            {
+              "label": "Recorder source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-skill",
+            "invoke": "from lab_run import LabRun",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "cp ~/claude-brainlab/skills/lab-knowledge/scripts/lab_run.py <training repository>/",
+              "# in code: with LabRun(work=..., name=..., settings=vars(args)) as run: ..."
+            ],
+            "installNote": "The file is self-contained: Python 3.9+, no dependencies. Without access to the lab base the run still lands on disk; pushing is simply skipped."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Researcher",
+              "role": "wraps training before launch and records the run's goal"
+            },
+            {
+              "name": "Project agent on the server",
+              "role": "adopts the run if the wrapper was forgotten"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-knowledge-run",
+              "label": "hands the result to the next stage",
+              "title": "Lab Knowledge: run and series"
+            },
+            {
+              "toolId": "run-guard",
+              "label": "checked by it at the end of a turn",
+              "title": "Recorder-less launch guard"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "experiments",
+              "processTitle": "Experiments",
+              "stageRef": "s4",
+              "stageTitle": "Wrap and launch"
+            }
+          ],
+          "processRelation": {
+            "processId": "experiments",
+            "processTitle": "Experiments",
+            "stageRef": "s4",
+            "stageTitle": "Wrap and launch"
+          }
+        },
+        {
+          "id": "run-guard",
+          "title": "Recorder-less launch guard",
+          "type": "Hook",
+          "role": "At the end of every agent turn it scans, on its own and without a model, for training launches and checks whether the recorder is attached. If not, it stops the agent with a single line while the run can still be adopted. It also shows red check verdicts on open proposals.",
+          "when": "Every Claude Code turn end; no separate call.",
+          "inputs": [
+            "session transcript",
+            "training entry-point file",
+            "the work's open proposals"
+          ],
+          "inside": [
+            "recognizes training launches by typical commands and arguments",
+            "looks for the recorder in the code, not in the launch command",
+            "does not confuse text inside a command with the command itself",
+            "reports each case once",
+            "prints a red verdict with the name of the check"
+          ],
+          "outputs": [
+            "the line “Launch without recorder: …”",
+            "the line “Red gates: …”"
+          ],
+          "writes": "Nothing but a list of what has already been reported in this session",
+          "gates": [
+            "decides on facts, not on a model's judgment",
+            "no file next to it means the run counts as unwrapped: retyping numbers by hand costs more than a false alarm"
+          ],
+          "limits": [
+            "never starts or stops a run itself",
+            "adopting the run is still the agent's job"
+          ],
+          "links": [
+            {
+              "label": "Hook source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "A Stop hook, installed by the claude-brainlab installer",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "cd ~/claude-brainlab && bash install/bootstrap.sh && bash install/setup.sh",
+              "# restart Claude Code"
+            ],
+            "installNote": "The hook is installed with the whole harness; in the same hook Jev decides what from the turn to record and where."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Researcher",
+              "role": "sees that a run is not being recorded while it can still be saved"
+            },
+            {
+              "name": "Project agent on the server",
+              "role": "adopts the run from its very first line"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-run",
+              "label": "checks whether it is attached",
+              "title": "lab_run.py"
+            },
+            {
+              "toolId": "lab-knowledge-run",
+              "label": "shows the check verdict on its proposals",
+              "title": "Lab Knowledge: run and series"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "experiments",
+              "processTitle": "Experiments",
+              "stageRef": "s4",
+              "stageTitle": "Wrap and launch"
+            }
+          ],
+          "processRelation": {
+            "processId": "experiments",
+            "processTitle": "Experiments",
+            "stageRef": "s4",
+            "stageTitle": "Wrap and launch"
+          }
+        },
         {
           "id": "experiment-log",
           "title": "obsidian-experiment-log",
           "type": "Skill",
-          "role": "A consistent workflow for ML runs: planning, launch, monitoring, failure investigation and an Obsidian record. A run without a note is invisible to a future agent. A note without a run is invented.",
+          "role": "The procedure for long runs on a server: background launch with logging, liveness confirmation, a check every 30 minutes, triage of hangs and crashes. A run without a record is invisible to the next agent; a record without a run is fiction.",
           "when": "From planning the series to recording the final numbers.",
           "inputs": [
             "claim and protocol",
-            "server facts",
-            "run logs",
-            "Obsidian destination"
+            "server and a free GPU",
+            "run logs"
           ],
           "inside": [
-            "checks whether the plan can answer the research question",
-            "defines the order of tmux, pipe-pane and send-keys commands",
-            "confirms progress from an advancing training step",
+            "sets the exact background launch sequence, otherwise the log stays empty",
+            "confirms liveness by a training-step line within 60–90 seconds",
+            "on a shared server, checks whose GPU it is before taking it",
+            "the same step twice in a row is treated as a hang",
             "distinguishes an intermediate result from a stable one"
           ],
           "outputs": [
-            "Experiments note with a timeline",
-            "progress snapshots",
-            "final numbers in Results"
+            "a live run with a growing log",
+            "series timeline and progress snapshots",
+            "final table with a plot"
           ],
-          "writes": "Project Obsidian notes and run files on the server",
+          "writes": "Logs on the server and the series log with the researcher; the run reaches the base through the recorder",
           "gates": [
             "the launch sequence must stay intact, or the log will be empty",
             "the final number includes its conditions"
           ],
           "limits": [
-            "does not make a weak protocol scientifically sound"
+            "does not make a weak protocol scientifically sound",
+            "the series log is not a record in the base"
           ],
           "links": [
             {
@@ -9517,7 +6992,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$obsidian-experiment-log",
+            "invoke": "/obsidian-experiment-log",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -9528,7 +7003,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
+              "name": "Researcher",
               "role": "approves the protocol, budget and stopping criterion"
             },
             {
@@ -9538,198 +7013,344 @@ window.RESEARCH_LOOP = {
           ],
           "relations": [
             {
-              "toolId": "experiment-mcp",
+              "toolId": "lab-run",
               "label": "works alongside it at the same stage",
-              "title": "Shared database: run"
+              "title": "lab_run.py"
             },
             {
               "toolId": "hermes",
-              "label": "passes the result to the next stage",
-              "title": "Hermes Agent"
+              "label": "hands the result to the next stage",
+              "title": "Hermes"
             }
           ],
           "processRelations": [
             {
               "processId": "experiments",
               "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
+              "stageRef": "s4",
+              "stageTitle": "Wrap and launch"
             }
           ],
           "processRelation": {
             "processId": "experiments",
             "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
+            "stageRef": "s4",
+            "stageTitle": "Wrap and launch"
           },
-          "cardTitle": "Track an experiment from plan to numbers",
-          "catalogSummary": "Protocol, run progress and results in the project log.",
-          "skillId": "obsidian-experiment-log",
-          "start": "Specify the project, protocol, server and run logs. Ask the agent to record the run's state and results.",
-          "capabilities": [
-            "checks whether the plan can answer the research question",
-            "defines the order of tmux, pipe-pane and send-keys commands",
-            "confirms progress from an advancing training step",
-            "distinguishes an intermediate result from a stable one"
-          ],
-          "outcomes": [
-            "Experiments note with a timeline",
-            "progress snapshots",
-            "final numbers in Results"
-          ],
-          "useCases": "From planning the series to recording the final numbers.",
-          "important": [
-            "does not make a weak protocol scientifically sound"
-          ]
+          "skillId": "obsidian-experiment-log"
         },
         {
-          "id": "experiment-mcp",
-          "title": "Shared database: run",
-          "type": "Files in git",
-          "role": "A run, that is, an experiment that tests a claim, lives in claims/H-XXX/runs/E-XXX.md. It is written by the lab_run.py recorder: hyperparameters, numbers, commit, and hardware; the run takes its claim from its folder.",
-          "when": "When a test plan needs a code such as E-WBD-033.",
+          "id": "experiment-runs",
+          "title": "experiment-runs",
+          "type": "Skill",
+          "role": "How to launch training on lab servers: where the machine list is, why the GPU index in the program differs from the physical one, code on the server under the same name, long runs only in the background, and what a run must record beyond the recorder.",
+          "when": "Before launching, resuming or moving training to a remote machine.",
           "inputs": [
-            "hypothesis_id",
-            "protocol: model, data, budget, seeds and metrics",
-            "status",
-            "idempotency_key"
+            "the work and its code",
+            "the work's server list, if set",
+            "launch command"
           ],
           "inside": [
-            "checks that the claim exists",
-            "accepts six statuses, from planned to failed",
-            "stores the protocol separately from logs",
-            "keeps the link to a future measurement"
+            "takes a machine from the work's list; without one, shows the load and asks",
+            "matches the GPU index in the program to the physical card so it doesn't land on someone else's run",
+            "keeps the code on the server in a folder with the same name",
+            "pins every source of randomness",
+            "saves exact library versions next to the results",
+            "saves optimizer and scheduler state in the checkpoint"
           ],
           "outputs": [
-            "run code in the E-* format",
-            "protocol and current status"
+            "a run you can reproduce six months later",
+            "a background launch on the right GPU"
           ],
-          "writes": "Shared lab knowledge base",
+          "writes": "Code and results on the server; the run reaches the base through the recorder",
           "gates": [
-            "the protocol is specific enough to repeat",
-            "completed is never set without an actual result"
+            "an output folder on the server does not count as knowledge",
+            "numbers and settings are written by code, not by a person"
           ],
           "limits": [
-            "checkpoints and full logs are not stored here",
-            "a run record is not itself a measurement"
+            "does not choose what is worth testing",
+            "does not record the run itself: that is the recorder's job"
           ],
           "links": [
             {
-              "label": "How the database works",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/experiment-runs/SKILL.md"
             }
           ],
           "adoption": {
-            "kind": "internal",
-            "invoke": "Through git and a merge request",
-            "installNote": "The run page goes into the work as a merge request: access is granted by the Telegram bot."
+            "kind": "toolkit-skill",
+            "invoke": "/experiment-runs",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/experiment-runs ~/.claude/skills/",
+              "# restart Claude Code, then /experiment-runs"
+            ]
           },
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "links the run to the claim being tested"
+              "name": "Researcher",
+              "role": "picks the machine and approves the protocol"
             },
             {
               "name": "Project agent on the server",
-              "role": "updates the run status to match what actually happened"
+              "role": "launches the run so that it can be reproduced"
             }
           ],
           "relations": [
             {
-              "toolId": "experiment-log",
-              "label": "works alongside it at the same stage",
-              "title": "obsidian-experiment-log"
+              "toolId": "lab-run",
+              "label": "hands the result to the next stage",
+              "title": "lab_run.py"
             },
             {
-              "toolId": "hermes",
-              "label": "passes the result to the next stage",
-              "title": "Hermes Agent"
+              "toolId": "server-hygiene",
+              "label": "works alongside it at the same stage",
+              "title": "Servers: log and hygiene"
             }
           ],
           "processRelations": [
             {
               "processId": "experiments",
               "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
+              "stageRef": "s2",
+              "stageTitle": "Freeze the protocol"
             }
           ],
           "processRelation": {
             "processId": "experiments",
             "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Provide the project, protocol and actual run state. The agent creates an experiment record and adds to it as work progresses.",
-          "capabilities": [
-            "checks that the claim exists",
-            "accepts six statuses, from planned to failed",
-            "stores the protocol separately from logs",
-            "keeps the link to a future measurement"
-          ],
-          "outcomes": [
-            "run code in the E-* format",
-            "protocol and current status"
-          ],
-          "useCases": "When a test plan needs a code such as E-WBD-033.",
-          "important": [
-            "checkpoints and full logs are not stored here",
-            "a run record is not itself a measurement"
-          ]
+            "stageRef": "s2",
+            "stageTitle": "Freeze the protocol"
+          }
         },
         {
-          "id": "hermes",
-          "title": "Hermes Agent · project work",
-          "type": "Agent environment",
-          "role": "An autonomous assistant for research projects. You can ask it to understand code, check a change, carry out an authorized comparison and explain the result. Hermes Agent provides the execution environment. The project profile defines the model, instructions, tools, memory and scope of work.",
-          "when": "When a task takes several steps and checks, and work needs to continue between your messages.",
+          "id": "server-hygiene",
+          "title": "Servers: log and hygiene",
+          "type": "Rule",
+          "role": "Servers are shared, and their system disk is small. This rule keeps them usable for everyone: temp files and caches go on the large disk, your own footprint is cleaned up after a run, and other people's stuff is left alone. What changed on the machines is recorded in the lab's server log.",
+          "when": "Before and after a heavy run; on “no space left” and when a host does not respond.",
           "inputs": [
-            "The working directory and canonical notes for a specific project.",
-            "The goal, completion criterion, permitted resources and stopping rules.",
-            "A separate profile with a selected model and available tools. MCP connections are checked for that profile.",
-            "For shared assignments: a link to an issue of the work in GitLab and to a human owner."
+            "free space on the system and work disks",
+            "your own footprint: temp files, caches, logs",
+            "the lab's server log"
           ],
           "inside": [
-            "Recovers project instructions, history and state. Checks its own files, processes and permitted servers. Other projects do not become part of the assignment.",
-            "The model chooses the next step and tool: read a file, edit code, run a check, inspect a log or call MCP. The tool's response returns to the same working loop.",
-            "Breaks work into internal tasks. In our setup, the Hermes board stores their IDs, states, messages and results. The profile's schedule lets it return to unfinished work.",
-            "Checks resources and budget before computation. Records the launch protocol and actual run status, retaining metrics and sources. A running process may still have no result.",
-            "Matches measurements or a theoretical derivation against a testable claim. The Lab GitLab stores the run, series, or derivation separately from the claim's state. “Task done” does not mean “hypothesis supported”.",
-            "In the regular cycle it reads GitLab issues assigned to its owner. It can take an assignment that has not started yet and add a result the team can understand. If a check is needed, the issue stays in progress; if blocked, it states what is needed and from whom.",
-            "Every 15 minutes, a separate Python exporter reads the internal board over SSH and updates the overview in the same project's Obsidian folder. No model is involved in this conversion.",
-            "Reports a meaningful result, failure or decision needed. A verifiable outcome includes artifacts and confirmed records. When paused or short of resources, the agent does not describe waiting as a completed run."
+            "temp files, models and caches move off the system disk onto the work disk",
+            "space on both disks is checked before a heavy run",
+            "after a run, your own temp files, unpacked archives and excess logs are deleted",
+            "other people's processes and files are left alone even when space runs out",
+            "the server log only gets durable facts: an address changed, what broke and when it was fixed"
           ],
           "outputs": [
-            "Code changes and results of completed checks.",
-            "Runs with state and sources of results; scientific records go to the Lab GitLab as a merge request.",
-            "A personal board with history in Obsidian and clear outcomes for assigned tasks on the shared project board."
+            "a server everyone can write to",
+            "an incident record someone will find a month later"
           ],
-          "writes": [
-            "The internal Hermes queue on the server: the authoritative state of personal tasks.",
-            "Obsidian: an overview in the same project folder, updated by the Python exporter.",
-            "Lab GitLab: the work's scientific records and journal entries.",
-            "GitLab issues: only shared project tasks and a clear outcome."
-          ],
+          "writes": "Nothing on its own; server log entries go in directly, without a proposal",
           "gates": [
-            "Resources and authority are checked before launch. Other people's jobs, profiles and processes are preserved.",
-            "Shared assignments require a project → board → owner binding. The human remains the task's assignee.",
-            "The outcome and status of a GitLab issue are updated so that someone else's change is not overwritten.",
-            "Scientific conclusions rely on measurements or a derivation and retain the limits of the test."
+            "only your own files get deleted",
+            "who is computing what right now does not go in the log"
           ],
           "limits": [
-            "The project queue and the GitLab issue handling are settings of our installation. A standard Hermes install does not enable them automatically.",
-            "Manual changes to the Obsidian overview do not control the agent's queue."
+            "server system settings are changed only with the owner's knowledge"
           ],
           "links": [
             {
-              "label": "Hermes Agent repository",
+              "label": "The server-hygiene rule",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/server-hygiene.md"
+            }
+          ],
+          "adoption": {
+            "kind": "source-only",
+            "invoke": "~/.claude/rules/server-hygiene.md, installed by the claude-brainlab installer",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "cd ~/claude-brainlab && bash install/bootstrap.sh && bash install/setup.sh"
+            ],
+            "installNote": "The server log is internal: access is granted by the access bot."
+          },
+          "usedBy": [
+            {
+              "name": "Researcher",
+              "role": "checks space before launch and cleans up after itself"
+            },
+            {
+              "name": "Project agent on the server",
+              "role": "never writes temp files to root and never touches other people's stuff"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "experiment-runs",
+              "label": "works alongside it at the same stage",
+              "title": "experiment-runs"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "experiments",
+              "processTitle": "Experiments",
+              "stageRef": "s4",
+              "stageTitle": "Wrap and launch"
+            }
+          ],
+          "processRelation": {
+            "processId": "experiments",
+            "processTitle": "Experiments",
+            "stageRef": "s4",
+            "stageTitle": "Wrap and launch"
+          }
+        },
+        {
+          "id": "lab-knowledge-run",
+          "title": "Lab Knowledge: run and series",
+          "type": "Skill",
+          "role": "Moves the run page written by the recorder under a claim, assembles the runs into a series with a verdict and sends it all as one proposal. A record enters the base when a human accepts the proposal; there is no other way.",
+          "when": "A run finished, successfully or not, or a set of runs answered one question.",
+          "inputs": [
+            "run page written by the recorder",
+            "a claim in the work",
+            "next free run number"
+          ],
+          "inside": [
+            "puts the page under the claim and adds only what the numbers show",
+            "series: question, shared conditions, comparison axis, run table, verdict",
+            "changes a claim's state only by its refutation criterion",
+            "one proposal per claim, in its own branch",
+            "a regular push opens the proposal by itself and assigns the work lead",
+            "the lab checks command shows the check verdict and unresolved comments"
+          ],
+          "outputs": [
+            "run page under the claim",
+            "a series with a verdict and a paragraph on the claim page",
+            "a proposal assigned to the work lead"
+          ],
+          "writes": "A work in the lab tree, a claim branch; into main only through an accepted proposal",
+          "gates": [
+            "a number that is not in any run gives a red verdict",
+            "a series without runs and without a verdict fails the check",
+            "a proposal with unprocessed runs is not accepted",
+            "accepted by a human — the work lead"
+          ],
+          "limits": [
+            "a planned run is not a result",
+            "non-comparable runs are not admitted into a series",
+            "numbers are never retyped by hand"
+          ],
+          "links": [
+            {
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+            },
+            {
+              "label": "How runs become a series",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-skill",
+            "invoke": "/lab-knowledge",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
+              "# restart Claude Code, then /lab-knowledge"
+            ],
+            "installNote": "The skill is installed for everyone, but there is somewhere to write only with access to the lab's GitLab, granted by the access bot."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Researcher",
+              "role": "reads the proposal and accepts it as the work lead"
+            },
+            {
+              "name": "Project agent on the server",
+              "role": "moves runs under the claim and writes the series"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "lab-run",
+              "label": "takes a finished run page from it",
+              "title": "lab_run.py"
+            },
+            {
+              "toolId": "run-guard",
+              "label": "works alongside it at the same stage",
+              "title": "Recorder-less launch guard"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "experiments",
+              "processTitle": "Experiments",
+              "stageRef": "s7",
+              "stageTitle": "Close honestly and hand over to the base"
+            }
+          ],
+          "processRelation": {
+            "processId": "experiments",
+            "processTitle": "Experiments",
+            "stageRef": "s7",
+            "stageTitle": "Close honestly and hand over to the base"
+          },
+          "skillId": "lab-knowledge"
+        },
+        {
+          "id": "hermes",
+          "title": "Hermes",
+          "type": "Server agent",
+          "role": "The second team member, living on the server next to the GPUs and logs. Each project has its own profile with a persistent session in its own Telegram chat: Hermes remembers for weeks which hypotheses are already closed and why, and brings it up himself. Sessions live for hundreds of hours; a regular turn costs about $0.02.",
+          "when": "When a series has to be run and watched without a human, and the task is short with a clear criterion.",
+          "inputs": [
+            "a task with a completion criterion",
+            "the project profile and its Telegram chat",
+            "a card on the task board",
+            "a copy of the work on the server"
+          ],
+          "inside": [
+            "each profile has its own role, memory and access; the session is tied to the project chat",
+            "sessions live for hundreds of hours: two profiles are at 625 and 946 hours (measured 23-09-2026)",
+            "a background process with a completion notification wakes the session three seconds after it ends",
+            "the task board is shared across profiles: claim, assign, block, comment",
+            "one project's board has 381 closed tasks",
+            "a regular turn is about $0.02, a substantive one up to $0.066 (measured 23-09-2026)"
+          ],
+          "outputs": [
+            "runs launched and seen through",
+            "a deviation report in the project chat",
+            "a closed or explicitly blocked task on the board"
+          ],
+          "writes": "Profile, task board and work copy on the server; into the base via the same git and a proposal",
+          "gates": [
+            "what gets handed over is a task with a completion criterion, not “think about this”",
+            "other people's runs are left alone, both ways",
+            "no second executor is set up next to the project profile"
+          ],
+          "limits": [
+            "one turn is capped at 60 tool iterations or an hour",
+            "what to test, what a number means and the paper text are decided locally",
+            "the board is a work order, not evidence"
+          ],
+          "links": [
+            {
+              "label": "The open-source Hermes Agent project Hermes is built on",
               "url": "https://github.com/NousResearch/hermes-agent",
               "canonical": true
             },
             {
+              "label": "Sample profile",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hermes/general/SOUL.md"
+            },
+            {
               "label": "All published profile prompts",
-              "url": "https://github.com/brain-lab-research/hermes-prompts"
+              "url": "https://github.com/Vepricov/claude-brainlab/tree/main/hermes"
+            },
+            {
+              "label": "How we split work with Hermes",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
@@ -9739,26 +7360,27 @@ window.RESEARCH_LOOP = {
               "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash",
               "hermes --help"
             ],
-            "installNote": "Hermes Agent is an open project by Nous Research. Create a clean profile with your own context and resources. Personal profiles for active research are not included in the public setup."
+            "installNote": "Hermes is built on the Nous Research open-source project with our modifications. The sample profile is published verbatim at the link below; set up your own board and Telegram chat."
           },
-          "purpose": "An autonomous assistant for research projects. You can ask it to understand code, check a change, carry out an authorized comparison and explain the result. Hermes Agent provides the execution environment. The project profile defines the model, instructions, tools, memory and scope of work.",
+          "purpose": "Takes a task with a completion criterion and drives it to a verifiable result while the human is busy with something else.",
           "capabilities": [
-            "Recovers project instructions, history and state. Checks its own files, processes and permitted servers. Other projects do not become part of the assignment.",
-            "The model chooses the next step and tool: read a file, edit code, run a check, inspect a log or call MCP. The tool's response returns to the same working loop.",
-            "Breaks work into internal tasks. In our setup, the Hermes board stores their IDs, states, messages and results. The profile's schedule lets it return to unfinished work.",
-            "Checks resources and budget before computation. Records the launch protocol and actual run status, retaining metrics and sources. A running process may still have no result.",
-            "Matches measurements or a theoretical derivation against a testable claim. The Lab GitLab stores the run, series, or derivation separately from the claim's state. “Task done” does not mean “hypothesis supported”.",
-            "In the regular cycle it reads GitLab issues assigned to its owner. It can take an assignment that has not started yet and add a result the team can understand. If a check is needed, the issue stays in progress; if blocked, it states what is needed and from whom.",
-            "Every 15 minutes, a separate Python exporter reads the internal board over SSH and updates the overview in the same project's Obsidian folder. No model is involved in this conversion.",
-            "Reports a meaningful result, failure or decision needed. A verifiable outcome includes artifacts and confirmed records. When paused or short of resources, the agent does not describe waiting as a completed run."
+            "run and watch runs, report deviations",
+            "wake up on its own when a process finishes",
+            "mechanical checks: verify a lemma numerically, run a grid, build a table",
+            "keep the board up to date",
+            "return the result together with its status and the next decision point"
           ],
-          "useCases": "When a task takes several steps and checks, and work needs to continue between your messages.",
+          "useCases": [
+            "The series runs overnight, laptop closed",
+            "You need to gather facts with twenty commands in a row right on the server",
+            "The task is short, and it is clear when it is done"
+          ],
           "outcomes": [
-            "Code changes and results of completed checks.",
-            "Runs with state and sources of results; scientific records go to the Lab GitLab as a merge request.",
-            "A personal board with history in Obsidian and clear outcomes for assigned tasks on the shared project board."
+            "a completed or explicitly blocked task",
+            "verifiable artifacts and results",
+            "a clear status and next step"
           ],
-          "afterSetup": "Assign Hermes bounded project tasks and receive a verified outcome with status and artifacts.",
+          "afterSetup": "You'll be able to hand off a series as a task with a completion criterion and get a report in the project chat when the process ends, not on a timer.",
           "nonInstallable": false,
           "usedBy": [
             {
@@ -9766,19 +7388,24 @@ window.RESEARCH_LOOP = {
               "role": "plans, launches and checks authorized runs"
             },
             {
-              "name": "researcher",
+              "name": "Researcher",
               "role": "approves the protocol, budget and stopping criterion"
             }
           ],
           "relations": [
             {
+              "toolId": "handoff-to-jarvis",
+              "label": "receives a series from it to watch over",
+              "title": "handoff-to-jarvis"
+            },
+            {
               "toolId": "run-monitoring",
-              "label": "gets the numbers for each cycle from it",
-              "title": "Fact probe"
+              "label": "receives only decisions from it",
+              "title": "Mechanics without a model"
             },
             {
               "toolId": "diagnose",
-              "label": "passes the result to the next stage",
+              "label": "hands the result to the next stage",
               "title": "diagnose"
             }
           ],
@@ -9798,90 +7425,91 @@ window.RESEARCH_LOOP = {
           },
           "visual": {
             "kind": "cycle",
-            "label": "One autonomous Hermes working cycle",
+            "label": "One Hermes work cycle",
             "nodes": [
-              "Work board",
-              "Project context",
-              "Execution",
-              "Outcome verification",
-              "Status"
+              "Task with a criterion",
+              "Background launch",
+              "Sleep until the process ends",
+              "Result check",
+              "Report in the chat"
             ]
-          },
-          "start": "In an existing profile's chat, state the goal and completion criterion. For example: “Compare two optimizers under the same budget and bring back a table with a conclusion.” Specify permitted servers and limits. First check that the agent has selected the correct project.",
-          "important": [
-            "The project queue and the GitLab issue handling are settings of our installation. A standard Hermes install does not enable them automatically.",
-            "Manual changes to the Obsidian overview do not control the agent's queue."
-          ],
-          "skyTitle": "Hermes Agent",
-          "storage": [
-            "The internal Hermes board is the authoritative state of its operational tasks. The notes/Hermes overview in Obsidian is for reading.",
-            "GitLab issues hold shared assignments and the team outcome, the work's claims/ hold scientific records. The agent's internal steps are not copied to the shared board."
-          ]
+          }
         },
         {
           "id": "handoff-to-jarvis",
           "title": "handoff-to-jarvis",
-          "type": "Laboratory setup",
-          "role": "In the installed laboratory setup, hands off or resumes project work through its existing Hermes agent. Transfers the goal, context, permitted resources, and completion criterion, then verifies acceptance and actual work.",
-          "when": "When work needs to continue through a configured Hermes profile with confirmed access to the project and resources.",
+          "type": "Skill",
+          "role": "Hands running runs over to Jarvis, a service agent on the lab server that takes runs under supervision and opens a chat with Hermes for each series. A handoff is a claim, not a fact: Jarvis checks every line against the server and only takes on what is actually alive.",
+          "when": "Runs are launched and checked, and the laptop is about to close.",
           "inputs": [
-            "Project, goal and a verifiable completion criterion.",
-            "Canonical files, the existing worker's profile and the notification route.",
-            "Permitted resources and limits on autonomous action.",
-            "For runs already launched: the verified server, process and results path."
+            "background session name and log path",
+            "server and GPU index",
+            "target step and queue of next configurations",
+            "thresholds, prohibitions, escalation rules"
           ],
           "inside": [
-            "Reads canonical notes and checks project ownership, profile, servers and message destination.",
-            "Continues through the existing worker or prepares a clean profile without copying another project's state.",
-            "Passes the goal, verified artifacts, permitted resources and completion criterion through the current intake mechanism.",
-            "Checks receipt, the worker's context and actual work. Neither a delivered file nor an active service alone proves a successful handoff."
+            "reads the live server state before writing the file",
+            "asks for goal, queue, thresholds and prohibitions in one block",
+            "writes the handoff file in one go so the receiver never reads it half-written",
+            "the receiver processes new handoffs every two minutes",
+            "opens a Telegram chat and gives it its own session",
+            "waits for the receiver's pass and checks the outcome"
           ],
           "outputs": [
-            "A verified handoff to the project's specific worker.",
-            "Artifact links and confirmation of receipt, or a precise description of the blocker."
+            "a series under supervision on the server",
+            "a Telegram chat with its own session",
+            "or a refusal with a stated reason"
           ],
-          "writes": "A confirmed task intake mechanism and the project worker's context.",
+          "writes": "Handoff receiver on the lab server",
           "gates": [
-            "The worker and resources belong to this project.",
-            "No second independent worker is created for the same project.",
-            "Handoff receipt and actual work are verified separately."
+            "every run lists its session or log and its server",
+            "a handoff older than a day expires",
+            "no second agent is set up for the same series",
+            "no secrets in the file: processed handoffs are always kept"
           ],
           "limits": [
-            "Requires an active Hermes profile, a configured intake mechanism, and access to the project's resources.",
-            "The public profile prompts do not deploy the laboratory's handoff infrastructure."
+            "delivering the file is not the same as supervision",
+            "if the project already has a Hermes profile, the series goes to it as a task on the board, not to a second executor",
+            "a repeated handoff does not overwrite the project directory"
           ],
           "links": [
             {
-              "label": "Public Hermes profile prompts",
-              "url": "https://github.com/brain-lab-research/hermes-prompts"
+              "label": "Skill source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/handoff-to-jarvis/SKILL.md"
             }
           ],
           "adoption": {
-            "kind": "internal",
-            "invoke": "$handoff-to-jarvis in the configured laboratory installation",
-            "installNote": "The current workflow uses the installed laboratory instructions and an active Hermes profile. The public prompts can be explored separately; a complete public installation of this workflow is not yet available."
+            "kind": "toolkit-skill",
+            "invoke": "/handoff-to-jarvis",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "mkdir -p ~/.claude/skills",
+              "cp -R ~/claude-brainlab/skills/handoff-to-jarvis ~/.claude/skills/",
+              "# restart Claude Code, then use /handoff-to-jarvis"
+            ],
+            "installNote": "The skill hands runs over to the lab server: without access to it, the skill installs but has nowhere to hand off to."
           },
-          "nonInstallable": true,
+          "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
-              "role": "Defines the goal, limits of autonomous work, and completion criterion."
+              "name": "Researcher",
+              "role": "hands over the running series and specifies thresholds"
             },
             {
               "name": "Project agent on the server",
-              "role": "Accepts the assignment within its profile's scope and continues the work."
+              "role": "accepts the series and continues it"
             }
           ],
           "relations": [
             {
               "toolId": "hermes",
-              "label": "passes the result to the next stage",
-              "title": "Hermes Agent"
+              "label": "hands the result to the next stage",
+              "title": "Hermes"
             },
             {
               "toolId": "run-monitoring",
               "label": "defines which numbers the probe will collect",
-              "title": "Fact probe"
+              "title": "Mechanics without a model"
             }
           ],
           "processRelations": [
@@ -9897,91 +7525,74 @@ window.RESEARCH_LOOP = {
             "processTitle": "Experiments",
             "stageRef": "s5",
             "stageTitle": "Leave it under supervision"
-          },
-          "cardTitle": "Hand off long-running work",
-          "catalogSummary": "Transfer context and responsibility to the project agent.",
-          "skillId": "handoff-to-jarvis",
-          "start": "Specify the project, goal, completion criterion and permitted resources. Ask it to continue through the existing Hermes agent and verify that the assignment was accepted.",
-          "purpose": "In the installed laboratory setup, hands off or resumes project work through its existing Hermes agent. Transfers the goal, context, permitted resources, and completion criterion, then verifies acceptance and actual work.",
-          "capabilities": [
-            "Reads canonical notes and checks project ownership, profile, servers and message destination.",
-            "Continues through the existing worker or prepares a clean profile without copying another project's state.",
-            "Passes the goal, verified artifacts, permitted resources and completion criterion through the current intake mechanism.",
-            "Checks receipt, the worker's context and actual work. Neither a delivered file nor an active service alone proves a successful handoff."
-          ],
-          "outcomes": [
-            "A verified handoff to the project's specific worker.",
-            "Artifact links and confirmation of receipt, or a precise description of the blocker."
-          ],
-          "important": [
-            "Requires an active Hermes profile, a configured intake mechanism, and access to the project's resources.",
-            "The public profile prompts do not deploy the laboratory's handoff infrastructure."
-          ],
-          "useCases": "When work needs to continue through a configured Hermes profile with confirmed access to the project and resources."
+          }
         },
         {
           "id": "watcher",
           "title": "Supervision and notifications",
-          "type": "systemd services",
-          "role": "A server worker that continues an assigned project between user messages. In the current setup, the project's Hermes agent fills this role with its own context, tasks and permitted resources.",
+          "type": "Background services",
+          "role": "Model-free services around Hermes: they post summaries to the project chat, restart Hermes if he hangs, and apply edits to his role on their own. They never call a model, so they cost almost nothing.",
           "when": "Runs continuously. No separate invocation is needed.",
           "inputs": [
-            "A worker profile bound to a specific project.",
-            "Working directory, canonical notes, goal and authority boundaries."
+            "Telegram delivery queue",
+            "profile settings and roles",
+            "Hermes state"
           ],
           "inside": [
-            "Finds the project's existing worker and checks its profile, message route and file scope.",
-            "Receives the goal and a verifiable completion criterion, then restores the working context.",
-            "Makes authorized changes and checks, monitors its own runs and resolves failures within its scope.",
-            "Writes results to project artifacts and reports meaningful events. A handoff is accepted only after the worker confirms it."
+            "delivery does not poll Telegram or start a model",
+            "every few minutes they check whether Hermes responds, and bring him back up",
+            "a role or settings edit is applied by a restart, and the conversation is not lost",
+            "every new project chat gets its own Hermes session",
+            "a secure channel gives the lab server access to the models"
           ],
           "outputs": [
-            "message in the project topic",
-            "available shared database and model proxies",
-            "verified status or an identified blocker"
+            "a message in the project chat",
+            "Hermes online",
+            "an applied profile edit"
           ],
-          "writes": "Dedicated state directories and a Telegram delivery queue",
+          "writes": "Their own state and the Telegram message queue",
           "gates": [
-            "The context contains no state from another project.",
-            "Files, processes, resources and notification routes are checked before acting.",
-            "Changes stay within the assigned scope. Errors are not hidden behind a success status."
+            "no model is called just to check a file",
+            "we don't set up timer-based watchers: one cost $21 to $509 a month and had no memory",
+            "a restart waits if someone is working at that moment"
           ],
           "limits": [
-            "A profile must not inherit another project's working memory.",
-            "Authorization for one project does not permit changing other people's processes or schedules."
+            "no service executes a run on its own",
+            "timer-based watchers are off; Hermes runs the runs",
+            "the chat conversation is held by Hermes, not by these services"
           ],
           "links": [
             {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/handoff-to-jarvis/SKILL.md"
+              "label": "How we split work with Hermes",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
             "kind": "private",
-            "invoke": "Through the existing Hermes profile and jarvis-agent@ project worker",
-            "installNote": "The project worker and notification delivery are configured separately in the owner's server infrastructure."
+            "invoke": "jarvis-notifier, jarvis-hermes-watchdog, jarvis-hermes-reload units and tunnels on the lab server",
+            "installNote": "The services are configured for the lab server's layout: access on request from the owner."
           },
           "nonInstallable": false,
           "usedBy": [
             {
               "name": "Project agent on the server",
-              "role": "receives summaries and access to the shared database"
+              "role": "gets summary delivery and a restart on hang"
             },
             {
-              "name": "researcher",
-              "role": "reads the summary in the project topic"
+              "name": "Researcher",
+              "role": "reads the summary in the project chat"
             }
           ],
           "relations": [
             {
               "toolId": "hermes",
               "label": "supports its operation",
-              "title": "Hermes Agent"
+              "title": "Hermes"
             },
             {
               "toolId": "run-monitoring",
               "label": "works alongside it at the same stage",
-              "title": "Fact probe"
+              "title": "Mechanics without a model"
             }
           ],
           "processRelations": [
@@ -9997,96 +7608,77 @@ window.RESEARCH_LOOP = {
             "processTitle": "Experiments",
             "stageRef": "s5",
             "stageTitle": "Leave it under supervision"
-          },
-          "start": "Ask the agent to continue a specific project and define the limits of autonomous work. It must first check the existing worker and obtain confirmation that the assignment was accepted.",
-          "storage": [
-            "Context and the internal queue are stored in the project profile.",
-            "Message delivery and work execution are separate parts of the system."
-          ],
-          "purpose": "A server worker that continues an assigned project between user messages. In the current setup, the project's Hermes agent fills this role with its own context, tasks and permitted resources.",
-          "capabilities": [
-            "Finds the project's existing worker and checks its profile, message route and file scope.",
-            "Receives the goal and a verifiable completion criterion, then restores the working context.",
-            "Makes authorized changes and checks, monitors its own runs and resolves failures within its scope.",
-            "Writes results to project artifacts and reports meaningful events. A handoff is accepted only after the worker confirms it."
-          ],
-          "important": [
-            "A profile must not inherit another project's working memory.",
-            "Authorization for one project does not permit changing other people's processes or schedules."
-          ],
-          "outcomes": [
-            "message in the project topic",
-            "available shared database and model proxies",
-            "verified status or an identified blocker"
-          ],
-          "useCases": "Runs continuously. No separate invocation is needed."
+          }
         },
         {
           "id": "run-monitoring",
-          "title": "Fact probe <name>.facts.sh",
-          "type": "Script running as root",
-          "role": "A deterministic status check for experiments already running. Collects server facts so the agent can inspect log freshness, training progress and process state before its next decision.",
-          "when": "On every agent cycle, roughly once every ten minutes.",
+          "title": "Mechanics without a model",
+          "type": "Model-free script",
+          "role": "Everything that needs no judgment is done by a plain script: it watches the cluster job queue, sees when a job ends, updates the state. The model is called only when a decision is needed.",
+          "when": "While a run is going and nothing has happened, which is almost always.",
           "inputs": [
-            "host and absolute log path",
-            "search patterns: >Eval: Iter=, val_loss=, CUDA out of memory",
-            "target step"
+            "the cluster scheduler queue",
+            "run logs",
+            "job state"
           ],
           "inside": [
-            "Connects to the permitted server and checks only the relevant project's processes.",
-            "Reads sessions, training steps, last update times and free space.",
-            "Returns facts to the agent, which compares them with the protocol and decides whether action is needed."
+            "a scheduled job without a model: the script's output goes to Telegram",
+            "whether to call the model is decided by a one-line check, not by a model",
+            "two model turns per experiment: the first records the measurement, the second reads the verdict",
+            "zero spend in between",
+            "a fuse on the number of turns per day"
           ],
           "outputs": [
-            "a line of verified numbers",
+            "silence while all is well",
+            "the model wakes up for a decision",
             "a stall or failure indicator"
           ],
-          "writes": "Nothing is stored here. The result feeds into the agent's cycle",
+          "writes": "Nothing but the job state; the result goes to Hermes",
           "gates": [
-            "Each observation has a timestamp and source.",
-            "Process state is checked against the protocol and result files."
+            "the model is not woken for a simple file check: once that cost 41,700 tokens",
+            "a bug in the script doesn't burn the budget"
           ],
           "limits": [
-            "Low GPU utilization alone does not prove that a resource is free or a run is finished.",
-            "The checks depend on the configured project profile."
+            "sees only what is named in the task",
+            "passes no judgment, only calls whoever will"
           ],
           "links": [
             {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/handoff-to-jarvis/SKILL.md"
+              "label": "How we split work with Hermes",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
             "kind": "private",
-            "invoke": "timeout 90 bash /etc/jarvis-agents/<name>.facts.sh on the private server",
-            "installNote": "The fact probe is written for a specific lab server. Request access from the owner."
+            "invoke": "hermes cron with --no-agent and a script on the lab server",
+            "installNote": "The scripts are written for the lab server: access on request from the owner."
           },
           "nonInstallable": false,
           "usedBy": [
             {
               "name": "Project agent on the server",
-              "role": "receives verified numbers instead of relying on guesses"
+              "role": "wakes up only when a decision is needed"
             },
             {
-              "name": "researcher",
-              "role": "detects a stalled run from the age of the status file"
+              "name": "Researcher",
+              "role": "gets a report on completion or failure, not a stream of updates"
             }
           ],
           "relations": [
             {
-              "toolId": "results-analysis",
-              "label": "passes completed runs to analysis",
-              "title": "results-analysis"
-            },
-            {
               "toolId": "hermes",
-              "label": "supplies numbers for each cycle",
-              "title": "Hermes Agent"
+              "label": "wakes it only for decisions",
+              "title": "Hermes"
             },
             {
               "toolId": "watcher",
               "label": "works alongside it at the same stage",
               "title": "Supervision and notifications"
+            },
+            {
+              "toolId": "results-analysis",
+              "label": "passes completed runs to analysis",
+              "title": "results-analysis"
             }
           ],
           "processRelations": [
@@ -10105,31 +7697,15 @@ window.RESEARCH_LOOP = {
           },
           "visual": {
             "kind": "cycle",
-            "label": "Monitor actual progress, not a process name",
+            "label": "The model is called to decide, not to check",
             "nodes": [
-              "Fresh log",
-              "Step and metrics",
-              "Run state",
-              "Permitted response",
-              "Verified status"
+              "Queue and log",
+              "The script watches it",
+              "End or failure",
+              "The model decides what to do",
+              "Report in the chat"
             ]
-          },
-          "start": "Specify an existing run and server. Its configured check collects process state and result freshness for the agent's next cycle.",
-          "purpose": "A deterministic status check for experiments already running. Collects server facts so the agent can inspect log freshness, training progress and process state before its next decision.",
-          "capabilities": [
-            "Connects to the permitted server and checks only the relevant project's processes.",
-            "Reads sessions, training steps, last update times and free space.",
-            "Returns facts to the agent, which compares them with the protocol and decides whether action is needed."
-          ],
-          "important": [
-            "Low GPU utilization alone does not prove that a resource is free or a run is finished.",
-            "The checks depend on the configured project profile."
-          ],
-          "outcomes": [
-            "a line of verified numbers",
-            "a stall or failure indicator"
-          ],
-          "useCases": "On every agent cycle, roughly once every ten minutes."
+          }
         },
         {
           "id": "diagnose",
@@ -10172,7 +7748,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$diagnose",
+            "invoke": "/diagnose",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -10183,7 +7759,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "researcher",
+              "name": "Researcher",
               "role": "requires a demonstrated cause rather than a guess"
             },
             {
@@ -10193,14 +7769,9 @@ window.RESEARCH_LOOP = {
           ],
           "relations": [
             {
-              "toolId": "verification-loop",
-              "label": "works alongside it at the same stage",
-              "title": "verification-loop"
-            },
-            {
               "toolId": "run-monitoring",
               "label": "uses its stall or failure indicator",
-              "title": "Fact probe"
+              "title": "Mechanics without a model"
             }
           ],
           "processRelations": [
@@ -10216,1785 +7787,29 @@ window.RESEARCH_LOOP = {
             "processTitle": "Experiments",
             "stageRef": "s6",
             "stageTitle": "Monitor and respond"
-          },
-          "skillId": "diagnose",
-          "start": "Provide a failing command or reproduction steps, the error output and expected behavior.",
-          "capabilities": [
-            "builds the shortest automated check loop",
-            "reduces the reproduction to a minimal case",
-            "adds only measurements that distinguish possible causes",
-            "fixes the demonstrated cause",
-            "turns the reproduction into a test"
-          ],
-          "outcomes": [
-            "an identified cause",
-            "a minimal fix, when a fix was requested",
-            "a test and incident review"
-          ],
-          "useCases": "A crash, intermittent behavior or slowdown whose cause has not been demonstrated.",
-          "important": [
-            "does not change code when asked only to investigate",
-            "does not replace measurement with a guess or indiscriminate logging"
-          ]
-        },
-        {
-          "id": "verification-loop",
-          "title": "verification-loop",
-          "type": "Skill",
-          "role": "Selects and runs checks for a code change using the task requirements and the repository's commands. Reports what was checked, what failed, and what was not run.",
-          "when": "After a substantial code change and before committing.",
-          "inputs": [
-            "the modified repository",
-            "its build files",
-            "acceptance criteria and diff"
-          ],
-          "inside": [
-            "Identifies the expected behavior and finds checks in the project's configuration, scripts, and CI.",
-            "Selects tests, build, type, UI, or security checks relevant to the change.",
-            "Preserves exit codes and command output, distinguishing regressions from pre-existing failures.",
-            "Reviews the final diff and reruns affected checks after fixes."
-          ],
-          "outputs": [
-            "The checks run and their results.",
-            "Exact failures and checks that could not be run.",
-            "The scope of what the checks establish."
-          ],
-          "writes": "Usually nothing except temporary build files",
-          "gates": [
-            "every pass is supported by command output",
-            "the diff meets the acceptance criteria"
-          ],
-          "limits": [
-            "Code checks do not establish a scientific conclusion or replace results analysis.",
-            "A skipped check is not a pass."
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/verification-loop/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$verification-loop",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/verification-loop ~/.claude/skills/",
-              "# restart Claude Code, then use /verification-loop"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "does not accept a pass without command output"
-            },
-            {
-              "name": "Project agent on the server",
-              "role": "Runs relevant checks after a code change."
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "diagnose",
-              "label": "works alongside it at the same stage",
-              "title": "diagnose"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s-code",
-              "stageTitle": "Check code changes"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s-code",
-            "stageTitle": "Check code changes"
-          },
-          "skillId": "verification-loop",
-          "skySummary": "Checks for changed code and the scope of what they establish.",
-          "start": "Specify the changes and completion criteria. Ask it to run the project's checks.",
-          "capabilities": [
-            "Identifies the expected behavior and finds checks in the project's configuration, scripts, and CI.",
-            "Selects tests, build, type, UI, or security checks relevant to the change.",
-            "Preserves exit codes and command output, distinguishing regressions from pre-existing failures.",
-            "Reviews the final diff and reruns affected checks after fixes."
-          ],
-          "outcomes": [
-            "The checks run and their results.",
-            "Exact failures and checks that could not be run.",
-            "The scope of what the checks establish."
-          ],
-          "useCases": "After a substantial code change and before committing.",
-          "important": [
-            "Code checks do not establish a scientific conclusion or replace results analysis.",
-            "A skipped check is not a pass."
-          ]
-        },
-        {
-          "id": "daily-coding",
-          "title": "daily-coding",
-          "type": "Skill",
-          "role": "A routine code change follows a loop: understand, capture the behavior in a test, change and verify.",
-          "when": "For a narrowly scoped task in an existing repository.",
-          "inputs": [
-            "task description",
-            "repository code",
-            "completion criteria"
-          ],
-          "inside": [
-            "reads the relevant code",
-            "defines a verifiable goal",
-            "makes a focused change",
-            "runs checks"
-          ],
-          "outputs": [
-            "a change and verification evidence"
-          ],
-          "writes": "Owned repository",
-          "gates": [
-            "test coverage is proportionate to risk",
-            "neighboring code is not rewritten"
-          ],
-          "limits": [
-            "does not silently expand the task"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/daily-coding/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$daily-coding",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/daily-coding ~/.claude/skills/",
-              "# restart Claude Code, then use /daily-coding"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "tdd",
-              "label": "works alongside it at the same stage",
-              "title": "tdd"
-            },
-            {
-              "toolId": "bug-analyzer",
-              "label": "passes the result to the next stage",
-              "title": "Bug Analyzer"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "cardTitle": "Make a verified change",
-          "catalogSummary": "A change to existing code, with the required behavior checked.",
-          "skillId": "daily-coding",
-          "start": "Describe the task in an existing repository and the expected result.",
-          "capabilities": [
-            "reads the relevant code",
-            "defines a verifiable goal",
-            "makes a focused change",
-            "runs checks"
-          ],
-          "outcomes": [
-            "a change and verification evidence"
-          ],
-          "useCases": "For a narrowly scoped task in an existing repository.",
-          "important": [
-            "does not silently expand the task"
-          ]
-        },
-        {
-          "id": "tdd",
-          "title": "tdd",
-          "type": "Skill",
-          "role": "First captures the expected behavior in a test, then makes the smallest change needed to pass it.",
-          "when": "When changing behavior, fixing a bug or refactoring safely.",
-          "inputs": [
-            "completion criteria",
-            "existing code",
-            "test suite"
-          ],
-          "inside": [
-            "writes a reproducing test",
-            "confirms that it fails",
-            "makes the smallest fix",
-            "reruns checks"
-          ],
-          "outputs": [
-            "code and a regression test"
-          ],
-          "writes": "Owned repository",
-          "gates": [
-            "red, green, refactor",
-            "unrelated code stays unchanged"
-          ],
-          "limits": [
-            "does not replace experimental validation"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/tdd/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$tdd",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/tdd ~/.claude/skills/",
-              "# restart Claude Code, then use /tdd"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "daily-coding",
-              "label": "works alongside it at the same stage",
-              "title": "daily-coding"
-            },
-            {
-              "toolId": "bug-analyzer",
-              "label": "passes the result to the next stage",
-              "title": "Bug Analyzer"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "skillId": "tdd",
-          "start": "Describe the new behavior and completion criteria in a project with tests.",
-          "capabilities": [
-            "writes a reproducing test",
-            "confirms that it fails",
-            "makes the smallest fix",
-            "reruns checks"
-          ],
-          "outcomes": [
-            "code and a regression test"
-          ],
-          "useCases": "When changing behavior, fixing a bug or refactoring safely.",
-          "important": [
-            "does not replace experimental validation"
-          ]
-        },
-        {
-          "id": "bug-analyzer",
-          "title": "Bug Analyzer",
-          "type": "Agent",
-          "role": "Maps control and data flow, then traces state backward from the symptom to a demonstrated root cause.",
-          "when": "When a complex failure requires analysis of call chains, branches or state changes.",
-          "inputs": [
-            "error, call stack and reproduction conditions",
-            "relevant source files",
-            "expected and actual state"
-          ],
-          "inside": [
-            "maps execution and call chains",
-            "traces variables from declaration to the failure point",
-            "compares expected and actual state where they diverge",
-            "checks branches, boundaries, races and resource lifetimes",
-            "distinguishes the root cause from the visible symptom"
-          ],
-          "outputs": [
-            "execution flow analysis",
-            "root cause location and supporting evidence",
-            "a focused repair strategy and verification scenarios"
-          ],
-          "writes": "Usually analysis only. A separate worker makes changes on request",
-          "gates": [
-            "the root cause explains the observed symptom",
-            "alternative causes are ruled out through checks",
-            "the proposed check is reproducible"
-          ],
-          "limits": [
-            "does not treat coincidence as causation",
-            "does not replace fault localization with broad restructuring"
-          ],
-          "links": [
-            {
-              "label": "Agent definition",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/agents/bug-analyzer.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-agent",
-            "invoke": "Assigned automatically by the coordinator",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/agents",
-              "cp ~/claude-brainlab/agents/bug-analyzer.md ~/.claude/agents/",
-              "# restart Claude Code; the coordinator assigns the agent automatically"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "build-error-resolver",
-              "label": "works alongside it at the same stage",
-              "title": "Build Error Resolver"
-            },
-            {
-              "toolId": "code-review",
-              "label": "passes the result to the next stage",
-              "title": "code-review-excellence"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Ask for a root cause investigation and provide reproduction steps. The coordinator can assign this agent an independent investigation of the execution path.",
-          "capabilities": [
-            "maps execution and call chains",
-            "traces variables from declaration to the failure point",
-            "compares expected and actual state where they diverge",
-            "checks branches, boundaries, races and resource lifetimes",
-            "distinguishes the root cause from the visible symptom"
-          ],
-          "outcomes": [
-            "execution flow analysis",
-            "root cause location and supporting evidence",
-            "a focused repair strategy and verification scenarios"
-          ],
-          "useCases": "When a complex failure requires analysis of call chains, branches or state changes.",
-          "important": [
-            "does not treat coincidence as causation",
-            "does not replace fault localization with broad restructuring"
-          ]
-        },
-        {
-          "id": "build-error-resolver",
-          "title": "Build Error Resolver",
-          "type": "Agent",
-          "role": "Makes minimal fixes to Python build, type, lint, import and dependency failures without changing the architecture.",
-          "when": "When the build, mypy or pyright, ruff or pylint, pytest, or import resolution is already failing.",
-          "inputs": [
-            "the exact failing command and its output",
-            "affected files",
-            "pyproject and environment"
-          ],
-          "inside": [
-            "collects the full list of current errors",
-            "groups them by root cause",
-            "fixes types, imports and configuration with a minimal change",
-            "reruns a focused check after each class of errors",
-            "repeats the complete original command at the end"
-          ],
-          "outputs": [
-            "a passing build",
-            "a minimal change",
-            "list of fixed errors"
-          ],
-          "writes": "Only affected code, tests and build configuration",
-          "gates": [
-            "the original failure is reproduced",
-            "the architecture stays unchanged",
-            "the original command passes after the fix"
-          ],
-          "limits": [
-            "does not redesign product features",
-            "does not suppress type errors without justification"
-          ],
-          "links": [
-            {
-              "label": "Agent definition",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/agents/build-error-resolver.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-agent",
-            "invoke": "Assigned automatically by the coordinator",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/agents",
-              "cp ~/claude-brainlab/agents/build-error-resolver.md ~/.claude/agents/",
-              "# restart Claude Code; the coordinator assigns the agent automatically"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "bug-analyzer",
-              "label": "works alongside it at the same stage",
-              "title": "Bug Analyzer"
-            },
-            {
-              "toolId": "code-review",
-              "label": "passes the result to the next stage",
-              "title": "code-review-excellence"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Provide the failing build or type-check command and its output. The agent makes minimal changes and repeats the same check.",
-          "capabilities": [
-            "collects the full list of current errors",
-            "groups them by root cause",
-            "fixes types, imports and configuration with a minimal change",
-            "reruns a focused check after each class of errors",
-            "repeats the complete original command at the end"
-          ],
-          "outcomes": [
-            "a passing build",
-            "a minimal change",
-            "list of fixed errors"
-          ],
-          "useCases": "When the build, mypy or pyright, ruff or pylint, pytest, or import resolution is already failing.",
-          "important": [
-            "does not redesign product features",
-            "does not suppress type errors without justification"
-          ]
-        },
-        {
-          "id": "code-review",
-          "title": "code-review-excellence",
-          "type": "Skill",
-          "role": "Guidelines for reviewing someone else's change: what to look for, how to write actionable comments and how to distinguish blockers from suggestions. This is a reference for review techniques, not a command that runs checks.",
-          "when": "When reviewing a change or agreeing on a team's code review practices.",
-          "inputs": [
-            "change",
-            "tests",
-            "completion criteria"
-          ],
-          "inside": [
-            "defines review goals: bugs, maintainability and knowledge sharing",
-            "explicitly excludes stylistic nitpicking and displays of expertise",
-            "shows how to make feedback actionable",
-            "distinguishes blockers from suggestions"
-          ],
-          "outputs": [
-            "prioritized findings or approval"
-          ],
-          "writes": "Review report",
-          "gates": [
-            "the author fixes blockers and submits the change for another review"
-          ],
-          "limits": [
-            "runs nothing itself: /code-review compares the diff, and the Code Reviewer agent performs an independent second pass",
-            "review without running the program does not verify its behavior"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/code-review-excellence/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$code-review-excellence",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/code-review-excellence ~/.claude/skills/",
-              "# restart Claude Code, then use /code-review-excellence"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "code-reviewer-agent",
-              "label": "works alongside it at the same stage",
-              "title": "Code Reviewer"
-            },
-            {
-              "toolId": "refactor-cleaner",
-              "label": "passes the result to the next stage",
-              "title": "Refactor Cleaner"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "skillId": "code-review-excellence",
-          "start": "Provide the diff and explain how the program's behavior should change.",
-          "capabilities": [
-            "defines review goals: bugs, maintainability and knowledge sharing",
-            "explicitly excludes stylistic nitpicking and displays of expertise",
-            "shows how to make feedback actionable",
-            "distinguishes blockers from suggestions"
-          ],
-          "outcomes": [
-            "prioritized findings or approval"
-          ],
-          "useCases": "When reviewing a change or agreeing on a team's code review practices.",
-          "important": [
-            "runs nothing itself: /code-review compares the diff, and the Code Reviewer agent performs an independent second pass",
-            "review without running the program does not verify its behavior"
-          ]
-        },
-        {
-          "id": "code-reviewer-agent",
-          "title": "Code Reviewer",
-          "type": "Agent",
-          "role": "An independent reviewer reads the complete diff and checks correctness, security and scope.",
-          "when": "Immediately after a code change and again after fixing review blockers.",
-          "inputs": [
-            "git diff",
-            "completion criteria",
-            "test and build results",
-            "the project's established style"
-          ],
-          "inside": [
-            "reads the complete diff",
-            "looks for logic errors and edge cases",
-            "separately checks secrets, code injection, path traversal and permissions",
-            "assesses error handling, performance and test coverage",
-            "classifies findings as critical, warnings or suggestions"
-          ],
-          "outputs": [
-            "prioritized findings",
-            "specific file and line",
-            "approval only when no critical findings remain"
-          ],
-          "writes": "Nothing is changed. The review is returned to the author",
-          "gates": [
-            "each blocker identifies a concrete failure scenario",
-            "security is checked in a separate pass",
-            "the revised change is reviewed again"
-          ],
-          "limits": [
-            "does not verify behavior without running the program",
-            "does not replace tests or the build"
-          ],
-          "links": [
-            {
-              "label": "Agent definition",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/agents/code-reviewer.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-agent",
-            "invoke": "Assigned automatically by the coordinator",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/agents",
-              "cp ~/claude-brainlab/agents/code-reviewer.md ~/.claude/agents/",
-              "# restart Claude Code; the coordinator assigns the agent automatically"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "code-review",
-              "label": "works alongside it at the same stage",
-              "title": "code-review-excellence"
-            },
-            {
-              "toolId": "refactor-cleaner",
-              "label": "passes the result to the next stage",
-              "title": "Refactor Cleaner"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Provide the diff and expected behavior. The reviewer examines the change and returns findings with code locations.",
-          "capabilities": [
-            "reads the complete diff",
-            "looks for logic errors and edge cases",
-            "separately checks secrets, code injection, path traversal and permissions",
-            "assesses error handling, performance and test coverage",
-            "classifies findings as critical, warnings or suggestions"
-          ],
-          "outcomes": [
-            "prioritized findings",
-            "specific file and line",
-            "approval only when no critical findings remain"
-          ],
-          "useCases": "Immediately after a code change and again after fixing review blockers.",
-          "important": [
-            "does not verify behavior without running the program",
-            "does not replace tests or the build"
-          ]
-        },
-        {
-          "id": "refactor-cleaner",
-          "title": "Refactor Cleaner",
-          "type": "Agent",
-          "role": "Finds dead code, unnecessary imports and dependencies, and duplicates. Removes only confirmed cases.",
-          "when": "For explicitly requested cleanup after behavior has stabilized.",
-          "inputs": [
-            "owned Python repository",
-            "test suite",
-            "vulture, pyflakes, ruff and dependency reports"
-          ],
-          "inside": [
-            "runs static dead-code checks",
-            "assesses confidence and the risk of dynamic usage",
-            "removes only confirmed cases",
-            "consolidates verified duplicates in small steps",
-            "runs tests after each step and records removals"
-          ],
-          "outputs": [
-            "less code",
-            "DELETION_LOG.md",
-            "evidence that checks pass"
-          ],
-          "writes": "Owned code, dependency files and DELETION_LOG.md",
-          "gates": [
-            "each removal has supporting evidence",
-            "dynamic imports and the public interface have been checked",
-            "tests pass after cleanup"
-          ],
-          "limits": [
-            "does not automatically remove uncertain cases",
-            "does not mix cleanup with a new architecture"
-          ],
-          "links": [
-            {
-              "label": "Agent definition",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/agents/refactor-cleaner.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-agent",
-            "invoke": "Assigned automatically by the coordinator",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/agents",
-              "cp ~/claude-brainlab/agents/refactor-cleaner.md ~/.claude/agents/",
-              "# restart Claude Code; the coordinator assigns the agent automatically"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Coding agent and independent reviewer",
-              "role": "make a minimal diff and review it independently"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "daily-coding",
-              "label": "used together in the same process",
-              "title": "daily-coding"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Specify the cleanup scope. The agent first finds candidates and confirms that they are unused.",
-          "capabilities": [
-            "runs static dead-code checks",
-            "assesses confidence and the risk of dynamic usage",
-            "removes only confirmed cases",
-            "consolidates verified duplicates in small steps",
-            "runs tests after each step and records removals"
-          ],
-          "outcomes": [
-            "less code",
-            "DELETION_LOG.md",
-            "evidence that checks pass"
-          ],
-          "useCases": "For explicitly requested cleanup after behavior has stabilized.",
-          "important": [
-            "does not automatically remove uncertain cases",
-            "does not mix cleanup with a new architecture"
-          ]
-        },
-        {
-          "id": "code-workflow-rule",
-          "title": "code-workflow.md",
-          "type": "Rule",
-          "role": "Requires three things from every project that uses code: a repository map in the code library, a Code section on the project page and observable runs.",
-          "when": "Always applies. Read it before substantial work with an unfamiliar repository.",
-          "inputs": [
-            "a project that uses code",
-            "a repository, owned or third-party"
-          ],
-          "inside": [
-            "makes the code library the source of knowledge about repository structure",
-            "requires code-ingest when a repository map does not yet exist",
-            "requires the project page's Code section to document differences from the original repository",
-            "requires a log note and a results note with tables and a plot for each run series",
-            "preserves existing code style, agent workflow and security rules"
-          ],
-          "outputs": [
-            "repository map",
-            "Code section on the project page",
-            "run log and tables"
-          ],
-          "writes": "Writes nothing itself. Defines where other tools write",
-          "gates": [
-            "long runs execute in tmux on the server",
-            "the verification loop updates run notes"
-          ],
-          "limits": [
-            "the rule is not in the public repository. It exists only in the personal configuration"
-          ],
-          "links": [],
-          "adoption": {
-            "kind": "private",
-            "invoke": "File ~/.claude/rules/code-workflow.md, not included in the public repository",
-            "installNote": "The internal rules/code-workflow.md rule describes the personal vault layout. Ask the owner for it."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Enable the rule for a project with code. It defines which notes and evidence should accompany changes and runs.",
-          "capabilities": [
-            "makes the code library the source of knowledge about repository structure",
-            "requires code-ingest when a repository map does not yet exist",
-            "requires the project page's Code section to document differences from the original repository",
-            "requires a log note and a results note with tables and a plot for each run series",
-            "preserves existing code style, agent workflow and security rules"
-          ],
-          "outcomes": [
-            "repository map",
-            "Code section on the project page",
-            "run log and tables"
-          ],
-          "useCases": "Always applies. Read it before substantial work with an unfamiliar repository.",
-          "important": [
-            "the rule is not in the public repository. It exists only in the personal configuration"
-          ],
-          "relations": []
-        },
-        {
-          "id": "code-ingest",
-          "title": "code-ingest",
-          "type": "Skill",
-          "role": "Analyzes a repository once and creates a set of notes: entry point, modules, branches in execution and where to make specific changes. It does not copy the code.",
-          "when": "When a project starts using a repository that has no folder in the code library yet.",
-          "inputs": [
-            "GitHub link or path to a local or server copy",
-            "Git URL and default branch"
-          ],
-          "inside": [
-            "prefers reading a local or server copy, otherwise fetches files from GitHub",
-            "maps top-level folders, entry points, configuration, the main loop, factories and data flow",
-            "traces one complete run from beginning to end to produce architecture.md",
-            "writes a note for each major module with path:line references and GitHub permalinks",
-            "lists where to edit each module to change specific behavior",
-            "adds the repository to Code/README.md"
-          ],
-          "outputs": [
-            "Code/<repo>/<repo>.md as the main note",
-            "architecture.md and module notes",
-            "entry in the library index"
-          ],
-          "writes": "Code/<repo>/ folder in the personal Obsidian vault",
-          "gates": [
-            "does not copy function bodies, only a path:line reference and one sentence",
-            "the main note always matches the folder name"
-          ],
-          "limits": [
-            "the analysis is done once and repeated only after major changes to the source repository",
-            "project-specific changes belong on the project page, not here"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/code-ingest/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$code-ingest",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/code-ingest ~/.claude/skills/",
-              "# restart Claude Code, then use /code-ingest"
-            ]
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "skillId": "code-ingest",
-          "start": "Provide a GitHub link or path to the repository to analyze.",
-          "capabilities": [
-            "prefers reading a local or server copy, otherwise fetches files from GitHub",
-            "maps top-level folders, entry points, configuration, the main loop, factories and data flow",
-            "traces one complete run from beginning to end to produce architecture.md",
-            "writes a note for each major module with path:line references and GitHub permalinks",
-            "lists where to edit each module to change specific behavior",
-            "adds the repository to Code/README.md"
-          ],
-          "outcomes": [
-            "Code/<repo>/<repo>.md as the main note",
-            "architecture.md and module notes",
-            "entry in the library index"
-          ],
-          "useCases": "When a project starts using a repository that has no folder in the code library yet.",
-          "important": [
-            "the analysis is done once and repeated only after major changes to the source repository",
-            "project-specific changes belong on the project page, not here"
-          ],
-          "relations": []
-        },
-        {
-          "id": "obsidian-code-library",
-          "title": "Obsidian code library",
-          "type": "Note library",
-          "role": "The Code/ folder in the personal vault has one folder per repository, with a main note at Code/<repo>/<repo>.md and module notes.",
-          "when": "Before modifying an unfamiliar repository or handing a project to another worker.",
-          "inputs": [
-            "a repository analyzed with code-ingest"
-          ],
-          "inside": [
-            "The main note describes the repository's purpose and the projects that use it.",
-            "Module notes explain the architecture, data, models, configuration and launch process.",
-            "Links point to exact source locations and help identify where to change specific behavior.",
-            "Project fork details are kept in the project's own notes."
-          ],
-          "outputs": [
-            "a repository map you can read in a few minutes"
-          ],
-          "writes": "Personal Obsidian vault, Code/ folder",
-          "gates": [
-            "each repository has exactly one folder and one main note",
-            "new repositories enter the library through code-ingest only"
-          ],
-          "limits": [
-            "The personal vault's contents are not published with the skill.",
-            "The library covers only repositories already analyzed. After code changes, check the notes against the current source."
-          ],
-          "links": [],
-          "adoption": {
-            "kind": "private",
-            "invoke": "Code/ folder in the personal Obsidian vault, created by code-ingest",
-            "installNote": "The Code/ folder is private and not published. Use code-ingest to create your own."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "start": "Open Code in Obsidian, or ask where a particular mechanism is implemented in a known repository.",
-          "capabilities": [
-            "The main note describes the repository's purpose and the projects that use it.",
-            "Module notes explain the architecture, data, models, configuration and launch process.",
-            "Links point to exact source locations and help identify where to change specific behavior.",
-            "Project fork details are kept in the project's own notes."
-          ],
-          "outcomes": [
-            "a repository map you can read in a few minutes"
-          ],
-          "useCases": "Before modifying an unfamiliar repository or handing a project to another worker.",
-          "important": [
-            "The personal vault's contents are not published with the skill.",
-            "The library covers only repositories already analyzed. After code changes, check the notes against the current source."
-          ],
-          "relations": []
-        },
-        {
-          "id": "code-library",
-          "title": "code-library",
-          "type": "Skill",
-          "role": "A guide to the local coding workflow: the code library, the project page's Code section, run monitoring and which skill to use for each task.",
-          "when": "When joining a project with code, before launching runs, or when you are unsure which tool to use.",
-          "inputs": [
-            "project and its repository"
-          ],
-          "inside": [
-            "describes three required parts: repository map, Code section on the project page and run monitoring",
-            "provides a Code section template: repository, local and server paths, new files, changed files with reasons and new flags",
-            "defines run notes: a log with a snapshot table and a results note with tables and a plot",
-            "reminds you to version PNG filenames when updating plots, or Obsidian may display the old image",
-            "reminds you to close these notes in the app while a background loop is writing to them",
-            "lists which skill to use: daily-coding, tdd, diagnose, code-review, verification-loop and others"
-          ],
-          "outputs": [
-            "an understanding of where things live and which tools to use"
-          ],
-          "writes": "Nothing",
-          "gates": [
-            "all three parts must exist for a project with code"
-          ],
-          "limits": [
-            "this is a reference. It creates nothing itself"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/code-library/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$code-library",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/code-library ~/.claude/skills/",
-              "# restart Claude Code, then use /code-library"
-            ]
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "processTitle": "Experiments",
-              "stageRef": "s1",
-              "stageTitle": "Define the test"
-            }
-          ],
-          "processRelation": {
-            "processId": "experiments",
-            "processTitle": "Experiments",
-            "stageRef": "s1",
-            "stageTitle": "Define the test"
-          },
-          "skillId": "code-library",
-          "start": "Name the project and the mechanism whose implementation you want to find.",
-          "capabilities": [
-            "describes three required parts: repository map, Code section on the project page and run monitoring",
-            "provides a Code section template: repository, local and server paths, new files, changed files with reasons and new flags",
-            "defines run notes: a log with a snapshot table and a results note with tables and a plot",
-            "reminds you to version PNG filenames when updating plots, or Obsidian may display the old image",
-            "reminds you to close these notes in the app while a background loop is writing to them",
-            "lists which skill to use: daily-coding, tdd, diagnose, code-review, verification-loop and others"
-          ],
-          "outcomes": [
-            "an understanding of where things live and which tools to use"
-          ],
-          "useCases": "When joining a project with code, before launching runs, or when you are unsure which tool to use.",
-          "important": [
-            "this is a reference. It creates nothing itself"
-          ],
-          "relations": []
-        },
-        {
-          "id": "architecture-design",
-          "title": "architecture-design",
-          "type": "Skill",
-          "role": "Helps add an ML component to an existing factory-and-registry architecture while following the project's interfaces and rules.",
-          "when": "When adding a registrable ML component to a project with this architecture.",
-          "inside": [
-            "Studies the project's existing Factory, Registry and automatic imports.",
-            "Places the component in the appropriate module and follows the configuration interface.",
-            "Checks registration, factory construction and compatibility with the rest of the code."
-          ],
-          "outputs": [
-            "A new ML component following the Factory/Registry pattern when the project requires it."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/architecture-design"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$architecture-design",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/architecture-design ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A new ML component following the Factory/Registry pattern when the project requires it.",
-          "cardTitle": "Add a component through the Registry",
-          "skillId": "architecture-design",
-          "inputs": [
-            "New ML component and project architecture"
-          ],
-          "writes": "Component code and registration",
-          "gates": [
-            "The component follows the existing Factory/Registry contract"
-          ],
-          "limits": [
-            "Applies only where this pattern is needed"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Add a component through the Registry"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Add a component through the Registry"
-            }
-          ],
-          "start": "Name the new dataset, model or other component and show neighboring implementations.",
-          "capabilities": [
-            "Studies the project's existing Factory, Registry and automatic imports.",
-            "Places the component in the appropriate module and follows the configuration interface.",
-            "Checks registration, factory construction and compatibility with the rest of the code."
-          ],
-          "useCases": "When adding a registrable ML component to a project with this architecture.",
-          "outcomes": [
-            "A new ML component following the Factory/Registry pattern when the project requires it."
-          ],
-          "purpose": "Helps add an ML component to an existing factory-and-registry architecture while following the project's interfaces and rules.",
-          "important": [
-            "Applies only where this pattern is needed"
-          ],
-          "relations": []
-        },
-        {
-          "id": "bug-detective",
-          "title": "bug-detective",
-          "type": "Skill",
-          "role": "Investigates a software failure from a reproducible symptom to a confirmed cause, then verifies the fix with the same scenario.",
-          "when": "When a failure is reproducible but its cause is unclear.",
-          "inside": [
-            "Collects logs and finds the first divergence between actual and expected behavior.",
-            "Proposes causes and tests them with short, reproducible checks.",
-            "Fixes the confirmed cause and repeats the original scenario to verify the result."
-          ],
-          "outputs": [
-            "Bug reproduction, execution chain and fix verification."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/bug-detective"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$bug-detective",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/bug-detective ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Bug reproduction, execution chain and fix verification.",
-          "cardTitle": "Trace a failure to its cause",
-          "skillId": "bug-detective",
-          "inputs": [
-            "Error, logs and reproduction scenario"
-          ],
-          "writes": "Fix and root cause report",
-          "gates": [
-            "The cause and post-fix behavior are confirmed"
-          ],
-          "limits": [
-            "Requires observations of a real failure"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Trace a failure to its cause"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Trace a failure to its cause"
-            }
-          ],
-          "start": "Provide the error, reproduction command and expected behavior.",
-          "capabilities": [
-            "Collects logs and finds the first divergence between actual and expected behavior.",
-            "Proposes causes and tests them with short, reproducible checks.",
-            "Fixes the confirmed cause and repeats the original scenario to verify the result."
-          ],
-          "useCases": "When a failure is reproducible but its cause is unclear.",
-          "outcomes": [
-            "Bug reproduction, execution chain and fix verification."
-          ],
-          "purpose": "Investigates a software failure from a reproducible symptom to a confirmed cause, then verifies the fix with the same scenario.",
-          "important": [
-            "Requires observations of a real failure"
-          ],
-          "relations": []
-        },
-        {
-          "id": "git-workflow",
-          "title": "git-workflow",
-          "type": "Skill",
-          "role": "Prepares a change for delivery through Git: a verified diff, meaningful commits, a branch and a pull request that follow repository rules.",
-          "when": "When preparing a commit, branch or pull request.",
-          "inside": [
-            "Checks the diff, working tree status and repository rules.",
-            "Groups related changes into meaningful commits while preserving other people's work.",
-            "Runs the required checks, prepares the PR description and completes mandatory review before merging."
-          ],
-          "outputs": [
-            "Commits, a branch or a pull request following the current repository's rules."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/git-workflow"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$git-workflow",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/git-workflow ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Commits, a branch or a pull request following the current repository's rules.",
-          "cardTitle": "Prepare a change for delivery",
-          "skillId": "git-workflow",
-          "inputs": [
-            "Changes and repository Git rules"
-          ],
-          "writes": "Branch, commits or pull request",
-          "gates": [
-            "The diff and selected branch base have been checked"
-          ],
-          "limits": [
-            "External actions stay within the authorized scope"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Prepare a change for delivery"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Prepare a change for delivery"
-            }
-          ],
-          "start": "Specify which changes to deliver and the target branch.",
-          "capabilities": [
-            "Checks the diff, working tree status and repository rules.",
-            "Groups related changes into meaningful commits while preserving other people's work.",
-            "Runs the required checks, prepares the PR description and completes mandatory review before merging."
-          ],
-          "useCases": "When preparing a commit, branch or pull request.",
-          "outcomes": [
-            "Commits, a branch or a pull request following the current repository's rules."
-          ],
-          "purpose": "Prepares a change for delivery through Git: a verified diff, meaningful commits, a branch and a pull request that follow repository rules.",
-          "important": [
-            "External actions stay within the authorized scope"
-          ],
-          "relations": []
-        },
-        {
-          "id": "git-guardrails-claude-code",
-          "title": "git-guardrails-claude-code",
-          "type": "Skill",
-          "role": "Installs Claude Code hooks that stop selected destructive Git commands before they execute.",
-          "when": "When dangerous Git commands need to be stopped automatically.",
-          "inside": [
-            "Agrees on the commands to block, such as hard reset or force push.",
-            "Installs a handler and registers it to run before command execution.",
-            "Checks that dangerous operations are blocked while normal workflows remain allowed."
-          ],
-          "outputs": [
-            "Hooks that block selected destructive operations at the user's request."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/git-guardrails-claude-code"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$git-guardrails-claude-code",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/git-guardrails-claude-code ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Hooks that block selected destructive operations at the user's request.",
-          "cardTitle": "Restrict dangerous Git commands",
-          "skillId": "git-guardrails-claude-code",
-          "inputs": [
-            "An explicit request for Git restrictions"
-          ],
-          "writes": "Claude Code PreToolUse hook",
-          "gates": [
-            "Selected dangerous commands are blocked"
-          ],
-          "limits": [
-            "Protection covers only intercepted Claude Code operations"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Restrict dangerous Git commands"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Restrict dangerous Git commands"
-            }
-          ],
-          "start": "Choose the scope: one project or the user-level Claude Code configuration.",
-          "capabilities": [
-            "Agrees on the commands to block, such as hard reset or force push.",
-            "Installs a handler and registers it to run before command execution.",
-            "Checks that dangerous operations are blocked while normal workflows remain allowed."
-          ],
-          "useCases": "When dangerous Git commands need to be stopped automatically.",
-          "outcomes": [
-            "Hooks that block selected destructive operations at the user's request."
-          ],
-          "purpose": "Installs Claude Code hooks that stop selected destructive Git commands before they execute.",
-          "important": [
-            "Protection covers only intercepted Claude Code operations"
-          ],
-          "relations": []
-        },
-        {
-          "id": "improve-codebase-architecture",
-          "title": "improve-codebase-architecture",
-          "type": "Skill",
-          "role": "Examines difficult module boundaries in existing code and proposes concrete simplifications with their tradeoffs.",
-          "when": "When confusing module boundaries make code difficult to change.",
-          "inside": [
-            "Studies actual dependencies and domain terminology.",
-            "Proposes concrete options for module boundaries and explains their tradeoffs.",
-            "Discusses the chosen option using examples of future changes before refactoring begins."
-          ],
-          "outputs": [
-            "Module improvement proposals grounded in the actual code and project terminology."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/improve-codebase-architecture"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$improve-codebase-architecture",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/improve-codebase-architecture ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Module improvement proposals grounded in the actual code and project terminology.",
-          "cardTitle": "Examine difficult parts of the architecture",
-          "skillId": "improve-codebase-architecture",
-          "inputs": [
-            "Existing code and domain model"
-          ],
-          "writes": "Module improvement proposals",
-          "gates": [
-            "The problem is demonstrated by the code and module dependencies"
-          ],
-          "limits": [
-            "A proposal does not authorize broad refactoring"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Examine difficult parts of the architecture"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Examine difficult parts of the architecture"
-            }
-          ],
-          "start": "Show the problematic part of the repository and an example of a difficult change.",
-          "capabilities": [
-            "Studies actual dependencies and domain terminology.",
-            "Proposes concrete options for module boundaries and explains their tradeoffs.",
-            "Discusses the chosen option using examples of future changes before refactoring begins."
-          ],
-          "useCases": "When confusing module boundaries make code difficult to change.",
-          "outcomes": [
-            "Module improvement proposals grounded in the actual code and project terminology."
-          ],
-          "purpose": "Examines difficult module boundaries in existing code and proposes concrete simplifications with their tradeoffs.",
-          "important": [
-            "A proposal does not authorize broad refactoring"
-          ],
-          "relations": []
-        },
-        {
-          "id": "prototype",
-          "title": "prototype",
-          "type": "Skill",
-          "role": "Builds a small temporary prototype to test one specific behavior or interface idea before full implementation.",
-          "when": "When you need a quick test of one interface or behavior idea.",
-          "inside": [
-            "Chooses a minimal scenario and places clearly marked temporary code near the relevant module.",
-            "Provides a simple way to run it and shows the state after an action.",
-            "Based on the trial, proposes deleting the prototype or moving the verified solution into the main code."
-          ],
-          "outputs": [
-            "A small prototype that answers a specific design question."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/prototype"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$prototype",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/prototype ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A small prototype that answers a specific design question.",
-          "cardTitle": "Test an idea with a prototype",
-          "skillId": "prototype",
-          "inputs": [
-            "A specific question about the future interface or program"
-          ],
-          "writes": "Disposable prototype",
-          "gates": [
-            "The prototype answered the original question"
-          ],
-          "limits": [
-            "Not a production-ready implementation"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Test an idea with a prototype"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Test an idea with a prototype"
-            }
-          ],
-          "start": "State the question the prototype should answer.",
-          "capabilities": [
-            "Chooses a minimal scenario and places clearly marked temporary code near the relevant module.",
-            "Provides a simple way to run it and shows the state after an action.",
-            "Based on the trial, proposes deleting the prototype or moving the verified solution into the main code."
-          ],
-          "useCases": "When you need a quick test of one interface or behavior idea.",
-          "outcomes": [
-            "A small prototype that answers a specific design question."
-          ],
-          "purpose": "Builds a small temporary prototype to test one specific behavior or interface idea before full implementation.",
-          "important": [
-            "Not a production-ready implementation"
-          ],
-          "relations": []
-        },
-        {
-          "id": "setup-pre-commit",
-          "title": "setup-pre-commit",
-          "type": "Skill",
-          "role": "Configures Husky and lint-staged to run selected checks automatically on changed files before a commit.",
-          "when": "To check changed files before committing.",
-          "inside": [
-            "Identifies the package manager and existing formatting rules.",
-            "Configures Husky and lint-staged for the selected checks on changed files.",
-            "Verifies that the hook runs and existing settings are preserved."
-          ],
-          "outputs": [
-            "Husky and lint-staged with agreed project checks."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/setup-pre-commit"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$setup-pre-commit",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/setup-pre-commit ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Husky and lint-staged with agreed project checks.",
-          "cardTitle": "Add pre-commit checks",
-          "skillId": "setup-pre-commit",
-          "inputs": [
-            "Repository and agreed checks"
-          ],
-          "writes": "Husky, lint-staged and scripts configuration",
-          "gates": [
-            "The hook checks the intended files"
-          ],
-          "limits": [
-            "Requires tools for the relevant stack"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Add pre-commit checks"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Add pre-commit checks"
-            }
-          ],
-          "start": "Ask to configure pre-commit and agree on the project's check commands.",
-          "capabilities": [
-            "Identifies the package manager and existing formatting rules.",
-            "Configures Husky and lint-staged for the selected checks on changed files.",
-            "Verifies that the hook runs and existing settings are preserved."
-          ],
-          "useCases": "To check changed files before committing.",
-          "outcomes": [
-            "Husky and lint-staged with agreed project checks."
-          ],
-          "purpose": "Configures Husky and lint-staged to run selected checks automatically on changed files before a commit.",
-          "important": [
-            "Requires tools for the relevant stack"
-          ],
-          "relations": []
-        },
-        {
-          "id": "uv-package-manager",
-          "title": "uv-package-manager",
-          "type": "Skill",
-          "role": "Helps manage a Python project with uv: environment, dependencies, lockfile, script execution and packaging.",
-          "when": "When working with Python dependencies, environments or packaging.",
-          "inside": [
-            "Reads pyproject.toml, the lockfile and the existing environment.",
-            "Uses uv to resolve dependencies, synchronize the environment or run code.",
-            "Checks installation reproducibility and the resulting version changes."
-          ],
-          "outputs": [
-            "Project dependencies, environment and packaging with uv."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/uv-package-manager"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$uv-package-manager",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/uv-package-manager ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Project dependencies, environment and packaging with uv.",
-          "cardTitle": "Manage a Python environment",
-          "skillId": "uv-package-manager",
-          "inputs": [
-            "Python project and dependency requirements"
-          ],
-          "writes": "Environment, lockfile and project configuration",
-          "gates": [
-            "The environment can be reproduced from the configuration"
-          ],
-          "limits": [
-            "Requires uv to be installed"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Manage a Python environment"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "Manage a Python environment"
-            }
-          ],
-          "start": "Specify the project and operation: installation, dependency update or script execution.",
-          "capabilities": [
-            "Reads pyproject.toml, the lockfile and the existing environment.",
-            "Uses uv to resolve dependencies, synchronize the environment or run code.",
-            "Checks installation reproducibility and the resulting version changes."
-          ],
-          "useCases": "When working with Python dependencies, environments or packaging.",
-          "outcomes": [
-            "Project dependencies, environment and packaging with uv."
-          ],
-          "purpose": "Helps manage a Python project with uv: environment, dependencies, lockfile, script execution and packaging.",
-          "important": [
-            "Requires uv to be installed"
-          ],
-          "relations": []
-        },
-        {
-          "id": "zoom-out",
-          "title": "zoom-out",
-          "type": "Skill",
-          "role": "Explains the broader code structure around the current task: components, responsibilities, dependencies and data flow.",
-          "when": "When individual edits no longer explain how the system works.",
-          "inside": [
-            "Traces callers of the current module and its dependencies.",
-            "Explains the system at the component and data-flow level.",
-            "Places the current task in the overall architecture and helps choose the next step."
-          ],
-          "outputs": [
-            "A higher-level map of modules and calling code."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/zoom-out"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$zoom-out",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/zoom-out ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A higher-level map of modules and calling code.",
-          "cardTitle": "See the broader code structure",
-          "skillId": "zoom-out",
-          "inputs": [
-            "An unfamiliar area of code and a question"
-          ],
-          "writes": "Explanation of modules and calling code",
-          "gates": [
-            "Terminology and relationships are checked against the repository"
-          ],
-          "limits": [
-            "Provides an overview, not a proof of implementation correctness"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "See the broader code structure"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "experiments",
-              "role": "See the broader code structure"
-            }
-          ],
-          "start": "Ask for the broader picture around the current area of code.",
-          "capabilities": [
-            "Traces callers of the current module and its dependencies.",
-            "Explains the system at the component and data-flow level.",
-            "Places the current task in the overall architecture and helps choose the next step."
-          ],
-          "useCases": "When individual edits no longer explain how the system works.",
-          "outcomes": [
-            "A higher-level map of modules and calling code."
-          ],
-          "purpose": "Explains the broader code structure around the current task: components, responsibilities, dependencies and data flow.",
-          "important": [
-            "Provides an overview, not a proof of implementation correctness"
-          ],
-          "relations": []
+          }
         }
       ],
       "implementation": {
-        "summary": "The interactive agent, server project agent and watcher are three different workers following one protocol. Run files are always the source of truth, rather than a worker's report.",
+        "summary": "A local agent, Hermes on the server and model-free scripts are three executors of one protocol. The source of truth is always the run files written by the code, not the executor's word.",
         "items": [
-          "The profile defines the agent's memory, skills and access",
-          "The task queue organizes work; it is not evidence",
-          "A long run lives in a persistent session and writes a log",
-          "The project directory on the server holds the agent's long-term memory",
-          "Ten timers start agents, open topics and repair the gateway",
-          "Monitoring reads the step, freshness, status, metrics and free space",
-          "A new watcher build goes through a canary unit with rollback",
-          "A stable finding enters the shared database as a run and a measurement"
+          "The recorder writes the run page from the training code itself",
+          "The end-of-turn guard catches a launch without the recorder while the run can still be adopted",
+          "A long run lives in the background on the server and writes a log",
+          "Hermes runs the series in a persistent project-chat session and wakes up when the process ends",
+          "A model-free script handles the mechanics: the model is woken only for decisions",
+          "Hermes's task board keeps the work order, not the evidence",
+          "The run page goes under a claim via a proposal; the check matches numbers against runs",
+          "The work lead accepting the proposal is the record in the base"
         ],
         "links": [
           {
-            "label": "Hermes",
+            "label": "Hermes: the original open-source project",
             "url": "https://github.com/NousResearch/hermes-agent"
           },
           {
-            "label": "Skill source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-experiment-log/SKILL.md"
+            "label": "Recorder source",
+            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
           }
         ]
       },
@@ -12005,7 +7820,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "ref": "o2",
-          "label": "Logs, checkpoints and metrics for each seed."
+          "label": "A page for every run: settings, metrics, environment, commit and hardware, all recorded by the code."
         },
         {
           "ref": "o3",
@@ -12013,25 +7828,27 @@ window.RESEARCH_LOOP = {
         },
         {
           "ref": "o4",
-          "label": "An explicit final status for every run."
+          "label": "An explicit final status: a crashed run is not thrown away but kept, marked “crashed” with the reason."
         },
         {
           "ref": "o5",
-          "label": "A link from the run to the original claim."
+          "label": "The run sits under its claim and belongs to a series with a verdict."
         }
       ],
       "toolClusters": [
         {
           "id": "protocol",
-          "title": "Protocol and records",
-          "stageRef": "s1",
+          "title": "The run records itself",
+          "stageRef": "s4",
           "toolIds": [
+            "lab-run",
+            "run-guard",
             "experiment-log"
           ]
         },
         {
           "id": "runtime",
-          "title": "The project agent manages runs",
+          "title": "Hermes runs the runs",
           "stageRef": "s5",
           "toolIds": [
             "hermes",
@@ -12040,10 +7857,19 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "reliability",
-          "title": "Checks for changed code",
-          "stageRef": "s-code",
+          "title": "Monitoring without extra model calls",
+          "stageRef": "s6",
           "toolIds": [
-            "verification-loop"
+            "run-monitoring",
+            "diagnose"
+          ]
+        },
+        {
+          "id": "record",
+          "title": "Run and series in the base",
+          "stageRef": "s7",
+          "toolIds": [
+            "lab-knowledge-run"
           ]
         }
       ],
@@ -12052,18 +7878,7 @@ window.RESEARCH_LOOP = {
           "id": "r1",
           "stage": "s1",
           "tools": [
-            "experiment-mcp",
-            "daily-coding",
-            "tdd",
-            "bug-analyzer",
-            "build-error-resolver",
-            "code-review",
-            "code-reviewer-agent",
-            "refactor-cleaner",
-            "code-workflow-rule",
-            "code-ingest",
-            "obsidian-code-library",
-            "code-library"
+            "lab-knowledge-run"
           ],
           "destinations": [
             "d4"
@@ -12077,7 +7892,8 @@ window.RESEARCH_LOOP = {
           "id": "r2",
           "stage": "s2",
           "tools": [
-            "experiment-log"
+            "experiment-log",
+            "experiment-runs"
           ],
           "destinations": [
             "d2"
@@ -12091,7 +7907,6 @@ window.RESEARCH_LOOP = {
           "id": "r3",
           "stage": "s3",
           "tools": [
-            "experiment-mcp",
             "hermes"
           ],
           "destinations": [
@@ -12104,7 +7919,10 @@ window.RESEARCH_LOOP = {
           "id": "r4",
           "stage": "s4",
           "tools": [
-            "run-monitoring"
+            "lab-run",
+            "run-guard",
+            "experiment-log",
+            "server-hygiene"
           ],
           "destinations": [
             "d1"
@@ -12133,6 +7951,7 @@ window.RESEARCH_LOOP = {
           "stage": "s6",
           "tools": [
             "run-monitoring",
+            "hermes",
             "diagnose"
           ],
           "destinations": [
@@ -12147,8 +7966,8 @@ window.RESEARCH_LOOP = {
           "id": "r7",
           "stage": "s7",
           "tools": [
-            "experiment-log",
-            "experiment-mcp"
+            "lab-run",
+            "lab-knowledge-run"
           ],
           "destinations": [
             "d1",
@@ -12159,62 +7978,66 @@ window.RESEARCH_LOOP = {
             "o5"
           ],
           "qa": []
-        },
-        {
-          "id": "r-code",
-          "stage": "s-code",
-          "tools": [
-            "verification-loop"
-          ],
-          "destinations": [],
-          "outcomes": [],
-          "qa": []
         }
       ],
       "toMcp": {
-        "lead": "The run protocol, status and resulting numbers become shared knowledge.",
+        "lead": "What becomes shared is the run page written by the code and the series with a verdict. There is one path: branch, proposal, automatic check, human acceptance.",
         "paths": [
           {
             "id": "human",
-            "actor": "person",
-            "title": "A person creates the run",
-            "line": "fixed protocol → run E-* → actual status",
+            "actor": "human or agent",
+            "title": "The run is wrapped before launch",
+            "line": "recorder in the code → run page → run under a claim → series with a verdict",
             "chain": [
               {
                 "lane": "work",
-                "title": "Fixed protocol",
-                "stageRef": "s2",
-                "destRef": "d2",
-                "detail": "Comparison, budget, seeds and stopping criterion are specified before launch."
+                "title": "Training code with the recorder",
+                "stageRef": "s4",
+                "destRef": "d1",
+                "detail": "The recorder is attached before launch; a copy of the run record stays on disk."
               },
               {
                 "lane": "record",
                 "kind": "run",
-                "code": "E-*",
-                "title": "Run in the shared database",
+                "code": "",
+                "title": "Run page",
                 "ref": "object:experiment",
                 "destRef": "d4",
                 "items": [
-                  "hypothesis_id is required: every run must be linked to a claim",
-                  "the protocol can be repeated from its description",
-                  "the project is inherited from the claim and is not accepted separately"
+                  "settings, metrics, environment, commit and hardware are written by the code",
+                  "a crashed run goes out marked “crashed” with the reason",
+                  "the page goes to the claim branch, not straight to main"
                 ],
                 "via": {
                   "tool": "lab_run.py",
-                  "type": "mcp"
+                  "type": "script"
                 }
               },
               {
                 "lane": "record",
                 "kind": "run",
-                "code": "E-*",
-                "title": "Actual status",
+                "code": "",
+                "title": "Run under a claim",
                 "ref": "object:experiment",
                 "destRef": "d4",
-                "detail": "Six statuses. completed is not set without an actual result.",
+                "detail": "The agent moves the page under the claim, gives the run a number and adds what the numbers show.",
                 "via": {
-                  "tool": "update_experiment_status",
-                  "type": "mcp"
+                  "tool": "git push",
+                  "type": "command"
+                }
+              },
+              {
+                "lane": "record",
+                "kind": "series",
+                "code": "",
+                "title": "Series with a verdict",
+                "ref": "object:experiment",
+                "destRef": "d4",
+                "detail": "Question, shared conditions, comparison axis, run table, verdict; “no win established” is a legitimate verdict.",
+                "via": {
+                  "tool": "lab checks",
+                  "type": "command",
+                  "gate": "number check"
                 }
               }
             ]
@@ -12222,40 +8045,40 @@ window.RESEARCH_LOOP = {
           {
             "id": "agent",
             "actor": "agent",
-            "title": "The server agent writes all records",
-            "line": "project agent service → run E-* → measurement R-*",
+            "title": "Launched without a wrapper",
+            "line": "running run → adopted by the recorder → page marked “adopted”",
             "chain": [
               {
                 "lane": "work",
-                "title": "Project agent service",
+                "title": "Launch without recorder",
                 "stageRef": "s4",
-                "destRef": "d3",
-                "detail": "Profile, board card and a dedicated labeled key."
+                "destRef": "d1",
+                "detail": "The automatic end-of-turn guard spots a launch without the recorder and says so once."
               },
               {
                 "lane": "record",
                 "kind": "run",
-                "code": "E-*",
-                "title": "Run under the agent's key",
+                "code": "",
+                "title": "Adopted run",
                 "ref": "object:experiment",
                 "destRef": "d4",
-                "detail": "The key label appears in the audit log. Revocation affects just that agent.",
+                "detail": "The log and config from disk are gathered into one folder and the page is marked as adopted; numbers are filled in by the reader, marked as their own reading.",
                 "via": {
-                  "tool": "lab_run.py",
-                  "type": "mcp"
+                  "tool": "lab_run.py --adopt",
+                  "type": "script"
                 }
               },
               {
                 "lane": "record",
-                "kind": "measurement",
-                "code": "R-*",
-                "title": "Numbers from the agent",
-                "ref": "object:evidence",
+                "kind": "run",
+                "code": "",
+                "title": "Repeat on completion",
+                "ref": "object:experiment",
                 "destRef": "d4",
-                "detail": "The same call as for a person, with a different key.",
+                "detail": "When the adopted run finishes, the adoption is repeated with the final status.",
                 "via": {
-                  "tool": "runs/E-XXX.md",
-                  "type": "mcp"
+                  "tool": "lab_run.py --adopt",
+                  "type": "script"
                 }
               }
             ]
@@ -12264,7 +8087,7 @@ window.RESEARCH_LOOP = {
             "id": "incident",
             "actor": "person",
             "title": "An infrastructure incident affecting the run",
-            "line": "server incident → resource journal",
+            "line": "server incident → server log entry",
             "chain": [
               {
                 "lane": "work",
@@ -12274,120 +8097,46 @@ window.RESEARCH_LOOP = {
               },
               {
                 "lane": "record",
-                "kind": "journal",
+                "kind": "server log",
                 "code": "—",
-                "title": "Resource observation",
+                "title": "Server entry",
                 "ref": "object:journal",
                 "destRef": "d4",
-                "detail": "The incident kind and resource slug. An unknown slug is silently dropped.",
+                "detail": "Durable facts only: what broke, when it was fixed, where access changed. Who is computing what right now does not go there.",
                 "via": {
-                  "tool": "brainlab/journal",
-                  "type": "mcp"
+                  "tool": "git push",
+                  "type": "command"
                 }
               }
             ]
           }
         ],
         "kept": [
-          "kanban.db and the Hermes board track who does what, not what is true",
-          "Hermes profiles and the server's project agent directory",
-          "logs, checkpoints and watchdog state"
+          "Hermes's task board: it is about who is doing what, not about what is true",
+          "Hermes profiles and their sessions on the server",
+          "logs, checkpoints and recorder files — on the server",
+          "series log — with the researcher"
         ],
         "hook": true
       },
       "mapFeatured": [
+        "lab-run",
         "hermes",
-        "handoff-to-jarvis",
-        "experiment-log",
-        "verification-loop"
-      ],
-      "constellation": {
-        "core": "hermes",
-        "caption": "Project agent · profile, tasks and execution",
-        "groups": [
-          {
-            "area": "north",
-            "title": "Hand off to an agent",
-            "toolIds": [
-              "handoff-to-jarvis",
-              "watcher",
-              "run-monitoring"
-            ]
-          },
-          {
-            "area": "nw",
-            "title": "Protocol and results",
-            "toolIds": [
-              "experiment-log",
-              "experiment-mcp"
-            ]
-          },
-          {
-            "area": "ne",
-            "title": "Check the code",
-            "toolIds": [
-              "verification-loop",
-              "code-review",
-              "code-reviewer-agent",
-              "refactor-cleaner",
-              "code-workflow-rule"
-            ]
-          },
-          {
-            "area": "west",
-            "title": "Research code",
-            "toolIds": [
-              "daily-coding",
-              "tdd",
-              "architecture-design",
-              "improve-codebase-architecture",
-              "prototype"
-            ]
-          },
-          {
-            "area": "east",
-            "title": "Find the cause of a failure",
-            "toolIds": [
-              "diagnose",
-              "bug-detective",
-              "bug-analyzer",
-              "build-error-resolver"
-            ]
-          },
-          {
-            "area": "sw",
-            "title": "Environment and changes",
-            "toolIds": [
-              "uv-package-manager",
-              "git-workflow",
-              "setup-pre-commit",
-              "git-guardrails-claude-code"
-            ]
-          },
-          {
-            "area": "se",
-            "title": "Repository structure",
-            "toolIds": [
-              "code-library",
-              "code-ingest",
-              "obsidian-code-library",
-              "zoom-out"
-            ]
-          }
-        ]
-      }
+        "run-guard",
+        "experiment-log"
+      ]
     },
     {
       "id": "results",
       "number": "05",
       "title": "Results",
       "verb": "Understand what the evidence establishes",
-      "result": "Measurements, uncertainty estimates and a decision on the claim",
+      "result": "Runs under a claim, a series with a verdict and the claim's state by its criterion",
       "color": "#73e7ba",
       "registryProcessIds": [
         "results"
       ],
-      "purpose": "Move from run files to a conclusion: check comparability, measure the effect and variability, plot the results and decide what to do next.",
+      "purpose": "Go from run files to a conclusion: check comparability, measure effect and spread, build plots and record a verdict. Numbers go into the base via code, not via the agent, and an automatic check matches every number on the page against the claim's runs: a made-up number won't pass.",
       "when": [
         "A run or series has finished.",
         "You need to compare methods, ablations or seeds.",
@@ -12396,8 +8145,8 @@ window.RESEARCH_LOOP = {
       "stages": [
         {
           "title": "Collect run files",
-          "summary": "Find configurations, logs, metrics and metadata for all runs.",
-          "result": "Verified inventory",
+          "summary": "Run pages the recorder wrote itself: config, metrics, commit, hardware, log.",
+          "result": "Inventory of runs with log locations",
           "ref": "s1"
         },
         {
@@ -12426,14 +8175,14 @@ window.RESEARCH_LOOP = {
         },
         {
           "title": "Make a decision",
-          "summary": "Continue, revise the protocol, add a control or stop.",
-          "result": "Rule and next action",
+          "summary": "The series verdict and the next action: continue, add a control or stop.",
+          "result": "Verdict and next action",
           "ref": "s6"
         },
         {
-          "title": "Share internally",
-          "summary": "Keep the human-readable report and shared database record separate.",
-          "result": "Verifiable result",
+          "title": "Record under a claim",
+          "summary": "Runs and the series go into the work as a proposal, the gates match the numbers, the work lead merges.",
+          "result": "Record accepted into the work",
           "ref": "s7"
         }
       ],
@@ -12442,29 +8191,36 @@ window.RESEARCH_LOOP = {
         "Mean, variability, intervals and effect size.",
         "Plots linked to their source files.",
         "Measurement, interpretation and limitations kept separate.",
-        "Decision on the claim."
+        "A series with a verdict and the claim's state by its criterion."
       ],
       "destinations": [
         {
           "name": "Analysis package alongside the data",
           "what": "Calculations, tables, figure inventory and the figures themselves",
-          "why": "A layer that can be recomputed",
+          "why": "A layer that can be recomputed; stays on the machine",
           "ref": "d1"
         },
         {
-          "name": "Obsidian, Results folder",
-          "what": "Full human-readable report, including negative results",
-          "why": "Canonical explanation",
+          "name": "Report for humans",
+          "what": "Interpretation of every plot, limitations and negative results",
+          "why": "Sits next to the analysis package, doesn't go to GitLab",
           "ref": "d2"
         },
         {
-          "name": "Shared lab knowledge base",
-          "what": "Measurement, rule and claim state",
-          "why": "Shared structured conclusion",
+          "name": "Claim in the work",
+          "what": "Run pages, a series with a verdict, figures, the claim's new state",
+          "why": "Shared lab knowledge; a record is the work lead merging a proposal",
           "ref": "d3"
         }
       ],
       "controls": [
+        {
+          "id": "numbers-by-code",
+          "title": "Numbers come from code, not from the agent",
+          "explanation": "The run page is written by the recorder: hyperparameters, metrics, environment, commit, hardware. The agent only adds what these numbers show. If the page has a number that is not in any of the claim's runs, the check gives a red verdict and the proposal is not accepted.",
+          "example": "",
+          "links": []
+        },
         {
           "id": "sample-size",
           "title": "One seed is still one observation",
@@ -12489,25 +8245,105 @@ window.RESEARCH_LOOP = {
         {
           "id": "real-figures",
           "title": "Plots are generated from the original data",
-          "explanation": "When the data are readable, create the plot and link it to the file that produced it, rather than describing a plot in words.",
+          "explanation": "A plot is built from the source data, and its caption says what it shows, not what is drawn. On 14-10-2026 we checked the figures of thirteen works: the numbers matched almost always, but the captions were wrong almost everywhere, in phrases like “grows with” or “across all”. Number matching doesn't catch this, so captions are read by eye.",
           "example": "",
           "links": []
         },
         {
           "id": "claim-boundary",
           "title": "An incomplete run limits the conclusion",
-          "explanation": "Measurement, interpretation and limitations are stored separately. Missing controls or seeds remain blockers, not a footnote at the end.",
+          "explanation": "Measurement, interpretation and limitation are stored separately. A one-run series is legitimate, but its verdict is almost always “not established”. Non-comparable runs are excluded from a series, and the series names them in one line.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "status-by-criterion",
+          "title": "State changes only by its own criterion",
+          "explanation": "A claim becomes “supported”, “refuted” or “inconclusive” strictly by what was written in it beforehand. A refutation criterion that did not fire means “not refuted”, not “supported”. “No difference visible” is a full-fledged series verdict.",
           "example": "",
           "links": []
         }
       ],
-      "example": "Analysis starts by checking batch size, budget, seeds and checkpoints. An effect from one seed remains preliminary. A stable paired comparison enters the shared database as a measurement, and only then can it support a rule.",
+      "example": "Analysis starts by checking batch size, budget, seeds and checkpoints. An effect on a single seed stays preliminary: such a series is legitimate, but its verdict is “not established”. A robust comparison goes under the claim as a series with a verdict, the check finds every one of its numbers in the run pages, and only after acceptance does the claim's state change.",
       "tools": [
+        {
+          "id": "lab-run",
+          "title": "lab_run.py",
+          "type": "Run recorder",
+          "role": "Wraps training before launch and writes the run page itself: hyperparameters, metrics, environment, commit, hardware, full log. Numbers in the base come from code, not from an agent's retelling.",
+          "when": "Before launching training, not after.",
+          "inputs": [
+            "training script",
+            "work name and run code"
+          ],
+          "inside": [
+            "puts the run page into a staging folder together with the log",
+            "pushes it to the work branch",
+            "adopts a run launched without a wrapper after the fact and marks it as adopted",
+            "the end-of-turn hook notices a training launch without the recorder on its own and says so right away"
+          ],
+          "outputs": [
+            "run page",
+            "log and metrics alongside"
+          ],
+          "writes": "A staging folder in the work branch; the agent moves the run under a claim",
+          "gates": [
+            "a proposal with unprocessed runs left in it is not accepted",
+            "the agent does not retype numbers or setting names"
+          ],
+          "limits": [
+            "Python standard library only: the file is copied into the repository with the training code",
+            "an adopted run has its numbers filled in by reading, and the sheet shows it"
+          ],
+          "links": [
+            {
+              "label": "Recorder source",
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
+            }
+          ],
+          "adoption": {
+            "kind": "toolkit-skill",
+            "invoke": "from lab_run import LabRun — at the training entry point",
+            "install": [
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "cp ~/claude-brainlab/skills/lab-knowledge/scripts/lab_run.py <repository with training code>/"
+            ],
+            "installNote": "No dependencies. Without a wrapper the run has to be transcribed by hand, and the base's rules forbid that."
+          },
+          "nonInstallable": false,
+          "usedBy": [
+            {
+              "name": "Experiment author and agent",
+              "role": "wrap the launch and move the run page under a claim"
+            }
+          ],
+          "relations": [
+            {
+              "toolId": "proposal-gates",
+              "label": "its numbers are matched by the gates",
+              "title": "Gates on the proposal"
+            }
+          ],
+          "processRelations": [
+            {
+              "processId": "results",
+              "processTitle": "Results",
+              "stageRef": "s1",
+              "stageTitle": "Collect run files"
+            }
+          ],
+          "processRelation": {
+            "processId": "results",
+            "processTitle": "Results",
+            "stageRef": "s1",
+            "stageTitle": "Collect run files"
+          }
+        },
         {
           "id": "results-analysis",
           "title": "results-analysis",
           "type": "Skill",
-          "role": "Rigorous data analysis: comparison units, descriptive and inferential statistics, and actual plots. Produces a file package rather than a paper's Results section.",
+          "role": "Rigorous data analysis: checking units of comparison, descriptive and inferential statistics, real plots. Delivers a package of files, not a ready paper section.",
           "when": "As soon as per-seed numbers are available.",
           "inputs": [
             "run configurations",
@@ -12522,19 +8358,19 @@ window.RESEARCH_LOOP = {
             "identifies blockers and missing data"
           ],
           "outputs": [
-            "analysis-report.md",
-            "stats-appendix.md",
-            "figure-catalog.md",
-            "figures/ directory"
+            "analysis report",
+            "statistics appendix",
+            "plot catalog",
+            "the plots themselves"
           ],
-          "writes": "analysis-output directory alongside the data",
+          "writes": "Analysis package alongside the data",
           "gates": [
             "the number of observations is stated",
             "statistical test assumptions are justified",
             "main comparisons include an effect size and interval"
           ],
           "limits": [
-            "does not write the paper's Results section",
+            "does not write the paper's results section",
             "does not substitute text for missing data"
           ],
           "links": [
@@ -12545,7 +8381,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$results-analysis",
+            "invoke": "/results-analysis",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -12555,36 +8391,40 @@ window.RESEARCH_LOOP = {
           },
           "purpose": "Turns a set of experimental runs into an accurate conclusion: what changed, how robust the result is and what cannot yet be claimed.",
           "capabilities": [
-            "checks that the comparisons are valid",
-            "computes statistics using the correct unit of analysis",
-            "creates plots from data rather than describing them in words",
-            "identifies blockers and missing data"
+            "compare only runs that are truly comparable",
+            "check the data of every repetition of the experiment",
+            "compute aggregates and uncertainty",
+            "find anomalies and missing measurements",
+            "state the conclusion within the bounds of the collected data"
           ],
-          "useCases": "As soon as per-seed numbers are available.",
+          "useCases": [
+            "Experiments have finished and you need to understand the result",
+            "Metrics diverge across runs",
+            "You need to prepare evidence for a paper or a decision"
+          ],
           "outcomes": [
-            "analysis-report.md",
-            "stats-appendix.md",
-            "figure-catalog.md",
-            "figures/ directory"
+            "a clear comparison of methods",
+            "tables and plots with verified numbers",
+            "a list of supported conclusions and open doubts"
           ],
           "afterSetup": "Turn raw run results into a reproducible analysis suitable for decisions and the paper's text.",
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Research agent and experiment author",
-              "role": "aggregate runs, check comparability and formulate evidence"
+              "name": "Agent and experiment author",
+              "role": "aggregate runs, check comparability and write a conclusion within the bounds of the data"
             }
           ],
           "relations": [
             {
-              "toolId": "experiment-log",
-              "label": "saves the verified summary and provenance",
-              "title": "obsidian-experiment-log"
+              "toolId": "results-report",
+              "label": "passes the analysis package on to the report",
+              "title": "results-report"
             },
             {
-              "toolId": "results-report",
-              "label": "passes the result to the next stage",
-              "title": "results-report"
+              "toolId": "proposal-gates",
+              "label": "its numbers are later matched by the gates",
+              "title": "Gates on the proposal"
             }
           ],
           "processRelations": [
@@ -12609,91 +8449,60 @@ window.RESEARCH_LOOP = {
               "Comparability",
               "Variation across seeds",
               "Plots",
-              "measurements"
+              "Measurement"
             ]
-          },
-          "cardTitle": "Understand what the experiment showed",
-          "catalogSummary": "Comparable metrics, uncertainty and the limits of the conclusions.",
-          "skillId": "results-analysis",
-          "start": "Provide configurations, metrics and logs for the runs being compared. State the question you want the results to answer.",
-          "important": [
-            "does not write the paper's Results section",
-            "does not substitute text for missing data"
-          ]
+          }
         },
         {
           "id": "academic-plotting",
           "title": "academic-plotting",
           "type": "Skill",
-          "role": "Creates numerical plots from data using Matplotlib/Seaborn. A separate workflow generates diagrams from descriptions through Gemini.",
-          "when": "When a paper needs plots of comparisons, trajectories or uncertainty and the source data are available.",
+          "role": "Builds plots from run data with matplotlib and seaborn and saves the script that produced each plot. Method diagrams are drawn separately, via image generation.",
+          "when": "When the numbers are verified and you need a figure for a series, a claim or a paper.",
           "inputs": [
-            "a table or result files",
-            "measured quantities and unit of analysis",
-            "figure format and column width"
+            "tables or CSV with results",
+            "what is compared with what",
+            "the venue or place the figure will go"
           ],
           "inside": [
-            "chooses the plot type for the data and question",
-            "saves the plotting script and numerical sources",
-            "sets dimensions, labels and distinguishable colors",
-            "exports the figure and checks readability at its intended size in the paper"
+            "picks the chart type from the shape of the data",
+            "highlights our method in its own color",
+            "saves a vector PDF and a 300 DPI PNG",
+            "puts the script that can rebuild the figure next to it"
           ],
           "outputs": [
-            "plotting script",
-            "PDF or PNG figure",
-            "captions and data source reference"
+            "figure in PDF and PNG",
+            "the script that builds it"
           ],
-          "writes": "The current paper's files and figures",
+          "writes": "Figures folder next to the text or the claim",
           "gates": [
-            "points and intervals match the source data",
-            "legend and labels do not obscure the plot",
-            "example data are replaced with real measurements"
+            "a plot with axes is built from data, not generated as an image",
+            "in the base, the figure is embedded in the claim page, otherwise the check gives a red verdict"
           ],
           "limits": [
-            "numerical plots require Python, Matplotlib, NumPy and optionally Seaborn",
-            "Gemini diagram generation separately requires google-genai and an API key, and sends the description to an external service",
-            "a generated diagram is not an experimental measurement",
-            "installing the text skill does not install libraries or validate the scientific conclusion"
+            "the caption about what the figure shows is written by a human or an agent, not by the skill",
+            "diagrams need a key for an image-generation service"
           ],
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs/blob/6710bc7360123bf7947374f58483879d630ace5b/20-ml-paper-writing/academic-plotting/SKILL.md"
-            },
-            {
-              "label": "Lab distribution",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/academic-plotting"
+              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/academic-plotting/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$academic-plotting",
+            "invoke": "/academic-plotting",
             "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/academic-plotting ~/.claude/skills/",
               "# restart Claude Code, then use /academic-plotting"
-            ],
-            "installNote": "For Codex, place the same directory in ~/.agents/skills/. Numerical plots require Matplotlib, NumPy and optionally Seaborn. The Gemini diagram workflow separately requires an API key and google-genai. Copying the skill does not install these dependencies."
+            ]
           },
-          "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author",
-              "role": "checks the result against the data and source text"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "results-analysis",
-              "title": "results-analysis",
-              "label": "receives verified numbers and intervals"
-            },
-            {
-              "toolId": "ml-paper-writing",
-              "processId": "writing",
-              "title": "ml-paper-writing",
-              "label": "passes figures into the manuscript"
+              "name": "Researcher",
+              "role": "builds the figure and checks it by eye"
             }
           ],
           "processRelations": [
@@ -12709,113 +8518,13 @@ window.RESEARCH_LOOP = {
             "processTitle": "Results",
             "stageRef": "s4",
             "stageTitle": "Create plots"
-          },
-          "cardTitle": "Create a figure for a paper",
-          "catalogSummary": "Data plots and diagrams that explain the method.",
-          "skillId": "academic-plotting",
-          "start": "Provide a table or result files. Specify the quantities, figure format and paper column width.",
-          "capabilities": [
-            "chooses the plot type for the data and question",
-            "saves the plotting script and numerical sources",
-            "sets dimensions, labels and distinguishable colors",
-            "exports the figure and checks readability at its intended size in the paper"
-          ],
-          "outcomes": [
-            "plotting script",
-            "PDF or PNG figure",
-            "captions and data source reference"
-          ],
-          "useCases": "When a paper needs plots of comparisons, trajectories or uncertainty and the source data are available.",
-          "important": [
-            "numerical plots require Python, Matplotlib, NumPy and optionally Seaborn",
-            "Gemini diagram generation separately requires google-genai and an API key, and sends the description to an external service",
-            "a generated diagram is not an experimental measurement",
-            "installing the text skill does not install libraries or validate the scientific conclusion"
-          ]
-        },
-        {
-          "id": "loss-plot",
-          "title": "plot_progress.py and refresh_plot.sh",
-          "type": "In-house tool",
-          "role": "Plots labeled loss curves directly from training logs and updates the embedded figure in an Obsidian note. Styling is fixed in the frozen HouseStyle class and reused unchanged across projects.",
-          "when": "For every run progress update, not just at the end of a series.",
-          "inputs": [
-            "logs with >Eval: Iter=… val_loss=… lines",
-            "target step count",
-            "the Results note containing the figure"
-          ],
-          "inside": [
-            "parses logs and splits them into subruns",
-            "creates a main panel and zoomed panels for active runs",
-            "keeps active curves and the best completed run",
-            "converts the horizontal axis to absolute token counts",
-            "writes a timestamped PNG and updates the note's image embed"
-          ],
-          "outputs": [
-            "PNG with loss curves",
-            "updated image embed in the Results note"
-          ],
-          "writes": "The project's Results folder in Obsidian",
-          "gates": [
-            "chat numbers and the figure are updated in the same cycle",
-            "a manually stopped run is removed from the log list immediately"
-          ],
-          "limits": [
-            "Obsidian caches images by filename, so the name includes a timestamp",
-            "a note open in the app can overwrite command-line changes",
-            "lives in the project folder; no separate package is available"
-          ],
-          "links": [],
-          "adoption": {
-            "kind": "private",
-            "invoke": "Run large-models/learning-rate-schedules/warmup/code/local/tools/refresh_plot.sh. Documentation: personal/general/Knowledge/warmup-loss-plot-tool.md",
-            "installNote": "The plotting scripts live in the owner's private project folder and are not in the public repository. Ask the owner for access."
-          },
-          "usedBy": [
-            {
-              "name": "researcher",
-              "role": "runs and checks the result"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "results",
-              "processTitle": "Results",
-              "stageRef": "s4",
-              "stageTitle": "Create plots"
-            }
-          ],
-          "processRelation": {
-            "processId": "results",
-            "processTitle": "Results",
-            "stageRef": "s4",
-            "stageTitle": "Create plots"
-          },
-          "start": "In a project where the script is configured, run the plot update from the logs. Before adapting it to another project, agree on the log format and output path.",
-          "capabilities": [
-            "parses logs and splits them into subruns",
-            "creates a main panel and zoomed panels for active runs",
-            "keeps active curves and the best completed run",
-            "converts the horizontal axis to absolute token counts",
-            "writes a timestamped PNG and updates the note's image embed"
-          ],
-          "outcomes": [
-            "PNG with loss curves",
-            "updated image embed in the Results note"
-          ],
-          "useCases": "For every run progress update, not just at the end of a series.",
-          "important": [
-            "Obsidian caches images by filename, so the name includes a timestamp",
-            "a note open in the app can overwrite command-line changes",
-            "lives in the project folder; no separate package is available"
-          ],
-          "relations": []
+          }
         },
         {
           "id": "results-report",
           "title": "results-report",
           "type": "Skill",
-          "role": "Writes an internal report after rigorous analysis: interpretation of each plot, limitations, failure cases and next actions. Saves it under a dated filename in the project's Results/Reports/ folder.",
+          "role": "Writes an internal report after rigorous analysis: interpretation of every plot, limitations, failure cases, next actions. Puts it next to the analysis package under a dated name.",
           "when": "After the analysis package is ready.",
           "inputs": [
             "analysis report and statistical appendix",
@@ -12828,11 +8537,11 @@ window.RESEARCH_LOOP = {
             "connects the conclusion to a decision"
           ],
           "outputs": [
-            "report named YYYY-MM-DD--track--r<round>--goal.md",
+            "a report with the date in its name",
             "limitations and failure cases",
             "next actions"
           ],
-          "writes": "Project Obsidian notes, Results/Reports/ folder",
+          "writes": "The report next to the analysis package, on the researcher's machine",
           "gates": [
             "the analysis package exists before the report",
             "each conclusion links to a calculation"
@@ -12849,7 +8558,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$results-report",
+            "invoke": "/results-report",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -12860,20 +8569,20 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Research agent and experiment author",
-              "role": "aggregate runs, check comparability and formulate evidence"
+              "name": "Agent and experiment author",
+              "role": "aggregate runs, check comparability and write a conclusion within the bounds of the data"
             }
           ],
           "relations": [
             {
-              "toolId": "obsidian-synthesis-map",
-              "label": "works alongside it at the same stage",
-              "title": "obsidian-synthesis-map"
+              "toolId": "results-analysis",
+              "label": "takes a finished analysis package from it",
+              "title": "results-analysis"
             },
             {
-              "toolId": "evidence-mcp",
-              "label": "passes the result to the next stage",
-              "title": "Run page in runs/"
+              "toolId": "proposal-gates",
+              "label": "the conclusion goes under a claim as a series",
+              "title": "Gates on the proposal"
             }
           ],
           "processRelations": [
@@ -12889,378 +8598,83 @@ window.RESEARCH_LOOP = {
             "processTitle": "Results",
             "stageRef": "s6",
             "stageTitle": "Make a decision"
-          },
-          "cardTitle": "Compile a verified report",
-          "catalogSummary": "Results, limitations and the next research step.",
-          "skillId": "results-report",
-          "start": "Provide the analysis results, plots and experiment context for the final report.",
-          "capabilities": [
-            "interprets each plot within the overall structure",
-            "distinguishes stable findings from preliminary ones",
-            "connects the conclusion to a decision"
-          ],
-          "outcomes": [
-            "report named YYYY-MM-DD--track--r<round>--goal.md",
-            "limitations and failure cases",
-            "next actions"
-          ],
-          "useCases": "After the analysis package is ready.",
-          "important": [
-            "the report itself is not a measurement",
-            "confident prose does not replace rigorous analysis"
-          ]
+          }
         },
         {
-          "id": "obsidian-synthesis-map",
-          "title": "obsidian-synthesis-map",
-          "type": "Skill",
-          "role": "Combines several project notes into one document: a literature review, comparison, project summary or result interpretation. The skill file labels it as a legacy helper.",
-          "when": "When scattered notes need to be combined around one goal.",
+          "id": "proposal-gates",
+          "title": "Gates on the proposal",
+          "type": "Checks in GitLab",
+          "role": "They check every proposal into a work: numbers, links and deletions are checked by code, and the text is scored separately by a model. Only a human, the work lead, accepts. The flow is 172 proposals in three days, and text scoring costs about $0.3 a month.",
+          "when": "On every push to a work.",
           "inputs": [
-            "the mapped Obsidian project",
-            "existing Papers, Experiments, Results and Knowledge notes",
-            "one purpose for the synthesis"
+            "a branch with runs, a series and a claim page",
+            "proposal body"
           ],
           "inside": [
-            "uses obsidian-project-memory as the primary workflow",
-            "collects claims only from linked notes",
-            "links to the source notes"
+            "every number on the page is looked up in this claim's runs",
+            "codes, links and deleted files are checked separately",
+            "catches a series without a verdict, a figure without a caption and unprocessed runs",
+            "the judge model asks the text three questions: is there filler instead of substance, does the conclusion follow from what is written, will another agent understand the text",
+            "the agent sees a red verdict itself, at the end of its turn"
           ],
           "outputs": [
-            "a synthesis note in Writing/"
+            "two verdicts: number check and text check",
+            "comments on the proposal"
           ],
-          "writes": "The mapped Obsidian project, usually Writing/",
+          "writes": "Only verdicts and comments; the record is the acceptance of the proposal",
           "gates": [
-            "each conclusion links to an existing note",
-            "no duplicate synthesis note is created alongside it"
+            "nobody can write to main directly, including the admin",
+            "a proposal with red gates or an unresolved comment is not merged"
           ],
           "limits": [
-            "Views/*.base and Maps/*.canvas are not created by default",
-            "a legacy helper, not the primary workflow"
+            "the text is scored on the ten largest files, and the rest are listed in a comment",
+            "a number is matched against runs, but its source only partially",
+            "connectives in captions like “grows with” are not caught by the machine; a human reads them"
           ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-synthesis-map/SKILL.md"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$obsidian-synthesis-map",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/obsidian-synthesis-map ~/.claude/skills/",
-              "# restart Claude Code, then use /obsidian-synthesis-map"
-            ]
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Research agent and experiment author",
-              "role": "aggregate runs, check comparability and formulate evidence"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "results-report",
-              "label": "works alongside it at the same stage",
-              "title": "results-report"
-            },
-            {
-              "toolId": "evidence-mcp",
-              "label": "passes the result to the next stage",
-              "title": "Run page in runs/"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "results",
-              "processTitle": "Results",
-              "stageRef": "s6",
-              "stageTitle": "Make a decision"
-            }
-          ],
-          "processRelation": {
-            "processId": "results",
-            "processTitle": "Results",
-            "stageRef": "s6",
-            "stageTitle": "Make a decision"
-          },
-          "skillId": "obsidian-synthesis-map",
-          "start": "Name the project and the question around which to connect notes, experiments and results.",
-          "capabilities": [
-            "uses obsidian-project-memory as the primary workflow",
-            "collects claims only from linked notes",
-            "links to the source notes"
-          ],
-          "outcomes": [
-            "a synthesis note in Writing/"
-          ],
-          "useCases": "When scattered notes need to be combined around one goal.",
-          "important": [
-            "Views/*.base and Maps/*.canvas are not created by default",
-            "a legacy helper, not the primary workflow"
-          ]
-        },
-        {
-          "id": "evidence-mcp",
-          "title": "Shared database: measurement",
-          "type": "Files in git",
-          "role": "The run page runs/E-XXX.md records what came out: code writes hyperparameters, numbers, commit, and hardware, and the agent adds only “what is seen”. The verdict on the claim comes from the series, not from the run itself.",
-          "when": "After the analysis package has been checked.",
-          "inputs": [
-            "experiment_id",
-            "summary",
-            "record kind",
-            "numbers in metrics",
-            "hypothesis_effects"
-          ],
-          "inside": [
-            "checks that the run exists",
-            "stores measurement separately from interpretation",
-            "adds a typed relationship to the claim",
-            "assigns a code such as R-WBD-023"
-          ],
-          "outputs": [
-            "measurement code in the R-* format",
-            "updated claim context"
-          ],
-          "writes": "Shared lab knowledge base",
-          "gates": [
-            "metric and measurement kinds are rejected without numbers",
-            "a completed task does not count as a measurement"
-          ],
-          "limits": [
-            "logs and checkpoints stay on the server",
-            "artifact, manuscript and diagnostic kinds do not imply numerical measurements"
-          ],
-          "links": [
-            {
-              "label": "How the database works",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
-            }
-          ],
+          "links": [],
           "adoption": {
             "kind": "internal",
-            "invoke": "Through git and a merge request",
-            "installNote": "The run page goes into the work as a merge request: access is granted by the Telegram bot."
+            "invoke": "Fire on their own on every git push of a work branch",
+            "installNote": "The gates run on the lab's GitLab. Access to a work is granted by the access bot in Telegram."
           },
           "nonInstallable": true,
           "usedBy": [
             {
-              "name": "Research agent and experiment author",
-              "role": "aggregate runs, check comparability and formulate evidence"
+              "name": "Work lead",
+              "role": "reads the statuses and merges a green proposal"
             }
           ],
           "relations": [
             {
-              "toolId": "decision-mcp",
-              "label": "works alongside it at the same stage",
-              "title": "Journal: decision"
+              "toolId": "lab-run",
+              "label": "matches the numbers it recorded",
+              "title": "lab_run.py"
             }
           ],
           "processRelations": [
             {
               "processId": "results",
               "processTitle": "Results",
-              "stageRef": "s6",
-              "stageTitle": "Make a decision"
+              "stageRef": "s7",
+              "stageTitle": "Record under a claim"
             }
           ],
           "processRelation": {
             "processId": "results",
             "processTitle": "Results",
-            "stageRef": "s6",
-            "stageTitle": "Make a decision"
-          },
-          "start": "Provide numbers, units, sources and comparison limitations. Link the measurement to a real experiment and the claim it tests.",
-          "capabilities": [
-            "checks that the run exists",
-            "stores measurement separately from interpretation",
-            "adds a typed relationship to the claim",
-            "assigns a code such as R-WBD-023"
-          ],
-          "outcomes": [
-            "measurement code in the R-* format",
-            "updated claim context"
-          ],
-          "useCases": "After the analysis package has been checked.",
-          "important": [
-            "logs and checkpoints stay on the server",
-            "artifact, manuscript and diagnostic kinds do not imply numerical measurements"
-          ]
-        },
-        {
-          "id": "decision-mcp",
-          "title": "Shared database: rule",
-          "type": "Files in git",
-          "role": "propose_decision records how the lab has decided to proceed: project_id, the decision text and rationale. A rule has a kind: scientific, operational or unspecified.",
-          "when": "When a measurement has been interpreted and a course of action needs to be recorded.",
-          "inputs": [
-            "project_id",
-            "rule text",
-            "why",
-            "codes of supporting measurements"
-          ],
-          "inside": [
-            "checks the project and measurement references",
-            "stores the rationale separately from the measurement",
-            "assigns a code such as P-WBD-001",
-            "changes state while preserving history"
-          ],
-          "outputs": [
-            "rule code in the P-* format",
-            "links between measurements and the rule",
-            "current rule state"
-          ],
-          "writes": "Shared lab knowledge base",
-          "gates": [
-            "a proposal is not presented as an adopted decision",
-            "the rationale references a verifiable measurement"
-          ],
-          "limits": [
-            "supporting evidence is required only for scientific rules",
-            "the database does not decide on the owner's behalf"
-          ],
-          "links": [
-            {
-              "label": "How the database works",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/knowledge-base.md"
-            }
-          ],
-          "adoption": {
-            "kind": "internal",
-            "invoke": "Through git and a merge request",
-            "installNote": "A rule goes into brainlab/journal by a plain push to main, and into the canon canon.md through a merge request."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Research agent and experiment author",
-              "role": "aggregate runs, check comparability and formulate evidence"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "evidence-mcp",
-              "label": "works alongside it at the same stage",
-              "title": "Run page in runs/"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "results",
-              "processTitle": "Results",
-              "stageRef": "s6",
-              "stageTitle": "Make a decision"
-            }
-          ],
-          "processRelation": {
-            "processId": "results",
-            "processTitle": "Results",
-            "stageRef": "s6",
-            "stageTitle": "Make a decision"
-          },
-          "start": "State the adopted rule of action, its rationale and supporting records. Specify whether the decision is scientific or operational.",
-          "capabilities": [
-            "checks the project and measurement references",
-            "stores the rationale separately from the measurement",
-            "assigns a code such as P-WBD-001",
-            "changes state while preserving history"
-          ],
-          "outcomes": [
-            "rule code in the P-* format",
-            "links between measurements and the rule",
-            "current rule state"
-          ],
-          "useCases": "When a measurement has been interpreted and a course of action needs to be recorded.",
-          "important": [
-            "supporting evidence is required only for scientific rules",
-            "the database does not decide on the owner's behalf"
-          ]
-        },
-        {
-          "id": "research-cycle",
-          "title": "research-cycle",
-          "type": "Skill",
-          "role": "How a scientific decision is made: what is being tested, which observation tells the explanations apart, and when new data changes the answer. The decision rule is fixed before anyone looks at the result, and an exploratory reading is called exactly that.",
-          "when": "Before a new or materially changed check, when data arrives that changes the answer, and when several results disagree. Routine progress checks and ordinary development do not trigger it.",
-          "inputs": [
-            "the question and a plausible alternative explanation",
-            "the observation that tells them apart",
-            "controls and the unit of comparison",
-            "the authorised budget",
-            "the decision rule"
-          ],
-          "inside": [
-            "keeps execution state apart from scientific interpretation: a finished run can be negative, inconclusive or invalid",
-            "checks a source against its own run identifier, not against a matching title or effective batch size",
-            "holds the line between «equality was not shown» and «a difference was shown»",
-            "compares only what is comparable, separating changed conditions, reused data and independent replications",
-            "proposes the next check only when existing artifacts do not answer the question"
-          ],
-          "outputs": [
-            "what the result supports and what stays open",
-            "the next justified action, or the decision to narrow the claim",
-            "records in the shared base with their real state, sources and limitations"
-          ],
-          "writes": "The existing task or the work's note; the shared base through its own contract",
-          "gates": [
-            "the decision rule is fixed before the results are seen",
-            "retrospective and exploratory readings are labelled honestly",
-            "a returned record ID does not yet prove a claim"
-          ],
-          "limits": [
-            "grants no new permissions and appoints no executor",
-            "does not justify an extra run to demonstrate compliance",
-            "a research map is optional: no map means no map-maintenance debt"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/research-cycle/SKILL.md"
-            },
-            {
-              "label": "ResearcherOS, whose audit informed this integration",
-              "url": "https://github.com/ZoyaV/ResearcherOS"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$research-cycle",
-            "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/research-cycle ~/.claude/skills/",
-              "# restart Claude Code, then /research-cycle"
-            ]
-          },
-          "usedBy": [
-            {
-              "name": "The research agent and the author of the work",
-              "role": "decide what to test next and what has already been shown"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "results",
-              "processTitle": "Results",
-              "stageRef": "s6",
-              "stageTitle": "Make a decision"
-            }
-          ],
-          "skillId": "research-cycle"
+            "stageRef": "s7",
+            "stageTitle": "Record under a claim"
+          }
         }
       ],
       "implementation": {
-        "summary": "Primary artifacts stay with the runs. The analysis bundle holds the computations. Obsidian explains to a person. Git holds the run pages and the series with its verdict.",
+        "summary": "Raw logs and checkpoints stay with the run. The analysis package holds the computations. The run page, the series and the claim's state live in the work's git and reach main only through an accepted proposal.",
         "items": [
-          "A comparability audit comes before aggregation",
-          "Statistics use the correct unit of analysis",
-          "Figures are generated from source data",
-          "the run page lives under its claim in claims/H-XXX/runs/",
-          "A Hypothesis is updated only after assessing the Evidence"
+          "Comparability is checked before aggregation",
+          "Statistics are computed on the correct unit of analysis",
+          "The figure is built from source data and embedded in the claim page",
+          "The recorder writes the run page, the agent moves it under a claim",
+          "The claim's state changes after the series verdict and only by its own criterion"
         ]
       },
       "outcomeRefs": [
@@ -13282,10 +8696,18 @@ window.RESEARCH_LOOP = {
         },
         {
           "ref": "o5",
-          "label": "Decision on the claim."
+          "label": "A series with a verdict and the claim's state by its criterion."
         }
       ],
       "toolClusters": [
+        {
+          "id": "recorder",
+          "title": "Code records the run",
+          "stageRef": "s1",
+          "toolIds": [
+            "lab-run"
+          ]
+        },
         {
           "id": "analysis",
           "title": "Rigorous run analysis",
@@ -13295,19 +8717,19 @@ window.RESEARCH_LOOP = {
           ]
         },
         {
-          "id": "figures",
-          "title": "Plots from data",
-          "stageRef": "s4",
-          "toolIds": [
-            "academic-plotting"
-          ]
-        },
-        {
           "id": "synthesis",
           "title": "Readable summary",
           "stageRef": "s6",
           "toolIds": [
             "results-report"
+          ]
+        },
+        {
+          "id": "record",
+          "title": "Record under a claim",
+          "stageRef": "s7",
+          "toolIds": [
+            "proposal-gates"
           ]
         }
       ],
@@ -13315,7 +8737,9 @@ window.RESEARCH_LOOP = {
         {
           "id": "r1",
           "stage": "s1",
-          "tools": [],
+          "tools": [
+            "lab-run"
+          ],
           "destinations": [],
           "outcomes": [],
           "qa": []
@@ -13346,7 +8770,6 @@ window.RESEARCH_LOOP = {
           "id": "r4",
           "stage": "s4",
           "tools": [
-            "loss-plot",
             "academic-plotting"
           ],
           "destinations": [
@@ -13371,180 +8794,121 @@ window.RESEARCH_LOOP = {
           "id": "r6",
           "stage": "s6",
           "tools": [
-            "results-report",
-            "obsidian-synthesis-map",
-            "evidence-mcp",
-            "decision-mcp"
+            "results-report"
           ],
           "destinations": [
-            "d2",
+            "d2"
+          ],
+          "outcomes": [],
+          "qa": []
+        },
+        {
+          "id": "r7",
+          "stage": "s7",
+          "tools": [
+            "proposal-gates"
+          ],
+          "destinations": [
             "d3"
           ],
           "outcomes": [
             "o5"
           ],
           "qa": []
-        },
-        {
-          "id": "r7",
-          "stage": "s7",
-          "tools": [],
-          "destinations": [],
-          "outcomes": [],
-          "qa": []
         }
       ],
       "toMcp": {
-        "lead": "The measured value, its applicability limits and the rule based on it become shared knowledge.",
+        "lead": "What becomes shared is a run recorded by code and a series with a verdict under a claim.",
         "paths": [
           {
             "id": "evidence",
-            "actor": "person",
+            "actor": "agent",
             "title": "A number from a run",
-            "line": "analysis package → measurement R-* → claim assessment",
+            "line": "run page → series with a verdict → claim state",
             "chain": [
               {
                 "lane": "work",
-                "title": "Verified analysis package",
-                "stageRef": "s3",
+                "title": "Run recorded by code",
+                "stageRef": "s1",
                 "destRef": "d1",
-                "detail": "Comparability is confirmed; effect and variability are calculated."
+                "detail": "The recorder wrote the run page itself: config, metrics, commit, hardware, log."
               },
               {
                 "lane": "record",
-                "kind": "measurement",
-                "code": "R-*",
-                "title": "Measurement with numbers",
+                "kind": "run and series",
+                "code": "",
+                "title": "Run under a claim and a series",
                 "ref": "object:evidence",
                 "destRef": "d3",
                 "items": [
-                  "run, summary and kind are required",
-                  "metric and measurement kinds are rejected without numbers",
-                  "the assessment lives on the hypothesis_effects edge, not as a flag in the record",
-                  "applicability limits are recorded here too"
+                  "the run moves under the claim, and the agent adds only what is seen",
+                  "the series names the question, shared conditions, comparison axis, run table and verdict",
+                  "“not established” is a legitimate verdict",
+                  "non-comparable runs are excluded from the series, and the series says so in one line"
                 ],
                 "via": {
-                  "tool": "runs/E-XXX.md",
-                  "type": "mcp"
+                  "tool": "lab-knowledge",
+                  "type": "skill"
                 }
               },
               {
                 "lane": "tie",
                 "title": "Claim under assessment",
                 "ref": "object:hypothesis",
-                "detail": "A person changes the claim's status. Recording a measurement does not change it automatically.",
+                "detail": "The state changes only by the criterion written in the claim. “Supported” requires the criterion to be met: our own recomputation, or a number from our submitted paper with a pointer to where it appears.",
                 "via": {
-                  "tool": "update_hypothesis",
-                  "type": "mcp"
+                  "tool": "git push",
+                  "type": "command",
+                  "gate": "then the gates check"
                 }
               }
             ]
           },
           {
             "id": "decision",
-            "actor": "person",
-            "title": "A rule based on measurements",
-            "line": "interpreted fact → rule P-*",
+            "actor": "work lead",
+            "title": "A record is a merge",
+            "line": "claim branch → gates → merge by a human",
             "chain": [
               {
                 "lane": "work",
-                "title": "Fact is separate from explanation",
-                "stageRef": "s5",
-                "detail": "What was measured and what it means are separate entries."
+                "title": "Claim branch",
+                "stageRef": "s7",
+                "detail": "One proposal per claim: runs, series, figure, paragraph and state change together. A regular push opens the proposal by itself and assigns the work lead."
               },
               {
                 "lane": "record",
-                "kind": "rule",
-                "code": "P-*",
-                "title": "Lab rule",
+                "kind": "proposal",
+                "code": "",
+                "title": "Gate check",
                 "ref": "object:decision",
                 "destRef": "d3",
                 "items": [
-                  "text and rationale are required",
-                  "scientific or operational kind: an operational rule does not require measurements",
-                  "measurements and claims are listed as supporting records"
+                  "every number is matched against runs: a made-up number gives a red verdict",
+                  "a series without a verdict, a figure without a caption and unprocessed runs won't pass",
+                  "the judge model catches filler, conclusions that don't follow from what is written, and text another agent won't understand",
+                  "only the work lead accepts; nobody writes to main directly"
                 ],
                 "via": {
-                  "tool": "propose_decision",
-                  "type": "mcp"
+                  "tool": "git push",
+                  "type": "command",
+                  "gate": "then the gates check"
                 }
               }
             ]
           }
         ],
         "kept": [
-          "analysis package alongside the data",
-          "PNG plots and reports in Results",
-          "raw run files: the database stores the number and conclusion, not the image"
+          "analysis package and report — next to the data, on the researcher's machine",
+          "raw logs and checkpoints — on the server; the base gets the run page with a link to the log, and the conclusion"
         ],
         "hook": true
       },
       "mapFeatured": [
+        "lab-run",
         "results-analysis",
-        "academic-plotting",
-        "results-report"
-      ],
-      "constellation": {
-        "cores": [
-          {
-            "toolId": "results-analysis",
-            "area": "analysis",
-            "caption": "Analysis and conclusions"
-          },
-          {
-            "toolId": "academic-plotting",
-            "area": "plot",
-            "caption": "Scientific plots"
-          },
-          {
-            "toolId": "results-report",
-            "area": "report",
-            "caption": "Results report"
-          }
-        ],
-        "links": [
-          [
-            "results-analysis",
-            "academic-plotting"
-          ],
-          [
-            "academic-plotting",
-            "results-report"
-          ],
-          [
-            "results-report",
-            "results-analysis"
-          ]
-        ],
-        "groups": [
-          {
-            "title": "Derivations and decisions",
-            "area": "evidence",
-            "core": "results-analysis",
-            "toolIds": [
-              "evidence-mcp",
-              "decision-mcp",
-              "research-cycle"
-            ]
-          },
-          {
-            "title": "Connect conclusions",
-            "area": "synthesis",
-            "core": "results-report",
-            "toolIds": [
-              "obsidian-synthesis-map"
-            ]
-          },
-          {
-            "title": "Learning curves",
-            "area": "visuals",
-            "core": "academic-plotting",
-            "toolIds": [
-              "loss-plot"
-            ]
-          }
-        ]
-      }
+        "proposal-gates"
+      ]
     },
     {
       "id": "writing",
@@ -13559,7 +8923,7 @@ window.RESEARCH_LOOP = {
         "literature-discovery",
         "literature-ingest"
       ],
-      "purpose": "Build a paper from verified results: connect claims to measurements and sources, select figures, write a coherent text and check its scientific content. Then analyze reviewer comments and prepare a response.",
+      "purpose": "Take the work to a text that survives someone else's scrutiny: every statement is tied to a measurement or a proof, every reference is backed by a source that was actually read, every reviewer comment is closed by a reply, an edit or a named obstacle. Automatic matching of 450 numbers in seventeen reviews of other papers found two real errors.",
       "when": [
         "You have a coherent story and sufficient measurements.",
         "A paper section needs writing or revision.",
@@ -13568,14 +8932,14 @@ window.RESEARCH_LOOP = {
       "stages": [
         {
           "title": "Gather the foundations",
-          "summary": "Collect measurements, derivations, figures, limitations and literature already read.",
+          "summary": "Pull up the work's claims and runs, its manuscript and the paper reviews from the theme's literature.",
           "result": "Verifiable support for the text",
           "ref": "s1"
         },
         {
           "title": "Break the argument into claims",
-          "summary": "For each claim, specify the source, number and uncertainty, limitations, figure and paper section.",
-          "result": "An evidence-backed claim outline",
+          "summary": "Tie every future statement to a measurement or a proof.",
+          "result": "Correspondence table",
           "ref": "s2"
         },
         {
@@ -13586,7 +8950,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "title": "Write the manuscript",
-          "summary": "Edit existing .tex files and take citation keys from references.bib.",
+          "summary": "Edit the existing paper source; take citation keys only from the work's bibliography.",
           "result": "Assembled text",
           "ref": "s4"
         },
@@ -13624,9 +8988,9 @@ window.RESEARCH_LOOP = {
       ],
       "destinations": [
         {
-          "name": "Paper repository",
-          "what": "LaTeX, figures, tables and references.bib",
-          "why": "Canonical text",
+          "name": "The work's manuscript",
+          "what": "LaTeX, figures, tables and bibliography; the manuscript is attached to the work and updated with it",
+          "why": "The canonical text and the location of every number",
           "ref": "d1"
         },
         {
@@ -13636,23 +9000,29 @@ window.RESEARCH_LOOP = {
           "ref": "d2"
         },
         {
-          "name": "Zotero",
-          "what": "Source records and paper files",
-          "why": "Where BibTeX comes from",
+          "name": "Theme literature",
+          "what": "One page per paper: a review, a ready citation entry and a “What the paper claims” section",
+          "why": "Where citation keys come from and what to trust in someone else's paper",
           "ref": "d3"
         },
         {
-          "name": "Obsidian vault",
-          "what": "Internal review note in the project's mapped location",
-          "why": "Review history for the author",
+          "name": "Internal review",
+          "what": "A review file before submission",
+          "why": "The review history for the author; stays on their machine and is not published to GitLab",
           "ref": "d4"
+        },
+        {
+          "name": "The work's claims in GitLab",
+          "what": "A number from our submitted paper with a pointer to where it appears in the manuscript",
+          "why": "A paper that has passed an external milestone supports a claim as our own measurement",
+          "ref": "d5"
         }
       ],
       "controls": [
         {
           "id": "bib-key",
-          "title": "The citation key already exists in references.bib",
-          "explanation": "The citation-validator.py hook reads every .tex edit and rejects a key absent from all references.bib files up the directory tree. Placeholders and promises to add references later are not allowed.",
+          "title": "The citation key is already in the bibliography",
+          "explanation": "An automatic guard reads every LaTeX edit and rejects a citation whose key is not in the work's bibliography. You cannot put in a placeholder or a promise to add it later.",
           "example": "",
           "links": []
         },
@@ -13666,7 +9036,14 @@ window.RESEARCH_LOOP = {
         {
           "id": "number-source",
           "title": "Every number leads to a file",
-          "explanation": "A table, figure or numerical statement can be traced to the configuration, raw run log and exact cell from which the number was taken.",
+          "explanation": "A table, figure or sentence with a number is traced to a run and to a location in the manuscript. The location is exact, down to the file revision: one work turned out to have eight manuscript revisions, and a single table cell in them reads 84.0, 86.0 and 88.6.",
+          "example": "",
+          "links": []
+        },
+        {
+          "id": "code-beside-paper",
+          "title": "Code is read next to the manuscript",
+          "explanation": "Attached code is not yet verified code. In one work the algorithm in the paper and in the code turned out to be different, while the numbers matched perfectly. This was found only by reading the code next to the text; mechanical checks don't catch it.",
           "example": "",
           "links": []
         },
@@ -13687,14 +9064,14 @@ window.RESEARCH_LOOP = {
         {
           "id": "readiness",
           "title": "A finished draft is not yet verified text",
-          "explanation": "The text is ready after fact checks, reference checks, LaTeX compilation and page inspection, not after the last edit.",
+          "explanation": "A text is done after facts, references, the build and the page layout are checked, not after the last edit.",
           "example": "",
           "links": []
         }
       ],
       "example": {
         "title": "The path of one reviewer comment",
-        "text": "Comment R2-C03 on effective batch size receives an ID and a response strategy: verify, rather than simply accept or defend. There is no comparable control run, so one focused experiment is created. The related paper intended to support the response is read in full. It uses a different batch size and does not contain the attributed claim, so its citation key is not added to the text. The response uses our own run table. The word “confirmed” appears only after the run finishes and the numbers are checked against its log."
+        "text": "Reviewer 2's third comment, about effective batch size, gets a number in the register and a response line: not “accept” and not “defend” but “confirm”. There is no comparable control run, so one narrow experiment is set up. Another group's paper that was meant to back up the reply is read in full: its batch size is different, the attributed claim isn't there, and citing it doesn't make it into the text. The reply gets our own run table, and the word “confirmed” appears only after the run has closed and the numbers are matched against the log."
       },
       "tools": [
         {
@@ -13704,22 +9081,22 @@ window.RESEARCH_LOOP = {
           "role": "Builds a manuscript from the repository, results and literature while keeping every claim linked to its source. Checks references through Semantic Scholar, CrossRef and arXiv rather than memory.",
           "when": "When writing or substantially revising a paper for NeurIPS, ICML, ICLR, ACL, AAAI or COLM.",
           "inputs": [
-            "existing .tex files",
+            "the existing paper source",
             "run reports",
             "figures",
             "bibliography",
             "target venue"
           ],
           "inside": [
-            "sets the working mode using references/OPERATING-MODES.md",
+            "chooses a mode: draft, rework or edit",
             "reconstructs the paper's contribution from the repository and results",
             "builds a section-level narrative and delivers a complete first draft",
-            "checks references using references/citation-workflow.md"
+            "checks every reference against scholarly publication catalogs"
           ],
           "outputs": [
             "sections or a complete manuscript"
           ],
-          "writes": "Paper repository",
+          "writes": "The work's manuscript",
           "gates": [
             "the reference source is verified programmatically",
             "each number is traceable to a run result"
@@ -13737,7 +9114,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$ml-paper-writing",
+            "invoke": "/ml-paper-writing",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -13748,7 +9125,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             }
           ],
@@ -13767,11 +9144,6 @@ window.RESEARCH_LOOP = {
               "toolId": "writing-anti-ai",
               "label": "works alongside it at the same stage",
               "title": "writing-anti-ai"
-            },
-            {
-              "toolId": "reverse-outline-flow-check",
-              "title": "reverse-outline-flow-check",
-              "label": "passes the draft to a coherence review"
             }
           ],
           "processRelations": [
@@ -13787,142 +9159,7 @@ window.RESEARCH_LOOP = {
             "processTitle": "Paper writing and review",
             "stageRef": "s4",
             "stageTitle": "Write the manuscript"
-          },
-          "cardTitle": "Write a research paper",
-          "catalogSummary": "A manuscript built from sources and results for the target venue.",
-          "skillId": "ml-paper-writing",
-          "start": "Provide the paper sources, results, figures and bibliography. Name the conference or journal.",
-          "capabilities": [
-            "sets the working mode using references/OPERATING-MODES.md",
-            "reconstructs the paper's contribution from the repository and results",
-            "builds a section-level narrative and delivers a complete first draft",
-            "checks references using references/citation-workflow.md"
-          ],
-          "outcomes": [
-            "sections or a complete manuscript"
-          ],
-          "useCases": "When writing or substantially revising a paper for NeurIPS, ICML, ICLR, ACL, AAAI or COLM.",
-          "important": [
-            "an unfinished run is not treated as a result",
-            "venue rules are checked on its website, not recalled from memory",
-            "Google Scholar is not the authoritative source for reference verification here"
-          ]
-        },
-        {
-          "id": "reverse-outline-flow-check",
-          "title": "reverse-outline-flow-check",
-          "type": "Skill",
-          "role": "Checks the explanation's flow: each paragraph's point, its support and its connection to the next paragraph.",
-          "when": "When a section has its content but the paragraph order, argument or transitions are difficult to follow.",
-          "inputs": [
-            "paper section or draft",
-            "section goal",
-            "facts and limitations that must be preserved"
-          ],
-          "inside": [
-            "reads from an outside reader's perspective",
-            "builds a reverse outline: the point, support and role of each paragraph",
-            "checks causal links, qualifications, examples and transitions",
-            "suggests reordering, splitting or rewriting paragraphs"
-          ],
-          "outputs": [
-            "reverse outline of the section",
-            "paragraph-level revision plan",
-            "rewritten text",
-            "unresolved questions for the author"
-          ],
-          "writes": "The paper section's source file and a reverse-outline note in the project.",
-          "gates": [
-            "each paragraph supports the section's goal",
-            "numbers, references and claim boundaries are preserved",
-            "transitions explain relationships rather than add filler"
-          ],
-          "limits": [
-            "does not replace new experiments, source verification or scientific review",
-            "text instructions for the current agent, with no separate API or Python dependencies",
-            "coherent writing does not prove that the claims are true"
-          ],
-          "links": [
-            {
-              "label": "Skill source",
-              "url": "https://github.com/Research-Equality/RE-paper-writing/blob/4aa7e40c5e1b9780fbc5d1519df63eb3ba37ff4f/skills/reverse-outline-flow-check/SKILL.md"
-            },
-            {
-              "label": "Lab distribution",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/reverse-outline-flow-check"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$reverse-outline-flow-check",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/reverse-outline-flow-check ~/.claude/skills/",
-              "# restart Claude Code, then use /reverse-outline-flow-check"
-            ],
-            "installNote": "For Codex, place the same directory in ~/.agents/skills/. This text skill needs no additional libraries or API keys."
-          },
-          "nonInstallable": false,
-          "usedBy": [
-            {
-              "name": "Paper author",
-              "role": "checks the result against the data and source text"
-            }
-          ],
-          "relations": [
-            {
-              "toolId": "ml-paper-writing",
-              "title": "ml-paper-writing",
-              "label": "checks the structure of the resulting draft"
-            },
-            {
-              "toolId": "writing-anti-ai",
-              "title": "writing-anti-ai",
-              "label": "complements the language and style review"
-            },
-            {
-              "toolId": "astar-paper-review",
-              "title": "astar-paper-review",
-              "label": "passes a coherent text to scientific review"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "writing",
-              "processTitle": "Paper writing and review",
-              "stageRef": "s4",
-              "stageTitle": "Write the manuscript"
-            }
-          ],
-          "processRelation": {
-            "processId": "writing",
-            "processTitle": "Paper writing and review",
-            "stageRef": "s4",
-            "stageTitle": "Write the manuscript"
-          },
-          "cardTitle": "Make the reasoning clear",
-          "catalogSummary": "One point per paragraph, with clear links between sentences.",
-          "skillId": "reverse-outline-flow-check",
-          "start": "Provide the paper section, its goal and the facts that must survive revision.",
-          "capabilities": [
-            "reads from an outside reader's perspective",
-            "builds a reverse outline: the point, support and role of each paragraph",
-            "checks causal links, qualifications, examples and transitions",
-            "suggests reordering, splitting or rewriting paragraphs"
-          ],
-          "outcomes": [
-            "reverse outline of the section",
-            "paragraph-level revision plan",
-            "rewritten text",
-            "unresolved questions for the author"
-          ],
-          "useCases": "When a section has its content but the paragraph order, argument or transitions are difficult to follow.",
-          "important": [
-            "does not replace new experiments, source verification or scientific review",
-            "text instructions for the current agent, with no separate API or Python dependencies",
-            "coherent writing does not prove that the claims are true"
-          ]
+          }
         },
         {
           "id": "doc-coauthoring",
@@ -13936,7 +9173,7 @@ window.RESEARCH_LOOP = {
             "source context and constraints"
           ],
           "inside": [
-            "checks references/RUNTIME-MATRIX.md for capabilities available in the current environment",
+            "checks what is available in the current environment",
             "gathers context and asks questions to fill gaps",
             "agrees on the structure before drafting the full text and revises sections one at a time",
             "checks for omissions and inconsistencies",
@@ -13947,7 +9184,7 @@ window.RESEARCH_LOOP = {
             "questions from a fresh reader",
             "verified final version"
           ],
-          "writes": "The specified working file, plain Markdown by default",
+          "writes": "The specified working file",
           "gates": [
             "the structure is confirmed before the full draft",
             "reader questions are answered or identified as blockers"
@@ -13964,7 +9201,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$doc-coauthoring",
+            "invoke": "/doc-coauthoring",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -13975,7 +9212,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             }
           ],
@@ -13992,7 +9229,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "toolId": "citation-verification",
-              "label": "passes the result to the next stage",
+              "label": "hands the result to the next stage",
               "title": "citation-verification"
             }
           ],
@@ -14009,26 +9246,7 @@ window.RESEARCH_LOOP = {
             "processTitle": "Paper writing and review",
             "stageRef": "s4",
             "stageTitle": "Write the manuscript"
-          },
-          "skillId": "doc-coauthoring",
-          "start": "Name the document, its readers and its purpose. Provide a draft or source materials.",
-          "capabilities": [
-            "checks references/RUNTIME-MATRIX.md for capabilities available in the current environment",
-            "gathers context and asks questions to fill gaps",
-            "agrees on the structure before drafting the full text and revises sections one at a time",
-            "checks for omissions and inconsistencies",
-            "gives the document to a model without prior context and collects its questions"
-          ],
-          "outcomes": [
-            "agreed document text",
-            "questions from a fresh reader",
-            "verified final version"
-          ],
-          "useCases": "For a proposal, specification, decision document or other substantial collaborative documentation.",
-          "important": [
-            "does not assume external publishing tools are available",
-            "does not publish the document without a request"
-          ]
+          }
         },
         {
           "id": "writing-anti-ai",
@@ -14045,7 +9263,7 @@ window.RESEARCH_LOOP = {
             "removes throat-clearing phrases, promotional language and unsupported references",
             "breaks repetitive patterns and improves rhythm",
             "replaces inflated vocabulary with concrete wording",
-            "bans em dashes, semicolons and \\emph, \\textbf, \\textit in academic LaTeX",
+            "in academic text, forbids em dashes, semicolons and italic or bold emphasis",
             "checks the result against the original facts"
           ],
           "outputs": [
@@ -14070,7 +9288,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$writing-anti-ai",
+            "invoke": "/writing-anti-ai",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -14081,7 +9299,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             }
           ],
@@ -14098,7 +9316,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "toolId": "citation-verification",
-              "label": "passes the result to the next stage",
+              "label": "hands the result to the next stage",
               "title": "citation-verification"
             }
           ],
@@ -14115,47 +9333,29 @@ window.RESEARCH_LOOP = {
             "processTitle": "Paper writing and review",
             "stageRef": "s4",
             "stageTitle": "Write the manuscript"
-          },
-          "skillId": "writing-anti-ai",
-          "start": "Provide the text and specify which facts, terms and formatting must be preserved.",
-          "capabilities": [
-            "removes throat-clearing phrases, promotional language and unsupported references",
-            "breaks repetitive patterns and improves rhythm",
-            "replaces inflated vocabulary with concrete wording",
-            "bans em dashes, semicolons and \\emph, \\textbf, \\textit in academic LaTeX",
-            "checks the result against the original facts"
-          ],
-          "outcomes": [
-            "rewritten text",
-            "a short list of preserved constraints"
-          ],
-          "useCases": "When text sounds formulaic or inflated and needs editing before publication.",
-          "important": [
-            "does not conceal actual authorship",
-            "does not repair weak reasoning through style alone"
-          ]
+          }
         },
         {
           "id": "citation-verification",
           "title": "citation-verification",
           "type": "Skill",
-          "role": "Reference-checking guidelines: verify that a work exists and that its title, authors, year and venue match the BibTeX. Runs nothing itself.",
+          "role": "A reference guide to citation checking: how to make sure a work exists and that its title, authors, year and venue match the bibliography entry. Runs nothing by itself.",
           "when": "When adding a new reference or when bibliographic details are uncertain.",
           "inputs": [
             "paper title and first author",
             "expected year, venue, DOI or arXiv ID",
-            "draft BibTeX"
+            "a draft bibliography entry"
           ],
           "inside": [
             "searches scholarly indexes for the exact title and author",
             "checks title, authors, year and venue, allowing explainable differences between a preprint and the published version",
             "opens the paper when a specific statement needs checking",
-            "gets BibTeX from the located record rather than writing it from memory",
+            "takes the bibliography entry from the catalog where it was found, rather than writing it from memory",
             "marks a reference that cannot be found as unresolved"
           ],
           "outputs": [
             "confirmation or rejection of the work's identity",
-            "BibTeX from the located record",
+            "bibliography entry from the catalog where it was found",
             "a paragraph supporting the claim, or an identified mismatch"
           ],
           "writes": "Writes nothing itself. The calling workflow updates the bibliography",
@@ -14167,7 +9367,7 @@ window.RESEARCH_LOOP = {
           "limits": [
             "this is a reference guide. Nothing runs automatically",
             "citation counts do not prove that a cited claim is correct",
-            "an unresolved-reference placeholder cannot be added to .tex: the hook blocks the edit"
+            "a “reference not found” marker cannot be left in the paper text: the guard will block the edit"
           ],
           "links": [
             {
@@ -14177,7 +9377,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$citation-verification",
+            "invoke": "/citation-verification",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -14188,23 +9388,28 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             },
             {
-              "name": "Literature Reviewer and paper agents",
+              "name": "Literature review agents",
               "role": "check the corpus, text and claims made by other authors"
             },
             {
-              "name": "Writing and rebuttal agents",
-              "role": "check bibliographic identity and citation key validity"
+              "name": "Paper and reviewer-response agents",
+              "role": "check that it is the right work and that it can be cited"
             }
           ],
           "relations": [
             {
               "toolId": "project-bibliography-gate",
-              "label": "passes a verified record before the .tex edit",
+              "label": "hands over the verified entry before the text is edited",
               "title": "citation-validator.py"
+            },
+            {
+              "toolId": "paper-claim-validator",
+              "label": "works alongside it at the same stage",
+              "title": "Claims from other papers"
             },
             {
               "toolId": "ml-paper-writing",
@@ -14236,56 +9441,35 @@ window.RESEARCH_LOOP = {
               "Supporting passage",
               "Verified or unresolved"
             ]
-          },
-          "skillId": "citation-verification",
-          "start": "Provide the paper title, author or DOI and the bibliographic record to verify.",
-          "capabilities": [
-            "searches scholarly indexes for the exact title and author",
-            "checks title, authors, year and venue, allowing explainable differences between a preprint and the published version",
-            "opens the paper when a specific statement needs checking",
-            "gets BibTeX from the located record rather than writing it from memory",
-            "marks a reference that cannot be found as unresolved"
-          ],
-          "outcomes": [
-            "confirmation or rejection of the work's identity",
-            "BibTeX from the located record",
-            "a paragraph supporting the claim, or an identified mismatch"
-          ],
-          "useCases": "When adding a new reference or when bibliographic details are uncertain.",
-          "important": [
-            "this is a reference guide. Nothing runs automatically",
-            "citation counts do not prove that a cited claim is correct",
-            "an unresolved-reference placeholder cannot be added to .tex: the hook blocks the edit"
-          ]
+          }
         },
         {
           "id": "project-bibliography-gate",
           "title": "citation-validator.py",
           "type": "Pre-write hook",
-          "role": "Prevents writing a .tex citation whose paper is absent from the project's references.bib. Runs automatically before the file changes.",
-          "when": "On every .tex edit that introduces a new citation.",
+          "role": "Prevents writing into the paper text a citation of a work that is not in the project bibliography. Fires automatically, before the file changes.",
+          "when": "On every edit of the paper text that adds a new citation.",
           "inputs": [
             "the edit the agent is about to write",
-            "all references.bib files found up the project directory tree"
+            "project bibliography"
           ],
           "inside": [
-            "extracts only keys that were not already in the file",
-            "searches for each key in all references.bib files up the directory tree",
+            "takes only the keys that were not in the file before",
+            "looks up each key in the project bibliography",
             "cancels the write and lists missing keys if any are absent",
-            "requires adding the paper to the library first and taking its existing key from there"
+            "forces you to first review the paper in the theme's literature and take its ready citation entry"
           ],
           "outputs": [
-            "an allowed .tex edit",
+            "an allowed edit",
             "or a canceled write with a list of missing keys"
           ],
-          "writes": "Nothing. Only the workflow that added the paper to the library changes the bibliography.",
+          "writes": "Nothing: the citation entry is copied into the bibliography from the paper's page in the theme's literature",
           "gates": [
-            "the key already exists in references.bib",
-            "BibTeX is copied from the paper record rather than written by hand"
+            "every new key is already in the bibliography"
           ],
           "limits": [
             "checks that the key exists, not whether the paper supports your claim",
-            "a placeholder such as % TODO cannot bypass the restriction: the hook cancels the write again"
+            "a placeholder can't get around the block: the guard will reject the write again"
           ],
           "links": [
             {
@@ -14295,10 +9479,6 @@ window.RESEARCH_LOOP = {
             {
               "label": "Registration in hooks.json",
               "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/hooks.json"
-            },
-            {
-              "label": "How to set up the bibliography",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/reference-setup.md"
             }
           ],
           "adoption": {
@@ -14307,20 +9487,26 @@ window.RESEARCH_LOOP = {
             "install": [
               "bash install/setup.sh    # places the hook in ~/.claude/hooks and registers it in settings.json"
             ],
-            "installNote": "The hook blocks a .tex write if a new \\cite{} key is absent from all references.bib files up the directory tree. This restriction must not be bypassed; it is the purpose of the hook."
+            "installNote": "The guard blocks a write to the paper text if a citation appears with a key that is not in the project bibliography. It cannot be bypassed — that is the point."
           },
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Literature Reviewer and paper agents",
+              "name": "Literature review agents",
               "role": "check the corpus, text and claims made by other authors"
             },
             {
-              "name": "Writing and rebuttal agents",
-              "role": "check bibliographic identity and citation key validity"
+              "name": "Paper and reviewer-response agents",
+              "role": "check that it is the right work and that it can be cited"
             }
           ],
-          "relations": [],
+          "relations": [
+            {
+              "toolId": "paper-claim-validator",
+              "label": "works alongside it at the same stage",
+              "title": "Claims from other papers"
+            }
+          ],
           "processRelations": [
             {
               "processId": "writing",
@@ -14337,36 +9523,20 @@ window.RESEARCH_LOOP = {
           },
           "visual": {
             "kind": "path",
-            "label": "Strict check before a .tex write",
+            "label": "A hard check before writing to the paper text",
             "nodes": [
               "New citation key",
-              "Project references.bib",
+              "Project bibliography",
               "Key from the paper record",
               "Allow or cancel the write"
             ]
-          },
-          "start": "Work with LaTeX as usual. The installed hook checks new citation keys before writing. If a key is missing, add a verified BibTeX record first.",
-          "capabilities": [
-            "extracts only keys that were not already in the file",
-            "searches for each key in all references.bib files up the directory tree",
-            "cancels the write and lists missing keys if any are absent",
-            "requires adding the paper to the library first and taking its existing key from there"
-          ],
-          "outcomes": [
-            "an allowed .tex edit",
-            "or a canceled write with a list of missing keys"
-          ],
-          "useCases": "On every .tex edit that introduces a new citation.",
-          "important": [
-            "checks that the key exists, not whether the paper supports your claim",
-            "a placeholder such as % TODO cannot bypass the restriction: the hook cancels the write again"
-          ]
+          }
         },
         {
           "id": "astar-paper-review",
           "title": "astar-paper-review",
           "type": "Skill",
-          "role": "An internal A*-level review: several reviewers examine theory, related work, experiments and reproducibility.",
+          "role": "An internal review at top-conference level (NeurIPS, ICML, ICLR): theory, related work, experiments and reproducibility examined by several reviewers.",
           "when": "Before submission, for an internal review of another paper or to examine a reviewer's report.",
           "inputs": [
             "full paper with appendices",
@@ -14385,7 +9555,7 @@ window.RESEARCH_LOOP = {
             "claim–evidence table",
             "prioritized weaknesses and a conclusion"
           ],
-          "writes": "One review note in the project's mapped Obsidian location",
+          "writes": "One review file with the author, not published to GitLab",
           "gates": [
             "the entire paper and relevant appendices have been read",
             "observation is separated from interpretation",
@@ -14403,19 +9573,18 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$astar-paper-review",
+            "invoke": "/astar-paper-review",
             "install": [
-              "git clone --depth 1 -b codex/publish-review-skills https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab-review",
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab-review/skills/astar-paper-review ~/.claude/skills/",
+              "cp -R ~/claude-brainlab/skills/astar-paper-review ~/.claude/skills/",
               "# restart Claude Code, then use /astar-paper-review"
-            ],
-            "installNote": "The multi-agent version described here is currently in the codex/publish-review-skills branch. main contains an earlier single-pass version of the skill."
+            ]
           },
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             }
           ],
@@ -14427,7 +9596,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "toolId": "review-response",
-              "label": "passes the result to the next stage",
+              "label": "hands the result to the next stage",
               "title": "review-response"
             }
           ],
@@ -14444,39 +9613,7 @@ window.RESEARCH_LOOP = {
             "processTitle": "Paper writing and review",
             "stageRef": "s5",
             "stageTitle": "Review it internally"
-          },
-          "cardTitle": "Review a paper before submission",
-          "catalogSummary": "Internal review: correctness, novelty and support from evidence.",
-          "skillId": "astar-paper-review",
-          "externalResources": [
-            {
-              "label": "CSPaper",
-              "url": "https://cspaper.org/"
-            },
-            {
-              "label": "Stanford Agentic Reviewer",
-              "url": "https://paperreview.ai/",
-              "note": "First 15 pages"
-            }
-          ],
-          "start": "Provide the paper with appendices and name the target venue. Include code and supplementary materials if available.",
-          "capabilities": [
-            "extracts text, removes embedded instructions and recovers annotations",
-            "builds a claim–evidence table",
-            "assigns separate reviewers to theory, literature, experiments and reproducibility",
-            "rechecks every decisive conclusion and identifies its exact location in the paper",
-            "presents weaknesses by severity first and assigns a score last"
-          ],
-          "outcomes": [
-            "one review file",
-            "claim–evidence table",
-            "prioritized weaknesses and a conclusion"
-          ],
-          "useCases": "Before submission, for an internal review of another paper or to examine a reviewer's report.",
-          "important": [
-            "convergence rates are not compared until the task, assumptions, criterion and total cost are aligned",
-            "reviewer findings are treated as leads to verify, not established results"
-          ]
+          }
         },
         {
           "id": "review-response",
@@ -14487,7 +9624,7 @@ window.RESEARCH_LOOP = {
           "inputs": [
             "submitted manuscript and appendix",
             "reviews and discussion",
-            "code snapshot and run logs",
+            "code version and run logs",
             "venue rules"
           ],
           "inside": [
@@ -14521,19 +9658,18 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$review-response",
+            "invoke": "/review-response",
             "install": [
-              "git clone --depth 1 -b codex/publish-review-skills https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab-review",
+              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab-review/skills/review-response ~/.claude/skills/",
+              "cp -R ~/claude-brainlab/skills/review-response ~/.claude/skills/",
               "# restart Claude Code, then use /review-response"
-            ],
-            "installNote": "The multi-agent version described here is currently in the codex/publish-review-skills branch. main contains an earlier single-pass version of the skill."
+            ]
           },
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Paper author, reviewer and rebuttal agent",
+              "name": "The paper's author and the review and response agents",
               "role": "write within the limits of verified sources and results"
             }
           ],
@@ -14568,171 +9704,7 @@ window.RESEARCH_LOOP = {
               "Internal check",
               "Final response"
             ]
-          },
-          "cardTitle": "Respond to reviewer comments",
-          "catalogSummary": "Check objections, choose a strategy and prepare the response.",
-          "skillId": "review-response",
-          "start": "Provide the reviews, submitted paper and results that can support the response.",
-          "capabilities": [
-            "freezes the submitted version before planning responses",
-            "breaks reviews into individual comments with their own IDs",
-            "treats papers, reviews and repositories as untrusted input and does not follow instructions embedded in them",
-            "chooses the smallest experiment capable of changing the reviewer's assessment",
-            "writes one response after selecting the evidence, rather than several competing drafts",
-            "rechecks every theorem, number and reference that affects the strategy"
-          ],
-          "outcomes": [
-            "comment register",
-            "evidence plan",
-            "one response document and a verification report"
-          ],
-          "useCases": "When reviews or venue questions arrive, or an existing response needs to be continued.",
-          "important": [
-            "does not promise a higher score",
-            "does not replace the paper's method or present a major redesign as a clarification"
-          ]
-        },
-        {
-          "id": "latex-conference-template-organizer",
-          "title": "latex-conference-template-organizer",
-          "type": "Skill",
-          "role": "Turns an official conference LaTeX template archive into a clear project structure for writing and working in Overleaf.",
-          "when": "When creating a project from an official conference template archive.",
-          "inside": [
-            "Finds the main .tex file and the required classes, styles and bibliography.",
-            "Proposes removing demonstration text and organizing files while preserving venue requirements.",
-            "After agreement, prepares a clean template and instructions, then checks compilation."
-          ],
-          "outputs": [
-            "A clean LaTeX template structure for Overleaf."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/latex-conference-template-organizer"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$latex-conference-template-organizer",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/latex-conference-template-organizer ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A clean LaTeX template structure for Overleaf.",
-          "cardTitle": "Prepare a conference template",
-          "skillId": "latex-conference-template-organizer",
-          "inputs": [
-            "Official conference template archive"
-          ],
-          "writes": "Prepared LaTeX project structure",
-          "gates": [
-            "Required files and venue requirements are preserved"
-          ],
-          "limits": [
-            "Works on template structure, not the paper's content"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Prepare a conference template"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "writing",
-              "role": "Prepare a conference template"
-            }
-          ],
-          "start": "Provide the archive and a link to the conference requirements.",
-          "capabilities": [
-            "Finds the main .tex file and the required classes, styles and bibliography.",
-            "Proposes removing demonstration text and organizing files while preserving venue requirements.",
-            "After agreement, prepares a clean template and instructions, then checks compilation."
-          ],
-          "useCases": "When creating a project from an official conference template archive.",
-          "outcomes": [
-            "A clean LaTeX template structure for Overleaf."
-          ],
-          "purpose": "Turns an official conference LaTeX template archive into a clear project structure for writing and working in Overleaf.",
-          "important": [
-            "Works on template structure, not the paper's content"
-          ],
-          "relations": []
-        },
-        {
-          "id": "google-workspace-mcp",
-          "title": "google-workspace-mcp",
-          "type": "Skill",
-          "role": "Helps an agent read and edit Google Docs and work with Drive through a configured MCP connection. Checks authorization when access fails.",
-          "when": "For reading and editing Google Docs through a connected agent.",
-          "inside": [
-            "Checks connection availability and current Google authorization.",
-            "Reads the document and performs the requested operation using permitted service tools.",
-            "Reads the edited section back. If access fails, investigates the cause and proposes the standard reauthorization procedure."
-          ],
-          "outputs": [
-            "Read and edit documents through a configured MCP connection."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/google-workspace-mcp"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$google-workspace-mcp",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/google-workspace-mcp ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Read and edit documents through a configured MCP connection.",
-          "cardTitle": "Work with Google Docs and Drive",
-          "skillId": "google-workspace-mcp",
-          "inputs": [
-            "Google document or Drive file and a request"
-          ],
-          "writes": "Google Workspace document or connection settings",
-          "gates": [
-            "Access and the read or write result are verified"
-          ],
-          "limits": [
-            "Requires a configured MCP connection and account permissions"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Work with Google Docs and Drive"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "writing",
-              "role": "Work with Google Docs and Drive"
-            }
-          ],
-          "start": "Provide the document link and the exact action to perform.",
-          "capabilities": [
-            "Checks connection availability and current Google authorization.",
-            "Reads the document and performs the requested operation using permitted service tools.",
-            "Reads the edited section back. If access fails, investigates the cause and proposes the standard reauthorization procedure."
-          ],
-          "useCases": "For reading and editing Google Docs through a connected agent.",
-          "outcomes": [
-            "Read and edit documents through a configured MCP connection."
-          ],
-          "purpose": "Helps an agent read and edit Google Docs and work with Drive through a configured MCP connection. Checks authorization when access fails.",
-          "important": [
-            "Requires a configured MCP connection and account permissions"
-          ],
-          "relations": []
+          }
         }
       ],
       "outcomeRefs": [
@@ -14758,23 +9730,6 @@ window.RESEARCH_LOOP = {
         }
       ],
       "toolClusters": [
-        {
-          "id": "drafting",
-          "title": "Manuscript from results",
-          "stageRef": "s2",
-          "toolIds": [
-            "ml-paper-writing"
-          ]
-        },
-        {
-          "id": "flow",
-          "title": "Coherence and language",
-          "stageRef": "s4",
-          "toolIds": [
-            "reverse-outline-flow-check",
-            "writing-anti-ai"
-          ]
-        },
         {
           "id": "evidence-qa",
           "title": "Pre-submission review",
@@ -14829,8 +9784,7 @@ window.RESEARCH_LOOP = {
           "tools": [
             "ml-paper-writing",
             "doc-coauthoring",
-            "writing-anti-ai",
-            "reverse-outline-flow-check"
+            "writing-anti-ai"
           ],
           "destinations": [
             "d1"
@@ -14845,11 +9799,13 @@ window.RESEARCH_LOOP = {
           "stage": "s4a",
           "tools": [
             "citation-verification",
-            "project-bibliography-gate"
+            "project-bibliography-gate",
+            "paper-claim-validator"
           ],
           "destinations": [
             "d1",
-            "d3"
+            "d3",
+            "d5"
           ],
           "outcomes": [
             "o2"
@@ -14906,158 +9862,82 @@ window.RESEARCH_LOOP = {
         "results"
       ],
       "primaryToolIds": [
-        "ml-paper-writing",
         "astar-paper-review"
       ],
+      "toMcp": {
+        "lead": "What becomes shared is verified claims from other papers and numbers from our submitted paper with their exact location in the manuscript.",
+        "paths": [
+          {
+            "id": "citations",
+            "actor": "person",
+            "title": "Reference verification populates the library",
+            "line": "verified reference → paper claim in the theme literature → the work's literature",
+            "chain": [
+              {
+                "lane": "work",
+                "title": "Verified reference in the text",
+                "stageRef": "s4a",
+                "destRef": "d3",
+                "detail": "The work has been found, its metadata match and the supporting paragraph has been read."
+              },
+              {
+                "lane": "record",
+                "kind": "paper claim",
+                "code": "",
+                "title": "A claim from another paper",
+                "ref": "object:paper-claim",
+                "destRef": "d3",
+                "items": [
+                  "one to three claims inside a review, in the “What the paper claims” section",
+                  "four lines: what it rests on, experimental conditions, what would refute it, our assessment",
+                  "only numbers printed in the paper serve as support, and a script finds each one in its text",
+                  "checking 450 numbers in seventeen reviews found two real errors, and both were in this line"
+                ],
+                "via": {
+                  "tool": "paper_claims_verify.py",
+                  "type": "script"
+                }
+              },
+              {
+                "lane": "tie",
+                "title": "Our work's literature",
+                "ref": "object:hypothesis",
+                "detail": "The work's description links to the paper review, not to arXiv, and sorts papers by role: where the method comes from, what inspired it, what we compete with, background of the theme. A link that bypasses the review is caught by an automatic check.",
+                "via": {
+                  "tool": "git push",
+                  "type": "command",
+                  "gate": "link check"
+                }
+              }
+            ]
+          }
+        ],
+        "nothing": {
+          "why": "The manuscript text, the comment register and the reviewer response do not turn into claims: they stay in the manuscript and the working folder. There is one feedback path: a number from our submitted or accepted paper with its exact location in the manuscript supports a claim, while an unsubmitted draft supports nothing.",
+          "instead": "process:results",
+          "insteadLabel": "05 Results → run and series under a claim",
+          "back": "A reference comes from the paper's page in the theme literature, a number from the run page under a claim.",
+          "title": "The manuscript and reviewer response do not become claims"
+        },
+        "kept": [
+          "manuscript and bibliography — in the work",
+          "comment register and reviewer response working directory",
+          "internal reviews — with the author",
+          "an edit citing a work that is not in the bibliography is rejected by the hook and never reaches the base"
+        ],
+        "hook": true
+      },
       "spotlight": {
-        "lead": "For scientific review and reviewer responses, use the lab's two original skills: astar-paper-review and review-response. Manuscript writing, coherence and style checks are shown separately on the map above.",
+        "lead": "For the paper and the reviewer response, the two main skills were written in the lab. Both work as a team of reviewer agents, and the coordinator re-checks every conclusion a decision depends on before it gets into the text.",
         "toolIds": [
           "astar-paper-review",
           "review-response"
         ]
       },
       "mapFeatured": [
-        "ml-paper-writing",
-        "reverse-outline-flow-check",
         "astar-paper-review",
-        "review-response",
-        "citation-verification"
-      ],
-      "pipeline": {
-        "title": "From verified results to a manuscript",
-        "steps": [
-          {
-            "op": "results-analysis",
-            "t": "Check the measurements",
-            "m": "Analysis package",
-            "d": "Check run comparability, the number of independent observations, effect size and uncertainty. Mark unfinished runs separately."
-          },
-          {
-            "op": "results-report",
-            "t": "Formulate the conclusion",
-            "m": "Report and claim boundaries",
-            "d": "Separate measurement, interpretation and decision. Preserve negative results and limitations."
-          },
-          {
-            "op": "paper outline",
-            "t": "Link claims to support",
-            "m": "Claim table",
-            "d": "For each claim, identify the source, number, interval, decision criterion, figure and intended section. Reuse the project's existing table if it has one."
-          },
-          {
-            "op": "academic-plotting",
-            "t": "Create the figures",
-            "m": "Data, script and figure",
-            "d": "Plot verified numbers. Save the source and script, then inspect the figure at column width."
-          },
-          {
-            "op": "ml-paper-writing",
-            "t": "Write a coherent draft",
-            "m": "Manuscript",
-            "d": "Develop the question, argument and results. Trace every number to data and every reference to a source actually read."
-          },
-          {
-            "op": "reverse-outline-flow-check",
-            "t": "Check the order of explanation",
-            "m": "Reverse outline and revisions",
-            "d": "Check each paragraph's role and its links to neighboring paragraphs. Then use writing-anti-ai to remove formulaic phrasing."
-          },
-          {
-            "op": "astar-paper-review",
-            "t": "Review the research",
-            "m": "Evidence-based review",
-            "d": "Check assumptions, comparisons and reproducibility. Analyze comments and responses with review-response."
-          }
-        ],
-        "note": "A table or JSON helps trace the transfer of numbers. A number matching the table does not establish the claim's meaning, the protocol's validity or the paper's readiness for submission."
-      },
-      "constellation": {
-        "cores": [
-          {
-            "toolId": "ml-paper-writing",
-            "area": "write",
-            "caption": "Manuscript writing"
-          },
-          {
-            "toolId": "reverse-outline-flow-check",
-            "area": "outline",
-            "caption": "Argument flow"
-          },
-          {
-            "toolId": "astar-paper-review",
-            "area": "review",
-            "caption": "Scientific review"
-          },
-          {
-            "toolId": "review-response",
-            "area": "reply",
-            "caption": "Reviewer responses"
-          },
-          {
-            "toolId": "citation-verification",
-            "area": "cite",
-            "caption": "Reference verification"
-          }
-        ],
-        "links": [
-          [
-            "ml-paper-writing",
-            "reverse-outline-flow-check"
-          ],
-          [
-            "reverse-outline-flow-check",
-            "citation-verification"
-          ],
-          [
-            "citation-verification",
-            "review-response"
-          ],
-          [
-            "review-response",
-            "astar-paper-review"
-          ],
-          [
-            "astar-paper-review",
-            "ml-paper-writing"
-          ]
-        ],
-        "groups": [
-          {
-            "title": "Language and style",
-            "area": "flow",
-            "core": "reverse-outline-flow-check",
-            "toolIds": [
-              "writing-anti-ai"
-            ]
-          },
-          {
-            "title": "Collaborative writing",
-            "area": "draft",
-            "core": "ml-paper-writing",
-            "toolIds": [
-              "doc-coauthoring",
-              "google-workspace-mcp"
-            ]
-          },
-          {
-            "title": "Venue template",
-            "area": "format",
-            "core": "ml-paper-writing",
-            "toolIds": [
-              "latex-conference-template-organizer"
-            ],
-            "externalFrom": "astar-paper-review"
-          },
-          {
-            "title": "Bibliography keys",
-            "area": "sources",
-            "core": "citation-verification",
-            "toolIds": [
-              "project-bibliography-gate"
-            ]
-          }
-        ]
-      }
+        "review-response"
+      ]
     },
     {
       "id": "presentation",
@@ -15085,7 +9965,7 @@ window.RESEARCH_LOOP = {
         },
         {
           "title": "Read the source",
-          "summary": "The paper's .tex first, then notes, then the PDF.",
+          "summary": "First the paper source, then the work's claims and notes, and only then the PDF.",
           "result": "Verified source",
           "ref": "s2"
         },
@@ -15114,14 +9994,8 @@ window.RESEARCH_LOOP = {
           "ref": "s6"
         },
         {
-          "ref": "s-web",
-          "title": "Website and interactive demo",
-          "summary": "For a web presentation, build the interface, then check its appearance and user flows in the browser.",
-          "result": "A working web interface and its verification results"
-        },
-        {
           "title": "Check before presenting",
-          "summary": "check_overflow.py reports all pages fit. Numbers and references are verified.",
+          "summary": "An automatic check confirms that no frame is clipped; numbers and references are verified.",
           "result": "Finished PDF and posts for the author",
           "ref": "s7"
         }
@@ -15135,9 +10009,9 @@ window.RESEARCH_LOOP = {
       ],
       "destinations": [
         {
-          "name": "Project repository",
-          "what": "Presentation or poster source and figures",
-          "why": "Reproducible build",
+          "name": "Talk and poster sources",
+          "what": "The slide source lives in the work; the shared poster source lives in the lab's communications repository",
+          "why": "A reproducible build and a single copy of the source",
           "ref": "d1"
         },
         {
@@ -15147,9 +10021,9 @@ window.RESEARCH_LOOP = {
           "ref": "d2"
         },
         {
-          "name": "Project folder in Obsidian",
-          "what": "One note per platform and checked images",
-          "why": "A draft for the author to publish",
+          "name": "The work's posts and poster",
+          "what": "One note per platform, a PDF poster and checked images",
+          "why": "Stored in GitLab with the work; the author publishes them",
           "ref": "d3"
         }
       ],
@@ -15164,14 +10038,14 @@ window.RESEARCH_LOOP = {
         {
           "id": "visual-qa",
           "title": "A clean log does not guarantee a clean presentation",
-          "explanation": "A tcolorbox inside columns can extend past the bottom edge without a warning while latexmk still exits with zero. Inspect the slide visually and run check_overflow.py.",
+          "explanation": "A block inside columns can slide off the bottom of a slide without any warning, and the build still counts as successful. So every frame is looked at by eye and run through an automatic check for clipped content.",
           "example": "",
           "links": []
         },
         {
           "id": "overflow",
           "title": "Smaller text does not fix overcrowding",
-          "explanation": "Revise in this order: remove unnecessary text, drop the least essential block, shrink the figure, rebalance columns, split the slide. At 16:9 and 10pt, a column fits a figure or three short blocks, not both.",
+          "explanation": "The order of fixes: cut excess text, drop the least needed block, shrink the figure, rebalance the columns, split the frame. On a wide slide a column holds a figure or three short blocks, but not both.",
           "example": "",
           "links": []
         },
@@ -15183,16 +10057,16 @@ window.RESEARCH_LOOP = {
           "links": []
         },
         {
-          "id": "timing",
-          "title": "Timing is checked by rehearsal",
-          "explanation": "Plan 10–15 slides for 15 minutes or 20–30 for 30 minutes, roughly a minute and a half per slide. A timed rehearsal confirms the duration, not an estimate.",
+          "id": "poster-one-source",
+          "title": "A paired poster has one source",
+          "explanation": "The WeightLoRA (ACL 2026) and SimplexLoRA (EMNLP 2026) posters are two A1 sheets with a shared design, hung side by side. Each work has its own PDF, but they share one source: an edit in one poster must show up in the other.",
           "example": "",
           "links": []
         }
       ],
       "example": {
         "title": "One result, from the feed to the lecture hall",
-        "text": "Extract one core message and accurate numbers from the accepted paper's .tex once for all platforms. Adapt the message to each setting: a conversational Russian post with cards for Telegram, a dense English thread with tweets of up to 280 characters for X, and a long-form article with connected prose and formulas for Habr. Retrieve figures from the arXiv version and inspect each one. The same message becomes a 15-minute talk with 10–15 slides, while derivations and ablations go into backup slides. Before release, check_overflow.py must report all pages fit. Posts wait in the project folder for the author to check links and accounts and publish them."
+        "text": "From the source of an accepted paper we extract one core message and the exact numbers, once for all platforms. From there the same message goes out differently: on Telegram it is a conversational Russian post with cards, on X an English thread of dense tweets up to 280 characters, on Habr a long article in connected prose with formulas; figures are taken from the arXiv version and each one is reviewed. The same message becomes a talk in the lab's style, with derivations and ablations moved to backup slides. Before release a check confirms that no frame is clipped, and the posts wait until the author checks links and accounts and publishes them personally."
       },
       "tools": [
         {
@@ -15202,23 +10076,24 @@ window.RESEARCH_LOOP = {
           "role": "Creates ready-to-paste paper posts for Telegram, X and Habr in the author's voice, using figures from the arXiv version.",
           "when": "When a finished paper needs to be shared on one or more platforms.",
           "inputs": [
-            "the paper's main.tex or arXiv version",
+            "the paper source or its arXiv version",
             "target platforms",
             "verified links and accounts"
           ],
           "inside": [
-            "reads .tex rather than the PDF",
+            "reads the paper source, not the PDF",
             "extracts one core message and accurate numbers once for all platforms",
             "retrieves figures from the published version and inspects each one",
             "adapts the structure separately for Telegram, X and Habr",
-            "runs the text through writing-anti-ai"
+            "builds cards in the lab palette with the lab logo",
+            "strips recognizable machine-generated phrasing from the text"
           ],
           "outputs": [
             "one note per platform",
             "checked images",
             "list of details for the author to fill in"
           ],
-          "writes": "Project folder in Obsidian",
+          "writes": "Posts and images are saved with the work, one note per platform",
           "gates": [
             "numbers, conference acceptance, links and accounts are verified",
             "X posts fit within 280 characters",
@@ -15241,7 +10116,7 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$paper-to-social",
+            "invoke": "/paper-to-social",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
@@ -15252,7 +10127,7 @@ window.RESEARCH_LOOP = {
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Speaker and presentation agent",
+              "name": "Talk author and agent",
               "role": "prepare public posts about published work"
             }
           ],
@@ -15269,29 +10144,7 @@ window.RESEARCH_LOOP = {
             "processTitle": "Share with the community",
             "stageRef": "s6",
             "stageTitle": "Adapt to each setting"
-          },
-          "cardTitle": "Share a result with the community",
-          "catalogSummary": "Telegram, X and Habr posts based on verified paper materials.",
-          "skillId": "paper-to-social",
-          "start": "Provide the paper and name the publishing platform. Specify links and accounts to mention.",
-          "capabilities": [
-            "reads .tex rather than the PDF",
-            "extracts one core message and accurate numbers once for all platforms",
-            "retrieves figures from the published version and inspects each one",
-            "adapts the structure separately for Telegram, X and Habr",
-            "runs the text through writing-anti-ai"
-          ],
-          "outcomes": [
-            "one note per platform",
-            "checked images",
-            "list of details for the author to fill in"
-          ],
-          "useCases": "When a finished paper needs to be shared on one or more platforms.",
-          "important": [
-            "does not invent a personal story or publish on the author's behalf",
-            "does not round the numbers"
-          ],
-          "relations": []
+          }
         },
         {
           "id": "presentation-skill",
@@ -15308,7 +10161,7 @@ window.RESEARCH_LOOP = {
           "inside": [
             "reconstructs the mathematical argument from .tex rather than a summary",
             "keeps notation consistent throughout the presentation",
-            "builds Beamer with metropolis, 16:9, cream background #FAF8F1 and plum #854C65",
+            "builds 16:9 Beamer slides: cream background and plum accents",
             "alternates full-screen plum slides with cream content slides",
             "fixes layout after each build",
             "uses the dark terminal style only on explicit request"
@@ -15316,16 +10169,16 @@ window.RESEARCH_LOOP = {
           "outputs": [
             "presentation source and PDF"
           ],
-          "writes": "Presentation folder in the project",
+          "writes": "The talk folder in the work",
           "gates": [
             "prefers figures from the paper to newly drawn substitutes",
             "each slide serves one purpose",
-            "Overfull hbox, Overfull vbox and Frame text is shrunk count as errors"
+            "any frame overflow or shrunk font counts as an error"
           ],
           "limits": [
-            "only a timed human rehearsal verifies duration",
             "does not rename notation without a request",
-            "does not use a white background, even if requested in general terms"
+            "does not use a white background, even if requested in general terms",
+            "presenting with speaker notes is handled by a separate skill"
           ],
           "links": [
             {
@@ -15339,21 +10192,21 @@ window.RESEARCH_LOOP = {
           ],
           "adoption": {
             "kind": "toolkit-skill",
-            "invoke": "$presentation",
+            "invoke": "/presentation",
             "install": [
               "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/presentation ~/.claude/skills/",
               "# restart Claude Code, then use /presentation"
             ],
-            "installNote": "The skill includes Beamer examples and an overflow-checking script. Building requires a TeX engine; visual verification requires inspecting the rendered pages. For Codex, install the same skill directory in ~/.agents/skills/."
+            "installNote": "The lab template, the terminal template and the clipped-frame check live in an open repository together with the skill."
           },
           "purpose": "",
           "afterSetup": "Turn project materials into a coherent talk in the lab's house style, ready to present.",
           "nonInstallable": false,
           "usedBy": [
             {
-              "name": "Speaker and presentation agent",
+              "name": "Talk author and agent",
               "role": "build and visually check a public explanation of the work"
             }
           ],
@@ -15382,344 +10235,7 @@ window.RESEARCH_LOOP = {
               "Visual check"
             ]
           },
-          "cardTitle": "Present the research in a talk",
-          "catalogSummary": "LaTeX Beamer slides with a clear structure and mathematical content.",
-          "skillId": "presentation",
-          "start": "Provide the paper or talk materials. Name the audience and talk duration.",
-          "capabilities": [
-            "reconstructs the mathematical argument from .tex rather than a summary",
-            "keeps notation consistent throughout the presentation",
-            "builds Beamer with metropolis, 16:9, cream background #FAF8F1 and plum #854C65",
-            "alternates full-screen plum slides with cream content slides",
-            "fixes layout after each build",
-            "uses the dark terminal style only on explicit request"
-          ],
-          "outcomes": [
-            "presentation source and PDF"
-          ],
-          "useCases": "For a talk, seminar or lecture.",
-          "important": [
-            "only a timed human rehearsal verifies duration",
-            "does not rename notation without a request",
-            "does not use a white background, even if requested in general terms"
-          ],
-          "relations": []
-        },
-        {
-          "id": "frontend-design",
-          "title": "frontend-design",
-          "type": "Skill",
-          "role": "Creates a working web interface with composition, typography, color and responsive behavior chosen for the task and audience.",
-          "when": "When creating or redesigning a web interface.",
-          "inside": [
-            "Chooses a visual direction based on the content and existing site.",
-            "Implements composition, typography, color, responsiveness and meaningful element states.",
-            "Checks that the design supports the user's workflow and works at the required screen sizes."
-          ],
-          "outputs": [
-            "A working interface with consistent composition, typography and color."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/frontend-design"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$frontend-design",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/frontend-design ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "A working interface with consistent composition, typography and color.",
-          "cardTitle": "Design a web interface",
-          "skillId": "frontend-design",
-          "inputs": [
-            "Interface goal, audience and current code"
-          ],
-          "writes": "Interface code",
-          "gates": [
-            "Composition and behavior are checked in the browser"
-          ],
-          "limits": [
-            "An attractive mockup does not replace accessibility and workflow checks"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Design a web interface"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "presentation",
-              "processTitle": "Share with the community",
-              "stageRef": "s-web",
-              "stageTitle": "Website and interactive demo"
-            }
-          ],
-          "start": "Provide the page goal, audience and examples of what you like or what gets in the way.",
-          "capabilities": [
-            "Chooses a visual direction based on the content and existing site.",
-            "Implements composition, typography, color, responsiveness and meaningful element states.",
-            "Checks that the design supports the user's workflow and works at the required screen sizes."
-          ],
-          "useCases": "When creating or redesigning a web interface.",
-          "outcomes": [
-            "A working interface with consistent composition, typography and color."
-          ],
-          "purpose": "Creates a working web interface with composition, typography, color and responsive behavior chosen for the task and audience.",
-          "important": [
-            "An attractive mockup does not replace accessibility and workflow checks"
-          ],
-          "relations": [],
-          "processRelation": {
-            "processId": "presentation",
-            "processTitle": "Share with the community",
-            "stageRef": "s-web",
-            "stageTitle": "Website and interactive demo"
-          }
-        },
-        {
-          "id": "ui-ux-pro-max",
-          "title": "ui-ux-pro-max",
-          "type": "Skill",
-          "role": "Helps choose an interface's visual system: page structure, fonts, palette, components and interaction rules.",
-          "when": "When choosing a design system or checking interface usability.",
-          "inside": [
-            "Selects structure, palette and typography for the task.",
-            "Defines component rules, states, spacing and motion.",
-            "Checks accessibility, contrast and interaction, then provides implementation recommendations."
-          ],
-          "outputs": [
-            "Recommendations on structure, fonts, color, accessibility and interaction."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/ui-ux-pro-max"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$ui-ux-pro-max",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/ui-ux-pro-max ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Recommendations on structure, fonts, color, accessibility and interaction.",
-          "cardTitle": "Plan the visual system",
-          "skillId": "ui-ux-pro-max",
-          "inputs": [
-            "Interface goal and product constraints"
-          ],
-          "writes": "Visual system and implementation recommendations",
-          "gates": [
-            "Typography, color and interaction decisions are consistent"
-          ],
-          "limits": [
-            "Recommendations must be adapted to the existing product"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Plan the visual system"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "presentation",
-              "processTitle": "Share with the community",
-              "stageRef": "s-web",
-              "stageTitle": "Website and interactive demo"
-            }
-          ],
-          "start": "Describe the product, audience, main workflow and technology stack.",
-          "capabilities": [
-            "Selects structure, palette and typography for the task.",
-            "Defines component rules, states, spacing and motion.",
-            "Checks accessibility, contrast and interaction, then provides implementation recommendations."
-          ],
-          "useCases": "When choosing a design system or checking interface usability.",
-          "outcomes": [
-            "Recommendations on structure, fonts, color, accessibility and interaction."
-          ],
-          "purpose": "Helps choose an interface's visual system: page structure, fonts, palette, components and interaction rules.",
-          "important": [
-            "Recommendations must be adapted to the existing product"
-          ],
-          "relations": [],
-          "processRelation": {
-            "processId": "presentation",
-            "processTitle": "Share with the community",
-            "stageRef": "s-web",
-            "stageTitle": "Website and interactive demo"
-          }
-        },
-        {
-          "id": "web-design-reviewer",
-          "title": "web-design-reviewer",
-          "type": "Skill",
-          "role": "Inspects actual pages in a browser, finds visible design and responsiveness problems, and verifies source-code fixes.",
-          "when": "When a page works but its appearance needs review.",
-          "inside": [
-            "Opens actual pages and inspects them at the required screen sizes.",
-            "Identifies demonstrated problems with text, spacing, contrast, overflow and responsiveness.",
-            "Fixes their causes in the source and checks the result again in the browser."
-          ],
-          "outputs": [
-            "Fixes for visible layout and responsiveness problems."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/web-design-reviewer"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$web-design-reviewer",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/web-design-reviewer ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Fixes for visible layout and responsiveness problems.",
-          "cardTitle": "Review the design in a browser",
-          "skillId": "web-design-reviewer",
-          "inputs": [
-            "Working site and target pages"
-          ],
-          "writes": "Fixes for demonstrated design problems",
-          "gates": [
-            "Results are compared in the browser at the required widths"
-          ],
-          "limits": [
-            "Source inspection does not replace viewing the rendered page"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Review the design in a browser"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "presentation",
-              "processTitle": "Share with the community",
-              "stageRef": "s-web",
-              "stageTitle": "Website and interactive demo"
-            }
-          ],
-          "start": "Provide the page URL and access to its source for fixes.",
-          "capabilities": [
-            "Opens actual pages and inspects them at the required screen sizes.",
-            "Identifies demonstrated problems with text, spacing, contrast, overflow and responsiveness.",
-            "Fixes their causes in the source and checks the result again in the browser."
-          ],
-          "useCases": "When a page works but its appearance needs review.",
-          "outcomes": [
-            "Fixes for visible layout and responsiveness problems."
-          ],
-          "purpose": "Inspects actual pages in a browser, finds visible design and responsiveness problems, and verifies source-code fixes.",
-          "important": [
-            "Source inspection does not replace viewing the rendered page"
-          ],
-          "relations": [],
-          "processRelation": {
-            "processId": "presentation",
-            "processTitle": "Share with the community",
-            "stageRef": "s-web",
-            "stageTitle": "Website and interactive demo"
-          }
-        },
-        {
-          "id": "webapp-testing",
-          "title": "webapp-testing",
-          "type": "Skill",
-          "role": "Tests web app workflows in the browser with Playwright: actions, interface state, errors and visible outcomes.",
-          "when": "When a user workflow needs to be verified in the browser.",
-          "inside": [
-            "Inspects the loaded page and its actual interface elements.",
-            "Runs the scenario through Playwright, checking state after each meaningful action.",
-            "Saves the verification result, console errors and screenshots when they help reproduce a problem."
-          ],
-          "outputs": [
-            "Browser checks of the required scenarios and visible outcomes."
-          ],
-          "links": [
-            {
-              "label": "Skill in the repository",
-              "url": "https://github.com/brain-lab-research/claude-brainlab/tree/main/skills/webapp-testing"
-            }
-          ],
-          "adoption": {
-            "kind": "toolkit-skill",
-            "invoke": "$webapp-testing",
-            "install": [
-              "git clone --depth 1 https://github.com/brain-lab-research/claude-brainlab.git ~/claude-brainlab",
-              "mkdir -p ~/.claude/skills",
-              "cp -R ~/claude-brainlab/skills/webapp-testing ~/.claude/skills/"
-            ],
-            "installNote": "For Codex, copy the skill to ~/.agents/skills/. For Claude Code, use ~/.claude/skills/. Restart the client after installation."
-          },
-          "catalogSummary": "Browser checks of the required scenarios and visible outcomes.",
-          "cardTitle": "Test web app behavior",
-          "skillId": "webapp-testing",
-          "inputs": [
-            "Local application and scenarios to test"
-          ],
-          "writes": "Browser scenario and verification results",
-          "gates": [
-            "Checks visible behavior, not merely the presence of code"
-          ],
-          "limits": [
-            "Requires a browser and a working app instance"
-          ],
-          "usedBy": [
-            {
-              "name": "Project agent",
-              "role": "Test web app behavior"
-            }
-          ],
-          "processRelations": [
-            {
-              "processId": "presentation",
-              "processTitle": "Share with the community",
-              "stageRef": "s-web",
-              "stageTitle": "Website and interactive demo"
-            }
-          ],
-          "start": "Specify the app URL, actions and expected result.",
-          "capabilities": [
-            "Inspects the loaded page and its actual interface elements.",
-            "Runs the scenario through Playwright, checking state after each meaningful action.",
-            "Saves the verification result, console errors and screenshots when they help reproduce a problem."
-          ],
-          "useCases": "When a user workflow needs to be verified in the browser.",
-          "outcomes": [
-            "Browser checks of the required scenarios and visible outcomes."
-          ],
-          "purpose": "Tests web app workflows in the browser with Playwright: actions, interface state, errors and visible outcomes.",
-          "important": [
-            "Requires a browser and a working app instance"
-          ],
-          "relations": [],
-          "processRelation": {
-            "processId": "presentation",
-            "processTitle": "Share with the community",
-            "stageRef": "s-web",
-            "stageTitle": "Website and interactive demo"
-          }
+          "skillId": "presentation"
         }
       ],
       "outcomeRefs": [
@@ -15755,21 +10271,10 @@ window.RESEARCH_LOOP = {
         },
         {
           "id": "deck",
-          "title": "Talk and poster",
+          "title": "Talk",
           "stageRef": "s4",
           "toolIds": [
             "presentation-skill"
-          ]
-        },
-        {
-          "id": "web",
-          "title": "Website and interactive demo",
-          "stageRef": "s-web",
-          "toolIds": [
-            "frontend-design",
-            "ui-ux-pro-max",
-            "web-design-reviewer",
-            "webapp-testing"
           ]
         }
       ],
@@ -15854,33 +10359,22 @@ window.RESEARCH_LOOP = {
             "o5"
           ],
           "qa": []
-        },
-        {
-          "id": "r-web",
-          "stage": "s-web",
-          "tools": [
-            "frontend-design",
-            "ui-ux-pro-max",
-            "web-design-reviewer",
-            "webapp-testing"
-          ],
-          "destinations": [],
-          "outcomes": [],
-          "qa": []
         }
       ],
       "toMcp": {
-        "lead": "Nothing is written to the shared database from this stage.",
+        "lead": "Posts, the poster and slides are stored with the work in GitLab, but they create no new claims: they retell what has already been verified.",
         "nothing": {
-          "why": "Slides, posters and posts present a result already recorded. If preparation leads to an agreement on a template, record it with propose_decision as operational. Such a rule does not require supporting measurements.",
+          "why": "Slides, the poster and posts are packaging for a result that is already recorded. Their numbers come from the claims and the manuscript, not the other way around.",
           "instead": "process:results",
-          "insteadLabel": "05 Results → measurement R-*",
-          "back": "a search over the ~/brainlab tree gives claim codes and citation keys for the slide"
+          "insteadLabel": "05 Results → run and series under a claim",
+          "back": "",
+          "title": "Telling the story adds no new claims"
         },
         "kept": [
-          "slide and poster sources in the project repository",
+          "talk source — in the work",
+          "shared poster source — in the lab's communications repository",
           "finished PDF after visual inspection",
-          "post drafts go to Telegram, Twitter/X and Habr, not the database"
+          "posts — in the work; the author publishes them on Telegram, X and Habr"
         ],
         "hook": true
       },
@@ -15888,73 +10382,30 @@ window.RESEARCH_LOOP = {
         {
           "src": "assets/social/warmup-tweet.png",
           "caption": "X post about the warmup paper",
-          "note": "Output from paper-to-social: the core message in the first sentence, no “we are pleased to announce,” and the paper's first page as an image. The author's voice rather than a restated abstract."
+          "note": "Output of the paper-to-social skill: one core message in the first sentence, no “we are pleased to announce”, the paper's first page as an image. The author's voice, not a retelling of the abstract."
         },
         {
-          "src": "assets/slides/en/en/lab-template-title.png",
-          "caption": "Lab template: title slide",
-          "note": "Teaching example from the presentation skill. Plum and amber, title and subtitle in one or two lines, lab signature in the bottom-right corner."
-        },
-        {
-          "src": "assets/slides/en/en/lab-template-slide.png",
+          "src": "assets/slides/en/lab-template-slide.png",
           "caption": "Lab template: content slide",
-          "note": "The same teaching example. One idea in the heading, an image on the left and two boxes on the right: the proposal and its limitations."
+          "note": "One idea in the title, a plot on the left, two blocks on the right: what we proposed and what the method can't do."
         },
         {
-          "src": "assets/slides/en/en/terminal-template-title.png",
-          "caption": "Terminal template: title slide",
-          "note": "A second teaching example from the same skill. Dark background and monospace type, with a launch command containing the talk topic instead of decoration."
-        },
-        {
-          "src": "assets/slides/en/en/terminal-template-slide.png",
+          "src": "assets/slides/en/terminal-template-slide.png",
           "caption": "Terminal template: derivation slide",
-          "note": "The same teaching example. The key idea in text and the update formula use the same two colors, with no separate formula box."
+          "note": "Dark terminal style: the key idea as text and the step formula in the same two colors, with no separate block for the formula."
         }
       ],
       "spotlight": {
-        "lead": "Two skills cover this stage: one writes platform-specific posts, the other builds the talk and poster. Their outputs are shown below.",
+        "lead": "Two skills here: one makes posts for each platform, the other builds a talk in the lab's style. Below is what comes out.",
         "toolIds": [
           "paper-to-social",
           "presentation-skill"
         ]
       },
       "mapFeatured": [
-        "presentation-skill",
-        "paper-to-social"
-      ],
-      "constellation": {
-        "cores": [
-          {
-            "toolId": "presentation-skill",
-            "area": "talk",
-            "caption": "Talk and slides"
-          },
-          {
-            "toolId": "paper-to-social",
-            "area": "share",
-            "caption": "Research posts"
-          }
-        ],
-        "links": [
-          [
-            "presentation-skill",
-            "paper-to-social"
-          ]
-        ],
-        "groups": [
-          {
-            "title": "Website and interactive demo",
-            "area": "design",
-            "independent": true,
-            "toolIds": [
-              "frontend-design",
-              "ui-ux-pro-max",
-              "web-design-reviewer",
-              "webapp-testing"
-            ]
-          }
-        ]
-      }
+        "paper-to-social",
+        "presentation-skill"
+      ]
     }
   ]
 };

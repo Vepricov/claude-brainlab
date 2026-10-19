@@ -3,7 +3,7 @@
 const fs=require('node:fs'),crypto=require('node:crypto'),path=require('node:path');
 const {babelParse}=require(path.join(path.dirname(require.resolve(process.env.PLAYWRIGHT_MODULE || 'playwright')), 'lib/transform/babelBundle.js'));
 const root=path.resolve(__dirname,'..');
-const files={'app.js':'ui-app','memory-map.js':'ui-memory','surface-pages.js':'ui-surfaces','obsidian-setup.js':'ui-surfaces','data/system-examples.js':'scenarios','data/atlas-tree.js':'demo-data','data/base-snapshot.js':'demo-data','data/library-snapshot.js':'demo-data','data/demo-flag.js':'demo-data','data/project-workspaces.js':'demo-data'};
+const files={'app.js':'ui-app','memory-map.js':'ui-memory','surface-pages.js':'ui-surfaces','obsidian-setup.js':'ui-surfaces','setup.js':'ui-setup','hub.js':'ui-hub','data/system-examples.js':'scenarios'};
 const groups={},manifest={};
 for(const [file,group] of Object.entries(files)){
  const source=fs.readFileSync(path.join(root,'docs/lab-showcase',file),'utf8');const ast=babelParse(source,file);const ranges=[];

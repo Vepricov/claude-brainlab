@@ -1,48 +1,305 @@
 window.SYSTEM_EXAMPLES = {
-  verified: "09-09-2026",
-  surfaces: {
-    obsidian: {
-      number: "P1",
-      title: "Obsidian",
-      kicker: "Personal research memory",
-      promise: "A place for detailed understanding, drafts, a research log, and private project context.",
-      owns: ["The whole lab tree ~/brainlab: the same folders as in GitLab", "Personal material next to the work: notes/, daily/, runs/ do not go to GitLab", "Operon boards with personal tasks"],
-      doesNotOwn: ["A separate copy of knowledge: Obsidian reads the same files as git", "Team tasks: they are in GitLab", "An agent's automatic session history"],
-      path: ["Working material appears in the work", "Personal material stays in its notes/ and daily/", "Knowledge is written up in claims/ of the same work", "A person merges the merge request, and it shows up in the same tree after git pull"],
-      routes: [{kind:"Workflow", title:"Projects and memory", text:"How to set up a project, where its hub lives, and what can be published.", process:"projects", tool:"obsidian-project-bootstrap"}],
-      links: [{label:"Obsidian", url:"https://obsidian.md/"}, {label:"Skill: project memory", url:"https://github.com/Vepricov/claude-brainlab/tree/main/skills/obsidian-project-memory"}]
-    },
-    mempalace: {
-      number: "P2",
-      title: "MemPalace",
-      kicker: "Long-term agent memory",
-      promise: "Recovers past decisions, work history, and context across sessions so the agent can resume a task with an understanding of prior work.",
-      owns: ["Past work episodes and their provenance", "Connections between tasks, decisions, and projects", "Context that helps restore a session"],
-      doesNotOwn: ["Scientific evidence", "Current server status without a live check", "A person's private notes"],
-      path: ["The agent first searches for relevant history", "It retrieves episodes together with their provenance", "It rechecks changeable facts in the live system", "It uses memory as context, not as evidence"],
-      routes: [{kind:"Workflow", title:"Agent orchestration", text:"See how context reaches Jarvis, Hermes, and project watchers.", process:"experiments", tool:"watcher"}],
-      links: [{label:"MemPalace on GitHub", url:"https://github.com/MemPalace/mempalace"}]
-    },
-    tasks: {
-      number: "P3",
-      title: "GitLab issues",
-      kicker: "Team assignments",
-      promise: "Issues and the board live in the same work repository that knowledge is written to. There is no second board next to it.",
-      owns: ["Work issues: assignee, deadline, the claim the issue affects", "Work board: columns by labels", "Linking an issue to a merge request: “Closes #N” closes it on merge"],
-      doesNotOwn: ["Knowledge itself: claims, runs, and series live in claims/", "Raw logs and personal notes", "A second copy of the claims"],
-      path: ["An agreement becomes an issue in the work repository", "The assignee sees it at session start", "The work goes out as a merge request that links the issue", "The merge closes the issue by itself"],
-      routes: [
-        {kind:"Workflow", title:"Projects and memory", text:"How a work is created, who leads it, and where its issues are.", process:"projects", tool:"obsidian-project-bootstrap"}
+  "verified": "19-10-2026",
+  "surfaces": {
+    "obsidian": {
+      "number": "P1",
+      "title": "Obsidian",
+      "kicker": "The lab tree in one window",
+      "promise": "Obsidian opens the ~/brainlab tree itself: personal notes and the shared base live in the same work folders, but only the shared part goes to GitLab.",
+      "owns": [
+        "Personal in every work: notes/, daily/, runs/ are excluded from git and stay on the machine",
+        "Shared in the same folders: claims/<CODE>/ with runs, series and derivations, plus the topic's literature",
+        "Personal Operon boards: the reading queue and your own tasks",
+        "Personal folders sync to the do-vpn server via Syncthing, and Hermes works in the same tree"
       ],
-      links: [{label:"How to set it up", url:"https://github.com/brain-lab-research/claude-brainlab/blob/main/docs/onboarding.md"}]
+      "doesNotOwn": [
+        "A second copy of the base: writing to the shared part is a git push, not a sync",
+        "Team tasks: they live in GitLab",
+        "The agent's session history: it lives in MemPalace"
+      ],
+      "path": [
+        "People and agents edit files right in the work's clone",
+        "Personal stays in notes/ and daily/, git does not see it",
+        "Shared goes out as a branch, and git push opens a proposal to the work lead by itself",
+        "Checks verify numbers and text, a person merges: the merge is the record"
+      ],
+      "routes": [
+        {
+          "kind": "Workflow",
+          "title": "Projects and memory",
+          "text": "How a work is created, where its README lives and what goes from it to GitLab.",
+          "process": "projects",
+          "tool": "create-project"
+        }
+      ],
+      "links": [
+        {
+          "label": "Obsidian",
+          "url": "https://obsidian.md/"
+        },
+        {
+          "label": "How the tree is laid out",
+          "url": "https://github.com/Vepricov/claude-brainlab#the-vault-is-the-tree"
+        }
+      ]
+    },
+    "mempalace": {
+      "number": "P2",
+      "title": "MemPalace",
+      "kicker": "The agent's personal long-term memory",
+      "promise": "Gives the agent back past decisions, the owner's words and working history, so a new session starts where the last one ended.",
+      "owns": [
+        "A session diary in the compressed AAAK format",
+        "Drawers of verbatim content: the owner's words, decisions with reasons, measured numbers",
+        "A knowledge graph: links between people, works and decisions"
+      ],
+      "doesNotOwn": [
+        "The lab's shared knowledge: it lives in git, in the works' claims/",
+        "Server and run state without a live check",
+        "A person's personal notes: they live in the work's notes/"
+      ],
+      "path": [
+        "When the past comes up, the agent searches MemPalace first, then the ~/brainlab tree",
+        "Gets episodes together with where they came from",
+        "Re-checks volatile facts against the live system",
+        "At the end of a turn Jev suggests what to save from it and where: MemPalace or the base"
+      ],
+      "routes": [
+        {
+          "kind": "Workflow",
+          "title": "Memory and shared knowledge",
+          "text": "Where the agent's personal memory ends and the shared base in git begins.",
+          "process": "memory",
+          "tool": "mempalace"
+        }
+      ],
+      "links": [
+        {
+          "label": "MemPalace on GitHub",
+          "url": "https://github.com/MemPalace/mempalace"
+        }
+      ]
+    },
+    "yonote": {
+      "number": "P3",
+      "title": "GitLab: issues and boards",
+      "kicker": "Team tasks next to the knowledge",
+      "promise": "A work's task is an issue in that work's own GitLab repository, and the board is a view of those issues by label. The task and the claim it moves forward live in one place.",
+      "owns": [
+        "Work tasks: assignee, due date, label and the claim the task affects",
+        "The work's board: columns by the labels “in progress” and “in review”",
+        "Proposals with the checks' verdict",
+        "Operations: grants, management, education, in a separate private ops group"
+      ],
+      "facts": [
+        "02-10-2026: 124 tasks from 25 boards moved over from Yonote",
+        "30 call records landed in calls/<date>.md of their works",
+        "An issue's body names the claim it affects (rule task-names-its-claim)",
+        "GitLab sends no emails: assignments are announced by To-Dos on the site and by a Telegram bot",
+        "Hermes has his own hermes kanban board: 381 closed tasks on rl-muon"
+      ],
+      "doesNotOwn": [
+        "Personal tasks and the reading queue: they live on Operon boards in Obsidian",
+        "Raw call recordings: calls/raw/ is excluded from git",
+        "The merge decision: the work lead makes it, not the agent"
+      ],
+      "path": [
+        "An issue is created in the work's repository and names its claim",
+        "lab tasks shows the open ones, lab take sets the assignee and the “in progress” label",
+        "Work goes out as a branch and a proposal, and a Closes #N line closes the issue on merge",
+        "lab checks shows the checks' verdict, the lead merges"
+      ],
+      "routes": [
+        {
+          "kind": "Workflow",
+          "title": "A new work",
+          "text": "A repository in its topic, a README with the lead and team, a protected main and a board.",
+          "process": "projects",
+          "tool": "create-project"
+        },
+        {
+          "kind": "Calls",
+          "title": "From a call to tasks",
+          "text": "The call's outcome goes into the work's calls/<date>.md, the tasks into its issues.",
+          "process": "calls",
+          "tool": "call-notes"
+        }
+      ],
+      "links": [
+        {
+          "label": "For lab members",
+          "url": "https://github.com/Vepricov/claude-brainlab#for-brain-lab-members"
+        }
+      ]
     }
   },
-  journeys: [
+  "liveMcp": {
+    "title": "The knowledge base in GitLab, live",
+    "subtitle": "What the lab has already tested lives in git: one work, one repository, and a claim is a claims/<CODE>/ folder. Below: how to find a record, how it is read and how it is written to.",
+    "verifiedAt": "19-10-2026",
+    "deployment": {
+      "host": "The lab's GitLab CE on the brain_lab server",
+      "service": "git: repositories of works, topic literature, handbook, journal, servers",
+      "endpoint": "everyone has it locally: the ~/brainlab tree at the same paths as in GitLab",
+      "revision": "a version is a commit in main, the history of any page is git log",
+      "state": "the MCP service and the PostgreSQL database were removed on 07-10-2026, there is no other knowledge store"
+    },
+    "counts": [
+      {
+        "value": "29",
+        "label": "works with claims"
+      },
+      {
+        "value": "135",
+        "label": "claims"
+      },
+      {
+        "value": "1 010",
+        "label": "run pages"
+      },
+      {
+        "value": "376",
+        "label": "series"
+      },
+      {
+        "value": "225",
+        "label": "derivations"
+      },
+      {
+        "value": "735",
+        "label": "paper reviews across 25 topics"
+      },
+      {
+        "value": "55",
+        "label": "named rules in the canon.md canon"
+      }
+    ],
+    "records": [
+      {
+        "code": "H-DYC-007",
+        "title": "DyKAF instead of SOAP lowers validation loss in language model pretraining",
+        "text": "dykaf · under test. The claim folder holds 114 runs, 21 series and 6 derivations: everything used to test it sits right next to it."
+      },
+      {
+        "code": "H-DYC-005",
+        "title": "DyKAF's overhead on SOAP's step time shrinks as data passes take up a larger share of the step",
+        "text": "dykaf · inconclusive. 12 runs, 6 series. “Not established” is a legitimate verdict, and it is recorded, not hidden."
+      },
+      {
+        "code": "H-KAW-002",
+        "title": "For BanLast the paper's 3x speedup does not reproduce: a direct count gives 1.7x",
+        "text": "kawasaki · refuted. A negative result is a record too: nobody will run this test a second time."
+      },
+      {
+        "code": "H-SXL-009",
+        "title": "SimplexLoRA gives the best GLUE average among hyperparameter-free methods on DeBERTaV3-base",
+        "text": "simplex-lora · supported. 4 runs, 2 series."
+      },
+      {
+        "code": "H-SFS-006",
+        "title": "SoftMuon lowers perplexity relative to Muon at three pretraining scales and has a better mean rank on graph tasks",
+        "text": "softsign · supported. 7 runs, 3 series, 1 derivation."
+      }
+    ],
+    "writeFlow": [
+      "A claim/<CODE> branch in the work's clone from the tree",
+      "The run page is written by the lab_run.py recorder, the agent adds only “what is seen”",
+      "git push opens a proposal and assigns the work lead by itself",
+      "The checks match every number against the runs, a judge reads the text",
+      "The lead merges: the merge is the record"
+    ],
+    "readFlow": [
+      "lab sync assembles and updates the ~/brainlab tree",
+      "git pull in the clone: what is new in the work",
+      "rg over the tree, or Obsidian and GitLab search, over the same files",
+      "git log and git blame: who wrote a line, when and why"
+    ],
+    "operations": [
+      {
+        "title": "Tree",
+        "mode": "read",
+        "names": [
+          "lab sync",
+          "lab here <work>",
+          "git pull"
+        ]
+      },
+      {
+        "title": "Search",
+        "mode": "read",
+        "names": [
+          "rg -i 'muon' ~/brainlab",
+          "git grep -n 'H-WSD-009'",
+          "git log -S 'E-WSD-031'",
+          "git blame"
+        ]
+      },
+      {
+        "title": "Tasks",
+        "mode": "read and write",
+        "names": [
+          "lab tasks",
+          "lab take <number>",
+          "Closes #N"
+        ]
+      },
+      {
+        "title": "Writing to a work",
+        "mode": "via a proposal",
+        "names": [
+          "git switch -c claim/<CODE>",
+          "lab_run.py",
+          "git push",
+          "lab checks"
+        ]
+      },
+      {
+        "title": "Literature and service repos",
+        "mode": "straight to main",
+        "names": [
+          "paper-ingest",
+          "git pull --rebase",
+          "git push"
+        ]
+      }
+    ],
+    "liveExample": {
+      "project": "H-DYC-007 · dykaf",
+      "status": "under test",
+      "empirical": "Claim → 114 runs → 21 series: every run is recorded by code, every number has an address where you can see it",
+      "theory": "6 derivations in theory/ next to the runs, each with a mandatory “Proof” section",
+      "note": "dykaf is the only work open to everyone logged into GitLab, so the example comes from it. Texts of private works are not copied to the showcase."
+    },
+    "boundaries": [
+      "Obsidian is a window into the ~/brainlab tree: personal content in notes/, daily/, runs/ stays on the machine",
+      "GitLab holds shared knowledge and tasks: works, topic literature, issues and boards",
+      "MemPalace is the agent's personal memory across sessions",
+      "Hermes handles execution and long conversational memory on the do-vpn server"
+    ],
+    "links": [
+      {
+        "label": "How the base is built",
+        "url": "https://github.com/Vepricov/claude-brainlab#lab-knowledge-the-shared-research-base"
+      },
+      {
+        "label": "BRAIn Lab toolkit",
+        "url": "https://github.com/Vepricov/claude-brainlab"
+      }
+    ],
+    "runtime": [
+      "GitLab CE 17.11 in rootless podman on brain_lab",
+      "checks are triggered by a GitLab event, not a schedule: a proposal opened or updated gets a verdict",
+      "the “base” gate (numbers, codes, links, deletions) and the “lab/prose” gate (text judge) block the merge",
+      "for the owner, lab sync runs by itself every three hours, and on do-vpn a cron job updates the same tree"
+    ],
+    "sourceStatus": "Numbers counted on 19-10-2026 over the owner's ~/brainlab tree: claims/H-* folders in works, E-*, S-*, D-* pages under them, topic literature pages excluding README, canon rules by heading. The MCP service this page used to show was removed on 07-10-2026 together with the PostgreSQL database, and its counters are not carried over."
+  },
+  "journeys": [
     {
       "id": "paper",
       "label": "Write a paper",
       "title": "From an idea to a paper",
-      "intro": "Start with a research question. Develop it into a testable result, a manuscript, and a response to reviewers.",
+      "intro": "The path by which a question becomes a paper. Every step leaves a trace in the base, and a reviewer can walk it backwards: from a conclusion to the run its number came from.",
       "color": "#c8ed93",
       "note": "A review may send you back to the experiments or the manuscript. You can revisit any stage.",
       "edges": [
@@ -84,21 +341,17 @@ window.SYSTEM_EXAMPLES = {
             12,
             18
           ],
-          "action": "Define what you want to find out and set up the research workspace.",
-          "inputs": "An idea, an existing repository, and notes. For ongoing work, first recover the current decisions.",
-          "check": "The project hub states the question, the scope, and the next test.",
+          "action": "State what you want to find out and create a work: a repository in your topic and a README with the lead and team.",
+          "inputs": "An idea, an existing repository and notes. For work already under way, first pull up past decisions from MemPalace and the work's README.",
+          "check": "The work's README records the question, the lead and the next test, and the clone sits in its place in the tree.",
           "tools": [
             {
               "process": "projects",
               "tool": "create-project"
             },
             {
-              "process": "projects",
-              "tool": "restore-session"
-            },
-            {
-              "process": "projects",
-              "tool": "obsidian-project-memory"
+              "process": "memory",
+              "tool": "mempalace"
             }
           ]
         },
@@ -111,8 +364,8 @@ window.SYSTEM_EXAMPLES = {
             12
           ],
           "action": "Find the closest methods and examine what their results establish.",
-          "inputs": "The research question, key papers, and search scope. Hermes helps discover papers; selected works enter the library.",
-          "check": "Each comparison method has a primary source. The difference from your idea is stated explicitly.",
+          "inputs": "The research question and key papers. Every morning Jev selects fresh papers against the descriptions of our works, and paper-ingest reviews the chosen ones.",
+          "check": "The compared methods have reviews in the topic's literature with a citation key. The difference from your idea is stated explicitly.",
           "tools": [
             {
               "process": "literature",
@@ -138,15 +391,19 @@ window.SYSTEM_EXAMPLES = {
           ],
           "action": "Turn the idea into a claim that an experiment could falsify.",
           "inputs": "Findings from the literature, a proposed mechanism, and the available budget.",
-          "check": "The baseline, metric, matched comparison conditions, and falsification criterion are recorded.",
+          "check": "claims/<CODE>/ records the baseline method, the metric, identical comparison conditions and the refutation criterion.",
           "tools": [
             {
               "process": "ideation",
               "tool": "research-ideation"
             },
             {
-              "process": "projects",
+              "process": "ideation",
               "tool": "grill-with-docs"
+            },
+            {
+              "process": "memory",
+              "tool": "lab-knowledge-skill"
             }
           ]
         },
@@ -158,17 +415,17 @@ window.SYSTEM_EXAMPLES = {
             86,
             31
           ],
-          "action": "Ask Hermes to implement and run the agreed test.",
-          "inputs": "The protocol, code, authorized resources, and stopping conditions. Long-running work can be handed to a project watcher.",
-          "check": "Each run retains its configuration and actual status. An unfinished run is not presented as a completed result.",
+          "action": "Wrap training in the lab_run.py recorder and hand launching and monitoring to Hermes.",
+          "inputs": "Protocol, code, allowed servers and a stop condition. Hermes wakes up by himself when a run finishes, and a long series can be handed to Jarvis.",
+          "check": "Every run page was written by code: hyperparameters, metrics, commit, hardware. An unfinished run is not passed off as a result.",
           "tools": [
             {
               "process": "experiments",
               "tool": "hermes"
             },
             {
-              "process": "experiments",
-              "tool": "experiment-log"
+              "process": "results",
+              "tool": "lab-run"
             },
             {
               "process": "experiments",
@@ -184,9 +441,9 @@ window.SYSTEM_EXAMPLES = {
             82,
             71
           ],
-          "action": "Compare runs and prepare figures for the paper.",
-          "inputs": "Logs, configurations, and information about repeated runs. Check comparability before plotting.",
-          "check": "Every point links to its source data. The number of repeats and the limits of the conclusion are stated.",
+          "action": "Gather the runs into a series with a verdict and build the figures for the paper.",
+          "inputs": "Run pages, configs and seeds. Check comparability first, then plot.",
+          "check": "Every number in the text is in the runs, otherwise the checks give a red verdict. The number of repeats and the limits of the conclusion are stated.",
           "tools": [
             {
               "process": "results",
@@ -198,7 +455,7 @@ window.SYSTEM_EXAMPLES = {
             },
             {
               "process": "results",
-              "tool": "results-report"
+              "tool": "proposal-gates"
             }
           ]
         },
@@ -220,7 +477,7 @@ window.SYSTEM_EXAMPLES = {
             },
             {
               "process": "writing",
-              "tool": "reverse-outline-flow-check"
+              "tool": "writing-anti-ai"
             }
           ]
         },
@@ -234,7 +491,7 @@ window.SYSTEM_EXAMPLES = {
           ],
           "action": "Critically review the manuscript and verify its citations separately.",
           "inputs": "The full manuscript, appendix, bibliography, and venue requirements.",
-          "check": "Strong claims have supporting data, references are verified, and substantive issues are addressed.",
+          "check": "Strong claims are backed by data. The hook refuses to write a \\cite with a key missing from references.bib.",
           "tools": [
             {
               "process": "writing",
@@ -243,6 +500,10 @@ window.SYSTEM_EXAMPLES = {
             {
               "process": "writing",
               "tool": "citation-verification"
+            },
+            {
+              "process": "writing",
+              "tool": "project-bibliography-gate"
             }
           ]
         },
@@ -264,7 +525,7 @@ window.SYSTEM_EXAMPLES = {
             },
             {
               "process": "writing",
-              "tool": "reverse-outline-flow-check"
+              "tool": "ml-paper-writing"
             }
           ]
         }
@@ -304,9 +565,9 @@ window.SYSTEM_EXAMPLES = {
             13,
             24
           ],
-          "action": "Read the source and save it alongside your own analysis.",
+          "action": "Read the source and file the review in the topic's literature.",
           "inputs": "A DOI, arXiv link, or PDF, plus the question that motivates your reading.",
-          "check": "The main result, assumptions, and limitations are separated from your interpretation.",
+          "check": "The main result, assumptions and limitations are kept apart from your interpretation. The review sits in the topic's literature and is visible to the whole lab.",
           "tools": [
             {
               "process": "literature",
@@ -318,7 +579,7 @@ window.SYSTEM_EXAMPLES = {
             },
             {
               "process": "literature",
-              "tool": "obsidian-literature-workflow"
+              "tool": "literature-library"
             }
           ]
         },
@@ -343,7 +604,7 @@ window.SYSTEM_EXAMPLES = {
               "tool": "paper-search"
             },
             {
-              "process": "projects",
+              "process": "ideation",
               "tool": "grill-with-docs"
             }
           ]
@@ -358,7 +619,7 @@ window.SYSTEM_EXAMPLES = {
           ],
           "action": "Discuss the idea with colleagues and preserve the decisions from the conversation.",
           "inputs": "A meeting recording for Brain Call, or an existing transcript for call-notes. Skip this stage if there was no discussion.",
-          "check": "The owner has confirmed the decisions and tasks. Only the agreed material may enter the shared database.",
+          "check": "The owner confirmed the decisions. The outcome went into the work's calls/<date>.md, the tasks into its issues, and the raw recording stayed in calls/raw/.",
           "tools": [
             {
               "process": "calls",
@@ -409,8 +670,8 @@ window.SYSTEM_EXAMPLES = {
               "tool": "hermes"
             },
             {
-              "process": "experiments",
-              "tool": "experiment-log"
+              "process": "results",
+              "tool": "lab-run"
             },
             {
               "process": "results",
@@ -460,7 +721,7 @@ window.SYSTEM_EXAMPLES = {
             },
             {
               "process": "writing",
-              "tool": "reverse-outline-flow-check"
+              "tool": "ml-paper-writing"
             }
           ]
         },

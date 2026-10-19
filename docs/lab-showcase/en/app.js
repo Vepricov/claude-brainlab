@@ -3,7 +3,8 @@
   const model=window.RESEARCH_LOOP||{}, registry=window.LAB_ATLAS_DATA||{}, systemData=window.SYSTEM_EXAMPLES||{};
   const all=[model.shared,...(model.processes||[]),...(model.support||[]),...(model.contours||[])].filter(Boolean), byId=Object.fromEntries(all.map(x=>[x.id,x]));
   const $=id=>document.getElementById(id), arr=v=>(Array.isArray(v)?v:v?[v]:[]).filter(Boolean);
-  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+  // Обратные кавычки из markdown в данных сайт не рисует: показываем только содержимое.
+  const esc=v=>String(v??"").replace(/`([^`\n]+)`/g,"$1").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
   const safe=v=>{try{const u=new URL(v);return u.protocol==="https:"?u.href:null}catch{return null}};
   // 06-09-2026 набор доложен на main: русские инструкции по базе, хук проверки цитат и
   // проверка вылезаний опубликованы, поэтому из списка непубликованного они ушли.
@@ -16,9 +17,14 @@
 
   function links(items=[]){const unique=[...new Map(items.map(liveSource).filter(x=>x.url).map(x=>[x.url,x])).values()],chosen=unique.find(x=>x.canonical)||unique[0];if(!chosen)return"";const label=chosen.label||(chosen.url.includes("github.com/")?"GitHub":"Documentation");return `<a class="source-link" href="${esc(chosen.url)}" target="_blank" rel="noopener">${esc(label)} <span>↗</span></a>`}
   function head(label,title,text=""){return `<p class="section-label">${esc(label)}</p><div class="section-heading"><h2>${esc(title)}</h2>${text?`<p>${esc(text)}</p>`:""}</div>`}
-  const previewIds={literature:["paperscout","paper-ingest","alphaxiv-mcp"],ideation:["research-ideation","grill-me","lab-knowledge-hypothesis"],calls:["brain-call","call-notes","yonote-call"],experiments:["hermes","experiment-log","run-monitoring"],results:["results-analysis","results-report","evidence-mcp"],writing:["astar-paper-review","review-response","ml-paper-writing"],presentation:["presentation-skill","paper-to-social"],"paper-qa":["literature-reviewer","citation-verification"]};
+  const previewIds={literature:["jev","paperscout","paper-ingest"],ideation:["research-ideation","grill-me","lab-knowledge-hypothesis"],calls:["brain-call","call-notes","gitlab-issues-call"],experiments:["lab-run","hermes","run-guard"],results:["lab-run","results-analysis","proposal-gates"],writing:["astar-paper-review","review-response","ml-paper-writing"],presentation:["presentation-skill","paper-to-social"],"paper-qa":["literature-reviewer","citation-verification"]};
   const supportPreviewIds={access:["server-access-bot","server-fleet","server-status"]};
-  function previews(p){const ids=p.mapFeatured||previewIds[p.id]||[],picked=ids.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean),shown=[...picked,...(p.tools||[]).filter(t=>!picked.includes(t))].slice(0,3);return `${shown.slice(0,2).map(t=>`<button data-open="${esc(p.id)}" data-tool="${esc(t.id)}" type="button"><small>${esc(t.type||"tool")}</small>${esc(t.title)}</button>`).join("")}${(p.tools||[]).length>2?`<button class="more" data-open="${esc(p.id)}" type="button">All ${p.tools.length} →</button>`:""}`}
+  // Подписи под карточками цикла читает гость: человеческое название вместо имени навыка.
+  const SAT_LABEL={"create-project":"Create a work","lab-knowledge":"Project migration",paperscout:"Paper pipeline",jev:"Jev",
+    "research-ideation":"Idea generation","grill-me":"Plan grilling","brain-call":"Brain Call","call-notes":"Call debrief",
+    "lab-run":"Run recorder",hermes:"Hermes","results-analysis":"Results analysis","astar-paper-review":"Pre-submission review",
+    "review-response":"Rebuttal","paper-to-social":"Paper posts","presentation-skill":"Slides"};
+  function previews(p){const ids=p.mapFeatured||previewIds[p.id]||[],picked=ids.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean),shown=[...picked,...(p.tools||[]).filter(t=>!picked.includes(t))].slice(0,3);return `${shown.slice(0,2).map(t=>`<button data-open="${esc(p.id)}" data-tool="${esc(t.id)}" type="button"><small>${esc(t.type||"tool")}</small><span class="sat-label">${esc(SAT_LABEL[t.id]||String(t.title).replace(/-/g,"\u2011"))}</span></button>`).join("")}${(p.tools||[]).length>2?`<button class="more" data-open="${esc(p.id)}" type="button">All ${p.tools.length} →</button>`:""}`}
 
   // Одна установка на весь набор. Владелец: «нужно, чтобы человек мог условно одной
   // кнопкой себе его скачать полностью». Стоит на первом экране, под опорными разделами.
@@ -29,7 +35,7 @@
     const box=$("toolkit"),k=model.meta?.toolkit;if(!box)return;
     if(!k){box.hidden=true;return}
     const pieces=(k.pieces||[]).map(x=>{const u=safe(x.url);
-      return `<li><b>${esc(x.name)}</b><span>${esc(x.what)}</span><i>${esc(x.access)}</i>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>`:`<em>no link yet</em>`}</li>`}).join("");
+      return `<li><b>${esc(x.name)}</b><span>${esc(x.what)}</span><i>${esc(x.access)}</i>${u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(/github\.com/.test(u)?"GitHub":/miro\.com/.test(u)?"Miro":/zotero/.test(u)?"Zotero":"Open")} <span aria-hidden="true">↗</span></a>`:""}</li>`}).join("");
     box.innerHTML=`<div class="toolkit-head"><p class="overline">Use it yourself</p><h2 id="toolkit-title">${esc(k.title)}</h2><p>${esc(k.lead)}</p></div>
       <div class="toolkit-body"><pre><code>${(k.install||[]).map(esc).join("\n")}</code></pre>
       ${k.after?`<p class="toolkit-after">${esc(k.after)}</p>`:""}
@@ -43,22 +49,34 @@
     // Опорного слоя больше нет: код уехал в эксперименты, доступ к серверам — в нулевую точку.
     document.querySelectorAll("#overview [data-open]").forEach(b=>b.onclick=()=>b.dataset.tool?openQuickTool(b.dataset.open,b.dataset.tool,b):openProcess(b.dataset.open));
     document.querySelectorAll("#overview [data-surface]").forEach(b=>b.onclick=()=>showSurface(b.dataset.surface));
-    $("knowledge-core").onclick=()=>openProcess("memory");
+    document.querySelectorAll("#overview [data-sat-process]").forEach(b=>b.onclick=()=>openProcess(b.dataset.satProcess,b.dataset.satTool));
+    $("knowledge-core").onclick=()=>showIdeas();
     renderTally();
   }
   function renderTally(){
     const tally=$("loop-tally");
     if(!tally)return;
-    const base=window.LAB_BASE,lib=window.LAB_LIBRARY;
+    const base=window.LAB_BASE,lib=window.LAB_LIBRARY,c=window.LAB_COUNTS;
+    if(!(base&&lib)&&c){
+      const num=x=>Number(x||0).toLocaleString(window.LAB_I18N?.language==="en"?"en-US":"ru-RU");
+      tally.hidden=false;
+      tally.innerHTML=[[c.works,"works"],[c.claims,"claims"],[c.series,"series"],[c.runs,"runs"],[c.derivations,"derivations"],[c.papers,"papers analyzed"]]
+        .map(([v,l])=>`<span><b>${esc(num(v))}</b>${esc(l)}</span>`).join("")
+        +`<em>This is the lab's live knowledge base in GitLab: every record is a file that was checked and accepted by a human. <button type="button" data-view-jump="ideas">Open the base →</button></em>`;
+      tally.querySelector("[data-view-jump]").onclick=()=>showIdeas();
+      return;
+    }
     tally.hidden=!(base&&lib);
     if(base&&lib){
       const n=k=>(base.records||[]).filter(r=>r.k===k).length;
-      const both=(base.records||[]).filter(r=>r.k==="hypothesis"&&r.sup==="proof_and_numbers").length;
-      const rows=[[n("hypothesis"),"claims",""],[n("experiment"),"runs",""],
-        [n("evidence"),"measurements",""],[(lib.papers||[]).length,"papers analyzed",""],
-        [both,"resolved through derivations and numbers","is-lit"]].filter(([v])=>v);
+      // Утверждение закрыто и выкладкой, и числами, если под ним есть и theory/, и прогоны.
+      const both=(base.records||[]).filter(r=>r.k==="hypothesis"&&/^[1-9]\d* · \d+ · [1-9]/.test(((r.f||[]).find(f=>f[0]==="derivations · series · runs")||[])[1]||"")).length;
+      const refuted=(base.records||[]).filter(r=>r.k==="hypothesis"&&r.st==="refuted").length;
+      const rows=[[n("hypothesis"),"claims",""],[n("series"),"series",""],[n("experiment"),"runs",""],
+        [n("derivation"),"derivations",""],[(lib.papers||[]).length,"papers analyzed",""],
+        [both,"resolved through derivations and numbers","is-lit"],[refuted,"honestly refuted",""]].filter(([v])=>v);
       tally.innerHTML=rows.map(([v,label,cls])=>`<span class="${cls}"><b>${esc(String(v))}</b>${esc(label)}</span>`).join("")
-        +`<em>This is what the shared base holds today. Every record came in as a merged merge request and is linked to what it grew from.</em>`;
+        +`<em>That is what the lab base holds today. Every record is a file in git that came in through a merged proposal, and it is linked to what it grew from.</em>`;
     }
   }
 
@@ -78,7 +96,7 @@
   function dossierSection(title,values,cls="",ordered=false){const xs=uniqueText(values);if(!xs.length)return "";const tag=ordered?"ol":"ul";return `<section class="dossier-section ${cls}"><h3>${esc(title)}</h3><${tag}>${xs.map(x=>`<li>${esc(x)}</li>`).join("")}</${tag}></section>`}
   function dossierHead(t,p,titleId=""){return `<header class="dossier-head"><p class="dossier-kicker">${esc(t.type||"Tool")} · ${esc(p.title||"Atlas")}</p><h2${titleId?` id="${esc(titleId)}"`:""} tabindex="-1">${esc(t.title)}</h2><p class="dossier-lead">${esc(toolStory(t).value)}</p>${t.status==='in-development'?"<p class=\"sky-pending\">In development</p>":''}</header>`}
   function dossierBody(t){
-    const story=toolStory(t),start=t.start||t.adoption?.invoke||'',invoke=t.skillId?`$${t.skillId}`:'',src=(t.links||[]).map(liveSource).filter(x=>x.url),install=arr(t.adoption?.install);
+    const story=toolStory(t),start=t.start||t.adoption?.invoke||'',invoke=t.skillId?`/${t.skillId}`:'',src=(t.links||[]).map(liveSource).filter(x=>x.url),install=arr(t.adoption?.install);
     return `<div class="dossier-body"><div class="dossier-entry">${dossierSection("When to use it",story.useCases)}<section class="dossier-section dossier-start"><h3>Getting started</h3><p>${esc(start)}</p>${invoke?`<code>${esc(invoke)}</code>`:''}</section></div><div class="dossier-flow">${dossierSection("Workflow",story.capabilities,"dossier-steps",true)}<aside class="dossier-result">${dossierSection("Result",story.outcomes)}${dossierSection("Where it is saved",t.writes)}</aside></div>${dossierSection("Data and storage",t.storage,"dossier-storage")}${window.LAB_OBSIDIAN_SETUP?.render(t.id)||''}${t.adoption?.installNote||install.length||src.length?`<footer class="dossier-footer">${install.length?`<details class="dossier-install"><summary>Connection commands</summary>${t.adoption?.installNote?`<p>${esc(t.adoption.installNote)}</p>`:''}<pre class="setup-install"><code>${install.map(esc).join("\n")}</code></pre></details>`:t.adoption?.installNote?`<p>${esc(t.adoption.installNote)}</p>`:''}${src.length?`<div class="dossier-links">${src.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label||"Source code")} ↗</a>`).join('')}</div>`:''}</footer>`:''}</div>`;
   }
   function adoptionLabel(kind="internal"){return ({"toolkit-skill":"Skill from the BRAIn Lab collection","toolkit-command":"Command from the BRAIn Lab collection","toolkit-agent":"Agent from the BRAIn Lab collection","toolkit-qa":"Check from the BRAIn Lab collection",mempalace:"Public MemPalace package",zotero:"Zotero MCP","connector-unpackaged":"Separate AlphaXiv connection","brain-call":"Separate private Brain Call repository",hermes:"Hermes Agent environment","hermes-profile-missing":"Hermes profile is not yet published","lab-hermes-component":"Project agent on the server",privileged:"Application and approval required","source-only":"Install using the source documentation",private:"Laboratory access required",internal:"Internal component"})[kind]||"Separate component"}
@@ -126,17 +144,17 @@
     const boundary=km.boundary||{},cards=[
       {title:"What the system is",text:boundary.mcp,items:(km.corpora||[]).map(x=>`${x.title}: ${arr(x.contains).join(", ")}`)},
       {title:"What the lab-knowledge skill does",text:boundary.skill,items:[km.read?.default,...arr(km.read?.behavior)]},
-      {title:"How to read",text:"Scope and permissions first, then search, then an answer with provenance.",items:arr(km.read?.tools)},
-      {title:"How to write",text:"A personal draft does not enter shared memory automatically: preview it for a person, get approval, write the appropriate record type, then read it back.",items:[...arr(km.write?.tools),...arr(km.write?.behavior)]},
+      {title:"How to read",text:"The lab tree on your machine or GitLab in the browser: find a work, a claim and the path to the run a number came from.",items:arr(km.read?.tools)},
+      {title:"How to write",text:"A personal draft never ships to the base on its own: the agent opens a proposal, the checks verify it, and only the work lead decides whether to merge it.",items:[...arr(km.write?.tools),...arr(km.write?.behavior)]},
       {title:"How to connect an agent",text:boundary.personal,items:arr(km.agentConnection)},
-      {title:"Permissions and provenance",text:"Policy is applied before search and writes; service responses must not reveal hidden records indirectly.",items:[...arr(km.acl),...arr(km.provenance)]}
+      {title:"Permissions and provenance",text:"A GitLab role decides what a person sees and where they can propose an edit; every line in the base has a commit, an author and the proposal it came in through.",items:[...arr(km.acl),...arr(km.provenance)]}
     ].filter(x=>x.text||x.items.some(Boolean));
     return `<div class="knowledge-runtime">${cards.map(x=>`<details><summary>${esc(x.title)}</summary>${x.text?`<p>${esc(x.text)}</p>`:""}<ul>${x.items.filter(Boolean).map(v=>`<li>${esc(v)}</li>`).join("")}</ul></details>`).join("")}</div><div class="knowledge-source-links">${links(km.sources||[],"Lab Knowledge")}</div>`;
   }
 
   function compactSectionMap(p){
     const map=normalizedMap(p),tools=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),qas=qualityProcesses().filter(q=>q.id!==p.id&&arr(q.touches).includes(p.id));
-    const journey=`<nav class="journey-strip" style="--steps:${Math.min(map.stages.length,7)}" aria-label="Workflow">${map.stages.map((s,i)=>`<button class="journey-step${s.human?" is-gate":""}" data-node="stage:${esc(s.id)}" aria-pressed="false" type="button"><small>${String(i+1).padStart(2,"0")}${s.human?" · human decision":""}</small><strong>${esc(s.title)}</strong><span>${esc(s.result)}</span></button>`).join("")}</nav>`;
+    const journey=`<nav class="journey-strip" style="--steps:${map.stages.length>7?Math.ceil(map.stages.length/2):map.stages.length}" aria-label="Workflow">${map.stages.map((s,i)=>`<button class="journey-step${s.human?" is-gate":""}" data-node="stage:${esc(s.id)}" aria-pressed="false" type="button"><small>${String(i+1).padStart(2,"0")}${s.human?" · human decision":""}</small><strong>${esc(s.title)}</strong><span>${esc(s.result)}</span></button>`).join("")}</nav>`;
     const clusters=clustersFor(p).map(c=>`<section class="tool-cluster" data-cluster="${esc(c.id)}"><h3>${esc(c.title)}</h3><div>${arr(c.toolIds).map(id=>tools[id]).filter(Boolean).map(t=>{const story=toolStory(t),steps=arr(t.visual?.nodes).slice(0,5);return `<button class="tool-node${steps.length?" tool-node-major":""}" data-node="tool:${esc(t.id)}" aria-pressed="false" type="button"><small>${esc(t.type||"Tool")}</small><strong>${esc(t.title)}</strong><span>${esc(compactRole(story.value))}</span>${steps.length?`<ol>${steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}<i aria-hidden="true">↗</i></button>`}).join("")}</div></section>`).join("");
     const destinations=`<aside class="destination-cluster"><h3>Outputs and storage</h3>${map.destinations.map(d=>`<button class="destination-node" data-node="destination:${esc(d.id)}" aria-pressed="false" type="button"><strong>${esc(d.name)}</strong><span>${esc(d.what)}</span></button>`).join("")}<div class="outcome-nodes"><p class="overline">Output of this stage</p>${map.outcomes.map(o=>`<button data-node="outcome:${esc(o.id)}" aria-pressed="false" type="button">${esc(o.text)}</button>`).join("")}</div></aside>`;
     return `<section class="section-overview process-section" id="map" data-layout="${esc(layouts[p.id]||"system")}" data-process="${esc(p.id)}"><div class="map-heading"><div><p class="section-label">Interactive section map</p><h2>${esc(p.verb)}</h2></div><div class="map-legend"><span><i class="legend-tool"></i>tool</span><span><i class="legend-stage"></i>stage</span><span><i class="legend-gate"></i>decision</span><span><i class="legend-destination"></i>storage</span></div></div>${journey}<div class="system-map"><div class="map-context-compact"><span>When it is used</span>${arr(p.when).map(x=>`<p>${esc(x)}</p>`).join("")}</div><button class="process-hub" data-map-reset type="button"><small>${esc(p.number)}</small><strong>${esc(p.title)}</strong><span>${esc(p.result)}</span></button><div class="tool-clusters">${clusters}</div>${destinations}<i class="map-orbit one" aria-hidden="true"></i><i class="map-orbit two" aria-hidden="true"></i></div><aside class="map-focus graph-focus" id="map-focus-${esc(p.id)}" role="dialog" aria-modal="false" aria-label="Selected node details" tabindex="-1" aria-live="polite">${focusDefault(p)}</aside></section>`;
@@ -158,7 +176,7 @@
     return `<section class="km-block km-rail-block"><header><p class="section-label">System structure</p><h3>Four inputs, one database, three consumers</h3></header>
       <div class="km-rail">
         <aside class="km-side"><span>Where it comes from</span>${src.map(x=>`<button class="km-node" data-knowledge="producer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
-        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>Single point of reading and writing</small><strong>Lab GitLab</strong><em>the lab's shared verifiable history</em></button></div>
+        <div class="km-core"><button class="km-node is-core" data-knowledge="boundary:mcp" type="button"><small>One place to read and write</small><strong>Knowledge base</strong><em>the lab's shared, checkable history in git</em></button></div>
         <aside class="km-side"><span>Who uses it</span>${dst.map(x=>`<button class="km-node" data-knowledge="consumer:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><em>${esc(x.short||"")}</em></button>`).join("")}</aside>
       </div></section>`;
   }
@@ -191,12 +209,12 @@
   function knowledgeArchitecture(p){
     const km=p.knowledgeModel||{},objects=km.objectTypes||[],flow=km.publishFlow||[],producers=km.producers||[],consumers=km.consumers||[],friendly={hypothesis:"Claim",experiment:"Run",evidence:"Measurement",derivation:"Derivation",decision:"Rule","paper-claim":"Paper claim","paper-chunk":"Paper section",paper:"Paper",journal:"Observation",term:"Term",resource:"Resource",project:"Project",theme:"Topic","source-ref":"Source"},objectById=Object.fromEntries(objects.map(x=>[x.id,x]));
     const objectButton=(id,kind="Record")=>{const x=objectById[id];return x?`<button class="knowledge-record" data-knowledge="object:${esc(x.id)}" type="button"><small>${esc(kind)}</small><strong>${esc(friendly[x.id]||x.label||x.title_ru||x.title)}</strong><span>${esc(x.plain||x.summary||"")}</span></button>`:""};
-    const personal=[{id:"obsidian",title:"Obsidian",action:"Personal draft. Enters shared memory only after human preview and approval."},{id:"mempalace",title:"MemPalace",action:"Agent memory and session history. Helps resume work, but is not a research result."},{id:"tasks",title:"GitLab issues",action:"Shared issues and work boards. They link to knowledge but do not replace it."}];
-    const readSteps=[{id:"question",title:"Ask a question",summary:"What has already been tested?"},{id:"scope",title:"Set the scope",summary:"Project, record type, and time"},{id:"policy",title:"Check access",summary:"Answer across the shared database"},{id:"search",title:"Search and follow relationships",summary:"Text + relationship graph"},{id:"answer",title:"Answer with sources",summary:"record codes, provenance, and limitations"}];
+    const personal=[{id:"obsidian",title:"Obsidian",action:"The whole ~/brainlab tree. Personal notes/, daily/, runs/ stay on the machine, and only shared content goes to GitLab."},{id:"mempalace",title:"MemPalace",action:"Agent memory and session history. Helps resume work, but is not a research result."},{id:"yonote",title:"GitLab issues",action:"Tasks and boards of the works. They reference claims but do not replace them: a closed task does not mean supported."}];
+    const readSteps=[{id:"question",title:"Ask a question",summary:"What has already been tested?"},{id:"scope",title:"Find a place in the tree",summary:"Direction, theme, work"},{id:"policy",title:"Access",summary:"You see what your GitLab role covers"},{id:"search",title:"Find and follow links",summary:"Claim → series → run → log"},{id:"answer",title:"Answer with sources",summary:"Record code, commit and the proposal it came in through"}];
     const lc=km.lifecycle||{};
     const lifecycleBlock=lc.tracks?`<section class="knowledge-lifecycle process-section"><header><p class="section-label">Record lifecycle</p><h2>Two paths from claim to rule</h2><p>${esc(lc.intro||"")}</p></header><div class="lifecycle-tracks">${lc.tracks.map(t=>`<article class="lifecycle-track"><h3>${esc(t.title)}</h3><span class="lifecycle-chain">${esc(t.chain)}</span><ol>${t.steps.map(x=>`<li><code>${esc(x.op)}</code><strong>${esc(x.title)}</strong><span class="lifecycle-needs">${esc(x.needs)}</span><em>${esc(x.gives)}</em><p>${esc(x.note)}</p></li>`).join("")}</ol></article>`).join("")}</div>${lc.verdictOnEdge?`<p class="lifecycle-verdict">${esc(lc.verdictOnEdge)}</p>`:""}<details class="lifecycle-statuses"><summary>Statuses and transitions <span>${(lc.statuses||[]).length} record kinds</span></summary><div>${(lc.statuses||[]).map(g=>`<article><h4>${esc(g.title)}<code>${esc(g.tool)}</code></h4><p>${esc(g.rule)}</p><dl>${g.values.map(v=>`<dt><code>${esc(v.value)}</code> ${esc(v.means)}</dt>${v.exit?`<dd>Output: ${esc(v.exit)}</dd>`:""}`).join("")}</dl></article>`).join("")}</div></details><details class="lifecycle-kinds"><summary>Kinds within types <span>how the kinds differ</span></summary><table><thead><tr><th>Record type</th><th>Values</th><th>Why distinguish them</th></tr></thead><tbody>${(lc.kinds||[]).map(k=>`<tr><td>${esc(k.of)}</td><td><code>${esc(k.values)}</code></td><td>${esc(k.why)}</td></tr>`).join("")}</tbody></table></details></section>`:"";
     const route=(name,kind,items)=>`<nav class="knowledge-route ${kind}-route" aria-label="${esc(name)}"><h3>${esc(name)}</h3>${items.map((x,i)=>`<button data-knowledge="${kind}:${esc(x.id)}" type="button"><small>${String(i+1).padStart(2,"0")}</small><strong>${esc(x.title)}</strong><span>${esc(x.summary||"")}</span></button>`).join("")}</nav>`;
-    return `<section class="knowledge-architecture knowledge-atlas-v3 process-section" id="map"><header class="knowledge-intro"><p class="section-label">Central map</p><h2>How knowledge moves through the laboratory</h2><p>A record crosses two required boundaries: access before an action and provenance after saving. Reading returns both an answer and verifiable sources.</p></header><div class="knowledge-map-frame"><div class="knowledge-stack"><div class="km-gates"><button class="km-gate" data-knowledge="guard:access" type="button"><small>Before reading and writing</small><strong>Access</strong><span>Identity from key · laboratory role · project role for writes</span></button><button class="km-gate" data-knowledge="guard:provenance" type="button"><small>For every saved record</small><strong>Provenance</strong><span>Source · author or agent · time · change history</span></button></div>${kmOverview(km)}${kmRecordTree(km,objectById,friendly)}${kmIntake(km)}${kmHook(km)}<section class="km-block km-read"><header><p class="section-label">Reading from the database</p><h3>A question changes nothing</h3></header>${route("Read","read",readSteps)}</section><section class="km-block km-neighbours"><header><p class="section-label">Neighboring systems</p><h3>Not another copy of shared memory</h3></header><div>${personal.map(x=>`<button data-knowledge="personal:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><span>${esc(x.action)}</span></button>`).join("")}</div><p class="km-blocked">Exchange uses links and explicit workflows: each data type retains one authoritative editable copy.</p></section></div><aside class="knowledge-inspector" id="knowledge-inspector" role="region" aria-label="Selected Lab Knowledge node details" tabindex="-1" aria-live="polite"></aside></div>${lifecycleBlock}<details class="knowledge-technical"><summary>Technical architecture and connection <span>PostgreSQL · MCP · access permissions · change log</span></summary>${knowledgeRuntime(km)}</details></section>`;
+    return `<section class="knowledge-architecture knowledge-atlas-v3 process-section" id="map"><header class="knowledge-intro"><p class="section-label">Central map</p><h2>How knowledge flows through the lab</h2><p>A record crosses two boundaries: the proposal checks before merge, and the human who merges. Git itself keeps the provenance of every line: commit, author, proposal. A read returns not just the answer but also the path to its source.</p></header><div class="knowledge-map-frame"><div class="knowledge-stack"><div class="km-gates"><button class="km-gate" data-knowledge="guard:access" type="button"><small>Before reading and writing</small><strong>Access</strong><span>GitLab role · the work lead merges · the agent does not merge</span></button><button class="km-gate" data-knowledge="guard:provenance" type="button"><small>For every saved record</small><strong>Provenance</strong><span>Commit · author or agent · proposal · checks verdict</span></button></div>${kmOverview(km)}${kmRecordTree(km,objectById,friendly)}${kmIntake(km)}${kmHook(km)}<section class="km-block km-read"><header><p class="section-label">Reading from the database</p><h3>A question changes nothing</h3></header>${route("Read","read",readSteps)}</section><section class="km-block km-neighbours"><header><p class="section-label">Neighboring systems</p><h3>Not another copy of shared memory</h3></header><div>${personal.map(x=>`<button data-knowledge="personal:${esc(x.id)}" type="button"><strong>${esc(x.title)}</strong><span>${esc(x.action)}</span></button>`).join("")}</div><p class="km-blocked">Exchange uses links and explicit workflows: each data type retains one authoritative editable copy.</p></section></div><aside class="knowledge-inspector" id="knowledge-inspector" role="region" aria-label="Selected Lab Knowledge node details" tabindex="-1" aria-live="polite"></aside></div>${lifecycleBlock}<details class="knowledge-technical"><summary>Technical architecture and connection <span>PostgreSQL · MCP · access permissions · change log</span></summary>${knowledgeRuntime(km)}</details></section>`;
   }
 
   function glossaryBlock(p){
@@ -220,38 +238,43 @@
     return TAKEABLE.has(k)?`<span class="take-badge is-open">available to install</span>`:k==="privileged"?`<span class="take-badge is-gated">by application</span>`:`<span class="take-badge is-closed">internal</span>`};
   function toolCard(t){return `<details class="tool" id="tool-${esc(t.id)}"><summary><span class="tool-type">${esc(t.type||"Tool")}</span>${takeBadge(t)}<strong>${esc(t.title)}</strong><span class="tool-role">${esc(toolStory(t).value)}</span><i class="tool-toggle">+</i></summary><div class="tool-body dossier">${dossierBody(t)}</div></details>`}
   // Владелец: «команды не нужны, оставляем только навыки, потому что по факту это дубликат».
-  function related(p){const ids=new Set(p.registryProcessIds||[]);return (registry.capabilities||[]).filter(c=>c.type!=="command"&&arr(c.process_ids).some(id=>ids.has(id)))}
+  // В реестре остались навыки прежней модели хранилища (проектные базы Obsidian, карточки
+  // Staff/Papers) и инструменты не по делу этапа. Гостю их не показываем.
+  const RELATED_HIDE=/^(skill|agent):(obsidian-(hub-creator|project-bootstrap|project-lifecycle|research-log|literature-workflow|synthesis-map|link-graph|project-memory)|zotero-obsidian-bridge|kaggle-(miner|learner)|dev-planner|story-generator|ui-sketcher|literature-reviewer-obsidian|research-knowledge-curator-obsidian)$/;
+  function related(p){const ids=new Set(p.registryProcessIds||[]),own=new Set((p.tools||[]).map(t=>t.skillId||t.id));return (registry.capabilities||[]).filter(c=>c.type!=="command"&&!RELATED_HIDE.test(c.id)&&!own.has(String(c.id).split(":")[1])&&arr(c.process_ids).some(id=>ids.has(id)))}
   function capCard(c){return `<button class="capability" data-capability="${esc(c.id)}" type="button"><span>${esc(capType(c.type))}</span><strong>${esc(c.title_ru||c.name)}</strong><p>${esc(c.description_ru||c.description||"")}</p><i>Details →</i></button>`}
   // Тип возможности приходит из машинного реестра по-английски. На витрине он
   // стоит подписью над названием, поэтому переводится здесь, а не в данных.
   const CAP_TYPE={agent:"Agent",skill:"Skill",command:"Command",hook:"Hook","mcp-tool":"MCP tool",service:"Service",documentation:"Documentation",repository:"Repository"};
   const capType=t=>CAP_TYPE[t]||t||"Capability";
   function capabilityGroups(caps){const labels={agent:"Agents",skill:"Skills",command:"Commands",hook:"Hooks","mcp-tool":"MCP tools",service:"Services",documentation:"Documentation",repository:"Repositories"},groups=caps.reduce((out,c)=>{const archived=c.current_status==="archived"?"archived":c.type||"other";(out[archived]||=[]).push(c);return out},{});return `<div class="capability-groups">${Object.entries(groups).map(([key,xs])=>`<details class="capability-group"><summary>${esc(key==="archived"?"Archived and obsolete":labels[key]||key)} <span>${xs.length}</span></summary><div class="capability-list">${xs.map(capCard).join("")}</div></details>`).join("")}</div>`}
-  function tools(p){const caps=related(p);return `<section class="process-section" id="tools">${head("Tools","Tool details")}<div class="tools-intro"><span class="tools-count">${(p.tools||[]).length} core${caps.length?` · ${caps.length} in the full registry`:""}</span></div><div class="tool-list">${(p.tools||[]).map(toolCard).join("")}</div>${caps.length?`<details class="all-capabilities"><summary>Everything in the repository linked to this section <span>${caps.length}</span></summary>${capabilityGroups(caps)}</details>`:""}</section>`}
+  // Формы числа на верхнем уровне: plural живёт внутри страницы базы и отсюда не виден.
+  function pluralTop(n,f){const a=Math.abs(n)%100,b=a%10;return a>10&&a<20?f[2]:b===1?f[0]:b>=2&&b<=4?f[1]:f[2]}
+  function tools(p){const caps=related(p);return `<section class="process-section" id="tools">${head("Tools","Tool details")}<div class="tools-intro"><span class="tools-count">${(p.tools||[]).length} ${pluralTop((p.tools||[]).length,["tool","tools","tools"])}</span></div><div class="tool-list">${(p.tools||[]).map(toolCard).join("")}</div></section>`}
   function implementation(p){return p.implementation?`<details class="implementation"><summary>Technical implementation <span>for maintenance and debugging</span></summary><div class="implementation-box"><p>${esc(p.implementation.summary)}</p><ul>${arr(p.implementation.items).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${p.implementation.links?.length?`<div class="tool-links">${links(p.implementation.links)}</div>`:""}</div></details>`:""}
-  function nav(p){const seq=[...(model.processes||[]),...(model.contours||[])],i=seq.findIndex(x=>x.id===p.id);if(i<0)return `<nav class="process-nav"><button data-back type="button"><small>Back</small><strong>← Research map</strong></button></nav>`;const prev=seq[(i-1+seq.length)%seq.length],next=seq[(i+1)%seq.length];return `<nav class="process-nav"><button data-open="${esc(prev.id)}" type="button"><small>Previous stage</small><strong>← ${esc(prev.title)}</strong></button><button data-open="${esc(next.id)}" type="button"><small>Next stage</small><strong>${esc(next.title)} →</strong></button></nav>`}
+  function nav(p){const seq=[...(model.processes||[]),...(model.contours||[])],i=seq.findIndex(x=>x.id===p.id);if(i<0)return `<nav class="process-nav"><button data-back type="button"><small>Back</small><strong>← Research map</strong></button></nav>`;const prev=i>0?seq[i-1]:null,next=i<seq.length-1?seq[i+1]:null;return `<nav class="process-nav">${prev?`<button data-open="${esc(prev.id)}" type="button"><small>Previous stage</small><strong>← ${esc(prev.title)}</strong></button>`:`<button data-back type="button"><small>Back</small><strong>← Work map</strong></button>`}${next?`<button data-open="${esc(next.id)}" type="button"><small>Next stage</small><strong>${esc(next.title)} →</strong></button>`:""}</nav>`}
   // ============ «Что уходит в общую базу» ============
   // Владелец: «нужно прям подробно расписать, прям подробный путь прохождения туда и как
   // это всё работает». Та же форма, что у пути статьи в поиске по базе: шаг = операция плюс
   // что именно на этом шаге появляется и по каким правилам. Ничего не сворачиваем.
-  const TOMCP_TYPE={skill:"skill",command:"command",mcp:"MCP operation",script:"script",hook:"hook"};
+  const TOMCP_TYPE={skill:"skill",command:"command",mcp:"git",script:"script",hook:"hook",classifier:"classifier"};
   function toMcpStep(l,k){
     const cls=l.lane==="record"?"is-rec":l.lane==="tie"?"is-tie":"is-work";
-    const op=k===0?"—":(l.via?.tool||"—");
+    const op=k===0?"":(l.via?.tool||"");
     const kind=l.kind?`<em>${esc(l.kind)}${l.code&&l.code!=="—"?" · "+esc(l.code):""}</em>`:"";
     const items=(l.items||[]).length?`<ul>${l.items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
     const via=k===0?"":`<small>${esc(TOMCP_TYPE[l.via?.type]||"")}${l.via?.gate?" · "+esc(l.via.gate):""}</small>`;
     // Тип шага стоит рядом с именем операции, а не последней строкой под описанием: там он
     // читался обрывком текста. Поэтому <small> — прямой ребёнок <li>, и сетка кладёт его
     // во вторую строку левой колонки, под <code>.
-    return `<li class="${cls}"><code>${esc(op)}</code><div><strong>${esc(l.title||"")}</strong>${kind}${l.detail?`<span>${esc(l.detail)}</span>`:""}${items}</div>${via}</li>`;
+    return `<li class="${cls}">${op?`<code>${esc(op)}</code>`:`<code class="is-empty" aria-hidden="true"></code>`}<div><strong>${esc(l.title||"")}</strong>${kind}${l.detail?`<span>${esc(l.detail)}</span>`:""}${items}</div>${via}</li>`;
   }
   function toMcpBlock(p){
     const t=p.toMcp;if(!t)return "";
     const paths=(t.paths||[]).map(x=>`<article class="tomcp-path">
       <header><small>${esc(x.actor||"")}</small><strong>${esc(x.title||"")}</strong>${x.line?`<span>${esc(x.line)}</span>`:""}</header>
       <ol class="tomcp-steps">${(x.chain||[]).map(toMcpStep).join("")}</ol></article>`).join("");
-    const none=t.nothing?`<div class="tomcp-none"><strong>Nothing from here goes to the shared database</strong><p>${esc(t.nothing.why||"")}</p>${t.nothing.back?`<p>${esc(t.nothing.back)}</p>`:""}${t.nothing.instead?`<button data-open-process="${esc(String(t.nothing.instead).replace(/^process:/,""))}" type="button">${esc(t.nothing.insteadLabel||"Section that writes")}</button>`:""}</div>`:"";
+    const none=t.nothing?`<div class="tomcp-none">${t.nothing.title?`<strong>${esc(t.nothing.title)}</strong>`:""}<p>${esc(t.nothing.why||"")}</p>${t.nothing.back?`<p>${esc(t.nothing.back)}</p>`:""}${t.nothing.instead?`<button data-open-process="${esc(String(t.nothing.instead).replace(/^process:/,""))}" type="button">${esc(t.nothing.insteadLabel||"Section that writes")}</button>`:""}</div>`:"";
     const kept=(t.kept||[]).length?`<p class="tomcp-kept"><b>Stays local:</b> ${esc(t.kept.join("; "))}.</p>`:"";
     return `<section class="process-section tomcp" id="mcp">
       <p class="section-label">What goes to the shared database</p>
@@ -277,7 +300,7 @@
     const sp=p.spotlight;if(!sp?.toolIds?.length)return "";
     const picked=sp.toolIds.map(id=>(p.tools||[]).find(t=>t.id===id)).filter(Boolean);
     if(!picked.length)return "";
-    return `<section class="process-section spotlight" id="spotlight"><p class="section-label">Start with this</p>
+    return `<section class="process-section spotlight" id="spotlight"><p class="section-label">Made in the lab</p>
       <p class="spotlight-lead">${esc(sp.lead||"")}</p>
       <div class="spotlight-grid">${picked.map(t=>{const src=(t.links||[]).map(liveSource).find(x=>x.url);
         return `<article><span>${esc(t.type||"Skill")}</span><h3>${esc(t.title)}</h3><p>${esc(compactRole(toolStory(t).value))}</p>
@@ -285,11 +308,11 @@
   }
   function galleryBlock(p){
     const g=p.gallery;if(!(g||[]).length)return "";
-    return `<section class="process-section gallery" id="gallery"><div class="gallery-head"><p class="section-label">What it looks like</p><h2>Examples from the skill</h2></div>
+    return `<section class="process-section gallery" id="gallery"><div class="gallery-head"><p class="section-label">What it looks like</p><h2>What it looks like for us</h2></div>
       <div class="gallery-grid">${g.map(x=>`<figure><img src="${esc(x.src)}" alt="${esc(x.caption||"")}" loading="lazy" width="1200" height="675"><figcaption><strong>${esc(x.caption||"")}</strong>${x.note?`<span>${esc(x.note)}</span>`:""}</figcaption></figure>`).join("")}</div></section>`;
   }
-  function skyName(t){return t.skyTitle||(t.id==='paperscout'?'Hermes Agent':t.skillId||t.title)}
-  function skyKind(t){return t.skillId?'skill':/Агент|Среда|Agent|Environment/i.test(t.type||'')||t.id==='hermes'?'agent':/MCP|Интеграция|Хук|Integration|Hook/i.test(t.type||'')?'connection':'system'}
+  function skyName(t){return t.skyTitle||(t.id==='paperscout'?"Hermes":t.skillId||t.title)}
+  function skyKind(t){return t.skillId?'skill':/Агент|Среда/.test(t.type||'')||t.id==='hermes'?'agent':/MCP|Интеграция|Хук/.test(t.type||'')?'connection':'system'}
   function skyNode(t,p,index){
     const major=p.mapFeatured.includes(t.id),kind=skyKind(t);
     return `<button class="sky-node${major?' is-major':''}${index===0?' is-anchor':''}" data-skill="${esc(t.id)}" data-kind="${kind}" type="button" aria-haspopup="dialog" title="${esc(toolStory(t).value)}"><i class="star-pin" aria-hidden="true"></i><span><strong>${esc(skyName(t))}</strong>${t.status==='in-development'?"<span class=\"sky-pending\">Work in progress</span>":major?`<span class="sky-node-description">${esc(t.skySummary||t.catalogSummary||compactRole(toolStory(t).value))}</span>`:''}</span></button>`;
@@ -372,8 +395,8 @@
     dialog.addEventListener('close',()=>{if(root.hidden||!dialog.isConnected)return;replaceHash(p.id);trigger?.focus({preventScroll:true});if(savedScroll)window.scrollTo(savedScroll)});
   }
 
-  function page(p){if(p.id==="memory"&&window.LAB_MEMORY_MAP)return window.LAB_MEMORY_MAP.render(p,model.processes);if(p.constellation)return constellationPage(p);const map=p.id==="memory"?knowledgeArchitecture(p):`${compactSectionMap(p)}`;return `<div class="process-shell${p.id==="memory"?" memory-shell":""}" style="--accent:${esc(p.color||"#426aff")}"><button class="back-button" data-back type="button">← Back to the main map</button><header class="process-hero compact"><div class="process-index">${esc(p.number)}</div><div class="process-title"><h1 tabindex="-1">${esc(p.title)}</h1><p class="verb">${esc(p.verb)}</p></div><div class="process-purpose"><p>${esc(p.purpose)}</p></div></header><nav class="process-jump" aria-label="Workflow sections"><a href="#map">Section map</a>${p.pipeline?"<a href=\"#pipeline\">How it works inside</a>":""}${p.spotlight?"<a href=\"#spotlight\">Start with this</a>":""}${p.toMcp?"<a href=\"#mcp\">What goes into the database</a>":""}${(p.gallery||[]).length?"<a href=\"#gallery\">What it looks like</a>":""}<a href="#tools">Tool details</a></nav>${map}${pipelineBlock(p)}${spotlightBlock(p)}${toMcpBlock(p)}${galleryBlock(p)}${tools(p)}${implementation(p)}${nav(p)}</div>`}
-  function bind(root,p){root.querySelectorAll("[data-back]").forEach(b=>b.onclick=showOverview);root.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openProcess(b.dataset.open,b.dataset.tool));root.querySelectorAll("[data-capability]").forEach(b=>b.onclick=()=>showCapability(b.dataset.capability));root.querySelectorAll(".process-jump a").forEach(a=>a.onclick=e=>{e.preventDefault();root.querySelector(a.hash)?.scrollIntoView({behavior:"smooth"})});if(p){const focus=root.querySelector(".map-focus"),toolsById=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),reset=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));focus?.classList.remove("is-open");if(focus)focus.innerHTML=focusDefault(p);replaceHash(p.id)};root.querySelectorAll("[data-focus-tool]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".map-tool").forEach(x=>x.classList.toggle("is-dim",x!==b));b.classList.remove("is-dim");b.classList.add("is-active");if(focus){focus.innerHTML=focusTool(toolsById[b.dataset.focusTool]);focus.classList.add("is-open")}replaceHash(`${p.id}/${b.dataset.focusTool}`)});root.querySelector("[data-map-reset]")?.addEventListener("click",reset);root.querySelectorAll("[data-map-title]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));b.classList.add("is-active");replaceHash(p.id)});root.onclick=e=>{const dossier=e.target.closest("[data-open-dossier]"),openSetup=e.target.closest("[data-open-setup]");if(e.target.closest("[data-reset-focus]"))reset();if(dossier||openSetup){const id=(dossier||openSetup).dataset.openDossier||(dossier||openSetup).dataset.openSetup,d=root.querySelector(`#tool-${CSS.escape(id)}`);if(d){d.open=true;let focusTarget=d.querySelector("summary"),scrollTarget=d;if(openSetup){const s=root.querySelector(`#setup-${CSS.escape(id)}`);if(s){s.open=true;focusTarget=s.querySelector("summary");scrollTarget=s}}focus?.classList.remove("is-open");scrollTarget.scrollIntoView({behavior:"smooth",block:"start"});focusTarget?.focus({preventScroll:true})}}}}}
+  function page(p){if(p.id==="memory"&&window.LAB_MEMORY_MAP)return window.LAB_MEMORY_MAP.render(p,model.processes);if(p.constellation)return constellationPage(p);const map=p.id==="memory"?knowledgeArchitecture(p):`${compactSectionMap(p)}`;return `<div class="process-shell${p.id==="memory"?" memory-shell":""}" style="--accent:${esc(p.color||"#426aff")}"><button class="back-button" data-back type="button">← Back to the main map</button><header class="process-hero compact"><div class="process-index">${esc(p.number)}</div><div class="process-title"><h1 tabindex="-1">${esc(p.title)}</h1><p class="verb">${esc(p.verb)}</p></div><div class="process-purpose"><p>${esc(p.purpose)}</p></div></header><nav class="process-jump" aria-label="Workflow sections"><a href="#map">Section map</a>${p.pipeline?"<a href=\"#pipeline\">How it works inside</a>":""}${p.spotlight?"<a href=\"#spotlight\">Made in the lab</a>":""}${p.toMcp?"<a href=\"#mcp\">What goes into the database</a>":""}${(p.gallery||[]).length?"<a href=\"#gallery\">What it looks like</a>":""}<a href="#tools">Tool details</a></nav>${map}${pipelineBlock(p)}${spotlightBlock(p)}${toMcpBlock(p)}${galleryBlock(p)}${tools(p)}${nav(p)}</div>`}
+  function bind(root,p){root.querySelectorAll("[data-back]").forEach(b=>b.onclick=showOverview);root.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openProcess(b.dataset.open,b.dataset.tool));root.querySelectorAll("[data-capability]").forEach(b=>b.onclick=()=>showCapability(b.dataset.capability));root.querySelectorAll(".process-jump a").forEach(a=>a.onclick=e=>{e.preventDefault();root.querySelector(a.getAttribute("href"))?.scrollIntoView({behavior:"smooth"})});if(p){const focus=root.querySelector(".map-focus"),toolsById=Object.fromEntries((p.tools||[]).map(t=>[t.id,t])),reset=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));focus?.classList.remove("is-open");if(focus)focus.innerHTML=focusDefault(p);replaceHash(p.id)};root.querySelectorAll("[data-focus-tool]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".map-tool").forEach(x=>x.classList.toggle("is-dim",x!==b));b.classList.remove("is-dim");b.classList.add("is-active");if(focus){focus.innerHTML=focusTool(toolsById[b.dataset.focusTool]);focus.classList.add("is-open")}replaceHash(`${p.id}/${b.dataset.focusTool}`)});root.querySelector("[data-map-reset]")?.addEventListener("click",reset);root.querySelectorAll("[data-map-title]").forEach(b=>b.onclick=()=>{root.querySelectorAll(".section-map-canvas button").forEach(x=>x.classList.remove("is-dim","is-active"));b.classList.add("is-active");replaceHash(p.id)});root.onclick=e=>{const dossier=e.target.closest("[data-open-dossier]"),openSetup=e.target.closest("[data-open-setup]");if(e.target.closest("[data-reset-focus]"))reset();if(dossier||openSetup){const id=(dossier||openSetup).dataset.openDossier||(dossier||openSetup).dataset.openSetup,d=root.querySelector(`#tool-${CSS.escape(id)}`);if(d){d.open=true;let focusTarget=d.querySelector("summary"),scrollTarget=d;if(openSetup){const s=root.querySelector(`#setup-${CSS.escape(id)}`);if(s){s.open=true;focusTarget=s.querySelector("summary");scrollTarget=s}}focus?.classList.remove("is-open");scrollTarget.scrollIntoView({behavior:"smooth",block:"start"});focusTarget?.focus({preventScroll:true})}}}}}
 
   function relationIndex(p){
     const map=normalizedMap(p),index=new Map();
@@ -405,8 +428,8 @@
 
   function bindKnowledgeMap(root,p){
     const scope=root.querySelector(".knowledge-architecture"),focus=scope?.querySelector(".knowledge-inspector"),km=p.knowledgeModel||{};if(!scope||!focus)return;
-    const boundary={mcp:{title:"Lab Knowledge MCP",detail:km.boundary?.mcp,operations:[...arr(km.read?.tools),...arr(km.write?.tools)],behavior:km.agentConnection,links:km.sources},skill:{title:"lab-knowledge skill",detail:km.boundary?.skill,behavior:[km.read?.default,...arr(km.write?.behavior)],links:(p.tools||[]).find(x=>x.id==="lab-knowledge-skill")?.links||[]}},personal={obsidian:{title:"Obsidian",detail:"A team member's personal notes, full analyses, and drafts. Published to shared memory only after human preview and approval.",connections:[{to:"flow:preview",label:"transfers only after human preview"}]},mempalace:{title:"MemPalace",detail:"Agent session history and working context. Helps continue work, but does not count as scientific evidence.",connections:[{to:"producer:agents",label:"returns context to the agent"}]},yonote:{title:"Yonote",detail:"Work tasks, deadlines, and assignees. Task status does not change a research hypothesis's status.",connections:[{to:"consumer:public",label:"shows the human-facing view"}]}},read={question:{title:"Ask a question",detail:"Define which existing knowledge is needed for the next decision.",connections:[{to:"read:scope",label:"refine the scope"}]},scope:{title:"Set the scope",detail:"Limit reading by project, record type, and time range.",connections:[{to:"read:policy",label:"check access"}]},policy:{title:"Check access",detail:"Validate the key before searching. Every laboratory participant can read the shared database; there is no separate restricted reading scope.",connections:[{to:"guard:access",label:"passes through the shared check"},{to:"read:search",label:"authorizes search"}]},search:{title:"Search and follow relationships",detail:"Combine text search with typed relationships between hypotheses, experiments, results, and papers.",operations:arr(km.read?.tools),connections:[{to:"boundary:mcp",label:"reads shared memory"},{to:"read:answer",label:"assembles the answer"}]},answer:{title:"Answer with sources",detail:"Return a short answer with record codes, provenance, and the limits of what was found.",connections:(km.consumers||[]).map(x=>({to:`consumer:${x.id}`,label:"returns the answer"}))}},guard={access:{title:"Access",detail:"Checked before any read or write. All participants can read; writing to another project's work requires a role in that project.",required:["valid key and the person behind it","global role","project role, for writes only"],connections:[...arr(km.publishFlow).map(x=>({to:`flow:${x.id}`,label:"protects writes"})),{to:"read:policy",label:"protects reads"}]},provenance:{title:"Record provenance",detail:"Shows where a fact came from, who published it, and what has changed.",required:arr(km.provenance),connections:(km.objectTypes||[]).map(x=>({to:`object:${x.id}`,label:"accompanies the record"}))}},bridge={"paper-to-work":{title:"How a paper connects to our work",detail:"An external paper claim receives a typed link: prior art, supports, contradicts, baseline, inspired, or reproduces. The link does not turn someone else's claim into our result.",connections:[{to:"object:paper-claim",label:"starts with a verified claim"},{to:"object:hypothesis",label:"may motivate a hypothesis"},{to:"object:experiment",label:"may establish a baseline"},{to:"object:evidence",label:"may provide comparison context"},{to:"object:decision",label:"may support a rationale"}]}},groups={intake:Object.fromEntries([...(km.intake||[]).flatMap(l=>(l.steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",operations:x.ops||[],connections:[{to:"boundary:mcp",label:"ends with a database record"}]}])),...((km.hook||{}).steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",connections:[{to:"boundary:mcp",label:"the hook suggests saving"}]}])]),object:Object.fromEntries((km.objectTypes||[]).map(x=>[x.id,x])),flow:Object.fromEntries((km.publishFlow||[]).map(x=>[x.id,x])),read,guard,bridge,producer:Object.fromEntries((km.producers||[]).map(x=>[x.id,x])),consumer:Object.fromEntries((km.consumers||[]).map(x=>[x.id,x])),corpus:Object.fromEntries((km.corpora||[]).map(x=>[x.id,x])),boundary,personal};
-    personal.yonote.connections=[{to:"consumer:projections",label:"shows the human-facing view"}];
+    const boundary={mcp:{title:"Knowledge base in GitLab",detail:km.boundary?.mcp,operations:[...arr(km.read?.tools),...arr(km.write?.tools)],behavior:km.agentConnection,links:km.sources},skill:{title:"The lab-knowledge skill",detail:km.boundary?.skill,behavior:[km.read?.default,...arr(km.write?.behavior)],links:(p.tools||[]).find(x=>x.id==="lab-knowledge-skill")?.links||[]}},personal={obsidian:{title:"Obsidian",detail:"The vault is the ~/brainlab tree itself. Personal notes, the diary and run logs are hidden from git and stay on the machine; shared content goes to GitLab only as a proposal.",connections:[{to:"flow:preview",label:"shared content leaves only as a proposal"}]},mempalace:{title:"MemPalace",detail:"Agent session history and working context. Helps continue work, but does not count as scientific evidence.",connections:[{to:"producer:agents",label:"returns context to the agent"}]},yonote:{title:"GitLab issues",detail:"Tasks, deadlines and work boards in GitLab. They reference claims but are not a research result",connections:[{to:"consumer:public",label:"references claims"}]}},read={question:{title:"Ask a question",detail:"See what has already been tested before deciding what to do next.",connections:[{to:"read:scope",label:"find a place in the tree"}]},scope:{title:"Find a place in the tree",detail:"Direction, theme, work: the path in the tree tells you whose knowledge it is.",connections:[{to:"read:policy",label:"you see what you have access to"}]},policy:{title:"Access",detail:"You see what your GitLab role covers. Any lab member can read the works.",connections:[{to:"guard:access",label:"GitLab role"},{to:"read:search",label:"opens the works"}]},search:{title:"Find and follow links",detail:"File search and following links: claim → series → run → log, paper → what it claims.",operations:arr(km.read?.tools),connections:[{to:"boundary:mcp",label:"reads the base"},{to:"read:answer",label:"assembles the answer"}]},answer:{title:"Answer with sources",detail:"A short answer together with the file path, the commit and the proposal through which the record entered the base.",connections:(km.consumers||[]).map(x=>({to:`consumer:${x.id}`,label:"returns the answer"}))}},guard={access:{title:"Access",detail:"GitLab decides: any member can read the works, a work member can propose an edit, and only the lead can merge it.",required:["valid key and the person behind it","global role","project role, for writes only"],connections:[...arr(km.publishFlow).map(x=>({to:`flow:${x.id}`,label:"protects writes"})),{to:"read:policy",label:"protects reads"}]},provenance:{title:"Record provenance",detail:"Every line in the base has a commit, an author and a proposal: you see where a fact came from, who accepted it and what changed.",required:arr(km.provenance),connections:(km.objectTypes||[]).map(x=>({to:`object:${x.id}`,label:"accompanies the record"}))}},bridge={"paper-to-work":{title:"How a paper connects to our work",detail:"A claim from someone else's paper lives on that paper's page in the theme literature, and a work references it by role: support, refutation, baseline. That does not make someone else's claim our result.",connections:[{to:"object:paper-claim",label:"starts with a verified claim"},{to:"object:hypothesis",label:"may motivate a hypothesis"},{to:"object:experiment",label:"may establish a baseline"},{to:"object:evidence",label:"may provide comparison context"},{to:"object:decision",label:"may support a rationale"}]}},groups={intake:Object.fromEntries([...(km.intake||[]).flatMap(l=>(l.steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",operations:x.ops||[],connections:[{to:"boundary:mcp",label:"ends with a merge into the base"}]}])),...((km.hook||{}).steps||[]).map(x=>[x.id,{title:x.title,detail:x.note||"",connections:[{to:"boundary:mcp",label:"the hook suggests saving"}]}])]),object:Object.fromEntries((km.objectTypes||[]).map(x=>[x.id,x])),flow:Object.fromEntries((km.publishFlow||[]).map(x=>[x.id,x])),read,guard,bridge,producer:Object.fromEntries((km.producers||[]).map(x=>[x.id,x])),consumer:Object.fromEntries((km.consumers||[]).map(x=>[x.id,x])),corpus:Object.fromEntries((km.corpora||[]).map(x=>[x.id,x])),boundary,personal};
+    personal.yonote.connections=[{to:"consumer:projections",label:"references claims"}];
     guard.provenance.connections=(km.objectTypes||[]).filter(x=>!["journal","term","resource","paper","paper-claim"].includes(x.id)).map(x=>({to:`object:${x.id}`,label:"accompanies a structured research record"}));
     let lastTrigger=null;
     scope.querySelectorAll("[data-knowledge]").forEach(x=>{x.setAttribute("aria-pressed","false");x.setAttribute("aria-controls","knowledge-inspector")});
@@ -416,10 +439,12 @@
   }
   function sourceButtons(items=[]){return `<div class="special-links">${items.map(x=>{const url=safe(x.url);return url?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(x.label)} <span>↗</span></a>`:""}).join("")}</div>`}
   let navigationRevision=0;
-  function hidePrimaryViews(){navigationRevision++;window.LAB_SURFACE_PAGES?.disconnect();document.querySelectorAll('.skill-dialog[open]').forEach(d=>d.close());$("overview").hidden=true;$("process-view").hidden=true;$("dykaf-view").hidden=true;$("examples-view").hidden=true}
+  function hidePrimaryViews(){navigationRevision++;window.LAB_SURFACE_PAGES?.disconnect();document.querySelectorAll('.skill-dialog[open]').forEach(d=>d.close());$("overview").hidden=true;$("process-view").hidden=true;$("dykaf-view").hidden=true;$("mcp-live-view").hidden=true;$("examples-view").hidden=true;$("setup-view").hidden=true;$("hub-view").hidden=true}
+  // Страница задач GitLab внутри по-прежнему ключ «yonote», а в адресе — «gitlab».
   function showSurface(id,navigate=true){
+    if(id==="gitlab")id="yonote";
     if(!systemData.surfaces?.[id])return;
-    if(navigate)updateHash(`surface/${id}`);
+    if(navigate)updateHash(`surface/${id==="yonote"?"gitlab":id}`);
     hidePrimaryViews();active("none");
     const view=$("process-view");view.hidden=false;
     const content=id==="obsidian"?window.LAB_OBSIDIAN_SETUP.page():window.LAB_SURFACE_PAGES.page(id);
@@ -429,7 +454,10 @@
     window.scrollTo({top:0,behavior:"instant"});
     view.querySelector("h1")?.focus({preventScroll:true});
   }
-  // The existing MCP renderer and all its indexes are initialized only after data arrives.
+  // Частичная подгрузка жила рядом со службой (scripts/serve.py). Теперь снимок дерева — обычные
+  // файлы, и витрина берёт их целиком: на стенде нет сервера, который отдал бы куски.
+  const liveSnapshotMode=false;
+  // Live search starts without snapshots; details are fetched when opened.
   function createMcpWorkspace(){
   // ============ Страница MCP: поиск по содержимому базы ============
   // Владелец: «я должен написать, когда выигрывает Muon… по этим связям… нужно максимально
@@ -443,18 +471,16 @@
   // Снимок собирается локально из живой базы и наружу не публикуется: в нём имена
   // проектов, неопубликованные утверждения и внутренние адреса.
   const base=window.LAB_BASE||{records:[],relations:[]};
-  const KIND={project:"project",hypothesis:"claim",experiment:"run",evidence:"measurement",
+  const KIND={project:"work",hypothesis:"claim",experiment:"run",series:"series",evidence:"measurement",
     derivation:"derivation",decision:"rule",journal:"journal",term:"term",
     resource:"resource",source:"source",source_ref:"source",
     paper:"paper",paper_chunk:"paper section",paper_claim:"paper claim"};
-  // Каждая запись в базе появляется ровно одной операцией MCP. Это и есть ответ на вопрос
-  // «как она сюда попала», поэтому операция стоит на карточке, а не в пояснении.
-  const KIND_OP={project:"upsert_project",hypothesis:"create_hypothesis",experiment:"record_experiment",
-    evidence:"record_evidence",derivation:"record_derivation",decision:"propose_decision",
-    journal:"record_journal",term:"upsert_term",resource:"upsert_resource",source:"attach_source_ref",
-    source_ref:"attach_source_ref",paper:"upsert_paper",paper_chunk:"add_paper_section",
-    paper_claim:"record_paper_claim"};
-  const KIND_ORDER=["project","hypothesis","derivation","experiment","evidence","decision","journal","term","resource","source"];
+  // С 07-10-2026 база живёт в git: каждая запись это файл в репозитории работы, и попадает
+  // она туда слиянием предложения. Поэтому на карточке стоит путь файла, а не вызов службы.
+  const KIND_OP={project:"the work's README.md",hypothesis:"claims/<CODE>/README.md",experiment:"claims/<H>/runs/<E>.md",
+    series:"claims/<H>/series/<S>.md",derivation:"claims/<H>/theory/<D>.md",
+    paper:"<theme>/literature/<paper>.md",paper_claim:"<theme>/literature/<paper>.md"};
+  const KIND_ORDER=["project","hypothesis","derivation","series","experiment","evidence","decision","journal","term","resource","source"];
   // Владелец: «есть и доказательства, и эксперимент — это вообще идеальный вариант».
   // Из 709 утверждений так закрыты 146, и это должно читаться прямо с карточки.
   const SUPPORT={proof_and_numbers:["both derivation and numbers","is-both"],proof:["derivation","is-proof"],
@@ -598,7 +624,7 @@
       <header><span class="base-kind">${esc(KIND[r.k]||r.k)}</span>${r.code?`<code class="base-code">${esc(r.code)}</code>`:""}${supportBadge(r)}${r.st?`<span class="base-status">${esc(r.st)}</span>`:""}${r.pj?`<span class="base-proj">${esc(r.pn||r.pj)} · ${esc(r.pj)}</span>`:""}</header>
       <h3>${mark(r.t||"untitled",q)}</h3>
       ${r.s&&r.s!==r.t?`<p>${mark(r.s,q)}</p>`:""}
-      <p class="base-op">added through <code>${esc(KIND_OP[r.k]||"—")}</code></p>
+      <p class="base-op">stored in git: <code>${esc(KIND_OP[r.k]||"—")}</code></p>
       ${fields?`<details class="base-fields"><summary>All record fields <span>${(r.f||[]).length}</span></summary><dl>${fields}</dl></details>`:""}
       ${rels.length?`<div class="base-rels"><b>Related records</b>${rels.map(y=>`<button type="button" data-base-jump="${esc(y.o.code||y.o.t||"")}"><small>${esc(y.dir)} ${esc(y.label)} · ${esc(KIND[y.o.k]||y.o.k)}</small>${esc(y.o.code||"")} ${esc((y.o.t||"").slice(0,70))}</button>`).join("")}</div>`:""}
     </article>`;
@@ -663,7 +689,7 @@
       <header>${place?`<span class="base-place">${esc(String(place))}</span>`:""}<span class="base-kind">${esc(KIND.paper_claim)}</span><span class="base-score" title="cross-encoder score">${esc(score)}</span>${x.library_folder?`<button class="base-folder" type="button" data-open-folder="${esc(x.library_folder)}">${esc(x.library_folder)}</button>`:""}</header>
       <h3>${mark(claim,q)}</h3>
       <p class="claim-of">${paper?`<button type="button" data-open-paper="${esc(shortId(x.paper_id))}">${esc(paper)}</button>`:""}${x.section?`<span>section «${esc(x.section)}»</span>`:""}</p>
-      <p class="base-op">added through <code>record_paper_claim</code></p>
+      <p class="base-op">stored in git: <code>record_paper_claim</code></p>
       <div class="claim-links">${x.paper_id?`<button type="button" data-open-paper="${esc(shortId(x.paper_id))}">All claims from this paper →</button>`:""}${x.arxiv_id?`<a href="https://arxiv.org/abs/${esc(x.arxiv_id)}" target="_blank" rel="noopener">arXiv ${esc(x.arxiv_id)} ↗</a>`:""}</div>
     </article>`;
   }
@@ -680,7 +706,7 @@
       <header>${place?`<span class="base-place">${esc(String(place))}</span>`:""}<span class="base-kind">${esc(KIND[kind]||kind)}</span>${code?`<code class="base-code">${esc(code)}</code>`:""}<span class="base-score" title="cross-encoder score: how well the record answers the question">${esc(score)}</span>${supportBadge(snap)}${snap?.pn?`<span class="base-proj">${esc(snap.pn)}</span>`:""}</header>
       <h3>${mark(item.title||"untitled",q)}</h3>
       <p>${mark(body,q)}</p>
-      <p class="base-op">added through <code>${esc(KIND_OP[kind]||"—")}</code></p>
+      <p class="base-op">stored in git: <code>${esc(KIND_OP[kind]||"—")}</code></p>
       ${fields?`<details class="base-fields"><summary>All record fields <span>${(snap.f||[]).length}</span></summary><dl>${fields}</dl></details>`:""}
       ${rels.length?`<div class="base-rels"><b>Related records</b>${rels.map(y=>`<button type="button" data-base-jump="${esc(y.o.code||y.o.t||"")}"><small>${esc(y.dir)} ${esc(y.label)} · ${esc(KIND[y.o.k]||y.o.k)}</small>${esc(y.o.code||"")} ${esc((y.o.t||"").slice(0,70))}</button>`).join("")}</div>`:""}
     </article>`;
@@ -752,19 +778,26 @@
   // 1.1 секунды у быстрого и 27 из 30 за 7.5 секунды у тщательного. Шесть лишних секунд
   // против шести правильных ответов — выбор в пользу правильного, и делать его каждый раз
   // заново человеку незачем.
-  const MCP_CALL={mode:"semantic",scope:"all",limit:20};
-  let liveOk=demo?false:null,mcpSeq=0;
+  // Режим ровно тот, каким `search_lab` отвечает агентам по умолчанию: значок рядом
+  // обещает «тот же ответ и порядок, что получают агенты», и витрина обязана этому
+  // обещанию соответствовать. Владелец 14-09-2026: «получают агенты — так и надо, так
+  // что сделай чтобы на сайте реально мы получали данные как агенты».
+  //
+  // Размен известен и принят. Мерка на 64 вопросах: hybrid лучше в среднем — nDCG@10
+  // 0.9542 против 0.9488 у semantic, MRR 0.9204 против 0.903. Но на вопросе «как
+  // выбрать оптимизатор в претрейне» hybrid уводит «Fantastic Pretraining Optimizers»
+  // за пределы первых двадцати, где semantic давал её четвёртой.
+  const MCP_CALL={mode:"hybrid",scope:"all",limit:20};
+  // Службы MCP с 07-10-2026 нет: база это git, и витрина читает её из дерева через scripts/live.py.
+  let liveOk=false,mcpSeq=0;
+  let lastLiveAnswer=null;
   function callLine(q){
-    if(demo)return `<p class="mcp-call is-local">${demoScenario(q)?"Topic selection · public demo database":"Browser search over the public demo database"}</p>`;
-    const args=`query: "${q}", mode: "${MCP_CALL.mode}", scope: "${MCP_CALL.scope}", `
-      +`limit: ${MCP_CALL.limit}`;
-    return `<pre class="mcp-call"><code>search_lab(${esc(args)})</code></pre>`;
+    if(demo)return `<p class="mcp-call is-local">Search over demo data in the browser</p>`;
+    // То же самое у себя в дереве: поиск идёт по файлам, вызывать нечего.
+    return `<pre class="mcp-call"><code>rg -i ${esc(JSON.stringify(q))} ~/brainlab</code></pre>`;
   }
   async function liveHealth(){
-    if(demo){liveOk=false;return false}
-    try{const r=await proxyFetch(`${PROXY}/health`,{cache:"no-store"});liveOk=r.ok}
-    catch{liveOk=false}
-    return liveOk;
+    liveOk=false;return false;
   }
   // Туннель к brain_lab рвётся под нагрузкой сервера: прокси это видит и поднимает его
   // заново, но запрос, попавший в разрыв, уже провалился. Одна такая осечка не значит, что
@@ -792,7 +825,7 @@
     const out=()=>$("mcp-results");
     const ask=value=>{const inp=$("mcp-search-input");inp.value=value;runSearch(value);
       window.scrollTo({top:0,behavior:"smooth"})};
-    const show=html=>{const box=out();if(!box)return;box.innerHTML=html;bindResults(box);
+    const show=html=>{const box=out();if(!box)return;++mcpSeq;box.innerHTML=html;bindResults(box);
       // Поле поиска прилипшее: без запаса заголовок карточки уезжает под него.
       const top=box.getBoundingClientRect().top+scrollY-150;
       window.scrollTo({top:Math.max(0,top),behavior:"smooth"})};
@@ -800,12 +833,12 @@
     // поиск по коду ничего не находил, и переход выглядел как поломка.
     scope.querySelectorAll("[data-base-jump]").forEach(b=>b.onclick=()=>{
       const code=b.dataset.baseJump;
-      if(byCode[code])show(recordCard(code));else ask(code)});
+      if(byCode[code])openDetail("record",code);else ask(code)});
     scope.querySelectorAll("[data-open-record]").forEach(b=>b.onclick=()=>{
       const code=b.dataset.openRecord;
       if(!code)return;
       replaceHash(`mcp-live/${code}`);
-      show(byCode[code]?.k==="project"?projectCard(code):recordCard(code))});
+      openDetail("record",code)});
     scope.querySelectorAll("[data-ask-tool]").forEach(b=>b.onclick=()=>{
       const box=$("mcp-agent");if(box)box.open=true;
       $("mcp-agent-name").value=b.dataset.askTool;
@@ -817,7 +850,7 @@
       try{await navigator.clipboard.writeText(link);b.textContent="link copied"}
       catch{b.textContent=link}});
     scope.querySelectorAll("[data-open-term]").forEach(b=>b.onclick=()=>ask(b.dataset.openTerm.replace(/_/g," ")));
-    scope.querySelectorAll("[data-open-paper]").forEach(b=>b.onclick=()=>{replaceHash(`mcp-live/paper/${b.dataset.openPaper}`);show(paperCard(b.dataset.openPaper))});
+    scope.querySelectorAll("[data-open-paper]").forEach(b=>b.onclick=()=>openDetail("paper",b.dataset.openPaper));
     scope.querySelectorAll("[data-open-folder]").forEach(b=>b.onclick=()=>show(folderPage(b.dataset.openFolder)));
     scope.querySelectorAll("[data-open-theme]").forEach(b=>b.onclick=()=>show(themePage(b.dataset.openTheme)));
     scope.querySelectorAll("[data-open-section]").forEach(b=>b.onclick=()=>show(sectionPage(b.dataset.openSection)));
@@ -840,38 +873,8 @@
   // снимка приводятся к форме ответа службы: род, идентификатор, заголовок, текст, оценка.
   // Оценки у снимка нет — вместо неё ставится пусто, и на карточке её просто не видно.
   function snapshotItems(q){
-    const scenario=demoScenario(q);
-    if(scenario)return scenarioItems(scenario,q);
     if(searchIndex)return snapshotRanked(q);
     return snapshotLegacy(q);
-  }
-
-  // Curated examples belong only to the public showcase, never to live MCP ranking.
-  function demoScenario(q){
-    const normalize=value=>String(value).toLowerCase().trim().replace(/[?!.]+$/u,"").trim().replace(/\s+/g," ");
-    return demo?.scenarios?.find(s=>normalize(s.text)===normalize(q));
-  }
-
-  function scenarioItems(scenario,q){
-    return [scenario.paper,...scenario.related].flatMap(id=>{
-      const paper=papersById[id];
-      if(!paper)return [];
-      const featured=id===scenario.paper;
-      const extra={paper_id:id,library_folder:paper.f,demo_featured:featured};
-      const claims=featured?paper.c:[paperClaim(paper,q)].filter(Boolean);
-      return [{entity_type:"paper",entity_id:id,title:paper.t,snippet:paper.s,extra},
-        ...claims.map(claim=>({entity_type:"paper_claim",entity_id:id,
-          title:paper.t+" — "+claim.s,snippet:"",
-          extra:{...extra,claim_kind:claim.k}}))];
-    });
-  }
-
-  function paperClaim(paper,q){
-    const claims=paper?.c||[];
-    if(!window.LabSearch)return claims[0];
-    const index=new window.LabSearch.Index();
-    for(const claim of claims)index.add(claim,[[claim.s,1]]);
-    return index.build().search(q,1)[0]||claims[0];
   }
 
   // Записи из общего индекса в форме ответа службы. Оценка BM25 приводится к 0…1 делением на
@@ -884,10 +887,7 @@
     for(const item of searchIndex.search(q,8)){
       if(!NODE_KINDS.has(item.kind))continue;
       if(item.kind==="project"||item.kind==="theme"){context.add(item.title);context.add(item.code)}
-      else{
-        context.add(item.id);
-        if(item.kind==="subtopic"&&item.folder)context.add(item.folder);
-      }
+      else context.add(item.id);
     }
     const found=searchIndex.search(q,40,{context}).filter(x=>!NODE_KINDS.has(x.kind));
     if(!found.length)return [];
@@ -899,7 +899,7 @@
       const snap=x.code?byCode[x.code]:null;
       if(x.kind==="paper"){
         const paper=papersById[x.id];
-        const claim=paperClaim(paper,q);
+        const claim=(paper?.c||[]).slice().sort((a,b)=>(b.s||"").length-(a.s||"").length)[0];
         return {entity_type:"paper_claim",entity_id:x.id,
                 title:`${x.title} — ${claim?claim.s:x.text||""}`,
                 snippet:claim?claim.s:(x.text||""),score:x.score/best,
@@ -919,7 +919,9 @@
     }
     for(const x of libSearch(q,8)){
       const p=x.p||x;
-      const claim=paperClaim(p,q);
+      // У статьи в снимке показываем её самое длинное разобранное утверждение: именно оно
+      // отвечает на вопрос, а не название статьи.
+      const claim=(p.c||[]).slice().sort((a,b)=>(b.s||"").length-(a.s||"").length)[0];
       out.push({entity_type:"paper_claim",entity_id:p.id,
                 title:`${p.t} — ${claim?claim.s:p.sr||p.s||""}`,
                 snippet:claim?claim.s:(p.sr||p.s||""),score:null,
@@ -938,11 +940,11 @@
       return;
     }
     const code=(q.trim().match(/^[A-ZА-Я]-[A-Z]{2,4}-\d{2,4}$/i)||[])[0];
-    if(code&&byCode[code.toUpperCase()]){
-      const record=byCode[code.toUpperCase()];
-      box.innerHTML=record.k==="project"?projectCard(code.toUpperCase()):recordCard(code.toUpperCase());
+    if(code){
+      await openDetail("record",code.toUpperCase());
+      if(seq+1!==mcpSeq||!box.isConnected)return;
       if(found)found.textContent="record by code";
-      if(call)call.innerHTML=`<p class="mcp-call is-local">Opened by code from the local snapshot: a record code does not need semantic search.</p>`;
+      if(call)call.innerHTML=`<p class="mcp-call is-local">Opened by record code.</p>`;
       bindResults(box);scrollToResults();return;
     }
     /* Развилки «карта или записи» здесь больше нет.
@@ -966,10 +968,11 @@
       // Служба падает часто (общий сервер), и в эти минуты витрина не должна выглядеть
       // хуже, чем обычно. Поэтому снимок приводится к тому же виду, что живой ответ:
       // источник сверху, его записи внутри.
-      const items=snapshotItems(q);
-      if(found)found.textContent=items.length?`${items.length} from snapshot`:"nothing";
+      const items=await fallbackItems(q,seq);
+      if(!items)return;
+      if(found)found.textContent=items.length?`${items.length} found`:"nothing";
       box.innerHTML=items.length?answerPage(items,q)
-        :demo?`<p class="mcp-empty">No answer in the demo database. Try one of the examples above.</p>`:`<p class="mcp-empty">No snapshot matches. The snapshot searches by words, not meaning. Start live search to send the same query to the service exactly as an agent would.</p>`;
+        :demo?`<p class="mcp-empty">The demo set has no answer. Try one of the examples above.</p>`:`<p class="mcp-empty">Nothing found. Try other words or browse the topics on the right.</p>`;
       bindResults(box);scrollToResults();return;
     }
     // Кросс-энкодер отвечает 6-14 секунд, и на такой паузе молчащий экран читается как
@@ -1005,6 +1008,7 @@
       const warn=lexicalOnly
         ? `<p class="mcp-warn">The service answered without vector search: embeddings timed out, so it fell back to word matching. Russian queries may miss terms stored in Latin script. Try again; vector search often succeeds on the second attempt.</p>`
         : "";
+      lastLiveAnswer=items.length?{items,q,seq,warn}:null;
       box.innerHTML=items.length?warn+answerPage(items,q)
         : warn+`<p class="mcp-empty">The service found no answer to this question. The database knows only what someone has explicitly recorded.</p>`;
       bindResults(box);scrollToResults();
@@ -1014,11 +1018,12 @@
       // Показываем ответ по снимку, но службу мёртвой не объявляем: следующий вопрос снова
       // пойдёт в неё. Раньше одна осечка сажала витрину на снимок до перезагрузки страницы,
       // и человек этого не замечал — он видел просто плохие ответы.
-      liveOk=demo?false:null;syncLiveBadge();
-      const items=snapshotItems(q);
+      liveOk=false;syncLiveBadge();
+      const items=await fallbackItems(q,seq);
+      if(!items)return;
       box.innerHTML=`<p class="mcp-warn">The service did not respond (${esc(String(error.message||error))}). Results below come from the local snapshot, which searches by words rather than meaning. The next question will try the service again.</p>`
         +(items.length?answerPage(items,q):"");
-      if(found)found.textContent=`${items.length} from snapshot`;
+      if(found)found.textContent=`${items.length} found`;
       bindResults(box);scrollToResults();
     }
   }
@@ -1115,14 +1120,14 @@
 
   const folderStats=folder=>{
     const ps=(lib.papers||[]).filter(p=>p.f===folder);
-    return {papers:ps.length,claims:ps.reduce((n,p)=>n+(p.c||[]).length,0)};
+    return {papers:ps.length,claims:ps.reduce((n,p)=>n+claimCount(p),0)};
   };
 
   // Что нашлось в карте базы по этому запросу: подразделы, подтемы, направления, проекты.
   // Единый индекс: узлы дерева, записи базы и статьи в одной коллекции, ранжирование BM25.
   // Пока индекс не построен, витрина работает по-старому — это лишь на случай, если файл
   // ядра не загрузился.
-  let searchIndex=(window.LabSearch&&window.LAB_TREE)
+  let searchIndex=(!window.LAB_PARTIAL&&window.LabSearch&&window.LAB_TREE)
     ? window.LabSearch.build({tree,base,lib}) : null;
 
   /* Подменить дерево на то, что отдала служба, и пересобрать всё, что от него зависит.
@@ -1139,7 +1144,7 @@
       tree.sections=fresh.sections;tree.folders=fresh.folders;
       treeFolders={};for(const f of tree.folders)treeFolders[f.f]=f;
       treeSections={};for(const x of tree.sections)treeSections[x.name]=x;
-      if(window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
+      if(!window.LAB_PARTIAL&&window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
       treeIsLive=true;
       const view=$("mcp-live-view"),areas=view?.querySelector(".way-areas");
       if(areas&&!view.hidden){
@@ -1218,6 +1223,7 @@
     paper_claim:["paper claim","paper claims","paper claims"],
     evidence:["measurement","measurements","measurements"],
     experiment:["run","runs","runs"],
+    series:["series","series","series"],
     derivation:["derivation","derivations","derivations"],
     decision:["decision","decisions","decisions"],
     project:["project","project","projects"],
@@ -1233,7 +1239,6 @@
     paper_chunk:["paper section","paper sections","paper sections"]};
   function plural(n,forms){
     if(!forms)return "";
-    if(document.documentElement.lang==="en")return forms[Math.abs(n)===1?0:2];
     const a=Math.abs(n)%100,b=a%10;
     if(a>10&&a<20)return forms[2];
     if(b>1&&b<5)return forms[1];
@@ -1283,6 +1288,7 @@
               abstract:snippet.startsWith(whole)?snippet.slice(whole.length).trim():snippet};
     }
     const snap=snapById[String(x.entity_id||"").slice(0,8)];
+    if(!snap&&e.project?.code)return {key:"project:"+e.project.code,kind:"project",id:e.project.code,title:e.project.name,folder:""};
     if(x.entity_type==="project"){
       const code=snap?.code||snap?.pj||"";
       return {key:"project:"+(code||whole),kind:"project",id:code,title:whole,folder:""};
@@ -1321,8 +1327,7 @@
     const tally=parts.map(k=>`<span><b>${esc(String(by[k].length))}</b> ${esc(plural(by[k].length,ANSWER_FORMS[k])||KIND[k]||k)}</span>`).join("");
     const ours=(by.hypothesis||[]).length+(by.evidence||[]).length+(by.experiment||[]).length;
     const theirs=(by.paper_claim||[]).length+(by.paper||[]).length;
-    const gist=demoScenario(q)?`Laboratory work and papers on the topic.`
-      :ours&&theirs?`Both our work and analyzed papers contribute to the answer.`
+    const gist=ours&&theirs?`Both our work and analyzed papers contribute to the answer.`
       :ours?`The answer comes from our work: run and measurement records.`
       :theirs?`Our work has no answer; analyzed papers provide one.`:"";
     const head=`<div class="answer-head"><p class="answer-tally">${tally}</p>${gist?`<p class="answer-gist">${esc(gist)}</p>`:""}</div>`;
@@ -1342,9 +1347,9 @@
 
   function sourceGroup(group,q){
     const {src,items}=group;
-    const snap=src.kind==="project"?byCode[src.id]:null;
+    const reported=items.find(({item})=>item.extra?.project)?.item.extra.project;
+    const snap=src.kind==="project"?(byCode[src.id]||{s:reported?.abstract,st:reported?.status,who:{leads:reported?.leads||[],members:reported?.members||[]}}):null;
     const paper=src.kind==="paper"?papersById[src.id]:null;
-    const featured=!!(demo&&paper&&items.some(({item})=>item.extra?.demo_featured));
     const node=src.kind==="folder"?treeFolders[src.id]:null;
     const [subFolder,subSlug]=src.kind==="subtopic"?String(src.id).split("|"):[];
     const topic=src.kind==="subtopic"
@@ -1356,14 +1361,13 @@
       ? (node?.sub||[]).map(t=>`<button type="button" data-open-subtopic="${esc(src.id)}|${esc(t.slug)}">${esc(t.t)}<span>${esc(String(t.p.length))}</span></button>`).join("")
       : src.kind==="subtopic"
       ? (topic?.p||[]).map(id=>papersById[id]).filter(Boolean)
-          .sort((a,b)=>(b.c||[]).length-(a.c||[]).length).slice(0,8)
+          .sort((a,b)=>claimCount(b)-claimCount(a)).slice(0,8)
           .map(p=>`<button type="button" data-open-paper="${esc(p.id)}">${esc(p.t)}${p.y?`<span>${esc(String(p.y))}</span>`:""}</button>`).join("")
       : "";
     const abstract=unmark(
       src.kind==="project"?(snap?.s||"")
       :src.kind==="folder"?shorten(node?.a||"",320)
       :src.kind==="subtopic"?shorten(topic?.a||src.abstract||"",320)
-      :featured?(paper?.sr||paper?.s||paper?.ab||"")
       :shorten(paper?.sr||paper?.s||paper?.ab||"",320));
     const who=snap?.who||{};
     const team=[...(who.leads||[]),...(who.members||[])];
@@ -1373,7 +1377,7 @@
       ? `${(node?.sub||[]).length} subtopics`
       : src.kind==="subtopic"
       ? [subFolder,topic?`${(topic.p||[]).length} ${plural((topic.p||[]).length,["paper","papers","papers"])}`:""].filter(Boolean).join(" · ")
-      : [paper?.au?authorLine(paper.au):"",paper?.v||paper?.y,featured?"":src.folder].filter(Boolean).join(" · ");
+      : [paper?.au?authorLine(paper.au):"",paper?.y,src.folder].filter(Boolean).join(" · ");
     const open=src.kind==="project"
       ? `<button type="button" data-open-record="${esc(src.id)}">Open project: overview, all claims, terminology →</button>`
       : src.kind==="folder"
@@ -1381,16 +1385,16 @@
       : src.kind==="subtopic"&&topic
       ? `<button type="button" data-open-subtopic="${esc(subFolder)}|${esc(subSlug)}">Open subtopic: all its papers →</button>`
       : src.kind==="paper"&&src.id
-      ? `<button type="button" data-open-paper="${esc(src.id)}">${featured?"Open project":"Open paper: abstract and all its claims"} →</button>`:"";
+      ? `<button type="button" data-open-paper="${esc(src.id)}">Open the paper: abstract and all its claims →</button>`:"";
     // Строки утверждений — только те, что не сам источник: карточка статьи, найденной
     // целиком, не должна показывать саму себя ещё и строкой внутри себя.
     const rows=items.filter(({item})=>!SELF_HIT.has(item.entity_type));
     const count=rows.length
       ? `${rows.length} ${plural(rows.length,["matching claim","matching claims","matching claims"])}`
       : "full match";
-    return `<article class="src-group is-${featured?"project is-publication":esc(src.kind)}" data-source-id="${esc(src.id)}" data-source-kind="${esc(src.kind)}">
+    return `<article class="src-group is-${esc(src.kind)}">
       <header>
-        <span class="src-kind">${featured?"Laboratory work · paper":esc(SRC_KIND[src.kind]||src.kind)}</span>
+        <span class="src-kind">${esc(SRC_KIND[src.kind]||src.kind)}</span>
         ${src.kind==="project"&&src.id?`<code>${esc(src.id)}</code>`:""}
         <span class="src-count">${esc(count)}</span>
       </header>
@@ -1461,6 +1465,7 @@
   // theme_slug в базе почти пустой, поэтому осей три настоящие: папки библиотеки (38),
   // темы проектов (23) и термины (59).
   const papersById={};for(const x of (lib.papers||[]))papersById[x.id]=x;
+  const claimCount=p=>p.claim_count??(p.c||[]).length;
   const CLAIM_KIND={empirical:"empirical",theoretical:"theoretical",method:"method",definition:"definitions"};
   const CLAIM_ORDER=["theoretical","empirical","method","definition"];
 
@@ -1510,7 +1515,7 @@
     const terms=(base.terms||[]).slice(0,40).map(t=>
       `<button type="button" data-open-term="${esc(t.t)}">${esc(t.t.replace(/_/g," "))}<span>${esc(String(t.n))}</span></button>`).join("");
     const subtopics=(tree.folders||[]).reduce((n,f)=>n+(f.sub||[]).length,0);
-    return `<details class="mcp-browse" id="mcp-browse"><summary>Browse sections without asking a question <span>${esc(String((tree.directions||[]).length))} research areas · ${esc(String((tree.sections||[]).length))} sections · ${esc(String((tree.folders||[]).length))} subsections · ${esc(String(subtopics))} subtopics</span></summary>
+    return `<details class="mcp-browse" id="mcp-browse"><summary>Browse by topic without asking <span>${esc(String((tree.directions||[]).length))} research areas · ${esc(String((tree.folders||[]).length))} themes with literature · ${esc(String((tree.folders||[]).reduce((n,f)=>n+(f.sub||[]).length,0)))} subtopics</span></summary>
       <section><b>Laboratory research areas</b><p>Our work: an area contains topics, a topic contains projects, and each project has its own claims, team, and terminology.</p><div class="browse-tree">${dirs}</div></section>
       <section><b>Library sections</b><p>External work in your library's organization. Larger subsections contain subtopics; every node has a description.</p><div class="browse-tree">${sections}</div></section>
       <section><b>Terms</b><p>A cross-cutting view: how often a term appears in paper claims, our claims, and measurements.</p><div class="mcp-chips is-terms">${terms}</div></section></details>`;
@@ -1541,7 +1546,7 @@
   // гипотез, экспериментов, теорем в этой статье».
   function paperCard(id,q=""){
     const p=papersById[id];
-    if(!p)return `<p class="mcp-empty">This paper is not in the local snapshot. Refresh with: <code>bash scripts/refresh-snapshots.sh</code></p>`;
+    if(!p)return `<p class="mcp-empty">This paper is not in the theme literature. To fetch it: <code>lab sync</code></p>`;
     const groups=CLAIM_ORDER.map(k=>{
       const xs=(p.c||[]).filter(c=>c.k===k);
       if(!xs.length)return "";
@@ -1550,13 +1555,13 @@
     }).join("");
     const body=p.sr||p.ab||p.s||"";
     return `<article class="paper-page">
-      <header><span class="base-kind">${["author-publication","related-publication"].includes(p.origin)?"published paper":demo?"demo paper":"paper"}</span>${p.f?`<button class="base-folder" type="button" data-open-folder="${esc(p.f)}">${esc(p.f)}</button>`:""}${p.y?`<span class="base-status">${esc(String(p.y))}</span>`:""}</header>
+      <header><span class="base-kind">paper</span>${p.f?`<button class="base-folder" type="button" data-open-folder="${esc(p.f)}">${esc(p.f)}</button>`:""}${p.y?`<span class="base-status">${esc(String(p.y))}</span>`:""}</header>
       <h2>${esc(p.t)}</h2>
       <p class="paper-authors">${esc(p.au||"")}${p.v?` · ${esc(p.v)}`:""}</p>
-      ${body?`<p class="paper-abstract">${mark(body,q)}</p>`:""}${p.reading_scope?`<p class="paper-authors">Brief analysis: ${esc(p.reading_scope)}. Claims are paraphrased.</p>`:""}
-      <div class="paper-counts"><span>claims <b>${esc(String((p.c||[]).length))}</b></span><span>sections <b>${esc(String(p.ns??p.nc??0))}</b></span>${p.key?`<span>key <b>${esc(p.key)}</b></span>`:""}</div>
-      <div class="claim-links">${p.ax?`<a href="https://arxiv.org/abs/${esc(p.ax)}" target="_blank" rel="noopener">arXiv ${esc(p.ax)} ↗</a>`:p.source_url?`<a href="${esc(p.source_url)}" target="_blank" rel="noopener">Original paper ↗</a>`:""}${p.venue_url&&p.venue_url!==p.source_url?`<a href="${esc(p.venue_url)}" target="_blank" rel="noopener">${esc(p.v)} ↗</a>`:""}${p.code_url?`<a href="${esc(p.code_url)}" target="_blank" rel="noopener">Code ↗</a>`:""}<button type="button" data-mcp-home>← back to search</button></div>
-      ${groups||`<p class="mcp-empty">This paper has no analyzed claims in the snapshot.</p>`}</article>`;
+      ${body?`<p class="paper-abstract">${mark(body,q)}</p>`:""}
+      <div class="paper-counts"><span>claims <b>${esc(String(claimCount(p)))}</b></span><span>sections <b>${esc(String(p.ns??p.nc??0))}</b></span>${p.key?`<span>key <b>${esc(p.key)}</b></span>`:""}</div>
+      <div class="claim-links">${p.ax?`<a href="https://arxiv.org/abs/${esc(p.ax)}" target="_blank" rel="noopener">arXiv ${esc(p.ax)} ↗</a>`:""}<button type="button" data-mcp-home>← back to search</button></div>
+      ${groups||`<p class="mcp-empty">This paper has no reviewed claims.</p>`}</article>`;
   }
 
   // Страница подтемы: третий уровень библиотеки. Владелец: «надо в больших разделах добавлять
@@ -1566,8 +1571,8 @@
     const topic=(node?.sub||[]).find(t=>t.slug===slug);
     if(!topic)return `<p class="mcp-empty">This subtopic is not in the tree. Rebuild with: <code>python3 scripts/build_tree.py</code></p>`;
     const xs=topic.p.map(id=>papersById[id]).filter(Boolean)
-      .sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
-    const claims=xs.reduce((n,p)=>n+(p.c||[]).length,0);
+      .sort((a,b)=>claimCount(b)-claimCount(a));
+    const claims=xs.reduce((n,p)=>n+claimCount(p),0);
     const siblings=(node.sub||[]).filter(t=>t.slug!==slug).map(t=>
       `<button type="button" data-open-subtopic="${esc(folder)}|${esc(t.slug)}">${esc(t.t)}<span>${esc(String(t.p.length))}</span></button>`).join("");
     return `<article class="paper-page is-node">
@@ -1577,7 +1582,7 @@
       <p class="node-abstract">${esc(unmark(topic.a||""))}</p>
       <div class="paper-counts"><span>papers <b>${esc(String(xs.length))}</b></span><span>paper claims <b>${esc(String(claims))}</b></span></div>
       <div class="claim-links"><button type="button" data-open-folder="${esc(folder)}">Entire subsection ${esc(folder)} →</button><button type="button" data-mcp-home>← back to search</button></div>
-      <ol class="folder-list is-rich">${xs.map(p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String((p.c||[]).length))} ${esc(plural((p.c||[]).length,["claim","claims","claims"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`).join("")}</ol>
+      <ol class="folder-list is-rich">${xs.map(p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String(claimCount(p)))} ${esc(plural(claimCount(p),["claim","claims","claims"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`).join("")}</ol>
       ${siblings?`<div class="node-siblings"><b>Other subtopics in this subsection</b>${siblings}</div>`:""}
     </article>`;
   }
@@ -1613,21 +1618,21 @@
   function folderPage(folder){
     const node=treeFolders[folder];
     const all=(lib.papers||[]).filter(p=>p.f===folder);
-    const claims=all.reduce((n,p)=>n+(p.c||[]).length,0);
+    const claims=all.reduce((n,p)=>n+claimCount(p),0);
     // У большого подраздела статьи показываются не одним списком на 67 строк, а по подтемам:
     // сначала аннотация подтемы, потом её статьи. Список без подтем остаётся у маленьких
     // папок, где дробить нечего.
     const subs=(node?.sub||[]);
-    const paperRow=p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String((p.c||[]).length))} ${esc(plural((p.c||[]).length,["claim","claims","claims"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`;
+    const paperRow=p=>`<li><button type="button" data-open-paper="${esc(p.id)}"><strong>${esc(p.t)}</strong><span>${esc(String(claimCount(p)))} ${esc(plural(claimCount(p),["claim","claims","claims"]))}${p.y?` · ${esc(String(p.y))}`:""}${p.au?` · ${esc(authorLine(p.au))}`:""}</span>${p.sr||p.s?`<em>${esc(shorten(p.sr||p.s,200))}</em>`:""}</button></li>`;
     const groups=subs.map(t=>{
-      const xs=t.p.map(id=>papersById[id]).filter(Boolean).sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
+      const xs=t.p.map(id=>papersById[id]).filter(Boolean).sort((a,b)=>claimCount(b)-claimCount(a));
       return `<section class="paper-claims"><h4>${esc(t.t)}<span>${xs.length}</span></h4>
         <p class="node-abstract is-sub">${esc(unmark(t.a||""))}</p>
         <ol class="folder-list is-rich">${xs.map(paperRow).join("")}</ol></section>`}).join("");
     const restIds=new Set((node?.rest)||[]);
     const rest=subs.length
-      ? all.filter(p=>restIds.has(p.id)).sort((a,b)=>(b.c||[]).length-(a.c||[]).length)
-      : all.slice().sort((a,b)=>(b.c||[]).length-(a.c||[]).length);
+      ? all.filter(p=>restIds.has(p.id)).sort((a,b)=>claimCount(b)-claimCount(a))
+      : all.slice().sort((a,b)=>claimCount(b)-claimCount(a));
     const restBlock=rest.length
       ? `<section class="paper-claims">${subs.length?`<h4>Outside subtopics<span>${rest.length}</span></h4>
           <p class="node-abstract is-sub">These papers do not belong to a subtopic: individually they do not form a distinct cluster, but remain in the folder.</p>`:""}
@@ -1655,7 +1660,7 @@
         return `<section class="theme-project"><h3><code class="base-code">${esc(pr.code||"")}</code> <button type="button" data-open-record="${esc(pr.code||"")}">${esc(pr.t)}</button></h3>
           ${pr.s?`<p>${esc(pr.s)}</p>`:""}
           ${hyp.length?`<ol class="folder-list is-rich">${hyp.map(h=>recordRow(h)).join("")}</ol>`
-            :`<p class="mcp-empty">This project has no claims in the snapshot yet.</p>`}</section>`}).join("")}</article>`;
+            :`<p class="mcp-empty">This work has no claims yet.</p>`}</section>`}).join("")}</article>`;
   }
   // ============ Карточка проекта ============
   // Владелец: «аналогично с проектом лабы, только там будет сильно больше». Всё берётся из
@@ -1663,7 +1668,7 @@
   // get_project_by_slug — тем же, которым пользуется агент.
   const byCode={};for(const r of (base.records||[]))if(r.code)byCode[r.code]=r;
   const PROJECT_PARTS=[["hypothesis","Claims"],["derivation","Derivations"],
-    ["experiment","Runs"],["evidence","Measurements"],["decision","Rules"],
+    ["series","Series"],["experiment","Runs"],["evidence","Measurements"],["decision","Rules"],
     ["journal","Journal"],["term","Terms"],["source","Sources"]];
   const field=(r,name)=>((r.f||[]).find(f=>f[0]===name)||[])[1]||"";
 
@@ -1727,9 +1732,9 @@
       .map(([label,value])=>[label,safeUrl(value)]).filter(([,url])=>url);
     const tasks=demo?(workspace?.example_tasks||[]):[];
     return `<section class="project-workspace" aria-label="Team workspace"><div class="project-workspace-heading"><div><span>Team workspace</span><h3>Project tasks</h3></div>${links.length?`<nav aria-label="Project links">${links.map(([label,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} ↗</a>`).join("")}</nav>`:""}</div>
-      <p>${demo?"Example shared board: the person remains the assignee; Hermes helps carry out their assigned work.":links.length?"Tasks, assignees, and deadlines live in the issues of the work repository in GitLab.":!window.LAB_PROJECT_WORKSPACES?"Loading issue links…":window.LAB_PROJECT_WORKSPACES.unavailable?"Issue links did not load right now.":"This work has no issues yet."}</p>
+      <p>${demo?"Example shared board: the person remains the assignee; Hermes helps carry out their assigned work.":links.length?"Tasks, assignees and deadlines live on the work's board in GitLab. Proposals to the work are assigned to its lead.":!window.LAB_PROJECT_WORKSPACES?"Loading GitLab links…":window.LAB_PROJECT_WORKSPACES.unavailable?"GitLab links failed to load just now.":"This work is not linked to a GitLab repository yet."}</p>
       ${tasks.length?`<ul class="project-task-preview">${tasks.map(t=>`<li><span class="project-task-state">${esc(t.status)}</span><strong>${esc(t.title)}</strong><span>${esc(t.assignee)}</span></li>`).join("")}</ul><small>Demo example. Cards are fictional; actions on the real board are unavailable here.</small>`:""}
-      ${!demo&&links.length?"<small>The link opens the work's board in GitLab.</small>":""}</section>`;
+      </section>`;
   }
 
   function projectCard(code,q=""){
@@ -1759,14 +1764,14 @@
       ${termsBlock(code)}
       <div class="paper-counts">${PROJECT_PARTS.map(([k,label])=>{const n=own.filter(r=>r.k===k).length;
         return n?`<span>${esc(label.toLowerCase())} <b>${n}</b></span>`:""}).join("")}</div>
-      <div class="claim-links">${slug?`<button type="button" data-ask-tool="get_project_by_slug" data-ask-args='{"slug":"${esc(slug)}"}'>Ask the service: get_project_by_slug ↗</button>`:""}<button type="button" data-mcp-home>← back to search</button></div>
+      <div class="claim-links">${slug&&window.LAB_PROJECT_WORKSPACES?.projects?.[slug]?.page_url?`<a href="${esc(window.LAB_PROJECT_WORKSPACES.projects[slug].page_url)}" target="_blank" rel="noopener">Open the work in GitLab ↗</a>`:""}<button type="button" data-mcp-home>← back to search</button></div>
       ${parts}</article>`;
   }
 
-  // Постоянная ссылка на одну запись по её коду: #mcp-live/H-WBD-001
+  // Постоянная ссылка на одну запись по её коду: #mcp-live/H-MMU-001
   function recordCard(code,q=""){
     const r=byCode[code];
-    if(!r)return `<p class="mcp-empty">Record code ${esc(code)} is not in the snapshot. Refresh with: <code>bash scripts/refresh-snapshots.sh</code></p>`;
+    if(!r)return `<p class="mcp-empty">Record code ${esc(code)} is not in the base. To fetch the latest: <code>lab sync</code></p>`;
     if(r.k==="project")return projectCard(code,q);
     const rels=baseRelations(r);
     const fields=(r.f||[]).map(f=>`<div><dt>${esc(f[0])}</dt><dd>${mark(f[1],q)}</dd></div>`).join("");
@@ -1774,7 +1779,7 @@
       <header><span class="base-kind">${esc(KIND[r.k]||r.k)}</span><code class="base-code">${esc(r.code||"")}</code>${supportBadge(r)}${r.st?`<span class="base-status">${esc(r.st)}</span>`:""}${r.pj?`<button class="base-folder" type="button" data-open-record="${esc(r.pj)}">${esc(r.pn||r.pj)}</button>`:""}</header>
       <h2>${mark(r.t||"",q)}</h2>
       ${r.s&&r.s!==r.t?`<p class="paper-abstract">${mark(r.s,q)}</p>`:""}
-      <p class="base-op">added through <code>${esc(KIND_OP[r.k]||"—")}</code></p>
+      <p class="base-op">stored in git: <code>${esc(KIND_OP[r.k]||"—")}</code></p>
       <div class="claim-links"><button type="button" data-copy-link="${esc(r.code||"")}">Copy record link</button><button type="button" data-mcp-home>← back to search</button></div>
       ${fields?`<dl class="project-about">${fields}</dl>`:""}
       ${rels.length?`<section class="paper-claims"><h4>Related records<span>${rels.length}</span></h4>
@@ -1805,20 +1810,33 @@
       if(out)out.textContent=JSON.stringify(data,null,1).slice(0,20000);
     }catch(error){if(out)out.textContent=String(error)}
   }
+  // База на странице живая: сервер атласа (scripts/live.py) пересобирает её, как только в клоны
+  // дерева приходит коммит, и сам подтягивает дерево из GitLab. Поэтому на плашке не дата
+  // сборки, а последнее слияние в базе.
+  function liveBadge(){
+    const last=base.last||{},when=last.t?new Date(last.t*1000):null;
+    const fmt=d=>`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")} in ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+    const n=k=>(base.records||[]).filter(r=>r.k===k).length;
+    const works=(base.records||[]).filter(r=>r.k==="project"&&String(r.id||"").startsWith("work:")).length;
+    const num=x=>x.toLocaleString(window.LAB_I18N?.language==="en"?"en-US":"ru-RU");
+    return `<b>live base${when?` · updated ${esc(fmt(when))}`:""}</b><span>${num(works)} works · ${num(n("hypothesis"))} claims · ${num(n("experiment"))} runs · ${num((lib.papers||[]).length)} papers reviewed. The page reads the lab GitLab and refreshes itself when something new is merged into the base.</span>`;
+  }
   function syncLiveBadge(){
     const badge=$("mcp-live-badge");if(!badge)return;
     badge.className=`mcp-live-badge ${!demo&&liveOk?"is-live":"is-snapshot"}`;
-    // Public papers and teaching records are served locally without the private MCP.
+    // В публичной сборке живой службы нет и быть не может: там выдуманная лаборатория.
     // Предлагать поднять прокси к чужому серверу нечестно, поэтому текст другой.
-    badge.innerHTML=!demo&&liveOk
+    badge.innerHTML=!demo&&liveOk===null
+      ? `<b>connecting to the service</b><span>You can ask a question without waiting for the catalog.</span>`
+      : !demo&&liveOk
       ? `<b>live service</b><span>Semantic search. The same results and order that laboratory agents receive.</span>`
       : demo
-      ? `<b>demo build</b><span>${esc(demo.note)}</span>`
+      ? `<b>demo build</b><span>${esc(demo.lab||"a fictional lab")}: one direction, one project and demo papers. The data is made up, and there is no live service here. Install the same showcase on your own base and you get this page built from your own records.</span>`
       // Раньше здесь стояло «Поднять: python3 scripts/mcp-proxy.py». Это требование к
       // человеку, которому делать нечего: туннель держит служба входа в систему и поднимает
       // его сама, как только brain_lab начнёт отвечать. Сервер общий и под нагрузкой иногда
       // не успевает даже на ssh-приветствие — это его состояние, а не поломка витрины.
-      : `<b>searching the snapshot</b><span>The shared laboratory database is not responding: the server is busy. This site is searching a complete local export by words rather than meaning. The connection will recover automatically; refresh the page in a few minutes.</span>`;
+      : liveBadge();
   }
   // ============ Что вообще есть в базе ============
   // Владелец: «дизайн MCP не созвездие, а просто удобная юзер-френдли штука, где можно
@@ -1826,22 +1844,25 @@
   // сколько чего лежит и в какой форме. Цвет несёт смысл — тёплый белый наше знание,
   // холодный синий чужие работы, янтарь то, что ещё не закрыто.
   function tallyBlock(){
-    const claims=(lib.papers||[]).reduce((n,p)=>n+(p.c||[]).length,0);
+    if(window.LAB_PARTIAL&&!window.LAB_CATALOG_READY)return `<div data-snapshot-tally></div>`;
+    const claims=(lib.papers||[]).reduce((n,p)=>n+claimCount(p),0);
     const hyp=(base.records||[]).filter(r=>r.k==="hypothesis");
-    const both=hyp.filter(r=>r.sup==="proof_and_numbers").length;
-    const open=hyp.filter(r=>r.sup==="open").length;
+    // Под утверждением есть и выкладка (theory/), и прогоны: так его закрывают с двух сторон.
+    const parts=r=>(((r.f||[]).find(f=>f[0]==="derivations · series · runs")||[])[1]||"0 · 0 · 0").split(" · ").map(Number);
+    const both=hyp.filter(r=>{const [d,,e]=parts(r);return d>0&&e>0}).length;
+    const st=s=>hyp.filter(r=>r.st===s).length;
     const count=k=>(base.records||[]).filter(r=>r.k===k).length;
-    return `<section class="tally" aria-label="Database snapshot contents"><p class="tally-caption">In the available database snapshot</p>
+    return `<section class="tally" aria-label="What the base contains"><p class="tally-caption">In the base now</p>
       <div class="tally-row">
-        <div class="is-their"><b>${esc(String((lib.papers||[]).length))}</b><span>papers in the collection</span></div>
+        <div class="is-their"><b>${esc(String((lib.papers||[]).length))}</b><span>papers reviewed</span></div>
         <div class="is-their"><b>${esc(String(claims))}</b><span>paper claims</span></div>
         <div class="is-our"><b>${esc(String(hyp.length))}</b><span>our claims</span></div>
         <div class="is-our"><b>${esc(String(count("experiment")))}</b><span>runs</span></div>
-        <div class="is-our"><b>${esc(String(count("evidence")))}</b><span>measurements</span></div>
+        <div class="is-our"><b>${esc(String(count("series")))}</b><span>series with a verdict</span></div>
         <div class="is-our"><b>${esc(String(count("derivation")))}</b><span>derivations</span></div>
       </div>
-      <p class="tally-note"><b class="is-our">${esc(String(both))}</b> claims resolved through both derivations and numbers.
-        ${demo?"Runs and measurements here are fictional. Real publications are listed under “Andrey's publications” and “Other research.”":"Everything below reads the same database as the laboratory's agents."}</p>
+      <p class="tally-note">Of ${esc(String(hyp.length))} of our claims, <b class="is-our">${esc(String(st("supported")))}</b> are supported and <b class="is-our">${esc(String(st("refuted")))}</b> honestly refuted: a method's loss is not thrown out of the base. ${esc(String(both))} are closed from both sides, by a proof and by runs.
+        ${demo?"These are made-up demo records, not lab results.":"These are the same files the lab's agents read and write."}</p>
       ${openBlock(hyp)}
     </section>`;
   }
@@ -1883,6 +1904,20 @@
   // The public demo supplies its own questions.
   const WAY_QUESTIONS=demo?.hints||["is warmup needed, and when does it help","when does Muon perform better",
     "what do we know about curvature-based quantization","where did the method fail"];
+  // Свежее в базе: утверждения, которые правили последними. Пустое место под поиском
+  // занимает не картинка, а то, чем база живёт прямо сейчас, и каждая строка открывается.
+  const CLAIM_STATE={supported:"supported",refuted:"refuted",inconclusive:"inconclusive",testing:"under test",draft:"draft"};
+  function recentClaims(){
+    if(demo)return "";
+    const upd=r=>((r.f||[]).find(f=>f[0]==="updated")||[])[1]||"";
+    const rows=(base.records||[]).filter(r=>r.k==="hypothesis"&&upd(r)&&(r.st==="supported"||r.st==="refuted"))
+      .sort((a,b)=>upd(b).localeCompare(upd(a))).slice(0,4);
+    const plain=s=>String(s||"").replace(/\$([^$]+)\$/g,"$1").replace(/\\sqrt\{([^}]*)\}/g,"√$1").replace(/\\/g,"");
+    if(!rows.length)return "";
+    return `<div class="way-recent"><span>Latest verdicts</span><ol>${rows.map(r=>
+      `<li><button type="button" data-open-record="${esc(r.code)}"><code>${esc(String(r.pn||"").split(/[:—]/)[0].trim()||r.code)}</code><strong>${esc(plain(r.t))}</strong>
+        <em class="is-${esc(r.st||"")}">${esc(CLAIM_STATE[r.st]||r.st||"")} · ${esc(upd(r).split("-").reverse().join("."))}</em></button></li>`).join("")}</ol></div>`;
+  }
   function waysBlock(){
     // Здесь стояли первые семь подпапок по алфавиту — то есть случайная выборка одного
     // уровня. Владелец: «надо в больших разделах добавлять ещё разбиение, чтобы было
@@ -1905,18 +1940,19 @@
     return `<div class="ways">
       <section class="way way-search"><span>Search the shared database</span>
         <h3>What would you like to know?</h3>
-        <p>${demo?"Find a method or result from a paper. Keyword search runs directly in your browser.":"Ask in your own words. Answers include claims, results, and their sources."}</p>
+        <p>${demo?"Keyword search over the demo set. Your question stays in the browser.":"Ask in your own words. Answers include claims, results, and their sources."}</p>
         <div class="way-body">
           <form class="way-form" id="mcp-search-form" role="search">
-            <label class="sr-only" for="mcp-search-input">Question for the shared database</label>
-            <input id="mcp-search-input" type="search" autocomplete="off" placeholder="${esc(demo?WAY_QUESTIONS[0]:"For example, when does warmup help?")}">
+            <label class="sr-only" for="mcp-search-input">Question to the shared base</label>
+            <input id="mcp-search-input" type="search" autocomplete="off" placeholder="For example, when does warmup help?">
             <button type="submit">Ask</button></form>
           <div class="way-examples">${WAY_QUESTIONS.map(q=>`<button type="button" data-way-ask="${esc(q)}">${esc(q)}</button>`).join("")}</div>
         </div>
+        ${recentClaims()}
         <div id="mcp-call-line" class="way-call"></div></section>
 
-      <section class="way way-explore"><span>From broad to specific</span>
-        <h3>Explore topics</h3>
+      <section class="way way-explore"><span>From general to specific</span>
+        <h3>Browse by topic</h3>
         <p>Section → subtopic → paper → claims.</p>
         <div class="way-body"><div class="way-areas">
           ${areas.map(a=>`<button class="way-area" type="button" data-open-section="${esc(a.name)}">
@@ -1924,6 +1960,108 @@
             ${a.examples.length?`<small class="way-area-topics">${a.examples.map(t=>`<span>${esc(t)}</span>`).join("")}</small>`:""}</button>`).join("")}
         </div></div></section></div>`;
   }
+  // Владелец 17-09-2026, второй заход: «как-то не очень нравится, типа четыре разных
+  // поиска — они один, почему так долго. Надо короче название делать. И слишком много,
+  // 8 штук это дохера, это какие-то сценарии скорее. Тебе нужно делать большой поиск, и
+  // вот каждый поиск расписать цепочками. Как в литературе: там внизу такие аккуратненькие
+  // подписи».
+  //
+  // Поэтому имена точек в одно слово, а поиск раскрыт цепочками: у каждого способа спросить
+  // — свой вопрос, своя форма ответа и свой вызов. Первый заход делал восемь точек с фразами
+  // вместо имён («Пройти по базе, не спрашивая»), и в крупной вёрстке это читалось как
+  // оглавление статьи, а не как названия.
+  //
+  // Точек стало пять: 18-09-2026 в базу приехали карты репозиториев, и у кода появился свой
+  // вопрос — «чем запустить, где править», — на который ни одна из прежних точек не отвечала.
+  // Способов спросить тоже пять, а не четыре: добавились search_grouped, search_claims и
+  // search_code, и здесь они названы ровно так же, как в `instructions` самой службы.
+  // С 07-10-2026 службы нет: каждая «точка» базы теперь это файл, команда или проверка git.
+  // Поле op оставлено прежним, чтобы вёрстка цепочки не менялась.
+  const MCP_SEARCHES=[
+    {op:"search field",t:"Ask in words",m:"claims, runs, papers",
+     d:"When you do not know where to look. The field above searches the whole tree: the works' claims, their runs, series and derivations, reviewed papers and what those papers claim.",
+     n:["One index for everything: your own work and other people's papers answer in one list.",
+        "The index is built from the base files automatically. Nobody maintains it by hand."]},
+    {op:"~/brainlab",t:"Walk the tree",m:"direction → theme → work",
+     d:"When the question is “what do we have on X at all”. The tree mirrors GitLab, and Obsidian opens it as a vault: a theme, its literature and all its works side by side.",
+     n:["The path itself tells whose it is and where it came from: no mapping table needed.",
+        "Personal notes sit in the same place but never go to GitLab."]},
+    {op:"rg · git grep",t:"Find exactly",m:"a word or number across all clones",
+     d:"When you know what to look for: a claim code, a method name, a number from a table. Plain file search finds it across all works and literature at once.",
+     n:["A number from a paper turns up next to the run that produced it."]},
+    {op:"git log -S · blame",t:"Ask the history",m:"who, when and through which proposal",
+     d:"When it matters where a record came from. Every line in the base arrived as a commit in a proposal that passed the checks and was merged by a human.",
+     n:["History is never lost: no edit is anonymous.",
+        "A proposal shows both the discussion and the checks' verdict."]},
+    {op:"GitLab",t:"Search the web",m:"across all repositories you can access",
+     d:"When the tree is not on your machine: GitLab search covers all works and literature the person has access to.",
+     n:["Works right in the browser: nothing to install."]},
+  ];
+  const MCP_POINTS=[
+    {id:"record",n:"01",title:"Record",
+     lead:"Knowledge lives not in a database but as files in the work repository. A claim is the folder claims/<CODE>/, holding everything it was tested with. The record type sets what is required of it: a claim must have a refutation criterion, a run's numbers are written by code, a series has a verdict.",
+     bullets:["Claim: one testable idea about a method, with a criterion that can refute it.",
+              "Run: a page written by the lab_run.py run recorder: hyperparameters, metrics, environment, commit, hardware.",
+              "Series: a set of runs answering one question, with a verdict on “what we see”.",
+              "Derivation: assumptions, the proof and whatever is still open.",
+              "Figure: sits next to the series it was built from."],
+     tools:["claims/<H>/README.md","runs/<E>.md","series/<S>.md","theory/<D>.md","figures/","lab_run.py","canon.md"]},
+    {id:"search",n:"02",title:"Search",searches:MCP_SEARCHES,
+     lead:"The base is files, so anything that searches files can search it. The ways differ in the shape of the answer: a list ranked by meaning, a place in the tree, an exact match, or the history of how a record appeared.",
+     tools:["lab sync","lab here","rg","git grep","git log -S","git blame","Obsidian"]},
+    {id:"library",n:"03",title:"Literature",
+     lead:"Each theme has its own literature repository: one page per paper, named after the paper. The page holds the review, BibTeX with a citation key and a “What the paper claims” section: the paper's own claims with our assessment of what to trust.",
+     bullets:["Jev picks fresh papers against the descriptions of our works, not by whether a paper is “good in general”.",
+              "The paper-ingest skill writes the review and sends the page to the theme literature with a plain git push.",
+              "A citation in a paper can only use a key that already exists in references.bib: a hook blocks made-up ones."],
+     tools:["paper-ingest","bibtex_fetch.py","paper_claims_verify.py","citation-validator.py","Jev"]},
+    {id:"code",n:"04",title:"Code",
+     lead:"A work's code lives inside it as a nested code/ repository with a branch and a commit, and the manuscript lives in paper/. lab here brings the work along with both. What the work changed in someone else's code is written in its README, not kept in the head of whoever ran it.",
+     bullets:["A run remembers the commit it was computed on: the number can be reproduced.",
+              "A map of someone else's repository is built once by the code-ingest skill: no copy of the code, just links to lines."],
+     tools:["code/","paper/","lab here","code-ingest","code-library"]},
+    {id:"gate",n:"05",title:"Checks",
+     lead:"Knowledge enters a work only by merging a proposal, and a human merges it: the work lead. The agent makes a branch and a git push, the proposal opens by itself and is assigned to the lead. Before a human sees it, automated checks read it, and if they find an error, the agent sees it on its own on the next turn.",
+     bullets:["A number that is not in the runs will not pass the check: a result cannot be made up.",
+              "A record code cannot be taken twice, and other people's files cannot be deleted unnoticed.",
+              "The prose judge reads the claim text: meaningless notation and retelling do not pass.",
+              "A second copy of a rulebook rule is caught by canon_check.",
+              "The agent does not merge: a record is a human decision."],
+     tools:["git push","lab checks","check_numbers","check_codes","check_deletions","prose judge","canon_check"]},
+    {id:"skills",n:"06",title:"Skills",
+     lead:"A skill is a written-down way of doing a job. 77 skills, 15 agents and 34 commands live in one harness repository and install for everyone with one command. On every request a hook matches it against the catalog and slips in the right skill.",
+     bullets:["A skill edit is made in the repository and reaches everyone, instead of living on one machine.",
+              "The lab handbook describes what we work with and how, for people."],
+     tools:["SKILLS.md","skill-forced-eval.js","claude_home_drift.py","handbook"]},
+    {id:"people",n:"07",title:"People and access",
+     lead:"A work has a lead and a team, named in its README. The lead merges proposals into their work, and access is granted by a Telegram bot together with a git key. The agent on the server uses its own account, not a human one.",
+     bullets:["The README shows who leads the work: that is who the proposal is assigned to.",
+              "People's tasks are GitLab issues and boards, separate from research: a closed task does not mean a supported claim.",
+              "lab tasks shows your tasks, lab take picks a task up."],
+     tools:["README “Leads”","access bot","Maintainer","lab tasks","lab take","issues · boards"]},
+  ];
+  function mcpSearchChain(list){
+    return `<ol class="mcp-chain">${list.map(x=>`<li>
+      <code>${esc(x.op)}</code>
+      <div><strong>${esc(x.t)}</strong><em>${esc(x.m)}</em><p>${esc(x.d)}</p>
+      ${(x.n||[]).length?`<ul>${x.n.map(y=>`<li>${esc(y)}</li>`).join("")}</ul>`:""}</div></li>`).join("")}</ol>`;
+  }
+  function mcpCapabilities(){
+    return `<section class="mcp-points" id="mcp-can">
+      <p class="section-label">What this base can do</p>
+      <h2>How the base works: seven parts, each one checkable by hand</h2>
+      <p class="mcp-points-lead">Search above is enough for most people. This is for those who want to understand the design: each part expands, and inside are the real paths, commands and checks. Nothing extra stands between a person and the knowledge: it is plain git.</p>
+      <div class="mcp-points-list">${MCP_POINTS.map(p=>`
+        <details class="mcp-point" id="mcp-point-${esc(p.id)}"${p.id==="search"?" open":""}>
+          <summary><i>${esc(p.n)}</i><strong>${esc(p.title)}</strong><em>${p.searches?`${esc(String(p.searches.length))} ${esc(plural(p.searches.length,["way","ways","ways"]))}`:`${esc(String(p.tools.length))} ${esc(plural(p.tools.length,["tool","tools","tools"]))}`}</em></summary>
+          <div class="mcp-point-body">
+            <p class="mcp-point-lead">${esc(p.lead)}</p>
+            ${p.searches?mcpSearchChain(p.searches):""}
+            ${(p.bullets||[]).length?`<ul class="mcp-point-bullets">${p.bullets.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>`:""}
+            <div class="mcp-point-tools">${p.tools.map(t=>`<code>${esc(t)}</code>`).join("")}</div>
+          </div></details>`).join("")}</div></section>`;
+  }
+
   function showMcpLive(navigate=true){
     const m=systemData.liveMcp;if(!m)return;
     if(navigate)updateHash("mcp-live");
@@ -1931,17 +2069,18 @@
     const view=$("mcp-live-view");
     view.hidden=false;
     view.innerHTML=`<div class="special-shell mcp-page knowledge-workspace">
-      <header class="mcp-hero"><p>${esc(demo?.label||"Lab Knowledge · BRAIn Lab")}</p><h1>Ask the laboratory<span aria-hidden="true">.</span></h1>
-        <strong>${demo?"Papers by Andrey Veprikov and coauthors: the proposed methods, how they work, and where to read the originals.":"What has been tested, what happened, and which papers informed the work."}</strong>
-        ${sourceButtons(m.links)}${demo?.publication_folder?`<div class="claim-links"><button type="button" data-open-folder="${esc(demo.publication_folder)}">All publications <span>${esc(String(demo.publication_count))}</span> →</button></div>`:""}</header>
+      <header class="mcp-hero"><p>${demo?"Demo base":"Knowledge base · BRAIn Lab"}</p><h1>Ask the laboratory<span aria-hidden="true">.</span></h1>
+        <strong>${demo?"A fictional project and demo papers. Look at the links between records, open an area or find a record by its code.":"What has been tested, what happened, and which papers informed the work."}</strong>
+        ${sourceButtons(m.links)}</header>
       <div class="mcp-live-badge" id="mcp-live-badge"></div>
       ${waysBlock()}
       <output id="mcp-found" class="mcp-found"></output>
       <div id="mcp-results"></div>
       ${tallyBlock()}
       ${browseBlock()}
-      ${demo?'':mcpPipeline()}
-      ${demo?'':`<details class="for-agents" id="mcp-agent"><summary>For agents: the same 17 read-only service calls</summary>
+      ${mcpCapabilities()}
+      <!-- The single-service-call pipeline was removed together with the service on 07-10-2026. -->
+      ${true?'':`<details class="for-agents" id="mcp-agent"><summary>For agents: the same 17 read-only service calls</summary>
         <p>The sections above offer the same information in plain language. These calls change nothing; this page cannot write to the database.</p>
         <p class="agent-map">The database map behind the navigation above, including sections, subsections, subtopics, and descriptions, comes from the service itself: <code>library_tree</code>; <code>full: true</code> also includes subtopics and papers. It answers the same question for an agent as for a person: where to start with a broad query.</p>
         <div class="mcp-chips" id="mcp-agent-tools"></div>
@@ -1986,23 +2125,126 @@
     }
     loadAgentTools();
     syncLiveBadge();
-    // Ссылка вида #mcp-live/H-WBD-001 открывает саму запись, а не пустой поиск.
-    const [,deep="",paperId=""]=location.hash.slice(1).split("/");
-    if(deep==="paper"&&papersById[paperId]){
-      const box=$("mcp-results");
-      box.innerHTML=paperCard(paperId);
-      bindResults(box);
-    }else if(deep&&byCode[deep]){
-      const box=$("mcp-results");
-      box.innerHTML=byCode[deep].k==="project"?projectCard(deep):recordCard(deep);
-      bindResults(box);
-    }else runSearch("");
-    liveHealth().then(()=>{syncLiveBadge();if(input.value.trim())runSearch(input.value)});
+    // Ссылка вида #mcp-live/H-MMU-001 открывает саму запись, а не пустой поиск.
+    const deep=(location.hash.slice(1).split("/")[1]||"").trim();
+    if(deep)openDetail("record",deep);else runSearch("");
+    liveHealth().then(()=>{syncLiveBadge()});
     // Форму базы спрашиваем у службы тем же вызовом, каким её спросил бы агент. Снимок на
     // странице остаётся только запасным: если службы нет, обзор рисуется по нему.
-    adoptServiceTree().then(live=>{if(live)redrawBrowse()});
+    ensureCatalog().then(()=>adoptServiceTree()).then(live=>{if(live)redrawBrowse()}).catch(()=>{});
     window.scrollTo({top:0,behavior:"instant"});
     input.focus({preventScroll:true});
+  }
+  let catalogLoading=null,fullLoading=null;
+  const detailLoads=new Map(),fullRecords=new Set(),fullPapers=new Set();
+  function reindexSnapshots(){
+    for(const obj of [baseById,relIndex,baseCounts,linksByPaper,snapById,papersById,byCode,themeAbstract,dirOf])
+      for(const key of Object.keys(obj))delete obj[key];
+    for(const r of base.records||[]){
+      if(r.id){baseById[r.k+":"+r.id]=r;snapById[r.id]=r}
+      if(r.code)byCode[r.code]=r;
+      baseCounts[r.k]=(baseCounts[r.k]||0)+1;
+    }
+    for(const r of base.relations||[]){
+      (relIndex[r.a+":"+r.ai]||=[]).push({ref:r.b+":"+r.bi,label:r.r,dir:"→"});
+      (relIndex[r.b+":"+r.bi]||=[]).push({ref:r.a+":"+r.ai,label:r.r,dir:"←"});
+    }
+    for(const p of lib.papers||[])papersById[p.id]=p;
+    for(const link of lib.links||[])(linksByPaper[link.p]||=[]).push(link);
+    treeFolders={};for(const f of tree.folders||[])treeFolders[f.f]=f;
+    treeSections={};for(const x of tree.sections||[])treeSections[x.name]=x;
+    for(const x of tree.themes||[])themeAbstract[x.code]=x.a;
+    for(const d of tree.directions||[])for(const raw of d.raw||[])dirOf[raw]=d;
+    if(!window.LAB_PARTIAL&&window.LabSearch)searchIndex=window.LabSearch.build({tree,base,lib});
+  }
+  function refreshCatalogViews(){
+    renderTally();
+    if($("mcp-live-view")?.hidden)return;
+    const fragment=document.createElement("div");fragment.innerHTML=waysBlock();
+    for(const selector of [".way-areas"]){
+      const old=$("mcp-live-view").querySelector(selector),fresh=fragment.querySelector(selector);
+      if(old&&fresh){old.replaceWith(fresh);bindResults(fresh)}
+    }
+    const tally=$("mcp-live-view").querySelector(".tally,[data-snapshot-tally]");
+    if(tally){tally.outerHTML=tallyBlock();const fresh=$("mcp-live-view").querySelector(".tally");if(fresh)bindResults(fresh)}
+    redrawBrowse();
+    // Enrich the current answer only; never replace a newer question or an open card.
+    if(lastLiveAnswer?.seq===mcpSeq){
+      const box=$("mcp-results");
+      box.innerHTML=lastLiveAnswer.warn+answerPage(lastLiveAnswer.items,lastLiveAnswer.q);bindResults(box);
+    }
+  }
+  async function snapshotRequest(kind,id=""){
+    const response=await fetch(`atlas-data?kind=${encodeURIComponent(kind)}&id=${encodeURIComponent(id)}`);
+    if(!response.ok)throw new Error(`Failed to load data (${response.status})`);
+    return response.json();
+  }
+  function ensureCatalog(){
+    if(!liveSnapshotMode||!window.LAB_PARTIAL||window.LAB_CATALOG_READY)return Promise.resolve();
+    if(!catalogLoading)catalogLoading=snapshotRequest("catalog").then(data=>{
+      if(!window.LAB_PARTIAL)return;
+      Object.assign(base,data.base);Object.assign(lib,data.lib);Object.assign(tree,data.tree);
+      window.LAB_BASE=base;window.LAB_LIBRARY=lib;window.LAB_TREE=tree;window.LAB_CATALOG_READY=true;
+      reindexSnapshots();refreshCatalogViews();
+    }).catch(error=>{catalogLoading=null;throw error});
+    return catalogLoading;
+  }
+  async function ensureFullSnapshots(){
+    if(!window.LAB_PARTIAL)return;
+    if(!fullLoading)fullLoading=Promise.all([
+      loadSnapshot("data/library-snapshot.js?v=20261019w","LAB_LIBRARY",true),
+      loadSnapshot("data/base-snapshot.js?v=20261019w","LAB_BASE",true),
+      loadSnapshot("data/atlas-tree.js?v=20261019w","LAB_TREE",true),
+    ]).then(([fullLib,fullBase,fullTree])=>{
+      Object.assign(base,fullBase);Object.assign(lib,fullLib);
+      if(!treeIsLive)Object.assign(tree,fullTree);
+      window.LAB_BASE=base;window.LAB_LIBRARY=lib;window.LAB_TREE=tree;
+      window.LAB_PARTIAL=false;window.LAB_CATALOG_READY=true;reindexSnapshots();refreshCatalogViews();
+    }).catch(error=>{fullLoading=null;throw error});
+    return fullLoading;
+  }
+  async function fallbackItems(q,seq){
+    const box=$("mcp-results");
+    if(window.LAB_PARTIAL)box.innerHTML=`<p class="mcp-wait">Loading the base for search…</p>`;
+    try{await ensureFullSnapshots();return seq===mcpSeq?snapshotItems(q):null}
+    catch(error){if(seq===mcpSeq)box.innerHTML=`<p class="mcp-empty">The base did not load. Repeat the query to try again.</p>`;return null}
+  }
+  async function ensureDetail(kind,key){
+    if(!liveSnapshotMode||!window.LAB_PARTIAL)return;
+    await ensureCatalog();
+    const loaded=kind==="paper"?fullPapers:fullRecords;
+    if(loaded.has(key))return;
+    const cacheKey=kind+":"+key;
+    if(!detailLoads.has(cacheKey))detailLoads.set(cacheKey,snapshotRequest(kind,key).then(data=>{
+      if(kind==="paper"){
+        const p=papersById[key];if(p)Object.assign(p,data.paper);else lib.papers.push(data.paper);
+        fullPapers.add(key);
+      }else{
+        for(const r of data.records){
+          const old=byCode[r.code]||snapById[r.id];if(old)Object.assign(old,r);else base.records.push(r);
+          if(r.code)fullRecords.add(r.code);
+        }
+        const seen=new Set(base.relations.map(r=>JSON.stringify(r)));
+        for(const r of data.relations)if(!seen.has(JSON.stringify(r))){base.relations.push(r);seen.add(JSON.stringify(r))}
+      }
+      reindexSnapshots();
+    }).catch(error=>{detailLoads.delete(cacheKey);throw error}));
+    await detailLoads.get(cacheKey);
+  }
+  async function openDetail(kind,key){
+    const box=$("mcp-results");if(!box)return;
+    const seq=++mcpSeq,revision=navigationRevision;
+    box.innerHTML=`<p class="mcp-wait">Loading the card…</p>`;
+    try{
+      await ensureDetail(kind,key);
+      if(seq!==mcpSeq||revision!==navigationRevision||!box.isConnected)return;
+      box.innerHTML=kind==="paper"?paperCard(key):recordCard(key);bindResults(box);
+      window.scrollTo({top:Math.max(0,box.getBoundingClientRect().top+scrollY-150),behavior:"smooth"});
+    }catch(error){
+      if(seq!==mcpSeq||revision!==navigationRevision||!box.isConnected)return;
+      box.innerHTML=`<p class="mcp-empty">${esc(error.message)}</p><button type="button" data-detail-retry>Retry</button>`;
+      box.querySelector("[data-detail-retry]").onclick=()=>openDetail(kind,key);
+    }
   }
     showMcpLive.refreshWorkspace=()=>{
       const article=$("mcp-results")?.querySelector(".paper-page[data-project]");
@@ -2014,13 +2256,13 @@
 
   let mcpRenderer=null,mcpLoading=null;
   const snapshotLoads=new Map();
-  function loadSnapshot(src,globalName){
-    if(window[globalName])return Promise.resolve();
+  function loadSnapshot(src,globalName,force=false){
+    if(window[globalName]&&!force)return Promise.resolve(window[globalName]);
     if(!snapshotLoads.has(src)){
       const promise=new Promise((resolve,reject)=>{
         const script=document.createElement("script");
-        script.src=window.LAB_I18N?.asset(src)||src;script.async=true;
-        script.onload=()=>window[globalName]?resolve():reject(new Error("Snapshot did not initialize"));
+        script.src=src;script.async=true;
+        script.onload=()=>window[globalName]?resolve(window[globalName]):reject(new Error("Snapshot did not initialize"));
         script.onerror=()=>{script.remove();reject(new Error("Snapshot could not be loaded"))};
         document.head.appendChild(script);
       }).catch(error=>{snapshotLoads.delete(src);throw error});
@@ -2030,13 +2272,18 @@
   }
   function prepareMcpWorkspace(){
     if(!mcpLoading){
-      loadSnapshot("data/project-workspaces.js","LAB_PROJECT_WORKSPACES")
+      loadSnapshot("data/project-workspaces.js?v=20261019w","LAB_PROJECT_WORKSPACES")
         .catch(()=>{window.LAB_PROJECT_WORKSPACES={projects:{},unavailable:true}})
         .then(()=>mcpRenderer?.refreshWorkspace());
+      if(liveSnapshotMode){
+        window.LAB_PARTIAL=true;
+        mcpRenderer=createMcpWorkspace();
+        return Promise.resolve();
+      }
       mcpLoading=Promise.all([
-        loadSnapshot("data/library-snapshot.js?v=general-questions-20260916","LAB_LIBRARY"),
-        loadSnapshot("data/base-snapshot.js","LAB_BASE"),
-        loadSnapshot("data/atlas-tree.js?v=general-questions-20260916","LAB_TREE"),
+        loadSnapshot("data/library-snapshot.js?v=20261019w","LAB_LIBRARY"),
+        loadSnapshot("data/base-snapshot.js?v=20261019w","LAB_BASE"),
+        loadSnapshot("data/atlas-tree.js?v=20261019w","LAB_TREE"),
       ]).then(()=>{mcpRenderer=createMcpWorkspace();renderTally()})
         .catch(error=>{mcpLoading=null;throw error});
     }
@@ -2049,7 +2296,7 @@
     const revision=navigationRevision,view=$("mcp-live-view");
     view.hidden=false;
     view.innerHTML=`<div class="special-shell mcp-page knowledge-workspace">
-      <header class="mcp-hero"><p>${esc(window.LAB_DEMO?.label||"Lab Knowledge · BRAIn Lab")}</p><h1>Ask the laboratory<span aria-hidden="true">.</span></h1></header>
+      <header class="mcp-hero"><p>${window.LAB_DEMO?"Demo base":"Knowledge base · BRAIn Lab"}</p><h1>Ask the laboratory<span aria-hidden="true">.</span></h1></header>
       <div class="mcp-load-state" data-mcp-loading><span aria-hidden="true">◌</span><p role="status">Loading the library and search records…</p></div>
       <button class="back-button" data-loading-back type="button">← Back to the main map</button></div>`;
     view.querySelector("[data-loading-back]").onclick=showOverview;
@@ -2062,6 +2309,21 @@
       view.querySelector("[data-mcp-loading]").innerHTML=`<p role="alert">Could not load the data. Check your connection and try again.</p><button type="button" data-mcp-retry>Retry loading</button>`;
       view.querySelector("[data-mcp-retry]").onclick=()=>showMcpLive(false);
     }
+  }
+  // Первая страница: база как GitHub для идей.
+  function showIdeas(navigate=true){
+    if(navigate)updateHash("ideas");
+    hidePrimaryViews();active("ideas");
+    const view=$("hub-view");view.hidden=false;window.LAB_HUB_PAGE?.render(view);
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+  function showSetup(navigate=true){
+    const section=location.hash.slice(1).split("/")[1];
+    if(navigate)updateHash("setup");
+    hidePrimaryViews();active("setup");
+    const view=$("setup-view");view.hidden=false;window.LAB_SETUP_PAGE?.render(view);
+    const target=!navigate&&section&&view.querySelector(`#setup-${CSS.escape(section)}`);
+    target?target.scrollIntoView({block:"start"}):window.scrollTo({top:0,behavior:"instant"});
   }
   // Journey links retain the selected stage when returning from a tool dossier.
   function showExamples(navigate=true,journeyId="",stageId=""){
@@ -2094,11 +2356,13 @@
                 </button></li>`).join("")}</ol>
           </div>
           <p class="journey-note">${esc(journey.note)}</p>
+          <div class="journey-visual" aria-live="polite"></div>
         </div>
         <section id="journey-detail" class="journey-detail" aria-labelledby="journey-stage-title"></section>
       </div></div>`;
     function selectStage(id,navigate=false){
       const selected=journey.stages.find(x=>x.id===id);if(!selected)return;
+      view.querySelector(".journey-visual").innerHTML=(STAGE_VISUAL[id]||(()=>""))();
       if(navigate)updateHash(`examples/${journey.id}/${id}`);
       view.querySelectorAll("[data-stage]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.stage===id)));
       const detail=view.querySelector(".journey-detail");
@@ -2133,7 +2397,7 @@
     });
     window.scrollTo({top:0,behavior:"instant"});
   }
-  function active(v){document.querySelectorAll("[data-view]").forEach(b=>{const selected=b.dataset.view===v;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected))});if(v==="mcp-live"||v==="examples")requestAnimationFrame(()=>{const heading=document.querySelector(`#${v==="mcp-live"?"mcp-live-view":"examples-view"} h1`);if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true})}})}
+  function active(v){document.querySelectorAll("[data-view]").forEach(b=>{const selected=b.dataset.view===v;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected))});if(v==="mcp-live"||v==="examples"||v==="setup"||v==="ideas")requestAnimationFrame(()=>{const heading=document.querySelector(`#${v==="mcp-live"?"mcp-live-view":v==="setup"?"setup-view":v==="ideas"?"hub-view":"examples-view"} h1`);if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true})}})}
   function openProcess(id,toolId,navigate=true){const p=byId[id];if(!p)return;if(toolId&&!p.tools?.some(t=>t.id===toolId)){toolId="";replaceHash(id)}if(navigate)updateHash(`${id}${toolId?`/${toolId}`:""}`);hidePrimaryViews();$("process-view").hidden=false;$("process-view").innerHTML=page(p);bind($("process-view"),p);bindGraphMap($("process-view"),p);active("none");window.scrollTo({top:0,behavior:"instant"});$("process-view").querySelector("h1")?.focus({preventScroll:true});if(toolId)setTimeout(()=>{
     const view=$("process-view"),skill=view.querySelector(`[data-skill="${CSS.escape(toolId)}"]`);
     if(skill){let parent=skill.parentElement;while(parent&&parent!==view){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement}skill.click();return}
@@ -2182,7 +2446,7 @@ addEventListener("resize",fitLoopMap);
   const processNames={"agent-orchestration":"you need to delegate work to a separate agent","code-engineering":"you need to change or check code","discussion":"you need to analyze a discussion","experiment-design":"you need to design a test for an idea","experiment-run":"you need to run an experiment","external-review":"you need an independent review","knowledge-maintenance":"you need to save or restore knowledge","literature-discovery":"you need to find relevant papers","literature-ingest":"you need to add a paper to the library","presentation":"you need to prepare a research talk","project-lifecycle":"you need to create, link, or close a project","publication":"you need to prepare a result for publication","research-direction":"you need to refine a research direction","results":"you need to understand the results","theory":"you need to check a theoretical argument","writing":"you need to write or review a research text"};
   const mcpTitles={add_paper_section:"Add a paper section",assign_public_code:"Assign a public code",create_hypothesis:"Save a hypothesis",create_project:"Create a knowledge project",define_term:"Define a project term",delete_project:"Delete an empty project",delete_record:"Delete a record",find_related_papers:"Find related papers",find_similar:"Find similar records",get_hypothesis:"Open a hypothesis",get_paper:"Open a paper",get_project_by_slug:"Open a project by slug",get_project_context:"Get project context",get_related:"View related records",get_theme_context:"Get topic context",get_timeline:"View change history",invite_member:"Invite a participant",issue_agent_token:"Grant agent access",lab_health:"Check laboratory knowledge status",link_paper:"Link a paper to our work",list_agent_tokens:"View agent access",list_derivations:"View theoretical derivations",list_hypotheses:"View hypotheses",list_journal:"View journal",list_lab_resources:"View laboratory resources",list_paper_claims:"View paper claims",list_projects:"View projects",list_recent_papers:"View recent papers",list_terms:"View terms",list_themes:"View research topics",list_yonote_tasks:"View Yonote tasks",preview_yonote_task:"Validate a task before writing",propose_decision:"Propose a decision",provision_project_workspace:"Provision a project workspace",publish_source_note:"Publish a note reference",recent_changes:"View recent changes",record_derivation:"Save a theoretical derivation",record_evidence:"Save experimental evidence",record_experiment:"Save an experiment",record_journal:"Add a journal entry",record_paper_claim:"Save a paper claim",related_by_terms:"Find relationships through terms",revoke_agent_token:"Revoke agent access",search_lab:"Search laboratory knowledge",set_project_links:"Save project links",set_project_open_questions:"Save open questions",set_project_status:"Change project status",set_project_theme:"Link a project to a topic",set_record_papers:"Link a record to papers",update_decision:"Approve or supersede a decision",update_derivation_status:"Update derivation status",update_experiment_status:"Update experiment status",update_hypothesis:"Update a hypothesis",upsert_call_note:"Save meeting notes",upsert_paper:"Save a paper",upsert_projection_ref:"Link a record to a public page",upsert_resource:"Save a laboratory resource",upsert_yonote_task:"Save a Yonote task",who_works_on_what:"See who is working on what"};
   function humanCapabilityTitle(c){if(c.type!=="mcp-tool"||mcpTitles[c.name])return mcpTitles[c.name]||c.title_ru||c.name;const names={hypothesis:"hypothesis",experiment:"experiment",evidence:"result",claim:"claim",paper:"paper",decision:"decision",project:"project",member:"participant",resource:"resource",context:"context",journal:"journal"},parts=String(c.name||"").split("_"),verbs={create:"Save",record:"Save",upsert:"Save",get:"View",list:"View",search:"Find",find:"Find",update:"Update",set:"Update",assign:"Link",link:"Link",preview:"Verify",validate:"Verify",issue:"Grant",invite:"Invite",provision:"Connect",delete:"Delete",revoke:"Revoke"},verb=verbs[parts.shift()]||"Execute",object=parts.map(x=>names[x]||x).join(" ");return `${verb} ${object}`.trim()}
-  function capabilityStory(c){const purpose=c.description_ru||c.description||"A detailed usage workflow has not been documented yet.",special=String(c.what_is_special||"").split(/Связан с процессами:|Минимальная проверка:|Назначение:|Related processes:|Related workflows?:|Minimum check:|Purpose:/)[0].trim(),plainSpecial=/ACL|provenance|типизирован|схем|entrypoint|ограниченной ответственностью|typed|schema|defined scope/i.test(special)?"":special,contexts=arr(c.process_ids).map(id=>processNames[id]).filter(Boolean).slice(0,3),type=c.type||"capability",action=humanCapabilityTitle(c),lowerPurpose=purpose.charAt(0).toLowerCase()+purpose.slice(1),after=type==="agent"?`Delegate a specific task to an agent: ${lowerPurpose}`:type==="skill"?`Ask an agent to carry out the full workflow: ${lowerPurpose}`:type==="command"?`Start the process with one action: ${lowerPurpose}`:type==="hook"?`The check runs automatically and blocks an incorrect action before it changes the project.`:type==="mcp-tool"?`Agents with the appropriate permissions can ${action.charAt(0).toLowerCase()+action.slice(1)} through the shared laboratory system.`:type==="documentation"?`Find the current procedure and check your setup.`:type==="repository"?`Use and update laboratory tools from one version-controlled source.`:type==="service"?`Connected agents and applications receive this capability as a shared service.`:`Use this capability in your workflow.`,categoryCapability=type==="agent"?"independently complete a bounded task and return the result for review":type==="skill"?"carry out a repeatable workflow from inputs to a verified result":type==="command"?"combine several work steps into one controlled run":type==="hook"?"automatically check an action before it changes the project":type==="mcp-tool"?"perform the action through the shared system without manually editing the database":type==="documentation"?"check procedures and constraints against the current source":type==="repository"?"work with version-controlled source code and inspect change history":type==="service"?"provide multiple tools with one shared capability and state":"use the capability within a connected workflow",rawOutputs=arr(c.outputs_ru||c.outputs).filter(x=>!/типизированный результат|квитанция записи|проверенный профильный артефакт|выводы специалиста или артефакт|typed result|write receipt|verified artifact appropriate to the task|specialist findings or an artifact/i.test(x)),fallbackOutcome=type==="agent"?`Verified result from agent «${action}»`:type==="skill"?`Completed workflow «${action}»`:type==="command"?`Process result «${action}»`:type==="hook"?"Automatic check with a clear decision":type==="mcp-tool"?`Response or saved change: «${action}»`:type==="documentation"?`Clear procedure for «${action}»`:type==="repository"?"Access to version-controlled source code":type==="service"?"Available response or saved service state":`Practical result for task «${action}»`,outcomes=rawOutputs.length?rawOutputs:[fallbackOutcome],capabilities=[purpose,categoryCapability,...(plainSpecial&&plainSpecial!==purpose?[plainSpecial]:[])];return {purpose,capabilities,useCases:contexts.length?contexts:[`when this specific action is needed in the research workflow`],outcomes,after}}
+  function capabilityStory(c){const purpose=c.description_ru||c.description||"A detailed usage workflow has not been documented yet.",special=String(c.what_is_special||"").split(/Связан с процессами:|Минимальная проверка:|Назначение:/)[0].trim(),plainSpecial=/ACL|provenance|типизирован|схем|entrypoint|ограниченной ответственностью/i.test(special)?"":special,contexts=arr(c.process_ids).map(id=>processNames[id]).filter(Boolean).slice(0,3),type=c.type||"capability",action=humanCapabilityTitle(c),lowerPurpose=purpose.charAt(0).toLowerCase()+purpose.slice(1),after=type==="agent"?`Delegate a specific task to an agent: ${lowerPurpose}`:type==="skill"?`Ask an agent to carry out the full workflow: ${lowerPurpose}`:type==="command"?`Start the process with one action: ${lowerPurpose}`:type==="hook"?`The check runs automatically and blocks an incorrect action before it changes the project.`:type==="mcp-tool"?`Agents with the appropriate permissions can ${action.charAt(0).toLowerCase()+action.slice(1)} through the shared laboratory system.`:type==="documentation"?`Find the current procedure and check your setup.`:type==="repository"?`Use and update laboratory tools from one version-controlled source.`:type==="service"?`Connected agents and applications receive this capability as a shared service.`:`Use this capability in your workflow.`,categoryCapability=type==="agent"?"independently complete a bounded task and return the result for review":type==="skill"?"carry out a repeatable workflow from inputs to a verified result":type==="command"?"combine several work steps into one controlled run":type==="hook"?"automatically check an action before it changes the project":type==="mcp-tool"?"perform the action through the shared system without manually editing the database":type==="documentation"?"check procedures and constraints against the current source":type==="repository"?"work with version-controlled source code and inspect change history":type==="service"?"provide multiple tools with one shared capability and state":"use the capability within a connected workflow",rawOutputs=arr(c.outputs_ru||c.outputs).filter(x=>!/типизированный результат|квитанция записи|проверенный профильный артефакт|выводы специалиста или артефакт/i.test(x)),fallbackOutcome=type==="agent"?`Verified result from agent «${action}»`:type==="skill"?`Completed workflow «${action}»`:type==="command"?`Process result «${action}»`:type==="hook"?"Automatic check with a clear decision":type==="mcp-tool"?`Response or saved change: «${action}»`:type==="documentation"?`Clear procedure for «${action}»`:type==="repository"?"Access to version-controlled source code":type==="service"?"Available response or saved service state":`Practical result for task «${action}»`,outcomes=rawOutputs.length?rawOutputs:[fallbackOutcome],capabilities=[purpose,categoryCapability,...(plainSpecial&&plainSpecial!==purpose?[plainSpecial]:[])];return {purpose,capabilities,useCases:contexts.length?contexts:[`when this specific action is needed in the research workflow`],outcomes,after}}
   function capSources(c){const own=arr(c.github_urls);if(own.length)return own;const query=encodeURIComponent(c.name||c.source_path||"");return [{label:`Find ${c.name||"source"} in the repository`,url:`https://github.com/Vepricov/claude-brainlab/search?q=${query}&type=code`,canonical:true}]}
   function capDetails(c){const match=all.flatMap(p=>(p.tools||[]).map(t=>({p,t}))).find(({t})=>t.skillId===c.name||t.id===c.id||t.id===c.name);if(match)return `<article class="dossier capability-dossier">${dossierHead(match.t,match.p)}${dossierBody(match.t)}</article>`;const story=capabilityStory(c),t={id:c.id,title:humanCapabilityTitle(c),type:capType(c.type),purpose:story.purpose,inside:story.capabilities,outputs:story.outcomes,inputs:c.inputs_ru||c.inputs,gates:c.quality_gates_ru||c.quality_gates,limits:c.known_limitations_ru||c.known_limitations,links:capSources(c),start:story.after};return `<article class="dossier capability-dossier">${dossierHead(t,{title:"Capability registry"})}${dossierBody(t)}</article>`}
   function showCapability(id){const c=(registry.capabilities||[]).find(x=>x.id===id);if(!c)return;$("search-input").value="";$("search-results").innerHTML=capDetails(c);if(!$("search-dialog").open)$("search-dialog").showModal();const heading=$("search-results").querySelector("h2");if(heading){heading.tabIndex=-1;heading.focus()}}
@@ -2191,14 +2455,42 @@ addEventListener("resize",fitLoopMap);
   const searchConcepts=[{words:["созвон","разговор","встреч","аудио"],expand:["brain call","call-notes","transcript","решения","задачи"]},{words:["стать","литератур","paper","arxiv"],expand:["paper-search","paper-ingest","literature","zotero","alphaxiv"]},{words:["эксперимент","запуск","обучен","run"],expand:["hermes","experiment","monitoring","protocol","gpu"]},{words:["цитат","ссылк","bibtex"],expand:["citation-verification","paperclaim","references.bib","проверка статей"]},{words:["сервер","доступ","gpu","аккаунт"],expand:["server access bot","managed host","credentials","mlsub"]},{words:["rebuttal","реценз","ответ"],expand:["review-response","writing","paper-self-review"]}];
   const searchIntents={"analyze a meeting":["calls","brain-call","call-notes"],"find papers about a method":["literature","paper-search","paperscout"],"run an experiment through Hermes":["experiments","hermes","hermes-experiment-launch"],"verify a quotation":["paper-qa","citation-verification","literature-reviewer"],"grant server access":["access","server-access-bot","hermes-add-user"],"respond to reviewers":["writing","review-response","rebuttal-command","rebuttal-writer"]};
   function searchScore(item,query){const normalized=query.toLowerCase(),base=`${item.title} ${item.text}`.toLowerCase(),tokens=normalized.match(/[a-zа-яё0-9-]+/g)||[],expanded=[...tokens];for(const concept of searchConcepts)if(concept.words.some(word=>tokens.some(token=>token.includes(word))))expanded.push(...concept.expand);const preferred=searchIntents[normalized]||[],position=preferred.indexOf(item.key),intentBoost=position<0?0:120-position*12;return intentBoost+[...new Set(expanded)].reduce((score,token)=>score+(item.title.toLowerCase().includes(token)?8:base.includes(token)?2:0),0)}
-  function renderSearch(q=""){const s=q.trim(),items=searchItems(),exact=items.filter(item=>item.key?.toLowerCase()===s.toLowerCase()),ranked=(exact.length?exact:items.map(item=>({...item,score:s?searchScore(item,s):0})).filter(item=>!s||item.score>0).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title,document.documentElement.lang)).slice(0,s?15:18)),groups=ranked.reduce((a,x)=>((a[x.kind]||=[]).push(x),a),{}),examples=`<div class="search-examples"><span>Try describing your task</span>${searchExamples.map(x=>`<button data-search-example="${esc(x)}" type="button">${esc(x)}</button>`).join("")}</div>`;$("search-results").innerHTML=examples+(ranked.length?Object.entries(groups).map(([kind,xs])=>`<section class="search-group"><h3>${esc(kind)} <span>${xs.length}</span></h3>${xs.map((x,i)=>`<button class="search-item" data-key="${esc(kind)}-${i}" type="button"><strong>${esc(x.title)}</strong><p>${esc(x.text)}</p><i>Open →</i></button>`).join("")}</section>`).join(""):`<p class="empty-search">No matches. Try describing the action differently.</p>`);$("search-results").querySelectorAll("[data-search-example]").forEach(b=>b.onclick=()=>{$("search-input").value=b.dataset.searchExample;renderSearch(b.dataset.searchExample)});Object.entries(groups).forEach(([kind,xs])=>xs.forEach((x,i)=>{const b=document.querySelector(`[data-key="${CSS.escape(`${kind}-${i}`)}"]`);if(b)b.onclick=()=>{$("search-dialog").close();x.go()}}))}
+  function renderSearch(q=""){const s=q.trim(),items=searchItems(),exact=items.filter(item=>item.key?.toLowerCase()===s.toLowerCase()),ranked=(exact.length?exact:items.map(item=>({...item,score:s?searchScore(item,s):0})).filter(item=>!s||item.score>0).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title,"ru")).slice(0,s?15:18)),groups=ranked.reduce((a,x)=>((a[x.kind]||=[]).push(x),a),{}),examples=`<div class="search-examples"><span>Try describing your task</span>${searchExamples.map(x=>`<button data-search-example="${esc(x)}" type="button">${esc(x)}</button>`).join("")}</div>`;$("search-results").innerHTML=examples+(ranked.length?Object.entries(groups).map(([kind,xs])=>`<section class="search-group"><h3>${esc(kind)} <span>${xs.length}</span></h3>${xs.map((x,i)=>`<button class="search-item" data-key="${esc(kind)}-${i}" type="button"><strong>${esc(x.title)}</strong><p>${esc(x.text)}</p><i>Open →</i></button>`).join("")}</section>`).join(""):`<p class="empty-search">No matches. Try describing the action differently.</p>`);$("search-results").querySelectorAll("[data-search-example]").forEach(b=>b.onclick=()=>{$("search-input").value=b.dataset.searchExample;renderSearch(b.dataset.searchExample)});Object.entries(groups).forEach(([kind,xs])=>xs.forEach((x,i)=>{const b=document.querySelector(`[data-key="${CSS.escape(`${kind}-${i}`)}"]`);if(b)b.onclick=()=>{$("search-dialog").close();x.go()}}))}
   function openSearch(){renderSearch();if(!$("search-dialog").open)$("search-dialog").showModal();requestAnimationFrame(()=>$("search-input").focus())}
 
-  renderLoop();renderToolkit();fitLoopMap();$("home").onclick=showOverview;$("search-open").onclick=openSearch;$("search-input").oninput=e=>renderSearch(e.target.value);document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>b.dataset.view==="mcp-live"?showMcpLive():b.dataset.view==="examples"?showExamples():showOverview());document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}});
+  renderLoop();renderToolkit();fitLoopMap();$("home").onclick=()=>showOverview();$("search-open").onclick=openSearch;$("search-input").oninput=e=>renderSearch(e.target.value);document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>b.dataset.view==="ideas"?showIdeas():b.dataset.view==="mcp-live"?showMcpLive():b.dataset.view==="examples"?showExamples():b.dataset.view==="setup"?showSetup():showOverview());document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openSearch()}});
   // Разделы слились, но ссылки на прежние адреса могли уже разойтись по чатам.
-  const MOVED={"paper-qa":"writing","orchestration":"experiments","engineering":"experiments","access":"projects"};
-  let [initial,initialTool]=location.hash.slice(1).split("/");if(MOVED[initial])initial=MOVED[initial];if(initial==="examples")showExamples(false);else if(initial==="surface")showSurface(initialTool,false);else if(byId[initial])openProcess(initial,initialTool);
-  const routeLocation=()=>{let [route,tool]=location.hash.slice(1).split("/");if(MOVED[route])route=MOVED[route];if(route==="examples")showExamples(false);else if(route==="surface")showSurface(tool,false);else if(byId[route])openProcess(route,tool,false);else showOverview(false)};
+  // Рисунок под картой маршрута для шага: как агент работает в общем git лаборатории.
+  const STAGE_VISUAL={project:()=>{
+    const shared=[["claims/","claims, runs, series, derivations"],["paper/","manuscript"],["code/","the code that computed it"],["calls/","call summaries"],["README.md","what the work is about and who leads it"]];
+    const own=[["notes/","drafts, thoughts, agent notes"],["daily/","work diary"],["runs/","raw run logs"],["paper/drafts/","text sketches"],["calls/raw/","call transcripts"],["code/local/","local code edits"]];
+    return `<div class="repo-split">
+      <div class="repo-split-head"><span class="overline">How an agent works in shared git</span><h3>One folder, two fates for files</h3>
+        <p>The work clone sits in the lab tree, and Obsidian opens it. The agent writes everything in one place, and git sorts it out: shared content goes to GitLab as a proposal, personal content is hidden via <code>.git/info/exclude</code> and never leaves the machine.</p></div>
+      <div class="repo-split-body">
+        <div class="repo-tree"><header>~/brainlab / zero-order / zo-estimators / <b>zo-jaguar</b></header>
+          ${shared.map(([f,d])=>`<div class="is-shared"><code>${f}</code><em>${d}</em><span>↑ GitLab</span></div>`).join("")}
+          ${own.map(([f,d])=>`<div class="is-own"><code>${f}</code><em>${d}</em><span>🔒 on the machine</span></div>`).join("")}
+        </div>
+        <div class="repo-flow">
+          <div class="repo-term"><header>agent · terminal</header><pre><b>$</b> git status
+  modified: claims/H-ZJG-040/runs/E-ZJG-047.md
+  <i># git does not see notes/ and daily/</i>
+<b>$</b> git switch -c claim/H-ZJG-040
+<b>$</b> git commit -m "E-ZJG-047: run under the claim"
+<b>$</b> git push
+  <u>proposal opened · assigned to the work lead</u></pre></div>
+          <div class="repo-dest">
+            <div class="is-shared"><b>Lab GitLab</b><p>proposal → checks → the lead accepts → knowledge visible to everyone</p></div>
+            <div class="is-own"><b>Only on your machine</b><p>notes and logs in Obsidian, next to the shared ones, but not in git</p></div>
+          </div>
+        </div>
+      </div></div>`;
+  }};
+  // Отдельная страница поиска по базе снята: базу показывает первая страница «GitHub для идей».
+  const MOVED={"paper-qa":"writing","orchestration":"experiments","engineering":"experiments","access":"projects","mcp-live":"ideas","examples":"loop"};
+  let [initial,initialTool]=location.hash.slice(1).split("/");if(MOVED[initial])initial=MOVED[initial];if(initial==="mcp-live")showMcpLive(false);else if(initial==="examples")showExamples(false);else if(initial==="setup")showSetup(false);else if(initial==="surface")showSurface(initialTool,false);else if(byId[initial])openProcess(initial,initialTool);else if(initial==="ideas")showIdeas(false);else if(!initial||initial==="loop")showOverview(false);
+  const routeLocation=()=>{let [route,tool]=location.hash.slice(1).split("/");if(MOVED[route])route=MOVED[route];if(route==="mcp-live")showMcpLive(false);else if(route==="examples")showExamples(false);else if(route==="setup")showSetup(false);else if(route==="surface")showSurface(tool,false);else if(byId[route])openProcess(route,tool,false);else if(route==="ideas")showIdeas(false);else showOverview(false)};
   window.addEventListener("popstate",routeLocation);
   document.addEventListener("click",e=>{if(e.target.closest("[data-obsidian-surface]")){e.preventDefault();showSurface("obsidian")}});
 

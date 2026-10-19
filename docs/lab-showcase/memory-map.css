@@ -316,7 +316,13 @@
 .mem-access footer{display:flex;gap:40px;align-items:baseline;border-top:1px solid #344136;padding-top:25px}
 .mem-access footer a{flex-shrink:0;color:#c8ee98;text-underline-offset:6px}
 @media(max-width:760px){.mem-access-roles,.mem-access-project dl{grid-template-columns:1fr;gap:20px}.mem-access-steps{align-items:flex-start;flex-direction:column;gap:12px}.mem-access-steps i{transform:rotate(90deg)}.mem-access footer{display:block}}
-.mem-access-roles-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.mem-save-route-4 ol{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media(max-width:1100px){.mem-access-roles-4{grid-template-columns:repeat(2,minmax(0,1fr))}.mem-save-route-4 ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:760px){.mem-access-roles-4,.mem-save-route-4 ol{grid-template-columns:1fr}}
+/* review 19-10: raised facts, no stray folder icon, label above connector lines */
+.mem-project-node h3:after{display:none}
+.mem-personal{position:relative;z-index:1}
+.mem-personal>.mem-label{position:relative;z-index:2;display:inline-block;background:#0c110e;padding:0 10px 0 0;box-shadow:0 0 0 4px #0c110e}
+.mem-fact b{color:#d9efb4;font-weight:500}
+.mem-claim-schema .mem-fact{font-size:13px;line-height:1.6}
+.mem-save-route p.mem-fact{margin-top:10px;font-size:12.5px}
+.mem-ingest-end{border-bottom:0}
+.mem-useful-context small{display:block;margin-top:7px;font-size:12px;color:#d5e3c5}
+.mem-vector-cache{border-bottom:0}

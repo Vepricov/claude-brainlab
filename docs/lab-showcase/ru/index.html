@@ -6,23 +6,26 @@
   <script src="language.js"></script>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Карта исследовательской работы BRAIn Lab">
+  <meta name="description" content="Карта исследовательской работы BRAIn Lab: агенты, база знаний в GitLab, сетап">
   <title>BRAIn Lab · Research Loop</title>
   <link rel="stylesheet" href="app.css">
-  <link rel="stylesheet" href="refinements.css?v=overview-fit-20260911">
+  <link rel="stylesheet" href="refinements.css">
   <link rel="stylesheet" href="map-shapes.css">
-  <link rel="stylesheet" href="mcp-design.css?v=simple-search-20260917">
-  <link rel="stylesheet" href="front-design.css?v=ideation-20260917">
+  <link rel="stylesheet" href="mcp-design.css">
+  <link rel="stylesheet" href="front-design.css">
   <link rel="stylesheet" href="memory-map.css">
-  <link rel="stylesheet" href="obsidian-setup.css?v=workspaces-20260911">
-  <link rel="stylesheet" href="surface-pages.css?v=workspaces-20260911">
-  <link rel="stylesheet" href="search-workspace.css?v=search-footer-20260917">
+  <link rel="stylesheet" href="obsidian-setup.css">
+  <link rel="stylesheet" href="surface-pages.css">
+  <link rel="stylesheet" href="search-workspace.css">
+  <link rel="stylesheet" href="setup.css">
+  <link rel="stylesheet" href="hub.css">
+  <link rel="stylesheet" href="fixes.css">
   <link rel="stylesheet" href="language.css">
 </head>
 <body>
   <header class="topbar">
-    <button class="brand" aria-label="BRAIn Lab" id="home" type="button"><span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span></button>
-    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Система</button><button data-view="mcp-live" type="button">Демобаза</button><button data-view="examples" type="button">Маршруты</button></nav>
+    <button class="brand" id="home" type="button"><span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span></button>
+    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Машина знаний</button><button data-view="ideas" type="button">GitHub для идей</button><button data-view="setup" type="button">Харнесс агентов</button></nav>
     <button class="search-open" id="search-open" type="button"><span>Найти процесс или инструмент</span><kbd>⌘ K</kbd></button>
     <nav class="language-switch" aria-label="Язык"><a data-language="en" lang="en" href="?lang=en">EN</a><a data-language="ru" lang="ru" href="ru/index.html?lang=ru">RU</a></nav>
   </header>
@@ -31,20 +34,21 @@
     <section class="overview" id="overview">
       <header class="overview-head">
         <p class="overline">Исследовательская система · <span id="verified-date"></span></p>
-        <h1>Как лаборатория<br> превращает вопрос<br> в <span>знание</span></h1>
-        <p class="overview-intro">Один цикл связывает литературу, обсуждения, гипотезы, эксперименты, результаты и публикации. Выберите этап, чтобы увидеть весь путь и инструменты.</p>
+        <h1>Вопрос входит —<br> <span>знание</span> выходит</h1>
+        <p class="overview-intro">Восемь этапов, 77 навыков, 15 агентов и 10 хуков в одном цикле. Агенты читают литературу, ночью ставят прогоны и пишут черновики, детерминированный код проверяет каждое число, человек принимает результат. Нажмите на этап — откроются инструменты.</p>
+        <div class="overview-chips"><span style="--c:#ffb86b">Автономные прогоны 24/7</span><span style="--c:#5ee6d0">Конвейер статей каждое утро</span><span style="--c:#8fb4ff">Проверка каждого числа</span><span style="--c:#c79bff">Память агентов на недели</span><span style="--c:#b9ff66">Харнесс для всей команды</span></div>
       </header>
 
       <div class="loop-map" id="loop-map" aria-label="Карта исследовательской работы">
         <div class="loop-nodes" id="loop-nodes"></div>
         <section class="knowledge-cluster" aria-label="Четыре слоя памяти и координации">
           <button class="knowledge-core" id="knowledge-core" type="button">
-            <span>Общий GitHub для идей</span><strong>GitLab<br>лаборатории</strong><p>утверждения · прогоны · предложения · ревью</p><i>Открыть карту →</i>
+            <span>Сердце системы</span><strong>GitLab</strong><p>база знаний лаборатории: утверждения · прогоны · литература · предложения</p><i>Открыть базу →</i>
           </button>
           <div class="memory-surfaces">
-            <button data-surface="obsidian" type="button"><b>Obsidian</b><span>то же дерево у тебя на машине</span></button>
-            <button data-surface="mempalace" type="button"><b>MemPalace</b><span>память и история агента</span></button>
-            <button data-surface="tasks" type="button"><b>Задачи</b><span>доски и поручения в GitLab</span></button>
+            <button data-surface="obsidian" type="button"><b>Obsidian</b><span>всё дерево в одном окне</span></button>
+            <button data-surface="mempalace" type="button"><b>MemPalace</b><span>память агента</span></button>
+            <button data-sat-process="experiments" data-sat-tool="hermes" type="button"><b>Гермес</b><span>агент на сервере 24/7</span></button>
           </div>
         </section>
       </div>
@@ -59,6 +63,8 @@
     <article class="dykaf-view" id="dykaf-view" hidden></article>
     <article class="mcp-live-view" id="mcp-live-view" hidden></article>
     <article class="examples-view" id="examples-view" hidden></article>
+    <article class="setup-view" id="setup-view" hidden></article>
+    <article class="hub-view" id="hub-view" hidden></article>
   </main>
 
   <dialog class="search-dialog" id="search-dialog">
@@ -66,18 +72,22 @@
     <div class="search-results" id="search-results"></div>
   </dialog>
 
-  <script src="data/demo-flag.js?v=general-questions-20260916"></script>
-  <script src="data/atlas-public.js?v=ideation-20260917"></script>
-  <script src="data/research-loop-data.js?v=ideation-20260917"></script>
-  <script src="data/system-examples.js?v=ideation-20260917"></script>
+  <script src="data/counts.js"></script>
+  <script src="data/atlas-public.js"></script>
+  <script src="data/research-loop-data.js"></script>
+  <script src="data/system-examples.js"></script>
   <!-- Scientific snapshots load on demand when the search workspace opens. -->
   <!-- Ядро поиска: один индекс на узлы дерева, записи базы и статьи, ранжирование BM25.
        Отдельный файл, потому что его гоняет набор проверок tests/test_search.mjs без
        браузера — 38 запросов за секунду, поэтому качество меряется, а не обсуждается. -->
   <script src="search-core.js"></script>
   <script src="memory-map.js"></script>
-  <script src="surface-pages.js?v=concise-dossiers-20260911"></script>
-  <script src="obsidian-setup.js?v=workspaces-20260911"></script>
-  <script src="app.js?v=ideation-20260917"></script>
+  <script src="surface-pages.js"></script>
+  <script src="obsidian-setup.js"></script>
+  <script src="data/setup-data.js"></script>
+  <script src="setup.js"></script>
+  <script src="data/hub-data.js"></script>
+  <script src="hub.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

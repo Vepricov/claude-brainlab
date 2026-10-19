@@ -1,0 +1,33 @@
+{
+  "group": "ui-setup",
+  "entries": [
+    {
+      "id": "450dd2961991",
+      "text": "<li><span class=\"setup-event\">шаг ",
+      "paths": [
+        "setup.js:20"
+      ]
+    },
+    {
+      "id": "6de7ebeb5b00",
+      "text": "<div class=\"setup-shell\">\n      <header class=\"setup-head\"><p class=\"overline\">Сетап агента · сверено ",
+      "paths": [
+        "setup.js:16"
+      ]
+    },
+    {
+      "id": "e370c4ff5f48",
+      "text": "</dl>\n      <section class=\"setup-turn\"><p class=\"overline\">Хуки</p><h2>",
+      "paths": [
+        "setup.js:18"
+      ]
+    },
+    {
+      "id": "ca8b846090c1",
+      "text": "</ol>\n      </section>\n      <nav class=\"setup-nav\" aria-label=\"Разделы сетапа\">",
+      "paths": [
+        "setup.js:21"
+      ]
+    }
+  ]
+}

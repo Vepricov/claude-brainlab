@@ -21,7 +21,7 @@ version: 1.7.0
 
 - Не использовать захардкоженные темы.
 - Не предлагать статьи, которые уже есть в библиотеке, `_inbox`, `_trash`, живых карточках
-  `Operon/Reading/` или архиве `Operon/Archives/`.
+  `personal/operon/Reading/` или архиве `personal/operon/Archives/`.
 - Не создавать отдельную папку `papers_<date>/`.
 - Не создавать полные paper notes и не запускать `paper-ingest`: подтверждение выражается переносом карточки владельцем из «Инбокса» в «Очередь», после чего ingest выполняет `/want-2-read`.
 - Все human-facing описания, статусы и инструкции в обзорном файле писать на русском.
@@ -139,7 +139,7 @@ LIT=("${OBSIDIAN_VAULT:-$HOME/brainlab}"/*/*/literature)
 - заголовков заметок
 - тегов во frontmatter
 - проектных карточек в `Papers/`, `Projects/`, `Staff/`
-- уже виденных arXiv ID в библиотеке, `_inbox`, `_trash`, `Operon/Reading/` и `Operon/Archives/`
+- уже виденных arXiv ID в библиотеке, `_inbox`, `_trash`, `personal/operon/Reading/` и `personal/operon/Archives/`
 
 Нужно получить ранжированный инвентарь тем:
 - доминирующие folder families
@@ -276,7 +276,7 @@ personal/literature/_inbox/papers_DD-MM-YYYY.md
 «принять 2, 5, 7».
 
 ```
-Operon/Reading/<Заголовок статьи>.md
+personal/operon/Reading/<Заголовок статьи>.md
 ```
 
 Карточка использует ту же каноническую схему, что и `/want-2-read`: четыре раздела,
@@ -311,9 +311,9 @@ https://arxiv.org/abs/<ARXIV_ID>
 - Все четыре раздела присутствуют всегда, даже если раздел пуст.
 - `## Тема` это человекочитаемая метка (`LoRA base`, `Zero-order optimization`, `Muon`),
   никогда не слаг вроде `lora_base` и не хвост пути папки.
-- `operonId` должен быть уникален по всей папке `Operon/Reading/` и по `Operon/Archives/`;
+- `operonId` должен быть уникален по всей папке `personal/operon/Reading/` и по `personal/operon/Archives/`;
   проверить перед записью.
-- Имя файла всегда `Operon/Reading/operon-<operonId>.md` (правило 11 в
+- Имя файла всегда `personal/operon/Reading/operon-<operonId>.md` (правило 11 в
   `~/.claude/skills/paper-ingest/references/alphaxiv-sync.md`), никогда не заголовок статьи и не arXiv ID. Человекочитаемое
   имя живёт в YAML-поле `taskTitle` и в H1: Operon показывает `taskTitle`, а не basename.
   Заголовок в `taskTitle` и H1 сохраняется как есть, включая двоеточия и `$...$`; санитайзить
@@ -329,11 +329,9 @@ https://arxiv.org/abs/<ARXIV_ID>
   карточка попадает в рабочий батч `/want-2-read`, получает полный ingest и после него
   переносится в «Очередь»: колонка означает «публичной версии ещё нет», и после разбора это
   уже неправда.
-- `_Trash` — явный отказ. Это terminal/cancelled status, но карточка остаётся видимой в колонке
-  14 дней: ночной архиватор (`~/.local/bin/operon_daily_archive.py`,
-  `--cancelled-grace-days`) уносит отменённое в `Operon/Archives` только после этого окна, в
-  отличие от `Прочитано`, которое уходит на следующий день. Случайный сброс в корзину поэтому
-  всегда можно откатить прямо на доске. Title и arXiv ID остаются частью dedup и в архиве.
+- `_Trash` — явный отказ, terminal/cancelled status. Карточка остаётся на доске: ночной архиватор
+  (`~/.local/bin/operon_daily_archive.py`) выключен 19-10-2026 по просьбе владельца — он уносил
+  «Прочитано» и корзину в `personal/operon/Archives`, и колонки на доске пустели. Title и arXiv ID остаются частью dedup и в архиве.
 
 Заполнением `## Заметка`, `**Zotero**:` и подробного описания занимается `/want-2-read`
 после ingest. Этот скилл ingest не делает и постоянные папки не трогает.
@@ -358,8 +356,8 @@ https://arxiv.org/abs/<ARXIV_ID>
 - NEVER создавать папку `papers_DD-MM-YYYY/`.
 - ALWAYS запускать несколько параллельных subagents для поиска по разным topic bundles.
 - NEVER пересказывать пользователю статьи, которые уже есть в библиотеке или были ранее staged/trashed.
-- NEVER возвращать статьи, чьи карточки уже лежат в `Operon/Reading/` или `Operon/Archives/`, включая `Reading._Trash`.
-- ALWAYS заводить по карточке на статью в `Operon/Reading/` со статусом `Reading.Инбокс`, пустым разделом `## Заметка` и всеми четырьмя каноническими разделами.
+- NEVER возвращать статьи, чьи карточки уже лежат в `personal/operon/Reading/` или `personal/operon/Archives/`, включая `Reading._Trash`.
+- ALWAYS заводить по карточке на статью в `personal/operon/Reading/` со статусом `Reading.Инбокс`, пустым разделом `## Заметка` и всеми четырьмя каноническими разделами.
 - ALWAYS логировать отклоненные статьи в `personal/literature/_trash/paper-search_rejected.md`, чтобы их ID больше не всплывали в shortlist.
 - NEVER класть найденное в папку «Want to read» на AlphaXiv. Эта папка означает «владелец решил читать» и синхронизируется с колонкой «Очередь», а `paper-search` кладёт кандидатов только в «Инбокс». Зеркалить на AlphaXiv будет `/want-2-read` после ingest.
 - BEFORE the owner moves a card to «Очередь», only the dedup overview and the `Reading.Инбокс` card may exist; no ingest, Zotero item, PDF, or permanent Literature note.

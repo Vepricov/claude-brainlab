@@ -70,7 +70,7 @@ ssh do-vpn 'python3 /root/paper-agent/ax_call.py save_papers_to_folder \
 `/root/paper-agent/alphaxiv-library-map.json` — обновлять обе.
 
 ## The one place local and AlphaXiv may differ
-Only the **reading queue**: the local Operon Reading board (`Operon/Reading/*.md`, visually ordered
+Only the **reading queue**: the local Operon Reading board (`personal/operon/Reading/*.md`, visually ordered
 _Trash → Жду публикацию → Инбокс → Очередь → Читаю → Прочитано) ⇄ AlphaXiv default **"Want to read"**
 folder (`0196244b-7b41-79ff-9c0a-e01fe749c0c5`). Papers sit there until processed; once a paper is
 filed into a topic folder locally, it must also be filed (and removed from "Want to read") on AlphaXiv.
@@ -89,7 +89,7 @@ filed into a topic folder locally, it must also be filed (and removed from "Want
 8. If the AlphaXiv MCP is not connected/authenticated, do the local work, then tell the user the AlphaXiv sync was skipped and needs `/mcp` auth — do not silently drop it.
 9. **Rejected queue item**: `Reading._Trash` is the local master decision. Remove that arXiv ID from AlphaXiv "Want to read" with `remove_papers_from_folder`, but do not remove it from existing thematic folders. Archived rejected cards remain part of dedup.
 10. **Waiting for publication**: `Reading.Жду публикацию` has no AlphaXiv mirror until a real arXiv ID exists. Recheck official sources; never invent or substitute an ID. A card whose only public source is OpenReview, a DOI, or a venue page is still marked `[found]` and is still fully ingestable into Zotero and Obsidian — it simply never reaches AlphaXiv (rule 6), and its callout must say so.
-11. **Canonical Reading card**: file tasks use `Operon/Reading/operon-<operonId>.md`, never the paper
+11. **Canonical Reading card**: file tasks use `personal/operon/Reading/operon-<operonId>.md`, never the paper
     title as basename. A completed report remains in `Reading.Очередь` and is marked by H1
     `# [[<направление>/<тема>/literature/<note>.md|Human title]]` plus the exact canonical link in `## Заметка`. YAML
     `taskTitle` equals the H1 content without `# ` so Operon never displays the technical basename.

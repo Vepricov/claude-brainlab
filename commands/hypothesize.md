@@ -1,6 +1,6 @@
 ---
 name: hypothesize
-description: Generate research hypotheses for a project by pulling its full Obsidian context (hub card + Code library + literature) and brainstorming testable ideas. Optionally writes them to Papers/<slug>/Hypotheses/.
+description: Generate research hypotheses for a project by pulling its full Obsidian context (hub card + Code library + literature) and brainstorming testable ideas. Optionally writes them to the work's private notes/.
 args:
   - name: slug
     description: Project slug (e.g. warmup, sign_muon, zo-rl-peft) — must exist in ~/.claude/obsidian-projects.json

@@ -89,7 +89,7 @@ lab here wsd-muon        # одна работа на её место в дер�
 
 ```bash
 cd ~/brainlab/matrix-optimization/training-dynamics/wsd-muon
-lab pull                                  # что изменилось и что уже открыто
+git pull                                  # что пришло в main
 git checkout -b claim/H-WSD-001           # ветка на утверждение, которое дополняешь
 $EDITOR claims/H-WSD-001/runs/E-WSD-042.md
 git add -A

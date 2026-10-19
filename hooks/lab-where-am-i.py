@@ -287,12 +287,12 @@ def pull_clone(work: str, cwd: str, root: Path | None = None) -> list[str]:
                            env={**os.environ, **NO_PROMPT_ENV})
     # Молчащий отказ здесь хуже устаревшей строки: 02-10-2026 после смены ключа git
     # отвечал «Access denied», хук этого не показывал, и агент видел прошлое состояние
-    # как текущее. Чинит это `lab pull` — он перезаписывает ключ помощнику.
+    # как текущее. Чинит это `lab sync` — он перезаписывает ключ помощнику.
     if fetched.returncode:
         trouble = (fetched.stderr or "").strip().splitlines()
         return ["  база не ответила, показано прошлое состояние: "
                 + (trouble[-1][:120] if trouble else "git fetch не прошёл"),
-                "  починить — `lab pull`"]
+                "  починить — `lab sync`"]
     subprocess.run([*GIT, "-C", str(root), "pull", "-q", "--ff-only", "origin", "main"],
                    capture_output=True, text=True, timeout=25,
                    stdin=subprocess.DEVNULL, env={**os.environ, **NO_PROMPT_ENV})

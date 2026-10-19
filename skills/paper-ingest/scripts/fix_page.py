@@ -1,56 +1,33 @@
 #!/usr/bin/env python3
-"""Полная страница статьи в репозитории литературы темы лаборатории.
+"""Привести заметку статьи в вид, который GitLab показывает правильно. Правит файл на месте.
 
-Источник — заметка в дереве `~/brainlab/<направление>/<тема>/literature/<Название>.md`.
-Скрипт переносит её в GitLab целиком: чинит формулы, кладёт рядом рисунки, на которые
-она ссылается, и переводит PDF-рисунки в PNG, иначе GitLab их не покажет. Страница в
-репозитории ищется по ключу цитирования из блока BibTeX заметки (или `citation_key`
-в шапке); ключа нет — статья пропускается с сообщением. Служба корпуса (`get_paper`,
-`labcall.py`) удалена 07-10-2026, и скрипт к ней не обращается.
+Заметка лежит в клоне литературы темы: `~/brainlab/<направление>/<тема>/literature/<Название>.md`.
+Скрипт чинит формулы, копирует рядом в `_attachments/` рисунки, на которые она ссылается, и
+переводит PDF-рисунки в PNG, иначе GitLab их не покажет. Больше он ничего не делает: отправка
+это обычный git в том же клоне, `git add`, `git commit`, `git push`.
 
-    lab_page_sync.py --arxiv 2604.18264            одна статья
-    lab_page_sync.py --theme zo-estimators         вся тема
-    lab_page_sync.py --arxiv 2604.18264 --dry-run  показать, ничего не записывая
+    fix_page.py --arxiv 2604.18264            одна статья
+    fix_page.py --theme zo-estimators         вся тема
+    fix_page.py --arxiv 2604.18264 --dry-run  показать, ничего не записывая
+
+До 19-10-2026 здесь был `lab_page_sync.py`: он клонировал тему во временную папку и сам пушил
+туда исправленную страницу. В дереве это лишнее и вредно: заметка уже лежит в том самом клоне,
+а пуш мимо него оставлял локальный файл позади своей же страницы в GitLab.
 """
-import ssl
-import argparse, json, os, re, shutil, subprocess, sys, tempfile
-from urllib.parse import quote, unquote
-import urllib.request, urllib.error
+import argparse, os, re, shutil, subprocess, sys, tempfile
+from urllib.parse import unquote
 import pathlib
 
 # Корень хранилища знает один модуль, см. `vault_paths`.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from vault_paths import VAULT as _VAULT, temy, vse_papki  # noqa: E402
+from vault_paths import temy, vse_papki  # noqa: E402
 
 # pdftoppm ставится из Homebrew и в PATH неинтерактивной оболочки его нет
 os.environ["PATH"] = os.environ.get("PATH", "") + ":/opt/homebrew/bin:/usr/local/bin"
 
-#: База переехала с Gitea на GitLab 01-10-2026. У темы теперь свой проект
-#: `literature` внутри её группы, страницы лежат в КОРНЕ проекта, а не в
-#: подпапке, и авторизация идёт заголовком `PRIVATE-TOKEN`.
-URL_FILE = os.path.expanduser("~/.config/brainlab/git-url")
-_CTX = ssl.create_default_context()      # сертификат самоподписанный
-_CTX.check_hostname = False
-_CTX.verify_mode = ssl.CERT_NONE
-_ПРОЕКТЫ: dict = {}
-
-
-def base():
-    return open(URL_FILE).read().strip().rstrip("/")
-TOKEN_FILE = os.path.expanduser("~/.config/brainlab/git-token")
-def _vault():
-    """Корень хранилища. С 16-10-2026 он один и тот же везде: дерево лаборатории.
-
-    Прежде путей было три (iCloud на маке, `/root/shkodnik1917` на do-vpn, домашняя
-    копия), и выбирался тот, внутри которого лежала папка `Literature`. Такой папки
-    больше нет: разборы лежат в репозитории своей темы, `<направление>/<тема>/literature`.
-    """
-    return str(_VAULT)
-
-
-VAULT = os.environ.get("BRAINLAB_VAULT") or _vault()
-#: Единой папки разборов нет: темы собирает `vault_paths.temy()`.
 CACHE = os.path.expanduser("~/.cache/brainlab/fig-png")
+
+
 def lit_dir(repo):
     """Где внутри репозитория лежат страницы.
 
@@ -67,23 +44,6 @@ def lit_dir(repo):
 FOOT = "[← вся литература темы](../README.md)"
 IMG = (".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp")
 MACROS = {r"\vtheta": r"\theta", r"\vx": r"\mathbf{x}", r"\vg": r"\mathbf{g}"}
-
-
-def token():
-    if not os.path.exists(TOKEN_FILE):
-        sys.exit("нет токена агента: ~/.config/brainlab/git-token")
-    return open(TOKEN_FILE).read().strip()
-
-
-def gitlab(path, tok):
-    url = quote(f"{base()}{path}", safe=":/?=&")
-    req = urllib.request.Request(url, headers={"PRIVATE-TOKEN": tok})
-    try:
-        return json.loads(urllib.request.urlopen(req, timeout=90).read().decode())
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        raise
 
 
 def fig_roots():
@@ -324,15 +284,6 @@ def convert_figs(text, repo_dir, idx, stats):
     return re.sub(r"!\[\[([^\]]+)\]\]|!\[[^\]]*\]\((_attachments/[^)\s]+)\)", sub, text)
 
 
-def note_key(text):
-    """Ключ цитирования заметки: из блока BibTeX, иначе из `citation_key` в шапке."""
-    m = re.search(r"```bibtex\s*@\w+\s*\{\s*([^,\s]+)\s*,", text)
-    if m:
-        return m.group(1)
-    m = re.search(r"(?m)^citation_key:\s*[\"']?([^\"'\s]+)", text)
-    return m.group(1) if m else None
-
-
 def local_notes(theme, arxiv=None):
     """Заметки темы в дереве; с `arxiv` — только те, где стоит этот номер."""
     d = temy().get(theme)
@@ -353,112 +304,43 @@ def local_notes(theme, arxiv=None):
     return out
 
 
-def page_for(repo, key):
-    """Страница клона с тем же ключом цитирования: имя файла — название, а не ключ."""
-    root = os.path.join(repo, lit_dir(repo))
-    for f in sorted(os.listdir(root)):
-        if f.endswith(".md") and f != "README.md":
-            with open(os.path.join(root, f), encoding="utf-8") as fh:
-                if note_key(fh.read()) == key:
-                    return os.path.join(root, f)
-    return None
-
-
-def sync(themes, arxivs, dry, tok):
+def fix(themes, arxivs, dry):
+    """Каждую заметку — на место: формулы, рисунки рядом, подпись внизу. Без git."""
     global CACHE
     idx = fig_index()
     stats = {"страниц": 0, "рисунков": 0, "pdf->png": 0, "не нашлось": 0}
-    work = tempfile.mkdtemp(prefix="labpage-")
     if dry:                                  # сухой прогон не пишет и в кеш рисунков
-        CACHE = os.path.join(work, "fig-png")
-    try:
-        for theme in themes:
-            путь = проекты(tok).get(theme)
-            if not путь:
-                print(f"  {theme}: проекта литературы в базе нет"); continue
-            if theme not in temy():
-                print(f"  {theme}: темы нет в дереве ~/brainlab/*/*/literature"); continue
-            адрес = base().replace("https://", f"https://oauth2:{tok}@")
-            url = f"{адрес}/{путь}.git"
-            d = os.path.join(work, theme)
-            if subprocess.run(["git", "clone", "-q", "--depth", "1", url, d],
-                              capture_output=True).returncode:
-                print(f"  {theme}: клонировать не удалось"); continue
-            subprocess.run(["git", "config", "core.quotepath", "false"], cwd=d)
-            changed = 0
-            for ax in (arxivs or [None]):
-                notes = local_notes(theme, ax)
-                if ax and not notes:
-                    print(f"  {theme}: в {temy()[theme]} нет заметки с arXiv {ax}"); continue
-                for src in notes:
-                    txt = src.read_text(encoding="utf-8").rstrip()
-                    key = note_key(txt)
-                    if not key:
-                        print(f"  {theme}: у заметки нет ключа цитирования (ни блока BibTeX, "
-                              f"ни citation_key в шапке), пропускаю: {src}"); continue
-                    p = page_for(d, key) or os.path.join(d, lit_dir(d), src.name)
-                    old = open(p, encoding="utf-8").read() if os.path.exists(p) else ""
-                    if txt.endswith(FOOT):
-                        txt = txt[:-len(FOOT)].rstrip()
-                    while txt.endswith("---"):
-                        txt = txt[:-3].rstrip()
-                    head_raw = head_of(txt)
-                    secs = re.findall(r"(?ms)^## (.+?)\n(.*?)(?=^## |\Z)", txt[len(head_raw):])
-                    head = convert_figs(balance_math(tex(head_raw)), d, idx, stats)
-                    body = "\n\n".join(
-                        f"## {tex(n)}\n\n{convert_figs(balance_math(tex(t)).strip(), d, idx, stats)}"
-                        for n, t in secs if t.strip().strip("-").strip())
-                    new = f"{head}\n\n{body}\n\n---\n\n{FOOT}\n" if body else f"{head}\n\n---\n\n{FOOT}\n"
-                    if old and len(new) < len(old) // 2:
-                        print(f"  {theme}: страница {os.path.basename(p)} в базе вдвое полнее "
-                              "заметки, не трогаю"); continue
-                    if new != old:
-                        if not dry:
-                            open(p, "w", encoding="utf-8").write(new)
-                        changed += 1
-                        stats["страниц"] += 1
-            if changed and not dry:
-                subprocess.run(["git", "add", "-A"], cwd=d)
-                subprocess.run(["git", "-c", "user.name=lab-agent",
-                                "-c", "user.email=lab-agent@brainlab", "commit", "-q", "-m",
-                                "Литература: полный разбор и рисунки из заметки"], cwd=d)
-                r = subprocess.run(["git", "push", "-q", "origin", "HEAD"], cwd=d, capture_output=True)
-                if not r.returncode:
-                    print(f"  {theme}: страниц {changed}, залито")
-                else:
-                    # Какие файлы отвергнуты, по сообщению не видно, а защита ветки
-                    # разрешает только literature/** и README. Печатаем список сами.
-                    файлы = subprocess.run(["git", "show", "--pretty=", "--name-only", "HEAD"],
-                                           cwd=d, capture_output=True, text=True).stdout.split()
-                    чужие = [x for x in файлы
-                             if not x.startswith("literature/") and x != "README.md"]
-                    print(f"  {theme}: страниц {changed}, ПУШ НЕ УДАЛСЯ: "
-                          + r.stderr.decode()[:120].replace(chr(10), " "))
-                    print(f"      в коммите файлов {len(файлы)}, вне literature/ и README: "
-                          + (", ".join(чужие[:5]) if чужие else "нет"))
-            else:
-                print(f"  {theme}: страниц {changed}" + (" (сухой прогон)" if dry else ", изменений нет"))
-    finally:
-        shutil.rmtree(work, ignore_errors=True)
+        CACHE = os.path.join(tempfile.mkdtemp(prefix="fixpage-"), "fig-png")
+    for theme in themes:
+        d = str(temy()[theme])
+        changed = 0
+        for ax in (arxivs or [None]):
+            notes = local_notes(theme, ax)
+            if ax and not notes:
+                print(f"  {theme}: в {d} нет заметки с arXiv {ax}"); continue
+            for src in notes:
+                old = src.read_text(encoding="utf-8")
+                txt = old.rstrip()
+                if txt.endswith(FOOT):
+                    txt = txt[:-len(FOOT)].rstrip()
+                while txt.endswith("---"):
+                    txt = txt[:-3].rstrip()
+                head_raw = head_of(txt)
+                secs = re.findall(r"(?ms)^## (.+?)\n(.*?)(?=^## |\Z)", txt[len(head_raw):])
+                head = convert_figs(balance_math(tex(head_raw)), d, idx, stats)
+                body = "\n\n".join(
+                    f"## {tex(n)}\n\n{convert_figs(balance_math(tex(t)).strip(), d, idx, stats)}"
+                    for n, t in secs if t.strip().strip("-").strip())
+                new = f"{head}\n\n{body}\n\n---\n\n{FOOT}\n" if body else f"{head}\n\n---\n\n{FOOT}\n"
+                if new != old:
+                    if not dry:
+                        src.write_text(new, encoding="utf-8")
+                    changed += 1
+                    stats["страниц"] += 1
+        print(f"  {theme}: исправлено страниц {changed}" + (" (сухой прогон)" if dry else ""))
     print(stats)
-
-
-def проекты(tok):
-    """Слаг темы -> полный путь её проекта литературы в GitLab."""
-    if _ПРОЕКТЫ:
-        return _ПРОЕКТЫ
-    стр = 1
-    while True:
-        кусок = gitlab(f"/api/v4/projects?simple=true&per_page=100&page={стр}", tok) or []
-        for пр in кусок:
-            путь = пр.get("path_with_namespace", "")
-            части = путь.split("/")
-            if len(части) >= 2 and части[-1] == "literature":
-                _ПРОЕКТЫ[части[-2]] = путь
-        if len(кусок) < 100:
-            break
-        стр += 1
-    return _ПРОЕКТЫ
+    if stats["страниц"] and not dry:
+        print("дальше обычный git в клоне литературы: git add -A && git commit && git push")
 
 
 def theme_of(arxiv):
@@ -474,17 +356,13 @@ def main():
     ap.add_argument("--arxiv", action="append", help="номер arXiv статьи")
     ap.add_argument("--theme", action="append", help="слаг темы; без него тема ищется по заметке в дереве")
     ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--fill-thin", action="store_true",
-                    help="пройти все темы и перенести в базу заметки дерева, где страница отстала")
     a = ap.parse_args()
-    tok = token()
     themes = a.theme
-    if a.fill_thin:
-        sync(themes or sorted(temy()), None, a.dry_run, tok)
-        return
-    if not themes:
-        if not a.arxiv:
-            sys.exit("нужен --arxiv или --theme")
+    if themes:
+        for слаг in themes:
+            if слаг not in temy():
+                sys.exit(f"темы {слаг} нет в дереве ~/brainlab/*/*/literature")
+    elif a.arxiv:
         themes = []
         for ax in a.arxiv:
             слаг = theme_of(ax)
@@ -492,7 +370,9 @@ def main():
                 print(f"  {ax}: заметки с этим номером нет ни в одной ~/brainlab/*/*/literature"); continue
             themes.append(слаг)
         themes = sorted(set(themes))
-    sync(themes, a.arxiv, a.dry_run, tok)
+    else:
+        sys.exit("нужен --arxiv или --theme")
+    fix(themes, a.arxiv, a.dry_run)
 
 
 if __name__ == "__main__":

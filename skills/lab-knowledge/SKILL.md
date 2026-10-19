@@ -38,7 +38,7 @@ git submodule add <git url of the training code> code/<name>
 git commit -F -        # say what was connected and where it came from
 ```
 
-The repository then stores a pointer, `lab pull` brings the text, and both are named in the
+The repository then stores a pointer, `lab here` brings the text, and both are named in the
 README in backticks. They are not gitignored and not pasted as a link in prose: a reader, a
 gate and an agent all need to open them, not to be told they exist.
 

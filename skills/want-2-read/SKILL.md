@@ -418,13 +418,14 @@ expected folder in `list_library(paper_ids_or_urls=[...])`.
 repository in GitLab is what other members read. For every paper filed in Step 5:
 
 ```bash
-python3 ~/.claude/skills/paper-ingest/scripts/lab_page_sync.py --arxiv {ARXIV_ID}
+python3 ~/.claude/skills/paper-ingest/scripts/fix_page.py --arxiv {ARXIV_ID}   # fixes the note in place
+cd ~/brainlab/<direction>/<theme>/literature
+git pull --rebase && git add -A && git commit -m "<Title>: разбор" && git push
 ```
 
-It takes the note from `~/brainlab/<direction>/<theme>/literature/`, finds the page by the
-citation key in the note's BibTeX block, and pushes it to `main` of the theme's literature
-repository in GitLab (through a temporary clone). No key in the note — the paper is skipped with
-a message; fix the BibTeX block and rerun.
+The note already lives in the theme's literature clone, so publishing it is plain git to `main`.
+`fix_page.py` only repairs formulas, copies the figures the note references into `_attachments/`
+and converts PDF figures to PNG so GitLab can show them.
 Repeat only the authorized paper or batch. On failure, keep the card's ingest pending and preserve
 the local work. Use the existing theme taxonomy; do not invent a new theme as an ingest step.
 

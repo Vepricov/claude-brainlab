@@ -26,7 +26,7 @@ description: Разбор одной статьи в Zotero и Obsidian по к�
 | правка только инструментом `patch`, `execute_code` запрещён | правка обычная, `python3 -c` работает |
 | `/root/paper-agent/state/...` | `~/Zotero/pdfs-from-vault/<arxiv_id>...`, временное убирается после импорта в Zotero |
 | заметка кладётся по `note_file` | `~/brainlab/<направление>/<тема>/literature/<Название>.md`, рисунки рядом в `_attachments/<arxiv_id>/`; темы — папки дерева (`ls -d ~/brainlab/*/*/literature`), см. `~/.claude/skills/paper-ingest/references/lab-git-literature.md` |
-| `ingest_finish.py` закрывает разбор | `scripts/lab_page_sync.py --arxiv <id>` кладёт страницу статьи в репозиторий литературы темы |
+| `ingest_finish.py` закрывает разбор | `scripts/fix_page.py --arxiv <id>` приводит заметку в вид для GitLab, затем обычный `git add`, `git commit`, `git push` в клоне литературы темы |
 
 Ограничения канона про запрещённый `execute_code` и про инструмент `patch` локально не
 действуют. Всё остальное, включая структуру заметки, голос, запрет своих графиков и

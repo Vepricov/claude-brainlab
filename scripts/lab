@@ -10,10 +10,9 @@
 ключ, показать задачи и что сказали проверки.
 
     lab sync [часть пути]  собрать или обновить дерево ~/brainlab: всё, что тебе видно
-    lab here <работа>      одна работа в дереве: слаг → её место в ~/brainlab
+    lab here [работа]      одна работа в дереве: слаг → её место в ~/brainlab; уже там —
+                           обновить вместе с кодом и статьёй. Без имени — работа, где стоишь
     lab here <работа> --рядом   по-старому: клон в <папка проекта>/lab-base
-    lab pull               обновить клон и вложенные репозитории (код, статья),
-                           положить ключ git'у, показать открытые предложения
     lab tasks              открытые задачи работы: кому назначены, какое утверждение
     lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
     lab checks             что сказали проверки этому предложению
@@ -521,10 +520,13 @@ def do_here(names: list[str]) -> None:
     """
     ryadom = "--рядом" in names
     names = [one for one in names if not one.startswith("--")]
-    if not names:
-        sys.exit("скажи работу: lab here <работа>")
     setup_key()
-    project = find_project(names[0])
+    if names:
+        project = find_project(names[0])
+    else:
+        # Без имени — работа, в клоне которой стоишь: так обновляют её вместе с кодом и
+        # статьёй. До 19-10-2026 это была отдельная команда `lab pull`.
+        project, _ = here()
     if not ryadom:
         state, target, why = v_derevo(project)
         print(f"{project['path_with_namespace']}: {state}{' — ' + why if why else ''}")
@@ -620,28 +622,6 @@ def my_proposal(project: dict, branch: str) -> dict | None:
         if proposal.get("source_branch") == branch:
             return proposal
     return None
-
-
-def do_pull() -> None:
-    # Ключ настраивается и здесь, а не только при клоне и предложении. 02-10-2026 после
-    # смены ключа `lab pull` упал на «Access denied» и сам себя не починил: он делал
-    # обычный `git fetch` тем, что лежало у помощника, а помощник держал прежнее.
-    setup_key()
-    project, root = here()
-    was, became = refresh(root)
-    if was == became:
-        print(f"{project['path']}: без изменений")
-    else:
-        print(f"{project['path']}: изменилось с прошлого раза")
-        print(git("--no-pager", "diff", "--stat", f"{was}..{became}", cwd=root))
-    if vlozhennye(root):
-        print(f"{project['path']}: код и статья работы")
-        podtyanut_vlozhennye(root)
-    opened = api(f"projects/{project['id']}/merge_requests?state=opened&per_page=100") or []
-    if opened:
-        print("открытые предложения этой работы:")
-        for proposal in opened:
-            print(f"  !{proposal['iid']}  {proposal.get('source_branch','')}  {proposal.get('title','')[:60]}")
 
 
 def svezhie(statuses: list) -> list:
@@ -843,8 +823,6 @@ def main() -> None:
         do_sync(tail)
     elif args == "here":
         do_here(tail)
-    elif args == "pull":
-        do_pull()
     elif args == "checks":
         do_checks()
     elif args == "tasks":

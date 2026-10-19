@@ -23,7 +23,7 @@
 
 ## Changes
 - Витрина `lab-atlas` удалена 15-10-2026 вместе со своей службой; её план выпуска лежит в архиве на машине владельца. Работы по ней нет.
-- Lab Atlas item 7 (`c84ded2`) means a team of people for testing, not a CLI command. The owner explicitly deferred it on 2026-09-08: no agent may take it until the owner resumes it. `scripts/lab_check.py` was created from a misunderstanding; preserve its files, but do not develop or ship it as completion of this item.
+- Lab Atlas item 7 (`c84ded2`) means a team of people for testing, not a CLI command. The owner explicitly deferred it on 2026-09-08: no agent may take it until the owner resumes it. `scripts/lab_check.py`, created for it from a misunderstanding, was removed 19-10-2026 at the owner's word.
 - Read and understand relevant code first. Explain your understanding in 2 to 3 sentences before changing it.
 - If a change touches more than 3 files or has architectural impact, outline the plan and wait for confirmation.
 - Use focused checks that establish the requested behavior. Local tests with disposable fixtures and no production access may be run and repaired within scope without repeated approval. Broaden testing when a failure, changed dependency, or unresolved risk warrants it.

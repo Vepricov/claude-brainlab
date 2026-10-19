@@ -9,7 +9,11 @@
 Здесь только то, чего git не делает сам: собрать дерево, найти работу по слагу, положить
 ключ, показать задачи и что сказали проверки.
 
-    lab sync [часть пути]  собрать или обновить дерево ~/brainlab: всё, что тебе видно
+    lab sync               собрать или обновить дерево ~/brainlab: работы, где ты в «Ведут»
+                           или «Команда», литература их тем, handbook, journal, servers и то,
+                           что выбрано в ~/.config/brainlab/sync (`*` — всё)
+    lab sync <часть пути>  то же для одной части дерева, разово, мимо выбора
+    lab sync --всё         всё, что тебе видно
     lab here [работа]      одна работа в дереве: слаг → её место в ~/brainlab; уже там —
                            обновить вместе с кодом и статьёй. Без имени — работа, где стоишь
     lab here <работа> --рядом   по-старому: клон в <папка проекта>/lab-base
@@ -53,6 +57,11 @@ LOGIN_FILE = Path("~/.config/brainlab/git-login").expanduser()
 #: бота вместе с доступом. Нужен, чтобы `lab take` знал, на кого назначать задачу.
 MY_LOGIN_FILE = Path("~/.config/brainlab/gitlab-login").expanduser()
 CREDENTIALS = Path("~/.config/brainlab/git-credentials").expanduser()
+#: Что ещё держать в дереве сверх своего: часть пути на строку (`low-rank`, `ops/grants`),
+#: `#` — комментарий, `*` — всё, что видно. Заводится один раз, руками или с агентом.
+SYNC_FILE = Path("~/.config/brainlab/sync").expanduser()
+#: Служебное, что нужно всем: как всё устроено, что поменялось, где какой сервер.
+VSEGDA = ("brainlab/handbook", "brainlab/journal", "brainlab/servers")
 #: Личный ключ GitLab принимает с любым именем пользователя; ключ группы — только со своим
 #: именем. Поэтому логин спрашивается, но по умолчанию его знать не надо.
 DEFAULT_LOGIN = "oauth2"
@@ -366,17 +375,72 @@ def vse_vidimye() -> list[dict]:
                   key=lambda one: one["path_with_namespace"])
 
 
-def vedushchiy(project: dict) -> str:
-    """Логин первого ведущего из строки «Ведут» README работы: ему назначается предложение."""
+def readme(project: dict) -> str:
+    """README работы: из клона в дереве, если он есть, иначе с сайта."""
+    local = put_v_dereve(project) / "README.md"
+    if local.is_file():
+        return local.read_text(encoding="utf-8", errors="replace")
     # Не через api(): тот разбирает ответ как JSON, а README — текст.
     request = urllib.request.Request(
         f"{site()}/api/v4/projects/{project['id']}/repository/files/README.md/raw?ref=main",
         headers={"PRIVATE-TOKEN": token()})
     try:
         with urllib.request.urlopen(request, timeout=60) as answer:
-            text = answer.read().decode("utf-8", "replace")
+            return answer.read().decode("utf-8", "replace")
     except (urllib.error.URLError, TimeoutError, ssl.SSLError, OSError):
         return ""
+
+
+def uchastnik(project: dict, login: str) -> bool:
+    """Записан ли человек в строках «Ведут» или «Команда» README работы.
+
+    Не членство в GitLab: его почти всегда дают группы, а не работа, и у владельца базы
+    прямого членства нет ни в одной из 33 работ (замер 19-10-2026). Строки README ведут
+    ровно для этого — кто в работе — и ссылаются на страницу человека `(…/логин)`.
+    """
+    return bool(login) and any(
+        re.search(rf"/{re.escape(login)}\)", line)
+        for line in readme(project).splitlines()
+        if re.match(r"\*\*(Вед[уё]т|Команда)\*\*", line))
+
+
+def vybrano(projects: list[dict]) -> tuple[list[dict], str]:
+    """Что держать в дереве: своё, служебное и то, что человек выбрал сам.
+
+    Своё — работы, где он в «Ведут» или «Команда», и литература их тем. Служебное —
+    `VSEGDA`. Выбор — `SYNC_FILE`. Владелец 19-10-2026: «чтобы синкалось не вообще всё из
+    лабы, а только то, что реально нужно… и всегда синкать работы, где чел участник».
+    """
+    try:
+        lines = SYNC_FILE.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        lines = []
+    prefixes = [one.split("#", 1)[0].strip().strip("/") for one in lines]
+    prefixes = [one for one in prefixes if one]
+    if "*" in prefixes:
+        return projects, "всё, что видно (`*` в " + str(SYNC_FILE) + ")"
+    login = my_login()
+    moi = {one["path_with_namespace"] for one in projects
+           if vid(one) == "работа" and uchastnik(one, login)}
+    temy = {path.rsplit("/", 1)[0] for path in moi}
+    def nuzhen(one: dict) -> bool:
+        path = one["path_with_namespace"]
+        local = str(put_v_dereve(one).relative_to(TREE))
+        return (path in moi or path in VSEGDA
+                or (vid(one) == "литература" and path.rsplit("/", 1)[0] in temy)
+                or any(path.startswith(prefix) or path.startswith("brainlab/" + prefix)
+                       or local.startswith(prefix) for prefix in prefixes))
+    why = (f"работы, где {login} в «Ведут» или «Команда»: {len(moi)}, литература их тем, "
+           + ", ".join(VSEGDA)
+           + (f"; из {SYNC_FILE}: " + ", ".join(prefixes) if prefixes else ""))
+    if not login:
+        why += f". Кто ты — неизвестно, своё не найти: положи логин GitLab в {MY_LOGIN_FILE}"
+    return [one for one in projects if nuzhen(one)], why
+
+
+def vedushchiy(project: dict) -> str:
+    """Логин первого ведущего из строки «Ведут» README работы: ему назначается предложение."""
+    text = readme(project)
     # Ссылка на человека бывает и `(/логин)`, и полным адресом `(https://…/логин)`.
     found = re.search(r"\*\*Вед[уё]т\*\*\s*\[[^\]]*\]\((?:[^)\s]*/)?([^)\s/]+)\)", text)
     return found.group(1) if found else ""
@@ -473,25 +537,39 @@ def v_derevo(project: dict, *, obnovit: bool = True) -> tuple[str, Path, str]:
 
 
 def do_sync(arguments: list[str]) -> None:
-    """Собрать дерево лаборатории или обновить его: всё, что видно твоим ключом.
+    """Собрать дерево лаборатории или обновить его: своё, служебное и выбранное.
 
-    Повторный запуск безопасен: недостающее клонирует, остальное подтягивает, а клоны с
-    правками и на ветках только называет. Часть пути ограничивает обход
-    (`lab sync low-rank`, `lab sync ops`).
+    Что брать, решает `vybrano()`; уже лежащие клоны вне выбора не трогаются. Повторный
+    запуск безопасен: недостающее клонирует, остальное подтягивает, а клоны с правками и на
+    ветках только называет. Часть пути берёт разово её одну (`lab sync low-rank`), мимо
+    выбора; `--всё` — всё, что видно.
     """
     from concurrent.futures import ThreadPoolExecutor
 
     setup_key()
     prefixes = [one.strip("/") for one in arguments if not one.startswith("-")]
-    projects = [one for one in vse_vidimye()
-                if not prefixes or any(
-                    str(put_v_dereve(one).relative_to(TREE)).startswith(prefix)
-                    or one["path_with_namespace"].startswith(prefix) for prefix in prefixes)]
+    visible = vse_vidimye()
+    if prefixes:
+        projects = [one for one in visible if any(
+            str(put_v_dereve(one).relative_to(TREE)).startswith(prefix)
+            or one["path_with_namespace"].startswith(prefix) for prefix in prefixes)]
+    elif "--всё" in arguments:
+        projects = visible
+    else:
+        projects, why = vybrano(visible)
+        print(f"в дереве держу: {why}")
+        mimo = [one for one in visible if one not in projects
+                and (put_v_dereve(one) / ".git").is_dir()]
+        if mimo:
+            print(f"уже лежат, но вне выбора — не трогаю: {len(mimo)}")
+        print(f"добавить своё: строка в {SYNC_FILE} (часть пути, `*` — всё); "
+              "разово — `lab sync <часть пути>` или `lab sync --всё`")
     # Сначала работы и служебные, литература последней: она весит больше всего (картинки и
     # PDF разборов, 50–115 МБ на тему), а работать можно, пока она докачивается.
     projects.sort(key=lambda one: (vid(one) == "литература", one["path_with_namespace"]))
-    print(f"дерево: {TREE} — репозиториев видно: {len(projects)}. Первый раз это около 1.5 ГБ "
-          "через туннель базы, порядка часа; дальше только подтягивание.")
+    print(f"дерево: {TREE} — репозиториев к сборке: {len(projects)} из {len(visible)} видимых. "
+          "Первый раз это до 1.5 ГБ через туннель базы, если брать всё; дальше только "
+          "подтягивание.")
     # Параллельно, но по двое: каждый клон идёт через туннель секунду-другую, а их под сотню,
     # и при шести разом туннель рвёт половину рукопожатий (замер 18-10-2026: 7 из 12).
     with ThreadPoolExecutor(max_workers=2) as pool:

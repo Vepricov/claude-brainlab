@@ -6,7 +6,7 @@ The user's code and experiments live on remote SSH servers. When working with co
 ## Available Servers
 
 Full server reference with GPU specs, CUDA mapping, and monitoring info:
-`${OBSIDIAN_VAULT}/general/Knowledge/servers.md`
+`~/brainlab/servers/README.md`
 
 Quick summary (example template — replace with your own hosts):
 - **<host_a>** — 8×A100-80GB (PCIe + SXM4 mix). CUDA indices ≠ physical indices — see your servers.md for canonical mapping.
@@ -14,7 +14,7 @@ Quick summary (example template — replace with your own hosts):
 - **<host_c>** — H200 server, internal network only
 - **<host_d>** — 2×A100
 
-Replace these stubs with the hosts from your `~/.ssh/config`. Maintain a single canonical reference at `${OBSIDIAN_VAULT}/general/servers.md` and link to it from this rule.
+Replace these stubs with the hosts from your `~/.ssh/config`. The canonical reference is `~/brainlab/servers/README.md` (`brainlab/servers` in GitLab); link to it from this rule.
 
 ## Usage Instructions
 

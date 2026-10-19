@@ -93,9 +93,9 @@ The core research loop: get a paper into your library with a real, audited note.
 
 ## E. Obsidian knowledge base & project setup
 
-- **`create-project`** ⭐ — Full project setup: `~/Papers/<slug>/` with `.claude/CLAUDE.md`
-  (SSH servers, code paths), private Obsidian hub, `obsidian-projects.json` registration,
-  and a handoff to shared onboarding for Brain Lab projects. *Fires on:* "create project / new project".
+- **`create-project`** ⭐ — New work in the lab tree: GitLab repository at
+  `brainlab/<direction>/<theme>/<work>`, clone in `~/brainlab/<direction>/<theme>/<work>` with
+  `claims/`, `paper/`, `code/` and private `notes/`, `daily/`, `runs/`. *Fires on:* "create project / new project".
 - **`lab-knowledge`** ⭐ — The one skill for the lab's shared base, which is a plain git
   repository per work. It covers both directions: reading research context out of the local
   clone with `git` and `grep`, and turning an accumulated project into a work of the base

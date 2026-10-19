@@ -799,7 +799,7 @@
     },
     {
       "id": "7213f9f25a78",
-      "text": "корень проекта на диске: ~/Papers, ~/Projects, ~/Staff",
+      "text": "корень работы на диске: ~/brainlab/<направление>/<тема>/<работа>",
       "paths": [
         "processes/0/tools/2/inputs/0"
       ]
@@ -7216,7 +7216,7 @@
     },
     {
       "id": "4fb8e25959eb",
-      "text": "папки ~/Papers, ~/Projects, ~/Staff",
+      "text": "дерево ~/brainlab",
       "paths": [
         "processes/1/tools/11/inputs/1"
       ]

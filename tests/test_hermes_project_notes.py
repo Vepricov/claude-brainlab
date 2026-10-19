@@ -36,7 +36,7 @@ class ProjectNotesTests(unittest.TestCase):
                                        'Соседний опыт на GPU0 к этой задаче не относится.'}],
                     block_event={'id': 1, 'created_at': 1788865451,
                                  'payload': '{"reason": "SSH недоступен"}'})
-        note = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')['Доска.md']
+        note = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')['Доска.md']
         self.assertIn(task['comments'][0]['body'], note)
         self.assertLess(note.index('SSH vv_h200 работает'), note.index('Предыдущие сообщения Hermes'))
         self.assertGreater(note.index('SSH недоступен'), note.index('Предыдущие сообщения Hermes'))
@@ -49,12 +49,12 @@ class ProjectNotesTests(unittest.TestCase):
         data = snapshot()
         task = data['boards'][0]['tasks'][0]
         task.update(status='blocked', block_kind='needs_input')
-        note = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')['Доска.md']
+        note = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')['Доска.md']
         self.assertIn('Причина и необходимая помощь в Hermes не описаны', note)
         self.assertIn('Сервер и занятые GPU не указаны', note)
         task['block_event'] = {'id': 5, 'created_at': 1789024106,
                                'payload': '{"reason": "Need dataset access <script>"}'}
-        note = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')['Доска.md']
+        note = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')['Доска.md']
         self.assertIn('Need dataset access &lt;script&gt;', note)
         self.assertIn('Причина блокировки · запись Hermes', note)
         self.assertNotIn('Причина и необходимая помощь в Hermes не описаны', note)
@@ -65,17 +65,17 @@ class ProjectNotesTests(unittest.TestCase):
         task['agent_run'] = {'id': 4, 'status': 'running', 'started_at': 1788880953,
                              'ended_at': None, 'summary': None, 'error': None}
         task['body'] = 'Plan: use GPU0 on vv_h200 after approval.'
-        note = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')['Доска.md']
+        note = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')['Доска.md']
         self.assertIn('В Hermes нет сообщения о прогоне', note)
         self.assertIn(task['body'], note)
-        self.assertEqual(json.loads(render_project(data, data['boards'][0], 'Papers/RL')['snapshot.json'])['boards'][0],
+        self.assertEqual(json.loads(render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl')['snapshot.json'])['boards'][0],
                          data['boards'][0])
 
     def test_card_text_preserves_line_breaks_and_zero_priority(self):
         data = snapshot()
         task = data['boards'][0]['tasks'][0]
         task.update(priority=0, body='Line one\n\n- [ ] source checklist\n`code` & <value>')
-        note = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')['Доска.md']
+        note = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')['Доска.md']
         class Text(HTMLParser):
             def __init__(self):
                 super().__init__()
@@ -93,7 +93,7 @@ class ProjectNotesTests(unittest.TestCase):
         data['boards'][0]['tasks'][0]['body'] = (
             '</div><script>alert(1)</script>\n\n```dataviewjs\nalert(2)\n```\n'
             '- [ ] injected {{operonId:: stolen}}')
-        files = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')
+        files = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')
         note = files['Доска.md']
         self.assertNotIn('<script>', note)
         self.assertNotIn('```', note)
@@ -105,10 +105,10 @@ class ProjectNotesTests(unittest.TestCase):
     def test_transition_moves_card_to_history_and_unknown_status_remains_visible(self):
         data = snapshot()
         data['boards'][0]['tasks'][0]['status'] = 'future-status'
-        files = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')
+        files = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')
         self.assertIn('future-status', files['Доска.md'])
         data['boards'][0]['tasks'][0].update(status='done', result='New result')
-        files = render_project(data, data['boards'][0], 'Papers/RL/Knowledge/Hermes')
+        files = render_project(data, data['boards'][0], 'reasoning-rl/rl-theme/rl/notes/Hermes')
         self.assertNotIn('t_same', files['Доска.md'])
         self.assertIn('t_same', files['История.md'])
         self.assertIn('New result', files['История.md'])
@@ -117,12 +117,12 @@ class ProjectNotesTests(unittest.TestCase):
     def test_manual_change_in_second_project_prevents_all_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
-            routes = {'rl-muon': 'Papers/RL', 'dykaf-scale': 'Papers/DyKAF'}
+            routes = {'rl-muon': 'reasoning-rl/rl-theme/rl', 'dykaf-scale': 'matrix-optimization/curvature/dykaf'}
             for folder in routes.values():
                 (vault / folder).mkdir(parents=True)
             data = snapshot()
             write_project_notes(vault, data, routes)
-            manual = vault / 'Papers/DyKAF/Knowledge/Hermes/Доска.md'
+            manual = vault / 'matrix-optimization/curvature/dykaf/notes/Hermes/Доска.md'
             manual.write_text(manual.read_text() + '\nMy annotation')
             before = {str(p):p.read_bytes() for p in vault.rglob('*') if p.is_file()}
             data['captured_at'] = '2026-09-10T07:14:00+00:00'
@@ -133,11 +133,11 @@ class ProjectNotesTests(unittest.TestCase):
     def test_missing_or_conflicting_bindings_do_not_create_projects(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
-            (vault / 'Papers/RL').mkdir(parents=True)
-            for routes in [{'rl-muon': 'Papers/RL'},
-                           {'rl-muon': 'Papers/RL', 'dykaf-scale': 'Papers/missing'},
-                           {'rl-muon': 'Papers/RL', 'dykaf-scale': 'Papers/RL'},
-                           {'rl-muon': '..', 'dykaf-scale': 'Papers/RL'}]:
+            (vault / 'reasoning-rl/rl-theme/rl').mkdir(parents=True)
+            for routes in [{'rl-muon': 'reasoning-rl/rl-theme/rl'},
+                           {'rl-muon': 'reasoning-rl/rl-theme/rl', 'dykaf-scale': 'matrix-optimization/curvature/missing'},
+                           {'rl-muon': 'reasoning-rl/rl-theme/rl', 'dykaf-scale': 'reasoning-rl/rl-theme/rl'},
+                           {'rl-muon': '..', 'dykaf-scale': 'reasoning-rl/rl-theme/rl'}]:
                 with self.assertRaises(ValueError):
                     write_project_notes(vault, snapshot(), routes)
                 self.assertEqual(list(vault.rglob('*.md')), [])
@@ -145,12 +145,12 @@ class ProjectNotesTests(unittest.TestCase):
     def test_each_project_gets_its_own_board_and_full_history(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
-            routes = {'rl-muon': 'Papers/RL', 'dykaf-scale': 'Papers/DyKAF'}
+            routes = {'rl-muon': 'reasoning-rl/rl-theme/rl', 'dykaf-scale': 'matrix-optimization/curvature/dykaf'}
             for folder in routes.values():
                 (vault / folder).mkdir(parents=True)
             write_project_notes(vault, snapshot(), routes)
             for slug, folder in routes.items():
-                root = vault / folder / 'Knowledge/Hermes'
+                root = vault / folder / 'notes' / 'Hermes'
                 data = json.loads((root / 'snapshot.json').read_text())
                 self.assertEqual([b['slug'] for b in data['boards']], [slug])
                 self.assertEqual([t['id'] for t in data['boards'][0]['tasks']], ['t_same', 't_done'])

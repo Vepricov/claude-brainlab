@@ -1,8 +1,8 @@
 {
-  "vault": "/absolute/path/to/My Research",
+  "vault": "/absolute/path/to/brainlab",
   "ssh_host": "my-hermes-host",
   "remote_root": "/absolute/path/to/hermes/boards",
   "projects": {
-    "example-project": "Papers/example-project"
+    "example-project": "<направление>/<тема>/<работа>"
   }
 }

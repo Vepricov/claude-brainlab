@@ -7,8 +7,8 @@
 
 ## Палитра
 
-Два источника: постер `~/Papers/finished papers/kawasaki/poster/brainposter.sty` и лабовая дека
-`~/Projects/huawei_optimizers/Talk3_Efficient_Pretraining_30min.pptx`. Дека главнее для слайдов,
+Два источника: постер `~/brainlab/matrix-optimization/non-euclidean-dependent/kawasaki/socials/poster/brainposter.sty` и лабовая дека
+`Talk3_Efficient_Pretraining_30min.pptx` из работы huawei-optimizers. Дека главнее для слайдов,
 и её схема такая:
 
 | Роль | Имя | Значение |

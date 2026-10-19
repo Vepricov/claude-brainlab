@@ -1333,7 +1333,7 @@
     },
     {
       "id": "9757f5777b55",
-      "text": "Внутренняя доска Hermes — источник состояния его служебных задач. Обзор Knowledge/Hermes в Obsidian предназначен для чтения.",
+      "text": "Внутренняя доска Hermes — источник состояния его служебных задач. Обзор notes/Hermes в Obsidian предназначен для чтения.",
       "paths": [
         "processes/4/tools/2/storage/0"
       ]
@@ -6187,7 +6187,7 @@
     },
     {
       "id": "786a2a0bad1a",
-      "text": "Запуск ~/Papers/warmup/tools/refresh_plot.sh, описание в заметке general/Knowledge/warmup-loss-plot-tool.md",
+      "text": "Запуск large-models/learning-rate-schedules/warmup/code/local/tools/refresh_plot.sh, описание в заметке personal/general/Knowledge/warmup-loss-plot-tool.md",
       "paths": [
         "processes/5/tools/2/adoption/invoke"
       ]

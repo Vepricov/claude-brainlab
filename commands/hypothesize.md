@@ -39,10 +39,10 @@ Use this when you want to brainstorm experiments or theoretical directions for a
 Write the brainstorm to:
 
 ```
-~/Papers/<slug>/Hypotheses/YYYY-MM-DD-hypotheses.md
+~/brainlab/<направление>/<тема>/<работа>/notes/hypotheses-YYYY-MM-DD.md
 ```
 
-(Create the `Hypotheses/` folder if missing. The exact vault path can be confirmed from `research-context $1`.)
+(`notes/` is the work's private folder and stays on the machine. Shared hypotheses go into `claims/` by a merge request.)
 
 After writing the file, print to the user:
 - File path

@@ -1,6 +1,6 @@
 # Пример проекта
 
-[[example-area/example-theme/example-work/Knowledge/Hermes/Доска|Доска Hermes]] · [[Dashboard]]
+[[example-area/example-theme/example-work/notes/Hermes/Доска|Доска Hermes]] · [[Dashboard]]
 
 ## Вопрос
 

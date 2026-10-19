@@ -3346,7 +3346,7 @@ window.RESEARCH_LOOP = {
           "role": "Maps the project's filesystem root to a folder in the Obsidian vault. Without this mapping, note-writing skills do not know where to write.",
           "when": "Before the first project note and when setting up a new project.",
           "inputs": [
-            "project filesystem root: ~/Papers, ~/Projects, ~/Staff",
+            "work filesystem root: ~/brainlab/<direction>/<theme>/<work>",
             "project short name"
           ],
           "inside": [
@@ -7273,7 +7273,7 @@ window.RESEARCH_LOOP = {
           "when": "Continuously, in the background.",
           "inputs": [
             "the entire Obsidian vault",
-            "~/Papers, ~/Projects, ~/Staff folders"
+            "the ~/brainlab tree"
           ],
           "inside": [
             "launchd job homebrew.mxcl.syncthing on the laptop",
@@ -9814,7 +9814,7 @@ window.RESEARCH_LOOP = {
           ],
           "skyTitle": "Hermes Agent",
           "storage": [
-            "The internal Hermes board is the authoritative state of its operational tasks. The Knowledge/Hermes overview in Obsidian is for reading.",
+            "The internal Hermes board is the authoritative state of its operational tasks. The notes/Hermes overview in Obsidian is for reading.",
             "GitLab issues hold shared assignments and the team outcome, the work's claims/ hold scientific records. The agent's internal steps are not copied to the shared board."
           ]
         },
@@ -12768,7 +12768,7 @@ window.RESEARCH_LOOP = {
           "links": [],
           "adoption": {
             "kind": "private",
-            "invoke": "Run ~/Papers/warmup/tools/refresh_plot.sh. Documentation: general/Knowledge/warmup-loss-plot-tool.md",
+            "invoke": "Run large-models/learning-rate-schedules/warmup/code/local/tools/refresh_plot.sh. Documentation: personal/general/Knowledge/warmup-loss-plot-tool.md",
             "installNote": "The plotting scripts live in the owner's private project folder and are not in the public repository. Ask the owner for access."
           },
           "usedBy": [

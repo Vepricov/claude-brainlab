@@ -19,8 +19,8 @@ Keep the target Obsidian closed before changing its configuration, back it up an
 preserve all tasks, statuses, presets, notes and access settings. Do not enable the
 archive job as part of setup.
 
-Hermes has a deterministic, read-only board projection in each project's own
-`Knowledge/Hermes/`. A system scheduler refreshes it every 15 minutes without an LLM.
+Hermes has a deterministic, read-only board projection in each work's own
+`notes/Hermes/` (local, not in git). A system scheduler refreshes it every 15 minutes without an LLM.
 Keep source task IDs and statuses. Private Hermes steps are not a copy of the shared
 GitLab issues of the work. SSH access and project routes are configured by the recipient.
 

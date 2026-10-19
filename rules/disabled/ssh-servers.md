@@ -52,16 +52,16 @@ ssh <host> "tmux attach -t train"   # reattach later
 
 ## Project-Specific Server Config
 
-Research projects live in `~/Papers/<project>/` and have a `.claude/CLAUDE.md` with a list of servers relevant to that project.
+Works live in `~/brainlab/<direction>/<theme>/<work>/` and may have a `.claude/CLAUDE.md` with a list of servers relevant to that work.
 
-**When working inside a project (`~/Papers/<project>/`):**
+**When working inside a work (`~/brainlab/<direction>/<theme>/<work>/`):**
 1. Check `.claude/CLAUDE.md` for `## SSH Servers` section
 2. If servers are listed there — use only those servers (subset of global `~/.ssh/config`)
 3. Do NOT ask which server if it is already recorded in `.claude/CLAUDE.md`
 4. If no server is specified by user and multiple are listed → show GPU load for all listed servers, then ask
 
 **Code path convention:**
-- Local code: `~/Papers/<project>/<code_name>/`
+- Local code: `~/brainlab/<direction>/<theme>/<work>/code/<code_name>/`
 - Remote code: `~/<code_name>/` (same folder name, cloned to home on server)
 - Run pattern: `ssh <host> "cd <code_name> && <command>"`
 

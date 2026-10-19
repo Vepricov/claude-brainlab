@@ -38,8 +38,8 @@ Display settings: mirroring OFF.
 Keys: →/←/space next/prev · `f`/Esc fullscreen on/off · `x` swap screens · `j`/`k` scroll notes ·
 `+`/`-`/`0` notes size · `t` timer start/stop · `.` black screen · `l` laser · `?` all keys.
 
-Example project using it: `~/Staff/ai-for-research/slides/` (`present.sh` there wraps this flow;
-script = Obsidian `Staff/ai-for-research/talk-script.md`).
+Example project using it: `~/brainlab/ops/lectures/ai-for-research/slides/` (`present.sh` there wraps this flow;
+script = `ops/lectures/ai-for-research/talk-script.md` in the vault).
 
 ## Files
 

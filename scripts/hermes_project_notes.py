@@ -175,7 +175,7 @@ def write_project_notes(vault: Path, snapshot: dict, routes: dict[str, str]) -> 
         if not re.fullmatch(r'[a-zA-Z0-9_-]+', board['slug']):
             raise ValueError('Invalid board slug')
         project = (vault / routes[board['slug']]).resolve()
-        root = (project / 'Knowledge/Hermes').resolve()
+        root = (project / 'notes' / 'Hermes').resolve()   # личное работы: <работа>/notes/
         if not project.is_dir() or vault not in project.parents or project not in root.parents:
             raise ValueError('Choose an existing project inside the vault')
         if root in targets:

@@ -3346,7 +3346,7 @@ window.RESEARCH_LOOP={
      "role": "Сопоставляет корень проекта на диске папке в хранилище Obsidian. Без заполненного файла навыки записи заметок не знают, куда писать.",
      "when": "Перед первой заметкой по проекту и при заведении нового проекта.",
      "inputs": [
-      "корень проекта на диске: ~/Papers, ~/Projects, ~/Staff",
+      "корень работы на диске: ~/brainlab/<направление>/<тема>/<работа>",
       "краткое имя проекта"
      ],
      "inside": [
@@ -7273,7 +7273,7 @@ window.RESEARCH_LOOP={
      "when": "Постоянно, в фоне.",
      "inputs": [
       "хранилище Obsidian целиком",
-      "папки ~/Papers, ~/Projects, ~/Staff"
+      "дерево ~/brainlab"
      ],
      "inside": [
       "на ноутбуке юнит launchd homebrew.mxcl.syncthing",
@@ -9814,7 +9814,7 @@ window.RESEARCH_LOOP={
      ],
      "skyTitle": "Hermes Agent",
      "storage": [
-      "Внутренняя доска Hermes — источник состояния его служебных задач. Обзор Knowledge/Hermes в Obsidian предназначен для чтения.",
+      "Внутренняя доска Hermes — источник состояния его служебных задач. Обзор notes/Hermes в Obsidian предназначен для чтения.",
       "Issues GitLab хранят общие поручения и командный итог, claims/ работы — научные записи. Внутренние шаги агента не копируются на общую доску."
      ]
     },
@@ -12768,7 +12768,7 @@ window.RESEARCH_LOOP={
      "links": [],
      "adoption": {
       "kind": "private",
-      "invoke": "Запуск ~/Papers/warmup/tools/refresh_plot.sh, описание в заметке general/Knowledge/warmup-loss-plot-tool.md",
+      "invoke": "Запуск large-models/learning-rate-schedules/warmup/code/local/tools/refresh_plot.sh, описание в заметке personal/general/Knowledge/warmup-loss-plot-tool.md",
       "installNote": "Скрипты построения графика лежат в личной папке проекта владельца и в открытом репозитории их нет: спрашивать у владельца."
      },
      "usedBy": [

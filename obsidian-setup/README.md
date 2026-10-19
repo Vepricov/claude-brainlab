@@ -112,7 +112,7 @@ kanban.db на вашем сервере
     ↓ SQLite read-only через ваш SSH
 sync_hermes.py — детерминированный Python
     ↓ раз в 15 минут по системному расписанию
-Papers/<project>/Knowledge/Hermes/
+<направление>/<тема>/<работа>/notes/Hermes/
     Доска.md       активные карточки
     История.md     завершённое и архив
     snapshot.json исходный снимок
@@ -134,7 +134,7 @@ Papers/<project>/Knowledge/Hermes/
 python3 sync_hermes.py --config /absolute/path/to/hermes-config.json
 ```
 
-Например, запись `"optimizer": "Papers/optimizer"` ведёт только в `Papers/optimizer/Knowledge/Hermes`. Несколько существующих досок можно перечислить в одном `projects`. Завершение задачи не подтверждает научное утверждение: для него агент отдельно сохраняет основания и оценку в Lab Knowledge MCP.
+Например, запись `"wsd-muon": "matrix-optimization/training-dynamics/wsd-muon"` ведёт только в `matrix-optimization/training-dynamics/wsd-muon/notes/Hermes` — личную папку работы, которая в git не едет. Несколько существующих досок можно перечислить в одном `projects`. Завершение задачи не подтверждает научное утверждение: для него агент отдельно записывает прогон и серию под утверждением в `claims/` работы и открывает предложение.
 
 Для проверки без сервера создайте конфиг с путём к тестовому vault и демонстрационным проектом, затем:
 

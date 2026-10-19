@@ -23,7 +23,7 @@ AlphaXiv — её отражение.
 ШАГ 3. Один вызов: list_library(include_papers=false). Для каждой статьи из папки
 «Want to read» (её содержимое посмотри вызовом
 `list_library(paper_ids_or_urls=[...])`, если понадобится) проверь командой:
-    grep -rl "<arxiv_id>" ~/shkodnik1917/Operon/Reading/
+    grep -rl "<arxiv_id>" ~/brainlab-operon/Reading/
 Карточки нет — заведи одной командой, папку возьми из описи:
     python3 ~/paper-agent/make_cards.py --status Очередь --no-digest \
         --pick "<arxiv_id>|<Тема>|<Top/Sub>|<две-три фразы о сути>"

@@ -61,7 +61,7 @@
    удаляется:
 
    ```bash
-   cd ~/Staff/BRAIn\ Lab/claude-brainlab && git mv scripts/lab-gitlab scripts/lab
+   cd ~/brainlab/agents/claude-brainlab && git mv scripts/lab-gitlab scripts/lab
    ```
 
    Единица в нём — работа, а не тема: `lab here wsd-muon`, не `lab here training-dynamics`.

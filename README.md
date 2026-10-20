@@ -387,6 +387,51 @@ client sessions backed by one model process per configuration. Library switches
 stay within each client. Missing or older runtimes keep the existing Zotero CLI.
 This check does not import models, install packages, or replace a global launcher.
 
+## Recommended plugins
+
+Two third-party Claude Code plugins pair well with this toolkit. `setup.sh` does not install them. Caveman shrinks what the agent says, ponytail shrinks what it builds, so they do not overlap.
+
+### [caveman](https://github.com/JuliusBrussee/caveman): fewer words
+
+For those who keep running out of tokens. The agent drops the filler and answers only to the point, while code, commands, and errors stay byte-for-byte exact. The upstream benchmark reports about 65% fewer output tokens. Example from the official README:
+
+| Normal agent (69 tokens) | Caveman agent (19 tokens) |
+|---|---|
+| The reason your React component is re-rendering is likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every time, which triggers a re-render. I'd recommend using useMemo to memoize the object. | New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`. |
+
+Only output tokens shrink. Input and reasoning tokens are untouched, and the skill adds about 1 to 1.5k input tokens per turn.
+
+```bash
+claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
+```
+
+Levels: `/caveman lite|full|ultra`. Say "normal mode" to turn it off.
+
+### [ponytail](https://github.com/DietrichGebert/ponytail): less code
+
+Shrinks the code the agent writes. Before writing code, the agent stops at the first rung that holds:
+
+```
+1. Does this need to exist?   → no: skip it (YAGNI)
+2. Already in this codebase?  → reuse it, don't rewrite
+3. Stdlib does it?            → use it
+4. Native platform feature?   → use it
+5. Installed dependency?      → use it
+6. One line?                  → one line
+7. Only then: the minimum that works
+```
+
+The ladder runs after the agent has read the code the change touches, not instead of it. Trust-boundary validation, data-loss handling, security, and accessibility are never cut.
+
+In Claude Code, send these as two separate prompts (needs `node` on `PATH`):
+
+```
+/plugin marketplace add DietrichGebert/ponytail
+```
+```
+/plugin install ponytail@ponytail
+```
+
 ## Customize
 
 Most paths and identifiers are driven by `.env`. To change a hook, skill, or rule, edit it in this repo and re-run `bash install/setup.sh` — your existing `~/.claude` is backed up first. Per-skill customization (Zotero parent keys, vault folder taxonomy, MemPalace wing names) lives in each skill's `SKILL.md`.

@@ -61,7 +61,7 @@ def build(destination: Path, owner: str, cache: Path | None = None,
         # Раскладка та же, что в дереве лаборатории: личное лежит в `personal/`, а работы —
         # в `<направление>/<тема>/<работа>`, и отдельных корней `Papers`/`Projects`/`Staff`
         # больше нет (переезд 16-10-2026).
-        for folder in ['personal/daily', 'personal/literature/_inbox',
+        for folder in ['personal/daily', 'personal/zotero-import',
                        'personal/operon/Archives', 'personal/operon/Projects',
                        'personal/operon/Tasks']:
             (staging / folder).mkdir(parents=True, exist_ok=True)

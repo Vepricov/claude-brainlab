@@ -1,6 +1,6 @@
 {
   "database": "Zotero",
-  "noteImportFolder": "personal/literature/_inbox",
+  "noteImportFolder": "personal/zotero-import",
   "pdfExportImageDPI": 120,
   "pdfExportImageFormat": "jpg",
   "pdfExportImageQuality": 90,

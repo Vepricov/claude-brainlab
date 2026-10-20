@@ -16,7 +16,7 @@
 
 ## Проекты и статьи
 
-Создавайте папки проектов в Papers, Projects или Staff. Храните разборы, протоколы, результаты и решения рядом с проектом. Разборы статей лежат по темам в <направление>/<тема>/literature; импорт Zotero по умолчанию идёт в personal/literature/_inbox. Шаблоны находятся в personal/general/Templates и personal/operon/Templates.
+Работы лежат в <направление>/<тема>/<работа>, личные заметки работы в её notes/. Разборы статей лежат по темам в <направление>/<тема>/literature; импорт Zotero по умолчанию идёт в personal/zotero-import. Шаблоны находятся в personal/general/Templates и personal/operon/Templates.
 
 ## Hermes
 

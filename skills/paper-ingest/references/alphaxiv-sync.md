@@ -83,7 +83,7 @@ filed into a topic folder locally, it must also be filed (and removed from "Want
 5. **New local folder** → first propose the folder and wait for explicit user confirmation. Only
    after confirmation call `create_folder(name=<слаг темы>, parent_folder_id=<personal_folder_id>)`
    and add its id to `folders` в обеих копиях карты. Статья, для которой темы ещё нет, уезжает в
-   `personal/_inbox` — ровно как в `personal/literature/_inbox` локально, и это не требует подтверждения.
+   `personal/_inbox` на AlphaXiv, и это не требует подтверждения.
 6. **arXiv-only via MCP**: the MCP can only add arXiv papers (`save_papers_to_folder` fetches from arXiv; there is NO upload/private-paper tool). For a paper without an arXiv id (e.g. ICML-poster-only), file it locally, skip the MCP sync, and tell the user they can upload the PDF manually as a **Private Paper** on the alphaxiv.org site if they want it there.
 7. Never touch AlphaXiv system folders (`My publications`, `Private Papers`). "Want to read" is managed only via the queue flow above.
 8. If the AlphaXiv MCP is not connected/authenticated, do the local work, then tell the user the AlphaXiv sync was skipped and needs `/mcp` auth — do not silently drop it.

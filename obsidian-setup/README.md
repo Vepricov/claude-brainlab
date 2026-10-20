@@ -91,7 +91,7 @@ py -3 install.py --vault "$env:USERPROFILE\My Research" --owner "Researcher"
 | Banners | 1.3.3 | Баннеры заметок |
 | Checklist | 2.2.14 | Дополнительный список чекбоксов; панель не открывается на старте |
 | Tasks | 7.23.1 | Запросы и представления обычных задач Markdown |
-| Zotero Integration | 3.2.1 | Импорт из собственного Zotero Desktop в `personal/literature/_inbox` |
+| Zotero Integration | 3.2.1 | Импорт из собственного Zotero Desktop в `personal/zotero-import` |
 | File Tree Alternative | 2.6.0 | Выключенная альтернатива навигации |
 | Notebook Navigator | 2.6.2 | Выключенная альтернатива навигации |
 

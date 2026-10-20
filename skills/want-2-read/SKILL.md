@@ -325,7 +325,7 @@ find "$VAULT"/*/*/literature -maxdepth 1 -name "*.md" | xargs grep -h "^tags:" -
 Collect every arXiv ID already seen so nothing gets re-ingested or re-suggested:
 
 ```bash
-find "$VAULT"/*/*/literature "$VAULT"/personal/literature -name "*.md" 2>/dev/null | xargs grep -h "arxiv.org/abs/" | grep -oE "[0-9]{4}\.[0-9]{4,5}" | sort -u > /tmp/all_seen_arxiv_ids.txt
+find "$VAULT"/*/*/literature "$VAULT"/personal/paper-search -name "*.md" 2>/dev/null | xargs grep -h "arxiv.org/abs/" | grep -oE "[0-9]{4}\.[0-9]{4,5}" | sort -u > /tmp/all_seen_arxiv_ids.txt
 ```
 
 Relevance signals: existing theme folders, note titles, note tags, and the work cards

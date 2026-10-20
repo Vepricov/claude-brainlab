@@ -15,12 +15,12 @@ version: 1.7.0
 
 ## Goal
 
-Сначала проверить колонку «Жду публикацию» и пометить `[found]` те карточки, у которых появилась публичная версия. Затем просканировать текущую Obsidian-библиотеку, вывести темы из живой структуры папок `<направление>/<тема>/literature/` и проектных карточек, найти свежие статьи arXiv за последние 30 дней, записать один обзорный файл в `_inbox` и завести по каждой найденной статье карточку в колонке «Инбокс» доски Reading плагина Operon. Решение принимает владелец, перетаскивая карточку из «Инбокса» в «Очередь»; ingest делает потом `/want-2-read`. Обзорный файл в `_inbox` остаётся: он служит журналом уже виденных arXiv ID, чтобы одни и те же статьи не всплывали в следующих поисках.
+Сначала проверить колонку «Жду публикацию» и пометить `[found]` те карточки, у которых появилась публичная версия. Затем просканировать текущую Obsidian-библиотеку, вывести темы из живой структуры папок `<направление>/<тема>/literature/` и проектных карточек, найти свежие статьи arXiv за последние 30 дней, записать один обзорный файл в `personal/paper-search/` и завести по каждой найденной статье карточку в колонке «Инбокс» доски Reading плагина Operon. Решение принимает владелец, перетаскивая карточку из «Инбокса» в «Очередь»; ingest делает потом `/want-2-read`. Обзорный файл остаётся: он служит журналом уже виденных arXiv ID, чтобы одни и те же статьи не всплывали в следующих поисках.
 
 ## Boundaries
 
 - Не использовать захардкоженные темы.
-- Не предлагать статьи, которые уже есть в библиотеке, `_inbox`, `_trash`, живых карточках
+- Не предлагать статьи, которые уже есть в литературе тем, журналах и списке отклонённых `personal/paper-search/`, живых карточках
   `personal/operon/Reading/` или архиве `personal/operon/Archives/`.
 - Не создавать отдельную папку `papers_<date>/`.
 - Не создавать полные paper notes и не запускать `paper-ingest`: подтверждение выражается переносом карточки владельцем из «Инбокса» в «Очередь», после чего ingest выполняет `/want-2-read`.
@@ -138,8 +138,8 @@ LIT=("${OBSIDIAN_VAULT:-$HOME/brainlab}"/*/*/literature)
 - папок `<направление>/<тема>/literature/`
 - заголовков заметок
 - тегов во frontmatter
-- проектных карточек в `Papers/`, `Projects/`, `Staff/`
-- уже виденных arXiv ID в библиотеке, `_inbox`, `_trash`, `personal/operon/Reading/` и `personal/operon/Archives/`
+- README работ `<направление>/<тема>/<работа>/README.md`
+- уже виденных arXiv ID в литературе тем, в `personal/paper-search/`, `personal/operon/Reading/` и `personal/operon/Archives/`
 
 Нужно получить ранжированный инвентарь тем:
 - доминирующие folder families
@@ -211,19 +211,19 @@ AlphaXiv, ни в Zotero: темы плоские и называются оди
 
 Нужно находить немного больше статей, чем в минимальном shortlist, но не превращать обзор в мусорную свалку. Обычно целевой диапазон: 8-15 хороших кандидатов, если материал реально есть.
 
-### 6. Записать один overview file в `_inbox`
+### 6. Записать один overview file в `personal/paper-search/`
 
 Использовать один файл:
 
 ```text
-personal/literature/_inbox/papers_DD-MM-YYYY.md
+personal/paper-search/papers_DD-MM-YYYY.md
 ```
 
 Не создавать папку `papers_DD-MM-YYYY/`.
 
 Файл служит техническим журналом поиска и dedup по arXiv ID. Пользователь принимает статьи не через редактирование этого файла, а на доске Reading.
 
-Если `_inbox/` не существует, создать его.
+Если `personal/paper-search/` не существует, создать её.
 
 ### 7. Формат обзора
 
@@ -266,7 +266,7 @@ personal/literature/_inbox/papers_DD-MM-YYYY.md
 
 ```text
 Найдено N статей по M темам. Карточки добавлены в Reading → Инбокс.
-Перетащи интересные статьи в «Очередь». Технический журнал: [[personal/literature/_inbox/papers_DD-MM-YYYY]]
+Перетащи интересные статьи в «Очередь». Технический журнал: [[personal/paper-search/papers_DD-MM-YYYY]]
 ```
 
 ### 9. Завести карточки в «Инбоксе» доски Reading
@@ -337,7 +337,7 @@ https://arxiv.org/abs/<ARXIV_ID>
 после ingest. Этот скилл ingest не делает и постоянные папки не трогает.
 
 Для отклоненных статей:
-- добавить запись в `personal/literature/_trash/paper-search_rejected.md`
+- добавить запись в `personal/paper-search/rejected.md`
 - формат должен быть простым и пригодным для future dedup, например:
 
 ```markdown
@@ -352,13 +352,13 @@ https://arxiv.org/abs/<ARXIV_ID>
 
 - NEVER использовать фиксированные темы вроде EEG, если библиотека этого не показывает.
 - ALWAYS писать human-facing обзор по-русски.
-- ALWAYS использовать один файл `personal/literature/_inbox/papers_DD-MM-YYYY.md`.
+- ALWAYS использовать один файл `personal/paper-search/papers_DD-MM-YYYY.md`.
 - NEVER создавать папку `papers_DD-MM-YYYY/`.
 - ALWAYS запускать несколько параллельных subagents для поиска по разным topic bundles.
 - NEVER пересказывать пользователю статьи, которые уже есть в библиотеке или были ранее staged/trashed.
 - NEVER возвращать статьи, чьи карточки уже лежат в `personal/operon/Reading/` или `personal/operon/Archives/`, включая `Reading._Trash`.
 - ALWAYS заводить по карточке на статью в `personal/operon/Reading/` со статусом `Reading.Инбокс`, пустым разделом `## Заметка` и всеми четырьмя каноническими разделами.
-- ALWAYS логировать отклоненные статьи в `personal/literature/_trash/paper-search_rejected.md`, чтобы их ID больше не всплывали в shortlist.
+- ALWAYS логировать отклоненные статьи в `personal/paper-search/rejected.md`, чтобы их ID больше не всплывали в shortlist.
 - NEVER класть найденное в папку «Want to read» на AlphaXiv. Эта папка означает «владелец решил читать» и синхронизируется с колонкой «Очередь», а `paper-search` кладёт кандидатов только в «Инбокс». Зеркалить на AlphaXiv будет `/want-2-read` после ingest.
 - BEFORE the owner moves a card to «Очередь», only the dedup overview and the `Reading.Инбокс` card may exist; no ingest, Zotero item, PDF, or permanent Literature note.
 - NEVER выставлять статус карточки выше «Инбокса»: перекладывать в «Очередь» решает владелец, а ingest потом делает `/want-2-read`.

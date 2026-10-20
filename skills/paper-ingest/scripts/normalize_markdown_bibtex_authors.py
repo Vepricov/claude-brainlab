@@ -138,16 +138,23 @@ def process_file(path: Path) -> bool:
 
 
 def main():
+    if not any(mesto.is_dir() for mesto in vse_papki()):
+        raise SystemExit(f'ERROR: no literature folders found under {VAULT}')
     changed = []
+    failed = []
     for path in sorted(p for mesto in vse_papki() for p in mesto.rglob('*.md')):
         try:
             if process_file(path):
                 changed.append(str(path))
-        except Exception:
-            continue
+        except Exception as exc:
+            failed.append(f'{path}: {exc}')
     print(f'CHANGED {len(changed)}')
     for p in changed:
         print(p)
+    if failed:
+        print(f'FAILED {len(failed)}')
+        for item in failed:
+            print(item)
 
 
 if __name__ == '__main__':

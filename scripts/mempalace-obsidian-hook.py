@@ -370,6 +370,48 @@ def last_turn_text(transcript: str) -> str:
     return "\n".join(chunk)
 
 
+#: Вызовы, которые и есть запись: память, связи, отправка в git. Ход, где такой вызов уже
+#: был, не прерывается: классификатор видит только текст ответа, а не вызовы, и на замере
+#: 21-10-2026 95 остановок из 490 пришлись на ход, где запись уже сделана. Владелец: «он
+#: слишком часто останавливает модельку, чтобы она что-то записала, а она уже на самом деле
+#: эту информацию записывала».
+ZAPIS_VYZOV = re.compile(r"mempalace_(add_drawer|diary_write|kg_add|update_drawer)")
+ZAPIS_GIT = re.compile(r"\bgit\b[^\n|;&]*\bpush\b")
+
+
+def turn_wrote(transcript: str) -> bool:
+    """Был ли в ходе после последнего сообщения человека вызов, который записывает."""
+    wrote = False
+    try:
+        with Path(transcript).open(encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict):
+                    continue
+                content = (entry.get("message") or {}).get("content")
+                if entry.get("type") == "user":
+                    human = isinstance(content, str) or (
+                        isinstance(content, list)
+                        and not any(b.get("type") == "tool_result" for b in content))
+                    if human:
+                        wrote = False
+                elif entry.get("type") == "assistant" and isinstance(content, list):
+                    for block in content:
+                        if block.get("type") != "tool_use":
+                            continue
+                        name = str(block.get("name") or "")
+                        command = str((block.get("input") or {}).get("command") or "")
+                        if ZAPIS_VYZOV.search(name) or (name == "Bash"
+                                                         and ZAPIS_GIT.search(command)):
+                            wrote = True
+    except OSError:
+        return False
+    return wrote
+
+
 #: Кто решает, когда прерывать. True — классификатор, False — счётчик, как было до
 #: 03-10-2026. Одна строка на откат.
 JEV_DECIDES = True
@@ -525,6 +567,10 @@ def main() -> None:
         lines = "\n".join(f"  {one}" for one in facts)
         print(json.dumps({"decision": "block", "reason":
                           f"{lines}\nЧто делать — `{RULE}`."}, ensure_ascii=False))
+        return
+    if turn_wrote(transcript):
+        # Запись в этом ходе уже была: прервать значит попросить её второй раз.
+        print(json.dumps({}))
         return
     fired = turns > 0 and turns - last >= SAVE_INTERVAL
     verdict = (ask_router(session, transcript, turns, last, fired,

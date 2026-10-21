@@ -120,6 +120,32 @@ class StopHookTest(unittest.TestCase):
         self.assertEqual(self.invoke()["decision"], "block")
         self.ingest.assert_called_once_with()
 
+    def write_turn_with_tool(self, name, command=""):
+        rows = [{"type": "user", "message": {"role": "user", "content": "Сделай и запиши"}},
+                {"type": "assistant", "message": {"role": "assistant", "content": [
+                    {"type": "tool_use", "id": "t1", "name": name,
+                     "input": {"command": command} if command else {"content": "x"}}]}},
+                {"type": "user", "message": {"role": "user", "content": [
+                    {"type": "tool_result", "tool_use_id": "t1", "content": "ok"}]}},
+                {"type": "assistant", "message": {"role": "assistant", "content": [
+                    {"type": "text", "text": "Записал в журнал и в память."}]}}]
+        self.transcript.write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+
+    def test_turn_that_already_wrote_to_memory_is_not_interrupted(self):
+        self.write_turn_with_tool("mcp__mempalace__mempalace_add_drawer")
+        self.says(прерывать=True)
+        self.assertEqual(self.invoke(), {})
+
+    def test_turn_that_already_pushed_is_not_interrupted(self):
+        self.write_turn_with_tool("Bash", "cd ~/brainlab/journal && git pull -q --rebase && git push -q")
+        self.says(прерывать=True)
+        self.assertEqual(self.invoke(), {})
+
+    def test_turn_with_only_reads_is_still_interrupted(self):
+        self.write_turn_with_tool("Bash", "git log --oneline -3")
+        self.says(прерывать=True)
+        self.assertEqual(self.invoke()["decision"], "block")
+
     def test_classifier_silence_about_interrupting_leaves_it_to_the_counter(self):
         self.write_turns(2)
         self.says(прерывать=None, оценка=2.9)

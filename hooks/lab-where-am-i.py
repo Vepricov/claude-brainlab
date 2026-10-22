@@ -689,7 +689,8 @@ def tell_proposals(cwd: str) -> None:
 
 
 #: Репозитории, где запись — это обычный push в `main`: защиты ветки там нет нарочно.
-SLUZHEBNYE = re.compile(r"(^|/)(journal|handbook|servers|services|agents)$|^ops/")
+#: С 22-10-2026 код агентов лежит в `brainlab/agents/<репозиторий>`, и все они служебные.
+SLUZHEBNYE = re.compile(r"(^|/)(journal|handbook|servers)$|^ops/|^brainlab/agents(/|$)")
 
 
 def tell_places(cwd: str) -> None:

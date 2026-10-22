@@ -27,13 +27,13 @@
 
 Предмет области темы лежит не в репозитории, а передней страницей её группы
 (`<тема>/gitlab-profile/README.md`, проект держится в архиве). Его источник — файл
-`scripts/gitlab_pages/themes/<тема>.md` в `brainlab/services`, и правится он там.
+`scripts/gitlab_pages/themes/<тема>.md` в `brainlab/agents/services`, и правится он там.
 
 ## Где что про литературу темы правится (с 16-10-2026)
 
 Три файла, и путать их нельзя.
 
-**Разбивка по подтемам** — `scripts/gitlab_pages/literature/<тема>.md` в `brainlab/services`.
+**Разбивка по подтемам** — `scripts/gitlab_pages/literature/<тема>.md` в `brainlab/agents/services`.
 Только то, чего нельзя вычислить: заголовок подтемы, абзац о том, что в ней общего, ключи
 цитирования в порядке чтения и пометка `⭐` («без этой статьи подтему не понять»). Ни
 авторов, ни года, ни места, ни «про что»: они берутся со страниц статей.
@@ -41,7 +41,7 @@
 **README репозитория литературы** — собирается целиком:
 
 ```bash
-python3 "$HOME/brainlab/services/scripts/literature_readme.py" <клон литературы>... --fix
+python3 "$HOME/brainlab/agents/services/scripts/literature_readme.py" <клон литературы>... --fix
 ```
 
 Читает он клоны, а не API (семьсот страниц по одной — это полчаса), и пишет `README.md`

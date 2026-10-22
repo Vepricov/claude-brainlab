@@ -7,7 +7,7 @@
 
 ## Палитра
 
-Два источника: постер `~/brainlab/matrix-optimization/non-euclidean-dependent/kawasaki/socials/poster/brainposter.sty` и лабовая дека
+Два источника: постер `~/brainlab/optimization-foundations/markovian-optimization/kawasaki/socials/poster/brainposter.sty` и лабовая дека
 `Talk3_Efficient_Pretraining_30min.pptx` из работы huawei-optimizers. Дека главнее для слайдов,
 и её схема такая:
 

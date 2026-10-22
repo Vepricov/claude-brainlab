@@ -176,7 +176,7 @@ LIT=("${OBSIDIAN_VAULT:-$HOME/brainlab}"/*/*/literature)
 таксономии (`Optimization/`, `PEFT/`, `LLM/`) больше нет ни в хранилище, ни в базе, ни на
 AlphaXiv, ни в Zotero: темы плоские и называются одинаково во всех четырёх местах.
 - агент 1: `zo-estimators`
-- агент 2: `muon-sign-methods`, `muon-convergence-theory`, `non-euclidean-dependent`
+- агент 2: `muon-sign-methods`, `muon-convergence-theory`, `markovian-optimization`, `dro-reweighting`
 - агент 3: `lora-basics`, `rank-budget`, `adapter-composition`
 - агент 4: `llm-scaling`, `training-dynamics`, `learning-rate-schedules`
 - при необходимости дополнительные агенты под `reinforcement-learning` и прикладные темы

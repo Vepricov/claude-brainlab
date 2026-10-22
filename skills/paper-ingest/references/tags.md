@@ -1,7 +1,7 @@
 # Теги разбора
 
 Теги нужны, чтобы находить работы поперёк тем: `tag:muon tag:convergence-analysis` собирает
-теорию Muon из `muon-convergence-theory`, `non-euclidean-dependent` и `preconditioning-curvature`
+теорию Muon из `muon-convergence-theory`, `markovian-optimization` и `preconditioning-curvature`
 сразу. До 20-10-2026 у 737 из 746 разборов стоял один тег — имя темы, то есть то же, что и
 папка, — и искать по ним было нечего.
 

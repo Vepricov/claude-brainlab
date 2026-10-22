@@ -21,7 +21,8 @@ VAULT = Path(os.getenv("OBSIDIAN_VAULT", "~/brainlab")).expanduser()
 def temy() -> dict[str, Path]:
     """Тема → папка её разборов. Имя темы это имя папки темы, как в GitLab."""
     out: dict[str, Path] = {}
-    for mesto in sorted(VAULT.glob("*/*/literature")):
+    # Тема агентов лежит прямо под корнем (`agents/literature`), остальные — в направлении.
+    for mesto in sorted([*VAULT.glob("*/*/literature"), *VAULT.glob("*/literature")]):
         if mesto.is_dir():
             out.setdefault(mesto.parent.name, mesto)
     return out

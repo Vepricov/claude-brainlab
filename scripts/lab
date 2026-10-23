@@ -927,15 +927,22 @@ def do_search(arguments: list[str]) -> None:
     if not found:
         print("ничего не нашлось")
         return
-    names = {"claim": "утв", "paper_claim": "утв.ст", "paper": "стат", "work": "раб", "handbook": "спр",
+    names = {"claim": "утв", "paper": "стат", "term": "терм", "work": "раб", "handbook": "спр",
              "journal": "жур", "other": "файл"}
     tree = Path("~/brainlab").expanduser()
     for hit in found:
         local = tree / hit["project"].removeprefix("brainlab/") / hit["path"]
         where = str(local).replace(str(Path.home()), "~") if local.is_file() else hit["url"]
-        snippet = " ".join(hit["snippet"].split())[:160]
-        print(f"[{names.get(hit['kind'], 'файл')}] {hit['title'][:90]}\n      {where}\n"
-              f"      {snippet}\n")
+        state = f" [{hit['status']}]" if hit.get("status") else ""
+        print(f"[{names.get(hit['kind'], 'файл')}] {hit['title'][:110]}{state}\n      {where}")
+        about = hit.get("text") or hit.get("snippet") or ""
+        if about and not hit.get("claims"):
+            print(f"      {' '.join(about.split())[:220]}")
+        for claim in hit.get("claims") or []:
+            print(f"      • {claim['label']}: {' '.join(claim['title'].split())[:150]}")
+        for part in hit.get("parts") or []:
+            print(f"      ↳ {part['title'][:110]}")
+        print()
 
 
 def main() -> None:

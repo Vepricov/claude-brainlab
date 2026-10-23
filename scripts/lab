@@ -21,7 +21,8 @@
     lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
     lab checks             что сказали проверки этому предложению
     lab search "<запрос>"  поиск по всей базе по смыслу и по словам, только в видимом тебе;
-                           --утверждения, --статьи, --работы, --справочник, --журнал
+                           --утверждения, --утверждения-статей, --статьи, --работы,
+                           --справочник, --журнал
 
 ВСЁ ОСТАЛЬНОЕ — ОБЫЧНЫЙ GIT, и прослойки для него нет нарочно:
 
@@ -903,12 +904,14 @@ def do_search(arguments: list[str]) -> None:
     Индекс живёт рядом с GitLab и собран из тех же файлов; своей записи у него нет. Если файл
     уже лежит в дереве, печатается его место в `~/brainlab`, иначе ссылка в GitLab.
     """
-    kinds = {"--утверждения": "claim", "--статьи": "paper", "--работы": "work",
+    kinds = {"--утверждения": "claim", "--утверждения-статей": "paper_claim",
+             "--статьи": "paper", "--работы": "work",
              "--справочник": "handbook", "--журнал": "journal"}
     kind = next((kinds[a] for a in arguments if a in kinds), "all")
     query = " ".join(a for a in arguments if a not in kinds).strip()
     if not query:
-        sys.exit('нужен запрос: lab search "Muon без прогрева" [--утверждения|--статьи|--работы]')
+        sys.exit('нужен запрос: lab search "Muon без прогрева" '
+                 '[--утверждения|--утверждения-статей|--статьи|--работы]')
     params = urllib.parse.urlencode({"q": query, "kind": kind, "limit": 15})
     request = urllib.request.Request(f"{site()}/-/lab-search/api?{params}",
                                      headers={"PRIVATE-TOKEN": token()})
@@ -924,7 +927,7 @@ def do_search(arguments: list[str]) -> None:
     if not found:
         print("ничего не нашлось")
         return
-    names = {"claim": "утв", "paper": "стат", "work": "раб", "handbook": "спр",
+    names = {"claim": "утв", "paper_claim": "утв.ст", "paper": "стат", "work": "раб", "handbook": "спр",
              "journal": "жур", "other": "файл"}
     tree = Path("~/brainlab").expanduser()
     for hit in found:

@@ -20,6 +20,8 @@
     lab tasks              открытые задачи работы: кому назначены, какое утверждение
     lab take <номер>       взять задачу на себя: исполнитель и ярлык «делается»
     lab checks             что сказали проверки этому предложению
+    lab search "<запрос>"  поиск по всей базе по смыслу и по словам, только в видимом тебе;
+                           --утверждения, --статьи, --работы, --справочник, --журнал
 
 ВСЁ ОСТАЛЬНОЕ — ОБЫЧНЫЙ GIT, и прослойки для него нет нарочно:
 
@@ -895,6 +897,44 @@ def do_take(arguments: list[str]) -> None:
           "задачу само")
 
 
+def do_search(arguments: list[str]) -> None:
+    """Поиск по всей базе: по смыслу и по словам, только в том, что тебе видно в GitLab.
+
+    Индекс живёт рядом с GitLab и собран из тех же файлов; своей записи у него нет. Если файл
+    уже лежит в дереве, печатается его место в `~/brainlab`, иначе ссылка в GitLab.
+    """
+    kinds = {"--утверждения": "claim", "--статьи": "paper", "--работы": "work",
+             "--справочник": "handbook", "--журнал": "journal"}
+    kind = next((kinds[a] for a in arguments if a in kinds), "all")
+    query = " ".join(a for a in arguments if a not in kinds).strip()
+    if not query:
+        sys.exit('нужен запрос: lab search "Muon без прогрева" [--утверждения|--статьи|--работы]')
+    params = urllib.parse.urlencode({"q": query, "kind": kind, "limit": 15})
+    request = urllib.request.Request(f"{site()}/-/lab-search/api?{params}",
+                                     headers={"PRIVATE-TOKEN": token()})
+    try:
+        with urllib.request.urlopen(request, timeout=90) as answer:
+            found = json.loads(answer.read().decode("utf-8"))["results"]
+    except urllib.error.HTTPError as trouble:
+        sys.exit(f"поиск ответил {trouble.code}: "
+                 f"{trouble.read().decode('utf-8', 'replace')[:300]}")
+    except (urllib.error.URLError, TimeoutError, ssl.SSLError, OSError) as trouble:
+        print(f"до поиска не дозвонился: {type(trouble).__name__} — {trouble}", file=sys.stderr)
+        raise SystemExit(3)
+    if not found:
+        print("ничего не нашлось")
+        return
+    names = {"claim": "утв", "paper": "стат", "work": "раб", "handbook": "спр",
+             "journal": "жур", "other": "файл"}
+    tree = Path("~/brainlab").expanduser()
+    for hit in found:
+        local = tree / hit["project"].removeprefix("brainlab/") / hit["path"]
+        where = str(local).replace(str(Path.home()), "~") if local.is_file() else hit["url"]
+        snippet = " ".join(hit["snippet"].split())[:160]
+        print(f"[{names.get(hit['kind'], 'файл')}] {hit['title'][:90]}\n      {where}\n"
+              f"      {snippet}\n")
+
+
 def main() -> None:
     args = sys.argv[1] if len(sys.argv) > 1 else ""
     tail = sys.argv[2:]
@@ -908,6 +948,8 @@ def main() -> None:
         do_tasks()
     elif args == "take":
         do_take(tail)
+    elif args == "search":
+        do_search(tail)
     else:
         print(__doc__)
 

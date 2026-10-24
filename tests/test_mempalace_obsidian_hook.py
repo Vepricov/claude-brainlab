@@ -298,6 +298,42 @@ class StopHookTest(unittest.TestCase):
             stream.write("\n" + "\n".join(json.dumps(row) for row in other) + "\nmalformed\n")
         self.assertEqual(HOOK.human_turns(str(self.transcript)), 2)
 
+    def test_messages_replayed_after_compaction_count_once(self):
+        """24-10-2026: 8 настоящих сообщений сосчитались как 48 — продолжение сессии дописывает
+        оставленные дословно сообщения заново, с тем же временем и новым uuid."""
+        rows = []
+        for copy in range(3):
+            for number in range(2):
+                rows.append({"type": "user", "uuid": f"u{copy}{number}",
+                             "timestamp": f"2026-10-23T09:3{number}:00Z",
+                             "message": {"role": "user", "content": f"Human message {number}"}})
+        rows += [{"type": "user", "isMeta": True, "timestamp": "2026-10-23T10:00:00Z",
+                  "message": {"role": "user", "content": "[Image: original 2600x1630]"}},
+                 {"type": "user", "timestamp": "2026-10-23T10:01:00Z",
+                  "message": {"role": "user", "content": "[Request interrupted by user for tool use]"}},
+                 {"type": "user", "timestamp": "2026-10-23T10:02:00Z",
+                  "message": {"role": "user", "content": "Tool loaded."}}]
+        self.transcript.write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+        self.assertEqual(HOOK.human_turns(str(self.transcript)), 2)
+
+    def test_a_write_restarts_the_safety_count_and_is_remembered(self):
+        """Страховка считает от последней записи, а классификатор узнаёт, что записано."""
+        self.marker().parent.mkdir(parents=True, exist_ok=True)
+        self.marker().write_text("0", encoding="utf-8")
+        rows = [{"type": "user", "message": {"role": "user", "content": f"Human message {n}"}}
+                for n in range(30)]
+        rows += [{"type": "assistant", "message": {"role": "assistant", "content": [
+                    {"type": "tool_use", "id": "t1", "name": "mcp__mempalace__mempalace_add_drawer",
+                     "input": {"content": "Поиск по базе: таймер сверяет головы веток"}},
+                    {"type": "tool_use", "id": "t2", "name": "Bash",
+                     "input": {"command": 'git commit -qm "lab-search: головы веток" && git push -q'}}]}}]
+        self.transcript.write_text("\n".join(json.dumps(r) for r in rows), encoding="utf-8")
+        self.assertEqual(self.invoke(), {})
+        self.assertEqual(self.marker().read_text(encoding="utf-8"), "30")
+        recorded = json.loads((self.state / "lab-check-fixture_jev_recorded.json").read_text(encoding="utf-8"))
+        self.assertIn("Поиск по базе: таймер сверяет головы веток", recorded)
+        self.assertIn("отправлено в git: lab-search: головы веток", recorded)
+
     def test_codex_transcripts_count_each_message_once(self):
         self.write_codex_turns(10)
         self.assertEqual(HOOK.human_turns(str(self.transcript)), 10)

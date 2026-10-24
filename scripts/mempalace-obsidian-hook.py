@@ -78,6 +78,7 @@ def _text_of(content: object) -> str:
 #: вхождением, а не началом строки: часть из них приходит вместе с настоящим текстом.
 NOT_A_PERSON = (
     "[Request interrupted by user]",
+    "[Request interrupted by user for tool use]",
     "SYSTEM NOTIFICATION - NOT USER INPUT",
     "<task-notification>",
     "<system-reminder>",
@@ -97,6 +98,7 @@ def human_turns(transcript_path: str) -> int:
     if not path.is_file():
         return 0
     count = 0
+    seen: set = set()
     with path.open(encoding="utf-8", errors="replace") as handle:
         for line in handle:
             try:
@@ -104,6 +106,9 @@ def human_turns(transcript_path: str) -> int:
             except json.JSONDecodeError:
                 continue
             if not isinstance(entry, dict):
+                continue
+            # Подпись к картинке и прочие служебные вставки клиента носят роль человека.
+            if entry.get("isMeta"):
                 continue
             message = entry.get("message")
             if entry.get("type") == "response_item":
@@ -128,8 +133,16 @@ def human_turns(transcript_path: str) -> int:
             # системы, вывод локальной команды, прерывание, сводка после сжатия контекста и
             # страховочный тик наблюдателя. 03-10-2026 они давали 213 лишних «ходов» из 2080
             # в стенограмме проекта, и страховка срабатывала чаще самого классификатора.
-            if any(mark in text for mark in NOT_A_PERSON):
+            if any(mark in text for mark in NOT_A_PERSON) or text.strip() == "Tool loaded.":
                 continue
+            # Продолжение сессии после сжатия заново дописывает в стенограмму сообщения, которые
+            # оставлены дословно: с тем же временем, но новым uuid. 24-10-2026 из-за этого 8
+            # настоящих сообщений сосчитались как 48, и страховка «48 ходов без записи» сработала
+            # на сессии, где запись шла каждые несколько ходов. Одно сообщение — один ход.
+            key = entry.get("promptId") or (entry.get("timestamp"), text[:300])
+            if key in seen:
+                continue
+            seen.add(key)
             count += 1
     return count
 
@@ -486,6 +499,50 @@ def remember_subject(session: str, transcript: str) -> None:
         pass
 
 
+def remember_written(session: str, transcript: str) -> None:
+    """Что именно записано в этом ходе: начало записи в память и сообщение коммита при push."""
+    heads: list[str] = []
+    try:
+        with Path(transcript).open(encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict):
+                    continue
+                content = (entry.get("message") or {}).get("content")
+                if entry.get("type") == "user":
+                    if isinstance(content, str) or (isinstance(content, list) and not any(
+                            b.get("type") == "tool_result" for b in content)):
+                        heads = []
+                elif entry.get("type") == "assistant" and isinstance(content, list):
+                    for block in content:
+                        if block.get("type") != "tool_use":
+                            continue
+                        args = block.get("input") or {}
+                        name = str(block.get("name") or "")
+                        if ZAPIS_VYZOV.search(name):
+                            body = args.get("content") or args.get("entry") or ""
+                            if not body and "kg_add" in name:
+                                body = " ".join(str(args.get(k, "")) for k in ("subject", "predicate", "object"))
+                            heads.append(" ".join(str(body).split())[:200])
+                        elif name == "Bash" and ZAPIS_GIT.search(str(args.get("command") or "")):
+                            command = str(args.get("command") or "")
+                            msg = re.search(r"commit[^\n]*?-q?m\s+[\"']([^\"']+)", command)
+                            heads.append("отправлено в git: " + (msg.group(1)[:180] if msg else command[:180]))
+    except OSError:
+        return
+    heads = [one for one in heads if one.strip()]
+    if not heads:
+        return
+    try:
+        path, already = recorded_subjects(session)
+        path.write_text(json.dumps((already + heads)[-12:], ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
+
+
 def main() -> None:
     try:
         data = json.load(sys.stdin)
@@ -569,7 +626,15 @@ def main() -> None:
                           f"{lines}\nЧто делать — `{RULE}`."}, ensure_ascii=False))
         return
     if turn_wrote(transcript):
-        # Запись в этом ходе уже была: прервать значит попросить её второй раз.
+        # Запись в этом ходе уже была: прервать значит попросить её второй раз. Отсчёт
+        # страховки идёт от записи, а не от прошлого прерывания: иначе она говорит «N ходов
+        # без записи» сессии, которая писала сама, без напоминаний. И запомнить, ЧТО записано:
+        # классификатор видит только текст ответа, и без этого он не знает, что тема закрыта.
+        try:
+            marker.write_text(str(turns), encoding="utf-8")
+        except OSError:
+            pass
+        remember_written(session, transcript)
         print(json.dumps({}))
         return
     fired = turns > 0 and turns - last >= SAVE_INTERVAL

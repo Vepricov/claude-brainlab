@@ -642,7 +642,15 @@ def _open_with_verdict(repo: str, token: str) -> list[str]:
                 marks = json.loads(answer.read().decode("utf-8"))
         except Exception:          # noqa: BLE001
             marks = []
-        states = {str(m.get("status")) for m in marks if isinstance(m, dict)}
+        # Состояния коммита копятся: перезапуск ворот добавляет новое рядом со старым. Судим по
+        # последнему у каждого имени, иначе исправленный провал висит красным навсегда.
+        latest: dict = {}
+        for m in marks if isinstance(marks, list) else []:
+            if isinstance(m, dict) and (m.get("name") not in latest
+                                        or (m.get("id") or 0) > (latest[m.get("name")].get("id") or 0)):
+                latest[m.get("name")] = m
+        marks = list(latest.values())
+        states = {str(m.get("status")) for m in marks}
         if not states:
             mark = "ворота ещё не отвечали"
         elif states & {"failed", "failure", "canceled"}:

@@ -317,7 +317,30 @@ def _mestnye_klony(cwd: str, module) -> list[Path]:
     return nashlos
 
 
-def nesohranennoe(cwd: str) -> list[str]:
+def tronutoe(transcript: str) -> str:
+    """Всё, что агент этой сессии передавал инструментам: пути файлов и тексты команд."""
+    parts: list[str] = []
+    try:
+        with Path(transcript).open(encoding="utf-8", errors="ignore") as handle:
+            for line in handle:
+                if '"tool_use"' not in line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                content = ((entry.get("message") or {}).get("content") if isinstance(entry, dict) else None)
+                for block in content if isinstance(content, list) else []:
+                    if isinstance(block, dict) and block.get("type") == "tool_use":
+                        args = block.get("input") or {}
+                        parts.append(str(args.get("file_path") or ""))
+                        parts.append(str(args.get("command") or ""))
+    except OSError:
+        pass
+    return "\n".join(parts)
+
+
+def nesohranennoe(cwd: str, transcript: str = "") -> list[str]:
     """Правка лежит в клоне, но в базу не ушла. Факт, а не суждение: спрашивается git.
 
     Владелец 17-10-2026: «он щас должен делать так: локально менять что-то у меня и потом в
@@ -339,8 +362,20 @@ def nesohranennoe(cwd: str) -> list[str]:
     out: list[str] = []
     for folder in papki[:8]:
         gryaz = [s for s in _git(folder, "status", "--porcelain").splitlines() if s.strip()]
+        if transcript:
+            # Только то, чего сессия касалась: чужая рукопись или файл соседней сессии в том же
+            # клоне не её правка, и отправлять их она не вправе. 10-2026 такие жалобы были
+            # большей частью остановок по фактам, и агент каждый раз отвечал «это не моё».
+            seen = tronutoe(transcript)
+            gryaz = [s for s in gryaz if s[2:].strip().strip('"').split(" -> ")[-1] in seen
+                     or Path(s[2:].strip().strip('"')).name in seen]
         vetka = _git(folder, "rev-parse", "--abbrev-ref", "HEAD")
-        vperedi = _git(folder, "rev-list", "--count", "origin/main..HEAD")
+        # Ветка, отправленная в свою ветку в GitLab, отправлена: сравнивать её с `main` значит
+        # жаловаться на каждое открытое предложение.
+        verh = _git(folder, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}")
+        if not verh and _git(folder, "rev-parse", "--verify", "-q", f"origin/{vetka}"):
+            verh = f"origin/{vetka}"
+        vperedi = _git(folder, "rev-list", "--count", f"{verh or 'origin/main'}..HEAD")
         rabota = (folder / "claims").is_dir()
         # Имя берётся отрезанием ровно двух знаков состояния и пробелов: срез по трём
         # знакам съедал первую букву у `M  CHANGELOG.md` (состояние в первой колонке).
@@ -608,7 +643,7 @@ def main() -> None:
         if f"mr:{row}" not in told:
             told.add(f"mr:{row}")
             facts.append(f"Красные ворота: {row}")
-    for row in nesohranennoe(here):
+    for row in nesohranennoe(here, transcript):
         # Ключ без числа файлов: иначе каждая следующая правка в том же клоне считалась бы
         # новым случаем, и строка повторялась бы ходами.
         klyuch = f"git:{row.split(':')[0]}"

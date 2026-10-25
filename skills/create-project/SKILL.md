@@ -16,7 +16,7 @@ GitLab: работа `brainlab/<направление>/<тема>/<работа
 
 Перед записью в базу прочитать свод `~/.claude/skills/lab-knowledge/references/canon.md`.
 Иконки и цвета папок — по разделу «Иконки и цвета» в
-`~/brainlab/personal/general/Knowledge/obsidian-conventions.md`.
+`~/brainlab/personal/Knowledge/obsidian-conventions.md`.
 
 ## 0. Убедиться, что такой работы нет
 

@@ -23,8 +23,8 @@ Both layers must be applied together. A finished experiment with no notes is inv
 
 | Mode | When to use | Reference |
 |---|---|---|
-| **Live monitor with /loop** | Multi-hour runs needing post-finish actions (kill tmux, refresh plot, launch next from queue, write final into table). User says "следи / поставь N ранов / запусти когда освободится". | [[personal/general/Knowledge/autonomous-experiment-loop]] |
-| **Push queue (per-GPU lane)** | Set-and-forget N items, no trigger logic, no chained actions. User says "поставь очередь на ночь". | [[personal/general/Knowledge/server-run-queue]] |
+| **Live monitor with /loop** | Multi-hour runs needing post-finish actions (kill tmux, refresh plot, launch next from queue, write final into table). User says "следи / поставь N ранов / запусти когда освободится". | [[personal/Knowledge/autonomous-experiment-loop]] |
+| **Push queue (per-GPU lane)** | Set-and-forget N items, no trigger logic, no chained actions. User says "поставь очередь на ночь". | [[personal/Knowledge/server-run-queue]] |
 
 The live-monitor mode is the default for warmup-style hypothesis studies. The push queue is for compute-burning ablations where order matters but events don't.
 
@@ -215,9 +215,9 @@ Workflow when activated:
 6. Stop the loop only after writing the final summary section (no orphaned ScheduleWakeup calls)
 
 Cross-references:
-- [[personal/general/Knowledge/autonomous-experiment-loop]] — full operations playbook
-- [[personal/general/Knowledge/server-run-queue]] — push-queue alternative
-- [[personal/general/Knowledge/warmup-loss-plot-tool]] — refresh_plot.sh patterns + iCloud gotchas
-- [[personal/general/Knowledge/claude-loop-stay-alive-on-mac]] — keeping local /loop session alive
+- [[personal/Knowledge/autonomous-experiment-loop]] — full operations playbook
+- [[personal/Knowledge/server-run-queue]] — push-queue alternative
+- [[personal/Knowledge/warmup-loss-plot-tool]] — refresh_plot.sh patterns + iCloud gotchas
+- [[personal/Knowledge/claude-loop-stay-alive-on-mac]] — keeping local /loop session alive
 
 Last revised 14-06-2026 based on the 583M Muon warmup study (loop ran for 3+ days, 13 finished runs, 1 disk-full crash handled).

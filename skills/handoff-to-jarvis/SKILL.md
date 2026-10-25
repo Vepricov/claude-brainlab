@@ -44,7 +44,7 @@ ssh vv_h200 "nvidia-smi --query-gpu=index,memory.used,memory.free,utilization.gp
 
 В руках на каждый прогон обязаны быть: имя tmux-сессии, **абсолютный** путь лога, mtime и
 размер лога (растёт ли), свежая строка `>Eval: Iter=… val_loss=…`, номер GPU, `target_iter`.
-Запускал сам — соблюди ordering из `general/Knowledge/autonomous-experiment-loop.md`
+Запускал сам — соблюди ordering из `personal/Knowledge/autonomous-experiment-loop.md`
 (`new-session -d` → `pipe-pane` → `send-keys`; порядок не сворачивается, иначе `pipe-pane`
 проигрывает гонку первому выводу и лог пуст) и **дождись 60–90 с, пока в панели появится
 `Iter=`**: прогон, где видно только инициализацию оптимизатора, скорее всего уже застрял.

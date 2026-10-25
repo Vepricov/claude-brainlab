@@ -23,7 +23,7 @@ tags: [wsd-muon, muon, forgetting, iclr2027]
 
 ## Custom keys
 
-Anything outside that reserved set is a free-form property, and the vault's own naming wins. This vault has long used Russian custom keys (`тип`, `тема`, `обновлено`), and `general/Knowledge/obsidian-conventions.md` documents them, so keep them as they are unless the owner says otherwise. Russian is fine there precisely because nothing built-in depends on those names.
+Anything outside that reserved set is a free-form property, and the vault's own naming wins. This vault has long used Russian custom keys (`тип`, `тема`, `обновлено`), and `personal/Knowledge/obsidian-conventions.md` documents them, so keep them as they are unless the owner says otherwise. Russian is fine there precisely because nothing built-in depends on those names.
 
 ## How to apply
 

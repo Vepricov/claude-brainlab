@@ -115,4 +115,4 @@ filed into a topic folder locally, it must also be filed (and removed from "Want
     on the board. `archiveHold: true` pins any card indefinitely. Archived or not, a rejected
     title/arXiv ID stays part of dedup.
 
-Full folder mapping + the 2026-07-12 full-rebuild rationale: MemPalace `literature/decisions` drawer + Obsidian `general/Knowledge/alphaxiv-mcp-sync.md`.
+Full folder mapping + the 2026-07-12 full-rebuild rationale: MemPalace `literature/decisions` drawer + Obsidian `personal/Knowledge/alphaxiv-mcp-sync.md`.

@@ -15,16 +15,16 @@ The user delegates code execution to agents and reads the logs. For that to work
 3. **Experiments are monitored, never lost.**
    Each monitored run has its own folder in the work, `runs/<E-code>/` (a series: `runs/<S-code>/`): `README.md` with status, a timestamped `## Progress snapshots` table and the convergence plot embedded under the status, so Obsidian shows it like a W&B run page; it stays on the machine, git it not. Skill: `obsidian-experiment-log`. Long runs go in `tmux` on the server; a `/loop` checks liveness, appends snapshots, and refreshes a versioned plot PNG. House-style plotting + the iCloud/cache gotchas: see `personal/Knowledge/warmup-loss-plot-tool.md`.
 
-4. **Every training run is wrapped in the lab recorder, before it starts.**
-   `lab_run.py` from the `lab-knowledge` skill (`~/.claude/skills/lab-knowledge/scripts/lab_run.py`)
-   writes the run's own page — hyperparameters, metrics,
-   environment, commit, hardware — into one folder per run and pushes it to a branch, from
-   which the agent later moves it under a claim and builds a series. Copy it into the repo
-   that holds the training code; no dependencies, stdlib only.
-   A run that finished without the recorder has to be transcribed by hand, which the base
-   forbids and its gates fail: a number absent from the corpus turns the verdict red.
-   The named rules are `run-is-written-by-code`, `run-says-what-is-seen` and
-   `shelf-must-be-empty` in `~/.claude/skills/lab-knowledge/references/canon.md`.
+4. **Every training run logs to the lab W&B; `lab wandb` carries it into the base.**
+   Training code uses plain `wandb` (`wandb.init()`, `wandb.log()`), pointed at the lab
+   server `https://wandb-radfan.ru`; W&B records hyperparameters, curves, commit, command
+   and hardware itself. `lab wandb <run URL> [--branch claim/H-XXX-001]` puts the run page
+   draft and full `metrics.csv` into the work's branch under `_runs/<id>/` and adds the
+   W&B project link to the work README. Code that cannot use W&B is wrapped in
+   `lab_run.py` (`~/.claude/skills/lab-knowledge/scripts/lab_run.py`) instead. Hand
+   transcription is forbidden and fails the gates: a number absent from the corpus turns
+   the verdict red. The named rules are `run-is-written-by-code`, `run-says-what-is-seen`
+   and `shelf-must-be-empty` in `~/.claude/skills/lab-knowledge/references/canon.md`.
 
 5. **Coding standards still apply** — `~/.claude/rules/coding-style.md`, `agents.md`, `security.md`, and the Karpathy principles in `CLAUDE.md` (surgical changes, frozen-dataclass config, type hints, no globals, factory/registry, files 200-400 lines).
 

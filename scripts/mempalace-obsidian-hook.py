@@ -159,9 +159,10 @@ LAUNCHERS = ("torchrun", "accelerate launch", "deepspeed", "sbatch", "srun",
              "python train", "python -m torch.distributed", "nohup python", "python main.py")
 TRAINING = ("--lr", "--learning-rate", "--epochs", "--batch", "--steps", "wandb",
             "train.py", "pretrain", "finetune", "--config")
-#: Признак обёртки: рекордер зовут из обучающего кода, а не из командной строки, поэтому
-#: ищется он В ФАЙЛЕ точки входа, а не в команде.
-WRAPPED = ("LabRun", "lab_run")
+#: Признак записи: W&B или рекордер зовут из обучающего кода, а не из командной строки,
+#: поэтому ищутся они В ФАЙЛЕ точки входа, а не в команде. С 26-10-2026 основной путь —
+#: обычный `wandb`, а в базу прогон переносит `lab wandb <ссылка>`.
+WRAPPED = ("wandb.init", "import wandb", "LabRun", "lab_run")
 
 
 def _golova(command: str) -> str:
@@ -638,7 +639,7 @@ def main() -> None:
     for command in unwrapped_runs(transcript, here):
         if f"run:{command}" not in told:
             told.add(f"run:{command}")
-            facts.append(f"Запуск без рекордера: `{command}`")
+            facts.append(f"Запуск без W&B и без рекордера: `{command}`")
     for row in red_proposals(here):
         if f"mr:{row}" not in told:
             told.add(f"mr:{row}")

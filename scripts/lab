@@ -23,6 +23,8 @@
     lab search "<запрос>"  поиск по всей базе по смыслу и по словам, только в видимом тебе;
                            --утверждения, --утверждения-статей, --статьи, --работы,
                            --справочник, --журнал
+    lab wandb <ссылка>     прогон из W&B — в ветку работы: страница прогона, metrics.csv и
+                           строка «Прогоны» в README; --work, --branch, --objective, --dry
 
 ВСЁ ОСТАЛЬНОЕ — ОБЫЧНЫЙ GIT, и прослойки для него нет нарочно:
 
@@ -945,6 +947,14 @@ def do_search(arguments: list[str]) -> None:
         print()
 
 
+def do_wandb(tail: list) -> None:
+    """Прогон W&B в базу: вся работа в `lab_wandb.py` рядом с рекордером навыка."""
+    script = Path("~/.claude/skills/lab-knowledge/scripts/lab_wandb.py").expanduser()
+    if not script.is_file():
+        sys.exit(f"нет {script}: поставь навык lab-knowledge")
+    sys.exit(subprocess.call([sys.executable, str(script), *tail]))
+
+
 def main() -> None:
     args = sys.argv[1] if len(sys.argv) > 1 else ""
     tail = sys.argv[2:]
@@ -960,6 +970,8 @@ def main() -> None:
         do_take(tail)
     elif args == "search":
         do_search(tail)
+    elif args == "wandb":
+        do_wandb(tail)
     else:
         print(__doc__)
 

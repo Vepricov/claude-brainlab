@@ -41,7 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lab_run import (DRAFT_SHELF, _base_credentials, _call, _draft_page,  # noqa: E402
                      _find_project, _run_branch, _settings_of, _upload)
 
-__all__ = ["fetch_run", "files_for", "main"]
+__all__ = ["add_runs_link", "fetch_run", "files_for", "main"]
 
 #: Состояние прогона в W&B → статус страницы прогона в базе.
 STATES = {"finished": "completed", "running": "running", "crashed": "failed",
@@ -174,8 +174,22 @@ def _work_here() -> str:
     return ""
 
 
-#: Строка в README работы со ссылкой на её проект в W&B. Ставится одна, рядом с «Состоянием».
-RUNS_LINE = "**Прогоны** [{label}]({url})"
+def add_runs_link(lines: List[str], project_url: str) -> List[str]:
+    """Проект W&B в строку «Прогоны» README: дописать в неё или поставить её под «Состоянием».
+
+    Строка одна на работу. У работы бывает несколько проектов W&B (разные машины, разные люди,
+    разные постановки), и вторая строка «Прогоны» читалась бы как другой раздел.
+    """
+    label = project_url.split("://", 1)[1].split("/", 1)[1]
+    link = f"[{label}]({project_url})"
+    for number, line in enumerate(lines):
+        if line.startswith("**Прогоны**"):
+            lines[number] = f"{line} · {link}"
+            return lines
+    at = next((i + 1 for i, l in enumerate(lines) if l.startswith("**Состояние**")),
+              next((i + 1 for i, l in enumerate(lines) if l.startswith("# ")), len(lines)))
+    lines[at:at] = ["", f"**Прогоны** в W&B: {link}"]
+    return lines
 
 
 def _link_project(work: str, project_url: str, branch: str) -> str:
@@ -192,11 +206,7 @@ def _link_project(work: str, project_url: str, branch: str) -> str:
         text = base64.b64decode(raw["content"]).decode("utf-8")
         if project_url in text:
             return "ссылка на проект W&B в README уже есть"
-        line = RUNS_LINE.format(label=project_url.split("://", 1)[1], url=project_url)
-        lines = text.split("\n")
-        at = next((i + 1 for i, l in enumerate(lines) if l.startswith("**Состояние**")),
-                  next((i + 1 for i, l in enumerate(lines) if l.startswith("# ")), len(lines)))
-        lines[at:at] = ["", line]
+        lines = add_runs_link(text.split("\n"), project_url)
         _call(address, token, f"projects/{project['id']}/repository/commits", {
             "branch": branch, "commit_message": "README: прогоны в W&B",
             "actions": [{"action": "update", "file_path": "README.md",

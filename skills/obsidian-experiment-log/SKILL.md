@@ -1,6 +1,6 @@
 ---
 name: obsidian-experiment-log
-description: "Records an experiment's protocol, progress snapshots, results, and next decision in its canonical Obsidian project log. Use when the user launches, monitors, or finishes a training run, asks to log an experiment, update a results table, or promote a finished result into a stable finding."
+description: "Keeps a monitored training run's live page in its own folder <work>/runs/<E-code>/ with progress snapshots and a convergence plot that Obsidian shows like a W&B run page. Use when the user launches, monitors, or finishes a training run, asks to log an experiment, update a results table, or promote a finished result into a stable finding."
 ---
 
 # Obsidian Experiment Log
@@ -9,9 +9,9 @@ Use this skill whenever project work changes the experimental state — either b
 
 ## Role in the workflow
 
-Supporting skill under `obsidian-project-memory`. Covers two layers:
+Covers two layers:
 1. **Operations** — how to launch, monitor, and chain real training runs on remote servers
-2. **Notes** — how to record the run's intent, progress, finals, and decisions into Obsidian
+2. **Notes** — the run's live page with its convergence plot, inside the work in `~/brainlab`
 
 Both layers must be applied together. A finished experiment with no notes is invisible to future agents; a beautifully written note with no actual run is fiction.
 
@@ -131,68 +131,46 @@ If a run crashed, write "crashed at iter X with traceback Y", not "may not have 
 
 ---
 
-## Layer 2 — Notes (documenting the experiments)
+## Layer 2 — Notes: the run's own folder, with a live convergence plot
 
-### Default outputs
+The vault is the lab tree `~/brainlab`, so a monitored run is watched in Obsidian like a W&B run page. Owner 26-10-2026: «удобно что логи рисуются в обсидиане… чтобы у рана если я попросил его мониторить прям в E- папке экспа рисовался бы какой то график сходимости в md файле».
 
-- the relevant canonical note in `Experiments/`
-- the relevant canonical note in `Results/`, if a durable finding exists
-- links from today's `Daily/` note
-- relevant hub or plan references only when project state materially changes
+### Where it lives
 
-### Main rules
+One folder per run, named by its E-code, in the work's local shelf (closed from git):
 
-- Prefer updating an existing experiment note over creating a sibling note for the same experiment line.
-- Prefer updating an existing result note over creating a parallel result page for the same durable finding.
-- Raw logs, metric dumps, and temporary analysis fragments stay in `Daily/` until interpreted.
-- A result note should exist only when the outcome is stable enough to reference later.
+```
+<работа>/runs/<E-код>/
+  README.md                  # status, progress table, plot embed, decisions
+  curves-<YYYYMMDD-HHMM>.png # current convergence plot, one file at a time
+```
 
-### File roles — three files, three jobs
+A series of runs watched together gets one folder for the series (`runs/<S-код>/`) with one plot, and each run's row in its table.
 
-| File | Role | Cadence |
-|---|---|---|
-| `Experiments/<series>.md` | per-tick narrative: launches, mid-run progress, decisions, crashes | every meaningful tick / finish |
-| `Results/<series>-table.md` | only finals, only paper-grade. Sectioned by hypothesis. Embeds plot PNG. | when a final lands |
-| `tools/refresh_plot.sh` (project-side) | local script: rsyncs remote logs, calls plot script, swaps PNG path in Results md | each tick that materially changes plotted data |
+### README.md of the run folder
 
-The Experiments log is the **narrative**; the Results table is the **conclusion**. Don't mix.
+- one line: what is checked and what the result will mean (the recorder's `objective`);
+- status (`running`, `done`, `failed`, `killed`), server, GPU, tmux session, log path;
+- the plot embed `![[curves-<stamp>.png]]` right under the status;
+- `## Progress snapshots` — timestamped table: step, train loss, val metric, s/iter, ETA;
+- decisions and crashes, 2-3 lines each, with the time.
 
-### Minimum experiment sections
+### The plot
 
-- Goal / hypothesis
-- Code or config entrypoint
-- Dataset / split
-- Metrics
-- Status (`planned`, `running`, `done`, `failed`)
-- Findings / notes
-- Next step
+- Refresh it on every tick and on every progress report to the owner, in the same turn. A number without the matching curve is half a report.
+- Draw from what the code wrote: the recorder's `metrics.csv` or the server log. Never from numbers typed by hand.
+- House style and the plotter: `personal/Knowledge/warmup-loss-plot-tool.md` (main panel + zoom on running tips, big fonts, narrow figure).
+- Obsidian caches embeds by file name: write a new timestamped file, rewrite the embed, delete the previous file. Keep the note closed in Obsidian while the loop writes it.
 
-### Minimum result sections
+### When the run is finished
 
-- Linked experiment
-- Main observation
-- Key numbers
-- Evidence (loss curve, table, plot embed)
-- Interpretation
-- Decision: keep / iterate / discard
-
-### Linking rule
-
-Link experiments and results directly to each other, and link both back to `00-Hub.md`, `01-Plan.md`, or `Daily/` only when those references improve the main working surface.
-
-### Research path handoff
-
-Treat experiment notes as the bridge between `Papers/` and `Results/`:
-- paper-derived hypotheses, baselines, and ablations land here
-- stable findings get promoted from here into `Results/`
-- when a result becomes claim-worthy, update `Writing/` rather than leaving the chain unfinished
+The run enters the lab base through `lab-knowledge`: the recorder's page goes to `claims/<H>/runs/<E>.md`, and a figure that carries a conclusion goes to `claims/<H>/figures/F-….svg` (SVG only, data only from that series). The local folder stays as the run's diary; nothing from it is copied into the base by hand.
 
 ### Post-mortem ritual (after every meaningful event)
 
-1. Append to `Experiments/<series>.md` with timestamp + brief reads
-2. If a result (val_loss, perplexity, accuracy): write the number into `Results/<series>-table.md` and refresh plot
-3. If a decision (restart? give up? accept partial?): write 2–3 lines of reasoning in Experiments
-4. After 5–10 such events: `mempalace_add_drawer` summarizing what's stable knowledge now
+1. Append a snapshot row and refresh the plot.
+2. If a decision (restart? give up? accept partial?): 2-3 lines of reasoning in the run's README.
+3. When the run or series is done: carry it into the base via `lab-knowledge`, and a `mempalace_add_drawer` with the stable numbers.
 
 ---
 
@@ -208,10 +186,10 @@ Trigger this skill on user phrases like:
 
 Workflow when activated:
 1. Identify mode (live-monitor vs push-queue) from user intent
-2. Identify project paths (`Experiments/<series>.md`, `Results/<series>-table.md`) from project's `.claude/CLAUDE.md`
+2. Find the work in `~/brainlab` and the run's E-code; create `runs/<E-код>/README.md`
 3. For live-monitor: build /loop prompt → launch first runs via tmux+pipe-pane primitive → `ScheduleWakeup(1800s)`
 4. For push-queue: follow [[server-run-queue]]
-5. On every tick: log to Experiments narrative; on every final: update Results table + refresh plot
+5. On every tick: snapshot row + refreshed plot in `runs/<E-код>/`; on finish: final numbers, then `lab-knowledge`
 6. Stop the loop only after writing the final summary section (no orphaned ScheduleWakeup calls)
 
 Cross-references:

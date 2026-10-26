@@ -10,7 +10,7 @@ Create or verify a checkpoint in your workflow.
 
 When creating a checkpoint:
 
-1. Run `/verify quick` to ensure current state is clean
+1. Run the project's quick checks (tests, lint) to ensure current state is clean
 2. Create a git stash or commit with checkpoint name
 3. Log checkpoint to `.claude/checkpoints.log`:
 

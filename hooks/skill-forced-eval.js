@@ -28,7 +28,7 @@ const cwd = input.cwd || process.cwd();
 // Check if it is a slash command (escape)
 if (userPrompt.startsWith('/')) {
   // Distinguish commands from paths:
-  // - Commands: /commit, /update-github (no second slash after the first)
+  // - Commands: /commit, /limits (no second slash after the first)
   // - Paths: /Users/xxx, /path/to/file (contains path separators)
   const rest = userPrompt.substring(1);
   if (rest.includes('/')) {
@@ -182,22 +182,6 @@ function suggestSkills(prompt) {
 const SKILL_LIST = collectSkills();
 const SKILL_GROUPS = categorizeSkills(SKILL_LIST);
 const suggestedSkills = suggestSkills(userPrompt);
-const binding = common.getProjectMemoryBinding(cwd);
-const isResearchPrompt = common.promptLooksResearchRelated(userPrompt);
-
-if (binding.bound && isResearchPrompt) {
-  if (SKILL_LIST.includes('obsidian-project-memory')) {
-    suggestedSkills.push('obsidian-project-memory');
-  }
-  if (/\b(zotero|collection|doi|arxiv|citation)\b/i.test(userPrompt) &&
-      SKILL_LIST.includes('zotero-obsidian-bridge')) {
-    suggestedSkills.push('zotero-obsidian-bridge');
-  }
-  if (/\b(paper|papers|literature|review|claim|method|evidence)\b/i.test(userPrompt) &&
-      SKILL_LIST.includes('obsidian-literature-workflow')) {
-    suggestedSkills.push('obsidian-literature-workflow');
-  }
-}
 
 const dedupedSuggestedSkills = [...new Set(suggestedSkills)];
 
@@ -212,9 +196,6 @@ const suggestedHint = dedupedSuggestedSkills.length > 0
   ? `\n**Pre-matched skills (MUST activate these)**: ${dedupedSuggestedSkills.join(', ')}\nThese skills matched keywords in the user's prompt. You MUST activate them via Skill tool.\n`
   : '';
 
-const boundRepoHint = binding.bound && isResearchPrompt
-  ? `\n**Bound Obsidian repo detected**: ${binding.projectId || 'unknown-project'}\nUse lightweight curator behavior by default: keep \`Daily/YYYY-MM-DD.md\` and \`.claude/project-memory/<project_id>.md\` in sync when this turn changes research state, and touch \`00-Hub.md\` only when top-level project status really changes. Consider the \`research-knowledge-curator-obsidian\` agent when the task spans plans, papers, experiments, results, or writing.\n`
-  : '';
 
 // Generate output — show full skill list only when skills are pre-matched,
 // otherwise emit a minimal reminder to keep token usage low.
@@ -226,11 +207,11 @@ if (dedupedSuggestedSkills.length > 0) {
 Available skills:
 ${groupedDisplay}
 **Pre-matched (MUST activate)**: ${dedupedSuggestedSkills.join(', ')}
-Use Skill tool to activate, then implement.${boundRepoHint}`;
+Use Skill tool to activate, then implement.`;
 } else {
   // Minimal — no full list, just a quiet reminder
   output = `## Skill Activation
-No pre-matched skills. If the request clearly fits a skill, activate it via Skill tool. Otherwise proceed directly.${boundRepoHint}`;
+No pre-matched skills. If the request clearly fits a skill, activate it via Skill tool. Otherwise proceed directly.`;
 }
 
 console.log(output);

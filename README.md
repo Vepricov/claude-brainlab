@@ -149,11 +149,11 @@ the lead of the theme you work on.
 
 | Area | Skills you will actually type |
 |---|---|
-| **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `obsidian-literature-workflow`, `zotero-obsidian-bridge`, `citation-verification` |
+| **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `citation-verification` |
 | **Experiments** | `results-analysis`, `results-report`, `obsidian-experiment-log`, `handoff-to-jarvis`, `diagnose`, `verification-loop` |
 | **Writing** | `ml-paper-writing`, `writing-anti-ai`, `presentation`, `paper-to-social` |
 | **Review** | `astar-paper-review`, `review-response`, `grill-me`, `grill-with-docs` |
-| **Knowledge** | `lab-knowledge`, `call-notes`, `create-project`, `obsidian-project-memory`, `obsidian-synthesis-map` |
+| **Knowledge** | `lab-knowledge`, `call-notes`, `create-project` |
 | **Engineering** | `code-ingest`, `code-library`, `code-review-excellence`, `tdd`, `bug-detective`, `git-workflow`, `uv-package-manager` |
 | **Ideas and planning** | `research-ideation`, `planning-with-files`, `zoom-out`, `architecture-design`, `improve-codebase-architecture` |
 

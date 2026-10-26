@@ -49,6 +49,6 @@ Stage and commit changes using Conventional Commits format.
 
 ## Notes
 
-- This command only commits locally. Use `/update-github` to also push.
+- This command only commits locally. Push yourself after `python3 scripts/publish_check.py` if the remote is public.
 - Always confirm the commit message with the user before committing.
 - If unsure about type or scope, ask the user.

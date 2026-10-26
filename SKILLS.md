@@ -32,12 +32,6 @@ The core research loop: get a paper into your library with a real, audited note.
 - **`paper-search`** ⭐ — Library-aware arXiv shortlist. Scans for fresh papers on your
   topics and writes a shortlist into the Obsidian literature inbox, skipping anything
   already ingested. *Fires on:* "scan for new papers on this topic".
-- **`zotero-obsidian-bridge`** — Turns papers already in Zotero into detailed reading
-  notes inside the bound Obsidian project, checks collection-wide note coverage, and
-  builds a connected knowledge map. *Fires on:* "papers are in Zotero, write notes".
-- **`obsidian-literature-workflow`** — Filesystem-first literature review when notes
-  live inside an Obsidian project KB: agent-first Zotero ingestion, `Papers/` + `Knowledge/`
-  synthesis, collection normalization, default literature canvas, no Obsidian MCP needed.
 - **`citation-verification`** — Reference guidance (not an action skill): principles and
   common error patterns for verifying citations. Supports `ml-paper-writing`. *Fires on:*
   "how to verify references / citation best practices".
@@ -115,17 +109,6 @@ The core research loop: get a paper into your library with a real, audited note.
   apply, how the Code library works, how a project hub card records its repo and edits,
   how experiments are monitored. *Fires on:* "how do we work with code here" / onboarding
   to a project with code.
-- **`obsidian-project-memory`** — Maintain a project KB without MCP: import a repo, keep
-  memory/daily notes synced, summarize context into durable notes.
-- **`obsidian-project-bootstrap`** — Bind the current repo to a compact research KB for
-  future syncing.
-- **`obsidian-project-lifecycle`** — Detach, archive, or purge a project KB.
-- **`obsidian-research-log`** — Daily research notes, plans, standups, meetings,
-  milestones reflected into daily notes + hub updates.
-- **`obsidian-synthesis-map`** — Higher-level synthesis notes: literature reviews,
-  comparison matrices, project summaries across notes.
-- **`obsidian-link-graph`** — Repair/strengthen wikilinks among canonical project notes
-  (papers, knowledge, experiments, results, writing).
 - **`obsidian-markdown`** ◇ — Author Obsidian Flavored Markdown: wikilinks, embeds,
   callouts, properties, tags.
 - **`obsidian-bases`** ◇ — Create/edit Obsidian Bases (`.base`): views, filters, formulas,
@@ -192,10 +175,6 @@ uses them directly.
 
 - **`skill-development`** ◇ — Create/repair a skill, improve trigger descriptions,
   restructure for reuse. *Fires on:* "create a skill / fix this skill".
-- **`skill-quality-reviewer`** ◇ — Evaluate a skill (description, organization, style,
-  structure) and emit a quality report.
-- **`skill-improver`** ◇ — Apply the improvements from a `improvement-plan-{name}.md`
-  produced by `skill-quality-reviewer`.
 - **`agent-identifier`** ◇ — Author/configure subagent frontmatter.
 - **`command-development`** ◇ — Build slash commands: frontmatter, `$ARGUMENTS`, bash
   execution, file refs, interactive patterns.

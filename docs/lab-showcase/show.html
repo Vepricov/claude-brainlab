@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Машина знаний BRAIn Lab: как агенты, база знаний и проверка каждого шага превращают работу команды в знание. В науке и в любой компании.">
+<title>BRAIn Lab · Машина знаний</title>
+<style>
+:root{--bg:#0c0f0e;--panel:#121614;--panel-2:#171c19;--ink:#f3f5ed;--muted:#929b94;--line:rgba(231,239,230,.14);--line-strong:rgba(231,239,230,.28);--lime:#b9ff66;--display:"Avenir Next","Century Gothic","Helvetica Neue",sans-serif;--body:"Avenir Next","Helvetica Neue",sans-serif;--mono:"SFMono-Regular",Consolas,monospace;--pad:clamp(20px,5vw,72px);--max:1320px}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 var(--body);text-wrap:pretty}
+a{color:inherit}
+.wrap{width:min(100%,var(--max));margin:0 auto;padding:0 var(--pad)}
+.top{position:sticky;top:0;z-index:20;background:rgba(12,15,14,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top .wrap{height:66px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand-sign{width:30px;height:30px;border:1.5px solid var(--line-strong);border-radius:50%;position:relative}
+.brand-sign:before,.brand-sign:after{content:"";position:absolute;width:7px;height:7px;border-radius:50%}
+.brand-sign:before{left:6px;top:7px;background:var(--ink)}.brand-sign:after{right:6px;bottom:6px;background:var(--lime)}
+.brand b{font:600 17px var(--display);letter-spacing:-.02em}.brand small{display:block;font:600 10px var(--body);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.nav{display:flex;gap:4px}.nav a{text-decoration:none;color:var(--muted);font-size:14px;padding:8px 13px;border-radius:30px}.nav a:hover{color:var(--ink);background:var(--panel-2)}
+.back{text-decoration:none;font-size:13px;border:1px solid var(--line-strong);border-radius:30px;padding:8px 15px;color:var(--muted);white-space:nowrap}.back:hover{color:var(--ink)}
+.over{font:600 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.04em;margin:0}
+h2{font-size:clamp(34px,4.4vw,58px);line-height:1.02}
+h2 em,h1 em{font-style:normal;color:var(--lime)}
+.lead{color:var(--muted);font-size:19px;max-width:760px;margin:20px 0 0}
+section{padding:110px 0 0}section[id]{scroll-margin-top:40px}
+/* Hero */
+.hero{padding:100px 0 30px;background:radial-gradient(circle at 78% 20%,rgba(185,255,102,.07),transparent 38%)}
+.hero h1{font-size:clamp(46px,7.6vw,112px);line-height:.96}
+.hero .lead{font-size:clamp(18px,1.6vw,22px);max-width:860px;color:#c6ccc4}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.chips span{border:1px solid color-mix(in srgb,var(--c) 45%,transparent);color:var(--c);background:color-mix(in srgb,var(--c) 9%,transparent);border-radius:30px;padding:8px 16px;font-size:15px;font-weight:500}
+.hero-strip{margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.hero-strip div{padding:24px 26px;border-right:1px solid var(--line);background:var(--panel)}.hero-strip div:last-child{border-right:0}
+.hero-strip strong{display:block;font:500 40px/1 var(--display);letter-spacing:-.04em;color:var(--c)}
+.hero-strip span{display:block;margin-top:10px;color:var(--muted);font-size:14px;line-height:1.35}
+/* Cycle */
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.stage{--c:var(--lime);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.stage:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--c);opacity:.85}
+.stage .n{font:600 13px var(--body);letter-spacing:.06em;color:var(--c)}
+.stage h3{font-size:26px;line-height:1.05;margin:10px 0 12px}
+.stage p{margin:0;font-size:15px;color:#c3c9c1;line-height:1.45}
+.stage .ours{margin-top:auto;padding-top:16px;border-top:1px dashed var(--line);margin-top:18px;font-size:14px;color:var(--muted)}
+.stage .ours b{display:block;font:600 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--c);margin-bottom:4px}
+/* Knowledge base */
+.kb{position:relative;overflow:hidden;margin-top:46px;border:1px solid color-mix(in srgb,var(--lime) 40%,transparent);border-radius:22px;background:radial-gradient(circle at 15% 0%,rgba(185,255,102,.09),transparent 45%),var(--panel);padding:54px 56px;display:grid;grid-template-columns:1.05fr 1fr;gap:56px}
+.ribbon{position:absolute;top:40px;right:-78px;width:330px;transform:rotate(38deg);background:var(--lime);color:#11140f;text-align:center;font:600 13px/1.25 var(--display);letter-spacing:.02em;padding:10px 0;box-shadow:0 10px 30px rgba(185,255,102,.25)}
+.ribbon small{display:block;font:500 11px var(--body);opacity:.75}
+.kb h3{font-size:clamp(30px,3vw,42px);line-height:1.05;max-width:560px}
+.kb .lead{font-size:17px}
+.kb-use{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.kb-use span{border:1px solid var(--line-strong);border-radius:10px;padding:7px 12px;font-size:14px;color:#d5dad2;background:var(--panel-2)}
+.kb-list{display:grid;gap:12px;align-content:start;padding-top:104px}
+.kb-list div{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.kb-list i{font-style:normal;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:600 18px var(--display);color:#11140f;background:var(--c)}
+.kb-list b{font:500 18px var(--display);letter-spacing:-.02em}.kb-list span{display:block;color:var(--muted);font-size:14px;line-height:1.4;margin-top:3px}
+/* Team */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+.member{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px}
+.member .ava{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:600 20px var(--display);color:#11140f;background:var(--c)}
+.member h3{font-size:24px;margin:16px 0 4px}.member .role{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--c)}
+.member p{color:#c3c9c1;font-size:15px;margin:12px 0 0;line-height:1.45}
+/* Models */
+.models{display:grid;grid-template-columns:1fr 1.25fr;gap:46px;margin-top:46px;align-items:start}
+.any{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px}
+.any strong{display:block;font:500 30px/1.08 var(--display);letter-spacing:-.035em}
+.any p{color:var(--muted);margin:14px 0 0;font-size:16px}
+.any .fam{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.any .fam span{font-size:13px;border:1px dashed var(--line-strong);border-radius:8px;padding:6px 10px;color:#cfd4cc}
+.route{display:grid;gap:10px}
+.route div{display:grid;grid-template-columns:1fr 26px 1fr;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+.route .task b{display:block;font:500 18px var(--display);letter-spacing:-.02em}.route .task span{font-size:13px;color:var(--muted)}
+.route .arr{color:var(--c);font-size:22px;text-align:center}
+.route .pick{font-size:15px;color:var(--c);font-weight:500}.route .pick small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+/* Case */
+.case{margin-top:46px;display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.case-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px}
+.case-card h3{font-size:30px;line-height:1.08}
+.case-card p{color:#c6ccc4;font-size:16px;margin:14px 0 0}
+.plain{border-left:3px solid var(--lime);padding-left:16px;margin-top:20px!important}
+.terms{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.terms span{font-size:14px;border-radius:30px;padding:6px 13px;background:rgba(143,180,255,.1);border:1px solid rgba(143,180,255,.35);color:#c9d8ff}
+.formula{font:16px var(--body);color:#dfe5dc;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:18px;line-height:1.7}
+.formula em{font-style:normal;color:var(--lime)}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.num{background:var(--panel-2);border:1px solid var(--line);border-radius:14px;padding:18px}
+.num strong{display:block;font:500 36px/1 var(--display);letter-spacing:-.04em;color:var(--c)}
+.num span{display:block;font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.35}
+.path{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:22px;font-size:14px}
+.path span{border:1px solid var(--line-strong);border-radius:30px;padding:6px 12px;color:#dfe5dc}.path i{font-style:normal;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin-top:16px}
+/* Any company */
+.anyco{margin:110px 0 0;border-radius:24px;padding:60px 56px;background:linear-gradient(135deg,rgba(185,255,102,.12),rgba(143,180,255,.06) 60%,transparent),var(--panel);border:1px solid var(--line)}
+.anyco h2{max-width:900px}
+.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+.fields div{background:rgba(12,15,14,.55);border:1px solid var(--line);border-radius:14px;padding:20px}
+.fields b{font:500 19px var(--display);letter-spacing:-.02em;display:block}.fields span{display:block;color:var(--muted);font-size:14px;margin-top:6px;line-height:1.4}
+footer{padding:70px 0 50px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:24px}
+@media(max-width:1100px){.cycle,.team{grid-template-columns:repeat(2,1fr)}.kb,.models,.case{grid-template-columns:1fr}.kb-list{padding-top:0}.nav{display:none}.hero-strip{grid-template-columns:repeat(2,1fr)}.hero-strip div:nth-child(2){border-right:0}.hero-strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}.fields{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){body{font-size:16px}.cycle,.team,.fields,.nums{grid-template-columns:1fr}.kb,.anyco{padding:58px 22px 30px}.ribbon{top:22px;right:-96px;font-size:11px;padding:6px 0}.route div{grid-template-columns:1fr;gap:4px}.route .arr{display:none}.hero-strip{grid-template-columns:1fr}.hero-strip div{border-right:0;border-bottom:1px solid var(--line)}section{padding-top:80px}.back{padding:7px 11px;font-size:12px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a class="brand" href="#"><span class="brand-sign"></span><span><b>BRAIn Lab</b><small>Машина знаний</small></span></a>
+ <nav class="nav" aria-label="Разделы"><a href="#cycle">Цикл</a><a href="#kb">База знаний</a><a href="#team">Команда</a><a href="#models">Модели</a><a href="#case">Пример</a></nav>
+ <a class="back" href="index.html">Подробная карта →</a>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+ <p class="over">Лаборатория BRAIn · МФТИ</p>
+ <h1>Вопрос входит —<br><em>знание</em> выходит</h1>
+ <p class="lead">Мы построили для науки систему, в которой ИИ-агенты и люди работают как одна команда: каждая идея проверяется, каждое число подтверждено, и ничего не теряется. Так же можно устроить работу любой компании: наука здесь лишь самый требовательный заказчик.</p>
+ <div class="chips"><span style="--c:#ffb86b">Работа идёт круглосуточно</span><span style="--c:#5ee6d0">Свежие новости каждое утро</span><span style="--c:#8fb4ff">Каждое число проверено</span><span style="--c:#c79bff">Память на месяцы вперёд</span><span style="--c:#b9ff66">Решение всегда за человеком</span></div>
+ <div class="hero-strip">
+  <div style="--c:#b9ff66"><strong>8</strong><span>этапов работы в одном цикле — от идеи до результата</span></div>
+  <div style="--c:#8fb4ff"><strong>24/7</strong><span>агент на сервере ведёт проверки и ночью, и в выходные</span></div>
+  <div style="--c:#ffb86b"><strong>0</strong><span>выдуманных чисел: каждое сверяет код, а не модель</span></div>
+  <div style="--c:#c79bff"><strong>Любая</strong><span>модель ИИ: под каждую задачу берём подходящую</span></div>
+ </div>
+</div></section>
+
+<section id="cycle"><div class="wrap">
+ <p class="over">Цикл знаний</p>
+ <h2>Восемь этапов,<br>которые есть <em>в любой работе</em></h2>
+ <p class="lead">У каждой компании свои слова, но шаги одни и те же: узнать, что нового, придумать, договориться, проверить, оформить, рассказать. На каждом шаге рядом с человеком работает агент.</p>
+ <div class="cycle">
+  <article class="stage" style="--c:#b9ff66"><span class="n">01</span><h3>Запуск и менеджмент</h3><p>Новый проект заводится за минуту: цель, команда, сроки, доска задач. Агенты сами разбирают задачи, отмечают ход работы и напоминают о дедлайнах — как привычная доска задач, только половину карточек двигают сами исполнители.</p><div class="ours"><b>Как у нас</b>каждая научная работа — отдельный проект со своей доской, командой и историей</div></article>
+  <article class="stage" style="--c:#ffb86b"><span class="n">02</span><h3>Новостной фонд</h3><p>Каждое утро агент приносит то, что вышло нового в вашей области, отбрасывает уже известное и пишет короткую выжимку. Всё прочитанное ложится в общий фонд, и его не нужно читать второй раз.</p><div class="ours"><b>Как у нас</b>свежие научные статьи с разбором и точной ссылкой на источник</div></article>
+  <article class="stage" style="--c:#ff7c7c"><span class="n">03</span><h3>Идеи и гипотезы</h3><p>Идея записывается вместе с тем, что её опровергнет. Агент проверяет, не пробовали ли это раньше, и устраивает идее строгий допрос, прежде чем на неё потратят деньги.</p><div class="ours"><b>Как у нас</b>научное утверждение с условием, при котором мы признаем его неверным</div></article>
+  <article class="stage" style="--c:#8fb4ff"><span class="n">04</span><h3>Встречи</h3><p>Встречу записывают, а агент превращает разговор в решения, поручения и правки в общих документах. Договорённость не теряется в чате и не живёт только в чьей-то голове.</p><div class="ours"><b>Как у нас</b>после созвона в проекте появляются задачи и правки утверждений</div></article>
+  <article class="stage" style="--c:#c79bff"><span class="n">05</span><h3>Проверки гипотез</h3><p>Проверки ставятся и ведутся автоматически, в том числе ночью. Результат записывает сама система, а не человек по памяти: каждое число можно открыть и пересчитать.</p><div class="ours"><b>Как у нас</b>эксперименты на видеокартах, за которыми круглосуточно следит агент</div></article>
+  <article class="stage" style="--c:#5ee6d0"><span class="n">06</span><h3>Оформление результатов</h3><p>Отдельные проверки собираются в вывод: что подтвердилось, что нет и насколько этому можно верить. Вывод сразу виден всей команде и связан с данными, на которых он стоит.</p><div class="ours"><b>Как у нас</b>серия экспериментов с вердиктом и графиками для статьи</div></article>
+  <article class="stage" style="--c:#ffd36b"><span class="n">07</span><h3>Документы и экспертиза</h3><p>Агент готовит черновик, а строгий проверяющий ищет в нём слабые места до того, как их найдут клиент или рецензент. В тексте остаётся только то, что подтверждено.</p><div class="ours"><b>Как у нас</b>научная статья, внутреннее рецензирование и ответы рецензентам</div></article>
+  <article class="stage" style="--c:#ff9ad5"><span class="n">08</span><h3>Рассказать миру</h3><p>Из одного результата получаются пост, презентация и выступление с одной ясной мыслью, написанные живым языком, а не канцеляритом.</p><div class="ours"><b>Как у нас</b>посты, доклады и постеры о наших статьях</div></article>
+ </div>
+</div></section>
+
+<section id="kb"><div class="wrap">
+ <p class="over">Сердце системы</p>
+ <h2>База знаний,<br>которая <em>проверяет себя сама</em></h2>
+ <div class="kb">
+  <div class="ribbon">Под любые нужды<small>настраивается под вашу компанию</small></div>
+  <div>
+   <h3>Зачем она нужна</h3>
+   <p class="lead">Самый частый вопрос в любой команде: «Мы это уже пробовали? И что вышло?» Обычно ответ лежит в чате, в чьей-то таблице или уходит вместе с сотрудником. В нашей базе у каждой идеи, проверки и решения есть автор, история и подтверждение.</p>
+   <p class="lead">Базу мы собрали под себя с нуля, поэтому она гибкая: какие записи хранить, кто их принимает и что проверять до записи, настраивается под задачи конкретной компании.</p>
+   <div class="kb-use"><span>гипотезы и эксперименты</span><span>клиенты и сделки</span><span>договоры и решения</span><span>исследования рынка</span><span>инциденты и разборы</span><span>регламенты</span></div>
+  </div>
+  <div class="kb-list">
+   <div style="--c:#b9ff66"><i>1</i><p style="margin:0"><b>История каждого изменения</b><span>видно, кто, когда и почему поменял запись, и любую версию можно вернуть</span></p></div>
+   <div style="--c:#8fb4ff"><i>2</i><p style="margin:0"><b>Проверка до записи</b><span>программа сверяет каждое число с исходными данными, а судья-агент не пропускает пустые слова</span></p></div>
+   <div style="--c:#ffb86b"><i>3</i><p style="margin:0"><b>Последнее слово за человеком</b><span>агенты предлагают, ответственный принимает — без его согласия в базу ничего не попадает</span></p></div>
+   <div style="--c:#c79bff"><i>4</i><p style="margin:0"><b>Поиск своими словами</b><span>спросите по-русски — найдётся и английский документ, и запись внутри него</span></p></div>
+  </div>
+ </div>
+</div></section>
+
+<section id="team"><div class="wrap">
+ <p class="over">Команда</p>
+ <h2>Люди и агенты —<br><em>одна команда</em></h2>
+ <p class="lead">У каждого участника своя сильная сторона. Агенты берут на себя объём и рутину, человек — направление и решения.</p>
+ <div class="team">
+  <article class="member" style="--c:#b9ff66"><div class="ava">Ч</div><h3>Человек</h3><span class="role">ставит цель и решает</span><p>Выбирает, что стоит проверять, понимает, что значит результат, и принимает каждую запись в базу.</p></article>
+  <article class="member" style="--c:#8fb4ff"><div class="ava">П</div><h3>Помощник</h3><span class="role">на рабочем месте</span><p>Работает рядом с сотрудником: читает материалы, пишет черновики и код, готовит предложения в базу.</p></article>
+  <article class="member" style="--c:#ffb86b"><div class="ava">Г</div><h3>Гермес</h3><span class="role">на сервере, круглосуточно</span><p>Ведёт долгие проверки, сам просыпается, когда что-то закончилось, и помнит историю проекта неделями. Обычный ход стоит около двух центов.</p></article>
+  <article class="member" style="--c:#c79bff"><div class="ava">Д</div><h3>Джев</h3><span class="role">строгий судья</span><p>Быстро читает каждое предложение в базу и останавливает пересказ, воду и непроверенные утверждения.</p></article>
+ </div>
+</div></section>
+
+<section id="models"><div class="wrap">
+ <p class="over">Модели</p>
+ <h2>Под каждую задачу —<br><em>своя модель</em></h2>
+ <div class="models">
+  <div class="any">
+   <strong>Мы не привязаны ни к одной модели ИИ</strong>
+   <p>Система просит не конкретную модель, а исполнителя под роль: «рассуждать», «быстро прочитать сорок документов», «найти похожее». Какая модель стоит за ролью, решает одна строка настройки. Можно работать с облачными сервисами, с открытыми моделями или целиком внутри своего контура, чтобы данные не покидали компанию.</p>
+   <div class="fam"><span>облачные модели</span><span>открытые модели</span><span>локальные модели</span><span>свой сервер</span></div>
+  </div>
+  <div class="route">
+   <div style="--c:#b9ff66"><p class="task" style="margin:0"><b>Сложные решения</b><span>разобраться в задаче, спланировать, написать текст</span></p><span class="arr">→</span><p class="pick" style="margin:0">самая сильная модель<small>дорого, но здесь цена ошибки выше</small></p></div>
+   <div style="--c:#ffb86b"><p class="task" style="margin:0"><b>Массовое чтение</b><span>десятки документов за ночь</span></p><span class="arr">→</span><p class="pick" style="margin:0">быстрая недорогая модель<small>запускается ночью, когда дешевле</small></p></div>
+   <div style="--c:#8fb4ff"><p class="task" style="margin:0"><b>Круглосуточная работа</b><span>следить, перезапускать, докладывать</span></p><span class="arr">→</span><p class="pick" style="margin:0">открытая модель на сервере<small>копейки за ход и память на недели</small></p></div>
+   <div style="--c:#c79bff"><p class="task" style="margin:0"><b>Поиск по базе</b><span>найти похожее среди тысяч записей</span></p><span class="arr">→</span><p class="pick" style="margin:0">локальная модель<small>данные не уходят наружу</small></p></div>
+   <div style="--c:#5ee6d0"><p class="task" style="margin:0"><b>Проверка чисел</b><span>сходится ли каждое число с данными</span></p><span class="arr">→</span><p class="pick" style="margin:0">не модель, а программа<small>здесь ИИ не доверяем вовсе</small></p></div>
+  </div>
+ </div>
+</div></section>
+
+<section id="case"><div class="wrap">
+ <p class="over">Пример из нашей науки</p>
+ <h2>Как правильно<br>дообучать <em>большие модели</em></h2>
+ <div class="case">
+  <div class="case-card">
+   <h3>LoRA-TSD: спектральный шаг в касательном пространстве</h3>
+   <p class="plain">Если просто: чтобы научить большую языковую модель новой задаче, её не переучивают целиком, а добавляют небольшую «надстройку». Мы показали, что привычные способы обучать эту надстройку шагают криво, и вывели, как шагать правильно. В итоге модель учится лучше при той же цене.</p>
+   <p>Если строго: надстройка ранга <i>r</i> живёт на многообразии матриц фиксированного ранга, и правильный шаг — это задача римановой оптимизации. Мы ищем наискорейший спуск в спектральной норме прямо в касательном пространстве этого многообразия, ортогонализуем шаг итерацией Ньютона — Шульца и возвращаемся на многообразие ретракцией без сингулярного разложения.</p>
+   <div class="formula">min ⟨G, X⟩ при X ∈ <em>T</em> (касательное пространство), ‖X‖<sub>2</sub> ≤ ρ<br>X<sub>t+1</sub> = <em>P<sub>T</sub></em>(msign(X<sub>t</sub>))</div>
+   <div class="terms"><span>риманова геометрия</span><span>многообразие низкого ранга</span><span>касательное пространство</span><span>спектральная норма</span><span>ретракция</span><span>инвариантность к параметризации</span></div>
+  </div>
+  <div class="case-card">
+   <div class="nums">
+    <div class="num" style="--c:#b9ff66"><strong>89,7</strong><span>среднее качество на шести задачах, Llama-3.1-8B; у стандартного AdamW 88,5</span></div>
+    <div class="num" style="--c:#8fb4ff"><strong>2,4×</strong><span>быстрее возврат на многообразие, чем через сингулярное разложение</span></div>
+    <div class="num" style="--c:#ffb86b"><strong>89,2</strong><span>против 64,1 у соседнего метода при самой маленькой надстройке (ранг 2, BoolQ)</span></div>
+    <div class="num" style="--c:#c79bff"><strong>82,5</strong><span>среднее на Llama-3.2-1B — лучше всех сравнённых методов</span></div>
+   </div>
+   <div class="path"><span>гипотеза</span><i>→</i><span>19 проверок</span><i>→</i><span>4 утверждения</span><i>→</i><span>статья</span><i>→</i><span>ответы рецензентам</span></div>
+   <p>Весь путь лежит в базе знаний: от первой идеи до статьи. У каждого числа на этой карточке есть запись, из которой его можно поднять и пересчитать, а у каждого утверждения — условие, при котором мы признаем его неверным.</p>
+   <p class="note">Числа из рукописи работы; часть утверждений ещё проверяется.</p>
+  </div>
+ </div>
+</div></section>
+
+<div class="wrap"><div class="anyco">
+ <p class="over">Не только наука</p>
+ <h2>Любой процесс, где важны <em>проверка, память и скорость</em></h2>
+ <p class="lead" style="color:#c6ccc4">Наука — самый строгий заказчик: здесь нельзя ошибиться в числе и нельзя забыть, что уже не сработало. Если система выдерживает науку, она выдержит и работу вашей компании.</p>
+ <div class="fields">
+  <div><b>Маркетинг и продажи</b><span>гипотезы о каналах и ценах, проверки и честный вывод, что сработало</span></div>
+  <div><b>Продукт и разработка</b><span>идеи, эксперименты, решения и их причины в одном месте</span></div>
+  <div><b>Юристы и консалтинг</b><span>база прецедентов и решений с поиском своими словами</span></div>
+  <div><b>Производство и инженерия</b><span>испытания, отклонения и разборы, которые не теряются</span></div>
+  <div><b>Аналитика и финансы</b><span>каждое число в отчёте связано с данными, из которых оно взято</span></div>
+  <div><b>Управление</b><span>встречи превращаются в поручения, а поручения — в результат</span></div>
+ </div>
+</div></div>
+</main>
+
+<footer><div class="wrap"><span>BRAIn Lab · МФТИ</span><a class="back" href="index.html">Подробная карта →</a></div></footer>
+</body>
+</html>

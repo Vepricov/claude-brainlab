@@ -34,10 +34,10 @@
 .section-overview[data-process="literature"] .tool-cluster:first-child,
 .section-overview[data-process="experiments"] .tool-cluster:nth-child(2){
   grid-column:1/-1;padding:20px 22px;border-radius:24px;
-  border-color:color-mix(in srgb,var(--accent) 42%,rgba(20,23,19,.14));
+  border-color:color-mix(in srgb,var(--accent) 42%,rgba(13,20,29,.14));
   background:
     radial-gradient(60% 120% at 22% 0%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%),
-    rgba(246,243,233,.6)}
+    rgba(233,243,246,.6)}
 .section-overview[data-process="literature"] .tool-cluster:first-child>div,
 .section-overview[data-process="experiments"] .tool-cluster:nth-child(2)>div{
   grid-template-columns:1.4fr 1fr;align-items:start;gap:10px 22px}
@@ -46,8 +46,8 @@
 .section-overview[data-process="literature"] .tool-cluster:first-child .tool-node:first-child,
 .section-overview[data-process="experiments"] .tool-cluster:nth-child(2) .tool-node:first-child{
   position:relative;
-  border-color:color-mix(in srgb,var(--accent) 55%,rgba(20,23,19,.16));
-  background:color-mix(in srgb,var(--accent) 11%,rgba(246,243,233,.92))}
+  border-color:color-mix(in srgb,var(--accent) 55%,rgba(13,20,29,.16));
+  background:color-mix(in srgb,var(--accent) 11%,rgba(233,243,246,.92))}
 .section-overview[data-process="literature"] .tool-cluster:first-child .tool-node:first-child strong,
 .section-overview[data-process="experiments"] .tool-cluster:nth-child(2) .tool-node:first-child strong{
   font-size:18px;letter-spacing:-.02em}
@@ -98,8 +98,8 @@
 .section-overview[data-process="writing"] .tool-clusters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .section-overview[data-process="writing"] .tool-cluster{
   padding:20px;border-radius:16px;
-  background:color-mix(in srgb,var(--accent) 7%,rgba(246,243,233,.6));
-  border-color:color-mix(in srgb,var(--accent) 45%,rgba(20,23,19,.16))}
+  background:color-mix(in srgb,var(--accent) 7%,rgba(233,243,246,.6));
+  border-color:color-mix(in srgb,var(--accent) 45%,rgba(13,20,29,.16))}
 .section-overview[data-process="writing"] .tool-node{min-height:132px}
 .section-overview[data-process="writing"] .tool-node strong{font-size:17px}
 

@@ -1,5 +1,5 @@
 /* Вкладка «Сетап». Токены цвета и шрифтов берутся из app.css. */
-.setup-view{min-height:100vh;padding:115px var(--pad) 100px;background:radial-gradient(circle at 80% 10%,rgba(185,255,102,.05),transparent 34%),var(--bg);color:var(--ink)}
+.setup-view{min-height:100vh;padding:115px var(--pad) 100px;background:radial-gradient(circle at 80% 10%,rgba(102,205,255,.05),transparent 34%),var(--bg);color:var(--ink)}
 .setup-shell{width:min(100%,1280px);margin:auto}
 .setup-head h1{margin-top:18px;max-width:980px;font:500 clamp(36px,5.4vw,72px)/.98 var(--display);letter-spacing:-.05em}
 .setup-head>p:last-child{margin-top:24px;max-width:760px;color:var(--muted);font-size:17px}
@@ -16,7 +16,7 @@
 
 .setup-turn{margin-top:90px}
 .setup-stages{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:stage;position:relative}
-.setup-stages:before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:linear-gradient(90deg,var(--lime),rgba(185,255,102,.1))}
+.setup-stages:before{content:"";position:absolute;left:0;right:0;top:15px;height:1px;background:linear-gradient(90deg,var(--lime),rgba(102,205,255,.1))}
 .setup-stages>li{position:relative;padding-top:38px}
 .setup-stages>li:before{content:"";position:absolute;top:10px;left:0;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--lime)}
 .setup-event{display:block;font:600 9px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
@@ -40,7 +40,7 @@
 .setup-compare{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .setup-compare>div{padding:18px;border:1px solid var(--line);border-radius:12px}
 .setup-compare>div p{margin-top:6px;color:var(--muted)}
-.setup-compare .is-ours{border-color:rgba(185,255,102,.5);background:rgba(185,255,102,.06)}
+.setup-compare .is-ours{border-color:rgba(102,205,255,.5);background:rgba(102,205,255,.06)}
 .setup-compare .is-ours b{color:var(--lime)}
 
 .setup-layers{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
@@ -74,22 +74,22 @@
 .setup-sections{align-items:start}
 
 /* ── v2: цвет как на первой странице ── */
-.setup-numbers>div:nth-child(1){--c:#b9ff66}.setup-numbers>div:nth-child(2){--c:#8fb4ff}.setup-numbers>div:nth-child(3){--c:#c79bff}
-.setup-numbers>div:nth-child(4){--c:#ffb86b}.setup-numbers>div:nth-child(5){--c:#5ee6d0}
+.setup-numbers>div:nth-child(1){--c:#66cdff}.setup-numbers>div:nth-child(2){--c:#8fb1ff}.setup-numbers>div:nth-child(3){--c:#9badff}
+.setup-numbers>div:nth-child(4){--c:#6be6ff}.setup-numbers>div:nth-child(5){--c:#5e9ae6}
 .setup-numbers>div{position:relative;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 8%,transparent),transparent 70%)}
 .setup-numbers>div:before{content:"";position:absolute;left:20px;right:20px;top:0;height:2px;border-radius:2px;background:var(--c);opacity:.8}
 .setup-numbers dt{color:var(--c)}
 
-.setup-stages>li:nth-child(1){--c:#b9ff66}.setup-stages>li:nth-child(2){--c:#8fb4ff}.setup-stages>li:nth-child(3){--c:#ff8fb1}
-.setup-stages>li:nth-child(4){--c:#ffb86b}.setup-stages>li:nth-child(5){--c:#c79bff}
-.setup-stages:before{background:linear-gradient(90deg,#b9ff66,#8fb4ff,#ff8fb1,#ffb86b,#c79bff)}
+.setup-stages>li:nth-child(1){--c:#66cdff}.setup-stages>li:nth-child(2){--c:#8fb1ff}.setup-stages>li:nth-child(3){--c:#938fff}
+.setup-stages>li:nth-child(4){--c:#6be6ff}.setup-stages>li:nth-child(5){--c:#9badff}
+.setup-stages:before{background:linear-gradient(90deg,#66cdff,#8fb1ff,#938fff,#6be6ff,#9badff)}
 .setup-stages>li:before{border-color:var(--c);box-shadow:0 0 12px color-mix(in srgb,var(--c) 60%,transparent)}
 .setup-event{color:var(--c)}
 .setup-stages ul li{border-color:color-mix(in srgb,var(--c) 25%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--c) 9%,transparent),transparent 60%),var(--panel);border-left:3px solid var(--c)}
-.setup-stages ul li code{color:color-mix(in srgb,var(--c) 70%,#9aa397)}
+.setup-stages ul li code{color:color-mix(in srgb,var(--c) 70%,#8d9aad)}
 
-.setup-section#setup-compaction{--c:#5ee6d0}.setup-section#setup-memory{--c:#c79bff}.setup-section#setup-obsidian{--c:#8fb4ff}
-.setup-section#setup-team{--c:#ffb86b}.setup-section#setup-guards{--c:#ff8fb1}.setup-section#setup-install{--c:#b9ff66}
+.setup-section#setup-compaction{--c:#5e9ae6}.setup-section#setup-memory{--c:#9badff}.setup-section#setup-obsidian{--c:#8fb1ff}
+.setup-section#setup-team{--c:#6be6ff}.setup-section#setup-guards{--c:#938fff}.setup-section#setup-install{--c:#66cdff}
 .setup-section{border-color:color-mix(in srgb,var(--c) 30%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--c) 9%,transparent),transparent 45%),var(--panel)}
 .setup-section .overline{color:var(--c)}
 .setup-points li:before{background:var(--c)}
@@ -97,8 +97,8 @@
 .setup-compare .is-ours b{color:var(--c)}
 .setup-layers span,.setup-agents small{color:var(--c)}
 .setup-layers li,.setup-agents article{border:1px solid color-mix(in srgb,var(--c) 22%,var(--line))}
-.setup-nav a:nth-child(1){--c:#5ee6d0}.setup-nav a:nth-child(2){--c:#c79bff}.setup-nav a:nth-child(3){--c:#8fb4ff}
-.setup-nav a:nth-child(4){--c:#ffb86b}.setup-nav a:nth-child(5){--c:#ff8fb1}.setup-nav a:nth-child(6){--c:#b9ff66}
+.setup-nav a:nth-child(1){--c:#5e9ae6}.setup-nav a:nth-child(2){--c:#9badff}.setup-nav a:nth-child(3){--c:#8fb1ff}
+.setup-nav a:nth-child(4){--c:#6be6ff}.setup-nav a:nth-child(5){--c:#938fff}.setup-nav a:nth-child(6){--c:#66cdff}
 .setup-nav a{border-color:color-mix(in srgb,var(--c) 45%,transparent);color:var(--c);background:color-mix(in srgb,var(--c) 8%,transparent)}
 .setup-nav a:hover{border-color:var(--c);color:var(--c)}
 .setup-head h1{max-width:1100px}

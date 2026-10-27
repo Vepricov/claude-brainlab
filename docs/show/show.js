@@ -44,7 +44,7 @@
 
   // Орбиты карты: тонкие линии и бегущие по ним точки, без влияния на раскладку.
   const ORBITS=`<svg class="show-orbits" viewBox="0 0 1000 434" preserveAspectRatio="none" aria-hidden="true">
-    <defs><radialGradient id="show-dot"><stop offset="0" stop-color="#b9ff66"/><stop offset="1" stop-color="#b9ff66" stop-opacity="0"/></radialGradient></defs>
+    <defs><radialGradient id="show-dot"><stop offset="0" stop-color="#66cdff"/><stop offset="1" stop-color="#66cdff" stop-opacity="0"/></radialGradient></defs>
     ${[[470,200,"o1",46],[380,152,"o2",34],[290,112,"o3",26]].map(([rx,ry,id,dur],i)=>`<path id="${id}" class="show-orbit o${i}" d="M${500-rx} 217a${rx} ${ry} 0 1 0 ${2*rx} 0a${rx} ${ry} 0 1 0 ${-2*rx} 0"/>
       <circle r="${7-i}" fill="url(#show-dot)"><animateMotion dur="${dur}s" repeatCount="indefinite" ${i%2?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':""}><mpath href="#${id}"/></animateMotion></circle>
       <circle r="${5-i}" fill="url(#show-dot)" opacity=".6"><animateMotion dur="${dur}s" begin="-${dur/2}s" repeatCount="indefinite" ${i%2?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':""}><mpath href="#${id}"/></animateMotion></circle>`).join("")}
@@ -60,12 +60,36 @@
     if(section)setTimeout(()=>document.getElementById(`setup-${section}`)?.scrollIntoView({behavior:"smooth",block:"start"}),250);
   },true);
 
+  // Первый экран: от каждого этапа к базе знаний идёт луч, по лучу бегут частицы, а сигнал
+  // обходит этапы по кругу — видно, что агенты работают на всех восьми и всё сходится в базу.
+  let live=0,timer=0;
+  function beams(){
+    const map=document.getElementById("loop-map"),core=map&&map.querySelector(".knowledge-core");
+    const nodes=map?[...map.querySelectorAll(".loop-node")]:[];
+    if(!core||nodes.length<2||matchMedia("(max-width:760px)").matches)return;
+    const m=map.getBoundingClientRect(),c=core.getBoundingClientRect(),cx=c.left+c.width/2-m.left,cy=c.top+c.height/2-m.top;
+    const paths=nodes.map((n,i)=>{const r=n.getBoundingClientRect(),x=r.left+r.width/2-m.left,y=r.top+r.height/2-m.top;
+      const ex=x+(cx-x)*.12,ey=y+(cy-y)*.12,tx=cx-(cx-x)*.2,ty=cy-(cy-y)*.2,qx=(ex+tx)/2+(ty-ey)*.12,qy=(ey+ty)/2-(tx-ex)*.12;
+      return `<path id="show-beam-${i}" class="show-beam" data-i="${i}" style="--node:${getComputedStyle(n).getPropertyValue("--node")||"#5e98ff"}" d="M${ex.toFixed(1)} ${ey.toFixed(1)}Q${qx.toFixed(1)} ${qy.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)}"/>
+        ${[0,1,2].map(k=>`<circle class="show-spark" r="${2.6-k*.6}"><animateMotion dur="${3.2+i%3*.4}s" begin="${-(k*1.1+i*.37).toFixed(2)}s" repeatCount="indefinite"><mpath href="#show-beam-${i}"/></animateMotion></circle>`).join("")}`;}).join("");
+    map.querySelector(".show-beams")?.remove();
+    map.insertAdjacentHTML("afterbegin",`<svg class="show-beams" width="${m.width}" height="${m.height}" aria-hidden="true">${paths}</svg>`);
+    if(!timer&&!matchMedia("(prefers-reduced-motion:reduce)").matches)timer=setInterval(()=>{
+      const ns=[...document.querySelectorAll("#loop-map .loop-node")],bs=[...document.querySelectorAll(".show-beam")];
+      if(!ns.length)return;live=(live+1)%ns.length;
+      ns.forEach((n,i)=>n.classList.toggle("is-live",i===live));bs.forEach((b,i)=>b.classList.toggle("is-live",i===live));
+      document.querySelector("#loop-map .knowledge-core")?.animate([{transform:"translate(-50%,-50%) scale(1)"},{transform:"translate(-50%,-50%) scale(1.035)"},{transform:"translate(-50%,-50%) scale(1)"}],{duration:900,delay:700,easing:"ease-out"});
+    },1700);
+  }
+  let rs;addEventListener("resize",()=>{clearTimeout(rs);rs=setTimeout(beams,150)});
+
   function decorate(){
     const view=document.getElementById("process-view"),shell=view&&!view.hidden&&view.querySelector(".process-shell");
     const id=location.hash.replace(/^#/,"").split("/")[0];
     if(shell&&!shell.querySelector(".show-stage")){const html=stage(id);if(html){shell.classList.add("show-compact");shell.querySelector(".back-button")?.insertAdjacentHTML("afterend",html);}}
     const map=document.getElementById("loop-map");
     if(map&&!map.querySelector(".show-orbits"))map.insertAdjacentHTML("afterbegin",ORBITS);
+    if(map&&!map.querySelector(".show-beams")&&map.querySelector(".loop-node"))requestAnimationFrame(beams);
     const hub=document.querySelector(".hub-hero");
     if(hub&&!hub.querySelector(".show-ribbon")&&S.ribbon)hub.insertAdjacentHTML("afterbegin",`<div class="show-ribbon">${esc(S.ribbon[0])}<small>${esc(S.ribbon[1])}</small></div>`);
   }

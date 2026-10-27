@@ -10,6 +10,7 @@ index.html и hub.js. Каждая замена обязана найтись р
 
     python3 scripts/show/build_show.py
 """
+import colorsys
 import json
 import pathlib
 import re
@@ -103,6 +104,33 @@ def hub_data() -> dict:
             "totals": data["totals"], "works": [work], "events": events[:10]}
 
 
+# Цвета МФТИ: синий, голубой, белый. Владелец 27-10-2026: «делаем в цветах МФТИ». Вёрстка
+# атласа не трогается: каждый цвет в собранных файлах переводится в синюю гамму. Насыщенные
+# оттенки сохраняют порядок (у этапов остаются разные цвета), серые и бежевые становятся
+# холодными, тёмные — тёмно-синими.
+COLOR = re.compile(r"(?<=[:,(\s\"'=])(#|%23)([0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![\w-])|rgba?\((\d+),\s*(\d+),\s*(\d+)")
+
+
+def to_mipt(r: int, g: int, b: int) -> tuple:
+    h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
+    if s < 0.3 or l > 0.97 or l < 0.02:
+        h, s = 215 / 360, (0.38 if l < 0.2 else min(0.3, s + 0.1)) if 0.02 <= l <= 0.97 else s
+    else:
+        h = (185 + h * 60) / 360
+    return tuple(round(c * 255) for c in colorsys.hls_to_rgb(h, l, s))
+
+
+def recolor(text: str) -> str:
+    def sub(m: re.Match) -> str:
+        if m.group(3):
+            r, g, b = to_mipt(*(int(m.group(i)) for i in (3, 4, 5)))
+            return m.group(0).split("(")[0] + f"({r},{g},{b}"
+        x = m.group(2)
+        x = "".join(c * 2 for c in x) if len(x) == 3 else x
+        return m.group(1) + "%02x%02x%02x" % to_mipt(int(x[:2], 16), int(x[2:4], 16), int(x[4:], 16))
+    return COLOR.sub(sub, text)
+
+
 def index_html() -> str:
     html = (ATLAS / "index.html").read_text(encoding="utf-8")
     html = re.sub(r"\?v=[\w-]+", "", html)
@@ -114,8 +142,9 @@ def index_html() -> str:
     core, (s1, s2, s3), tabs = C.INDEX["core"], C.INDEX["surfaces"], C.INDEX["tabs"]
     return replace_once(html, [
         ('<span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span>',
-         '<span class="show-logos"><img class="lg-iii" src="assets/logos/iii-white.png" alt="Институт искусственного интеллекта МФТИ">'
-         '<img class="lg-mipt" src="assets/logos/mipt.png" alt="МФТИ"><img class="lg-brain" src="assets/logos/brainlab.svg" alt="BRAIn Lab"></span>'),
+         '<span class="show-logos"><img class="lg-brain" src="assets/logos/brainlab.svg" alt="BRAIn Lab">'
+         '<img class="lg-iii" src="assets/logos/iii-white.png" alt="Институт искусственного интеллекта МФТИ">'
+         '<img class="lg-mipt" src="assets/logos/mipt.png" alt="МФТИ"></span>'),
         ("<title>BRAIn Lab · Research Loop</title>", f"<title>{C.INDEX['title']}</title>"),
         ('<p class="overline">Исследовательская система · <span id="verified-date"></span></p>', f'<p class="overline">{C.INDEX["overline"]}<span id="verified-date" hidden></span></p>'),
         ("<h1>Вопрос входит —<br> <span>знание</span> выходит</h1>", f"<h1>{C.INDEX['h1']}</h1>"),
@@ -173,6 +202,10 @@ def main() -> None:
     ], "setup.js")
     (OUT / "setup.js").write_text(setup_js, encoding="utf-8")
     (OUT / "index.html").write_text(index_html(), encoding="utf-8")
+
+    for f in OUT.rglob("*"):
+        if f.is_file() and f.suffix in (".js", ".html", ".css"):
+            f.write_text(recolor(f.read_text(encoding="utf-8")), encoding="utf-8")
 
     bad = []
     for f in OUT.rglob("*"):

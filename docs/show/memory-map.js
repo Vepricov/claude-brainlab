@@ -183,7 +183,7 @@ window.LAB_MEMORY_MAP = (() => {
   }
 
   function render(p, processes){
-    return `<div class="process-shell memory-observatory" style="--accent:#b9ff66">
+    return `<div class="process-shell memory-observatory" style="--accent:#66cdff">
       <header class="mem-header"><div><button class="back-button" data-back type="button">← Весь атлас</button><span class="mem-coordinate">BRAIn Lab / База знаний · git</span></div></header>
       ${anatomy()}
       <header class="mem-chapter-heading mem-overview-heading"><div><span class="mem-label">Откуда приходит знание</span><h2>Как работа становится <em>знанием</em></h2></div></header>
@@ -259,7 +259,7 @@ window.LAB_MEMORY_MAP = (() => {
         lines+=`<path data-edge="writer:${id}" class="mem-line-private" d="M${b.left-box.left+4},${b.top-box.top+11} H${rail} V${y-6} H${x} V${y+10}"/>`;
       }
     }
-    const colors={paper:'#9ec9d8',project:'#c5df94',violet:'#bba8e1'};
+    const colors={paper:'#9eb4d8',project:'#94c8df',violet:'#a8b3e1'};
     svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
     svg.innerHTML=`<defs>${Object.entries(colors).map(([c,fill])=>`<marker id="mem-arrow-${kind}-${c}" viewBox="0 0 6 6" refX="6" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="${fill}"/></marker>`).join('')}</defs>${lines}`;
   }

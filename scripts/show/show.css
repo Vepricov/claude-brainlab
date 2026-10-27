@@ -133,4 +133,20 @@
 @keyframes show-breathe-dot{50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--accent) 18%,transparent)}}
 .sc-out-tile{position:absolute;z-index:1;font-size:12.5px;background:rgba(243,245,237,.1);border:1px solid rgba(243,245,237,.2);border-radius:8px;padding:6px 12px;opacity:0;animation:show-in 4s calc(var(--i)*.7s) ease-out infinite}
 .sc-out-tile:nth-of-type(2){left:4%;top:6%}.sc-out-tile:nth-of-type(3){right:4%;top:6%}.sc-out-tile:nth-of-type(4){left:50%;bottom:0;margin-left:-32px}
-@media(prefers-reduced-motion:reduce){.show-orbits,.show-scene *{animation:none!important}.show-orbits circle{display:none}}
+/* Первый экран: лучи к базе, частицы, сигнал по кругу, звёздная пыль и мерцающее «каждом». */
+.show-beams{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
+.show-beam{fill:none;stroke:#b9ff66;stroke-opacity:.2;stroke-width:1;stroke-dasharray:3 6;transition:stroke-opacity .5s,stroke-width .5s}
+.show-beam.is-live{stroke:var(--node,#b9ff66);stroke-opacity:.75;stroke-width:1.6;stroke-dasharray:none;filter:drop-shadow(0 0 6px var(--node,#b9ff66))}
+.show-spark{fill:#e9f5ff;opacity:.55}
+.loop-node{transition:box-shadow .5s,transform .5s,border-color .5s}
+.loop-node.is-live{box-shadow:0 0 0 1px var(--node,#b9ff66),0 0 34px -4px var(--node,#b9ff66);transform:translateY(-3px)}
+.loop-node:nth-child(3).is-live{transform:translate(-50%,-3px)}
+.overview{position:relative}
+.overview:before{content:"";position:absolute;inset:-50% -10%;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(1px 1px at 12% 22%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 68% 14%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 84% 62%,#b9ff66 50%,transparent 51%),radial-gradient(1px 1px at 32% 78%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 52% 44%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 22% 58%,#8fb4ff 50%,transparent 51%),radial-gradient(1px 1px at 92% 30%,#fff 50%,transparent 51%);
+  background-size:520px 520px;animation:show-drift 120s linear infinite}
+@keyframes show-drift{to{transform:translate(-260px,-520px)}}
+.overview-head h1 span{background:linear-gradient(100deg,#b9ff66 0%,#e9f5ff 45%,#b9ff66 60%,#8fb4ff 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:show-shine 7s ease-in-out infinite}
+@keyframes show-shine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+@media(prefers-reduced-motion:reduce){.show-orbits,.show-scene *,.overview:before,.overview-head h1 span{animation:none!important}.show-orbits circle,.show-spark{display:none}}
+.process-view{background:#f4f7fb}

@@ -124,6 +124,7 @@ def index_html() -> str:
         ('>Харнесс агентов</button>', f'>{tabs[2]}</button>'),
         ("<strong>GitLab</strong><p>база знаний лаборатории: утверждения · прогоны · литература · предложения</p><i>Открыть базу →</i>",
          f"<strong>{core[0]}</strong><p>{core[1]}</p><i>{core[2]}</i>"),
+        ("<span>Сердце системы</span>", ""),
         ("<b>Obsidian</b><span>всё дерево в одном окне</span>", f"<b>{s1[0]}</b><span>{s1[1]}</span>"),
         ("<b>MemPalace</b><span>память агента</span>", f"<b>{s2[0]}</b><span>{s2[1]}</span>"),
         ("<b>Гермес</b><span>агент на сервере 24/7</span>", f"<b>{s3[0]}</b><span>{s3[1]}</span>"),
@@ -151,7 +152,7 @@ def main() -> None:
                                                           "Говорит агенту, в какой репозиторий базы писать отсюда и как отправлять"), encoding="utf-8")
     dump(OUT / "data/setup-data.js", "LAB_SETUP", P.SETUP)
     dump(OUT / "data/hub-data.js", "LAB_HUB", hub_data())
-    dump(OUT / "data/show-data.js", "LAB_SHOW", {"how": {k: v["how"] for k, v in C.PROCESSES.items()},
+    dump(OUT / "data/show-data.js", "LAB_SHOW", {"stage": C.STAGE,
                                                   "ribbon": P.RIBBON, "cta": P.CTA})
     hub_js = (ATLAS / "hub.js").read_text(encoding="utf-8")
     cta = re.search(r'<section class="hub-cta"><h2>Посмотрите сами</h2><p>.*?</p>', hub_js).group(0)

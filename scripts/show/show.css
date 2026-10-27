@@ -1,11 +1,32 @@
 /* «Показ»: вёрстка атласа без изменений, здесь только то, что для гостей лишнее, и две вставки. */
 .search-open,.loop-tally,#toolkit,.node-satellites{display:none!important}
 .memory-surfaces button{pointer-events:none}
-/* Страница этапа: общее описание и «как у нас», без досье инструментов. */
-.process-jump,#tools,.process-section.tomcp,.tool-cluster:empty,.map-legend{display:none!important}
-.show-how{margin-top:42px}
-.show-how h2{font:500 clamp(28px,3vw,40px)/1.08 var(--display);letter-spacing:-.035em;margin:10px 0 16px;max-width:900px}
-.show-how p.show-how-text{font-size:18px;line-height:1.55;max-width:900px;color:#3c4239;margin:0}
+/* Экран этапа: один экран, плотно. Всё прежнее содержимое страницы этапа скрыто, кроме навигации. */
+.show-compact>*:not(.back-button):not(.show-stage):not(.process-nav){display:none!important}
+.process-view:has(.show-compact){padding-top:96px;padding-bottom:28px;min-height:100vh}
+.show-stage{margin-top:18px;--ink-accent:color-mix(in srgb,var(--accent) 72%,#141713)}
+.show-stage header{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:end;padding-bottom:22px;border-bottom:1px solid rgba(20,23,19,.14)}
+.show-num{font:500 64px/1 var(--display);color:var(--ink-accent);letter-spacing:-.05em}
+.show-stage h1{font:500 clamp(40px,4.4vw,60px)/1 var(--display);letter-spacing:-.045em;margin:0}
+.show-key{margin:12px 0 0;font:500 clamp(19px,1.7vw,24px)/1.25 var(--display);letter-spacing:-.02em;color:#141713;max-width:820px}
+.show-key:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ink-accent);margin-right:12px;vertical-align:.12em}
+.show-stat{text-align:right;border-left:3px solid var(--ink-accent);padding-left:18px}
+.show-stat b{display:block;font:500 52px/1 var(--display);letter-spacing:-.04em;color:#141713}
+.show-stat span{display:block;font-size:13px;color:#5d645b;margin-top:6px;max-width:170px}
+.show-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.show-cols article{border:1px solid rgba(20,23,19,.14);border-radius:16px;padding:20px 24px;background:rgba(255,255,255,.45)}
+.show-cols article.is-ours{background:#151917;color:#f3f5ed;border-color:#151917}
+.show-cols article.is-ours .section-label{color:var(--accent)}
+.show-cols ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.show-cols li{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:baseline;padding-top:12px;border-top:1px solid rgba(20,23,19,.1)}
+.show-cols .is-ours li{border-top-color:rgba(243,245,237,.12)}
+.show-cols li b{font:500 18px/1.2 var(--display);letter-spacing:-.02em}
+.show-cols li span{font-size:15px;line-height:1.4;color:#4a5048}.show-cols .is-ours li span{color:#b8c0b6}
+.show-steps{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px}
+.show-steps li{border-top:3px solid var(--ink-accent);padding:12px 4px 0}
+.show-steps small{font:11px var(--mono);color:#6b7369}.show-steps b{display:block;font:500 16px/1.2 var(--display);margin:4px 0 3px}.show-steps span{font-size:13px;color:#5d645b}
+.show-compact .process-nav{margin-top:20px;padding-top:14px}
+@media(max-width:900px){.show-stage header{grid-template-columns:1fr}.show-stat{text-align:left}.show-cols{grid-template-columns:1fr}.show-cols li{grid-template-columns:1fr;gap:2px}.show-steps{grid-auto-flow:row}}
 /* Лента на базе знаний: справа сверху по диагонали. */
 .hub-hero{position:relative}
 .show-ribbon{position:absolute;z-index:3;top:30px;right:-92px;width:400px;transform:rotate(30deg);background:var(--lime,#b9ff66);color:#11140f;text-align:center;padding:11px 0 10px;font:600 15px/1.2 var(--display,sans-serif);letter-spacing:.01em;box-shadow:0 12px 34px rgba(185,255,102,.28);pointer-events:none}

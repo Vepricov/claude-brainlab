@@ -660,26 +660,6 @@ def vlozhennye(target: Path) -> list[str]:
                                                                     errors="replace"), re.M)
 
 
-def k_istochniku(target: Path, names: list[str]) -> None:
-    """Вложенный репозиторий берётся из источника, а не из зеркала.
-
-    С 27-10-2026 `.gitmodules` работы указывает на зеркало в GitLab (`mirrors/…`): так
-    GitLab открывает статью и код папкой, а не строкой «warmup @ a3bca560». Зеркало только
-    для чтения и отстаёт на минуты, а писать надо в Overleaf или на GitHub, поэтому здесь,
-    после `submodule sync`, адрес возвращается на источник из поля `upstream`.
-    """
-    for name in names:
-        upstream = git("config", "-f", ".gitmodules", f"submodule.{name}.upstream",
-                       cwd=target, quiet=True)
-        if not upstream:
-            continue
-        git("config", f"submodule.{name}.url", upstream, cwd=target, quiet=True)
-        path = git("config", "-f", ".gitmodules", f"submodule.{name}.path",
-                   cwd=target, quiet=True) or name
-        if (target / path / ".git").exists():
-            git("-C", path, "remote", "set-url", "origin", upstream, cwd=target, quiet=True)
-
-
 def podtyanut_vlozhennye(target: Path) -> None:
     """Обновить код и статью работы до свежего состояния их собственных репозиториев.
 
@@ -698,7 +678,6 @@ def podtyanut_vlozhennye(target: Path) -> None:
         return
     subprocess.run(["git", "submodule", "sync", "--quiet", "--recursive"],
                    cwd=target, capture_output=True, text=True, env=environment())
-    k_istochniku(target, names)
     for name in names:
         was = git("rev-parse", f"HEAD:{name}", cwd=target, quiet=True) or ""
         # Пустая папка до подтягивания: сравнение коммитов тут соврёт «без изменений»,

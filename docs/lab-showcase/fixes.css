@@ -65,3 +65,5 @@
 .overview-chips{grid-column:1/-1;margin-top:18px}
 #overview .overview-chips{grid-column:1;align-self:start}
 #overview .overview-chips{max-width:min(100%,calc(100% - 430px))}
+/* Кнопка в упрощённую страницу для показа гостям (show.html). */
+.top-right{justify-self:end;display:flex;align-items:center;gap:10px}.show-link{font-size:13px;font-weight:500;text-decoration:none;color:#11140f;background:var(--lime);border-radius:30px;padding:7px 16px;white-space:nowrap}.show-link:hover{filter:brightness(1.08)}

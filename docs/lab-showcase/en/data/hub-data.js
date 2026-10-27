@@ -198,16 +198,16 @@ window.LAB_HUB = {
     ],
     "mrs": [
       {
-        "title": "H-DYC-007: finals of the large pairs and the paper's hyperparameter axis (Hermes's work)",
-        "who": "Andrey Veprikov (agent)",
-        "url": "",
-        "n": 19
-      },
-      {
         "title": "README: the work's runs in W&B",
         "who": "Andrey Veprikov (agent)",
         "url": "",
         "n": 35
+      },
+      {
+        "title": "H-DYC-007: finals of the large pairs and the paper's hyperparameter axis (Hermes's work)",
+        "who": "Andrey Veprikov (agent)",
+        "url": "",
+        "n": 19
       }
     ],
     "chain": {

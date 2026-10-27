@@ -33,5 +33,13 @@
   "31789e1aabe3": "Memory column of table 5: two percentages of one GPU add up to 112-130% of its capacity",
   "1c642f8852f9": "launch >124M pretraining",
   "56a5121d277d": "H-DYC-007: finals of the large pairs and the paper's hyperparameter axis (Hermes's work)",
-  "2cbdbfb03e35": "dykaf: H-DYC-005 rephrased as measurable, the overhead depends on the share of data passes"
+  "2cbdbfb03e35": "dykaf: H-DYC-005 rephrased as measurable, the overhead depends on the share of data passes",
+  "287105b0d559": "Nikolay Yudin",
+  "b25b9425817e": "Ekaterina Grishina",
+  "de6eef5bd239": "README: the work's runs in W&B",
+  "0e4f8f83a8b3": "Base administrator",
+  "7129a31b2f0c": "Members: Leads and Team in one view, the old \"Participants\" line removed",
+  "950ca884d78d": "Work members: the team",
+  "22e28281706d": "Yonote link removed from the work's front page",
+  "3e68c65a9809": "Paper-note links point to the new file names (9)"
 }

@@ -11392,7 +11392,7 @@
   },
   "hub.js": {
     "group": "ui-hub",
-    "sha256": "2fe036c2f7eba5fd3985b9e3527db0b45a8eb71fe2d9e6ee7f6d8ac25c555902",
+    "sha256": "b2d7b6b52e19f421d5d0eeb95820a0fc05374e4fc12b43b92fd53f804043aff1",
     "ranges": [
       {
         "start": 685,
@@ -12389,29 +12389,29 @@
         "source": "<div class=\"hub-shell\"><p class=\"hub-lead\">Загружаем базу…</p></div>"
       },
       {
-        "start": 16337,
-        "end": 16419,
+        "start": 16382,
+        "end": 16464,
         "type": "StringLiteral",
         "id": "8406c0988c87",
         "source": "\"Харнесс, навыки и правила лаборатории открыты: поставьте их себе одной командой.\""
       },
       {
-        "start": 16420,
-        "end": 16485,
+        "start": 16465,
+        "end": 16530,
         "type": "StringLiteral",
         "id": "980518790edd",
         "source": "\"Всё, что на этой странице, — настоящие репозитории лаборатории.\""
       },
       {
-        "start": 16554,
-        "end": 16619,
+        "start": 16599,
+        "end": 16664,
         "type": "TemplateElement",
         "id": "4b4fef6e5651",
         "source": "\" target=\"_blank\" rel=\"noopener\">Открыть GitLab лаборатории ↗</a>"
       },
       {
-        "start": 16267,
-        "end": 16326,
+        "start": 16312,
+        "end": 16371,
         "type": "TemplateElement",
         "id": "9ef19ff5bb9c",
         "source": "\n      <section class=\"hub-cta\"><h2>Посмотрите сами</h2><p>"

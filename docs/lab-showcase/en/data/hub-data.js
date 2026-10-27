@@ -13,18 +13,17 @@ window.LAB_HUB = {
     "lead": "DyKAF instead of SOAP lowers validation loss in language model pretraining",
     "leads": [
       "Andrey Veprikov",
-      "Kolya Yudin",
-      "Katya Grishina",
-      "Fedor Fomin"
+      "Nikolay Yudin",
+      "Ekaterina Grishina"
     ],
     "direction": "Matrix optimization and Muon",
     "theme": "Preconditioning and curvature",
     "claims": 6,
     "runs": 135,
-    "commits": 100,
-    "merges": 25,
+    "commits": 102,
+    "merges": 26,
     "authors": 7,
-    "updated": 1792334066,
+    "updated": 1792673817,
     "url": "",
     "last": null,
     "issues": 7,
@@ -203,6 +202,12 @@ window.LAB_HUB = {
         "who": "Andrey Veprikov (agent)",
         "url": "",
         "n": 19
+      },
+      {
+        "title": "README: the work's runs in W&B",
+        "who": "Andrey Veprikov (agent)",
+        "url": "",
+        "n": 35
       }
     ],
     "chain": {
@@ -215,14 +220,14 @@ window.LAB_HUB = {
     }
   },
   "totals": {
-    "works": 29,
-    "claims": 135,
-    "runs": 1010,
-    "papers": 740,
-    "commits": 2631,
-    "merges": 681,
-    "people": 20,
-    "agentCommits": 1205
+    "works": 30,
+    "claims": 130,
+    "runs": 1025,
+    "papers": 720,
+    "commits": 2650,
+    "merges": 688,
+    "people": 19,
+    "agentCommits": 1169
   },
   "works": [
     {
@@ -232,18 +237,17 @@ window.LAB_HUB = {
       "lead": "DyKAF instead of SOAP lowers validation loss in language model pretraining",
       "leads": [
         "Andrey Veprikov",
-        "Kolya Yudin",
-        "Katya Grishina",
-        "Fedor Fomin"
+        "Nikolay Yudin",
+        "Ekaterina Grishina"
       ],
       "direction": "Matrix optimization and Muon",
       "theme": "Preconditioning and curvature",
       "claims": 6,
       "runs": 135,
-      "commits": 100,
-      "merges": 25,
+      "commits": 102,
+      "merges": 26,
       "authors": 7,
-      "updated": 1792334066,
+      "updated": 1792673817,
       "url": "",
       "last": null,
       "issues": 7,
@@ -252,13 +256,76 @@ window.LAB_HUB = {
   ],
   "events": [
     {
-      "t": 1792051663,
+      "t": 1792673817,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Base administrator",
+      "agent": false,
+      "merge": false,
+      "s": "Merge branch 'sostav/22-10-2026' into 'main'"
+    },
+    {
+      "t": 1792673540,
       "repo": "dykaf",
       "url": "",
       "who": "Andrey Veprikov",
       "agent": false,
-      "merge": true,
-      "s": "dykaf: H-DYC-005 rephrased as measurable, the overhead depends on the share of data passes"
+      "merge": false,
+      "s": "Members: Leads and Team in one view, the old \"Participants\" line removed"
+    },
+    {
+      "t": 1792334066,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": true,
+      "merge": false,
+      "s": "Merge branch 'sostav/komanda' into 'main'"
+    },
+    {
+      "t": 1792314038,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": false,
+      "merge": false,
+      "s": "Work members: the team"
+    },
+    {
+      "t": 1792173747,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": true,
+      "merge": false,
+      "s": "Merge branch 'readme/bez-yonote-16-10-2026' into 'main'"
+    },
+    {
+      "t": 1792173531,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": false,
+      "merge": false,
+      "s": "Yonote link removed from the work's front page"
+    },
+    {
+      "t": 1792168611,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": true,
+      "merge": false,
+      "s": "Merge branch 'literature/imena-16-10-2026' into 'main'"
+    },
+    {
+      "t": 1792166829,
+      "repo": "dykaf",
+      "url": "",
+      "who": "Andrey Veprikov",
+      "agent": false,
+      "merge": false,
+      "s": "Paper-note links point to the new file names (9)"
     }
   ]
 };

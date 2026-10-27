@@ -2,82 +2,67 @@
   <img src="docs/assets/banner.svg" alt="claude-brainlab — a research workbench for Claude Code" width="100%">
 </p>
 
+<h3 align="center">A question goes in — knowledge comes out.</h3>
+
+<p align="center">
+  The working setup of <a href="https://github.com/brain-lab-research">BRAIn Lab</a>: Claude Code skills, hooks and rules<br>
+  plus a lab knowledge base that is plain git — GitHub for ideas.
+</p>
+
+<p align="center">
+  <a href="https://vepricov.github.io/claude-brainlab/lab-showcase/"><img alt="Open the atlas" src="https://img.shields.io/badge/%E2%86%97%20open%20the%20atlas-live%20site-B5F35C?style=for-the-badge&labelColor=111"></a>
+</p>
+
 <p align="center">
   <a href="https://docs.claude.com/en/docs/claude-code"><img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-configuration-000?style=flat-square&logo=anthropic&logoColor=white"></a>
-  <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-75-3FB950?style=flat-square"></a>
-  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-34-58A6FF?style=flat-square"></a>
-  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-15-BC8CFF?style=flat-square"></a>
-  <a href="docs/knowledge-base.md"><img alt="lab knowledge" src="https://img.shields.io/badge/Lab%20Knowledge-git%20%2B%20merge%20requests-D29922?style=flat-square"></a>
+  <a href="SKILLS.md"><img alt="skills" src="https://img.shields.io/badge/skills-67-3FB950?style=flat-square"></a>
+  <a href="commands/"><img alt="slash commands" src="https://img.shields.io/badge/slash%20commands-10-58A6FF?style=flat-square"></a>
+  <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-13-BC8CFF?style=flat-square"></a>
+  <a href="hooks/"><img alt="hooks" src="https://img.shields.io/badge/hooks-9-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
   <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
 </p>
 
 <p align="center">
-  <a href="#overview">Overview</a> ·
-  <a href="#lab-knowledge-the-shared-research-base">Lab Knowledge</a> ·
-  <a href="#the-toolkit-skills-commands-agents-hooks">The toolkit</a> ·
+  <a href="#knowledge-engine">Knowledge engine</a> ·
+  <a href="#github-for-ideas">GitHub for ideas</a> ·
+  <a href="#agent-harness">Agent harness</a> ·
   <a href="#install">Install</a> ·
-  <a href="#for-brain-lab-members">For lab members</a> ·
-  <a href="SKILLS.md">All 75 skills</a>
+  <a href="SKILLS.md">All skills</a>
 </p>
 
-## Overview
+<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/"><img src="docs/assets/atlas-machine.png" alt="The atlas: eight stages of the research loop around the lab GitLab" width="100%"></a>
 
-`claude-brainlab` is the working configuration of a machine-learning research lab, packaged so that
-someone else can install it. It turns [Claude Code](https://docs.claude.com/en/docs/claude-code) into a
-workbench that covers a research day end to end: find the paper, read it properly, run the experiment,
-write the paper, survive the review — and leave every step in a base the rest of the lab can search.
+The repository is the lab's own configuration, packaged so another lab can install it. Claude Code
+runs on the researcher's machine, a server agent keeps runs going overnight, and everything they
+produce lands in one git tree that is at the same time the Obsidian vault and the lab base in GitLab.
+The [atlas](https://vepricov.github.io/claude-brainlab/lab-showcase/) shows the whole loop page by page, in English and Russian; this README follows
+the same three tabs.
 
-What it actually gives you:
+## Knowledge engine
 
-- **A literature pipeline that does not hallucinate metadata.** An arXiv link becomes a Zotero item with
-  its PDF, a vault note with an eight-section analysis, an AlphaXiv mirror entry and a bibliography
-  entry. BibTeX comes from external APIs, never from a model, and a hook blocks any `\cite{}` key that
-  is missing from `references.bib`.
-- **A shared research base that is plain git.** One repository per work, claims in `claims/<CODE>/` with
-  the runs and series under them, one `literature` repository per research theme. A change enters by a
-  merge request a human merges. See [Lab Knowledge](#lab-knowledge-the-shared-research-base).
-- **Experiment work that survives the night.** Per-project SSH and GPU routing, long runs in `tmux`,
-  loops that append timestamped progress to an experiment note and refresh the plot, and a queue with a
-  circuit breaker instead of a job list that burns down silently.
-- **Writing and review with teeth.** Beamer decks in a terminal-style theme, A\*-grade internal review
-  (reviewer + theoretician + literature scout + experiments auditor), and a rebuttal workflow where
-  every claim must point at the submitted paper or a verified artifact.
-- **Obsidian opens the base itself.** Since 16-10-2026 the vault *is* the lab tree: every repository of
-  the base is cloned under one root, so a note, a claim and a manuscript are the same files seen from
-  two sides. Drafts stay on the machine because `notes/`, `daily/` and `runs/` are excluded from git in
-  every clone, and nothing maps a project to a separate vault folder any more — the path is the map.
-- **Memory across sessions.** MemPalace integration with auto-save, so the next session starts knowing
-  what the last one decided.
+Eight stages, one loop, with the lab GitLab at the centre. Each stage is a handful of skills you
+actually type.
 
-> [!TIP]
-> Everything works without lab access. The base is read and written with ordinary `git`, so without a
-> clone the base-facing skills simply have nothing to act on, and Obsidian-routed skills no-op without
-> a vault.
+| | Stage | What it does | Skills |
+|---|---|---|---|
+| 00 | **Project setup** | a work is one GitLab repository, cloned at the same path in the tree | `create-project`, `code-ingest` |
+| 01 | **Literature** | an arXiv link becomes a Zotero item, a reading note and a BibTeX entry from an external API, never from a model | `paper-ingest`, `paper-search`, `want-2-read` |
+| 02 | **Ideas and hypotheses** | a refutable claim with the condition that would refute it | `research-ideation`, `grill-me` |
+| 03 | **Meetings** | a call transcript turns into claim edits and tasks | `call-notes` |
+| 04 | **Experiments** | runs log to W&B; the code writes the record, nobody retypes numbers | `experiment-runs`, `obsidian-experiment-log`, `handoff-to-jarvis` |
+| 05 | **Results** | runs under a claim form a series with a verdict | `results-analysis`, `results-report` |
+| 06 | **Paper writing and review** | only supportable claims; A\*-grade internal review and evidence-bound rebuttals | `ml-paper-writing`, `astar-paper-review`, `review-response` |
+| 07 | **Share with the community** | posts, talks and posters with one core message | `paper-to-social`, `presentation` |
 
-### The vault is the tree
+## GitHub for ideas
 
-```
-~/brainlab/                                  ← the Obsidian vault root
-├── <area>/<theme>/<work>/                   one GitLab repository per work
-│   ├── claims/<CODE>/{runs,series,theory}/  what goes to the base
-│   ├── paper/  code/  socials/              manuscript, code, public posts
-│   └── notes/  daily/  runs/                local only (git-excluded)
-├── <area>/<theme>/literature/               one repository per theme, one file per paper
-├── journal/  handbook/  servers/            service repositories: direct push to main
-├── ops/<grant|management|education|…>/      obligations, grants, teaching
-├── agents/                                  this toolkit and notes about it
-└── personal/                                operon boards, knowledge, code-library
-```
+<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/#ideas"><img src="docs/assets/atlas-hub.png" alt="GitHub for ideas: a lab work shown as a repository with claims, runs, tasks and proposals" width="100%"></a>
 
-Two consequences the toolkit relies on. Links are written as relative markdown
-(`[Name](Name.md)`): Obsidian and GitLab both render them and both land on the same file, while
-`[[Name]]` works in Obsidian only and is kept for notes that never leave the machine. And a change
-is written by merging: edit the clone in place, then a work takes a merge request (a plain
-`git push` opens it) while the service repositories take a direct push to `main`. The end-of-turn
-hook reports anything still sitting uncommitted in a clone.
-
-## Lab Knowledge: the shared research base
+Code has had git for decades: history of every line, branches, review, merge. Ideas had none of it,
+and once agents launch dozens of runs and read hundreds of papers overnight, knowledge without
+versions turns into noise. The base gives research what git gave code: every idea, run and number
+comes with its history, its checks and its author.
 
 The base answers the question a lab loses most often: *has anyone here already tried this, and what
 came out of it?* It is a GitLab group, and everything in it is ordinary git. The knowledge service that
@@ -105,64 +90,43 @@ What makes it work rather than rot:
 | **Names before records** | Every work keeps a registry of its internal names: build nicknames, run ids, local protocol names. A record that needs a dictionary nobody wrote is unreadable in a month. |
 | **Nothing is written by accident** | A stop hook ends a turn with one line: what is worth recording and where. The rules it points at live in `rules/checkpoint.md` and `rules/lab.md`, not in the line itself. |
 
-Read [`docs/knowledge-base.md`](docs/knowledge-base.md) for the rules that hold for everybody, and
+The [`lab-knowledge`](skills/lab-knowledge/SKILL.md) skill carries the rules that hold for everybody; read
 [`docs/llm-providers.md`](docs/llm-providers.md) for which model does which job.
 
-## For BRAIn Lab members
+## Agent harness
 
-This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
-gate service, the meeting pipeline, and the tests that carry real names — stays in a private repository
-inside the [brain-lab-research](https://github.com/brain-lab-research) organisation. Access comes with
-team membership: if you work at BRAIn Lab, join the
-[GitHub team](https://github.com/orgs/brain-lab-research/teams) for the internal repository.
+<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/#setup"><img src="docs/assets/atlas-harness.png" alt="Agent harness: skills, hooks, base rules and agent memory" width="100%"></a>
 
-The base itself lives in the lab's GitLab, and access there is granted per research theme, not per
-lab: the theme tree and the literature are open to everyone with an account, the works are not. Ask
-the lead of the theme you work on.
-
-| | Where |
-|---|---|
-| Canonical repository, issues and pull requests | [Vepricov/claude-brainlab](https://github.com/Vepricov/claude-brainlab) |
-| Organisation fork, kept in sync | [brain-lab-research/claude-brainlab](https://github.com/brain-lab-research/claude-brainlab) |
-| Lab organisation and papers | [github.com/brain-lab-research](https://github.com/brain-lab-research) |
-| Internal half: knowledge service, data, call pipeline | private, granted with team membership |
-
-| Read this | If you want to |
-|---|---|
-| [`docs/knowledge-base.md`](docs/knowledge-base.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |
-| [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
-| [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
-
-## The toolkit: skills, commands, agents, hooks
+A harness where the agent loses neither knowledge nor context: hooks fire on their own at every step
+of a turn, memory outlives sessions, and one file tree is both the vault and the base.
 
 | | Count | What it is | Where |
 |---|---|---|---|
-| **Skills** | 75 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
-| **Slash commands** | 34 | `/paper-ingest`, `/want-2-read`, `/analyze-results`, … | [`commands/`](commands/) |
-| **Agents** | 15 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
-| **Hooks** | 10 | security guard, citation validator, session start (plus lab state), session end, two stop hooks for memory and Obsidian, skill activation | [`hooks/`](hooks/) |
-| **Rules** | 11 | coding style, security, agent orchestration, code workflow, server hygiene, lab base, checkpoint, autoresearch, Obsidian frontmatter, Hermes team, scholar core | [`rules/`](rules/) |
-| **Templates** | — | `settings.json.template`, `.env.example`, project-mapping example | repo root |
+| **Skills** | 67 | the working units: literature, experiments, Obsidian, code, writing, review | [`skills/`](skills/) |
+| **Slash commands** | 10 | `/analyze-results`, `/hypothesize`, `/checkpoint`, … | [`commands/`](commands/) |
+| **Agents** | 13 | `code-reviewer`, `bug-analyzer`, `paper-miner`, `obsidian-hub-creator`, … | [`agents/`](agents/) |
+| **Hooks** | 9 | security guard, citation validator, session start and end, stop hooks, skill activation, old-path guard | [`hooks/`](hooks/) |
+| **Rules** | 11 | coding style, security, lab base, checkpoint, server hygiene, Hermes team, … | [`rules/`](rules/) |
 
-<details>
-<summary><b>What the 75 skills cover</b> — the full catalogue with trigger phrases is in <a href="SKILLS.md">SKILLS.md</a></summary>
+### The vault is the tree
 
-| Area | Skills you will actually type |
-|---|---|
-| **Literature** | `paper-ingest`, `paper-search`, `want-2-read`, `citation-verification` |
-| **Experiments** | `results-analysis`, `results-report`, `obsidian-experiment-log`, `handoff-to-jarvis`, `diagnose`, `verification-loop` |
-| **Writing** | `ml-paper-writing`, `writing-anti-ai`, `presentation`, `paper-to-social` |
-| **Review** | `astar-paper-review`, `review-response`, `grill-me`, `grill-with-docs` |
-| **Knowledge** | `lab-knowledge`, `call-notes`, `create-project` |
-| **Engineering** | `code-ingest`, `code-library`, `code-review-excellence`, `tdd`, `bug-detective`, `git-workflow`, `uv-package-manager` |
-| **Ideas and planning** | `research-ideation`, `planning-with-files`, `zoom-out`, `architecture-design`, `improve-codebase-architecture` |
+```
+~/brainlab/                                  ← the Obsidian vault root
+├── <area>/<theme>/<work>/                   one GitLab repository per work
+│   ├── claims/<CODE>/{runs,series,theory}/  what goes to the base
+│   ├── paper/  code/  socials/              manuscript, code, public posts
+│   └── notes/  daily/  runs/                local only (git-excluded)
+├── <area>/<theme>/literature/               one repository per theme, one file per paper
+├── journal/  handbook/  servers/            service repositories: direct push to main
+├── ops/<grant|management|education|…>/      obligations, grants, teaching
+├── agents/                                  this toolkit and notes about it
+└── personal/                                operon boards, knowledge, code-library
+```
 
-</details>
-
-## Highlights — what you won't find upstream
+### What you won't find upstream
 
 The repository started from `claude-scholar` (see [Credits](#credits)); these are the parts that grew
-here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
+here. Per-skill detail for all skills is in [`SKILLS.md`](SKILLS.md).
 
 - **`paper-ingest`** — end-to-end pipeline: arXiv URL → BibTeX (external API, never LLM-generated) → PDF → Zotero parent item with PDF child attachment → Obsidian note with 8-section AI Explanation written by Haiku → mandatory final audit.
 - **`want-2-read`** — process a Markdown reading queue with one fan-out agent per paper, each invoking `paper-ingest`, plus a final review agent for quality control.
@@ -178,7 +142,96 @@ here. Per-skill detail for all 75 skills is in [`SKILLS.md`](SKILLS.md).
 - **MemPalace integration** — durable conversation memory with auto-save on every turn (off by default for new installs).
 - **`presentation`** — Beamer-first slide skill with a built-in **terminal-style** theme (dark, monospace, bright-green accent). One source of truth for talks, posters and promotion content.
 
-## Evidence-first paper review and rebuttal
+> [!TIP]
+> Everything works without lab access. The base is read and written with ordinary `git`, so without a
+> clone the base-facing skills simply have nothing to act on, and Obsidian-routed skills no-op without
+> a vault.
+
+## Install
+
+```bash
+git clone https://github.com/<you>/claude-brainlab.git
+cd claude-brainlab
+bash install/bootstrap.sh   # interactive — fills .env
+bash install/setup.sh       # backup-aware copy to ~/.claude/
+```
+
+Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`.
+
+See the prerequisites table below before installing.
+
+When Zotero is configured, the installer checks the existing uv runtime for the
+APIs used by `scripts/zotero_shared.py`. A compatible runtime gets separate stdio
+client sessions backed by one model process per configuration. Library switches
+stay within each client. Missing or older runtimes keep the existing Zotero CLI.
+This check does not import models, install packages, or replace a global launcher.
+
+## Prerequisites
+
+| | Required | Optional |
+|---|---|---|
+| Claude Code | ✓ | |
+| Python 3.10+ | ✓ | |
+| Node.js (for hooks) | ✓ | |
+| `rsync` | ✓ | |
+| Obsidian | | recommended (Obsidian-routed skills no-op without it) |
+| Zotero + zotero-mcp | | recommended for `paper-ingest` / `want-2-read` |
+| MemPalace | | recommended for cross-session memory |
+| Access to the lab GitLab | | needed only to clone a work; the toolkit installs and runs without it |
+
+## Recommended plugins
+
+Two third-party Claude Code plugins pair well with this toolkit. `setup.sh` does not install them. Caveman shrinks what the agent says, ponytail shrinks what it builds, so they do not overlap.
+
+### [caveman](https://github.com/JuliusBrussee/caveman): fewer words
+
+For those who keep running out of tokens. The agent drops the filler and answers only to the point, while code, commands, and errors stay byte-for-byte exact. The upstream benchmark reports about 65% fewer output tokens. Example from the official README:
+
+| Normal agent (69 tokens) | Caveman agent (19 tokens) |
+|---|---|
+| The reason your React component is re-rendering is likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every time, which triggers a re-render. I'd recommend using useMemo to memoize the object. | New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`. |
+
+Only output tokens shrink. Input and reasoning tokens are untouched, and the skill adds about 1 to 1.5k input tokens per turn.
+
+```bash
+claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
+```
+
+Levels: `/caveman lite|full|ultra`. Say "normal mode" to turn it off.
+
+### [ponytail](https://github.com/DietrichGebert/ponytail): less code
+
+Shrinks the code the agent writes. Before writing code, the agent stops at the first rung that holds:
+
+```
+1. Does this need to exist?   → no: skip it (YAGNI)
+2. Already in this codebase?  → reuse it, don't rewrite
+3. Stdlib does it?            → use it
+4. Native platform feature?   → use it
+5. Installed dependency?      → use it
+6. One line?                  → one line
+7. Only then: the minimum that works
+```
+
+The ladder runs after the agent has read the code the change touches, not instead of it. Trust-boundary validation, data-loss handling, security, and accessibility are never cut.
+
+In Claude Code, send these as two separate prompts (needs `node` on `PATH`):
+
+```
+/plugin marketplace add DietrichGebert/ponytail
+```
+```
+/plugin install ponytail@ponytail
+```
+
+## Customize
+
+Most paths and identifiers are driven by `.env`. To change a hook, skill, or rule, edit it in this repo and re-run `bash install/setup.sh` — your existing `~/.claude` is backed up first. Per-skill customization (Zotero parent keys, vault folder taxonomy, MemPalace wing names) lives in each skill's `SKILL.md`.
+
+## Deep dives
+
+<details>
+<summary><b>Evidence-first paper review and rebuttal</b> — <code>astar-paper-review</code> and <code>review-response</code></summary>
 
 The repository includes two related skills for internal A* conference work. They share the same rule: every important judgment must point to the submitted paper or a verified artifact. Both ship native Codex metadata in `agents/openai.yaml`. The rebuttal skill reuses the audited PDF sanitizer bundled with the review skill, so the two directories should be installed together.
 
@@ -331,7 +384,10 @@ Both skills include compact lessons extracted from real laboratory review and re
 
 These skills improve scientific coverage and response discipline. They do not promise acceptance or replace the authors' judgment.
 
-## The `presentation` skill
+</details>
+
+<details>
+<summary><b>The <code>presentation</code> skill</b> — Beamer decks and the terminal-style theme</summary>
 
 A LaTeX Beamer skill for theory talks, mathematical decks, and conference presentations. It enforces:
 
@@ -368,86 +424,32 @@ The `presentation` skill routes `terminal style` requests to this canonical exam
 
 To customize the theme: edit `skills/presentation/examples/terminal-style-mini.tex` (or fork it into your project), rerun `bash install/setup.sh` if you want it propagated to `~/.claude/`.
 
-## Install
+</details>
 
-```bash
-git clone https://github.com/<you>/claude-brainlab.git
-cd claude-brainlab
-bash install/bootstrap.sh   # interactive — fills .env
-bash install/setup.sh       # backup-aware copy to ~/.claude/
-```
+## For BRAIn Lab members
 
-Restart Claude Code afterwards. To roll back: `bash install/uninstall.sh`.
+This repository is the open half: skills, rules, hooks and the installer. The lab's own half — the
+gate service, the meeting pipeline, and the tests that carry real names — stays in a private repository
+inside the [brain-lab-research](https://github.com/brain-lab-research) organisation. Access comes with
+team membership: if you work at BRAIn Lab, join the
+[GitHub team](https://github.com/orgs/brain-lab-research/teams) for the internal repository.
 
-See the prerequisites table below before installing.
+The base itself lives in the lab's GitLab, and access there is granted per research theme, not per
+lab: the theme tree and the literature are open to everyone with an account, the works are not. Ask
+the lead of the theme you work on.
 
-When Zotero is configured, the installer checks the existing uv runtime for the
-APIs used by `scripts/zotero_shared.py`. A compatible runtime gets separate stdio
-client sessions backed by one model process per configuration. Library switches
-stay within each client. Missing or older runtimes keep the existing Zotero CLI.
-This check does not import models, install packages, or replace a global launcher.
-
-## Recommended plugins
-
-Two third-party Claude Code plugins pair well with this toolkit. `setup.sh` does not install them. Caveman shrinks what the agent says, ponytail shrinks what it builds, so they do not overlap.
-
-### [caveman](https://github.com/JuliusBrussee/caveman): fewer words
-
-For those who keep running out of tokens. The agent drops the filler and answers only to the point, while code, commands, and errors stay byte-for-byte exact. The upstream benchmark reports about 65% fewer output tokens. Example from the official README:
-
-| Normal agent (69 tokens) | Caveman agent (19 tokens) |
+| | Where |
 |---|---|
-| The reason your React component is re-rendering is likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every time, which triggers a re-render. I'd recommend using useMemo to memoize the object. | New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`. |
+| Canonical repository, issues and pull requests | [Vepricov/claude-brainlab](https://github.com/Vepricov/claude-brainlab) |
+| Organisation fork, kept in sync | [brain-lab-research/claude-brainlab](https://github.com/brain-lab-research/claude-brainlab) |
+| Lab organisation and papers | [github.com/brain-lab-research](https://github.com/brain-lab-research) |
+| Internal half: knowledge service, data, call pipeline | private, granted with team membership |
 
-Only output tokens shrink. Input and reasoning tokens are untouched, and the skill adds about 1 to 1.5k input tokens per turn.
-
-```bash
-claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman
-```
-
-Levels: `/caveman lite|full|ultra`. Say "normal mode" to turn it off.
-
-### [ponytail](https://github.com/DietrichGebert/ponytail): less code
-
-Shrinks the code the agent writes. Before writing code, the agent stops at the first rung that holds:
-
-```
-1. Does this need to exist?   → no: skip it (YAGNI)
-2. Already in this codebase?  → reuse it, don't rewrite
-3. Stdlib does it?            → use it
-4. Native platform feature?   → use it
-5. Installed dependency?      → use it
-6. One line?                  → one line
-7. Only then: the minimum that works
-```
-
-The ladder runs after the agent has read the code the change touches, not instead of it. Trust-boundary validation, data-loss handling, security, and accessibility are never cut.
-
-In Claude Code, send these as two separate prompts (needs `node` on `PATH`):
-
-```
-/plugin marketplace add DietrichGebert/ponytail
-```
-```
-/plugin install ponytail@ponytail
-```
-
-## Customize
-
-Most paths and identifiers are driven by `.env`. To change a hook, skill, or rule, edit it in this repo and re-run `bash install/setup.sh` — your existing `~/.claude` is backed up first. Per-skill customization (Zotero parent keys, vault folder taxonomy, MemPalace wing names) lives in each skill's `SKILL.md`.
-
-## Prerequisites
-
-| | Required | Optional |
-|---|---|---|
-| Claude Code | ✓ | |
-| Python 3.10+ | ✓ | |
-| Node.js (for hooks) | ✓ | |
-| `rsync` | ✓ | |
-| Obsidian | | recommended (Obsidian-routed skills no-op without it) |
-| Zotero + zotero-mcp | | recommended for `paper-ingest` / `want-2-read` |
-| MemPalace | | recommended for cross-session memory |
-| Access to the lab GitLab | | needed only to clone a work; the toolkit installs and runs without it |
+| Read this | If you want to |
+|---|---|
+| [`lab-knowledge`](skills/lab-knowledge/SKILL.md) | contribute papers or records to the shared base, with or without Obsidian and Zotero |
+| [`docs/llm-providers.md`](docs/llm-providers.md) | know which model does which job, what it costs, and what must never be model-generated |
+| [`docs/reference-setup.md`](docs/reference-setup.md) | copy a configuration that works, including the parts that broke first |
 
 ## Credits
 

@@ -152,8 +152,9 @@
   function render(view,opts={}){
     const H=window.LAB_HUB;
     if(!H){view.innerHTML=`<div class="hub-shell"><p class="hub-lead">Loading the base…</p></div>`;return}
-    view.innerHTML=`<div class="hub-shell">${hero(H,opts.tab||"overview")}${stats(H.totals||{})}${mapping()}${chain(H)}${why()}${works(H,opts.all)}${activity(H)}${team()}
+    view.innerHTML=`<div class="hub-shell">${hero(H,opts.tab||"overview")}${stats(H.totals||{})}${mapping()}${chain(H)}${window.LAB_SEARCH_DEMO_PAGE?.section()||""}${why()}${works(H,opts.all)}${activity(H)}${team()}
       <section class="hub-cta"><h2>See for yourself</h2><p>${H.public?"The lab's harness, skills and rules are open: install them with one command.":"Everything on this page is a real lab repository."}</p>${H.gitlab?`<a class="hub-btn is-primary" href="${esc(H.gitlab)}" target="_blank" rel="noopener">Open the lab GitLab ↗</a>`:H.cta?`<a class="hub-btn is-primary" href="${esc(H.cta.href)}" target="_blank" rel="noopener">${esc(H.cta.label)}</a>`:""}</section></div>`;
+    window.LAB_SEARCH_DEMO_PAGE?.bind(view);
     view.querySelectorAll("[data-hub-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();view.querySelector(`#hub-${a.dataset.hubJump}`)?.scrollIntoView({behavior:"smooth",block:"start"})});
     view.querySelector("[data-hub-all]")?.addEventListener("click",()=>{const y=scrollY;render(view,{...opts,all:true});scrollTo(0,y)});
     // Вкладки окна работы переключаются на месте, без перехода в GitLab.

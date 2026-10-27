@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании.">
-  <title>BRAIn Lab · Машина знаний</title>
+  <title>BRAIn Lab · ИИ-агенты на каждом этапе</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c0f0e'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%23f3f5ed' stroke-opacity='.55' stroke-width='3.5'/%3E%3Ccircle cx='25' cy='26' r='6' fill='%23f3f5ed'/%3E%3Ccircle cx='40' cy='40' r='6' fill='%23b9ff66'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="refinements.css">
@@ -23,8 +23,8 @@
 </head>
 <body>
   <header class="topbar">
-    <button class="brand" id="home" type="button"><span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Машина знаний</small></span></button>
-    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Машина знаний</button><button data-view="ideas" type="button">База знаний</button><button data-view="setup" type="button">Агенты и модели</button></nav>
+    <button class="brand" id="home" type="button"><span class="show-logos"><img class="lg-iii" src="assets/logos/iii-white.png" alt="Институт искусственного интеллекта МФТИ"><img class="lg-mipt" src="assets/logos/mipt.png" alt="МФТИ"><img class="lg-brain" src="assets/logos/brainlab.svg" alt="BRAIn Lab"></span></button>
+    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Восемь этапов</button><button data-view="ideas" type="button">База знаний</button><button data-view="setup" type="button">Агенты и модели</button></nav>
     <div class="top-right"><a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>
      <button class="search-open" id="search-open" type="button"><span>Найти процесс или инструмент</span><kbd>⌘ K</kbd></button></div>
   </header>
@@ -32,9 +32,9 @@
   <main>
     <section class="overview" id="overview">
       <header class="overview-head">
-        <p class="overline">Исследовательская система · <span id="verified-date"></span></p>
-        <h1>Вопрос входит —<br> <span>знание</span> выходит</h1>
-        <p class="overview-intro">Восемь этапов работы в одном цикле. Агенты читают новое, ведут проверки ночью и пишут черновики, программа проверяет каждое число, человек принимает результат. Так устроена наша наука, и так же можно устроить работу любой компании. Нажмите на этап.</p>
+        <p class="overline">ИИ-агенты в работе · BRAIn Lab<span id="verified-date" hidden></span></p>
+        <h1>Агенты на <span>каждом</span><br> этапе работы</h1>
+        <p class="overview-intro">Путь любого проекта проходит через восемь этапов: от запуска до рассказа о результате. Мы встроили ИИ-агентов в каждый из них, и сделали это в самом требовательном цикле — научном. <b>Тот же подход работает в любой компании.</b> Нажмите на этап.</p>
         <div class="overview-chips"><span style="--c:#ffb86b">Работа идёт круглосуточно</span><span style="--c:#5ee6d0">Свежие новости каждое утро</span><span style="--c:#8fb4ff">Каждое число проверено</span><span style="--c:#c79bff">Память на месяцы</span><span style="--c:#b9ff66">Подходит любой компании</span></div>
       </header>
 
@@ -47,7 +47,7 @@
           <div class="memory-surfaces">
             <button data-surface="obsidian" type="button"><b>Одно окно</b><span>всё знание в одном месте</span></button>
             <button data-surface="mempalace" type="button"><b>Память</b><span>агенты помнят месяцами</span></button>
-            <button data-sat-process="experiments" data-sat-tool="hermes" type="button"><b>Гермес</b><span>агент на сервере 24/7</span></button>
+            <button data-sat-process="experiments" data-sat-tool="hermes" type="button"><b>Автономный агент</b><span>на сервере 24/7</span></button>
           </div>
         </section>
       </div>

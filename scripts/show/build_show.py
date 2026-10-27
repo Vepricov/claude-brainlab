@@ -34,7 +34,7 @@ CODE = ["app.js", "search-core.js", "app.css", "refinements.css", "map-shapes.cs
         "hub.css", "fixes.css", "data/atlas-public.js", "data/system-examples.js"]
 INTERNAL = re.compile(r"68-183-24-188|sslip\.io|/root/|@brainlab\.local|phystech\.edu|mbzuai")
 # Слова, которых на видимых страницах «Показа» быть не должно (владелец: «убрать англицизмы»).
-BANNED = re.compile(r"GitLab|Claude|Харнесс|харнесс|MemPalace|Obsidian|GitHub для идей")
+BANNED = re.compile(r"GitLab|Claude|Харнесс|харнесс|MemPalace|Obsidian|GitHub для идей|Гермес")
 
 
 def load(path: pathlib.Path) -> dict:
@@ -68,7 +68,7 @@ def loop_data() -> dict:
         p["example"] = c["how"][1]
         for k in ("tools", "toolClusters", "mapRelations", "controls", "mapFeatured"):
             p[k] = []
-        for k in ("toMcp", "spotlight", "pipeline", "gallery"):
+        for k in ("toMcp", "spotlight", "pipeline", "gallery", "implementation"):
             p.pop(k, None)
     data["shared"].update(C.SHARED)
     data["meta"].pop("toolkit", None)
@@ -113,8 +113,13 @@ def index_html() -> str:
     chips = "".join(f'<span style="--c:{c}">{t}</span>' for c, t in C.INDEX["chips"])
     core, (s1, s2, s3), tabs = C.INDEX["core"], C.INDEX["surfaces"], C.INDEX["tabs"]
     return replace_once(html, [
-        ("<small>Research system</small>", "<small>Машина знаний</small>"),
-        ("<title>BRAIn Lab · Research Loop</title>", "<title>BRAIn Lab · Машина знаний</title>"),
+        ('<span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span>',
+         '<span class="show-logos"><img class="lg-iii" src="assets/logos/iii-white.png" alt="Институт искусственного интеллекта МФТИ">'
+         '<img class="lg-mipt" src="assets/logos/mipt.png" alt="МФТИ"><img class="lg-brain" src="assets/logos/brainlab.svg" alt="BRAIn Lab"></span>'),
+        ("<title>BRAIn Lab · Research Loop</title>", f"<title>{C.INDEX['title']}</title>"),
+        ('<p class="overline">Исследовательская система · <span id="verified-date"></span></p>', f'<p class="overline">{C.INDEX["overline"]}<span id="verified-date" hidden></span></p>'),
+        ("<h1>Вопрос входит —<br> <span>знание</span> выходит</h1>", f"<h1>{C.INDEX['h1']}</h1>"),
+        ('data-view="loop" type="button">Машина знаний</button>', f'data-view="loop" type="button">{tabs[0]}</button>'),
         ("Карта исследовательской работы BRAIn Lab: агенты, база знаний в GitLab, сетап",
          "Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании."),
         (old_intro, f'<p class="overview-intro">{C.INDEX["intro"]}</p>'),
@@ -141,6 +146,9 @@ def main() -> None:
     shutil.copytree(ATLAS / "assets", OUT / "assets", ignore=shutil.ignore_patterns("katex", "F-DYC-*"))
     for f in ("show.css", "show.js"):
         shutil.copyfile(HERE / f, OUT / f)
+    (OUT / "assets/logos").mkdir(parents=True, exist_ok=True)
+    for f in ("iii-white.png", "mipt.png", "brainlab.svg"):
+        shutil.copyfile(ATLAS.parent / "optimizer-demo/logos" / f, OUT / "assets/logos" / f)
 
     counts = load(ATLAS / "data/counts.js")
     counts.pop("last", None)
@@ -153,7 +161,7 @@ def main() -> None:
     dump(OUT / "data/setup-data.js", "LAB_SETUP", P.SETUP)
     dump(OUT / "data/hub-data.js", "LAB_HUB", hub_data())
     dump(OUT / "data/show-data.js", "LAB_SHOW", {"stage": C.STAGE,
-                                                  "ribbon": P.RIBBON, "cta": P.CTA})
+                                                  "ribbon": P.RIBBON, "cta": P.CTA, "setupIds": [s["id"] for s in P.SETUP["sections"]]})
     hub_js = (ATLAS / "hub.js").read_text(encoding="utf-8")
     cta = re.search(r'<section class="hub-cta"><h2>Посмотрите сами</h2><p>.*?</p>', hub_js).group(0)
     hub_js = replace_once(hub_js, P.HUB + [(cta, f'<section class="hub-cta"><h2>{P.CTA[0]}</h2><p>{P.CTA[1]}</p>')], "hub.js")

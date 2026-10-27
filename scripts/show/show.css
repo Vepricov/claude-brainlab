@@ -152,3 +152,17 @@
 @keyframes show-shine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 @media(prefers-reduced-motion:reduce){.show-orbits,.show-scene *,.overview:before,.overview-head h1 span{animation:none!important}.show-orbits circle,.show-spark{display:none}}
 .process-view{background:#f4f7fb}
+/* Главный экран: что получает компания. */
+.show-points{position:relative;z-index:3;width:min(100%,var(--max));margin:40px auto 0;padding-top:46px;border-top:1px solid var(--line)}
+.show-points-head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+.show-points-head h2{font:500 clamp(34px,3.6vw,52px)/1 var(--display);letter-spacing:-.045em}
+.show-points-head p{color:var(--muted);font-size:15px;max-width:420px}
+.show-points-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.show-points-grid article{position:relative;overflow:hidden;padding:26px 24px 24px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 10%,transparent),transparent 60%),var(--panel);transition:border-color .4s,transform .4s}
+.show-points-grid article:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--c),transparent)}
+.show-points-grid article:hover{border-color:color-mix(in srgb,var(--c) 55%,transparent);transform:translateY(-3px)}
+.show-points-grid b{display:block;font:500 46px/1 var(--display);letter-spacing:-.05em;color:var(--c)}
+.show-points-grid strong{display:block;margin-top:10px;font:500 19px/1.15 var(--display);letter-spacing:-.02em}
+.show-points-grid p{margin-top:10px;color:var(--muted);font-size:13.5px;line-height:1.45}
+@media(max-width:1100px){.show-points-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.show-points-grid{grid-template-columns:1fr}}

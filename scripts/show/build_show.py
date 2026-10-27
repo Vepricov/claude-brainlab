@@ -131,6 +131,12 @@ def recolor(text: str) -> str:
     return COLOR.sub(sub, text)
 
 
+def points_html() -> str:
+    p = C.POINTS
+    cards = "".join(f'<article style="--c:{c}"><b>{v}</b><strong>{k}</strong><p>{t}</p></article>' for c, v, k, t in p["items"])
+    return f'<section class="show-points"><div class="show-points-head"><h2>{p["title"]}</h2><p>{p["lead"]}</p></div><div class="show-points-grid">{cards}</div></section>'
+
+
 def index_html() -> str:
     html = (ATLAS / "index.html").read_text(encoding="utf-8")
     html = re.sub(r"\?v=[\w-]+", "", html)
@@ -152,6 +158,7 @@ def index_html() -> str:
         ("Карта исследовательской работы BRAIn Lab: агенты, база знаний в GitLab, сетап",
          "Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании."),
         (old_intro, f'<p class="overview-intro">{C.INDEX["intro"]}</p>'),
+        ('<p class="loop-tally" id="loop-tally"></p>', '<p class="loop-tally" id="loop-tally"></p>\n' + points_html()),
         (old_chips, f'<div class="overview-chips">{chips}</div>'),
         (old_show, '<a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>'),
         ('>GitHub для идей</button>', f'>{tabs[1]}</button>'),

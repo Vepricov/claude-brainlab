@@ -175,20 +175,26 @@ def _work_here() -> str:
 
 
 def add_runs_link(lines: List[str], project_url: str) -> List[str]:
-    """Проект W&B в строку «Прогоны» README: дописать в неё или поставить её под «Состоянием».
+    """Проект W&B в строку «Ссылки» шапки README: дописать к «прогоны в W&B» или завести.
 
-    Строка одна на работу. У работы бывает несколько проектов W&B (разные машины, разные люди,
-    разные постановки), и вторая строка «Прогоны» читалась бы как другой раздел.
+    Шапка работы это название, состояние, люди и одна строка «Ссылки» (статья, код, прогоны).
+    Отдельной строки «Прогоны» нет: владелец 27-10-2026 назвал такую шапку мусором.
     """
-    label = project_url.split("://", 1)[1].split("/", 1)[1]
-    link = f"[{label}]({project_url})"
+    entity, name = project_url.rstrip("/").split("/")[-2:]
+    link = f"[{name}]({project_url})"
     for number, line in enumerate(lines):
-        if line.startswith("**Прогоны**"):
-            lines[number] = f"{line} · {link}"
+        if line.startswith("**Ссылки**"):
+            if "прогоны в W&B:" in line:
+                if f"[{name}]" in line:
+                    link = f"[{name} ({entity})]({project_url})"
+                lines[number] = f"{line}, {link}"
+            else:
+                lines[number] = f"{line} · прогоны в W&B: {link}"
             return lines
-    at = next((i + 1 for i, l in enumerate(lines) if l.startswith("**Состояние**")),
-              next((i + 1 for i, l in enumerate(lines) if l.startswith("# ")), len(lines)))
-    lines[at:at] = ["", f"**Прогоны** в W&B: {link}"]
+    head = ("**Ведут**", "**Ведёт**", "**Команда**", "**Состояние**")
+    at = max((i + 1 for i, l in enumerate(lines) if l.startswith(head)),
+             default=next((i + 1 for i, l in enumerate(lines) if l.startswith("# ")), len(lines)))
+    lines[at:at] = ["", f"**Ссылки** прогоны в W&B: {link}"]
     return lines
 
 
@@ -211,7 +217,7 @@ def _link_project(work: str, project_url: str, branch: str) -> str:
             "branch": branch, "commit_message": "README: прогоны в W&B",
             "actions": [{"action": "update", "file_path": "README.md",
                          "content": "\n".join(lines)}]})
-        return f"README: добавлена строка «Прогоны» → {project_url}"
+        return f"README: проект W&B в строке «Ссылки» → {project_url}"
     except (urllib.error.URLError, KeyError, ValueError) as trouble:
         return f"ссылка в README не поставлена ({type(trouble).__name__}: {trouble})"
 

@@ -1,0 +1,1682 @@
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.memory-surfaces{position:absolute;z-index:2;left:50%;top:calc(50% + 148px);width:350px;transform:translateX(-50%);display:flex;justify-content:space-between;gap:12px}
+.memory-surfaces button{width:169px;padding:10px 12px;border:1px solid var(--line);border-radius:7px;background:rgba(12,15,14,.88);color:var(--ink);text-align:left;cursor:pointer}
+.memory-surfaces b{display:block;font-size:10px}
+.memory-surfaces span{display:block;margin-top:3px;color:var(--muted);font-size:8px}
+.memory-surfaces button:hover{border-color:var(--lime)}
+
+.no-public-link{display:block;margin-top:18px;color:#747b72;font:8px var(--mono);text-transform:uppercase}
+.process-title h1:focus{outline:none}
+.tool-map{grid-column:1/-1;padding:18px;border:1px solid rgba(20,23,19,.14);border-radius:10px;background:rgba(255,255,255,.2)}
+.tool-map>span{display:block;margin-bottom:14px;color:#747b72;font:8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.tool-map>div{display:flex;align-items:stretch;gap:7px}
+.tool-map b{position:relative;flex:1;min-height:62px;padding:12px 10px;border-radius:7px;background:#151815;color:var(--warm);font:500 10px/1.35 var(--body)}
+.tool-map b i{display:block;margin-bottom:9px;color:var(--accent);font:normal 7px var(--mono)}
+.tool-map.path b:not(:last-child):after{content:"";position:absolute;z-index:2;right:-8px;top:50%;width:9px;height:1px;background:#151815}
+.tool-map.cycle{border-radius:999px;padding:24px}.tool-map.cycle>div{gap:3px}.tool-map.cycle b{display:flex;flex-direction:column;justify-content:center;min-height:78px;border-radius:999px;text-align:center}.tool-map.cycle b:last-child{box-shadow:inset 0 0 0 1px var(--accent)}
+.tool-map.routes>div{display:grid;grid-template-columns:repeat(3,1fr)}.tool-map.routes b:first-child{grid-column:1/-1;text-align:center;background:var(--accent);color:#151815}.tool-map.routes b:first-child i{color:#151815}.tool-map.stack>div{display:grid}.tool-map.stack b{min-height:0}.tool-map.stack b+ b{margin-top:-3px;margin-left:16px}
+.tool-map.topology>div{display:grid;grid-template-columns:repeat(3,1fr)}.tool-map.topology b:first-child{grid-column:1/-1;text-align:center;background:var(--accent);color:#151815}.tool-map.topology b:first-child i{color:#151815}.tool-map.topology b:nth-child(n+5){grid-column:1/-1;min-height:48px;text-align:center}.tool-map.topology b:nth-child(n+6){margin-inline:8%}
+.process-jump{position:sticky;z-index:12;top:68px;display:flex;gap:6px;margin:22px 0 -24px;padding:8px;border:1px solid rgba(20,23,19,.14);border-radius:9px;background:rgba(236,232,220,.9);backdrop-filter:blur(12px)}
+.process-jump a{padding:7px 10px;border-radius:6px;color:#596057;text-decoration:none;font:8px var(--mono);text-transform:uppercase}
+.process-jump a:hover{background:#151815;color:var(--warm)}
+.capability-groups{display:grid;gap:8px;margin-top:16px}
+.capability-group{border:1px solid rgba(20,23,19,.15);border-radius:8px}
+.capability-group>summary{padding:13px 15px;cursor:pointer;font:9px var(--mono);text-transform:uppercase}
+.capability-group>summary span{float:right;color:#727970}
+.capability-group .capability-list{padding:0 10px 10px}
+.support-items{grid-template-columns:repeat(4,1fr)}
+.support-card{display:flex;flex-direction:column;background:var(--bg)}.support-card .support-item{width:100%;flex:1}.support-satellites{display:flex;flex-wrap:wrap;gap:4px;padding:0 18px 18px}.support-satellites button{padding:4px 6px;border:1px solid var(--line);border-radius:999px;background:none;color:#929a90;font:7px var(--mono);white-space:nowrap;cursor:pointer}.support-satellites button:hover{border-color:rgba(185,255,102,.45);color:#dce2da}
+
+/* The overview previews each section as a small, named tool system. */
+.loop-node{cursor:default}
+.loop-node-main{width:100%;padding:0;border:0;background:none;color:inherit;text-align:inherit;cursor:pointer}
+.loop-node-main strong{display:block;margin-top:7px;font:500 25px/1 var(--display);letter-spacing:-.045em}
+.loop-node-main span{display:block}
+.node-satellites{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.node-satellites button{min-height:24px;padding:4px 7px;border:1px solid color-mix(in srgb,var(--node) 38%,transparent);border-radius:999px;background:rgba(12,15,14,.82);color:#aeb6ac;font:7px var(--mono);white-space:nowrap;cursor:pointer;transition:.18s ease}.node-satellites button small{margin-right:5px;color:var(--node);font:6px var(--mono);text-transform:uppercase}.node-satellites .more{color:var(--node)}
+.node-satellites button:before{content:"";display:inline-block;width:5px;height:5px;margin-right:5px;border:1px solid var(--node);transform:rotate(45deg)}
+.node-satellites button:hover,.node-satellites button:focus-visible{border-color:var(--node);color:var(--ink);transform:translateY(-2px)}
+
+/* Each process is a map first: tools, route and destinations share one canvas. */
+.process-hero.compact{padding-bottom:44px}
+.section-map{padding-top:48px}
+.map-heading{display:flex;justify-content:space-between;gap:40px;align-items:end}
+.map-heading h2{max-width:740px;margin-top:10px;font:500 clamp(34px,4.2vw,62px)/.92 var(--display);letter-spacing:-.055em}
+.map-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px 16px;max-width:420px;color:#62695f;font:8px var(--mono);text-transform:uppercase}
+.map-legend span{display:flex;align-items:center;gap:6px}.map-legend i{display:block;width:8px;height:8px;border:1px solid #50584f}
+.map-legend .legend-tool{transform:rotate(45deg);border-color:var(--accent)}.map-legend .legend-stage{border-radius:50%}.map-legend .legend-gate{background:var(--accent);transform:rotate(45deg)}.map-legend .legend-destination{border-radius:5px 5px 1px 1px}
+.section-map-canvas{position:relative;display:grid;grid-template-columns:minmax(180px,.58fr) minmax(380px,1.45fr) minmax(210px,.72fr);grid-template-areas:"context tools destinations" "core tools destinations" "journey journey journey";gap:16px;min-height:600px;margin-top:30px;padding:28px;border:1px solid rgba(20,23,19,.18);border-radius:22px;background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 28%),linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.04));overflow:hidden}
+.section-map-canvas:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(20,23,19,.16) .65px,transparent .65px);background-size:15px 15px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
+.section-map-canvas>div,.map-core{position:relative;z-index:1}
+.map-context{grid-area:context;align-self:start}.map-tools{grid-area:tools;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:9px}.map-core{grid-area:core;align-self:end}.map-journey{grid-area:journey;display:flex;gap:7px;align-items:stretch;padding-top:18px;border-top:1px solid rgba(20,23,19,.15);overflow-x:auto}.map-destinations{grid-area:destinations;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.map-context>span,.map-tools>span,.map-journey>span,.map-destinations>span{display:block;color:#656d63;font:8px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.map-context>span,.map-tools>span,.map-destinations>span{grid-column:1/-1;margin-bottom:4px}.map-journey>span{flex:0 0 74px;align-self:center}
+.section-map-canvas button{border:1px solid rgba(20,23,19,.17);background:rgba(240,237,226,.76);color:#141713;text-align:left;cursor:pointer;transition:opacity .18s,transform .18s,border-color .18s,background .18s}
+.section-map-canvas button:hover,.section-map-canvas button:focus-visible,.section-map-canvas button.is-active{z-index:3;border-color:var(--accent);background:#f7f3e8;outline:none;transform:translateY(-2px);box-shadow:0 14px 30px rgba(20,23,19,.08)}
+.section-map-canvas button.is-dim{opacity:.5}.section-map-canvas button.is-dim:hover{opacity:1}
+.map-context button{display:block;width:100%;margin-top:7px;padding:9px 10px;border:0;border-left:2px solid rgba(20,23,19,.2);background:transparent;color:#596057;font-size:9px;line-height:1.4}
+.map-tool{position:relative;display:flex;flex-direction:column;min-height:150px;padding:15px 15px 38px;border-radius:12px}.map-tool:before{content:"";position:absolute;right:13px;top:13px;width:9px;height:9px;border:1px solid var(--accent);transform:rotate(45deg)}
+.map-tool small,.map-stage small,.map-destinations small,.map-core small{display:block;color:#697066;font:7px var(--mono);letter-spacing:.08em;text-transform:uppercase}.map-tool strong,.map-stage strong,.map-destinations strong,.map-core strong{display:block}.map-tool strong{max-width:85%;margin-top:13px;font:500 16px/1.05 var(--display)}.map-tool em,.map-stage em,.map-destinations em{display:block;margin-top:7px;color:#60675e;font:normal 9px/1.35 var(--body)}.map-tool>i{position:absolute;left:15px;bottom:12px;color:#777e75;font:normal 7px var(--mono);text-transform:uppercase}
+.map-core{width:100%;min-height:130px;padding:18px;border:1px solid var(--accent)!important;border-radius:50% 50% 12px 12px!important;background:#151815!important;color:#eef2eb!important;text-align:center!important}.map-core small{color:var(--accent)}.map-core strong{margin-top:9px;font:500 23px/.95 var(--display)}.map-core span{display:block;margin-top:10px;color:#aeb5ab;font-size:9px;line-height:1.4}
+.map-stage{flex:1 0 130px;min-height:96px;padding:12px;border-radius:9px}.map-stage strong{margin-top:9px;font-size:10px}.map-stage.is-gate{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 19%,#f0ede2)}.map-stage.is-gate:before{content:"◇";float:right;color:#6d5830}
+.map-destinations button{padding:13px;border-radius:14px 14px 4px 4px}.map-destinations strong{margin-top:7px;font-size:11px}.map-output{border-style:dashed!important;border-radius:4px!important;background:transparent!important}.map-output strong{font-size:9px!important;line-height:1.4}
+.map-focus{display:grid;grid-template-columns:minmax(180px,.55fr) 1fr auto;gap:18px;align-items:center;min-height:135px;margin-top:12px;padding:20px 22px;border-radius:14px;background:#151815;color:#e9eee7}.map-focus-kicker{color:var(--accent);font:8px var(--mono);letter-spacing:.09em;text-transform:uppercase}.map-focus h3{font:500 25px/1 var(--display)}.map-focus p{color:#b6bdb3;font-size:11px;line-height:1.55}.focus-result{padding-left:18px;border-left:1px solid #353a35;color:#d5d9d2;font-size:10px;line-height:1.4}.focus-result b{display:block;margin-bottom:5px;color:#858d82;font:7px var(--mono);text-transform:uppercase}.map-focus-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}.map-focus-actions button,.map-focus-actions .source-link{padding:8px 10px;border:1px solid #485047;border-radius:6px;background:none;color:#e4e9e2;font:8px var(--mono);text-transform:uppercase;cursor:pointer}.map-focus-actions button:hover,.map-focus-actions .source-link:hover{border-color:var(--accent);background:var(--accent);color:#151815}.map-focus.is-open{position:fixed;z-index:40;right:24px;bottom:24px;width:min(700px,calc(100vw - 48px));max-height:calc(100vh - 48px);overflow:auto;grid-template-columns:150px 1fr;box-shadow:0 28px 90px rgba(0,0,0,.32)}.map-focus.is-open>p{grid-column:2}.map-focus.is-open .tool-map,.map-focus.is-open .focus-route,.map-focus.is-open .map-focus-actions{grid-column:1/-1}.map-focus.is-open .tool-map{border-color:#3b423b;background:#1b201b}.focus-route{display:flex;align-items:center;gap:7px;color:#d7ddd4;font:8px/1.35 var(--mono)}.focus-route span{padding:6px 8px;border:1px solid #3c443c;border-radius:5px}.focus-route i{color:var(--accent);font-style:normal}.map-focus-actions [data-reset-focus]{margin-left:auto;min-width:34px;font-size:14px}
+
+/* Twelve visual grammars built on the same accessible DOM. */
+.section-map[data-layout="funnel"] .map-tools{grid-template-columns:repeat(2,1fr);padding:0 22px}.section-map[data-layout="funnel"] .map-tool:nth-of-type(5){grid-column:1/-1;margin-inline:18%}
+.section-map[data-layout="planetarium"] .map-tools{grid-template-columns:1fr 1fr;transform:rotate(-2deg)}.section-map[data-layout="planetarium"] .map-tool{border-radius:50%;text-align:center}.section-map[data-layout="planetarium"] .map-tool:nth-of-type(even){transform:translateY(28px)}
+.section-map[data-layout="branches"] .map-tools{align-content:start;padding-top:55px}.section-map[data-layout="branches"] .map-tool:first-of-type{grid-column:1/-1;margin-inline:15%}.section-map[data-layout="branches"] .map-tool:nth-of-type(n+2){border-radius:4px 28px 4px 28px}
+.section-map[data-layout="routing"] .map-tools{grid-template-columns:1fr 1.25fr}.section-map[data-layout="routing"] .map-tool:nth-of-type(2){grid-row:span 2;min-height:265px;border-radius:40px 8px 40px 8px}.section-map[data-layout="routing"] .map-tool:nth-of-type(n+3){min-height:110px}
+.section-map[data-layout="control"] .map-tools{grid-template-columns:repeat(3,1fr);align-content:center}.section-map[data-layout="control"] .map-tool{min-height:145px;border-radius:50% 50% 10px 10px}.section-map[data-layout="control"] .map-tool:first-of-type{grid-column:2;grid-row:1/3;min-height:290px;border-color:var(--accent)}
+.section-map[data-layout="prism"] .map-tools{padding:22px}.section-map[data-layout="prism"] .map-tool{border-radius:2px 24px 2px 24px}
+.section-map[data-layout="spine"] .map-tools{grid-template-columns:1fr 1fr}.section-map[data-layout="spine"] .map-tool{min-height:145px;border-radius:5px;border-left:4px solid var(--accent)}
+.section-map[data-layout="storyboard"] .map-tools{grid-template-columns:repeat(3,1fr);align-items:stretch}.section-map[data-layout="storyboard"] .map-tool{min-height:175px;border-radius:5px}.section-map[data-layout="storyboard"] .map-tool:nth-of-type(even){transform:translateY(10px)}
+.section-map[data-layout="ports"] .map-tools{grid-template-columns:1fr 1fr 1fr}.section-map[data-layout="ports"] .map-tool{border-radius:50% 6px 6px 50%}.section-map[data-layout="ports"] .map-tool:nth-of-type(2){transform:translateY(60px)}
+.section-map[data-layout="workbench"] .map-tools{grid-template-columns:1fr 1fr}.section-map[data-layout="workbench"] .map-tool:first-of-type{grid-column:1/-1;margin-inline:12%;border-radius:6px}.section-map[data-layout="workbench"] .map-tool:nth-of-type(n+2){border-bottom:5px solid #272c27}
+.section-map[data-layout="relay"] .map-tools{grid-template-columns:1fr 1fr}.section-map[data-layout="relay"] .map-tool{border-radius:999px}.section-map[data-layout="relay"] .map-tool:first-of-type{grid-column:1/-1;margin-inline:22%}
+.section-map[data-layout="airlock"] .section-map-canvas{grid-template-columns:.5fr 1.6fr .8fr}.section-map[data-layout="airlock"] .map-tools{grid-template-columns:1.2fr 1fr}.section-map[data-layout="airlock"] .map-tool{min-height:145px;border-radius:28px 7px 28px 7px}.section-map[data-layout="airlock"] .map-tool:first-of-type{grid-row:span 2;min-height:300px;border:2px solid var(--accent);justify-content:center}.section-map[data-layout="airlock"] .map-tool strong{max-width:none;font-size:18px}
+
+
+@media (max-width:1100px) and (min-width:761px){.support-items{grid-template-columns:repeat(2,1fr)}}
+
+@media (min-width:761px) and (max-height:850px){
+  .overview{padding-top:84px}
+  .overview-head h1{max-width:620px;font-size:clamp(46px,4.6vw,59px)}
+  .overview-intro{max-width:390px}
+  .loop-map{height:680px;margin:-22px auto 0}
+  .knowledge-core{width:190px;height:190px}
+  .knowledge-core strong{font-size:20px}
+  .knowledge-core p{max-width:130px;font-size:8px}
+  .knowledge-core i{margin-top:10px}
+  .memory-surfaces{top:calc(50% + 112px);width:350px}
+  .memory-surfaces button{width:169px;padding:7px 9px}
+  .loop-node{width:205px}
+  .loop-node strong{font-size:18px}
+  .loop-node .verb{margin-top:5px;font-size:9px}
+  .loop-node .result{font-size:8px}
+  .loop-node:nth-child(7){left:37%;bottom:-2%;transform:none;text-align:left}
+  .loop-node:nth-child(7) .result{margin-inline:0}
+  .support{margin-top:0}
+}
+
+@media (max-width:760px){
+  .topbar{grid-template-columns:1fr auto auto}
+  .view-switch{display:flex;border:0;padding:0}
+  .view-switch button{display:none}
+  .view-switch button[data-view="dykaf"]{display:block;padding:7px 8px;border:1px solid var(--line);font-size:8px}
+  .search-open:before{content:"Поиск";font:8px var(--mono);text-transform:uppercase}
+  .search-open kbd{display:none}
+  .memory-surfaces{position:relative;left:auto;top:auto;width:100%;transform:none;margin-top:10px}
+  .knowledge-core strong br{display:block}
+  .memory-surfaces button{width:50%;background:var(--panel)}
+  .process-jump{top:62px;overflow:auto}
+  .tool-map>div{display:grid;grid-template-columns:1fr 1fr}.tool-map b{min-height:70px;font-size:11px;line-height:1.4}.tool-map.path b:after{display:none}.tool-map.routes>div{grid-template-columns:1fr 1fr}.tool-map.routes b:first-child{grid-column:1/-1}.tool-map.cycle{border-radius:12px;padding:16px}.tool-map.stack>div{grid-template-columns:1fr}.tool-map.stack b+ b{margin:0}.tool-map.topology>div{grid-template-columns:1fr}.tool-map.topology b,.tool-map.topology b:first-child,.tool-map.topology b:nth-child(n+5){grid-column:1;margin-inline:0}
+  .loop-node-main{padding:0;color:var(--ink)}.node-satellites{margin-left:0;overflow-x:auto;flex-wrap:nowrap}.node-satellites button:nth-child(3){display:none}.node-satellites .more{display:block}
+  .map-heading{display:block}.map-legend{justify-content:flex-start;margin-top:18px}.section-map-canvas,.section-map[data-layout="airlock"] .section-map-canvas{display:flex;flex-direction:column;min-height:0;padding:15px;border-radius:14px}.map-context{order:1}.map-core{order:2;align-self:stretch}.map-tools{order:3!important;display:grid!important;grid-template-columns:1fr 1fr!important;transform:none!important;clip-path:none!important;padding:0!important}.map-tool,.section-map[data-layout] .map-tool{grid-column:auto!important;grid-row:auto!important;min-width:0!important;min-height:150px!important;margin:0!important;transform:none!important;border-radius:10px!important;padding:13px 13px 38px!important;text-align:left!important}.map-journey{order:4}.map-destinations{order:5;display:grid;grid-template-columns:1fr 1fr}.map-focus,.map-focus.is-open{grid-template-columns:1fr;position:relative;z-index:2;right:auto;bottom:auto;width:auto}.map-focus.is-open>p,.map-focus.is-open .focus-route,.map-focus.is-open .map-focus-actions{grid-column:auto}.focus-route{flex-wrap:wrap}.focus-result{padding:10px 0 0;border-left:0;border-top:1px solid #353a35}.map-focus-actions{justify-content:flex-start}
+}
+
+/* v5 — click semantics, accessible targets, and the Lab Knowledge control plane. */
+.focus-notes{margin-top:12px;padding:12px;border:1px solid #343d35;border-radius:7px}.focus-notes b{display:block;margin-bottom:7px;color:#899387;font:8px var(--mono);text-transform:uppercase}.focus-notes p{color:#d8ded6;font-size:10px;line-height:1.45}.focus-notes p+p{margin-top:6px}
+.node-satellites button{min-height:36px;padding:7px 9px;font-size:9px}.node-satellites button small{font-size:8px}.quality-tool-links button{min-height:36px;font-size:10px}.process-title,.process-purpose{min-width:0}.process-title h1{overflow-wrap:anywhere}
+.dykaf-view .stage{width:100%;color:#171a16;text-align:left;cursor:pointer}.dykaf-view .stage:hover,.dykaf-view .stage:focus-visible{border-color:var(--accent);outline:none;transform:translateY(-2px)}
+.tool-map>ol{display:flex;align-items:stretch;gap:7px;margin:0;padding:0;list-style:none}.tool-map li{position:relative;flex:1;min-height:62px;padding:12px 10px;border-radius:7px;background:#151815;color:var(--warm);font:500 10px/1.35 var(--body)}.tool-map li i{display:block;margin-bottom:9px;color:var(--accent);font:normal 7px var(--mono)}.tool-map.path li:not(:last-child):after{content:"";position:absolute;z-index:2;right:-8px;top:50%;width:9px;height:1px;background:#151815}.tool-map.cycle>ol{gap:3px}.tool-map.cycle li{display:flex;flex-direction:column;justify-content:center;min-height:78px;border-radius:999px;text-align:center}.tool-map.routes>ol,.tool-map.topology>ol{display:grid;grid-template-columns:repeat(3,1fr)}.tool-map.routes li:first-child,.tool-map.topology li:first-child{grid-column:1/-1;text-align:center;background:var(--accent);color:#151815}.tool-map.stack>ol{display:grid}.tool-map.stack li{min-height:0}.tool-map.stack li+li{margin-top:-3px;margin-left:16px}
+
+.knowledge-atlas-v3{--knowledge-green:#a8ee5d;--knowledge-blue:#72cee9;--knowledge-amber:#e5b85f;padding-top:44px}
+.knowledge-atlas-v3 .knowledge-intro{display:grid;grid-template-columns:1.15fr .85fr;gap:18px 48px;align-items:end}.knowledge-atlas-v3 .knowledge-intro .section-label{grid-column:1/-1}.knowledge-atlas-v3 .knowledge-intro h2{font:500 clamp(42px,5.8vw,82px)/.88 var(--display);letter-spacing:-.06em}.knowledge-atlas-v3 .knowledge-intro>p:last-child{max-width:520px;color:#525a51;font-size:14px;line-height:1.6}
+.knowledge-map-frame{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start;margin-top:30px}
+.knowledge-map-shell{position:relative;display:grid;grid-template-columns:100px 110px minmax(340px,1fr) 110px 100px;gap:8px;align-items:start;padding:14px;border:1px solid rgba(20,23,19,.18);border-radius:26px;background:radial-gradient(circle at 50% 28%,rgba(168,238,93,.15),transparent 29%),linear-gradient(135deg,#e9e5d9,#f3efe5 54%,#e7e4da);box-shadow:0 28px 90px rgba(31,39,31,.08)}
+.knowledge-map-shell button{color:#171a16;cursor:pointer;transition:border-color .16s ease,background .16s ease,opacity .16s ease,transform .16s ease,box-shadow .16s ease}.knowledge-map-shell button:hover,.knowledge-map-shell button:focus-visible{border-color:#578922!important;outline:none;transform:translateY(-1px)}
+.knowledge-guard{grid-column:1/-1;display:grid;grid-template-columns:150px 90px 1fr;gap:12px;align-items:center;width:100%;padding:11px 14px;border:1px solid rgba(154,105,24,.35);border-radius:999px;background:rgba(255,248,226,.68);text-align:left}.knowledge-guard small{color:#8b6a2f;font:8px var(--mono);text-transform:uppercase}.knowledge-guard strong{font-size:14px}.knowledge-guard span{color:#645a46;font-size:10px}.access-guard{grid-row:1}
+.knowledge-rack{display:flex;flex-direction:column;gap:6px;padding-top:10px}.knowledge-rack h3,.knowledge-route h3{margin-bottom:4px;color:#626b61;font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}.knowledge-rack button{position:relative;padding:11px;border:1px solid rgba(20,23,19,.16);border-radius:8px;background:rgba(255,255,255,.32);text-align:left}.knowledge-rack.producers button:after{content:"→";position:absolute;right:-10px;top:50%;color:#7a8478;font:10px var(--mono)}.knowledge-rack.consumers button:before{content:"→";position:absolute;left:-10px;top:50%;color:#7a8478;font:10px var(--mono)}.knowledge-rack strong{display:block;font-size:12px;line-height:1.2}.knowledge-rack span{display:block;margin-top:5px;color:#626a61;font-size:9px;line-height:1.35}
+.knowledge-route{display:flex;flex-direction:column;gap:5px;padding-top:10px}.knowledge-route button{position:relative;min-height:72px;padding:10px;border:1px solid rgba(20,23,19,.16);border-radius:8px;background:rgba(255,255,255,.28);text-align:left}.knowledge-route button:not(:last-child):after{content:"↓";position:absolute;z-index:2;left:50%;bottom:-8px;color:#778074;font:10px var(--mono)}.knowledge-route small{color:#70796f;font:8px var(--mono)}.knowledge-route strong{display:block;margin-top:5px;font-size:11px;line-height:1.15}.knowledge-route span{display:block;margin-top:4px;color:#626a61;font-size:8px;line-height:1.3}.write-route button{border-left:3px solid var(--knowledge-green)}.read-route button{border-right:3px solid var(--knowledge-blue)}
+.knowledge-atlas-v3 .knowledge-service{position:relative;padding:12px;border:1px solid rgba(20,23,19,.38);border-radius:22px;background:rgba(248,245,235,.84);box-shadow:0 24px 70px rgba(31,39,31,.11)}.knowledge-atlas-v3 .knowledge-service-head{width:100%;padding:19px;border:0;border-radius:14px;background:#121612;color:#edf2eb;text-align:left}.knowledge-atlas-v3 .knowledge-service-head small{color:var(--knowledge-green);font:9px var(--mono);text-transform:uppercase}.knowledge-atlas-v3 .knowledge-service-head strong{display:block;margin-top:8px;font:500 32px/.95 var(--display)}.knowledge-atlas-v3 .knowledge-service-head span{display:block;margin-top:8px;color:#b1bab0;font-size:11px}.knowledge-skill-chip{display:grid;width:100%;grid-template-columns:115px 1fr;gap:5px 10px;margin-top:6px;padding:10px 12px;border:1px dashed rgba(20,23,19,.25);border-radius:9px;background:#eeeadf;text-align:left}.knowledge-skill-chip small{grid-row:1/3;color:#697168;font:8px var(--mono);text-transform:uppercase}.knowledge-skill-chip strong{font-size:12px}.knowledge-skill-chip span{color:#626a61;font-size:9px}
+.knowledge-atlas-v3 .knowledge-track{margin-top:7px;padding:11px;border:1px solid rgba(20,23,19,.15);border-radius:11px;background:rgba(255,255,255,.28)}.knowledge-atlas-v3 .knowledge-track header{display:flex;justify-content:space-between;gap:12px;align-items:baseline}.knowledge-atlas-v3 .knowledge-track header small{color:#687067;font:8px var(--mono);text-transform:uppercase}.knowledge-atlas-v3 .knowledge-track header strong{font-size:11px}.knowledge-atlas-v3 .knowledge-track>div{display:grid;gap:5px;margin-top:9px}.knowledge-atlas-v3 .empirical-chain{grid-template-columns:repeat(4,1fr)}.knowledge-atlas-v3 .knowledge-record{position:relative;min-height:92px;padding:10px;border:1px solid rgba(20,23,19,.17);border-radius:8px;background:#f5f1e6;text-align:left}.knowledge-atlas-v3 .empirical-chain .knowledge-record:not(:last-child):after,.knowledge-atlas-v3 .foreign-track .knowledge-record:first-child:after{content:"→";position:absolute;z-index:2;left:100%;top:43%;width:6px;color:#707a6e;font:9px var(--mono)}.knowledge-atlas-v3 .knowledge-record small{color:#6b746a;font:7px var(--mono);text-transform:uppercase}.knowledge-atlas-v3 .knowledge-record strong{display:block;margin-top:7px;font-size:12px;line-height:1.15}.knowledge-atlas-v3 .knowledge-record span{display:block;margin-top:5px;color:#60685f;font-size:8px;line-height:1.35}.theory-chain{grid-template-columns:105px 1fr!important;align-items:center;padding-top:6px;border-top:1px dashed rgba(20,23,19,.17)}.theory-chain>span{color:#687067;font:8px var(--mono);text-transform:uppercase}.theory-chain .knowledge-record{min-height:62px}.knowledge-atlas-v3 .foreign-track{border-color:rgba(67,156,190,.35);background:rgba(114,206,233,.08)}.knowledge-atlas-v3 .foreign-track>div{grid-template-columns:1fr 1fr}.knowledge-atlas-v3 .context-track>div{grid-template-columns:repeat(3,1fr)}.knowledge-atlas-v3 .context-track .knowledge-record{min-height:70px}
+.provenance-guard{grid-column:auto;grid-template-columns:130px 1fr;margin-top:7px;border-radius:9px}.provenance-guard span{grid-column:2}.personal-dock{grid-column:1/-1;display:grid;grid-template-columns:170px repeat(3,1fr);gap:7px;align-items:stretch;padding-top:12px;border-top:1px solid rgba(20,23,19,.2)}.personal-dock header{padding:9px}.personal-dock header small{color:#687067;font:8px var(--mono);text-transform:uppercase}.personal-dock header strong{display:block;margin-top:7px;font-size:10px;line-height:1.3}.personal-dock button{padding:11px;border:1px dashed rgba(20,23,19,.2);border-radius:8px;background:rgba(255,255,255,.24);text-align:left}.personal-dock strong{font-size:12px}.personal-dock span{display:block;margin-top:5px;color:#626a61;font-size:9px;line-height:1.35}
+.knowledge-map-frame>.knowledge-inspector{position:sticky!important;right:auto!important;bottom:auto!important;top:84px;width:auto!important;max-height:calc(100dvh - 104px);margin:0;padding:18px;overflow:auto;border:1px solid #39443b;border-radius:14px;background:#121612;color:#eaf0e8;box-shadow:0 24px 70px rgba(0,0,0,.2)}.knowledge-map-frame>.knowledge-inspector .focus-head h3{font-size:26px}.knowledge-map-frame>.knowledge-inspector .focus-detail-grid{grid-template-columns:1fr}.knowledge-map-frame>.knowledge-inspector .map-focus-actions{justify-content:flex-start;margin-top:14px}.knowledge-map-frame>.knowledge-inspector:not(.is-open){min-height:180px}.knowledge-map-frame>.knowledge-inspector.is-open{display:block}
+.knowledge-atlas-v3 [data-knowledge].is-active{border-color:#578922!important;background:#f5f9e9;box-shadow:0 0 0 2px rgba(87,137,34,.22)}.knowledge-atlas-v3 .knowledge-service-head.is-active{background:#1f291a}.knowledge-atlas-v3 [data-knowledge].is-related{border-color:#77a83e!important;box-shadow:0 0 0 2px rgba(119,168,62,.16)}.knowledge-atlas-v3 [data-knowledge].is-muted{opacity:.28;filter:saturate(.25)}
+.knowledge-technical{margin-top:10px;border:1px solid rgba(20,23,19,.17);border-radius:10px;background:rgba(255,255,255,.22)}.knowledge-technical>summary{display:flex;justify-content:space-between;gap:18px;padding:14px;cursor:pointer;font:600 12px var(--body)}.knowledge-technical>summary span{color:#687067;font:8px var(--mono);text-transform:uppercase}.knowledge-technical .knowledge-runtime{padding:0 10px 10px}.knowledge-technical .knowledge-source-links{padding:0 10px 10px}
+
+@media (max-width:1180px) and (min-width:821px){.knowledge-map-frame{grid-template-columns:1fr}.knowledge-map-shell{grid-template-columns:1fr 1fr}.knowledge-map-shell>.knowledge-guard,.knowledge-map-shell>.knowledge-service,.knowledge-map-shell>.personal-dock{grid-column:1/-1}.knowledge-rack.producers button:after,.knowledge-rack.consumers button:before{display:none}.knowledge-map-frame>.knowledge-inspector{position:relative!important;top:auto;max-height:none}}
+@media (max-width:820px){.knowledge-atlas-v3 .knowledge-intro{grid-template-columns:1fr}.knowledge-map-frame{grid-template-columns:1fr}.knowledge-map-shell{display:flex;flex-direction:column;padding:12px}.knowledge-map-shell>*{width:100%}.knowledge-map-shell>.access-guard{order:1}.knowledge-map-shell>.producers{order:2}.knowledge-map-shell>.write-route{order:3}.knowledge-map-shell>.knowledge-service{order:4}.knowledge-map-shell>.read-route{order:5}.knowledge-map-shell>.consumers{order:6}.knowledge-map-shell>.personal-dock{order:7}.knowledge-rack.producers button:after,.knowledge-rack.consumers button:before{display:none}.knowledge-route{display:grid;grid-template-columns:1fr 1fr}.knowledge-route h3{grid-column:1/-1}.knowledge-route button:not(:last-child):after{display:none}.knowledge-atlas-v3 .empirical-chain{grid-template-columns:1fr 1fr}.knowledge-atlas-v3 .empirical-chain .knowledge-record:after{display:none}.knowledge-atlas-v3 .context-track>div{grid-template-columns:1fr}.personal-dock{grid-template-columns:1fr}.knowledge-guard{grid-template-columns:1fr;border-radius:10px}.provenance-guard span{grid-column:auto}.knowledge-map-frame>.knowledge-inspector{position:relative!important;top:auto;max-height:none}.knowledge-technical>summary{display:block}.knowledge-technical>summary span{display:block;margin-top:6px}.process-title h1{font-size:clamp(38px,12vw,52px)!important}}
+@media (max-width:820px){
+  .loop-map{height:auto;margin:52px 0 0;transform:none!important}
+  .loop-line{display:none}
+  .knowledge-core{position:relative;left:auto;top:auto;width:100%;height:auto;transform:none;align-items:flex-start;padding:22px;border-radius:12px;text-align:left}
+  .knowledge-core:before{display:none}.knowledge-core p{max-width:none}.knowledge-core strong br{display:none}
+  .memory-surfaces{position:relative;left:auto;top:auto;width:100%;transform:none;margin-top:10px}.memory-surfaces button{width:50%;background:var(--panel)}
+  .loop-nodes{display:grid;margin-top:12px}
+  .loop-node,.loop-node:nth-child(n){position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;transform:none;text-align:left;padding:20px 10px 20px 46px;border-bottom:1px solid var(--line)}
+  .loop-node:before,.loop-node:nth-child(n):before{left:12px;right:auto;top:29px;bottom:auto}.loop-node:nth-child(n) .result{margin-left:0}
+  .support{grid-template-columns:1fr;margin-top:50px}.support-items{grid-template-columns:1fr 1fr}
+  .tool-map>ol{display:grid;grid-template-columns:1fr 1fr}.tool-map.path li:after{display:none}.tool-map.routes>ol,.tool-map.topology>ol{grid-template-columns:1fr 1fr}.tool-map.routes li:first-child,.tool-map.topology li:first-child{grid-column:1/-1}.tool-map.stack>ol{grid-template-columns:1fr}.tool-map.stack li+li{margin:0}
+}
+
+/* v40: dense system constellation, equal memory surfaces and evidence-first examples. */
+#overview .overview-head{max-width:1500px}
+#overview .overview-head h1{max-width:820px;font-size:clamp(48px,5.2vw,78px)}
+#overview .overview-intro{max-width:500px;font-size:15px}
+#overview .loop-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:210px 270px 210px;gap:14px;width:min(100%,1500px);height:auto;margin:54px auto 0;transform:none!important}
+#overview .loop-map:before{content:"";position:absolute;z-index:0;inset:6% 8%;background:linear-gradient(90deg,transparent 49.9%,rgba(185,255,102,.12) 50%,transparent 50.1%),linear-gradient(0deg,transparent 49.9%,rgba(185,255,102,.12) 50%,transparent 50.1%);pointer-events:none}
+#overview .loop-line{display:none}
+#overview .loop-nodes{display:contents}
+#overview .loop-node:nth-child(n){position:relative;inset:auto;width:auto;min-width:0;padding:0;transform:none;text-align:left}
+#overview .loop-node:nth-child(1){grid-area:1/1}#overview .loop-node:nth-child(2){grid-area:1/2}#overview .loop-node:nth-child(3){grid-area:1/3}#overview .loop-node:nth-child(4){grid-area:2/3}#overview .loop-node:nth-child(5){grid-area:3/3}#overview .loop-node:nth-child(6){grid-area:3/2}#overview .loop-node:nth-child(7){grid-area:3/1}#overview .loop-node:nth-child(8){grid-area:2/1}
+#overview .loop-node:before{display:none}
+#overview .loop-node-main{display:flex;flex-direction:column;min-height:142px;height:100%;padding:20px 20px 68px;border:1px solid color-mix(in srgb,var(--node) 32%,var(--line));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--node) 7%,#121614),#101412 58%);transition:.18s ease}
+#overview .loop-node-main:hover,#overview .loop-node-main:focus-visible{border-color:var(--node);transform:translateY(-2px);outline:none;box-shadow:0 18px 45px rgba(0,0,0,.25)}
+#overview .loop-node-main .num{font-size:10px;letter-spacing:.08em}
+#overview .loop-node-main strong{margin-top:11px;font-size:clamp(22px,1.9vw,30px);line-height:1}
+#overview .loop-node-main .verb{margin-top:9px;font-size:12px}
+#overview .loop-node-main .result{max-width:95%;margin-top:auto;padding-top:9px;font-size:10px;line-height:1.35}
+#overview .node-satellites{position:absolute;right:14px;bottom:14px;left:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;transform:translateY(calc(100% + 6px));z-index:4}
+#overview .loop-node:nth-child(n) .node-satellites{position:static;margin-top:-54px;padding:0 14px 13px;transform:none}
+#overview .node-satellites button{display:block!important;min-width:0;min-height:44px;padding:9px 10px;overflow:hidden;border:1px solid color-mix(in srgb,var(--node) 38%,var(--line));border-radius:9px;background:#171c19;color:#e4e9e1;font:11px/1.25 var(--mono);text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+#overview .node-satellites button:hover{border-color:var(--node)}
+#overview .node-satellites small{display:none}
+#overview .node-satellites .more{color:var(--node);text-align:center}
+#overview .knowledge-cluster{position:relative;grid-area:2/2;min-width:0;border:1px solid rgba(185,255,102,.16);border-radius:32px;background:radial-gradient(circle at center,rgba(185,255,102,.09),rgba(185,255,102,.018) 48%,transparent 68%)}
+#overview .knowledge-core{left:50%;top:43%;width:164px;height:164px;z-index:3}
+#overview .knowledge-core:before{inset:9px}
+#overview .knowledge-core span{font-size:9px}
+#overview .knowledge-core strong{font-size:21px}
+#overview .knowledge-core p{max-width:126px;font-size:10px;line-height:1.3}
+#overview .knowledge-core i{margin-top:10px}
+#overview .memory-surfaces{position:absolute;inset:0;width:auto;transform:none;display:block;margin:0}
+#overview .memory-surfaces button{position:absolute;width:86px;height:86px;padding:12px;border:1px solid rgba(185,255,102,.48);border-radius:50%;background:radial-gradient(circle,rgba(185,255,102,.12),rgba(13,18,14,.96) 72%);color:#f2f6ee;text-align:center;cursor:pointer;transition:.18s ease}
+#overview .memory-surfaces button:nth-child(1){left:4%;top:34%}#overview .memory-surfaces button:nth-child(2){right:4%;top:34%}#overview .memory-surfaces button:nth-child(3){left:50%;bottom:2%;transform:translateX(-50%)}
+#overview .memory-surfaces button:hover,#overview .memory-surfaces button:focus-visible{border-color:var(--lime);box-shadow:0 0 30px rgba(185,255,102,.13);outline:none}
+#overview .memory-surfaces b{font-size:12px}
+#overview .memory-surfaces span{margin-top:4px;font-size:9px;line-height:1.18}
+#overview .support{margin-top:70px;grid-template-columns:minmax(210px,.55fr) 2fr;gap:28px}
+#overview .support-items{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;background:none}
+#overview .support-card{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#overview .support-card .support-item{padding:18px;background:#101412}
+#overview .support-card .support-item strong{font-size:16px}
+#overview .support-card .support-item p{font-size:10px;line-height:1.4}
+#overview .support-satellites{padding:0 14px 14px;background:#101412}
+
+.mcp-live-view,.examples-view{min-height:100vh;padding:108px var(--pad) 90px;background:#0c0f0e;color:#f1f5ed}
+.special-shell{width:min(100%,1500px);margin:auto}
+.special-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:24px 70px;padding:34px 0 46px;border-bottom:1px solid var(--line)}
+.special-hero>p{grid-column:1/-1;color:var(--lime);font:10px var(--mono);letter-spacing:.11em;text-transform:uppercase}
+.special-hero h1{font:500 clamp(48px,6vw,88px)/.9 var(--display);letter-spacing:-.065em}
+.special-hero>strong{align-self:end;color:#aab3a8;font-size:15px;line-height:1.6;font-weight:400}
+.special-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.special-hero .special-links{grid-column:1/-1}
+.special-links a{padding:9px 12px;border:1px solid var(--line);border-radius:999px;color:#dfe6dd;text-decoration:none;font:9px var(--mono)}.special-links a:hover{border-color:var(--lime);color:var(--lime)}
+.live-status{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin-top:24px;background:var(--line)}
+.live-status div{padding:16px;background:#111512}.live-status small{display:block;color:#718071;font:8px var(--mono)}.live-status strong{display:block;margin-top:7px;font-size:11px;line-height:1.35}
+.live-counts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:8px}
+.live-counts article{min-height:120px;padding:17px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(185,255,102,.07),transparent)}
+.live-counts strong{display:block;color:var(--lime);font:500 30px var(--display)}.live-counts span{display:block;margin-top:12px;color:#abb4a9;font-size:10px;line-height:1.35}
+.live-architecture,.live-operations,.live-example,.live-boundaries{margin-top:64px}
+.live-architecture>header,.live-operations>header{display:grid;grid-template-columns:.4fr 1fr;gap:30px;align-items:end}.live-architecture header p,.live-operations header p,.live-example>p,.live-boundaries>p{color:#849080;font:9px var(--mono);text-transform:uppercase}.live-architecture h2,.live-operations h2,.live-example h2{font:500 clamp(30px,4vw,56px)/.95 var(--display);letter-spacing:-.05em}
+.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}.record-grid article{min-height:150px;padding:18px;border:1px solid var(--line);border-radius:16px;background:#121614}.record-grid small{color:var(--lime);font:9px var(--mono)}.record-grid strong{display:block;margin-top:20px;font-size:17px}.record-grid span{display:block;margin-top:8px;color:#a0a99e;font-size:11px;line-height:1.5}
+.live-flows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.live-flows article{padding:20px;border-radius:16px;background:#eae6da;color:#161915}.live-flows p{font:600 10px var(--mono);text-transform:uppercase}.live-flows span{display:flex;gap:10px;margin-top:12px;font-size:12px}.live-flows i{display:grid;place-items:center;width:22px;height:22px;flex:none;border:1px solid #84907f;border-radius:50%;font:normal 8px var(--mono)}
+.live-example{padding:30px;border:1px solid rgba(185,255,102,.35);border-radius:24px;background:radial-gradient(circle at 20% 20%,rgba(185,255,102,.12),transparent 36%)}.live-example h2{margin-top:12px}.live-example>div{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px}.live-example span{padding:16px;border:1px solid var(--line);border-radius:12px;font:11px/1.5 var(--mono)}.live-example>small{display:block;margin-top:16px;color:#929d90;font-size:10px}
+.live-operations>div{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:22px}.live-operations article{padding:18px;border:1px solid var(--line);border-radius:14px;background:#111512}.live-operations article small{color:var(--lime);font:8px var(--mono);text-transform:uppercase}.live-operations article strong{display:block;margin:7px 0 12px;font-size:15px}.live-operations code{display:inline-block;margin:0 5px 5px 0;padding:4px 6px;border-radius:5px;background:#1d241e;color:#cbd4c8;font:8px var(--mono)}
+.live-boundaries{display:grid;grid-template-columns:180px repeat(4,1fr);gap:8px;padding-top:25px;border-top:1px solid var(--line)}.live-boundaries>span{padding:14px;border:1px solid var(--line);border-radius:10px;color:#aab3a8;font-size:10px}.live-boundaries>details,.live-boundaries>small{grid-column:2/-1}.live-boundaries summary{cursor:pointer;color:var(--lime);font:9px var(--mono)}.live-boundaries details code{display:block;margin-top:7px;color:#a6b0a4;font:9px var(--mono)}.live-boundaries>small{margin-top:10px;color:#778175;font-size:9px}
+.example-map{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:30px}.example-map button{min-height:300px;padding:24px;border:1px solid var(--line);border-radius:20px;background:#111512;color:#f1f5ed;text-align:left;cursor:pointer;transition:.18s ease}.example-map button:hover{border-color:var(--lime);transform:translateY(-3px)}.example-map small{color:var(--lime);font:9px var(--mono);text-transform:uppercase}.example-map strong{display:block;margin-top:28px;font:500 25px/1.05 var(--display)}.example-map span{display:block;margin-top:15px;color:#a1aaa0;font-size:11px;line-height:1.6}.example-map b{display:block;margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;line-height:1.45}.example-map i{display:block;margin-top:20px;color:var(--lime);font:normal 9px var(--mono);text-transform:uppercase}.dykaf-route{display:grid;grid-template-columns:150px 1fr auto;gap:20px;align-items:center;width:100%;margin-top:10px;padding:24px;border:1px solid rgba(185,255,102,.35);border-radius:18px;background:rgba(185,255,102,.06);color:#edf4e9;text-align:left;cursor:pointer}.dykaf-route small,.dykaf-route span{color:var(--lime);font:9px var(--mono);text-transform:uppercase}.dykaf-route strong{font-size:16px}
+.surface-page{padding-top:24px}.surface-hero{display:grid;grid-template-columns:120px 1fr;gap:10px 24px;margin-top:42px;padding-bottom:34px;border-bottom:1px solid rgba(20,23,19,.18)}.surface-hero p{grid-column:1/-1;color:#677166;font:9px var(--mono);text-transform:uppercase}.surface-hero>span{grid-row:2/4;color:var(--accent);font:500 72px/.9 var(--display)}.surface-hero h1{font:500 clamp(52px,7vw,90px)/.9 var(--display);letter-spacing:-.06em}.surface-hero>strong{max-width:760px;color:#566057;font-size:15px;line-height:1.55;font-weight:400}
+.surface-map{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;padding:55px 0}.surface-orbit{position:relative;min-height:500px;border:1px solid rgba(20,23,19,.15);border-radius:50%;background:radial-gradient(circle,rgba(123,168,62,.12),transparent 58%)}.surface-center{position:absolute;left:50%;top:50%;width:180px;height:180px;transform:translate(-50%,-50%);display:flex;flex-direction:column;justify-content:center;padding:22px;border-radius:50%;background:#151915;color:#edf3e9;text-align:center}.surface-center small{color:#b9ff66;font:8px var(--mono);text-transform:uppercase}.surface-center strong{margin-top:12px;font-size:25px}.surface-center span{margin-top:10px;color:#aab4a7;font-size:9px}.surface-orbit article{position:absolute;width:165px;padding:16px;border:1px solid rgba(20,23,19,.18);border-radius:16px;background:#f1ede1}.surface-orbit article:nth-of-type(1){left:2%;top:8%}.surface-orbit article:nth-of-type(2){right:2%;top:12%}.surface-orbit article:nth-of-type(3){left:10%;bottom:5%}.surface-orbit article small{color:#6c756a;font:8px var(--mono);text-transform:uppercase}.surface-orbit article strong{display:block;margin-top:9px;font-size:12px;line-height:1.35}.surface-flow{display:grid;gap:8px;align-content:center}.surface-flow>p{color:#6a7368;font:9px var(--mono);text-transform:uppercase}.surface-flow article{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:center;padding:18px;border:1px solid rgba(20,23,19,.16);border-radius:14px}.surface-flow article span{display:grid;place-items:center;width:36px;height:36px;border:1px solid #8ba86d;border-radius:50%;font:9px var(--mono)}.surface-flow article strong{font-size:13px}.surface-boundary{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-bottom:60px}.surface-boundary>div{padding:22px;border-radius:16px;background:#dedace}.surface-boundary p{font:9px var(--mono);text-transform:uppercase}.surface-boundary>div>span{display:block;margin-top:10px;font-size:11px;line-height:1.5}.surface-boundary .special-links a{display:flex;align-items:center;min-height:44px;padding:10px 13px;border-color:rgba(20,23,19,.32);color:#172018;font-size:11px}
+.surface-facts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:7px;margin-top:-20px}.surface-facts span{padding:8px 11px;border:1px solid rgba(20,23,19,.18);border-radius:999px;font:9px var(--mono)}
+
+@media(max-width:1050px){#overview .support-items{grid-template-columns:repeat(2,1fr)}.live-counts{grid-template-columns:repeat(3,1fr)}.example-map{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:820px){.topbar{grid-template-columns:auto 1fr auto}.view-switch{display:flex;justify-self:center;max-width:55vw;overflow-x:auto;white-space:nowrap}.view-switch button{display:block!important;min-height:44px;padding:9px 10px;font-size:9px}.search-open{min-width:44px}.overview{padding-inline:16px}#overview .overview-head h1{font-size:45px}#overview .loop-map{display:flex;flex-direction:column;gap:9px;margin-top:35px}#overview .loop-nodes{display:flex;flex-direction:column;gap:9px}#overview .loop-node:nth-child(n){display:block;order:initial;padding:0;border:0}#overview .loop-node-main{min-height:150px;padding:18px 18px 68px}#overview .node-satellites,#overview .loop-node:nth-child(n) .node-satellites{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-54px;padding:0 12px 12px;transform:none}#overview .node-satellites .more{grid-column:1/-1}#overview .knowledge-cluster{order:-1;min-height:330px}#overview .knowledge-core{top:40%}#overview .memory-surfaces button{width:84px;height:84px}#overview .memory-surfaces button:nth-child(1){left:3%;top:auto;bottom:4%}#overview .memory-surfaces button:nth-child(2){right:3%;top:auto;bottom:4%}#overview .memory-surfaces button:nth-child(3){bottom:3%}#overview .support{margin-top:45px}.special-hero{grid-template-columns:1fr}.special-hero>p,.special-hero .special-links{grid-column:auto}.live-status,.live-counts,.record-grid,.live-flows,.live-operations>div,.example-map,.surface-map,.surface-boundary{grid-template-columns:1fr}.live-counts{grid-template-columns:repeat(2,1fr)}.live-architecture>header,.live-operations>header{grid-template-columns:1fr}.live-example>div{grid-template-columns:1fr}.live-boundaries{grid-template-columns:1fr}.live-boundaries>details,.live-boundaries>small{grid-column:auto}.dykaf-route{grid-template-columns:1fr}.surface-orbit{display:flex;flex-direction:column;gap:8px;min-height:0;padding:14px;border-radius:28px}.surface-center{position:relative;left:auto;top:auto;width:180px;height:180px;transform:none;align-self:center;margin-bottom:6px}.surface-orbit article:nth-of-type(n){position:relative;inset:auto;width:100%}.surface-hero{grid-template-columns:70px 1fr}.surface-hero>span{font-size:48px}}
+@media(max-width:520px){#overview .support-items{grid-template-columns:1fr}.live-counts{grid-template-columns:1fr 1fr}.mcp-live-view,.examples-view{padding-inline:16px}.surface-orbit{min-height:560px;border-radius:30px}.surface-center{width:180px;height:180px}.surface-orbit article{width:160px}.surface-orbit article:nth-of-type(1){left:2%;top:3%}.surface-orbit article:nth-of-type(2){right:2%;top:22%}.surface-orbit article:nth-of-type(3){left:4%;bottom:3%}}
+@media (max-width:520px){.support-items{grid-template-columns:1fr}.knowledge-route{grid-template-columns:1fr}.knowledge-atlas-v3 .empirical-chain{grid-template-columns:1fr}.knowledge-atlas-v3 .foreign-track>div{grid-template-columns:1fr}}
+
+/* v3 — semantic process maps: the route drives the system instead of sitting below it. */
+.loop-map:has(.overview-contour){margin-bottom:150px}
+.overview-contour{position:absolute;z-index:5;left:50%;top:100%;width:min(760px,76vw);transform:translate(-50%,18px);padding:9px;border:1px solid color-mix(in srgb,var(--node) 48%,#2b302b);border-radius:12px;background:rgba(12,15,14,.97);box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.overview-contour:before{content:"";position:absolute;left:50%;bottom:100%;height:42px;border-left:1px dashed color-mix(in srgb,var(--node) 48%,transparent)}
+.overview-contour .contour-main{display:grid;grid-template-columns:1fr auto;gap:3px 18px;width:100%;padding:8px 10px;border:0;background:none;color:var(--ink);text-align:left;cursor:pointer}.overview-contour .contour-main small{grid-column:1/-1;color:var(--node);font:8px var(--mono);text-transform:uppercase}.overview-contour .contour-main strong{font:500 18px var(--display)}.overview-contour .contour-main span{align-self:center;color:#8e978c;font-size:9px}.overview-contour>div{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.overview-contour>div button{min-height:46px;padding:7px 9px;border:1px solid #303730;border-radius:7px;background:#121612;color:#e3e8e1;text-align:left;cursor:pointer}.overview-contour>div b{display:block;font:500 10px/1.15 var(--body)}.overview-contour>div small{display:block;margin-top:4px;color:#778077;font:7px var(--mono);text-transform:uppercase}.overview-contour button:hover,.overview-contour button:focus-visible{border-color:var(--node);outline:none}
+
+.section-overview{padding-top:42px}.section-overview .map-heading{align-items:center}.section-overview .map-heading h2{max-width:820px}.journey-strip{display:grid;grid-template-columns:repeat(var(--steps,6),minmax(0,1fr));gap:5px;margin-top:24px;padding:7px;border:1px solid rgba(20,23,19,.17);border-radius:12px;background:rgba(255,255,255,.22)}
+.journey-step{position:relative;min-height:104px;padding:12px;border:1px solid transparent;border-radius:8px;background:transparent;color:#171a16;text-align:left;cursor:pointer;transition:.18s ease}.journey-step:not(:last-child):after{content:"";position:absolute;left:100%;top:50%;z-index:2;width:6px;border-top:1px solid rgba(20,23,19,.25)}.journey-step small{display:block;color:#747c72;font:9px var(--mono);text-transform:uppercase}.journey-step strong{display:block;margin-top:13px;font:600 13px/1.2 var(--body)}.journey-step span{display:block;margin-top:7px;color:#646b62;font-size:11px;line-height:1.25}.journey-step.is-gate{box-shadow:inset 0 -2px var(--accent)}.journey-step:hover,.journey-step:focus-visible,.journey-step.is-active{border-color:var(--accent);background:#f8f4e9;outline:none}.journey-step.is-related{background:color-mix(in srgb,var(--accent) 11%,#f2eee2)}.journey-step.is-muted{opacity:.42}
+
+.system-map{position:relative;display:grid;grid-template-columns:180px minmax(430px,1fr) 270px;grid-template-areas:"context tools destinations" "hub tools destinations" "quality quality destinations";gap:16px;min-height:520px;margin-top:12px;padding:24px;border:1px solid rgba(20,23,19,.18);border-radius:22px;background:radial-gradient(circle at 43% 48%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 24%),linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.04));overflow:hidden}.system-map:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(20,23,19,.15) .65px,transparent .65px);background-size:15px 15px;mask-image:linear-gradient(110deg,black,transparent 78%);pointer-events:none}.system-map>*,.tool-cluster{position:relative;z-index:2}
+.map-context-compact{grid-area:context;align-self:start;padding:13px 0}.map-context-compact>span,.tool-cluster>h3,.destination-cluster>h3,.map-qa-contour>span{display:block;color:#626a60;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase}.map-context-compact p{margin-top:11px;padding-left:10px;border-left:2px solid rgba(20,23,19,.2);color:#535b52;font-size:12px;line-height:1.4}
+.process-hub{grid-area:hub;align-self:start;width:168px;height:168px;padding:18px;border:1px solid var(--accent);border-radius:50%;background:#151815;color:#edf2eb;text-align:center;cursor:pointer;box-shadow:0 0 0 12px rgba(21,24,21,.035),0 0 0 24px rgba(21,24,21,.025)}.process-hub small{display:block;color:var(--accent);font:10px var(--mono)}.process-hub strong{display:block;margin-top:9px;font:500 22px/.95 var(--display)}.process-hub span{display:block;margin-top:9px;color:#aeb6ac;font-size:10px;line-height:1.3}
+.tool-clusters{grid-area:tools;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:center}.tool-cluster{padding:13px;border:1px solid rgba(20,23,19,.14);border-radius:16px 5px 16px 5px;background:rgba(246,243,233,.57)}.tool-cluster:nth-child(even){border-radius:5px 16px 5px 16px}.tool-cluster>div{display:grid;gap:6px;margin-top:9px}.tool-node{position:relative;min-height:76px;padding:10px 30px 10px 11px;border:1px solid rgba(20,23,19,.16);border-radius:8px;background:rgba(246,243,233,.76);color:#171a16;text-align:left;cursor:pointer;transition:.18s ease}.tool-node small{display:block;color:#6c746a;font:10px var(--mono);text-transform:uppercase}.tool-node strong{display:block;margin-top:6px;font:600 14px/1.15 var(--body)}.tool-node span{display:-webkit-box;margin-top:5px;overflow:hidden;color:#5c635b;font-size:11px;line-height:1.3;-webkit-box-orient:vertical;-webkit-line-clamp:2}.tool-node i{position:absolute;right:10px;top:10px;color:var(--accent);font-style:normal}
+.destination-cluster{grid-area:destinations;display:flex;flex-direction:column;justify-content:center;gap:7px;padding-left:13px;border-left:1px dashed rgba(20,23,19,.23)}.destination-node{min-height:82px;padding:11px;border:1px solid rgba(20,23,19,.18);border-radius:14px 14px 4px 4px;background:rgba(246,243,233,.7);color:#171a16;text-align:left;cursor:pointer}.destination-node small,.outcome-nodes small{display:block;color:#687067;font:9px var(--mono);text-transform:uppercase}.destination-node strong{display:block;margin-top:7px;font-size:14px}.destination-node span{display:block;margin-top:5px;color:#60675f;font-size:11px;line-height:1.3}.outcome-nodes{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}.outcome-nodes button{flex:1 1 100px;padding:8px;border:1px dashed rgba(20,23,19,.2);border-radius:5px;background:transparent;color:#4f564e;text-align:left;font-size:10px;line-height:1.3;cursor:pointer}.outcome-nodes small{margin-bottom:4px}
+.map-qa-contour{grid-area:quality;display:flex;align-items:stretch;gap:6px;padding-top:12px;border-top:1px solid rgba(20,23,19,.13)}.map-qa-contour>span{align-self:center;width:120px;flex:none}.map-qa-contour button{flex:1;padding:9px;border:1px solid color-mix(in srgb,var(--accent) 42%,transparent);border-radius:999px;background:rgba(246,243,233,.55);color:#171a16;text-align:left;cursor:pointer}.map-qa-contour strong{display:block;font-size:11px}.map-qa-contour small{display:block;margin-top:4px;color:#626961;font-size:10px;line-height:1.25}.map-qa-contour i{display:block;margin-top:7px;color:#4f7b90;font:normal 9px var(--mono);text-transform:uppercase}
+.system-map [data-node]:hover,.system-map [data-node]:focus-visible,.system-map [data-node].is-active{border-color:var(--accent);background:#fbf7ec;outline:none;box-shadow:0 12px 30px rgba(20,23,19,.08);transform:translateY(-1px)}.system-map [data-node].is-related{border-color:color-mix(in srgb,var(--accent) 72%,#282d28);background:color-mix(in srgb,var(--accent) 10%,#f5f1e6)}.system-map [data-node].is-muted{opacity:.38}.map-orbit{position:absolute;z-index:1;border:1px solid color-mix(in srgb,var(--accent) 24%,transparent);border-radius:50%;pointer-events:none}.map-orbit.one{left:19%;top:13%;width:55%;height:72%}.map-orbit.two{left:25%;top:24%;width:42%;height:50%;border-style:dashed}
+.graph-focus{margin-top:9px}.graph-focus.is-open{position:relative;right:auto;bottom:auto;width:auto;max-height:none;grid-template-columns:minmax(190px,.5fr) 1fr;box-shadow:none}.semantic-route span{display:flex;flex-direction:column;gap:4px;flex:1}.semantic-route span b,.focus-checks b{color:#7d867b;font:8px var(--mono);text-transform:uppercase}.focus-checks{grid-column:1/-1;padding:9px;border:1px solid #353c35;border-radius:6px;color:#d5dad3;font-size:10px}
+
+/* The same graph grammar, with a composition shaped by each kind of work. */
+.section-overview[data-layout="observatory"] .tool-cluster{border-radius:50% 50% 12px 12px}.section-overview[data-layout="observatory"] .tool-cluster:nth-child(3){grid-column:1/-1;margin-inline:13%}
+.section-overview[data-layout="branches"] .tool-cluster:first-child{grid-column:1/-1;margin-inline:12%;border-radius:7px 30px 7px 30px}.section-overview[data-layout="branches"] .tool-cluster:nth-child(n+2){border-radius:30px 7px 30px 7px}
+.section-overview[data-layout="routing"] .tool-clusters{grid-template-columns:1.15fr .85fr}.section-overview[data-layout="routing"] .tool-cluster:first-child{grid-row:span 2;align-self:center;border-radius:34px 7px 34px 7px}
+.section-overview[data-layout="control"] .tool-clusters{grid-template-columns:repeat(3,1fr)}.section-overview[data-layout="control"] .tool-cluster{border-radius:50% 50% 9px 9px}.section-overview[data-layout="control"] .tool-cluster:nth-child(2){transform:translateY(22px)}
+.section-overview[data-layout="prism"] .tool-cluster{border-radius:3px 26px 3px 26px}.section-overview[data-layout="prism"] .tool-cluster:nth-child(even){border-radius:26px 3px 26px 3px}
+.section-overview[data-layout="spine"] .tool-clusters{grid-template-columns:1fr}.section-overview[data-layout="spine"] .tool-cluster{border-left:4px solid var(--accent);border-radius:5px}
+.section-overview[data-layout="storyboard"] .tool-clusters,.section-overview[data-layout="ports"] .tool-clusters,.section-overview[data-layout="airlock"] .tool-clusters{grid-template-columns:repeat(3,1fr)}.section-overview[data-layout="storyboard"] .tool-cluster{border-radius:4px}.section-overview[data-layout="storyboard"] .tool-cluster:nth-child(2){transform:translateY(16px)}
+.section-overview[data-layout="ports"] .tool-cluster{border-radius:40px 6px 6px 40px}.section-overview[data-layout="workbench"] .tool-cluster{border-bottom:5px solid #252a25;border-radius:6px}.section-overview[data-layout="relay"] .tool-cluster{border-radius:999px;padding-inline:20px}.section-overview[data-layout="airlock"] .tool-cluster:first-child{grid-column:1/-1;margin-inline:20%;border:2px solid var(--accent)}
+.section-overview[data-layout="quality"] .system-map{min-height:410px;grid-template-columns:220px minmax(430px,1fr) 270px;background:radial-gradient(circle at 44% 50%,rgba(119,213,255,.16),transparent 25%),linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.04))}.section-overview[data-layout="quality"] .process-hub{width:210px;height:auto;min-height:150px;border-radius:34px;text-align:left}.section-overview[data-layout="quality"] .process-hub span{font-size:9px;line-height:1.35}.section-overview[data-layout="quality"] .tool-clusters{align-content:center}.section-overview[data-layout="quality"] .tool-cluster:first-child{border:2px solid var(--accent);border-radius:36px}.section-overview[data-layout="quality"] .tool-cluster:first-child .tool-node{min-height:92px}.section-overview[data-layout="quality"] .map-orbit.one{top:20%;height:58%}.section-overview[data-layout="quality"] .map-orbit.two{top:30%;height:38%}
+
+.control-section .section-heading p{max-width:560px}.control-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.control-grid .control{min-height:165px;padding:17px;border-radius:12px;background:rgba(255,255,255,.25)}.control small{color:#747c72;font:10px var(--mono);text-transform:uppercase}.control h3{margin-top:16px;font:600 17px/1.15 var(--body)}.control p{margin-top:10px;color:#555d54;font-size:13px;line-height:1.5}.control>div{margin-top:14px;padding-top:10px;border-top:1px solid rgba(20,23,19,.14);font-size:11px;line-height:1.4}.control>div b{display:block;margin-bottom:4px;color:#70786f;font:9px var(--mono);text-transform:uppercase}.example{font-size:13px}.example span{font-size:10px}
+.glossary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.glossary-grid article{padding:18px;border:1px solid rgba(20,23,19,.16);border-radius:12px;background:rgba(255,255,255,.22)}.glossary-grid small{color:#717970;font:10px var(--mono);text-transform:uppercase}.glossary-grid h3{margin-top:12px;font:600 18px var(--body)}.glossary-grid p{margin-top:9px;color:#535a52;font-size:13px;line-height:1.5}.glossary-grid article>div{margin-top:12px;padding-top:10px;border-top:1px solid rgba(20,23,19,.14);font-size:11px;line-height:1.45}.glossary-grid b{display:block;margin-bottom:4px;color:#6d756c;font:9px var(--mono);text-transform:uppercase}.glossary-grid .source-link{margin-top:10px}
+
+.knowledge-architecture{padding-top:42px}.knowledge-intro{display:grid;grid-template-columns:1.2fr 1fr;gap:18px 60px;align-items:end}.knowledge-intro .section-label{grid-column:1/-1}.knowledge-intro h2{font:500 clamp(38px,5vw,72px)/.92 var(--display);letter-spacing:-.055em}.knowledge-intro>p:last-child{color:#525a51;font-size:14px;line-height:1.55}.knowledge-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:28px}.knowledge-flow button{min-height:100px;padding:12px;border:1px solid rgba(20,23,19,.18);border-radius:8px;background:rgba(255,255,255,.23);color:#171a16;text-align:left;cursor:pointer}.knowledge-flow small{color:#737b71;font:10px var(--mono)}.knowledge-flow strong{display:block;margin-top:12px;font-size:14px}.knowledge-flow span{display:block;margin-top:6px;color:#60675e;font-size:11px;line-height:1.3}
+.knowledge-canvas{position:relative;display:grid;grid-template-columns:190px minmax(520px,1fr) 190px;gap:16px;margin-top:10px;padding:24px;border:1px solid rgba(20,23,19,.18);border-radius:24px;background:radial-gradient(circle at 50% 42%,rgba(185,255,102,.14),transparent 31%),#e8e4d8}.knowledge-lane{display:flex;flex-direction:column;justify-content:center;gap:7px}.knowledge-lane>span,.shared-boundary>span{color:#656d63;font:10px var(--mono);text-transform:uppercase}.knowledge-lane button{padding:12px;border:1px solid rgba(20,23,19,.17);border-radius:7px;background:rgba(250,247,238,.65);color:#171a16;text-align:left;cursor:pointer}.knowledge-lane strong{display:block;font-size:13px}.knowledge-lane small{display:block;margin-top:5px;color:#60675e;font-size:10px;line-height:1.3}.shared-boundary{padding:18px;border:1px solid rgba(20,23,19,.35);border-radius:48% 48% 18px 18px;background:rgba(248,245,235,.54)}.knowledge-object-graph{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}.knowledge-object-graph button{min-height:116px;padding:12px;border:1px solid #272c27;border-radius:50% 50% 10px 10px;background:#151815;color:#edf1eb;text-align:center;cursor:pointer}.knowledge-object-graph small{color:#b9ff66;font:9px var(--mono)}.knowledge-object-graph strong{display:block;margin-top:9px;font:500 16px var(--body)}.knowledge-object-graph span{display:block;margin-top:7px;color:#aab2a8;font-size:10px;line-height:1.3}.knowledge-engine{margin:10px auto 0;padding:12px;border:1px dashed rgba(20,23,19,.3);border-radius:8px;text-align:center}.knowledge-engine small{display:block;color:#687067;font:9px var(--mono);text-transform:uppercase}.knowledge-engine strong{display:block;margin-top:5px}.knowledge-engine span{display:block;margin-top:4px;color:#626960;font-size:10px}.personal-boundaries{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.personal-boundaries article{padding:13px;border:1px solid rgba(20,23,19,.16);border-radius:8px;background:rgba(255,255,255,.24)}.personal-boundaries small{color:#6c746b;font:9px var(--mono);text-transform:uppercase}.personal-boundaries strong{display:block;margin-top:7px;font-size:15px}.personal-boundaries p{margin-top:6px;color:#555d54;font-size:11px;line-height:1.4}.knowledge-canvas [data-knowledge]:hover,.knowledge-canvas [data-knowledge]:focus-visible,.knowledge-canvas [data-knowledge].is-active,.knowledge-flow [data-knowledge].is-active{border-color:var(--accent);outline:none;transform:translateY(-1px)}.knowledge-canvas [data-knowledge].is-muted{opacity:.38}.knowledge-inspector{margin-top:9px;padding:20px;border-radius:12px;background:#151815;color:#eaf0e8}.knowledge-inspector small{color:#b9ff66;font:9px var(--mono);text-transform:uppercase}.knowledge-inspector h3{margin-top:8px;font:500 24px var(--display)}.knowledge-inspector p{margin-top:8px;color:#b5bdb3;font-size:12px;line-height:1.5}.knowledge-inspector>div{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}.knowledge-inspector>div b{width:100%;color:#7f887d;font:8px var(--mono);text-transform:uppercase}.knowledge-inspector span,.knowledge-inspector code{padding:6px 8px;border:1px solid #3a423a;border-radius:5px;color:#e1e7df;font:9px var(--mono)}
+.knowledge-runtime{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.knowledge-runtime details{padding:14px;border:1px solid rgba(20,23,19,.16);border-radius:9px;background:rgba(255,255,255,.24)}.knowledge-runtime summary{cursor:pointer;font:600 13px var(--body)}.knowledge-runtime p{margin-top:9px;color:#515950;font-size:12px;line-height:1.45}.knowledge-runtime ul{margin:10px 0 0;padding-left:17px}.knowledge-runtime li{margin-top:5px;color:#5d655c;font-size:11px;line-height:1.35}.knowledge-source-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.knowledge-source-links .source-link{background:#151815;color:#e7ece5}
+
+.capability-group>summary{font-size:11px}.capability-group .capability{min-height:150px}.capability-group .capability span{font-size:10px}.capability-group .capability strong{font-size:16px}.capability-group .capability p{font-size:12px;line-height:1.45}.all-capabilities>summary{font-size:11px}.tool-map.cycle b:last-child{box-shadow:none}
+
+@media (max-width:1100px){.system-map{grid-template-columns:160px 1fr;grid-template-areas:"context hub" "tools tools" "quality quality" "destinations destinations"}.process-hub{justify-self:center}.destination-cluster{display:grid;grid-template-columns:repeat(3,1fr);padding:12px 0 0;border-left:0;border-top:1px dashed rgba(20,23,19,.23)}.destination-cluster>h3,.outcome-nodes{grid-column:1/-1}.knowledge-canvas{grid-template-columns:150px 1fr 150px}.knowledge-object-graph{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.overview-contour{position:relative;left:auto;top:auto;width:100%;transform:none;margin-top:14px}.overview-contour:before{display:none}.overview-contour>div{grid-template-columns:1fr 1fr}.journey-strip{grid-template-columns:1fr}.journey-step{min-height:78px}.journey-step:not(:last-child):after{left:20px;top:100%;height:6px;border-left:1px solid rgba(20,23,19,.25);border-top:0}.system-map{display:flex;flex-direction:column;min-height:0;padding:15px}.map-context-compact{order:1}.process-hub{order:2;align-self:center}.tool-clusters{order:3;grid-template-columns:1fr}.destination-cluster{order:4;display:flex;padding-top:14px}.map-qa-contour{order:5;flex-direction:column}.map-qa-contour>span{width:auto}.graph-focus.is-open{grid-template-columns:1fr}.knowledge-intro{grid-template-columns:1fr}.knowledge-flow{grid-template-columns:1fr}.knowledge-canvas{display:flex;flex-direction:column;padding:14px}.knowledge-object-graph{grid-template-columns:1fr 1fr}.personal-boundaries{grid-template-columns:1fr}.glossary-grid,.control-grid{grid-template-columns:1fr}.capability-group .capability{min-height:0}}
+@media (prefers-reduced-motion:reduce){.journey-step,.tool-node,.system-map [data-node],.knowledge-canvas [data-knowledge]{transition:none!important}}
+@media (min-width:761px) and (max-width:1100px){.section-overview[data-layout] .tool-clusters{grid-template-columns:repeat(2,minmax(0,1fr))}.section-overview[data-layout] .tool-cluster{grid-column:auto;margin-inline:0;transform:none}.knowledge-runtime{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){.section-map-canvas button,.node-satellites button{transition:none!important;scroll-behavior:auto!important}}
+
+@media (max-width:760px){
+  .loop-map:has(.overview-contour){margin-bottom:0}
+  .section-overview[data-layout="quality"] .system-map{min-height:0}
+  .section-overview[data-layout="quality"] .process-hub{width:100%;min-height:0}
+}
+
+/* v4 — one eight-part cycle, integrated QA nodes, and information-first inspectors. */
+.loop-node-quality .loop-node-main strong{color:var(--node)}
+.loop-node-quality .loop-node-main:after{content:"обязательная проверка";display:inline-block;margin-top:8px;padding:3px 6px;border:1px solid color-mix(in srgb,var(--node) 55%,transparent);border-radius:999px;color:var(--node);font:7px var(--mono);text-transform:uppercase}
+@media (min-width:761px){.loop-node:nth-child(1){top:35%}.loop-node:nth-child(8){left:8%;bottom:-5%}}
+.knowledge-engine{width:100%;background:transparent;color:#171a16;cursor:pointer}
+.knowledge-architecture [data-knowledge].is-related{border-color:#77a83e;box-shadow:0 0 0 2px rgba(119,168,62,.18)}
+
+.quality-tool-cluster{border:1px solid color-mix(in srgb,#77d5ff 72%,rgba(20,23,19,.16));background:linear-gradient(145deg,rgba(119,213,255,.12),rgba(246,243,233,.72))}
+.quality-tool-cluster>h3{color:#376c83}
+.quality-tool-cluster>.quality-node{width:100%;border-color:rgba(55,108,131,.34)}
+.quality-tool-links{display:flex!important;flex-wrap:wrap;gap:5px!important;margin-top:7px!important}
+.quality-tool-links button{flex:1 1 120px;padding:7px 8px;border:1px solid rgba(55,108,131,.28);border-radius:5px;background:rgba(255,255,255,.3);color:#315f72;font:8px/1.3 var(--mono);text-align:left;cursor:pointer}
+
+.system-map [data-node].is-muted{opacity:.64;filter:saturate(.35)}
+.graph-focus.is-open{position:fixed;z-index:70;right:18px;bottom:18px;display:block;width:min(760px,calc(100vw - 36px));max-height:calc(100dvh - 96px);padding:22px;overflow:auto;border:1px solid #3b463d;box-shadow:0 32px 110px rgba(0,0,0,.48)}
+.focus-head{display:grid;grid-template-columns:1fr auto;gap:7px 18px}.focus-head h3,.focus-head p{grid-column:1/-1}.focus-head h3{font:500 30px/.98 var(--display)}.focus-head p{color:#b7c0b5;font-size:12px;line-height:1.55}.focus-head>button{grid-column:2;grid-row:1;width:34px;height:34px;border:1px solid #465047;border-radius:50%;background:none;color:#eef3ec;font-size:17px;cursor:pointer}
+.focus-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:18px}.focus-detail-grid section{padding:12px;border:1px solid #343d35;border-radius:7px;background:#191e1a}.focus-detail-grid b,.focus-related>b,.focus-operations>b{display:block;margin-bottom:7px;color:#899387;font:8px var(--mono);letter-spacing:.06em;text-transform:uppercase}.focus-detail-grid span{display:block;color:#d8ded6;font-size:10px;line-height:1.45}.focus-detail-grid span+span{margin-top:5px;padding-top:5px;border-top:1px solid #2d352e}
+.focus-related{margin-top:12px;padding-top:12px;border-top:1px solid #343d35}.focus-related button{margin:0 5px 5px 0;padding:8px 10px;border:1px solid #3d473e;border-radius:6px;background:#1a201b;color:#e1e7df;text-align:left;cursor:pointer}.focus-related button:hover{border-color:var(--accent)}.focus-related button small{display:block;margin-bottom:3px;color:#828c80;font:7px var(--mono);text-transform:uppercase}
+.focus-operations{margin-top:12px;padding:12px;border:1px solid #343d35;border-radius:7px}.focus-operations code{display:inline-block;margin:0 5px 5px 0;padding:5px 7px;border-radius:4px;background:#232a24;color:#dce5d9;font:9px var(--mono)}
+.graph-focus.is-open>.tool-map{margin-top:12px;border-color:#39443b;background:#191e1a}
+.graph-focus.is-open .map-focus-actions{margin-top:14px;justify-content:flex-start}
+
+/* Lab Knowledge is drawn as a transit system rather than a schema diagram. */
+.knowledge-definition{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:26px}.knowledge-definition button{min-height:145px;padding:20px;border:1px solid rgba(20,23,19,.18);border-radius:16px;background:rgba(255,255,255,.23);color:#171a16;text-align:left;cursor:pointer}.knowledge-definition button:first-child{background:#151815;color:#edf2eb}.knowledge-definition small,.knowledge-flow-heading>span{color:#697268;font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}.knowledge-definition button:first-child small{color:#b9ff66}.knowledge-definition strong{display:block;margin-top:18px;font:500 24px var(--display)}.knowledge-definition span{display:block;margin-top:9px;color:#5d655c;font-size:12px;line-height:1.5}.knowledge-definition button:first-child span{color:#abb5a9}
+.knowledge-flow-heading{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-top:34px}.knowledge-flow-heading p{max-width:430px;color:#5c645b;font-size:11px}.knowledge-flow{margin-top:10px}.knowledge-flow button{min-height:112px}.knowledge-flow button:hover,.knowledge-flow button.is-active{border-color:#77a83e;background:#f6f8ec}
+.knowledge-canvas-v2{grid-template-columns:180px minmax(620px,1fr) 180px;align-items:start;background:radial-gradient(circle at 50% 20%,rgba(185,255,102,.13),transparent 30%),#e8e4d8}
+.knowledge-service{position:relative;z-index:2;padding:14px;border:1px solid rgba(20,23,19,.32);border-radius:24px;background:rgba(248,245,235,.72);box-shadow:0 28px 80px rgba(31,39,31,.08)}
+.knowledge-service-head{width:100%;padding:18px;border:0;border-radius:14px;background:#151815;color:#edf2eb;text-align:left;cursor:pointer}.knowledge-service-head small{color:#b9ff66;font:9px var(--mono);text-transform:uppercase}.knowledge-service-head strong{display:block;margin-top:8px;font:500 29px var(--display)}.knowledge-service-head span{display:block;margin-top:7px;color:#aeb7ac;font-size:11px}
+.knowledge-corpora{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.knowledge-corpora button{padding:13px;border:1px solid rgba(20,23,19,.16);border-radius:9px;background:#efecdf;color:#171a16;text-align:left;cursor:pointer}.knowledge-corpora small{color:#687168;font:8px var(--mono);text-transform:uppercase}.knowledge-corpora strong{display:block;margin-top:6px;font-size:14px}.knowledge-corpora span{display:block;margin-top:5px;color:#626a61;font-size:9px;line-height:1.35}
+.knowledge-track{margin-top:8px;padding:13px;border:1px solid rgba(20,23,19,.15);border-radius:12px;background:rgba(255,255,255,.25)}.knowledge-track header small{color:#687067;font:8px var(--mono);text-transform:uppercase}.knowledge-track header strong{display:block;margin-top:5px;font-size:13px}.knowledge-track>div{display:grid;gap:6px;margin-top:11px}.own-track>div{grid-template-columns:repeat(4,1fr)}.foreign-track>div,.context-track>div{grid-template-columns:1fr 1fr}.knowledge-record{position:relative;min-height:108px;padding:11px;border:1px solid rgba(20,23,19,.17);border-radius:8px;background:#f5f1e6;color:#171a16;text-align:left;cursor:pointer}.own-track .knowledge-record:not(:last-child):after{content:"→";position:absolute;z-index:3;left:100%;top:43%;width:7px;color:#7e887c;font:9px var(--mono)}.knowledge-record small{color:#6b746a;font:8px var(--mono)}.knowledge-record strong{display:block;margin-top:8px;font-size:13px;line-height:1.15}.knowledge-record span{display:block;margin-top:6px;color:#60685f;font-size:9px;line-height:1.35}.own-track>aside{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin-top:7px;padding-top:7px;border-top:1px dashed rgba(20,23,19,.18)}.own-track>aside>span{color:#697168;font:8px var(--mono);text-transform:uppercase}.own-track>aside .knowledge-record{min-height:78px}.foreign-track{border-color:rgba(119,213,255,.42);background:rgba(119,213,255,.07)}.paper-record{border-style:dashed}.context-track .knowledge-record{min-height:82px}
+.knowledge-canvas-v2 .knowledge-lane{padding-top:14px}.knowledge-canvas-v2 .knowledge-lane button{font-size:11px}.knowledge-canvas-v2 .knowledge-lane button+button{margin-top:0}
+.knowledge-canvas-v2 .personal-boundaries{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding-top:12px;border-top:1px solid rgba(20,23,19,.18)}.knowledge-canvas-v2 .personal-boundaries:before{content:"Личная рабочая память · не синхронизируется автоматически";grid-column:1/-1;color:#626a60;font:9px var(--mono);letter-spacing:.08em;text-transform:uppercase}.knowledge-canvas-v2 .personal-boundaries button{padding:13px;border:1px solid rgba(20,23,19,.16);border-radius:8px;background:rgba(255,255,255,.25);color:#171a16;text-align:left;cursor:pointer}.knowledge-canvas-v2 .personal-boundaries small{color:#6a7268;font:8px var(--mono);text-transform:uppercase}.knowledge-canvas-v2 .personal-boundaries strong{display:block;margin-top:6px;font-size:14px}.knowledge-canvas-v2 .personal-boundaries span{display:block;margin-top:5px;color:#5c645b;font-size:10px;line-height:1.4}
+.knowledge-canvas-v2 [data-knowledge]:hover,.knowledge-canvas-v2 [data-knowledge]:focus-visible,.knowledge-definition [data-knowledge]:hover,.knowledge-definition [data-knowledge]:focus-visible{border-color:#77a83e;outline:none;transform:translateY(-1px)}.knowledge-architecture [data-knowledge].is-muted{opacity:.64;filter:saturate(.35)}
+.knowledge-inspector.is-open{position:fixed;z-index:70;right:18px;bottom:18px;width:min(720px,calc(100vw - 36px));max-height:calc(100dvh - 96px);overflow:auto;border:1px solid #3b463d;box-shadow:0 32px 110px rgba(0,0,0,.48)}
+
+@media (max-width:1100px) and (min-width:761px){.knowledge-canvas-v2{grid-template-columns:150px minmax(500px,1fr) 150px}.own-track>div{grid-template-columns:1fr 1fr}.own-track .knowledge-record:after{display:none}}
+@media (max-width:760px){
+  .journey-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.journey-step{flex:0 0 220px;scroll-snap-align:start}.journey-step:not(:last-child):after{left:100%;top:50%;height:0;border-left:0;border-top:1px solid rgba(20,23,19,.25)}
+  .focus-detail-grid{grid-template-columns:1fr}.graph-focus.is-open,.knowledge-inspector.is-open{right:8px;bottom:8px;width:calc(100vw - 16px);max-height:80dvh;padding:17px}
+  .knowledge-definition{grid-template-columns:1fr}.knowledge-flow-heading{display:block}.knowledge-flow-heading p{margin-top:7px}.knowledge-flow{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.knowledge-flow button{flex:0 0 220px;scroll-snap-align:start}
+  .knowledge-canvas-v2{display:flex;flex-direction:column}.knowledge-service{width:100%;order:2}.knowledge-canvas-v2 .producers{order:1;width:100%}.knowledge-canvas-v2 .consumers{order:3;width:100%}.knowledge-canvas-v2 .personal-boundaries{order:4;grid-template-columns:1fr}.own-track>div,.foreign-track>div,.context-track>div{grid-template-columns:1fr}.own-track .knowledge-record:after{display:none}.own-track>aside{grid-template-columns:1fr}.knowledge-corpora{grid-template-columns:1fr}
+}
+
+/* Final responsive precedence for the 761–820px tablet gap. */
+@media (max-width:820px){
+  #overview .loop-map{height:auto;margin:52px 0 0;transform:none!important}
+  #overview .loop-line{display:none}
+  #overview .knowledge-core{position:relative;left:auto;top:auto;width:100%;height:auto;transform:none;align-items:flex-start;padding:22px;border-radius:12px;text-align:left}
+  #overview .knowledge-core:before{display:none}
+  #overview .memory-surfaces{position:relative;left:auto;top:auto;width:100%;transform:none;margin-top:10px}
+  #overview .loop-nodes{display:grid;margin-top:12px}
+  #overview .loop-node:nth-child(n){position:relative;left:auto;right:auto;top:auto!important;bottom:auto!important;width:100%;transform:none;text-align:left;padding:20px 10px 20px 46px;border-bottom:1px solid var(--line)}
+  #overview .loop-node:nth-child(n):before{left:12px;right:auto;top:29px;bottom:auto}
+  #overview .support{grid-template-columns:1fr;margin-top:50px}
+}
+
+/* Final Lab Knowledge pass: readable transit map, explicit theory and paper bridges. */
+.memory-shell>.process-hero.compact{padding-block:22px 18px}
+.memory-shell>.process-hero.compact .process-index{font-size:11px}
+.memory-shell>.process-hero.compact .process-title h1{font-size:clamp(34px,4vw,58px)}
+.memory-shell>.process-hero.compact .process-purpose p{max-width:560px}
+.knowledge-atlas-v3 .knowledge-rack strong{font-size:13px}
+.knowledge-atlas-v3 .knowledge-rack span{font-size:10px;line-height:1.4}
+.knowledge-atlas-v3 .knowledge-route strong{font-size:12px}
+.knowledge-atlas-v3 .knowledge-route span{font-size:9px;line-height:1.35}
+.knowledge-atlas-v3 .knowledge-record small{font-size:8px}
+.knowledge-atlas-v3 .knowledge-record strong{font-size:14px}
+.knowledge-atlas-v3 .knowledge-record span{font-size:10px;line-height:1.4}
+.knowledge-atlas-v3 .knowledge-track header small{font-size:9px}
+.knowledge-atlas-v3 .knowledge-track header strong{font-size:13px}
+.knowledge-atlas-v3 .personal-dock header small{font-size:9px}
+.knowledge-atlas-v3 .personal-dock header strong{font-size:11px}
+.knowledge-atlas-v3 .personal-dock strong{font-size:13px}
+.knowledge-atlas-v3 .personal-dock span{font-size:10px}
+.knowledge-atlas-v3 .theory-chain{grid-template-columns:112px repeat(3,minmax(0,1fr))!important;gap:6px;align-items:stretch}
+.knowledge-atlas-v3 .theory-chain>span{align-self:center;font-size:9px;line-height:1.35}
+.knowledge-atlas-v3 .theory-chain .knowledge-record{min-height:78px}
+.knowledge-atlas-v3 .theory-chain .knowledge-record:not(:last-child):after{content:"→";position:absolute;z-index:2;left:100%;top:43%;width:7px;color:#707a6e;font:10px var(--mono)}
+.knowledge-cross-link{display:grid;width:100%;grid-template-columns:150px 1fr;gap:8px;align-items:center;margin-top:7px;padding:11px 13px;border:1px dashed rgba(55,108,131,.55);border-radius:8px;background:rgba(114,206,233,.09);text-align:left}
+.knowledge-cross-link small{color:#376c83;font:8px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.knowledge-cross-link strong{font-size:11px;line-height:1.35}
+
+@media (min-width:1181px) and (max-width:1500px){
+  .knowledge-map-frame{grid-template-columns:1fr}
+  .knowledge-map-shell{grid-template-columns:125px 135px minmax(430px,1fr) 135px 125px}
+  .knowledge-map-frame>.knowledge-inspector{position:relative!important;top:auto;max-height:none}
+}
+
+@media (max-width:820px){
+  .memory-shell>.process-hero.compact{padding-block:16px}
+  .knowledge-atlas-v3 .theory-chain{grid-template-columns:1fr!important}
+  .knowledge-atlas-v3 .theory-chain .knowledge-record:after{display:none}
+  .knowledge-cross-link{grid-template-columns:1fr}
+}
+
+/* Final overview geometry: reserve clear lanes for the center dock and satellites. */
+@media (min-width:821px){
+  #overview .loop-map:has(.overview-contour){margin-bottom:250px}
+  #overview .loop-node:nth-child(6){right:22%}
+  #overview .loop-node:nth-child(7){bottom:-12%}
+}
+
+@media (max-width:820px){
+  #overview .loop-node:nth-child(n){box-sizing:border-box;max-width:100%;min-width:0}
+  #overview .loop-node-main,#overview .node-satellites{box-sizing:border-box;max-width:100%;min-width:0}
+}
+
+/* Desktop overview uses three collision-free belts around the shared MCP core. */
+@media (min-width:821px){
+  #overview .loop-map{height:1080px;margin-top:-22px}
+  #overview .loop-map:has(.overview-contour){margin-bottom:130px}
+  #overview .knowledge-core{top:50%}
+  #overview .memory-surfaces{top:calc(50% + 170px)}
+  #overview .loop-node:nth-child(1){left:0;top:36%}
+  #overview .loop-node:nth-child(2){left:10%;top:4%}
+  #overview .loop-node:nth-child(3){left:50%;top:2%;transform:translateX(-50%);text-align:center}
+  #overview .loop-node:nth-child(4){right:10%;top:4%}
+  #overview .loop-node:nth-child(5){right:0;top:36%}
+  #overview .loop-node:nth-child(6){right:15%;top:auto;bottom:0}
+  #overview .loop-node:nth-child(7){left:30%;top:auto;bottom:0;transform:none;text-align:left}
+  #overview .loop-node:nth-child(7) .result{margin-inline:0}
+  #overview .loop-node:nth-child(8){left:0;top:auto!important;bottom:0!important}
+}
+
+/* Tool dossiers: large readable sheet, with every secondary block spanning the sheet. */
+.graph-focus.is-open{right:24px;bottom:24px;display:block;width:min(1080px,calc(100vw - 48px));max-height:calc(100dvh - 48px);padding:26px;border-radius:18px}
+.graph-focus:not(.is-open):has(.focus-head){display:none}
+.graph-focus.is-open .focus-head h3{font-size:clamp(32px,3vw,44px)}
+.graph-focus.is-open .focus-head p{max-width:900px;font-size:14px;line-height:1.55}
+.graph-focus.is-open .focus-detail-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.graph-focus.is-open .focus-detail-grid section{min-width:0;padding:15px}
+.graph-focus.is-open .focus-detail-grid b,.graph-focus.is-open .focus-related>b,.graph-focus.is-open .focus-operations>b{font-size:10px}
+.graph-focus.is-open .focus-detail-grid span{font-size:12px;line-height:1.45;overflow-wrap:break-word}
+.graph-focus.is-open>.tool-map,.graph-focus.is-open .focus-related,.graph-focus.is-open .focus-operations,.graph-focus.is-open .map-focus-actions{grid-column:1/-1;min-width:0}
+.graph-focus.is-open>.tool-map{padding:18px}
+.graph-focus.is-open .tool-map>span{font-size:10px}
+.graph-focus.is-open .tool-map li{min-width:0;min-height:82px;padding:14px 12px;font-size:12px;line-height:1.4;overflow-wrap:break-word}
+.graph-focus.is-open .tool-map li i{font-size:9px}
+.graph-focus.is-open .focus-related button{min-height:52px;padding:10px 13px;font-size:13px;line-height:1.3}
+.graph-focus.is-open .focus-related button small{font-size:9px}
+
+/* Install instructions stay compact enough to scan and large enough to read. */
+
+@media (max-width:950px){
+  .graph-focus.is-open{right:12px;bottom:12px;width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:20px}
+  .graph-focus.is-open .focus-detail-grid{grid-template-columns:1fr 1fr}
+}
+
+@media (max-width:520px){
+  .graph-focus.is-open{padding:17px}
+  .graph-focus.is-open .focus-head h3{font-size:30px}
+  .graph-focus.is-open .focus-detail-grid{grid-template-columns:1fr}
+}
+
+/* Natural-height dossier columns prevent short facts from becoming empty slabs. */
+.graph-focus.is-open .focus-detail-columns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.graph-focus.is-open .focus-detail-columns>div{display:grid;align-content:start;gap:9px;min-width:0}
+.graph-focus.is-open .focus-detail-columns section{min-width:0;padding:15px;border:1px solid #343d35;border-radius:9px;background:#191e1a}
+.graph-focus.is-open .focus-detail-columns b{display:block;margin-bottom:8px;color:#899387;font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.graph-focus.is-open .focus-detail-columns span{display:block;color:#d8ded6;font-size:13px;line-height:1.45;overflow-wrap:break-word}
+.graph-focus.is-open .focus-detail-columns span+span{margin-top:6px;padding-top:6px;border-top:1px solid #2d352e}
+.tool-body{column-gap:36px;row-gap:20px}
+
+@media (max-width:700px){
+  .graph-focus.is-open .focus-detail-columns{grid-template-columns:1fr}
+  .tool-body{row-gap:16px}
+}
+
+/* Outcome-first instrument stories. Technical mechanics stay behind disclosure. */
+.tool-value{display:grid;grid-template-columns:1.25fr 1fr;align-items:start;gap:9px;margin-top:18px}
+.graph-focus .focus-head h3:focus,.graph-focus .focus-head h3:focus-visible{outline:none}
+.tool-value section{min-width:0;padding:17px;border:1px solid #343d35;border-radius:11px;background:#191e1a}
+.tool-value section>b{display:block;margin-bottom:10px;color:#99a397;font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.tool-value section>span{display:block;color:#e4e9e2;font-size:13px;line-height:1.45;overflow-wrap:break-word}
+.tool-value section>span+span{margin-top:7px;padding-top:7px;border-top:1px solid #303830}
+.tool-value .tool-outcome{border-color:color-mix(in srgb,var(--accent) 58%,#343d35);background:color-mix(in srgb,var(--accent) 9%,#191e1a)}
+.tool-value .tool-outcome>b{color:var(--accent)}
+.focus-source-row{display:flex;justify-content:flex-start;margin-top:13px}
+.focus-source-row .source-link{border-color:#485047;color:#e4e9e2}
+.tool-mechanics>summary{display:flex;justify-content:space-between;gap:18px;min-height:48px;align-items:center;cursor:pointer;color:inherit;font:11px var(--mono);text-transform:uppercase}
+.tool-body>.tool-value,.tool-body>.tool-mechanics{grid-column:1/-1}
+.tool-body>.tool-value section{border-color:rgba(20,23,19,.16);background:rgba(255,255,255,.26)}
+.tool-body>.tool-value section>b{color:#697168}
+.tool-body>.tool-value section>span{color:#252a24}
+.tool-body>.tool-value .tool-outcome{border-color:color-mix(in srgb,var(--accent) 58%,rgba(20,23,19,.16));background:color-mix(in srgb,var(--accent) 10%,#f1ede2)}
+.tool-mechanics{border-top:1px solid rgba(20,23,19,.16);border-bottom:1px solid rgba(20,23,19,.16)}
+.tool-mechanics>summary span{color:#737b71;font-size:9px}
+.tool-mechanics>div{padding:0 0 18px}
+.tool-mechanics .tool-map{margin-bottom:14px}
+
+@media (max-width:760px){
+  .tool-value{grid-template-columns:1fr}
+}
+
+/* v40 geometry must win over legacy orbit patches above. */
+@media (min-width:821px){
+  #overview .loop-map,#overview .loop-map:has(.overview-contour){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:190px 230px 190px;gap:14px;width:min(100%,1500px);height:auto;margin:36px auto 0;transform:none!important}
+  #overview .loop-nodes{display:contents}
+  #overview .loop-node:nth-child(n){position:relative;inset:auto;width:auto;min-width:0;padding:0;transform:none;text-align:left}
+  #overview .loop-node:nth-child(1){grid-area:1/1}#overview .loop-node:nth-child(2){grid-area:1/2}#overview .loop-node:nth-child(3){grid-area:1/3}#overview .loop-node:nth-child(4){grid-area:2/3}#overview .loop-node:nth-child(5){grid-area:3/3}#overview .loop-node:nth-child(6){grid-area:3/2}#overview .loop-node:nth-child(7){grid-area:3/1}#overview .loop-node:nth-child(8){grid-area:2/1}
+  #overview .knowledge-cluster{grid-area:2/2}
+  #overview .knowledge-core{position:absolute;left:50%;top:32%;width:148px;height:148px;transform:translate(-50%,-50%)}
+  #overview .memory-surfaces{position:absolute;inset:0;width:auto;transform:none;margin:0}
+  #overview .memory-surfaces button{width:78px;height:78px;padding:9px}
+  #overview .memory-surfaces button:nth-child(1){left:4%}
+  #overview .memory-surfaces button:nth-child(2){right:4%}
+  #overview .memory-surfaces button:nth-child(3){bottom:0}
+}
+@media (max-width:820px){
+  .topbar{grid-template-columns:auto 1fr auto}.view-switch{display:flex;justify-self:center;max-width:55vw;overflow-x:auto;white-space:nowrap}.view-switch button{display:block!important;min-height:44px}
+  #overview .loop-map{display:flex;height:auto;margin:35px 0 0;transform:none!important}
+  #overview .loop-nodes{display:flex}
+  #overview .loop-node:nth-child(n){position:relative;inset:auto;width:100%;padding:0;transform:none;border:0;text-align:left}
+  #overview .knowledge-cluster{position:relative;order:-1;min-height:330px;width:100%}
+  #overview .knowledge-core{position:absolute;left:50%;top:40%;width:164px;height:164px;transform:translate(-50%,-50%);align-items:center;padding:0;border-radius:50%;text-align:center}
+  #overview .memory-surfaces{position:absolute;inset:0;width:auto;transform:none;margin:0}
+  .surface-orbit{display:flex!important;flex-direction:column;gap:8px;min-height:0!important;padding:14px;border-radius:28px}
+  .surface-center{position:relative!important;inset:auto!important;width:180px!important;height:180px!important;transform:none!important;align-self:center;margin-bottom:6px}
+  .surface-orbit article:nth-of-type(n){position:relative!important;inset:auto!important;width:100%!important}
+}
+
+/* Live operations begin compact and expand on click or keyboard activation. */
+.live-operations article{position:relative;max-height:72px;overflow:hidden;cursor:pointer;transition:max-height .22s ease,border-color .22s ease}
+.live-operations article:after{content:"Открыть все";position:absolute;right:16px;top:17px;color:var(--lime);font:8px var(--mono);text-transform:uppercase}
+.live-operations article.is-open{max-height:420px;border-color:#658f45}
+.live-operations article.is-open:after{content:"Свернуть"}
+.live-operations article:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.live-operations article small,.live-operations article strong{max-width:70%}
+
+.surface-routes{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:4px}
+.surface-routes button{display:grid;min-height:132px;padding:18px;border:1px solid rgba(20,23,19,.18);border-radius:15px;background:#171b17;color:#eef3ec;text-align:left}
+.surface-routes small{color:#b9ff66;font:8px var(--mono);text-transform:uppercase}.surface-routes strong{margin-top:9px;font-size:15px}.surface-routes span{margin-top:7px;color:#aeb7ab;font-size:11px;line-height:1.45}.surface-routes i{align-self:end;margin-top:12px;color:#b9ff66;font:9px var(--mono);font-style:normal;text-transform:uppercase}
+@media(max-width:820px){.surface-routes{grid-template-columns:1fr}.live-operations article{max-height:68px}}
+
+@media(min-width:821px){
+  .surface-map>.surface-orbit{grid-column:1;grid-row:1}
+  .surface-map>.surface-flow{grid-column:2;grid-row:1}
+  .surface-map>.surface-facts{grid-column:1/-1;grid-row:2}
+  .surface-map>.surface-routes{grid-column:1/-1;grid-row:3}
+}
+.surface-hero h1:focus,.surface-hero h1:focus-visible{outline:none}
+@media(max-width:820px){#overview .knowledge-core strong br{display:block!important}#overview .memory-surfaces button{width:84px;height:84px}}
+.view-switch button{min-height:44px;font-size:12px}
+
+/* Overview satellites open a compact dossier without changing the route. */
+.quick-tool-dialog{width:min(640px,calc(100vw - 28px));max-height:calc(100dvh - 32px);padding:0;overflow:auto;border:1px solid #465047;border-radius:18px;background:#121713;color:#eef3ec;box-shadow:0 32px 110px rgba(0,0,0,.58)}
+.quick-tool-dialog::backdrop{background:rgba(5,8,6,.58);backdrop-filter:blur(5px)}
+.quick-tool-card{position:relative;padding:24px}.quick-tool-card>.quick-close{position:absolute;right:17px;top:17px;width:44px;height:44px;border:1px solid #465047;border-radius:50%;background:transparent;color:#eef3ec;font-size:22px;cursor:pointer}
+.quick-tool-card>small{display:block;padding-right:48px;color:var(--accent);font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase}.quick-tool-card>h2{margin-top:10px;font:500 clamp(30px,5vw,44px)/1 var(--display);letter-spacing:-.04em}.quick-tool-card>h2:focus{outline:none}.quick-tool-card>p{margin-top:12px;color:#bdc6bb;font-size:14px;line-height:1.55}
+.quick-tool-card>section{display:grid;grid-template-columns:110px 1fr;gap:7px 14px;margin-top:18px;padding:14px;border:1px solid #343e35;border-radius:11px;background:#181e19}.quick-tool-card>section>b{grid-row:1/span 6;color:var(--accent);font:10px var(--mono);text-transform:uppercase}.quick-tool-card>section>span{color:#e0e6de;font-size:12px;line-height:1.4}.quick-tool-card>section>span+span{padding-top:7px;border-top:1px solid #303831}
+.quick-tool-card>.tool-map{margin-top:18px;padding:14px;border-color:#39443b;background:#181e19}.quick-tool-card>.tool-map ol{grid-template-columns:repeat(3,minmax(0,1fr))}.quick-tool-card>.tool-map li{min-height:66px;padding:10px;font-size:11px}.quick-tool-card>footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}.quick-tool-card>footer>button{min-height:44px;padding:0 15px;border:1px solid color-mix(in srgb,var(--accent) 60%,#465047);border-radius:999px;background:transparent;color:var(--accent);font:10px var(--mono);text-transform:uppercase;cursor:pointer}
+
+/* Large tools expose their mechanism directly on the section map. */
+.tool-node-major{min-height:138px}.tool-node-major>ol{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin:10px 0 0;padding:9px 0 0 16px;border-top:1px solid rgba(20,23,19,.12)}.tool-node-major>ol li{color:#4f574f;font-size:10px;line-height:1.3}.tool-node-major>span{-webkit-line-clamp:3}
+
+/* Search accepts a task description and offers concrete starting prompts. */
+.search-examples{display:flex;flex-wrap:wrap;gap:7px;padding:10px 8px 14px;border-bottom:1px solid #2e352f}.search-examples>span{width:100%;color:#858e83;font:9px var(--mono);text-transform:uppercase}.search-examples>button{min-height:44px;padding:8px 11px;border:1px solid #39423a;border-radius:999px;background:#181e19;color:#d7ded5;font-size:10px;cursor:pointer}.search-examples>button:hover,.search-examples>button:focus-visible{border-color:var(--lime);color:var(--lime)}
+
+/* Read-only semantic demo over the current public Lab Knowledge snapshot. */
+.live-search{margin:24px 0;padding:24px;border:1px solid #5c7c46;border-radius:20px;background:radial-gradient(circle at 92% 0,rgba(185,255,102,.11),transparent 34%),#111612;color:#edf2eb}.live-search>header{display:grid;grid-template-columns:minmax(260px,.7fr) 1fr;gap:5px 28px}.live-search>header p{color:var(--lime);font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase}.live-search>header h2{grid-row:2;font:500 clamp(28px,4vw,46px)/1 var(--display);letter-spacing:-.04em}.live-search>header span{grid-column:2;grid-row:1/3;align-self:end;color:#aeb8ac;font-size:13px;line-height:1.5}
+#live-search-form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:22px}#live-search-form input{min-width:0;height:54px;padding:0 17px;border:1px solid #3d473e;border-radius:12px;background:#1a201b;color:#eff4ed;font-size:15px;outline:none}#live-search-form input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(185,255,102,.08)}#live-search-form button{padding:0 22px;border:1px solid var(--lime);border-radius:12px;background:var(--lime);color:#111511;font:10px var(--mono);text-transform:uppercase;cursor:pointer}
+.live-search-examples{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.live-search-examples button{min-height:44px;padding:8px 11px;border:1px solid #39423a;border-radius:999px;background:transparent;color:#bac4b8;font-size:10px;cursor:pointer}.live-search-examples button:hover,.live-search-examples button:focus-visible{border-color:var(--lime);color:var(--lime)}
+#overview .loop-node:nth-child(n) .node-satellites{position:relative;z-index:8;scroll-margin-top:84px}
+
+/* Planetary overview: the shared MCP is the gravity center, not a grid cell. */
+@media (min-width:821px){
+  #overview .loop-map,
+  #overview .loop-map:has(.overview-contour){
+    position:relative;
+    display:block;
+    width:min(100%,1450px);
+    height:760px;
+    margin:16px auto 18px;
+    transform:none!important;
+    isolation:isolate;
+  }
+  #overview .loop-map:before{
+    content:"";
+    position:absolute;
+    z-index:0;
+    inset:38px 54px;
+    border:1px dashed rgba(207,219,205,.24);
+    border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(185,255,102,.075),transparent 43%,rgba(185,255,102,.035) 44%,transparent 61%);
+    pointer-events:none;
+  }
+  #overview .loop-map:after{
+    content:"";
+    position:absolute;
+    z-index:0;
+    inset:76px 105px;
+    border:24px solid rgba(185,255,102,.025);
+    border-radius:50%;
+    pointer-events:none;
+  }
+  #overview .loop-line{display:block}
+  #overview .loop-nodes{display:block}
+  #overview .loop-node:nth-child(n){
+    position:absolute;
+    z-index:3;
+    width:clamp(230px,19vw,286px);
+    min-width:0;
+    inset:auto;
+    padding:0;
+    transform:none;
+    text-align:left;
+  }
+  #overview .loop-node:nth-child(1){left:1.5%;top:18%}
+  #overview .loop-node:nth-child(2){left:23%;top:1%}
+  #overview .loop-node:nth-child(3){right:23%;top:1%}
+  #overview .loop-node:nth-child(4){right:1.5%;top:18%}
+  #overview .loop-node:nth-child(5){right:1.5%;bottom:16%}
+  #overview .loop-node:nth-child(6){right:23%;bottom:0}
+  #overview .loop-node:nth-child(7){left:23%;bottom:0}
+  #overview .loop-node:nth-child(8){left:1.5%;bottom:16%}
+  #overview .loop-node:before{
+    display:block;
+    left:-8px;
+    top:18px;
+    width:8px;
+    height:8px;
+    border:3px solid var(--bg);
+    background:var(--node);
+    box-shadow:0 0 0 1px var(--node),0 0 22px color-mix(in srgb,var(--node) 35%,transparent);
+  }
+  #overview .loop-node-main{
+    display:block;
+    min-height:0;
+    height:auto;
+    padding:15px 17px 13px;
+    border:1px solid color-mix(in srgb,var(--node) 42%,rgba(220,228,220,.16));
+    border-radius:15px;
+    background:linear-gradient(145deg,color-mix(in srgb,var(--node) 8%,rgba(14,18,16,.95)),rgba(11,15,13,.94));
+    box-shadow:0 14px 36px rgba(0,0,0,.2);
+  }
+  #overview .loop-node-main .num{font-size:9px}
+  #overview .loop-node-main strong{margin-top:7px;font-size:clamp(21px,1.65vw,27px)}
+  #overview .loop-node-main .verb{margin-top:7px;font-size:11px}
+  #overview .loop-node-main .result{max-width:none;margin-top:7px;padding:0;font-size:9px;line-height:1.38}
+  #overview .loop-node:nth-child(n) .node-satellites{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    z-index:8;
+    gap:5px;
+    margin:6px 0 0;
+    padding:0;
+    transform:none;
+  }
+  #overview .node-satellites button{
+    display:block!important;
+    min-width:0;
+    min-height:44px;
+    padding:7px 9px;
+    border-radius:999px;
+    font-size:9px;
+    line-height:1.18;
+    overflow-wrap:anywhere;
+    white-space:normal;
+  }
+  #overview .knowledge-cluster{
+    position:absolute;
+    z-index:2;
+    left:50%;
+    top:50%;
+    width:500px;
+    height:348px;
+    min-width:0;
+    transform:translate(-50%,-50%);
+    border:1px solid rgba(185,255,102,.18);
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 42%,rgba(185,255,102,.11),rgba(185,255,102,.025) 48%,transparent 69%);
+  }
+  #overview .knowledge-core{
+    position:absolute;
+    left:50%;
+    top:40%;
+    z-index:3;
+    width:190px;
+    height:190px;
+    transform:translate(-50%,-50%);
+  }
+  #overview .knowledge-core strong{font-size:25px}
+  #overview .knowledge-core p{max-width:150px;font-size:9px}
+  #overview .memory-surfaces{position:absolute;inset:0;display:block;width:auto;margin:0;transform:none}
+  #overview .memory-surfaces button{width:96px;height:96px;padding:10px}
+  #overview .memory-surfaces button:nth-child(1){left:5%;top:49%}
+  #overview .memory-surfaces button:nth-child(2){right:5%;top:49%}
+  #overview .memory-surfaces button:nth-child(3){left:50%;bottom:0;transform:translateX(-50%)}
+  #overview .memory-surfaces b{font-size:13px}
+  #overview .memory-surfaces span{font-size:8px;line-height:1.2}
+  #overview .support{margin-top:34px}
+}
+
+@media (min-width:821px) and (max-width:1120px){
+  #overview .loop-map,#overview .loop-map:has(.overview-contour){height:820px}
+  #overview .loop-node:nth-child(n){width:225px}
+  #overview .loop-node:nth-child(2),#overview .loop-node:nth-child(7){left:24%}
+  #overview .loop-node:nth-child(3),#overview .loop-node:nth-child(6){right:24%}
+  #overview .knowledge-cluster{width:430px;height:320px}
+  #overview .knowledge-core{width:174px;height:174px}
+  #overview .memory-surfaces button{width:82px;height:82px}
+}
+#live-search-results{margin-top:16px}#live-search-results>header{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid #364038;border-bottom:1px solid #364038}#live-search-results>header small{color:#8e988c;font:9px var(--mono);text-transform:uppercase}#live-search-results>header strong{font-size:11px}.live-search-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}.live-search-grid>section{padding:13px;border:1px solid #343d35;border-radius:12px;background:#181e19}.live-search-grid>section>b{display:block;margin-bottom:9px;color:var(--lime);font:9px var(--mono);text-transform:uppercase}.live-search-grid article{display:grid;grid-template-columns:80px 1fr;gap:4px 10px;padding:9px 0}.live-search-grid article+article{border-top:1px solid #2f3730}.live-search-grid article small{grid-row:1/3;color:#899287;font:8px var(--mono);text-transform:uppercase}.live-search-grid article strong,.live-search-grid article code{font-size:12px}.live-search-grid article span{color:#aeb7ac;font-size:10px;line-height:1.4}.live-search-grid>section:last-child article{grid-template-columns:1fr}.live-search-grid>section:last-child article small{grid-row:auto}.live-search-grid>section:last-child code{color:#e0e7dd}.live-search-grid+p{margin-top:10px;color:#818b80;font-size:9px;line-height:1.5}.live-search-empty{padding:22px;border:1px dashed #3b453c;border-radius:12px;text-align:center}.live-search-empty strong,.live-search-empty span{display:block}.live-search-empty span{margin-top:6px;color:#8f998d;font-size:11px}
+
+@media(max-width:760px){.quick-tool-card{padding:19px}.quick-tool-card>section{grid-template-columns:1fr}.quick-tool-card>section>b{grid-row:auto}.quick-tool-card>.tool-map ol{grid-template-columns:1fr 1fr}.quick-tool-card>footer{align-items:stretch;flex-direction:column}.tool-node-major>ol{grid-template-columns:1fr}.live-search{padding:17px}.live-search>header{grid-template-columns:1fr}.live-search>header h2,.live-search>header span{grid-column:1;grid-row:auto}.live-search-grid{grid-template-columns:1fr}#live-search-form{grid-template-columns:1fr}#live-search-form button{height:46px}}
+
+/* Карта помещается в экран целиком.
+   Замер 05-09-2026: при фиксированной высоте 760px на 1280×800 из восьми направлений были видны
+   четыре, на 1920×1080 у трёх нижних срезало ряды кнопок. Геометрия карты сохранена как есть, а
+   вся карта целиком уменьшается до свободной высоты: масштаб считает скрипт и кладёт в --map-scale,
+   потому что делить высоту окна на высоту макета в CSS пришлось бы на глаз. */
+@media (min-width:821px){
+  #overview{padding-top:96px;padding-bottom:40px}
+  #overview .overview-head h1{font-size:clamp(42px,4.4vw,64px)}
+  #overview .overview-intro{max-width:390px;font-size:13px;line-height:1.6}
+  #overview .loop-map,
+  #overview .loop-map:has(.overview-contour){
+    /* Ширина макета зафиксирована: если позволить карте сжиматься, проценты в расстановке
+       сжимаются вместе с ней и карточки наезжают друг на друга. Замер на 1280: «Литература»
+       перекрывала «Проверку статей» на 150 пикселей. Вместо сжатия карта уменьшается целиком. */
+    width:1450px!important;
+    max-width:none!important;
+    transform:scale(var(--map-scale,1))!important;
+    /* Точка отсчёта слева, а не по центру. Холст шире контейнера, а у блока шире родителя
+       margin:auto обращается в ноль: раскладочная коробка начинается от левого поля и уходит
+       вправо. При отсчёте от центра уменьшенная карта оставалась смещённой вправо на те же
+       85 пикселей и правым краем вылезала за окно. От левого края смещение считает скрипт:
+       он знает и масштаб, и свободное место. */
+    transform-origin:top left;
+    /* Высота холста настоящая, не умноженная на масштаб. Раньше здесь стояло
+       calc(760px * var(--map-scale,1)), и высота уменьшалась дважды: сначала в calc, потом
+       трансформом. Холст сжимался по вертикали — на 1280 до 510 пикселей вместо 628, — а
+       расстановка карточек задана в процентах от него, поэтому нижний ряд наезжал на круг
+       общего знания. Лишнее место под картой снимаем отрицательным полем: место занимает
+       нарисованная высота, а внутренняя геометрия остаётся целой. */
+    height:760px;
+    margin:8px 0 calc(12px - 760px * (1 - var(--map-scale,1)));
+  }
+}
+
+/* Абсолютная раскладка держится только там, где ей хватает ширины.
+   Замер: на 1150px карточка «Проверка статей» перекрывала «Презентацию» на 114px, на 1024
+   таких наложений было тринадцать. Ниже 1200px карта переходит в столбец — он читается. */
+/* Граница поднята с 1200 до 1260. Ниже неё круговой раскладке не хватает ширины: масштаб
+   уходит меньше 0.80, и мелкие подписи становятся нечитаемыми. Колонка там честнее. */
+@media (max-width:1260px) and (min-width:821px){
+  #overview .loop-map,
+  #overview .loop-map:has(.overview-contour){
+    /* Ширину обязательно вернуть: блок выше жёстко ставит холст 1450px под круговую
+       раскладку, а здесь раскладка колоночная и холст ей не нужен. Без сброса колонка
+       строилась внутри коробки в 1450 пикселей и обрезалась с обеих сторон. */
+    width:min(100%,1180px)!important;
+    height:auto;
+    min-height:0;
+    transform:none!important;
+    margin:24px auto 0;
+  }
+  #overview .loop-map:before{display:none}
+  #overview .loop-map>.loop-nodes,
+  #overview .loop-map>.knowledge-cluster,
+  #overview .loop-map>svg{transform:none}
+  #overview .loop-map>svg{display:none}
+  /* Кластеру нужна собственная высота: и ядро, и три кнопки памяти внутри позиционированы
+     абсолютно, поэтому при height:auto он схлопывался в ноль, а его содержимое ложилось
+     поверх карточек и полосы с числами. Так же, как в мобильной ветке, задаём min-height. */
+  #overview .knowledge-cluster{position:relative;left:auto;top:auto;transform:none;
+    width:100%;height:auto;min-height:330px;margin:0 0 18px}
+  #overview .knowledge-core{position:absolute;left:50%;top:44%;width:168px;height:168px;
+    transform:translate(-50%,-50%)}
+  #overview .memory-surfaces{position:absolute;inset:0;width:auto;transform:none;margin:0}
+  #overview .loop-nodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  #overview .loop-node,#overview .loop-node:nth-child(n){
+    position:relative;left:auto;right:auto;top:auto;bottom:auto;
+    width:100%;transform:none;text-align:left}
+  #overview .loop-node:before,#overview .loop-node:nth-child(n):before{display:none}
+}
+
+/* Левая и правая колонки карты: карточки не должны налезать друг на друга.
+   Замер 05-09-2026: узлы 1 и 8 стоят в одной колонке, и при выросших рядах кнопок нижний край
+   первого заходил на второй на 47 пикселей. То же у 4 и 5. Разводим по вертикали, композиция
+   остаётся прежней: те же четыре колонки вокруг центра. */
+/* Граница та же, что у перехода в колонку: ниже 1261 карточки не расставлены по кругу, и
+   сдвиги по вертикали там не поправляют композицию, а ломают колонку — узлы остаются
+   position:relative, и top/bottom смещают их друг на друга. */
+@media (min-width:1261px){
+  #overview .loop-node:nth-child(1),#overview .loop-node:nth-child(4){top:9%}
+  #overview .loop-node:nth-child(5),#overview .loop-node:nth-child(8){bottom:7%}
+  #overview .loop-node:nth-child(1) .node-satellites,
+  #overview .loop-node:nth-child(4) .node-satellites,
+  #overview .loop-node:nth-child(5) .node-satellites,
+  #overview .loop-node:nth-child(8) .node-satellites{row-gap:5px}
+}
+
+/* Шапка на узком экране: три вкладки, поиск и логотип не помещались в 390 пикселей.
+   Замер 05-09-2026: «Примеры» налезали на поиск на 44 пикселя, и по центру нажималась не
+   вкладка, а поиск. Подпись под логотипом уходила под первую вкладку. */
+@media (max-width:560px){
+  .topbar{height:auto;min-height:58px;padding-top:8px;padding-bottom:8px;
+    grid-template-columns:1fr auto;row-gap:8px}
+  .brand small{display:none}
+  .view-switch{display:flex!important;grid-column:1/-1;order:3;justify-self:stretch;
+    max-width:none!important;justify-content:space-between;overflow:visible;
+    gap:2px;padding:3px}
+  .view-switch::-webkit-scrollbar{display:none}
+  .view-switch button{flex:1 1 auto;padding:9px 6px;font-size:11px;white-space:nowrap}
+  .search-open{min-width:0;width:44px;height:44px;justify-content:center;gap:0;padding:0}
+  .search-open>span,.search-open>kbd{display:none!important}
+  .search-open:before{content:""!important}
+  .search-open:after{content:"⌕";font-size:20px;line-height:1}
+}
+
+/* Пол размера шрифта и контраст служебных подписей.
+   Замер 05-09-2026: кнопка «Вернуться к общей карте» — 9 пикселей при цели нажатия 166×11,
+   якоря «Карта раздела» — 8 пикселей, а серый #747B72 на кремовом давал контраст 3.56 при
+   норме 4.5. Ниже одиннадцати пикселей на витрине не остаётся ничего. */
+.process-view .back-button,.dykaf-view .back-button{
+  font-size:12px;padding:9px 13px 9px 0;letter-spacing:.06em}
+.process-jump a{font-size:11px!important;padding:8px 12px!important}
+.tool-type,.tools-count,.tool-spec dt,.tool-when>span,.stage-result span,
+.destination small,.capability>span,.section-label,.process-nav small,
+.all-capabilities>summary,.implementation>summary{font-size:10px!important}
+.tool-spec dd,.capability>p,.destination p,.stage>p{font-size:11px}
+.process-view{--muted-ink:#565e54}
+.tool-spec dt,.tool-when>span,.stage-result span,.destination small,.capability>span,
+.section-label,.tools-count,.tool-type,.process-nav small,.all-capabilities>summary span,
+.implementation>summary span{color:var(--muted-ink)!important}
+.tool-role,.section-heading p,.process-purpose,.stage>p,.capability>p{color:#4f564d}
+/* Строка длиной под сто сорок знаков читается тяжело: ограничиваем абзацы. */
+.process-shell p,.knowledge-intro p,.section-heading p{max-width:74ch}
+
+/* Карта уплотнена, чтобы помещаться без мелкого шрифта.
+   Замер 05-09-2026: чтобы влезть в 1440×900, карту приходилось ужимать до 0.75, и описания
+   выходили по 6.8 пикселя. Теперь макет ниже и плотнее, а уменьшение ограничено 0.85: ниже
+   этого порога карта переходит в две колонки, где текст остаётся нормального размера. */
+@media (min-width:1261px){
+  #overview .loop-map,
+  #overview .loop-map:has(.overview-contour){height:628px;
+    margin-bottom:calc(12px - 628px * (1 - var(--map-scale,1)))}
+  #overview .knowledge-cluster{width:392px;height:320px}
+  #overview .knowledge-core{width:196px;height:196px}
+  #overview .knowledge-core strong{font-size:24px}
+  #overview .knowledge-core p{margin-top:8px;font-size:9px}
+  #overview .memory-surfaces button{width:88px;height:88px}
+  #overview .loop-node{width:224px}
+  #overview .loop-node-main{padding:13px 15px}
+  /* Внутри карты кегль фиксированный, без vw. Холст в 1450 пикселей и так уменьшается
+     целиком через --map-scale, и если типографика внутри него ещё раз реагирует на ширину
+     окна, карточки на каждой ширине получаются разной высоты, а расстановка задана в
+     процентах от холста. Из-за этого «Поделиться с сообществом» задевало кнопку Obsidian
+     на 1280 и не задевало на 1920: одна и та же геометрия, разная высота текста. */
+  #overview .loop-node-main strong{font-size:21px}
+  #overview .loop-node-main .result{font-size:10px;line-height:1.35}
+  #overview .loop-node:nth-child(n) .node-satellites{gap:5px;margin-top:7px}
+  #overview .node-satellites button{padding:7px 9px;font-size:9.5px}
+  #overview .loop-node:nth-child(1),#overview .loop-node:nth-child(4){top:7%}
+  #overview .loop-node:nth-child(5),#overview .loop-node:nth-child(8){bottom:5%}
+}
+
+/* Когда карта не помещается без потери читаемости, восемь направлений выстраиваются в две
+   колонки вокруг центра. Это не сетка вместо карты: центр остаётся общим знанием наверху,
+   порядок обхода сохраняется, просто орбита разворачивается в столбцы. */
+#overview.map-stacked .loop-map,
+#overview.map-stacked .loop-map:has(.overview-contour){
+  display:flex;flex-direction:column;width:min(100%,1180px)!important;height:auto!important;transform:none!important;margin:18px auto 0}
+#overview.map-stacked .loop-map:before{display:none}
+#overview.map-stacked .loop-map>svg{display:none}
+#overview.map-stacked .knowledge-cluster{position:relative;left:auto;top:auto;transform:none;
+  order:-1;flex:none;width:min(100%,500px);height:330px;margin:0 auto 20px}
+#overview.map-stacked .loop-nodes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#overview.map-stacked .loop-node,#overview.map-stacked .loop-node:nth-child(n){
+  position:relative;left:auto;right:auto;top:auto;bottom:auto;width:100%;transform:none;text-align:left}
+#overview.map-stacked .loop-node:before,#overview.map-stacked .loop-node:nth-child(n):before{display:none}
+
+/* Keep the orbit readable on laptop screens by reducing the heading's footprint. */
+@media (min-width:1261px) and (max-height:850px){
+  #overview{padding-top:84px}
+  #overview .overview-head{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:8px 40px;align-items:end}
+  #overview .overview-head .overline{grid-column:1/-1}
+  #overview .overview-head h1{max-width:680px;margin-top:0;font-size:38px;line-height:1.02}
+  #overview .overview-head h1 br{display:none}
+  #overview .overview-intro{position:static;max-width:390px;margin:0;font-size:12px;line-height:1.5}
+}
+
+/* Кнопка возврата наверх. Появляется только когда прокрутка уже увела от заголовка. */
+.to-top{position:fixed;right:18px;bottom:18px;z-index:60;width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);background:rgba(18,20,24,.92);color:#e8ecf2;font-size:17px;
+  line-height:1;cursor:pointer;backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.to-top:hover{background:rgba(34,38,44,.96);border-color:rgba(185,255,102,.5)}
+.to-top:focus-visible{outline:2px solid #b9ff66;outline-offset:2px}
+@media (max-width:560px){.to-top{right:12px;bottom:12px;width:38px;height:38px}}
+
+/* Прыжок по якорю не должен заводить заголовок под липкую панель и под навигацию раздела. */
+#map,#tools,.process-section{scroll-margin-top:132px}
+
+/* ============ Плотность страниц раздела ============
+   Заголовки в 90 пикселей и отбивки в 72 съедали экран, и посетителю приходилось
+   прокручивать три экрана, прежде чем начиналось содержание. Тут шкала уменьшена
+   примерно на четверть, а вертикальные отбивки на треть. Карта на первом экране
+   (#overview) не затрагивается: у неё своя, уже выверенная геометрия. */
+.process-view .process-hero{margin-top:30px;padding-bottom:38px;gap:28px;grid-template-columns:104px minmax(0,1.25fr) minmax(260px,.65fr)}
+.process-view .process-index{font-size:66px}
+.process-view .process-title h1{font-size:clamp(38px,4.6vw,62px)}
+.process-view .process-title .verb{margin-top:12px;font-size:16px}
+.process-view .process-section{padding:44px 0}
+.process-view .section-heading{gap:40px;margin-top:12px}
+.process-view .section-heading h2{font-size:clamp(28px,3vw,42px)}
+.process-view .map-heading h2{font-size:clamp(28px,3vw,44px)}
+.knowledge-intro h2,.knowledge-atlas-v3 .knowledge-intro h2{font-size:clamp(32px,3.6vw,52px)}
+.knowledge-architecture{padding-top:26px}
+.surface-hero{margin-top:26px;padding-bottom:24px}
+.surface-hero h1{font-size:clamp(38px,4.6vw,62px)}
+.surface-hero>span{font-size:52px}
+.special-hero h1{font-size:clamp(38px,4.6vw,64px)}
+.live-architecture h2,.live-operations h2,.live-example h2{font-size:clamp(26px,3vw,40px)}
+.live-search>header h2{font-size:clamp(24px,2.8vw,36px)}
+.process-view .flow{margin-top:28px}
+.process-view .stage{min-height:0;padding:18px}
+.process-view .stage h3{margin-top:22px;font-size:19px}
+.process-view .when-grid{margin-top:24px}
+.process-view .when-grid p{padding:16px}
+.process-view .outcome-layout{gap:48px;margin-top:26px}
+.process-view .control-grid,.process-view .example{margin-top:22px}
+.process-view .example{padding:20px}
+
+/* Заголовок получает фокус только чтобы читалка объявила новую страницу.
+   Рамка вокруг него читается как ошибка вёрстки, у настоящих кнопок она остаётся. */
+h1[tabindex="-1"]:focus-visible,h2[tabindex="-1"]:focus-visible,h3[tabindex="-1"]:focus-visible,
+.map-focus:focus-visible,.graph-focus:focus-visible{outline:none}
+
+/* ============ Жизненный цикл записи ============
+   Раньше центральная страница показывала типы записей, но не показывала порядок:
+   что за чем идёт, чем закрывается утверждение и какие переходы служба запрещает.
+   Два пути стоят рядом, потому что выбор между ними и есть первое решение автора. */
+.knowledge-lifecycle{padding:36px 0;border-top:1px solid rgba(20,23,19,.16)}
+.knowledge-lifecycle>header{display:grid;grid-template-columns:1.1fr 1fr;gap:14px 48px;align-items:end}
+.knowledge-lifecycle>header .section-label{grid-column:1/-1}
+.knowledge-lifecycle>header h2{font:500 clamp(26px,3vw,40px)/.98 var(--display);letter-spacing:-.045em}
+.knowledge-lifecycle>header p{color:#525a51;font-size:13px;line-height:1.6}
+.lifecycle-tracks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:26px}
+.lifecycle-track{padding:18px;border:1px solid rgba(20,23,19,.18);border-radius:12px;background:rgba(255,255,255,.28)}
+.lifecycle-track h3{font:500 19px/1 var(--display);letter-spacing:-.03em}
+.lifecycle-chain{display:block;margin-top:7px;color:#6d7569;font:10px var(--mono)}
+.lifecycle-track ol{counter-reset:s;list-style:none;margin:16px 0 0;padding:0;display:grid;gap:9px}
+.lifecycle-track li{counter-increment:s;position:relative;padding:11px 12px 11px 34px;border:1px solid rgba(20,23,19,.13);border-radius:9px;background:rgba(255,255,255,.4)}
+.lifecycle-track li:before{content:counter(s,decimal-leading-zero);position:absolute;left:12px;top:12px;color:var(--accent,#426aff);font:10px var(--mono)}
+.lifecycle-track code{color:#2f3a2b;font:10px var(--mono);background:rgba(20,23,19,.07);padding:1px 5px;border-radius:4px}
+.lifecycle-track strong{display:block;margin-top:6px;font-size:13px}
+.lifecycle-needs{display:block;margin-top:4px;color:#6d7569;font:9.5px/1.45 var(--mono);overflow-wrap:anywhere}
+.lifecycle-track em{display:block;margin-top:3px;color:#3f7a2e;font:normal 10px var(--mono)}
+.lifecycle-track li p{margin-top:7px;color:#565d54;font-size:11.5px;line-height:1.5}
+.lifecycle-verdict{max-width:900px;margin-top:18px;padding:15px 17px;border-left:2px solid var(--accent,#426aff);background:rgba(255,255,255,.3);font-size:12.5px;line-height:1.6}
+.lifecycle-statuses,.lifecycle-kinds{margin-top:12px;border:1px solid rgba(20,23,19,.16);border-radius:10px;background:rgba(255,255,255,.22)}
+.lifecycle-statuses>summary,.lifecycle-kinds>summary{padding:14px 16px;cursor:pointer;font-size:13px}
+.lifecycle-statuses>summary span,.lifecycle-kinds>summary span{margin-left:8px;color:#6d7569;font:9px var(--mono);text-transform:uppercase}
+.lifecycle-statuses>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;padding:0 16px 16px}
+.lifecycle-statuses article{padding:14px;border:1px solid rgba(20,23,19,.13);border-radius:9px;background:rgba(255,255,255,.4)}
+.lifecycle-statuses h4{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-size:13px}
+.lifecycle-statuses h4 code{color:#6d7569;font:9px var(--mono)}
+.lifecycle-statuses article>p{margin-top:7px;color:#565d54;font-size:11.5px;line-height:1.5}
+.lifecycle-statuses dl{margin-top:10px}
+.lifecycle-statuses dt{margin-top:7px;font-size:11.5px}
+.lifecycle-statuses dt code{margin-right:6px;padding:1px 5px;border-radius:4px;background:rgba(20,23,19,.08);font:10px var(--mono)}
+.lifecycle-statuses dd{margin:2px 0 0;color:#6d7569;font-size:10.5px}
+.lifecycle-kinds table{width:100%;border-collapse:collapse;font-size:11.5px}
+.lifecycle-kinds thead th{padding:8px 16px;border-top:1px solid rgba(20,23,19,.13);color:#6d7569;font:9px var(--mono);text-transform:uppercase;text-align:left}
+.lifecycle-kinds td{padding:9px 16px;border-top:1px solid rgba(20,23,19,.1);vertical-align:top;line-height:1.5}
+.lifecycle-kinds td code{font:10px var(--mono);color:#3f4a3c;overflow-wrap:anywhere}
+.lifecycle-kinds td:first-child{white-space:nowrap;font-weight:500}
+@media (max-width:900px){.knowledge-lifecycle>header{grid-template-columns:1fr}.lifecycle-tracks{grid-template-columns:1fr}
+  .lifecycle-kinds{overflow-x:auto}.lifecycle-kinds table{min-width:560px}}
+
+/* Названия инструментов на карточках первого экрана не должны переноситься по буквам:
+   моноширинный шрифт рвал «presentation» на «presentatio / n». */
+#overview .node-satellites button,#overview .loop-node-main + div button{
+  overflow-wrap:normal;word-break:keep-all;hyphens:none;white-space:normal}
+
+/* Названия инструментов длиннее «Все 7 →», и обрезка многоточием прятала как раз то,
+   ради чего чип и стоит на карте. Ряд теперь тянется по содержимому, а перенос
+   разрешён только по дефису, чтобы слово не рвалось посреди корня. */
+#overview .node-satellites{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:5px;align-items:stretch}
+#overview .node-satellites button{overflow:visible;white-space:normal;text-overflow:clip;
+  overflow-wrap:break-word;word-break:normal;hyphens:manual;line-height:1.2;display:flex!important;
+  flex-direction:column;justify-content:center;gap:2px}
+#overview .node-satellites button small{white-space:nowrap}
+
+/* ============ Узкий экран ============
+   На 320–390 полоса этапов и шапка раздела выталкивали страницу вбок: у прокручиваемого
+   контейнера внутри сетки ширина по умолчанию считается по содержимому, поэтому
+   overflow-x на нём не работал. min-width:0 возвращает ему право сжиматься. */
+@media (max-width:760px){
+  .process-shell,.section-map,.section-map-canvas,.section-overview,.process-section{min-width:0;max-width:100%}
+  .journey-strip{min-width:0;max-width:100%;-webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;padding-bottom:6px;
+    /* видно, что полосу можно листать */
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,#000 0,#000 92%,transparent)}
+  .journey-step{flex:0 0 min(220px,78vw)}
+}
+@media (max-width:620px){
+  .process-view .process-hero{grid-template-columns:1fr;gap:10px}
+  .process-view .process-index{font-size:44px}
+  .process-view .process-purpose{max-width:100%}
+  .knowledge-lifecycle>header{grid-template-columns:1fr}
+  .lifecycle-statuses>div{grid-template-columns:1fr}
+}
+
+/* Строка инструмента на узком экране: длинное имя вроде «Доска задач kanban.db»
+   держало колонку шире экрана и выталкивало плюсик за край. */
+@media (max-width:620px){
+  .tool summary{grid-template-columns:minmax(0,1fr) 24px;gap:8px 10px;padding:16px 0;align-items:start}
+  .tool summary .tool-type{grid-column:1/-1}
+  .tool summary strong{grid-column:1;min-width:0;overflow-wrap:anywhere}
+  .tool-role{grid-column:1/-1}
+  .tool-toggle{grid-column:2;grid-row:2}
+}
+
+/* Словарь одинаков на всех страницах, поэтому свёрнут. */
+.glossary-section{padding:26px 0}
+.glossary-details>summary{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;padding:14px 0;cursor:pointer;
+  font:500 17px var(--display);letter-spacing:-.02em}
+.glossary-details>summary span{color:#6d7569;font:9px var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.glossary-details[open]>summary{margin-bottom:8px}
+
+/* Ряд кнопок под «Идеями и гипотезами» задевал круг общего знания углом на 6×12 пикселей.
+   Узел сдвинут влево ровно настолько, чтобы касание пропало. */
+/* Тот же порог: в колонке узлы стоят position:relative, и этот сдвиг влево не убирал
+   касание, а двигал «Идеи и гипотезы» прямо на «Созвоны». */
+@media (min-width:1261px){#overview .loop-node:nth-child(2){left:22%}}
+
+/* Одно свойство, ради которого сюда и пришли: можно ли поставить это себе. */
+.take-badge{justify-self:start;padding:3px 8px;border-radius:999px;font:8px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.take-badge.is-open{border:1px solid rgba(63,122,46,.45);background:rgba(63,122,46,.1);color:#3f7a2e}
+.take-badge.is-gated{border:1px solid rgba(160,110,30,.45);background:rgba(160,110,30,.1);color:#8a5f1c}
+.take-badge.is-closed{border:1px solid rgba(20,23,19,.2);background:rgba(20,23,19,.05);color:#6d7569}
+@media (min-width:621px){.tool summary{grid-template-columns:96px auto minmax(170px,.42fr) 1fr 28px;gap:16px}
+  .tool summary .tool-type{line-height:1.3}}
+@media (max-width:620px){.tool summary .take-badge{grid-column:1;grid-row:1;justify-self:end}
+  .tool summary .tool-type{grid-column:1;justify-self:start}}
+
+/* Колонки центральной карты узкие, а слова в них длинные: «Исследователь» шире своей
+   колонки на четверть. Разрешаем перенос внутри слова, иначе текст просто обрезается. */
+.knowledge-map-shell button,
+.knowledge-map-shell strong,
+.knowledge-map-shell span,
+.knowledge-map-shell small{min-width:0;overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+.knowledge-rack button{padding-inline:8px}
+
+/* Автоматический перенос рвал слова с дефисом: «Исследова-тель», «Доказа-тельство».
+   Крайние колонки расширены ровно настолько, чтобы самые длинные слова помещались
+   целиком, а перенос внутри слова остаётся только как последняя мера. */
+.knowledge-map-shell{grid-template-columns:146px 136px minmax(430px,1fr) 136px 146px}
+.knowledge-map-shell button,.knowledge-map-shell strong,
+.knowledge-map-shell span,.knowledge-map-shell small{hyphens:manual}
+@media (max-width:1100px) and (min-width:821px){
+  .knowledge-map-shell{grid-template-columns:124px 112px minmax(240px,1fr) 112px 124px}
+}
+
+/* Четыре карточки в ряд ужимались до 91 пикселя, и «Утверждение» ломалось пополам.
+   Ряд перестраивается в две строки, как только карточке не хватает ширины на слово. */
+@media (min-width:1181px){
+  /* Цепочка из четырёх шагов читается только целым рядом, поэтому колонок ровно
+     четыре, а заголовок в них на пункт мельче: так «Утверждение» помещается в строку. */
+  .knowledge-atlas-v3 .empirical-chain{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .knowledge-atlas-v3 .empirical-chain .knowledge-record{padding-inline:10px}
+  .knowledge-atlas-v3 .theory-chain{grid-template-columns:minmax(96px,120px) repeat(2,minmax(120px,1fr))!important}
+  /* Пояснение про отсутствие прямой связи — целая фраза, а не колонка в один слог. */
+  .knowledge-atlas-v3 .theory-chain .theory-note{grid-column:1/-1;max-width:none}
+}
+.knowledge-record strong{overflow-wrap:normal}
+
+/* Центральная карта — единственная страница, которой действительно нужна ширина:
+   при инспекторе в 300 пикселей на 1280 полосе цепочке из четырёх шагов остаётся
+   по 71 пикселю на заголовок, и «Утверждение» не помещается. На широком экране
+   страница знания берёт больше, остальные разделы держат прежнюю меру строки. */
+@media (min-width:1441px){
+  .process-view:has(.memory-shell){padding-inline:28px}
+  .process-shell.memory-shell{width:min(100%,1560px)}
+}
+
+/* Панель узла до выбора: подсказка в одну строку вместо пустой полосы во всю ширину. */
+.map-focus:not(.is-open){display:block;min-height:0;padding:13px 18px}
+
+
+/* Опорных разделов теперь два, а не четыре: «Запуск проекта» стал точкой 0 атласа,
+   «Автономная работа» растворилась в экспериментах. Сетка на четыре колонки оставляла
+   две пустые. */
+#overview .support-items,.support-items{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){#overview .support-items,.support-items{grid-template-columns:1fr}}
+
+/* ============ Что уходит в общую базу ============
+   Та же форма, что у пути статьи в поиске: слева имя операции, справа что появляется
+   и по каким правилам. Цвет полосы говорит, работа это, запись или связь. */
+.tomcp{padding:34px 0;border-bottom:1px solid rgba(20,23,19,.16)}
+.tomcp>h2{margin-top:10px;max-width:920px;font:500 clamp(19px,2vw,27px)/1.3 var(--display);letter-spacing:-.02em}
+.tomcp-paths{display:grid;gap:10px;margin-top:20px}
+.tomcp-path{padding:15px 17px;border:1px solid rgba(20,23,19,.15);border-radius:12px;background:rgba(255,255,255,.28)}
+.tomcp-path>header{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.tomcp-path>header small{color:var(--accent,#426aff);font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.tomcp-path>header strong{font:500 15px var(--display)}
+.tomcp-path>header span{flex-basis:100%;margin-top:3px;color:#6d7569;font:10px/1.55 var(--mono);overflow-wrap:anywhere}
+.tomcp-steps{list-style:none;margin:13px 0 0;padding:0}
+.tomcp-steps>li{display:grid;grid-template-columns:186px 1fr;gap:6px 16px;align-items:baseline;
+  padding:11px 0;border-top:1px solid rgba(20,23,19,.12)}
+.tomcp-steps>li:first-child{border-top:0;padding-top:2px}
+.tomcp-steps ul li{display:list-item;padding:0;border:0}
+.tomcp-steps code{justify-self:start;padding:3px 8px;border-radius:6px;background:rgba(20,23,19,.08);
+  color:#2f3a2b;font:10.5px var(--mono);overflow-wrap:anywhere}
+.tomcp-steps li.is-rec code{background:rgba(63,122,46,.16);color:#2f5c22}
+.tomcp-steps li.is-tie code{background:rgba(58,110,168,.14);color:#28527f}
+.tomcp-steps strong{font-size:13px}
+.tomcp-steps em{display:block;margin-top:3px;color:#6d7569;font:normal 9px var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.tomcp-steps span{display:block;margin-top:5px;color:#565d54;font-size:11.5px;line-height:1.55}
+.tomcp-steps ul{margin:7px 0 0;padding-left:15px;color:#565d54;font-size:11px;line-height:1.55}
+.tomcp-steps small{display:block;margin-top:5px;color:#7f877c;font:9px var(--mono);text-transform:uppercase}
+.tomcp-none{margin-top:18px;padding:15px 17px;border-left:3px solid #b0821f;border-radius:9px;background:rgba(176,130,31,.08)}
+.tomcp-none strong{font-size:14px}
+.tomcp-none p{margin-top:7px;max-width:880px;color:#565d54;font-size:12.5px;line-height:1.6}
+.tomcp-none button{margin-top:11px;padding:8px 12px;border:1px solid rgba(20,23,19,.2);border-radius:7px;
+  background:none;font:9px var(--mono);text-transform:uppercase;cursor:pointer}
+.tomcp-none button:hover{background:#151815;color:var(--warm)}
+.tomcp-kept{max-width:900px;margin-top:16px;color:#565d54;font-size:12px;line-height:1.65}
+.tomcp-kept b{color:#171a16}
+@media (max-width:620px){.tomcp-steps li{grid-template-columns:1fr}}
+/* ============ Центральная карта MCP, версия 4 ============
+   Прежняя страница была одной сеткой из пяти колонок, куда впихнули шесть разных мыслей,
+   и настоящих стрелок в ней не было вовсе. Теперь это набор небольших схем, у каждой
+   своя ось: зелёное — путь записи, синее — путь чтения, янтарное — ворота. */
+.knowledge-stack{display:grid;gap:14px;min-width:0}
+.km-block{padding:20px 22px;border:1px solid rgba(20,23,19,.16);border-radius:14px;background:rgba(255,255,255,.3)}
+.km-block>header h3{margin-top:8px;font:500 clamp(18px,1.9vw,24px)/1.25 var(--display);letter-spacing:-.02em}
+.km-block>header>p:not(.section-label){margin-top:9px;max-width:900px;color:#565d54;font-size:12.5px;line-height:1.6}
+
+/* Ворота — развилка, а не баннер. */
+.km-gates{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.km-gate{padding:14px 16px;border:1px solid rgba(176,130,31,.45);border-left-width:3px;border-radius:12px;
+  background:rgba(176,130,31,.09);text-align:left;color:#171a16;cursor:pointer}
+.km-gate small{color:#8a5f1c;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-gate strong{display:block;margin-top:6px;font-size:15px}
+.km-gate span{display:block;margin-top:5px;color:#5c6459;font-size:11.5px;line-height:1.5}
+.km-gate:hover{border-color:#8a5f1c}
+
+/* Рельс: четыре входа — база — три потребителя. */
+.km-rail{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:18px}
+.km-side{display:grid;gap:7px;min-width:0}
+.km-side>span{color:#6d7569;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-node{padding:11px 13px;border:1px solid rgba(20,23,19,.16);border-radius:10px;background:rgba(255,255,255,.55);
+  text-align:left;color:#171a16;cursor:pointer}
+.km-node strong{display:block;font-size:13px}
+.km-node em{display:block;margin-top:4px;color:#5c6459;font:normal 11px/1.45 var(--body)}
+.km-node:hover{border-color:var(--accent,#3f7a2e)}
+.km-node.is-core{padding:18px 20px;border-color:#3f7a2e;background:#151815;color:#eaf0e8}
+.km-node.is-core small{color:#b9ff66;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-node.is-core strong{margin-top:7px;font:500 22px var(--display)}
+.km-node.is-core em{color:#a8b1a4}
+.km-core{position:relative}
+.km-core:before,.km-core:after{content:"→";position:absolute;top:50%;color:#3f7a2e;font:14px var(--mono);transform:translateY(-50%)}
+.km-core:before{left:-13px}
+.km-core:after{right:-13px}
+
+/* Дерево записей. */
+.km-tree{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.km-branch{padding:14px 15px;border:1px solid rgba(20,23,19,.14);border-radius:11px;background:rgba(255,255,255,.45)}
+.km-branch h4{font:500 15px var(--display)}
+.km-branch>p{margin-top:6px;color:#5c6459;font-size:11.5px;line-height:1.5}
+.km-chain{margin-top:12px}
+.km-chain>span{color:#6d7569;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-chain>div{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin-top:7px}
+.km-leaf{position:relative;flex:1 1 120px;min-width:0;padding:9px 11px;border:1px solid rgba(20,23,19,.14);
+  border-left:3px solid #3f7a2e;border-radius:8px;background:rgba(63,122,46,.06);text-align:left;color:#171a16;cursor:pointer}
+.km-leaf small{color:#6d7569;font:8.5px var(--mono);text-transform:uppercase}
+.km-leaf strong{display:block;margin-top:4px;font-size:12.5px}
+.km-leaf span{display:block;margin-top:4px;color:#5c6459;font-size:10.5px;line-height:1.4}
+.km-leaf:not(:last-child):after{content:"→";position:absolute;right:-7px;top:50%;z-index:1;color:#8d9589;font:11px var(--mono);transform:translateY(-50%)}
+.km-leaf:hover{border-color:#3f7a2e}
+.km-bridge{display:block;width:100%;margin-top:12px;padding:12px 14px;border:1px dashed #3a6ea8;border-radius:10px;
+  background:rgba(58,110,168,.07);text-align:left;color:#171a16;cursor:pointer}
+.km-bridge small{color:#3a6ea8;font:9px var(--mono);text-transform:uppercase}
+.km-bridge strong{display:block;margin-top:5px;font-size:13px}
+.km-bridge em{display:block;margin-top:4px;color:#5c6459;font:normal 11px var(--body)}
+.km-context-bar{margin-top:12px;padding-top:12px;border-top:1px solid rgba(20,23,19,.12)}
+.km-context-bar>span{color:#6d7569;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-context-bar>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:8px}
+.km-context-bar .km-leaf{border-left-color:#9aa295;background:rgba(255,255,255,.5)}
+.km-context-bar .km-leaf:after{display:none}
+
+/* Ленты приёма и лента чтения: один примитив, разное направление и цвет. */
+.km-lanes{display:grid;gap:10px;margin-top:18px}
+.km-lane{padding:14px 15px;border:1px solid rgba(20,23,19,.14);border-radius:11px;background:rgba(255,255,255,.45)}
+.km-lane>header small{color:var(--accent,#3f7a2e);font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-lane>header strong{display:block;margin-top:5px;font:500 15px var(--display)}
+.km-lane>header em{display:block;margin-top:4px;color:#5c6459;font:normal 11.5px var(--body)}
+.km-flow{list-style:none;margin:13px 0 0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:6px 14px}
+.km-step{position:relative;padding:10px 11px;border:1px solid rgba(20,23,19,.14);border-left:3px solid #3f7a2e;
+  border-radius:8px;background:rgba(63,122,46,.06);text-align:left;color:#171a16;cursor:pointer}
+.km-step.is-human{border-left-color:#b0821f;background:rgba(176,130,31,.1)}
+.km-step small{color:#6d7569;font:8.5px var(--mono);text-transform:uppercase}
+.km-step strong{display:block;margin-top:4px;font-size:12.5px;line-height:1.25}
+.km-step p{margin-top:5px;color:#565d54;font-size:10.5px;line-height:1.45}
+.km-ops{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.km-ops code{padding:1px 5px;border-radius:4px;background:rgba(20,23,19,.08);font:9.5px var(--mono)}
+.km-flow[data-dir="right"] .km-step:not(:last-child):after{content:"→";position:absolute;right:-11px;top:50%;
+  color:#8d9589;font:11px var(--mono);transform:translateY(-50%)}
+.km-terminal{margin-top:12px;padding:11px 14px;border:1px solid #3f7a2e;border-radius:9px;
+  background:rgba(63,122,46,.1);text-align:center;font-size:12px}
+
+/* Хук. */
+.km-hook .km-flow{margin-top:16px}
+.km-fanout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:12px}
+.km-fanout article{padding:12px 13px;border:1px solid rgba(20,23,19,.14);border-radius:9px;background:rgba(255,255,255,.5)}
+.km-fanout article.is-conditional{border-style:dashed;border-color:#3a6ea8;background:rgba(58,110,168,.06)}
+.km-fanout strong{font-size:13px}
+.km-fanout p{margin-top:5px;color:#565d54;font-size:11px;line-height:1.5}
+.km-fanout em{display:block;margin-top:6px;color:#3a6ea8;font:normal 10px var(--mono)}
+.km-hook-ops{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:13px}
+.km-hook-ops b{color:#6d7569;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-hook-ops code{padding:3px 7px;border-radius:5px;background:rgba(20,23,19,.08);font:10px var(--mono)}
+.km-hook-rules{margin-top:12px}
+.km-hook-rules>summary{cursor:pointer;font-size:12.5px}
+.km-hook-rules>summary span{margin-left:6px;color:#6d7569;font:9px var(--mono)}
+.km-hook-rules ul{margin:9px 0 0;padding-left:17px;color:#565d54;font-size:11.5px;line-height:1.6}
+.km-hook-history{margin-top:13px;padding:12px 14px;border-left:2px solid #9aa295;background:rgba(255,255,255,.35)}
+.km-hook-history b{color:#6d7569;font:9px var(--mono);letter-spacing:.07em;text-transform:uppercase}
+.km-hook-history p{margin-top:7px;max-width:900px;color:#565d54;font-size:11.5px;line-height:1.6}
+
+/* Чтение — синим, чтобы направление читалось без подписи. */
+.km-read .knowledge-route button{border-left:3px solid #3a6ea8;background:rgba(58,110,168,.06)}
+.km-neighbours>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:16px}
+.km-neighbours button{padding:12px 13px;border:1px solid rgba(20,23,19,.14);border-radius:9px;
+  background:rgba(255,255,255,.5);text-align:left;color:#171a16;cursor:pointer}
+.km-neighbours strong{display:block;font-size:13px}
+.km-neighbours span{display:block;margin-top:5px;color:#565d54;font-size:11px;line-height:1.5}
+.km-blocked{position:relative;margin-top:14px;padding-left:26px;color:#565d54;font-size:11.5px;line-height:1.6}
+.km-blocked:before{content:"⇸";position:absolute;left:0;top:-1px;color:#b0821f;font:14px var(--mono)}
+
+@media (max-width:900px){
+  .km-gates,.km-tree{grid-template-columns:1fr}
+  .km-rail{grid-template-columns:1fr}
+  .km-core:before,.km-core:after{display:none}
+  .km-flow{grid-template-columns:1fr}
+  .km-flow[data-dir="right"] .km-step:not(:last-child):after{content:"↓";right:auto;left:14px;top:auto;bottom:-13px;transform:none}
+  .km-leaf:not(:last-child):after{display:none}
+}
+
+/* Галерея слайдов: показать, а не описывать словами. */
+.gallery{padding:40px 0;border-bottom:1px solid rgba(20,23,19,.16)}
+.gallery-head h2{margin-top:9px;font:500 clamp(20px,2.2vw,30px)/1.2 var(--display);letter-spacing:-.03em}
+.gallery-head>p:not(.section-label){margin-top:9px;max-width:760px;color:#565d54;font-size:12.5px;line-height:1.6}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:22px}
+.gallery figure{margin:0;border:1px solid rgba(20,23,19,.16);border-radius:12px;background:rgba(255,255,255,.4);overflow:hidden}
+.gallery img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+  border-bottom:1px solid rgba(20,23,19,.2);background:#e8e4d8}
+.gallery figcaption{padding:12px 14px}
+.gallery figcaption strong{display:block;font-size:13px}
+.gallery figcaption span{display:block;margin-top:6px;color:#565d54;font-size:11.5px;line-height:1.55}
+
+/* Раскладка «spine» ставила кластеры в одну колонку: при четырёх кластерах статьи
+   это была вертикальная простыня. Кластеров теперь четыре, значит колонок две. */
+.section-overview[data-layout="spine"] .tool-clusters{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+/* «Запуск проекта»: четыре кластера, и они читаются как четыре места записи. */
+.section-overview[data-layout="ports"] .tool-clusters{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+
+/* Боевое задание агента. Длинный текст, поэтому свёрнут, но целиком и дословно. */
+
+/* Шаги настройки после установки: там, где одной команды не хватает. */
+
+/* ============ Поставить весь набор сразу ============
+   Первый экран показывает, из чего система состоит; здесь она заканчивается ответом
+   на вопрос, ради которого посетитель и пришёл: как забрать это себе. */
+/* minmax(0,…) вместо 1fr обязателен: у элемента сетки min-width по умолчанию auto, и колонка
+   растягивается до самой длинной строки внутри. Внутри лежит блок команд установки с
+   white-space:pre, поэтому на узком экране обе колонки уезжали за край — на 390 пикселях до
+   629, — и overflow-x:auto на самом блоке не спасал: не он был шире родителя, а колонка. */
+#overview .toolkit{width:min(100%,var(--max));margin:44px auto 0;padding-top:34px;
+  border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:28px 48px;align-items:start}
+.toolkit-head,.toolkit-body{min-width:0}
+.toolkit-head h2{margin-top:11px;font:500 clamp(24px,2.6vw,34px)/1.1 var(--display);letter-spacing:-.04em}
+.toolkit-head>p{margin-top:12px;max-width:460px;color:var(--muted);font-size:13px;line-height:1.65}
+.toolkit-parts{display:inline-block;margin-top:14px;padding:5px 11px;border:1px solid var(--line);
+  border-radius:999px;color:var(--muted);font:9px var(--mono);letter-spacing:.06em}
+.toolkit-body pre{margin:0;padding:16px 18px;border:1px solid #2c332c;border-radius:12px;
+  background:#0d100d;color:#e7ecdf;overflow-x:auto}
+.toolkit-body code{font:11.5px/1.75 var(--mono);white-space:pre;user-select:text}
+.toolkit-after{margin-top:11px;color:var(--muted);font-size:12px;line-height:1.6}
+.toolkit-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+@media (max-width:900px){#overview .toolkit{grid-template-columns:minmax(0,1fr);gap:20px}}
+
+/* ============ Страница MCP: спросить общую базу ============
+   Поиск идёт по живому снимку библиотеки, а каждый результат разворачивается в путь
+   из шести шагов с настоящим именем операции на каждом. */
+.mcp-page{width:min(100%,1180px);margin:auto}
+.mcp-hero{padding:26px 0 20px;border-bottom:1px solid #2c332c}
+.mcp-hero p{color:var(--lime);font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.mcp-hero h1{margin-top:12px;font:500 clamp(30px,4.4vw,58px)/1 var(--display);letter-spacing:-.05em}
+.mcp-hero strong{display:block;max-width:820px;margin-top:14px;color:var(--muted);font-weight:400;font-size:13.5px;line-height:1.65}
+.mcp-search{position:sticky;top:76px;z-index:14;display:grid;grid-template-columns:1fr auto;gap:14px;
+  align-items:center;margin:18px 0 6px;padding:14px 16px;border:1px solid #3b4a37;border-radius:14px;
+  background:rgba(13,16,13,.95);backdrop-filter:blur(10px)}
+.mcp-search label{display:block}
+.mcp-search input{width:100%;padding:12px 14px;border:1px solid #2c332c;border-radius:9px;
+  background:#0c0f0c;color:var(--ink);font:15px var(--body)}
+.mcp-search input:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.mcp-search output{color:var(--lime);font:10px var(--mono);white-space:nowrap}
+.lib-start{margin-top:26px;padding:22px 24px;border:1px dashed #3b4a37;border-radius:14px}
+.lib-start p{max-width:820px;color:var(--muted);font-size:13.5px;line-height:1.7}
+.lib-examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.lib-examples button{padding:9px 14px;border:1px solid #3b4a37;border-radius:999px;background:none;
+  color:var(--ink);font:12px var(--body);cursor:pointer}
+.lib-examples button:hover{border-color:var(--lime);color:var(--lime)}
+.lib-card{margin-top:12px;padding:20px 22px;border:1px solid #262c26;border-radius:14px;background:#121612}
+.lib-card h3{max-width:840px;font:500 clamp(17px,1.7vw,22px)/1.25 var(--display);letter-spacing:-.02em}
+.lib-card header p{margin-top:8px;color:#8b948a;font-size:11.5px}
+.lib-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.lib-tags span{padding:4px 9px;border:1px solid #2c332c;border-radius:999px;color:#98a094;font:9px var(--mono)}
+.lib-tags .is-linked{border-color:#5c7c46;background:rgba(185,255,102,.1);color:var(--lime)}
+.lib-sum{max-width:900px;margin-top:14px;color:#c3ccc0;font-size:13px;line-height:1.7}
+.lib-claims,.lib-way{margin-top:13px;border-top:1px solid #22281f;padding-top:11px}
+.lib-claims>summary,.lib-way>summary{cursor:pointer;color:var(--ink);font-size:12.5px}
+.lib-claims>summary span,.lib-way>summary span{margin-left:7px;color:var(--lime);font:9px var(--mono)}
+.lib-claims ul{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+.lib-claims li{padding:11px 13px;border:1px solid #242a24;border-left:2px solid #3a4438;border-radius:8px;
+  color:#c3ccc0;font-size:12px;line-height:1.6}
+.lib-claims li.is-hit{border-left-color:var(--lime);background:rgba(185,255,102,.06)}
+.lib-claims small{display:block;margin-bottom:5px;color:#7f887c;font:8.5px var(--mono);text-transform:uppercase}
+.lib-path{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:0}
+.lib-path li{position:relative;padding:11px 13px 11px 0;display:grid;grid-template-columns:190px 1fr;
+  gap:4px 16px;align-items:baseline;border-top:1px solid #1e241e}
+.lib-path li:first-child{border-top:0}
+.lib-path code{padding:3px 8px;border-radius:6px;background:#1b211b;color:var(--lime);font:10.5px var(--mono);justify-self:start}
+.lib-path li.is-work code{color:#98a094}
+.lib-path li.is-tie code{color:#8fc7ff}
+.lib-path strong{font-size:12.5px}
+.lib-path span{grid-column:2;color:#8b948a;font-size:11.5px;line-height:1.55}
+.mcp-empty{margin-top:26px;padding:20px 22px;border:1px dashed #3b4a37;border-radius:12px;
+  max-width:900px;color:var(--muted);font-size:13px;line-height:1.7}
+@media (max-width:700px){.mcp-search{grid-template-columns:1fr;top:66px}.mcp-search output{text-align:right}
+  .lib-path li{grid-template-columns:1fr}.lib-path span{grid-column:1}}
+
+/* ============ Правка по замечаниям: меньше слов, больше ссылок ============
+   Владелец: «слишком сложно перегружено, очень много лишнего текста, и если он лишний,
+   то его надо удалить. И главное, пользуйся ссылками на какие-то инструменты». */
+
+/* Крупные части системы: строка на часть, ссылка справа. */
+.toolkit-pieces{grid-column:1/-1;max-width:1120px;margin:6px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.toolkit-pieces li{display:grid;grid-template-columns:180px minmax(0,1fr) max-content max-content;
+  gap:8px 26px;align-items:baseline;padding:11px 2px;border-bottom:1px solid var(--line)}
+.toolkit-pieces b{font-size:13px;letter-spacing:-.01em}
+.toolkit-pieces span{color:var(--muted);font-size:12px;line-height:1.45}
+.toolkit-pieces i{color:var(--muted);font:9px var(--mono);font-style:normal;letter-spacing:.05em;text-transform:uppercase}
+.toolkit-pieces a{justify-self:end;color:var(--lime);font:9px var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.toolkit-pieces a:hover{text-decoration:underline}
+.toolkit-pieces em{justify-self:end;color:#7c8479;font:9px var(--mono);font-style:normal;
+  letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+@media (max-width:900px){.toolkit-pieces li{grid-template-columns:minmax(0,1fr) auto;gap:5px 14px}
+  .toolkit-pieces span{grid-column:1/-1}.toolkit-pieces i{grid-column:1}}
+
+/* Пустая панель узла больше не занимает полосу: до выбора её просто нет. */
+.map-focus:empty,.knowledge-inspector:empty,
+.knowledge-map-frame>.knowledge-inspector:empty{display:none!important}
+
+/* Большая ссылка вместо кнопки «как начать»: первая — основная. */
+.focus-take{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.focus-take-link{display:inline-flex;align-items:center;gap:14px;min-height:46px;padding:12px 16px;
+  border:1px solid #3f483f;border-radius:8px;background:#191e1a;color:#e6ece4;font-size:13px;
+  text-decoration:none;line-height:1.3}
+.focus-take-link i{color:var(--accent);font-style:normal;font-size:12px}
+.focus-take-link:hover{border-color:var(--accent)}
+.focus-take-link.is-primary{border-color:var(--accent);background:var(--accent);color:#12160f;font-weight:500}
+.focus-take-link.is-primary i{color:#12160f}
+.focus-take-link.is-primary:hover{filter:brightness(1.08)}
+.focus-take-none{margin-top:14px;color:#9aa398;font-size:12px}
+.graph-focus.is-open .focus-take{grid-column:1/-1}
+.graph-focus.is-open .focus-take-link{font-size:14px;min-height:52px}
+
+/* Установка внутри досье: команда и ссылка, без пересказа условий доступа. */
+.tool-body>.tool-take,.tool-body>.setup-closed{grid-column:1/-1;width:100%;min-width:0;margin-top:14px}
+.tool-take{scroll-margin-top:124px}
+.tool-take pre.setup-install{margin:0;padding:15px 17px;border-radius:10px;background:#151815;
+  color:#e7ecdf;overflow-x:auto}
+.tool-take pre.setup-install code{font:11.5px/1.75 var(--mono);white-space:pre;user-select:text}
+.tool-take>p,.setup-closed>p{margin-top:11px;max-width:760px;color:#565d54;font-size:12px;line-height:1.6}
+.tool-take .tool-links{margin-top:13px}
+/* Абзац примера занимал две трети ширины, треть блока оставалась пустой. */
+.control-section .example p{max-width:1150px}
+
+/* ============ Страница MCP: вся база, а не только библиотека ============
+   Владелец: «там прям всё, что есть на brain_lab, должно отображаться, реально вся
+   информация». Чипы сверху — рода записей с их числом: по ним видно, что база отдаёт
+   всё, и можно листать род целиком, ничего не набирая. */
+.mcp-kinds{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.mcp-kinds button{display:inline-flex;align-items:baseline;gap:7px;min-height:34px;padding:7px 12px;
+  border:1px solid var(--line);border-radius:999px;background:none;color:var(--muted);
+  font-size:12px;cursor:pointer}
+.mcp-kinds button span{color:#6f7a6d;font:9px var(--mono)}
+.mcp-kinds button:hover{border-color:var(--line-strong);color:var(--ink)}
+.mcp-kinds button.is-on{border-color:var(--lime);background:rgba(185,255,102,.12);color:var(--ink)}
+.mcp-kinds button.is-on span{color:var(--lime)}
+
+.base-card{margin-top:9px;padding:17px 19px;border:1px solid var(--line);border-radius:12px;
+  background:rgba(255,255,255,.022)}
+.base-card>header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.base-kind{color:var(--lime);font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.base-code{color:var(--ink);font:10px var(--mono);padding:2px 6px;border:1px solid var(--line);border-radius:4px}
+.base-status,.base-proj{color:var(--muted);font:9px var(--mono);letter-spacing:.04em}
+.base-card h3{margin-top:9px;font:500 18px/1.3 var(--display);letter-spacing:-.02em}
+.base-card>p{margin-top:8px;max-width:900px;color:#c3cbc0;font-size:13px;line-height:1.6}
+.base-card mark{background:rgba(185,255,102,.24);color:var(--ink);border-radius:2px}
+.base-op{margin-top:9px;color:var(--muted);font-size:11px}
+.base-op code{color:var(--lime);font:10px var(--mono)}
+.base-fields{margin-top:11px;border-top:1px solid var(--line)}
+.base-fields>summary{padding:10px 0;cursor:pointer;color:var(--muted);font:10px var(--mono);
+  letter-spacing:.05em;text-transform:uppercase}
+.base-fields>summary span{margin-left:6px;color:#6f7a6d}
+.base-fields dl{margin:0 0 10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:9px 26px}
+.base-fields dl>div{min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:8px}
+.base-fields dl>div.is-hit{border-color:color-mix(in srgb,var(--lime) 45%,var(--line))}
+.base-fields dt{color:var(--muted);font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.base-fields dd{margin:6px 0 0;color:#cfd6cc;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+.base-rels{margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
+.base-rels>b{display:block;margin-bottom:7px;color:var(--muted);font:9px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase}
+.base-rels button{display:block;width:100%;margin-bottom:5px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:7px;background:none;color:#dbe2d8;font-size:12px;text-align:left;cursor:pointer}
+.base-rels button:hover{border-color:var(--lime)}
+.base-rels button small{display:block;margin-bottom:3px;color:#7d867b;font:9px var(--mono);text-transform:uppercase}
+@media (max-width:760px){.base-fields dl{grid-template-columns:1fr}}
+
+/* ============ «Пользуйтесь только этим» ============
+   Два навыка крупно и вплотную к карте: похожие навыки из чужих наборов убраны, и
+   посетитель не должен гадать, какой из них правильный. */
+.spotlight-lead{margin-top:15px;max-width:900px;color:#4c5449;font-size:14px;line-height:1.7}
+.spotlight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));gap:12px;margin-top:26px}
+.spotlight-grid article{padding:24px 26px;border:1px solid color-mix(in srgb,var(--accent) 55%,rgba(20,23,19,.2));
+  border-radius:14px;background:color-mix(in srgb,var(--accent) 9%,rgba(255,255,255,.34))}
+.spotlight-grid span{color:var(--accent);font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.spotlight-grid h3{margin-top:13px;font:500 clamp(24px,2.4vw,32px)/1.05 var(--display);letter-spacing:-.04em}
+.spotlight-grid p{margin-top:12px;color:#4f574c;font-size:13px;line-height:1.65}
+.spotlight-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.spotlight-actions button,.spotlight-actions a{min-height:44px;padding:12px 15px;border-radius:8px;
+  font:10px var(--mono);letter-spacing:.05em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.spotlight-actions button{border:0;background:#151815;color:#f0f3ee}
+.spotlight-actions button:hover{background:var(--accent);color:#12160f}
+.spotlight-actions a{border:1px solid rgba(20,23,19,.24);color:#20241f}
+.spotlight-actions a:hover{border-color:var(--accent)}
+
+/* Владелец: «исследовательский код слишком вытянут, просто один большой столбец,
+   разбей его на 2-3». Блок занимал одну колонку сетки, поэтому одиннадцать карточек
+   уходили вниз лестницей. Теперь он на всю ширину и раскладывается в три столбца. */
+.section-overview[data-process="experiments"] .tool-cluster:last-child{grid-column:1/-1}
+.section-overview[data-process="experiments"] .tool-cluster:last-child>div{
+  grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:8px;align-content:start}
+@media (max-width:900px){
+  .section-overview[data-process="experiments"] .tool-cluster:last-child>div{grid-template-columns:1fr}}
+@media (max-width:400px){.spotlight-grid article{padding:17px 15px}
+  .spotlight-grid h3{font-size:21px;overflow-wrap:anywhere}
+  .spotlight-actions button,.spotlight-actions a{width:100%;text-align:center}}
+
+/* ============ Живой поиск: режим, статус, группы ответов ============
+   Владелец: «он должен искать конкретные утверждения, где задан вопрос, и искать ответ
+   на этот вопрос во всей базе». Поэтому сверху видно, куда уходит запрос, а ответы
+   разложены: сначала наше знание, потом литература, потом контекст. */
+.mcp-live-badge{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-top:16px;
+  padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:12px}
+.mcp-live-badge b{font:9px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.mcp-live-badge span{color:var(--muted);line-height:1.5}
+.mcp-live-badge code{padding:2px 5px;border:1px solid var(--line);border-radius:4px;font:10px var(--mono)}
+.mcp-live-badge.is-live{border-color:color-mix(in srgb,var(--lime) 45%,var(--line));
+  background:rgba(185,255,102,.07)}
+.mcp-live-badge.is-live b{color:var(--lime)}
+.mcp-live-badge.is-snapshot{border-color:rgba(255,196,120,.4);background:rgba(255,196,120,.06)}
+.mcp-live-badge.is-snapshot b{color:#ffc478}
+
+.mcp-modes{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.mcp-modes button{min-height:32px;padding:6px 13px;border:1px solid var(--line);border-radius:7px;
+  background:none;color:var(--muted);font-size:12px;cursor:pointer}
+.mcp-modes button:hover{border-color:var(--line-strong);color:var(--ink)}
+.mcp-modes button.is-on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+
+.mcp-group{margin-top:30px}
+.mcp-group>header{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:10px 14px;
+  padding-bottom:11px;border-bottom:1px solid var(--line)}
+.mcp-group>header h2{font:500 22px/1.1 var(--display);letter-spacing:-.03em}
+.mcp-group>header>span{color:var(--lime);font:10px var(--mono)}
+.mcp-group>header p{grid-column:1/-1;color:var(--muted);font-size:12px;line-height:1.5}
+.mcp-more>summary{padding:12px 0;cursor:pointer;color:var(--muted);font:10px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase}
+.base-score{margin-left:auto;color:var(--lime);font:10px var(--mono)}
+.base-card>header{align-items:baseline}
+.mcp-ask-claims{margin-top:12px;min-height:40px;padding:11px 15px;border:1px solid var(--line-strong);
+  border-radius:8px;background:none;color:var(--ink);font:10px var(--mono);letter-spacing:.05em;
+  text-transform:uppercase;cursor:pointer}
+.mcp-ask-claims:hover{border-color:var(--lime);color:var(--lime)}
+.mcp-ask-claims:disabled{color:var(--muted);cursor:default}
+
+/* ============ Что происходит с вопросом ============
+   Владелец: «это самое интересное — видно, какая модель строит эмбеддинг; это самая важная
+   часть сайта». Шаг = операция плюс модель, которая её делает, плюс что она решает. */
+.mcp-pipeline{margin-top:14px;border:1px solid var(--line);border-radius:11px}
+.mcp-pipeline>summary{padding:13px 16px;cursor:pointer;font-size:12.5px}
+.mcp-pipeline>summary span{margin-left:8px;color:var(--muted);font:9px var(--mono)}
+.mcp-pipeline ol{counter-reset:pl;list-style:none;margin:0;padding:0 16px 6px}
+.mcp-pipeline ol>li{counter-increment:pl;display:grid;grid-template-columns:190px minmax(0,1fr);
+  gap:8px 20px;padding:14px 0;border-top:1px solid var(--line)}
+.mcp-pipeline ol>li>code{align-self:start;color:var(--lime);font:11px var(--mono);
+  padding:4px 8px;border:1px solid color-mix(in srgb,var(--lime) 30%,var(--line));border-radius:5px;
+  justify-self:start}
+.mcp-pipeline ol>li>code:before{content:counter(pl) " · ";color:var(--muted)}
+.mcp-pipeline strong{display:block;font-size:14px}
+.mcp-pipeline em{display:block;margin-top:5px;color:var(--muted);font:10px var(--mono);font-style:normal}
+.mcp-pipeline p{margin-top:8px;max-width:760px;color:#c3cbc0;font-size:12.5px;line-height:1.6}
+.mcp-pipeline ol>li ul{margin:9px 0 0;padding-left:17px}
+.mcp-pipeline ol>li ul li{color:var(--muted);font-size:11.5px;line-height:1.55}
+.mcp-pipeline-note{margin:0;padding:13px 16px 15px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:12px;line-height:1.6}
+@media (max-width:760px){.mcp-pipeline ol>li{grid-template-columns:1fr;gap:9px}}
+/* Тот же разбор на светлой странице раздела: рамка не нужна, он и так в своей секции. */
+.pipeline-section .mcp-pipeline{margin-top:30px;border:0}
+.pipeline-section .mcp-pipeline ol{padding:0}
+.pipeline-section .mcp-pipeline ol>li{border-top-color:rgba(20,23,19,.16)}
+.pipeline-section .mcp-pipeline ol>li>code{color:#20241f;border-color:rgba(20,23,19,.22)}
+.pipeline-section .mcp-pipeline ol>li>code:before{color:#6c746a}
+.pipeline-section .mcp-pipeline em{color:#6a7168}
+.pipeline-section .mcp-pipeline p{color:#4f574c}
+.pipeline-section .mcp-pipeline ol>li ul li{color:#5d645b}
+.pipeline-section .mcp-pipeline-note{padding:14px 0 0;border-top-color:rgba(20,23,19,.16);color:#5d645b}
+
+/* ============ Страница MCP = ровно тот вызов, который делает агент ============
+   Ни чипов по родам, ни переключателя режима: агент их не жмёт. Виден сам вызов и
+   список в том порядке, в котором его вернула служба. */
+.mcp-call{margin:14px 0 0;padding:13px 16px;border:1px solid var(--line);border-radius:9px;
+  background:#0d100d;overflow-x:auto}
+.mcp-call code{color:#e7ecdf;font:11.5px/1.7 var(--mono);white-space:pre;user-select:text}
+.base-place{min-width:22px;color:var(--muted);font:10px var(--mono);text-align:right}
+
+/* Чем закрыто утверждение. «И выкладка, и числа» — лучший случай, он и выделен. */
+.base-support{padding:2px 8px;border-radius:999px;font:9px var(--mono);letter-spacing:.05em;
+  text-transform:uppercase;white-space:nowrap}
+.base-support.is-both{border:1px solid var(--lime);background:rgba(185,255,102,.16);color:var(--lime)}
+.base-support.is-proof{border:1px solid rgba(150,200,255,.55);color:#96c8ff}
+.base-support.is-numbers{border:1px solid var(--line-strong);color:var(--ink)}
+.base-support.is-partial{border:1px solid rgba(255,196,120,.5);color:#ffc478}
+.base-support.is-open{border:1px solid var(--line);color:var(--muted)}
+
+/* ============ Утверждение статьи как отдельная запись ============
+   Владелец: «статья должна быть в таком же виде, как утверждения по проектам». Крупно —
+   сама формулировка, подписью — из какой она статьи и какого раздела. */
+.base-card.is-claim{border-left:2px solid color-mix(in srgb,var(--lime) 40%,var(--line))}
+.base-folder{padding:2px 8px;border:1px solid var(--line);border-radius:999px;background:none;
+  color:var(--muted);font:9px var(--mono);cursor:pointer}
+.base-folder:hover{border-color:var(--lime);color:var(--lime)}
+.claim-of{margin-top:9px;display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 10px}
+.claim-of button{padding:0;border:0;background:none;color:var(--ink);font-size:12.5px;
+  text-align:left;text-decoration:underline;text-decoration-color:var(--line-strong);cursor:pointer}
+.claim-of button:hover{color:var(--lime);text-decoration-color:var(--lime)}
+.claim-of span{color:var(--muted);font:10px var(--mono)}
+.claim-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.claim-links button,.claim-links a{padding:8px 11px;border:1px solid var(--line);border-radius:7px;
+  background:none;color:#dbe2d8;font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase;
+  text-decoration:none;cursor:pointer}
+.claim-links button:hover,.claim-links a:hover{border-color:var(--lime);color:var(--lime)}
+
+/* ============ Обзор базы по темам ============
+   Владелец: «надо сделать так, чтобы на сайте можно было всё аккуратно смотреть по темам,
+   не только поиск». Три оси: папки библиотеки, темы проектов, термины. */
+.mcp-browse{margin-top:14px;border:1px solid var(--line);border-radius:11px}
+.mcp-browse>summary{padding:13px 16px;cursor:pointer;font-size:12.5px}
+.mcp-browse>summary span{margin-left:8px;color:var(--muted);font:9px var(--mono)}
+.mcp-browse section{padding:14px 16px;border-top:1px solid var(--line)}
+.mcp-browse section>b{display:block;color:var(--lime);font:9px var(--mono);letter-spacing:.08em;
+  text-transform:uppercase}
+.mcp-browse section>p{margin-top:6px;max-width:780px;color:var(--muted);font-size:11.5px;line-height:1.55}
+.mcp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.mcp-chips button{display:inline-flex;align-items:baseline;gap:7px;min-height:32px;padding:6px 12px;
+  border:1px solid var(--line);border-radius:8px;background:none;color:#dbe2d8;font-size:12px;
+  cursor:pointer;text-align:left}
+.mcp-chips button span{color:#6f7a6d;font:9px var(--mono)}
+.mcp-chips button:hover{border-color:var(--lime);color:var(--lime)}
+.mcp-chips button:hover span{color:var(--lime)}
+.mcp-chips.is-terms button{border-radius:999px}
+
+/* ============ Карточка статьи и списки ============
+   Утверждения сгруппированы по родам, у каждого видно, сверена ли цитата. */
+.paper-page{margin-top:16px;padding:24px 26px;border:1px solid var(--line);border-radius:13px;
+  background:rgba(255,255,255,.022)}
+.paper-page>header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px}
+.paper-page h2{margin-top:11px;font:500 clamp(22px,2.4vw,30px)/1.15 var(--display);letter-spacing:-.03em}
+.paper-authors{margin-top:8px;color:var(--muted);font-size:12px}
+.paper-abstract{margin-top:15px;max-width:900px;color:#cfd6cc;font-size:13.5px;line-height:1.7}
+.paper-counts{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:15px;padding-top:13px;
+  border-top:1px solid var(--line)}
+.paper-counts span{color:var(--muted);font:10px var(--mono)}
+.paper-counts b{color:var(--ink)}
+.paper-claims{margin-top:22px}
+.paper-claims h4{display:flex;align-items:baseline;gap:9px;padding-bottom:9px;
+  border-bottom:1px solid var(--line);color:var(--lime);font:10px var(--mono);
+  letter-spacing:.08em;text-transform:uppercase}
+.paper-claims h4 span{color:var(--muted)}
+.paper-claims ol{counter-reset:cl;list-style:none;margin:0;padding:0}
+.paper-claims ol li{counter-increment:cl;position:relative;padding:13px 0 13px 34px;
+  border-bottom:1px solid var(--line)}
+.paper-claims ol li:before{content:counter(cl);position:absolute;left:0;top:14px;
+  color:var(--muted);font:10px var(--mono)}
+.paper-claims p{max-width:900px;color:#d5dcd2;font-size:13px;line-height:1.65;overflow-wrap:anywhere}
+.paper-claims blockquote{margin:9px 0 0;padding-left:12px;border-left:2px solid var(--line);
+  color:var(--muted);font-size:11.5px;line-height:1.55;overflow-wrap:anywhere}
+.paper-claims small{display:block;margin-top:7px;font:9px var(--mono);letter-spacing:.05em}
+.paper-claims li.is-verified small{color:var(--lime)}
+.paper-claims li.is-unverified small{color:#ffc478}
+.folder-list{list-style:none;margin:18px 0 0;padding:0}
+.folder-list li{border-bottom:1px solid var(--line)}
+.folder-list button{display:block;width:100%;padding:13px 0;border:0;background:none;
+  color:var(--ink);text-align:left;cursor:pointer}
+.folder-list strong{display:block;font-size:13.5px;font-weight:500}
+.folder-list span{display:block;margin-top:4px;color:var(--muted);font:10px var(--mono)}
+.folder-list button:hover strong{color:var(--lime)}
+.theme-project{margin-top:26px;padding-top:18px;border-top:1px solid var(--line)}
+.theme-project h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:9px;
+  font:500 17px var(--display);letter-spacing:-.02em}
+.theme-project>p{margin-top:9px;max-width:900px;color:var(--muted);font-size:12.5px;line-height:1.6}
+/* Поле поиска прилипшее, поэтому переход на карточку прокручивал её заголовок под него. */
+.paper-page{scroll-margin-top:150px}
+#mcp-results{scroll-margin-top:150px}
+
+/* ============ Карточка проекта и запись по коду ============ */
+.project-about{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));
+  gap:10px 26px;margin:18px 0 0}
+.project-about>div{min-width:0;padding:11px 13px;border:1px solid var(--line);border-radius:9px}
+.project-about dt{color:var(--muted);font:9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.project-about dd{margin:6px 0 0;color:#cfd6cc;font-size:12.5px;line-height:1.6;overflow-wrap:anywhere}
+/* Владелец: «там будет на каждую гипотезу пару строк». Формулировка и критерий рядом. */
+.folder-list.is-rich button{padding:15px 0}
+.folder-list.is-rich em{display:block;margin-top:6px;color:#b9c1b6;font-style:normal;
+  font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+.folder-list.is-rich em.row-why{color:var(--muted);font-size:11.5px}
+.theme-project h3 button{padding:0;border:0;background:none;color:var(--ink);
+  font:inherit;text-align:left;cursor:pointer}
+.theme-project h3 button:hover{color:var(--lime)}
+
+/* ============ Читать как агент ============
+   Те же вызовы, что делает агент; ответ показывается сырым. */
+.mcp-agent{margin-top:14px;border:1px solid var(--line);border-radius:11px}
+.mcp-agent>summary{padding:13px 16px;cursor:pointer;font-size:12.5px}
+.mcp-agent>summary span{margin-left:8px;color:var(--muted);font:9px var(--mono)}
+.mcp-agent>p{margin:0;padding:0 16px 4px;color:var(--muted);font-size:11.5px;line-height:1.55}
+.mcp-agent .mcp-chips{padding:11px 16px 0}
+.agent-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) auto;gap:9px;
+  align-items:end;padding:14px 16px}
+.agent-form label{display:grid;gap:5px;color:var(--muted);font:9px var(--mono);
+  letter-spacing:.05em;text-transform:uppercase}
+.agent-form input{min-height:38px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+  background:#0d100d;color:var(--ink);font:11.5px var(--mono)}
+.agent-form input:focus{border-color:var(--lime);outline:none}
+.agent-form button{min-height:38px;padding:10px 15px;border:1px solid var(--lime);border-radius:8px;
+  background:rgba(185,255,102,.12);color:var(--lime);font:10px var(--mono);
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.agent-out{margin:0;padding:14px 16px 16px;max-height:420px;overflow:auto;
+  border-top:1px solid var(--line);color:#cfd6cc;font:11px/1.6 var(--mono);white-space:pre-wrap;
+  overflow-wrap:anywhere}
+@media (max-width:760px){.agent-form{grid-template-columns:1fr}}
+/* На 320px карточка записи упиралась в паддинги и код цитирования. */
+@media (max-width:400px){
+  .paper-page{padding:17px 15px}
+  .paper-page>header{gap:6px 8px}
+  .base-code,.base-status,.base-proj{overflow-wrap:anywhere}
+  .paper-counts{gap:6px 14px}
+  .claim-links button,.claim-links a{width:100%;text-align:center}
+}
+
+/* ============ Хранилища перестают быть кнопками ============
+   Владелец: «вот тут я бы везде убрал это как кнопки, тоже в дизайн надо встроить, чтобы
+   было не так перегружено». Рамка, фон и радиус у каждой карточки говорили «отдельный
+   объект», хотя это просто перечень: куда результат ложится. Теперь это список с одной
+   линией слева, а нажимается по-прежнему всё. */
+.destination-cluster .destination-node,
+.destination-cluster .outcome-nodes button{
+  min-height:0;padding:9px 0 9px 13px;
+  border:0;border-left:1px solid rgba(20,23,19,.18);border-radius:0;
+  background:none;box-shadow:none}
+.destination-cluster .destination-node:hover,
+.destination-cluster .outcome-nodes button:hover{
+  border-left-color:var(--accent);background:none}
+.destination-cluster .destination-node small{color:#7c8479}
+.destination-cluster .destination-node strong{font-size:13px}
+.destination-cluster .destination-node span{color:#6a7168}
+/* «Остаётся» — итог, а не объект: пунктирные рамки убраны, остался мелкий кегль в столбец. */
+.destination-cluster .outcome-nodes{display:grid;grid-template-columns:1fr;gap:0;margin-top:9px}
+.destination-cluster .outcome-nodes button{
+  border-left-style:dashed;font-size:11px;line-height:1.45}
+.destination-cluster .outcome-nodes button small{
+  display:block;margin-bottom:3px;color:#8b9288;font:8px var(--mono);text-transform:uppercase}
+
+/* ============ Глубина поиска ============
+   Два режима, и разница между ними измерена: быстрый отвечает за секунду и попадает по теме
+   первым ответом в 21 случае из 30, тщательный — за семь секунд и в 27 из 30. Поэтому
+   переключатель стоит рядом с полем, а не спрятан в настройках: это не тонкая настройка, а
+   выбор между «сейчас» и «точнее», и человек должен видеть цену. */
+  border-radius:999px;background:transparent;color:var(--muted);font:10px var(--mono);
+  letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+  color:var(--ink)}

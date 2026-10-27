@@ -1,0 +1,7 @@
+/* Canonical guide references inside existing tool dialogs. */
+.os-reference{margin:22px 0}
+.os-reference a{font:500 13px/1.6 var(--body);color:#344f4b;text-decoration:underline;text-underline-offset:4px}
+.os-reference a:focus-visible{outline:2px solid #344f4b;outline-offset:4px}
+.skill-dialog:has(.os-reference) .skill-dialog-head h2{color:#252a24}
+.skill-dialog:has(.os-reference) .skill-dialog-head>p,.skill-dialog:has(.os-reference) .skill-invoke{color:#50594b}
+.skill-dialog:has(.os-reference) .skill-invoke code{color:#303a29}

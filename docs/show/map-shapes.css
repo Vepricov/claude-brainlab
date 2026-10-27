@@ -1,0 +1,147 @@
+/* ============ Фигура карты по смыслу этапа ============
+   Владелец: «на самой карте только самое важное оставлять… надо как-то красиво обыграть,
+   например как-то Гермесов выделить, не просто квадратными штуками. Короче креатив
+   проявить, не обязательно на каждой точке из 8 делать одинаково».
+
+   На карте осталось 21 карточка вместо 69, и старая сетка под двенадцать оставляла
+   пустоты. Здесь у каждой точки своя фигура, и она следует смыслу этапа, а не украшению:
+   где есть порядок — цепочка, где есть ядро — орбита, где есть выбор — две равные карточки.
+
+   Раскладку задаёт .system-map с областями "context tools destinations". Мы меняем только
+   середину, поэтому колонка «когда включается» и колонка хранилищ остаются на местах. */
+
+/* Пустоты: высота была рассчитана на двенадцать карточек. */
+.section-overview .system-map{min-height:auto}
+.section-overview .tool-clusters{align-content:start;gap:14px}
+
+/* ---------- Общее для всех восьми ---------- */
+.section-overview .tool-cluster{position:relative}
+/* Шаги внутри карточки идут в две колонки: так карточка не растёт вниз лестницей. */
+.section-overview .tool-node ol{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px}
+.section-overview .tool-node-major{min-height:0}
+
+/* ---------- 01 Литература и 04 Эксперименты: созвездие вокруг Hermes ----------
+   Владелец: «типо Гермес большое созвездие, paper-ingest, paper-search и тд какие-то
+   другие». На этих двух этапах работу ведёт агент, поэтому он крупная звезда, а соседние
+   инструменты — звёзды поменьше, соединённые с ним линиями. Линии рисуются рамками
+   псевдоэлементов, без картинок и без разметки. */
+.section-overview[data-process="literature"] .tool-clusters,
+.section-overview[data-process="experiments"] .tool-clusters{
+  position:relative;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;
+  gap:20px 26px}
+
+/* Ядро созвездия занимает ширину и светится. */
+.section-overview[data-process="literature"] .tool-cluster:first-child,
+.section-overview[data-process="experiments"] .tool-cluster:nth-child(2){
+  grid-column:1/-1;padding:20px 22px;border-radius:24px;
+  border-color:color-mix(in srgb,var(--accent) 42%,rgba(20,23,19,.14));
+  background:
+    radial-gradient(60% 120% at 22% 0%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%),
+    rgba(246,243,233,.6)}
+.section-overview[data-process="literature"] .tool-cluster:first-child>div,
+.section-overview[data-process="experiments"] .tool-cluster:nth-child(2)>div{
+  grid-template-columns:1.4fr 1fr;align-items:start;gap:10px 22px}
+
+/* Сама звезда: главный инструмент выделен весом, а не рамкой пожирнее. */
+.section-overview[data-process="literature"] .tool-cluster:first-child .tool-node:first-child,
+.section-overview[data-process="experiments"] .tool-cluster:nth-child(2) .tool-node:first-child{
+  position:relative;
+  border-color:color-mix(in srgb,var(--accent) 55%,rgba(20,23,19,.16));
+  background:color-mix(in srgb,var(--accent) 11%,rgba(246,243,233,.92))}
+.section-overview[data-process="literature"] .tool-cluster:first-child .tool-node:first-child strong,
+.section-overview[data-process="experiments"] .tool-cluster:nth-child(2) .tool-node:first-child strong{
+  font-size:18px;letter-spacing:-.02em}
+/* Свечение ядра. */
+.section-overview[data-process="literature"] .tool-cluster:first-child .tool-node:first-child:before,
+.section-overview[data-process="experiments"] .tool-cluster:nth-child(2) .tool-node:first-child:before{
+  content:"";position:absolute;inset:-9px;border-radius:14px;pointer-events:none;
+  background:radial-gradient(circle at 30% 40%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 68%)}
+
+/* Спутники: звезда на луче, луч тянется к ядру. */
+.section-overview[data-process="literature"] .tool-cluster:not(:first-child),
+.section-overview[data-process="experiments"] .tool-cluster:not(:nth-child(2)){
+  position:relative;border-radius:16px}
+.section-overview[data-process="literature"] .tool-cluster:not(:first-child):before,
+.section-overview[data-process="experiments"] .tool-cluster:not(:nth-child(2)):before{
+  content:"";position:absolute;left:26px;top:-21px;width:1px;height:21px;
+  background:linear-gradient(to bottom,color-mix(in srgb,var(--accent) 55%,transparent),transparent)}
+.section-overview[data-process="literature"] .tool-cluster:not(:first-child):after,
+.section-overview[data-process="experiments"] .tool-cluster:not(:nth-child(2)):after{
+  content:"";position:absolute;left:23px;top:-9px;width:7px;height:7px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent)}
+
+/* ---------- 03 Созвоны: цепочка ----------
+   Здесь строгий порядок: один вход, и рядом независимый второй. Стрелка это и показывает. */
+.section-overview[data-process="calls"] .tool-clusters{grid-template-columns:1fr;gap:34px}
+.section-overview[data-process="calls"] .tool-cluster{border-radius:8px}
+.section-overview[data-process="calls"] .tool-cluster:not(:last-child):after{
+  content:"";position:absolute;left:50%;bottom:-25px;width:1px;height:18px;
+  background:color-mix(in srgb,var(--accent) 55%,transparent)}
+.section-overview[data-process="calls"] .tool-cluster:not(:last-child):before{
+  content:"";position:absolute;left:50%;bottom:-25px;width:7px;height:7px;
+  transform:translateX(-3px) rotate(45deg);
+  border-right:1px solid color-mix(in srgb,var(--accent) 55%,transparent);
+  border-bottom:1px solid color-mix(in srgb,var(--accent) 55%,transparent)}
+
+/* ---------- 02 Идеи: ветвление от корня ----------
+   Граф идей ветвится, поэтому блоки уходят лестницей вправо, а не стоят в сетке. */
+.section-overview[data-process="ideation"] .tool-clusters{grid-template-columns:1fr;gap:10px}
+.section-overview[data-process="ideation"] .tool-cluster{
+  border-radius:6px 20px 20px 6px;
+  border-left:3px solid color-mix(in srgb,var(--accent) 55%,transparent)}
+.section-overview[data-process="ideation"] .tool-cluster:nth-child(2){margin-left:7%}
+.section-overview[data-process="ideation"] .tool-cluster:nth-child(3){margin-left:14%}
+
+/* ---------- 06 Статья: выбор из двух равных ----------
+   Два навыка написаны в лаборатории, и оба равны. Поэтому две крупные карточки рядом. */
+.section-overview[data-process="writing"] .tool-clusters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.section-overview[data-process="writing"] .tool-cluster{
+  padding:20px;border-radius:16px;
+  background:color-mix(in srgb,var(--accent) 7%,rgba(246,243,233,.6));
+  border-color:color-mix(in srgb,var(--accent) 45%,rgba(20,23,19,.16))}
+.section-overview[data-process="writing"] .tool-node{min-height:132px}
+.section-overview[data-process="writing"] .tool-node strong{font-size:17px}
+
+/* ---------- 05 Результаты: две ступени ----------
+   Разобрать строго, потом изложить читаемо. Вторая ступень ниже первой. */
+.section-overview[data-process="results"] .tool-clusters{grid-template-columns:1fr;gap:12px}
+.section-overview[data-process="results"] .tool-cluster:nth-child(2){
+  margin-left:12%;border-top:2px solid color-mix(in srgb,var(--accent) 50%,transparent)}
+
+/* ---------- 00 Запуск: два независимых входа ----------
+   Проект и доступ к ресурсам не следуют друг за другом, их просят по отдельности. */
+.section-overview[data-process="projects"] .tool-clusters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.section-overview[data-process="projects"] .tool-cluster{
+  border-radius:14px;border-top:2px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+
+/* ---------- 07 Поделиться: две площадки ---------- */
+.section-overview[data-process="presentation"] .tool-clusters{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.section-overview[data-process="presentation"] .tool-cluster{border-radius:5px 5px 18px 18px}
+
+/* ---------- Узкие экраны: любая фигура разворачивается в столбец ---------- */
+@media (max-width:900px){
+  .section-overview[data-process] .tool-clusters{grid-template-columns:1fr!important;gap:10px}
+  .section-overview[data-process] .tool-cluster{grid-column:auto!important;margin-left:0!important}
+  .section-overview[data-process="literature"] .tool-cluster:first-child>div,
+  .section-overview[data-process="experiments"] .tool-cluster:nth-child(2)>div{grid-template-columns:1fr}
+  .section-overview .tool-node ol{grid-template-columns:1fr}
+  .section-overview[data-process="calls"] .tool-cluster:not(:last-child):after,
+  .section-overview[data-process="calls"] .tool-cluster:not(:last-child):before{display:none}
+  .section-overview[data-process="literature"] .tool-cluster:not(:first-child):before,
+  .section-overview[data-process="literature"] .tool-cluster:not(:first-child):after,
+  .section-overview[data-process="experiments"] .tool-cluster:not(:nth-child(2)):before,
+  .section-overview[data-process="experiments"] .tool-cluster:not(:nth-child(2)):after{display:none}
+}
+
+/* ---------- Пустота под фигурой ----------
+   Высоту карты задаёт колонка хранилищ: у статьи их пять, а карточек на карте две, и под
+   фигурой оставалось полтысячи пустых точек. Фигура центрируется по своей колонке, а
+   колонка хранилищ больше не растягивает всю карту. */
+.section-overview[data-process="writing"] .tool-clusters,
+.section-overview[data-process="results"] .tool-clusters,
+.section-overview[data-process="projects"] .tool-clusters,
+.section-overview[data-process="presentation"] .tool-clusters,
+.section-overview[data-process="calls"] .tool-clusters,
+.section-overview[data-process="ideation"] .tool-clusters{align-content:center}
+.section-overview .destination-cluster{align-self:start}

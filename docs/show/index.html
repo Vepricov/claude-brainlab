@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании.">
+  <title>BRAIn Lab · Машина знаний</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="refinements.css">
+  <link rel="stylesheet" href="map-shapes.css">
+  <link rel="stylesheet" href="mcp-design.css">
+  <link rel="stylesheet" href="front-design.css">
+  <link rel="stylesheet" href="memory-map.css">
+  <link rel="stylesheet" href="obsidian-setup.css">
+  <link rel="stylesheet" href="surface-pages.css">
+  <link rel="stylesheet" href="search-workspace.css">
+  <link rel="stylesheet" href="setup.css">
+  <link rel="stylesheet" href="hub.css">
+  <link rel="stylesheet" href="fixes.css">
+  <link rel="stylesheet" href="show.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" id="home" type="button"><span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Машина знаний</small></span></button>
+    <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Машина знаний</button><button data-view="ideas" type="button">База знаний</button><button data-view="setup" type="button">Агенты и модели</button></nav>
+    <div class="top-right"><a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>
+     <button class="search-open" id="search-open" type="button"><span>Найти процесс или инструмент</span><kbd>⌘ K</kbd></button></div>
+  </header>
+
+  <main>
+    <section class="overview" id="overview">
+      <header class="overview-head">
+        <p class="overline">Исследовательская система · <span id="verified-date"></span></p>
+        <h1>Вопрос входит —<br> <span>знание</span> выходит</h1>
+        <p class="overview-intro">Восемь этапов работы в одном цикле. Агенты читают новое, ведут проверки ночью и пишут черновики, программа проверяет каждое число, человек принимает результат. Так устроена наша наука, и так же можно устроить работу любой компании. Нажмите на этап.</p>
+        <div class="overview-chips"><span style="--c:#ffb86b">Работа идёт круглосуточно</span><span style="--c:#5ee6d0">Свежие новости каждое утро</span><span style="--c:#8fb4ff">Каждое число проверено</span><span style="--c:#c79bff">Память на месяцы</span><span style="--c:#b9ff66">Подходит любой компании</span></div>
+      </header>
+
+      <div class="loop-map" id="loop-map" aria-label="Карта исследовательской работы">
+        <div class="loop-nodes" id="loop-nodes"></div>
+        <section class="knowledge-cluster" aria-label="Четыре слоя памяти и координации">
+          <button class="knowledge-core" id="knowledge-core" type="button">
+            <span>Сердце системы</span><strong>База знаний</strong><p>общая память: идеи · проверки · решения · история</p><i>Открыть базу →</i>
+          </button>
+          <div class="memory-surfaces">
+            <button data-surface="obsidian" type="button"><b>Одно окно</b><span>всё знание в одном месте</span></button>
+            <button data-surface="mempalace" type="button"><b>Память</b><span>агенты помнят месяцами</span></button>
+            <button data-sat-process="experiments" data-sat-tool="hermes" type="button"><b>Гермес</b><span>агент на сервере 24/7</span></button>
+          </div>
+        </section>
+      </div>
+
+
+      <p class="loop-tally" id="loop-tally"></p>
+
+      <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title"></section>
+    </section>
+
+    <article class="process-view" id="process-view" hidden></article>
+    <article class="dykaf-view" id="dykaf-view" hidden></article>
+    <article class="mcp-live-view" id="mcp-live-view" hidden></article>
+    <article class="examples-view" id="examples-view" hidden></article>
+    <article class="setup-view" id="setup-view" hidden></article>
+    <article class="hub-view" id="hub-view" hidden></article>
+  </main>
+
+  <dialog class="search-dialog" id="search-dialog">
+    <form method="dialog" class="search-head"><label><span aria-hidden="true">⌕</span><span class="sr-only">Поиск по процессам и инструментам</span><input id="search-input" type="search" placeholder="Например: разобрать созвон, Hermes, rebuttal…" autocomplete="off"></label><button value="close" aria-label="Закрыть">×</button></form>
+    <div class="search-results" id="search-results"></div>
+  </dialog>
+
+  <script src="data/counts.js"></script>
+  <script src="data/atlas-public.js"></script>
+  <script src="data/research-loop-data.js"></script>
+  <script src="data/system-examples.js"></script>
+  <!-- Scientific snapshots load on demand when the search workspace opens. -->
+  <!-- Ядро поиска: один индекс на узлы дерева, записи базы и статьи, ранжирование BM25.
+       Отдельный файл, потому что его гоняет набор проверок tests/test_search.mjs без
+       браузера — 38 запросов за секунду, поэтому качество меряется, а не обсуждается. -->
+  <script src="search-core.js"></script>
+  <script src="memory-map.js"></script>
+  <script src="surface-pages.js"></script>
+  <script src="obsidian-setup.js"></script>
+  <script src="data/setup-data.js"></script>
+  <script src="setup.js"></script>
+  <script src="data/hub-data.js"></script>
+  <script src="hub.js"></script>
+  <script src="data/show-data.js"></script>
+  <script src="app.js"></script>
+  <script src="show.js"></script>
+</body>
+</html>

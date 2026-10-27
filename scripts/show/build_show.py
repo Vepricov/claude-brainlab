@@ -131,9 +131,18 @@ def recolor(text: str) -> str:
     return COLOR.sub(sub, text)
 
 
+ICONS = {
+    "model": '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>',
+    "tune": '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+    "lock": '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/><circle cx="12" cy="15.5" r="1.3"/>',
+    "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+}
+
+
 def points_html() -> str:
-    """Под заголовком главного экрана: что получает компания (вместо прежних плашек)."""
-    cards = "".join(f'<li style="--c:{c}" title="{t}"><b>{v}</b><span>{k}</span></li>' for c, v, k, t in C.POINTS["items"])
+    """Под заголовком главного экрана: четыре главных обещания (вместо прежних плашек)."""
+    cards = "".join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{ICONS[i]}</svg><p><b>{k}</b><span>{t}</span></p></li>'
+                    for i, k, t in C.POINTS["items"])
     return f'<ul class="show-pts" aria-label="{C.POINTS["title"]}">{cards}</ul>'
 
 

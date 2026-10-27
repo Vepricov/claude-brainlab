@@ -152,13 +152,16 @@
 @keyframes show-shine{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 @media(prefers-reduced-motion:reduce){.show-orbits,.show-scene *,.overview:before,.overview-head h1 span{animation:none!important}.show-orbits circle,.show-spark{display:none}}
 .process-view{background:#f4f7fb}
-/* Главный экран: что получает компания — под заголовком, вместо плашек. */
-.show-pts{grid-column:1/-1;list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;width:100%}
-.show-pts li{position:relative;overflow:hidden;padding:10px 12px 9px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),transparent 70%),rgba(255,255,255,.02);cursor:default;transition:border-color .35s,transform .35s}
-.show-pts li:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--c),transparent)}
-.show-pts li:hover{border-color:color-mix(in srgb,var(--c) 60%,transparent);transform:translateY(-2px)}
-.show-pts b{display:block;font:500 22px/1 var(--display);letter-spacing:-.045em;color:var(--c)}
-.show-pts span{display:block;margin-top:5px;font-size:12px;line-height:1.2;color:var(--ink)}
-@media(max-width:1200px){.show-pts{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:600px){.show-pts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Главный экран: четыре обещания под заголовком — без плашек, строкой с иконками. */
+.show-pts{grid-column:1/-1;list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:0;width:100%}
+.show-pts li{display:flex;align-items:center;gap:14px;padding:4px 34px 4px 0;margin-right:34px;border-right:1px solid var(--line)}
+.show-pts li:last-child{border-right:0;margin-right:0}
+.show-pts svg{flex:none;width:44px;height:44px;padding:10px;border-radius:50%;fill:none;stroke:#b9ff66;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;background:rgba(185,255,102,.08);box-shadow:inset 0 0 0 1px rgba(185,255,102,.28);transition:box-shadow .4s,background .4s,transform .6s}
+.show-pts li:hover svg{background:rgba(185,255,102,.16);box-shadow:inset 0 0 0 1px rgba(185,255,102,.6),0 0 22px rgba(185,255,102,.35);transform:rotate(-12deg) scale(1.06)}
+.show-pts p{margin:0}
+.show-pts b{display:block;font:500 19px/1.15 var(--display);letter-spacing:-.025em;color:var(--ink);white-space:nowrap}
+.show-pts span{display:block;margin-top:3px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+@media(max-width:1200px){.show-pts{grid-template-columns:repeat(2,auto);row-gap:16px}.show-pts li:nth-child(2){border-right:0;margin-right:0}}
+@media(max-width:600px){.show-pts{grid-template-columns:1fr}.show-pts li{border-right:0;margin-right:0}}
 .overview-head .overview-intro{bottom:96px}
-@media(max-width:1200px){.overview-head .overview-intro{bottom:170px}}
+@media(max-width:1200px){.overview-head .overview-intro{bottom:130px}}

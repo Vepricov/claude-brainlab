@@ -135,12 +135,14 @@
 .sc-out-tile:nth-of-type(2){left:4%;top:6%}.sc-out-tile:nth-of-type(3){right:4%;top:6%}.sc-out-tile:nth-of-type(4){left:50%;bottom:0;margin-left:-32px}
 /* Первый экран: лучи к базе, частицы, сигнал по кругу, звёздная пыль и мерцающее «каждом». */
 .show-beams{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
-.show-beam{fill:none;stroke:#66cdff;stroke-opacity:.2;stroke-width:1;stroke-dasharray:3 6;transition:stroke-opacity .5s,stroke-width .5s}
-.show-beam.is-live{stroke:var(--node,#66cdff);stroke-opacity:.75;stroke-width:1.6;stroke-dasharray:none;filter:drop-shadow(0 0 6px var(--node,#66cdff))}
-.show-spark{fill:#e9f0ff;opacity:.55}
-.loop-node{transition:box-shadow .5s,transform .5s,border-color .5s}
-.loop-node.is-live{box-shadow:0 0 0 1px var(--node,#66cdff),0 0 34px -4px var(--node,#66cdff);transform:translateY(-3px)}
-.loop-node:nth-child(3).is-live{transform:translate(-50%,-3px)}
+.show-beam{fill:none;stroke:var(--node);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;filter:drop-shadow(0 0 6px var(--node));transition:stroke-dashoffset .5s ease-out,opacity .3s}
+.show-ray.is-on .show-beam{stroke-dashoffset:0;opacity:.85}
+.show-spark{fill:#ffffff;opacity:0;filter:drop-shadow(0 0 4px var(--node));transition:opacity .3s}
+.show-ray.is-on .show-spark{opacity:.95;transition-delay:.35s}
+.show-ripple{position:absolute;left:var(--core-x);top:var(--core-y);width:260px;height:260px;margin:-130px 0 0 -130px;border:1.5px solid var(--node);border-radius:50%;pointer-events:none;z-index:1;box-shadow:0 0 24px -6px var(--node);animation:show-ripple 1.8s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes show-ripple{from{transform:scale(.85);opacity:.8}to{transform:scale(2.1);opacity:0}}
+.show-orbit{transition:stroke-opacity .6s}
+#loop-map.is-hovering .show-orbit{stroke-opacity:.28}
 .overview{position:relative}
 .overview:before{content:"";position:absolute;inset:-50% -10%;pointer-events:none;opacity:.55;
   background-image:radial-gradient(1px 1px at 12% 22%,#ffffff 50%,transparent 51%),radial-gradient(1px 1px at 68% 14%,#ffffff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 84% 62%,#66cdff 50%,transparent 51%),radial-gradient(1px 1px at 32% 78%,#ffffff 50%,transparent 51%),radial-gradient(1px 1px at 52% 44%,#ffffff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 22% 58%,#8fb1ff 50%,transparent 51%),radial-gradient(1px 1px at 92% 30%,#ffffff 50%,transparent 51%);

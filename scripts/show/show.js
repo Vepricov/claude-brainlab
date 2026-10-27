@@ -60,26 +60,29 @@
     if(section)setTimeout(()=>document.getElementById(`setup-${section}`)?.scrollIntoView({behavior:"smooth",block:"start"}),250);
   },true);
 
-  // Первый экран: от каждого этапа к базе знаний идёт луч, по лучу бегут частицы, а сигнал
-  // обходит этапы по кругу — видно, что агенты работают на всех восьми и всё сходится в базу.
-  let live=0,timer=0;
+  // Первый экран: плитки не подсвечиваются. Навёл на этап — от него к базе знаний прорисовывается
+  // луч, по нему бегут частицы, а от базы расходятся кольца цвета этапа. Владелец 27-10-2026:
+  // «не делать, чтобы выделялись плитки… если навожу мышкой, начинается красивая анимация».
   function beams(){
     const map=document.getElementById("loop-map"),core=map&&map.querySelector(".knowledge-core");
     const nodes=map?[...map.querySelectorAll(".loop-node")]:[];
     if(!core||nodes.length<2||matchMedia("(max-width:760px)").matches)return;
     const m=map.getBoundingClientRect(),c=core.getBoundingClientRect(),cx=c.left+c.width/2-m.left,cy=c.top+c.height/2-m.top;
-    const paths=nodes.map((n,i)=>{const r=n.getBoundingClientRect(),x=r.left+r.width/2-m.left,y=r.top+r.height/2-m.top;
-      const ex=x+(cx-x)*.12,ey=y+(cy-y)*.12,tx=cx-(cx-x)*.2,ty=cy-(cy-y)*.2,qx=(ex+tx)/2+(ty-ey)*.12,qy=(ey+ty)/2-(tx-ex)*.12;
-      return `<path id="show-beam-${i}" class="show-beam" data-i="${i}" style="--node:${getComputedStyle(n).getPropertyValue("--node")||"#5ec8ff"}" d="M${ex.toFixed(1)} ${ey.toFixed(1)}Q${qx.toFixed(1)} ${qy.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)}"/>
-        ${[0,1,2].map(k=>`<circle class="show-spark" r="${2.6-k*.6}"><animateMotion dur="${3.2+i%3*.4}s" begin="${-(k*1.1+i*.37).toFixed(2)}s" repeatCount="indefinite"><mpath href="#show-beam-${i}"/></animateMotion></circle>`).join("")}`;}).join("");
+    const rays=nodes.map((n,i)=>{const r=n.getBoundingClientRect(),x=r.left+r.width/2-m.left,y=r.top+r.height/2-m.top;
+      const ex=x+(cx-x)*.18,ey=y+(cy-y)*.18,tx=cx-(cx-x)*.22,ty=cy-(cy-y)*.22,qx=(ex+tx)/2+(ty-ey)*.14,qy=(ey+ty)/2-(tx-ex)*.14;
+      const col=getComputedStyle(n).getPropertyValue("--node").trim()||"#5ec8ff";
+      return `<g class="show-ray" data-i="${i}" style="--node:${col}"><path id="show-beam-${i}" class="show-beam" pathLength="1" d="M${ex.toFixed(1)} ${ey.toFixed(1)}Q${qx.toFixed(1)} ${qy.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)}"/>
+        ${[0,1,2,3,4].map(k=>`<circle class="show-spark" r="${3-k*.4}"><animateMotion dur="1.3s" begin="${(-k*.26).toFixed(2)}s" repeatCount="indefinite"><mpath href="#show-beam-${i}"/></animateMotion></circle>`).join("")}</g>`;}).join("");
     map.querySelector(".show-beams")?.remove();
-    map.insertAdjacentHTML("afterbegin",`<svg class="show-beams" width="${m.width}" height="${m.height}" aria-hidden="true">${paths}</svg>`);
-    if(!timer&&!matchMedia("(prefers-reduced-motion:reduce)").matches)timer=setInterval(()=>{
-      const ns=[...document.querySelectorAll("#loop-map .loop-node")],bs=[...document.querySelectorAll(".show-beam")];
-      if(!ns.length)return;live=(live+1)%ns.length;
-      ns.forEach((n,i)=>n.classList.toggle("is-live",i===live));bs.forEach((b,i)=>b.classList.toggle("is-live",i===live));
-      document.querySelector("#loop-map .knowledge-core")?.animate([{transform:"translate(-50%,-50%) scale(1)"},{transform:"translate(-50%,-50%) scale(1.035)"},{transform:"translate(-50%,-50%) scale(1)"}],{duration:900,delay:700,easing:"ease-out"});
-    },1700);
+    map.insertAdjacentHTML("afterbegin",`<svg class="show-beams" width="${m.width}" height="${m.height}" aria-hidden="true">${rays}</svg>`);
+    map.style.setProperty("--core-x",cx+"px");map.style.setProperty("--core-y",cy+"px");
+    nodes.forEach((n,i)=>{if(n.dataset.showHover)return;n.dataset.showHover="1";let t=0;
+      const ripple=()=>{const col=getComputedStyle(n).getPropertyValue("--node").trim()||"#5ec8ff";
+        map.insertAdjacentHTML("beforeend",`<span class="show-ripple" style="--node:${col}"></span>`);
+        const el=map.lastElementChild;setTimeout(()=>el.remove(),1800);};
+      n.addEventListener("mouseenter",()=>{map.querySelector(`.show-ray[data-i="${i}"]`)?.classList.add("is-on");map.classList.add("is-hovering");setTimeout(ripple,450);t=setInterval(ripple,900);});
+      n.addEventListener("mouseleave",()=>{map.querySelector(`.show-ray[data-i="${i}"]`)?.classList.remove("is-on");map.classList.remove("is-hovering");clearInterval(t);});
+    });
   }
   let rs;addEventListener("resize",()=>{clearTimeout(rs);rs=setTimeout(beams,150)});
 

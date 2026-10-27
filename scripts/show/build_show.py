@@ -132,9 +132,9 @@ def recolor(text: str) -> str:
 
 
 def points_html() -> str:
-    p = C.POINTS
-    cards = "".join(f'<article style="--c:{c}"><b>{v}</b><strong>{k}</strong><p>{t}</p></article>' for c, v, k, t in p["items"])
-    return f'<section class="show-points"><div class="show-points-head"><h2>{p["title"]}</h2><p>{p["lead"]}</p></div><div class="show-points-grid">{cards}</div></section>'
+    """Под заголовком главного экрана: что получает компания (вместо прежних плашек)."""
+    cards = "".join(f'<li style="--c:{c}" title="{t}"><b>{v}</b><span>{k}</span></li>' for c, v, k, t in C.POINTS["items"])
+    return f'<ul class="show-pts" aria-label="{C.POINTS["title"]}">{cards}</ul>'
 
 
 def index_html() -> str:
@@ -144,7 +144,6 @@ def index_html() -> str:
     old_intro = re.search(r'<p class="overview-intro">.*?</p>', html).group(0)
     old_chips = re.search(r'<div class="overview-chips">.*?</div>', html).group(0)
     old_show = re.search(r'<a class="show-link"[^>]*>Показ</a>', html).group(0)
-    chips = "".join(f'<span style="--c:{c}">{t}</span>' for c, t in C.INDEX["chips"])
     core, (s1, s2, s3), tabs = C.INDEX["core"], C.INDEX["surfaces"], C.INDEX["tabs"]
     return replace_once(html, [
         ('<span class="brand-sign"><i></i><i></i></span><span><b>BRAIn Lab</b><small>Research system</small></span>',
@@ -158,8 +157,7 @@ def index_html() -> str:
         ("Карта исследовательской работы BRAIn Lab: агенты, база знаний в GitLab, сетап",
          "Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании."),
         (old_intro, f'<p class="overview-intro">{C.INDEX["intro"]}</p>'),
-        ('<p class="loop-tally" id="loop-tally"></p>', '<p class="loop-tally" id="loop-tally"></p>\n' + points_html()),
-        (old_chips, f'<div class="overview-chips">{chips}</div>'),
+        (old_chips, points_html()),
         (old_show, '<a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>'),
         ('>GitHub для идей</button>', f'>{tabs[1]}</button>'),
         ('>Харнесс агентов</button>', f'>{tabs[2]}</button>'),

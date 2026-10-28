@@ -581,8 +581,7 @@ def adopt(*, work: str, name: str, command: str = "", logs: Optional[List[str]] 
     run = LabRun(work=work, name=name, objective=objective, command=command,
                  code_root=code_root, branch=branch)
     run._data["adopted"] = True          # noqa: SLF001 — свой же лист
-    run.note("Прогон подхвачен задним числом: код его не писал, поэтому числа в лист "
-             "вписывает читатель и помечает как своё чтение.")
+    run.note("Прогон подхвачен задним числом.")
     missing = []
     for one in logs or []:
         place = Path(one).expanduser()

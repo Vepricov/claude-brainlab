@@ -96,6 +96,13 @@
     const hub=document.querySelector(".hub-hero");
     if(hub&&!hub.querySelector(".show-ribbon")&&S.ribbon)hub.insertAdjacentHTML("afterbegin",`<div class="show-ribbon">${esc(S.ribbon[0])}<small>${esc(S.ribbon[1])}</small></div>`);
   }
+  // Светлая тема: кнопка в шапке, выбор помнится в этом браузере.
+  const theme=light=>{document.documentElement.classList.toggle("show-light",light);const b=document.getElementById("show-theme");
+    if(b){b.textContent=light?"Тёмная тема":"Светлая тема";b.setAttribute("aria-pressed",String(light));}
+    try{localStorage.setItem("show-theme",light?"light":"dark")}catch(e){}};
+  let saved=false;try{saved=localStorage.getItem("show-theme")==="light"}catch(e){}
+  theme(saved);
+  document.getElementById("show-theme")?.addEventListener("click",()=>theme(!document.documentElement.classList.contains("show-light")));
   new MutationObserver(decorate).observe(document.body,{childList:true,subtree:true});
   decorate();
 })();

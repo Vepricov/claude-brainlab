@@ -165,7 +165,10 @@ def index_html() -> str:
         ('data-view="loop" type="button">Машина знаний</button>', f'data-view="loop" type="button">{tabs[0]}</button>'),
         ("Карта исследовательской работы BRAIn Lab: агенты, база знаний в GitLab, сетап",
          "Машина знаний BRAIn Lab: агенты, база знаний и проверка каждого шага. В науке и в любой компании."),
-        (old_intro, f'<p class="overview-intro">{C.INDEX["intro"]}</p>'),
+        (old_intro, f'<div class="overview-intro show-intro"><p>{C.INDEX["intro"]}</p>'
+                    f'<a class="show-qr" href="{C.QR[0]}" target="_blank" rel="noopener"><img src="assets/qr-github.svg" alt="QR-код: {C.QR[1]}">'
+                    f'<span><b>{C.QR[1]}</b>{C.QR[2]}</span></a></div>'),
+        ('<a class="show-link"', '<button class="show-theme" id="show-theme" type="button" aria-pressed="false">Светлая тема</button><a class="show-link"'),
         (old_chips, points_html()),
         (old_show, '<a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>'),
         ('>GitHub для идей</button>', f'>{tabs[1]}</button>'),
@@ -189,6 +192,7 @@ def main() -> None:
     shutil.copytree(ATLAS / "assets", OUT / "assets", ignore=shutil.ignore_patterns("katex", "F-DYC-*"))
     for f in ("show.css", "show.js"):
         shutil.copyfile(HERE / f, OUT / f)
+    shutil.copyfile(HERE / "qr-github.svg", OUT / "assets/qr-github.svg")
     (OUT / "assets/logos").mkdir(parents=True, exist_ok=True)
     for f in ("iii-white.png", "mipt.png", "brainlab.svg"):
         shutil.copyfile(ATLAS.parent / "optimizer-demo/logos" / f, OUT / "assets/logos" / f)

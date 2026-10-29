@@ -25,7 +25,7 @@
   <header class="topbar">
     <button class="brand" id="home" type="button"><span class="show-logos"><img class="lg-brain" src="assets/logos/brainlab.svg" alt="BRAIn Lab"><img class="lg-iii" src="assets/logos/iii-white.png" alt="Институт искусственного интеллекта МФТИ"><img class="lg-mipt" src="assets/logos/mipt.png" alt="МФТИ"></span></button>
     <nav class="view-switch" aria-label="Режим просмотра"><button class="active" data-view="loop" type="button">Восемь этапов</button><button data-view="ideas" type="button">База знаний</button><button data-view="setup" type="button">Агенты и модели</button></nav>
-    <div class="top-right"><a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>
+    <div class="top-right"><button class="show-theme" id="show-theme" type="button" aria-pressed="false">Светлая тема</button><a class="show-link" href="../lab-showcase/ru/index.html">Подробная карта</a>
      <button class="search-open" id="search-open" type="button"><span>Найти процесс или инструмент</span><kbd>⌘ K</kbd></button></div>
   </header>
 
@@ -34,7 +34,7 @@
       <header class="overview-head">
         <p class="overline">ИИ-агенты в работе · BRAIn Lab<span id="verified-date" hidden></span></p>
         <h1>Агенты на <span>каждом</span><br> этапе работы</h1>
-        <p class="overview-intro">Любой проект проходит восемь этапов. Мы встроили ИИ-агентов в каждый — сначала в науке, где ошибаться нельзя. <b>Тот же подход работает в любой компании.</b></p>
+        <div class="overview-intro show-intro"><p>Любой проект проходит восемь этапов. Мы встроили ИИ-агентов в каждый — сначала в науке, где ошибаться нельзя. <b>Тот же подход работает в любой компании.</b></p><a class="show-qr" href="https://github.com/Vepricov/claude-brainlab" target="_blank" rel="noopener"><img src="assets/qr-github.svg" alt="QR-код: Навыки агентов"><span><b>Навыки агентов</b>на GitHub</span></a></div>
         <ul class="show-pts" aria-label="Что это даёт вашей компании"><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg><p><b>Любая модель ИИ</b><span>без привязки к поставщику</span></p></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><p><b>Полностью под вас</b><span>ваш процесс, ваши правила</span></p></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3"/><circle cx="12" cy="15.5" r="1.3"/></svg><p><b>Данные остаются у вас</b><span>можно на своём сервере</span></p></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><p><b>Работает круглосуточно</b><span>решение всегда за человеком</span></p></li></ul>
       </header>
 

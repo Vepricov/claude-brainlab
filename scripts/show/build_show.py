@@ -11,6 +11,7 @@ index.html и hub.js. Каждая замена обязана найтись р
     python3 scripts/show/build_show.py
 """
 import colorsys
+import hashlib
 import json
 import pathlib
 import re
@@ -224,6 +225,15 @@ def main() -> None:
     for f in OUT.rglob("*"):
         if f.is_file() and f.suffix in (".js", ".html", ".css"):
             f.write_text(recolor(f.read_text(encoding="utf-8")), encoding="utf-8")
+
+    # Метка версии на каждом файле стилей и скриптов: GitHub Pages держит их в кеше браузера
+    # 10 минут, и без метки новая страница открывалась со старым show.css (27-10-2026 на показе).
+    page = OUT / "index.html"
+    html = page.read_text(encoding="utf-8")
+    html = re.sub(r'((?:href|src)=")([\w/.-]+\.(?:css|js))"',
+                  lambda m: f'{m.group(1)}{m.group(2)}?v={hashlib.sha1((OUT / m.group(2)).read_bytes()).hexdigest()[:8]}"'
+                  if (OUT / m.group(2)).is_file() else m.group(0), html)
+    page.write_text(html, encoding="utf-8")
 
     bad = []
     for f in OUT.rglob("*"):

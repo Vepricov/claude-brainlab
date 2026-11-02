@@ -1,7 +1,8 @@
 {
   "_comment": "settings.json.template — placeholders are filled in by install/setup.sh from .env. See docs/INSTALL.md.",
   "env": {
-    "EDITOR": "${HOME}/.claude/scripts/editor.sh"
+    "EDITOR": "${HOME}/.claude/scripts/editor.sh",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
   },
   "hooks": {
     "PreToolUse": [

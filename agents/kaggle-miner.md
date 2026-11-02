@@ -1,7 +1,7 @@
 ---
 name: kaggle-miner
 description: Use this agent when the user provides a Kaggle competition URL or asks to learn from Kaggle winning solutions, extract ML competition techniques, or study top Kaggle solutions.
-model: inherit
+model: sonnet
 color: blue
 ---
 

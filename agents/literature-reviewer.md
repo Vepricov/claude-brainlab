@@ -1,7 +1,7 @@
 ---
 name: literature-reviewer
 description: Use this agent when the user asks to conduct a literature review, search for papers, analyze research papers, identify research gaps, or review related work. Integrates with Zotero for automated paper collection.
-model: inherit
+model: sonnet
 color: blue
 tools: ["Read", "Write", "Grep", "Glob", "WebSearch", "WebFetch", "TodoWrite"]
 ---

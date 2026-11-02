@@ -1,7 +1,7 @@
 ---
 name: story-generator
 description: Use this agent when you need to generate user stories with acceptance criteria from git diffs, conversation history, PRD documents, or any requirements that need to be structured into story format.
-model: inherit
+model: sonnet
 color: blue
 tools: ["Bash", "Glob", "Grep", "Read", "WebFetch", "TodoWrite", "WebSearch"]
 ---

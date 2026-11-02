@@ -1,7 +1,7 @@
 ---
 name: paper-miner
 description: Use this agent when the user provides a research paper or asks to learn writing patterns from papers, extract venue-specific writing signals, study paper structure, or mine rebuttal strategies.
-model: inherit
+model: sonnet
 color: green
 tools: ["Read", "Write", "Bash", "Grep", "Glob"]
 ---

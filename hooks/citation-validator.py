@@ -7,8 +7,8 @@ that does not appear as `@type{KEY,` in any references.bib reachable from the
 edited file (walking up parent directories).
 
 This enforces the global rule: never invent placeholder citation keys.
-Citations must be resolved against the Obsidian library or paper-ingest
-*before* writing them.
+Citations must be resolved against the lab literature or a verified
+BibTeX entry from a primary source *before* writing them.
 """
 
 import json
@@ -157,7 +157,10 @@ def main() -> int:
         "    1. Search ~/brainlab/<direction>/<theme>/literature/ for the paper.\n"
         "    2. If found, copy the exact key from its `## BibTeX` block and\n"
         "       append the bibtex entry to references.bib first.\n"
-        "    3. If not found, run the paper-ingest skill to add it, then cite.\n"
+        "    3. If not found, take the BibTeX from a primary source (proceedings,\n"
+        "       dblp, Crossref, arXiv), check title/authors/year/venue against it,\n"
+        "       append it to references.bib, then cite. A full paper-ingest is\n"
+        "       only for central papers or when the owner asks.\n"
         "  Do not commit a `% TODO: add bibtex` placeholder.\n"
     )
     sys.stderr.write(msg)

@@ -85,21 +85,32 @@
 ### Finding citations (applies to all agents, all sessions)
 
 Before citing any paper in Related Work, background, or inline references:
-1. Search the current Obsidian library and the current project card.
-2. If found: use the exact `citation_key` from that paper's `## BibTeX` block and the exact Obsidian link that already exists in the library.
-3. If not found → follow **When the paper is not in the library** below.
+1. Search the lab literature (`~/brainlab/<направление>/<тема>/literature/`, файл назван статьёй) and the work's README.
+2. The lab base is the same tree: each theme's `literature` folder in `~/brainlab` is a clone of
+   its GitLab repository, one page per paper named by the paper's title (not by `citation_key`).
+   A theme missing from the tree is brought by `lab sync`. (`lab_pull.py` and `search_lab` are
+   gone since 19-10-2026.)
+3. If found: copy the exact `citation_key` from that paper's `## BibTeX` block, append the bibtex entry to the project's `references.bib`, then write the `\cite{key}`.
+4. If not found → follow **When the paper is not in the library** below. A full ingest is not the default.
 
 ### Library structure
 
 Literature lives in the lab GitLab, one repository per theme: `brainlab/<direction>/<theme>/literature`, cloned into `~/brainlab/<direction>/<theme>/literature/`. One page per paper, named by the paper's title; the citation key is in its `## BibTeX` block.
 
-### When the paper is not in the library
+### When the paper is not in the library: verified citation, no ingest
 
-1. Find the paper's arXiv ID.
-2. Run the `paper-ingest` skill into the literature of the work's own theme (the theme is the path of the work). The page goes to that theme's GitLab repository.
-3. Cite only from that page.
+Владелец 02-11-2026: «не надо прям все статьи разбирать… достаточно описания и уверенности что агент ставит нужный бибтех и по смыслу это то». A full ingest per `\cite` costs a page, figures and a push for a paper the work mentions once.
 
-If no theme fits the paper, say so and propose one; a theme is a GitLab group and is created by the owner.
+For an ordinary `\cite` (related work, background, a dataset, a tool), do this instead:
+1. Take the BibTeX from a primary source: the venue's proceedings page (PMLR, NeurIPS, ICLR, ACL Anthology, CVF), dblp, Crossref by DOI, or arXiv. If the paper is published, cite the published version, not the arXiv one.
+2. Check title, every author, year and venue against that source. The real failures are mixed entries: 02-11-2026 one entry carried the authors of Gilmer et al. with the title and arXiv id of a different paper, and two more had a wrong author. Model memory is not a source.
+3. Read the abstract (and the relevant section if the claim is specific) and confirm the paper supports the sentence it is attached to.
+4. Key in the lab format below; keep a `url` field pointing to the source.
+5. Report each new citation in one line: what the paper is, what it supports in the text, where the BibTeX came from.
+
+### When to run a full `paper-ingest`
+
+Only in three cases: the owner asks for it; the paper is central to the work (the method it builds on, the main baseline, a candidate for the key-papers list in the work's README); or the paper comes from the reading queue (`want-2-read`). Run it into the literature of the work's own theme, on Sonnet (`~/.claude/rules/agents.md`). If no theme fits the paper, say so and propose one; a theme is a GitLab group and is created by the owner.
 
 ### Citation key format
 

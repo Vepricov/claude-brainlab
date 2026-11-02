@@ -10,6 +10,12 @@ For delegated work, name the owned files or responsibility, expected result, and
 Preserve other agents' edits and resources. Use the agents available in the current client;
 an unavailable agent name is not a reason to abandon work that can be completed locally.
 
+## Model for subagents (HARD RULE)
+All subagents run on Sonnet by default. Владелец 02-11-2026: «все инджесты запускать на сонете, все агенты должны его по умолчанию использовать».
+- `~/.claude/settings.json` sets `CLAUDE_CODE_SUBAGENT_MODEL=sonnet`, and every agent in `~/.claude/agents/` pins `model: sonnet` (except `obsidian-hub-creator`, which stays on Haiku).
+- Paper ingests (`paper-ingest`, `want-2-read`, any batch of papers) always run on Sonnet. When spawning one through the Agent tool, pass `model: "sonnet"` explicitly.
+- Override with another model only when the owner asks for it in that conversation.
+
 ## Parallel execution
 Run independent bounded tasks in parallel when delegation is allowed and useful work can
 continue locally. Keep dependent operations and shared-file edits sequential.

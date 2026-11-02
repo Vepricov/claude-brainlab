@@ -86,7 +86,7 @@ EOF
 
 CLAUDE_HOME="$home" bash "$fixture/install/setup.sh" >/dev/null
 assert_servers "$home/settings.json" "mempalace"
-if rg -q '\$\{PLANE_' "$home/settings.json"; then
+if grep -q '${PLANE_' "$home/settings.json"; then
   echo "optional MCP placeholders leaked into rendered settings" >&2
   exit 1
 fi
@@ -171,7 +171,7 @@ EOF
 
 HOME="$home" bash "$fixture/scripts/setup.sh" >/dev/null
 assert_servers "$home/.claude/settings.json" "mempalace"
-if rg -q '\$\{PLANE_' "$home/.claude/settings.json"; then
+if grep -q '${PLANE_' "$home/.claude/settings.json"; then
   echo "optional MCP placeholders leaked into legacy-rendered settings" >&2
   exit 1
 fi

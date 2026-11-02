@@ -18,9 +18,16 @@ import argparse
 import json
 import os
 import sys
-import tomllib
 from dataclasses import asdict, dataclass
 from pathlib import Path
+
+try:
+    import tomllib  # Python >= 3.11
+except ModuleNotFoundError:  # Python 3.10: the same parser, packaged as tomli
+    try:
+        import tomli as tomllib
+    except ModuleNotFoundError:
+        tomllib = None
 
 CONFIG = Path(__file__).resolve().parents[2] / "config" / "llm-routes.toml"
 
@@ -44,6 +51,8 @@ class Route:
 def _table() -> dict:
     if not CONFIG.is_file():
         raise RouteError(f"routing table not found: {CONFIG}")
+    if tomllib is None:
+        raise RouteError("reading the routing table needs Python >= 3.11 or `pip install tomli`")
     return tomllib.loads(CONFIG.read_text(encoding="utf-8"))
 
 

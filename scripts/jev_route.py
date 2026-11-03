@@ -960,7 +960,7 @@ def addresses(cwd: str) -> tuple[str, str]:
     """Крыло MemPalace для этого места; вторым значением — путь в дереве, для него же.
 
     Работа: `<направление>/<тема>/<работа>` — крыло по имени работы, заметки в её `notes/`.
-    Агентские репозитории: `agents/<что-то>` — заметки в `agents/notes/<что-то>/`.
+    Агентские репозитории: `agents/<что-то>` — заметки в `agents/<что-то>/notes/`.
     Остальное (операционка, личное, рецензии) — само себе папка.
     """
     try:
@@ -979,7 +979,7 @@ def addresses(cwd: str) -> tuple[str, str]:
             return "", f"{parts[0]}/{parts[1]}/literature"
         return work, f"{parts[0]}/{parts[1]}/{work}/notes"
     if parts[0] == "agents" and len(parts) >= 2:
-        return parts[1], f"agents/notes/{parts[1]}"
+        return parts[1], f"agents/{parts[1]}/notes"
     return parts[0], parts[0]
 
 

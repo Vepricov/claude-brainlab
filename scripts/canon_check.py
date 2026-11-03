@@ -51,11 +51,20 @@ SKILL_ROOTS = (HOME / ".claude" / "skills", HOME / ".agents" / "skills", ROOT / 
 #: Где искать вторую копию свода. Корни, в которых агент читает инструкции, плюс репозиторий.
 LOOK_FOR_COPIES = (HOME / ".claude", HOME / ".agents", ROOT / "skills", ROOT / "docs")
 
+#: Слепки установщика — это снимки прошлого, а не вторые своды: они на то и лежат.
+NE_KOPII = (".claude-brainlab-backups", ".git")
+
 #: Где искать то, что свод называет проверяющим. Серверное лежит не в репозитории, поэтому
 #: ищется по копии, которая в нём есть.
+#: Серверные проверки живут в соседнем репозитории `brainlab/agents/services`: туда они
+#: переехали из этого, и без этого корня сторож объявлял несуществующими два десятка
+#: проверок, которые есть (`sweep.py`, `check_numbers`, `check_codes`).
 CODE = (ROOT / "services" / "lab-knowledge" / "scripts",
         ROOT / "services" / "lab-knowledge" / "src" / "lab_knowledge",
-        ROOT / "scripts")
+        ROOT / "scripts",
+        ROOT.parent / "services" / "scripts",
+        ROOT.parent / "services" / "scripts" / "claims",
+        ROOT.parent / "services" / "src" / "lab_knowledge")
 
 #: Признак свода, а не упоминания о нём: заголовок плюс имя правила в разделе.
 FINGERPRINT = "# Свод правил базы"
@@ -90,8 +99,16 @@ def stray_copies() -> list[pathlib.Path]:
                         continue
                 except OSError:
                     pass
-            if file == MIRROR or ".git" in file.parts:
+            if file == MIRROR or set(NE_KOPII) & set(file.parts):
                 continue
+            # Копия в другом корне навыков законна, если её наливает `canon_sync.py`
+            # и она совпадает с главной: источник всё равно один.
+            if file.name == "canon.md" and MIRROR.is_file():
+                try:
+                    if file.read_text(encoding="utf-8") == MIRROR.read_text(encoding="utf-8"):
+                        continue
+                except OSError:
+                    pass
             try:
                 head = file.read_text(encoding="utf-8", errors="replace")[:400]
             except OSError:

@@ -27,6 +27,15 @@ SOURCE = "brainlab/handbook/canon.md"
 # работы, через навык `lab-knowledge`, а правило сессии только велит это сделать.
 MIRROR = (pathlib.Path.home() / ".claude" / "skills" / "lab-knowledge"
           / "references" / "canon.md")
+#: Второй корень навыков (codex). Он не обязан быть, но если есть — свод наливается и туда:
+#: 03-11-2026 копия в нём разошлась с источником, и агент codex работал по старому своду.
+OTHER_ROOTS = (pathlib.Path.home() / ".agents" / "skills" / "lab-knowledge"
+               / "references" / "canon.md",)
+
+
+def mirrors() -> list[pathlib.Path]:
+    """Копии, которые надо держать совпадающими: главная плюс существующие корни."""
+    return [MIRROR] + [p for p in OTHER_ROOTS if p.parent.is_dir()]
 CONF = pathlib.Path.home() / ".config" / "brainlab"
 TIMEOUT = 15
 
@@ -61,17 +70,20 @@ def main() -> int:
         print(f"справочник не ответил ({beda}); копия на месте не тронута: {MIRROR}")
         return 2
 
-    here = MIRROR.read_text(encoding="utf-8") if MIRROR.is_file() else None
-    if here == source:
+    razoshlis = [m for m in mirrors()
+                 if not m.is_file() or m.read_text(encoding="utf-8") != source]
+    if not razoshlis:
         print(f"свод совпадает с источником {SOURCE}")
         return 0
     if args.check:
-        print(f"копия разошлась с источником {SOURCE}: {MIRROR}")
+        for m in razoshlis:
+            print(f"копия разошлась с источником {SOURCE}: {m}")
         return 1
-    MIRROR.parent.mkdir(parents=True, exist_ok=True)
-    MIRROR.write_text(source, encoding="utf-8")
-    print(f"налит свод из {SOURCE}: {MIRROR}"
-          + ("" if here is None else " (копия обновлена)"))
+    for m in razoshlis:
+        bylo = m.is_file()
+        m.parent.mkdir(parents=True, exist_ok=True)
+        m.write_text(source, encoding="utf-8")
+        print(f"налит свод из {SOURCE}: {m}" + (" (копия обновлена)" if bylo else ""))
     return 0
 
 

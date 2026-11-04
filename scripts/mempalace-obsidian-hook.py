@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Stop hook: one interruption, three places the session gets written down.
 
+Правила записи в базу этот скрипт не пересказывает: свод лежит в одном месте,
+`~/.claude/skills/lab-knowledge/references/canon.md` (источник — `brainlab/handbook/canon.md`).
+
 Replaces `python3 -m mempalace hook run --hook stop --harness claude-code`.
 
 MemPalace blocks the end of a turn every few exchanges and asks the agent to save what
@@ -284,6 +287,34 @@ def _git(folder: Path, *args: str) -> str:
     return done.stdout.strip() if not done.returncode else ""
 
 
+def _chuzhoy_podmodul(folder: Path, stroka: str) -> bool:
+    """Строка состояния про чужое содержимое вложенного репозитория, а не про запись.
+
+    У подмодуля три разных состояния, и значат они разное: указатель сдвинут (это наша
+    правка, её записывать надо), внутри изменены отслеживаемые им файлы, внутри лежит
+    неотслеживаемое. Два последних случая к базе отношения не имеют: рукопись и код
+    приезжают своей историей, их ведёт тот, кто их пишет, и собранный `main.pdf` или чужая
+    незаконченная правка статьи записью в базу не являются.
+
+    04-11-2026 этот сторож шесть раз за сессию потребовал отправить `paper/<работа>`, потому
+    что считал такие строки наравне с настоящими файлами. Каждый раз ответ был один и тот же:
+    это не файл, а вложенный репозиторий, и отправка его указателя записала бы в базу ссылку
+    на коммит, которого в общем репозитории рукописи может не быть.
+
+    Различать приходится не по букве состояния: `git status --porcelain` помечает подмодуль
+    буквой `M` в любом из трёх случаев, а строчные `m` и `?` показывает только `--short`.
+    Поэтому состояние спрашивается у `git submodule status`: `+` в начале строки значит, что
+    указатель разошёлся с записанным, пробел — что совпадает.
+    """
+    if len(stroka) < 3:
+        return False
+    put = stroka[2:].strip().strip('"').split(" -> ")[-1]
+    if not (folder / put / ".git").exists():
+        return False
+    sostoyanie = _git(folder, "submodule", "status", "--", put)
+    return bool(sostoyanie) and not sostoyanie.startswith(("+", "-", "U"))
+
+
 def _mestnye_klony(cwd: str, module) -> list[Path]:
     """Папки клонов базы на машине. `clones_here` отдаёт адреса НА СЕРВЕРЕ
     (`brainlab/handbook`), и принять их за пути — значит смотреть в несуществующие папки.
@@ -363,6 +394,7 @@ def nesohranennoe(cwd: str, transcript: str = "") -> list[str]:
     out: list[str] = []
     for folder in papki[:8]:
         gryaz = [s for s in _git(folder, "status", "--porcelain").splitlines() if s.strip()]
+        gryaz = [s for s in gryaz if not _chuzhoy_podmodul(folder, s)]
         if transcript:
             # Только то, чего сессия касалась: чужая рукопись или файл соседней сессии в том же
             # клоне не её правка, и отправлять их она не вправе. 10-2026 такие жалобы были

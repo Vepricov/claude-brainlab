@@ -15,6 +15,7 @@ import importlib.util
 import io
 import json
 import os
+import subprocess
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -355,6 +356,73 @@ class StopHookTest(unittest.TestCase):
     def test_non_object_json_lines_are_ignored(self):
         self.transcript.write_text("null\n[]\n42\n", encoding="utf-8")
         self.assertEqual(self.invoke(), {})
+
+
+class SubmoduleNoiseTest(unittest.TestCase):
+    """Вложенный репозиторий рукописи не считается неотправленной записью.
+
+    04-11-2026 сторож шесть раз за сессию потребовал отправить `paper/<работа>`. Это не
+    файл, а подмодуль: рукопись приезжает своей историей, и собранный `main.pdf` внутри
+    неё записью в базу не является. Отправка его указателя записала бы в базу ссылку на
+    коммит, которого в общем репозитории рукописи может не быть.
+
+    Различать по букве состояния нельзя: `git status --porcelain` помечает подмодуль
+    буквой `M` и когда указатель сдвинут, и когда внутри просто лежит мусор сборки.
+    """
+
+    def rabota(self, *, sdvinut):
+        """Клон работы с подмодулем внутри. `sdvinut` — ушёл ли указатель от записанного."""
+        root = Path(tempfile.mkdtemp())
+        self.addCleanup(lambda: __import__("shutil").rmtree(root, ignore_errors=True))
+        vnutri = root / "paper" / "rukopis"
+
+        def git(where, *args):
+            subprocess.run(("git", *args), cwd=where, check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        istochnik = root / "istochnik"
+        istochnik.mkdir(parents=True)
+        git(istochnik, "init", "-q", "-b", "main")
+        (istochnik / "main.tex").write_text("текст", encoding="utf-8")
+        git(istochnik, "add", "main.tex")
+        git(istochnik, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "статья")
+
+        rabota = root / "rabota"
+        rabota.mkdir()
+        git(rabota, "init", "-q", "-b", "main")
+        (rabota / "claims").mkdir()
+        (rabota / "claims" / ".gitkeep").write_text("", encoding="utf-8")
+        git(rabota, "add", "claims/.gitkeep")
+        git(rabota, "-c", "protocol.file.allow=always", "-c", "user.email=t@t",
+            "-c", "user.name=t", "submodule", "add", "-q", str(istochnik), "paper/rukopis")
+        git(rabota, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "каркас")
+        # Клон опознаётся по адресу базы в `.git/config`, иначе сторож его не смотрит.
+        host = HOOK._lab_hook().BASE_HOST
+        git(rabota, "remote", "add", "origin",
+            f"https://{host}:9445/brainlab/test/tema/rabota.git")
+
+        vnutri = rabota / "paper" / "rukopis"
+        (vnutri / "main.pdf").write_text("собранное", encoding="utf-8")
+        if sdvinut:
+            (vnutri / "main.tex").write_text("правка", encoding="utf-8")
+            git(vnutri, "add", "main.tex")
+            git(vnutri, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "правка")
+        return rabota
+
+    def test_musor_vnutri_podmodulya_molchit(self):
+        rabota = self.rabota(sdvinut=False)
+        self.assertEqual(HOOK.nesohranennoe(str(rabota)), [])
+
+    def test_sdvinutyy_ukazatel_nazvan(self):
+        rabota = self.rabota(sdvinut=True)
+        zhaloby = HOOK.nesohranennoe(str(rabota))
+        self.assertTrue(any("paper/rukopis" in one for one in zhaloby), zhaloby)
+
+    def test_nastoyashchiy_fayl_nazvan(self):
+        rabota = self.rabota(sdvinut=False)
+        (rabota / "claims" / "H-TST-001.md").write_text("страница", encoding="utf-8")
+        zhaloby = HOOK.nesohranennoe(str(rabota))
+        self.assertTrue(any("H-TST-001.md" in one for one in zhaloby), zhaloby)
 
 
 if __name__ == "__main__":

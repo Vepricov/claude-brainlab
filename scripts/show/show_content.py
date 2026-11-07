@@ -264,4 +264,4 @@ POINTS = {
 
 # QR-код на главном экране: навыки агентов на GitHub. Картинка qr-github.svg сделана один раз
 # (python qrcode) и лежит рядом; меняется ссылка — пересоздать её.
-QR = ("https://github.com/Vepricov/claude-brainlab", "Навыки агентов", "на GitHub")
+QR = ("https://github.com/shkodnik1917/claude-brainlab", "Навыки агентов", "на GitHub")

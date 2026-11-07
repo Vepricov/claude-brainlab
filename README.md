@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vepricov.github.io/claude-brainlab/lab-showcase/"><img alt="Open the atlas" src="https://img.shields.io/badge/%E2%86%97%20open%20the%20atlas-live%20site-B5F35C?style=for-the-badge&labelColor=111"></a>
+  <a href="https://shkodnik1917.github.io/claude-brainlab/lab-showcase/"><img alt="Open the atlas" src="https://img.shields.io/badge/%E2%86%97%20open%20the%20atlas-live%20site-B5F35C?style=for-the-badge&labelColor=111"></a>
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@
   <a href="agents/"><img alt="agents" src="https://img.shields.io/badge/agents-13-BC8CFF?style=flat-square"></a>
   <a href="hooks/"><img alt="hooks" src="https://img.shields.io/badge/hooks-9-D29922?style=flat-square"></a>
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT-8B949E?style=flat-square"></a>
-  <a href="https://github.com/Vepricov/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/Vepricov/claude-brainlab?style=flat-square&color=E3B341"></a>
+  <a href="https://github.com/shkodnik1917/claude-brainlab/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/shkodnik1917/claude-brainlab?style=flat-square&color=E3B341"></a>
 </p>
 
 <p align="center">
@@ -31,12 +31,12 @@
   <a href="SKILLS.md">All skills</a>
 </p>
 
-<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/"><img src="docs/assets/atlas-machine.png" alt="The atlas: eight stages of the research loop around the lab GitLab" width="100%"></a>
+<a href="https://shkodnik1917.github.io/claude-brainlab/lab-showcase/"><img src="docs/assets/atlas-machine.png" alt="The atlas: eight stages of the research loop around the lab GitLab" width="100%"></a>
 
 The repository is the lab's own configuration, packaged so another lab can install it. Claude Code
 runs on the researcher's machine, a server agent keeps runs going overnight, and everything they
 produce lands in one git tree that is at the same time the Obsidian vault and the lab base in GitLab.
-The [atlas](https://vepricov.github.io/claude-brainlab/lab-showcase/) shows the whole loop page by page, in English and Russian; this README follows
+The [atlas](https://shkodnik1917.github.io/claude-brainlab/lab-showcase/) shows the whole loop page by page, in English and Russian; this README follows
 the same three tabs.
 
 ## Knowledge engine
@@ -57,7 +57,7 @@ actually type.
 
 ## GitHub for ideas
 
-<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/#ideas"><img src="docs/assets/atlas-hub.png" alt="GitHub for ideas: a lab work shown as a repository with claims, runs, tasks and proposals" width="100%"></a>
+<a href="https://shkodnik1917.github.io/claude-brainlab/lab-showcase/#ideas"><img src="docs/assets/atlas-hub.png" alt="GitHub for ideas: a lab work shown as a repository with claims, runs, tasks and proposals" width="100%"></a>
 
 Code has had git for decades: history of every line, branches, review, merge. Ideas had none of it,
 and once agents launch dozens of runs and read hundreds of papers overnight, knowledge without
@@ -95,7 +95,7 @@ The [`lab-knowledge`](skills/lab-knowledge/SKILL.md) skill carries the rules tha
 
 ## Agent harness
 
-<a href="https://vepricov.github.io/claude-brainlab/lab-showcase/#setup"><img src="docs/assets/atlas-harness.png" alt="Agent harness: skills, hooks, base rules and agent memory" width="100%"></a>
+<a href="https://shkodnik1917.github.io/claude-brainlab/lab-showcase/#setup"><img src="docs/assets/atlas-harness.png" alt="Agent harness: skills, hooks, base rules and agent memory" width="100%"></a>
 
 A harness where the agent loses neither knowledge nor context: hooks fire on their own at every step
 of a turn, memory outlives sessions, and one file tree is both the vault and the base.
@@ -440,7 +440,7 @@ the lead of the theme you work on.
 
 | | Where |
 |---|---|
-| Canonical repository, issues and pull requests | [Vepricov/claude-brainlab](https://github.com/Vepricov/claude-brainlab) |
+| Canonical repository, issues and pull requests | [shkodnik1917/claude-brainlab](https://github.com/shkodnik1917/claude-brainlab) |
 | Organisation fork, kept in sync | [brain-lab-research/claude-brainlab](https://github.com/brain-lab-research/claude-brainlab) |
 | Lab organisation and papers | [github.com/brain-lab-research](https://github.com/brain-lab-research) |
 | Internal half: knowledge service, data, call pipeline | private, granted with team membership |

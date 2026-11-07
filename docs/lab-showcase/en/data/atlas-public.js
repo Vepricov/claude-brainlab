@@ -27,7 +27,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/architect.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/architect.md"
         }
       ],
       "known_limitations": [
@@ -72,7 +72,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/bug-analyzer.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/bug-analyzer.md"
         }
       ],
       "known_limitations": [
@@ -116,7 +116,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/build-error-resolver.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/build-error-resolver.md"
         }
       ],
       "known_limitations": [
@@ -163,7 +163,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/code-reviewer.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/code-reviewer.md"
         }
       ],
       "known_limitations": [
@@ -208,7 +208,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/dev-planner.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/dev-planner.md"
         }
       ],
       "known_limitations": [
@@ -253,7 +253,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/kaggle-miner.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/kaggle-miner.md"
         }
       ],
       "known_limitations": [
@@ -297,7 +297,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer.md"
         }
       ],
       "known_limitations": [
@@ -343,7 +343,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer-obsidian.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/literature-reviewer-obsidian.md"
         }
       ],
       "known_limitations": [
@@ -390,7 +390,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/obsidian-hub-creator.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/obsidian-hub-creator.md"
         }
       ],
       "known_limitations": [
@@ -435,7 +435,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/paper-miner.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/paper-miner.md"
         }
       ],
       "known_limitations": [
@@ -482,7 +482,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/refactor-cleaner.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/refactor-cleaner.md"
         }
       ],
       "known_limitations": [
@@ -526,7 +526,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/research-knowledge-curator-obsidian.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/research-knowledge-curator-obsidian.md"
         }
       ],
       "known_limitations": [
@@ -571,7 +571,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/story-generator.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/story-generator.md"
         }
       ],
       "known_limitations": [
@@ -616,7 +616,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/tdd-guide.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/tdd-guide.md"
         }
       ],
       "known_limitations": [
@@ -660,7 +660,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/ui-sketcher.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/agents/ui-sketcher.md"
         }
       ],
       "known_limitations": [
@@ -705,7 +705,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/analyze-results.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/analyze-results.md"
         }
       ],
       "known_limitations": [
@@ -751,7 +751,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/build-fix.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/build-fix.md"
         }
       ],
       "known_limitations": [
@@ -797,7 +797,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/checkpoint.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/checkpoint.md"
         }
       ],
       "known_limitations": [
@@ -843,7 +843,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/code-review.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/code-review.md"
         }
       ],
       "known_limitations": [
@@ -889,7 +889,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/commit.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/commit.md"
         }
       ],
       "known_limitations": [
@@ -935,7 +935,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/conversations.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/conversations.md"
         }
       ],
       "known_limitations": [
@@ -981,7 +981,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/create_project.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/create_project.md"
         }
       ],
       "known_limitations": [
@@ -1027,7 +1027,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/evaluate-repository.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/evaluate-repository.md"
         }
       ],
       "known_limitations": [
@@ -1073,7 +1073,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/hypothesize.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/hypothesize.md"
         }
       ],
       "known_limitations": [
@@ -1119,7 +1119,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/learn.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/learn.md"
         }
       ],
       "known_limitations": [
@@ -1165,7 +1165,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/limits.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/limits.md"
         }
       ],
       "known_limitations": [
@@ -1211,7 +1211,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-status.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-status.md"
         }
       ],
       "known_limitations": [
@@ -1257,7 +1257,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-sync.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/memory-sync.md"
         }
       ],
       "known_limitations": [
@@ -1303,7 +1303,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/mine-writing-patterns.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/mine-writing-patterns.md"
         }
       ],
       "known_limitations": [
@@ -1352,7 +1352,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-ingest.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-ingest.md"
         }
       ],
       "known_limitations": [
@@ -1398,7 +1398,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-init.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-init.md"
         }
       ],
       "known_limitations": [
@@ -1445,7 +1445,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-link.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-link.md"
         }
       ],
       "known_limitations": [
@@ -1491,7 +1491,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-note.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-note.md"
         }
       ],
       "known_limitations": [
@@ -1537,7 +1537,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-notes.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-notes.md"
         }
       ],
       "known_limitations": [
@@ -1583,7 +1583,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-project.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-project.md"
         }
       ],
       "known_limitations": [
@@ -1630,7 +1630,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-review.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-review.md"
         }
       ],
       "known_limitations": [
@@ -1676,7 +1676,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-sync.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-sync.md"
         }
       ],
       "known_limitations": [
@@ -1723,7 +1723,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-views.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/obsidian-views.md"
         }
       ],
       "known_limitations": [
@@ -1769,7 +1769,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/plan.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/plan.md"
         }
       ],
       "known_limitations": [
@@ -1815,7 +1815,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/refactor-clean.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/refactor-clean.md"
         }
       ],
       "known_limitations": [
@@ -1861,7 +1861,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/research-init.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/research-init.md"
         }
       ],
       "known_limitations": [
@@ -1907,7 +1907,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/setup-pm.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/setup-pm.md"
         }
       ],
       "known_limitations": [
@@ -1953,7 +1953,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/tdd.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/tdd.md"
         }
       ],
       "known_limitations": [
@@ -1999,7 +1999,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-github.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-github.md"
         }
       ],
       "known_limitations": [
@@ -2045,7 +2045,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-memory.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-memory.md"
         }
       ],
       "known_limitations": [
@@ -2091,7 +2091,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-readme.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/update-readme.md"
         }
       ],
       "known_limitations": [
@@ -2137,7 +2137,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/verify.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/verify.md"
         }
       ],
       "known_limitations": [
@@ -2183,7 +2183,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-notes.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-notes.md"
         }
       ],
       "known_limitations": [
@@ -2230,7 +2230,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-review.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/commands/zotero-review.md"
         }
       ],
       "known_limitations": [
@@ -2277,7 +2277,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/citation-validator.py"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/citation-validator.py"
         }
       ],
       "known_limitations": [
@@ -2323,7 +2323,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hook-common.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hook-common.js"
         }
       ],
       "known_limitations": [
@@ -2369,7 +2369,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hooks.json"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/hooks.json"
         }
       ],
       "known_limitations": [
@@ -2415,7 +2415,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/lab-where-am-i.py"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/lab-where-am-i.py"
         }
       ],
       "known_limitations": [
@@ -2459,7 +2459,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/no-old-paths.py"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/no-old-paths.py"
         }
       ],
       "known_limitations": [
@@ -2506,7 +2506,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/security-guard.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/security-guard.js"
         }
       ],
       "known_limitations": [
@@ -2552,7 +2552,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-start.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-start.js"
         }
       ],
       "known_limitations": [
@@ -2598,7 +2598,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-summary.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/session-summary.js"
         }
       ],
       "known_limitations": [
@@ -2644,7 +2644,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/skill-forced-eval.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/skill-forced-eval.js"
         }
       ],
       "known_limitations": [
@@ -2690,7 +2690,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/stop-summary.js"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/hooks/stop-summary.js"
         }
       ],
       "known_limitations": [
@@ -2736,7 +2736,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/academic-plotting/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/academic-plotting/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2784,7 +2784,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/agent-identifier/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/agent-identifier/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2830,7 +2830,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/architecture-design/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/architecture-design/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2881,7 +2881,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/astar-paper-review/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/astar-paper-review/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2927,7 +2927,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/bug-detective/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/bug-detective/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -2979,7 +2979,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/call-notes/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/call-notes/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3025,7 +3025,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/caveman/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/caveman/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3071,7 +3071,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/citation-verification/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/citation-verification/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3121,7 +3121,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-ingest/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-ingest/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3168,7 +3168,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-library/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-library/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3217,7 +3217,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-review-excellence/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/code-review-excellence/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3263,7 +3263,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/command-development/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/command-development/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3309,7 +3309,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/create-project/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/create-project/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3356,7 +3356,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/daily-coding/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/daily-coding/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3402,7 +3402,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/defuddle/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/defuddle/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3448,7 +3448,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/diagnose/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/diagnose/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3495,7 +3495,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/doc-coauthoring/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/doc-coauthoring/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3541,7 +3541,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/experiment-runs/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/experiment-runs/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3588,7 +3588,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/frontend-design/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/frontend-design/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3634,7 +3634,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-guardrails-claude-code/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-guardrails-claude-code/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3680,7 +3680,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-workflow/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/git-workflow/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3726,7 +3726,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/google-workspace-mcp/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/google-workspace-mcp/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3773,7 +3773,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-me/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-me/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3821,7 +3821,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-with-docs/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/grill-with-docs/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3868,7 +3868,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3919,7 +3919,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff-to-jarvis/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/handoff-to-jarvis/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -3966,7 +3966,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/hook-development/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/hook-development/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4013,7 +4013,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/improve-codebase-architecture/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/improve-codebase-architecture/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4059,7 +4059,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/json-canvas/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/json-canvas/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4105,7 +4105,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/kaggle-learner/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/kaggle-learner/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4152,7 +4152,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/lab-knowledge/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/lab-knowledge/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4201,7 +4201,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/latex-conference-template-organizer/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/latex-conference-template-organizer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4247,7 +4247,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/mcp-integration/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/mcp-integration/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4294,7 +4294,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ml-paper-writing/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ml-paper-writing/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4341,7 +4341,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-bases/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-bases/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4387,7 +4387,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-cli/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-cli/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4441,7 +4441,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-experiment-log/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-experiment-log/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4491,7 +4491,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-link-graph/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-link-graph/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4537,7 +4537,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-literature-workflow/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-literature-workflow/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4584,7 +4584,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-markdown/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-markdown/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4630,7 +4630,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-bootstrap/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-bootstrap/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4678,7 +4678,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-lifecycle/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-lifecycle/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4734,7 +4734,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-memory/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-project-memory/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4781,7 +4781,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-research-log/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-research-log/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4828,7 +4828,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-synthesis-map/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/obsidian-synthesis-map/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4875,7 +4875,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/operon-obsidian-setup/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/operon-obsidian-setup/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4928,7 +4928,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-ingest/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-ingest/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -4979,7 +4979,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-search/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-search/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5029,7 +5029,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-to-social/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-to-social/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5075,7 +5075,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-venue-formatting/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/paper-venue-formatting/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5119,7 +5119,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/pdf-reader/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/pdf-reader/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5165,7 +5165,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/planning-with-files/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/planning-with-files/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5211,7 +5211,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/plugin-structure/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/plugin-structure/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5264,7 +5264,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presentation/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presentation/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5311,7 +5311,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presenter-mode/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/presenter-mode/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5357,7 +5357,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/prototype/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/prototype/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5403,7 +5403,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-cycle/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-cycle/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5450,7 +5450,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-ideation/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/research-ideation/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5496,7 +5496,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/restore-session/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/restore-session/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5549,7 +5549,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-analysis/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-analysis/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5597,7 +5597,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-report/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/results-report/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5643,7 +5643,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/reverse-outline-flow-check/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/reverse-outline-flow-check/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5699,7 +5699,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/review-response/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/review-response/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5746,7 +5746,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/setup-pre-commit/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/setup-pre-commit/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5792,7 +5792,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-development/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-development/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5838,7 +5838,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-improver/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-improver/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5885,7 +5885,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-quality-reviewer/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/skill-quality-reviewer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5932,7 +5932,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/tdd/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/tdd/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -5978,7 +5978,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ui-ux-pro-max/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/ui-ux-pro-max/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6024,7 +6024,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/uv-package-manager/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/uv-package-manager/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6070,7 +6070,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/verification-loop/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/verification-loop/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6122,7 +6122,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/want-2-read/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/want-2-read/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6170,7 +6170,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/web-design-reviewer/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/web-design-reviewer/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6216,7 +6216,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/webapp-testing/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/webapp-testing/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6262,7 +6262,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/writing-anti-ai/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/writing-anti-ai/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6309,7 +6309,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zoom-out/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zoom-out/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6355,7 +6355,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zotero-obsidian-bridge/SKILL.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/skills/zotero-obsidian-bridge/SKILL.md"
         }
       ],
       "known_limitations": [
@@ -6401,7 +6401,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/architecture.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/architecture.md"
         }
       ],
       "known_limitations": [
@@ -6445,7 +6445,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-layout.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-layout.md"
         }
       ],
       "known_limitations": [
@@ -6487,7 +6487,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-migration.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-migration.md"
         }
       ],
       "known_limitations": [
@@ -6529,7 +6529,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-structure-proposal.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/gitlab-structure-proposal.md"
         }
       ],
       "known_limitations": [
@@ -6571,7 +6571,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/lab-showcase/README.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/lab-showcase/README.md"
         }
       ],
       "known_limitations": [
@@ -6613,7 +6613,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/llm-providers.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/llm-providers.md"
         }
       ],
       "known_limitations": [
@@ -6657,7 +6657,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/onboarding.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/onboarding.md"
         }
       ],
       "known_limitations": [
@@ -6701,7 +6701,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/reference-setup.md"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/78673491fb21ab50e2b76262b13bb07a89b4b333/docs/reference-setup.md"
         }
       ],
       "known_limitations": [
@@ -6745,7 +6745,7 @@ window.LAB_ATLAS_DATA = {
       "github_urls": [
         {
           "label": "Source",
-          "url": "https://github.com/Vepricov/claude-brainlab"
+          "url": "https://github.com/shkodnik1917/claude-brainlab"
         }
       ],
       "known_limitations": [

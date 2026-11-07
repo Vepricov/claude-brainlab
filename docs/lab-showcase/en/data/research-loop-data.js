@@ -187,14 +187,14 @@ window.RESEARCH_LOOP = {
         "links": [
           {
             "label": "Skill source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-project-memory/SKILL.md"
+            "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/obsidian-project-memory/SKILL.md"
           }
         ],
         "adoption": {
           "kind": "toolkit-skill",
           "invoke": "/obsidian-project-memory",
           "install": [
-            "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+            "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
             "mkdir -p ~/.claude/skills",
             "cp -R ~/claude-brainlab/skills/obsidian-project-memory ~/.claude/skills/",
             "# restart Claude Code, then use /obsidian-project-memory"
@@ -902,7 +902,7 @@ window.RESEARCH_LOOP = {
           "kind": "toolkit-qa",
           "invoke": "Place the required files in ~/.claude/rules/",
           "install": [
-            "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+            "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
             "mkdir -p ~/.claude/rules",
             "cp ~/claude-brainlab/rules/*.md ~/.claude/rules/",
             "# restart Claude Code: rules are read at the start of each session"
@@ -1789,7 +1789,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "label": "Brain Call owner · request access",
-              "url": "https://github.com/Vepricov"
+              "url": "https://github.com/shkodnik1917"
             }
           ],
           "short": "a call becomes a summary"
@@ -2653,7 +2653,7 @@ window.RESEARCH_LOOP = {
       "title": "Install the complete toolkit",
       "lead": "One install puts skills, commands, agents, hooks, scripts and rules for Claude Code into ~/.claude. A third command sets up the ~/brainlab tree and the lab command for a lab member. The other parts of the system live separately and install from their own links.",
       "install": [
-        "git clone https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+        "git clone https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
         "cd ~/claude-brainlab",
         "bash install/bootstrap.sh    # asks about the vault and keys",
         "bash install/setup.sh        # lays everything out in ~/.claude",
@@ -2664,19 +2664,19 @@ window.RESEARCH_LOOP = {
       "links": [
         {
           "label": "Repository",
-          "url": "https://github.com/Vepricov/claude-brainlab"
+          "url": "https://github.com/shkodnik1917/claude-brainlab"
         },
         {
           "label": "What bootstrap.sh asks",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/install/bootstrap.sh"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/install/bootstrap.sh"
         },
         {
           "label": "What setup.sh does",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/install/setup.sh"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/install/setup.sh"
         },
         {
           "label": "Lab install",
-          "url": "https://github.com/Vepricov/claude-brainlab/blob/main/docs/lab/install.sh"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/docs/lab/install.sh"
         }
       ],
       "pieces": [
@@ -2684,7 +2684,7 @@ window.RESEARCH_LOOP = {
           "name": "claude-brainlab",
           "what": "77 skills, 34 commands, 15 agents, hooks and 11 rules",
           "access": "Public",
-          "url": "https://github.com/Vepricov/claude-brainlab"
+          "url": "https://github.com/shkodnik1917/claude-brainlab"
         },
         {
           "name": "Hermes",
@@ -2696,13 +2696,13 @@ window.RESEARCH_LOOP = {
           "name": "The lab base in GitLab",
           "what": "works, claims, runs and theme literature in plain git; a record is a merged proposal",
           "access": "By approved request",
-          "url": "https://github.com/Vepricov/claude-brainlab#lab-knowledge-the-shared-research-base"
+          "url": "https://github.com/shkodnik1917/claude-brainlab#lab-knowledge-the-shared-research-base"
         },
         {
           "name": "Brain Call",
           "what": "calls: recording, a transcript with who said what, and a breakdown into the work's decisions and tasks",
           "access": "By approved request",
-          "url": "https://github.com/Vepricov/brain-call"
+          "url": "https://github.com/shkodnik1917/brain-call"
         },
         {
           "name": "MemPalace",
@@ -2732,13 +2732,13 @@ window.RESEARCH_LOOP = {
           "name": "autoresearch",
           "what": "an autonomous idea loop: picks which idea to test next and filters out repeats",
           "access": "Public",
-          "url": "https://github.com/Vepricov/claude-brainlab/tree/main/autoresearch"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/tree/main/autoresearch"
         },
         {
           "name": "Hermes prompts",
           "what": "server agent profiles: each one's character and instructions",
           "access": "Public",
-          "url": "https://github.com/Vepricov/claude-brainlab/tree/main/hermes"
+          "url": "https://github.com/shkodnik1917/claude-brainlab/tree/main/hermes"
         }
       ]
     }
@@ -2897,14 +2897,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/create-project/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/create-project/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/create-project",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/create-project ~/.claude/skills/",
               "# restart Claude Code, then run /create-project"
@@ -2982,14 +2982,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/lab-knowledge",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/"
             ]
@@ -3094,7 +3094,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Source: scripts/lab",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/lab"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/scripts/lab"
             }
           ],
           "adoption": {
@@ -3173,7 +3173,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Hook source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/lab-where-am-i.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/hooks/lab-where-am-i.py"
             }
           ],
           "adoption": {
@@ -3339,7 +3339,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "label": "Public server map",
-              "url": "https://vepricov.github.io/ssh_websile/servers.html"
+              "url": "https://shkodnik1917.github.io/ssh_websile/servers.html"
             }
           ],
           "adoption": {
@@ -3708,7 +3708,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Source of the want-2-read skill",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
             }
           ]
         },
@@ -3720,7 +3720,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
             }
           ]
         },
@@ -3732,11 +3732,11 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "bibtex_fetch.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
             },
             {
               "label": "citation-validator.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/citation-validator.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/hooks/citation-validator.py"
             }
           ]
         },
@@ -3748,7 +3748,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "The review canon",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/canon-ingest.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/references/canon-ingest.md"
             }
           ]
         }
@@ -3760,11 +3760,11 @@ window.RESEARCH_LOOP = {
         "links": [
           {
             "label": "Source of the paper-ingest skill",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
+            "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
           },
           {
             "label": "AlphaXiv mirror rule",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/alphaxiv-sync.md"
+            "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/references/alphaxiv-sync.md"
           }
         ]
       },
@@ -3807,7 +3807,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "The review canon the pipeline writes by",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md",
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md",
               "canonical": true
             },
             {
@@ -3978,14 +3978,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-search/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-search/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/paper-search",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/paper-search ~/.claude/skills/",
               "# restart Claude Code, then run /paper-search"
@@ -4090,14 +4090,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/want-2-read",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/want-2-read ~/.claude/skills/",
               "# restart Claude Code, then run /want-2-read"
@@ -4179,22 +4179,22 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/SKILL.md"
             },
             {
               "label": "bibtex_fetch.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/scripts/bibtex_fetch.py"
             },
             {
               "label": "Literature and git",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/paper-ingest",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/paper-ingest ~/.claude/skills/",
               "# restart Claude Code, then run /paper-ingest"
@@ -4285,7 +4285,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "paper_claims_verify.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/paper_claims_verify.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/scripts/paper_claims_verify.py"
             }
           ],
           "adoption": {
@@ -4456,7 +4456,7 @@ window.RESEARCH_LOOP = {
             },
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/want-2-read/SKILL.md"
             }
           ],
           "adoption": {
@@ -4553,7 +4553,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Literature and git: rules",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-ingest/references/lab-git-literature.md"
             }
           ],
           "adoption": {
@@ -4615,18 +4615,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/operon-obsidian-setup/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/operon-obsidian-setup/SKILL.md"
             },
             {
               "label": "operon_daily_archive.py",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/operon-obsidian-setup/scripts/operon_daily_archive.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/operon-obsidian-setup/scripts/operon_daily_archive.py"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/operon-obsidian-setup",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/operon-obsidian-setup ~/.claude/skills/",
               "# restart Claude Code, then run /operon-obsidian-setup"
@@ -5105,18 +5105,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/research-ideation/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/research-ideation/SKILL.md"
             },
             {
               "label": "Gap analysis",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/research-ideation/references/gap-analysis-guide.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/research-ideation/references/gap-analysis-guide.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/research-ideation",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/research-ideation ~/.claude/skills/",
               "# restart Claude Code, then run /research-ideation"
@@ -5203,14 +5203,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-with-docs/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/grill-with-docs/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/grill-with-docs",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/grill-with-docs ~/.claude/skills/",
               "# restart Claude Code, then run /grill-with-docs"
@@ -5363,14 +5363,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/grill-me/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/grill-me/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/grill-me",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/grill-me ~/.claude/skills/",
               "# restart Claude Code, then run /grill-me"
@@ -5446,7 +5446,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "autoresearch: package and README",
-              "url": "https://github.com/Vepricov/claude-brainlab/tree/main/autoresearch",
+              "url": "https://github.com/shkodnik1917/claude-brainlab/tree/main/autoresearch",
               "canonical": true
             }
           ],
@@ -5540,18 +5540,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             },
             {
               "label": "How a claim page is written",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/lab-knowledge",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
               "# restart Claude Code, then /lab-knowledge"
@@ -5929,7 +5929,7 @@ window.RESEARCH_LOOP = {
       "links": [
         {
           "label": "Access to Brain Call: on request to the owner",
-          "url": "https://github.com/Vepricov"
+          "url": "https://github.com/shkodnik1917"
         }
       ],
       "tools": [
@@ -5975,7 +5975,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Brain Call repository",
-              "url": "https://github.com/Vepricov/brain-call"
+              "url": "https://github.com/shkodnik1917/brain-call"
             }
           ],
           "adoption": {
@@ -6083,14 +6083,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/call-notes/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/call-notes/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/call-notes",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/call-notes ~/.claude/skills/",
               "# restart Claude Code, then run /call-notes"
@@ -6180,14 +6180,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/lab-knowledge",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
               "# restart Claude Code, then /lab-knowledge"
@@ -6322,7 +6322,7 @@ window.RESEARCH_LOOP = {
         "links": [
           {
             "label": "Access to Brain Call: on request to the owner",
-            "url": "https://github.com/Vepricov"
+            "url": "https://github.com/shkodnik1917"
           }
         ]
       },
@@ -6816,14 +6816,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Recorder source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "from lab_run import LabRun",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "cp ~/claude-brainlab/skills/lab-knowledge/scripts/lab_run.py <training repository>/",
               "# in code: with LabRun(work=..., name=..., settings=vars(args)) as run: ..."
             ],
@@ -6901,14 +6901,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Hook source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/scripts/mempalace-obsidian-hook.py"
             }
           ],
           "adoption": {
             "kind": "source-only",
             "invoke": "A Stop hook, installed by the claude-brainlab installer",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "cd ~/claude-brainlab && bash install/bootstrap.sh && bash install/setup.sh",
               "# restart Claude Code"
             ],
@@ -6987,14 +6987,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/obsidian-experiment-log/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/obsidian-experiment-log/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/obsidian-experiment-log",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/obsidian-experiment-log ~/.claude/skills/",
               "# restart Claude Code, then use /obsidian-experiment-log"
@@ -7074,14 +7074,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/experiment-runs/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/experiment-runs/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/experiment-runs",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/experiment-runs ~/.claude/skills/",
               "# restart Claude Code, then /experiment-runs"
@@ -7158,14 +7158,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "The server-hygiene rule",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/server-hygiene.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/rules/server-hygiene.md"
             }
           ],
           "adoption": {
             "kind": "source-only",
             "invoke": "~/.claude/rules/server-hygiene.md, installed by the claude-brainlab installer",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "cd ~/claude-brainlab && bash install/bootstrap.sh && bash install/setup.sh"
             ],
             "installNote": "The server log is internal: access is granted by the access bot."
@@ -7241,18 +7241,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/SKILL.md"
             },
             {
               "label": "How runs become a series",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/references/claim-page.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/lab-knowledge",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/lab-knowledge ~/.claude/skills/",
               "# restart Claude Code, then /lab-knowledge"
@@ -7342,15 +7342,15 @@ window.RESEARCH_LOOP = {
             },
             {
               "label": "Sample profile",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hermes/general/SOUL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/hermes/general/SOUL.md"
             },
             {
               "label": "All published profile prompts",
-              "url": "https://github.com/Vepricov/claude-brainlab/tree/main/hermes"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/tree/main/hermes"
             },
             {
               "label": "How we split work with Hermes",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
@@ -7475,14 +7475,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/handoff-to-jarvis/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/handoff-to-jarvis/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/handoff-to-jarvis",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/handoff-to-jarvis ~/.claude/skills/",
               "# restart Claude Code, then use /handoff-to-jarvis"
@@ -7564,7 +7564,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "How we split work with Hermes",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
@@ -7645,7 +7645,7 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "How we split work with Hermes",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/rules/hermes-team.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/rules/hermes-team.md"
             }
           ],
           "adoption": {
@@ -7743,14 +7743,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/diagnose/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/diagnose/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/diagnose",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/diagnose ~/.claude/skills/",
               "# restart Claude Code, then use /diagnose"
@@ -7809,7 +7809,7 @@ window.RESEARCH_LOOP = {
           },
           {
             "label": "Recorder source",
-            "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
+            "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
           }
         ]
       },
@@ -8298,14 +8298,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Recorder source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/lab-knowledge/scripts/lab_run.py"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "from lab_run import LabRun — at the training entry point",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "cp ~/claude-brainlab/skills/lab-knowledge/scripts/lab_run.py <repository with training code>/"
             ],
             "installNote": "No dependencies. Without a wrapper the run has to be transcribed by hand, and the base's rules forbid that."
@@ -8376,14 +8376,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/results-analysis/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/results-analysis/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/results-analysis",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/results-analysis ~/.claude/skills/",
               "# restart Claude Code, then use /results-analysis"
@@ -8486,14 +8486,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/academic-plotting/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/academic-plotting/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/academic-plotting",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/academic-plotting ~/.claude/skills/",
               "# restart Claude Code, then use /academic-plotting"
@@ -8553,14 +8553,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/results-report/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/results-report/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/results-report",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/results-report ~/.claude/skills/",
               "# restart Claude Code, then use /results-report"
@@ -9109,14 +9109,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/ml-paper-writing/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/ml-paper-writing/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/ml-paper-writing",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/ml-paper-writing ~/.claude/skills/",
               "# restart Claude Code, then use /ml-paper-writing"
@@ -9196,14 +9196,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/doc-coauthoring/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/doc-coauthoring/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/doc-coauthoring",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/doc-coauthoring ~/.claude/skills/",
               "# restart Claude Code, then use /doc-coauthoring"
@@ -9283,14 +9283,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/writing-anti-ai/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/writing-anti-ai/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/writing-anti-ai",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/writing-anti-ai ~/.claude/skills/",
               "# restart Claude Code, then use /writing-anti-ai"
@@ -9372,14 +9372,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/citation-verification/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/citation-verification/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/citation-verification",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/citation-verification ~/.claude/skills/",
               "# restart Claude Code, then use /citation-verification"
@@ -9474,11 +9474,11 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Hook source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/citation-validator.py"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/hooks/citation-validator.py"
             },
             {
               "label": "Registration in hooks.json",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/hooks/hooks.json"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/hooks/hooks.json"
             }
           ],
           "adoption": {
@@ -9568,14 +9568,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/astar-paper-review/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/astar-paper-review/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/astar-paper-review",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/astar-paper-review ~/.claude/skills/",
               "# restart Claude Code, then use /astar-paper-review"
@@ -9653,14 +9653,14 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/review-response/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/review-response/SKILL.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/review-response",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/review-response ~/.claude/skills/",
               "# restart Claude Code, then use /review-response"
@@ -10107,18 +10107,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-to-social/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-to-social/SKILL.md"
             },
             {
               "label": "Author's voice and rules against formulaic AI writing",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/paper-to-social/references/voice-and-anti-ai.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/paper-to-social/references/voice-and-anti-ai.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/paper-to-social",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/paper-to-social ~/.claude/skills/",
               "# restart Claude Code, then use /paper-to-social"
@@ -10183,18 +10183,18 @@ window.RESEARCH_LOOP = {
           "links": [
             {
               "label": "Skill source",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/presentation/SKILL.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/presentation/SKILL.md"
             },
             {
               "label": "Beamer build workflow",
-              "url": "https://github.com/Vepricov/claude-brainlab/blob/main/skills/presentation/references/beamer-workflow.md"
+              "url": "https://github.com/shkodnik1917/claude-brainlab/blob/main/skills/presentation/references/beamer-workflow.md"
             }
           ],
           "adoption": {
             "kind": "toolkit-skill",
             "invoke": "/presentation",
             "install": [
-              "git clone --depth 1 https://github.com/Vepricov/claude-brainlab.git ~/claude-brainlab",
+              "git clone --depth 1 https://github.com/shkodnik1917/claude-brainlab.git ~/claude-brainlab",
               "mkdir -p ~/.claude/skills",
               "cp -R ~/claude-brainlab/skills/presentation ~/.claude/skills/",
               "# restart Claude Code, then use /presentation"

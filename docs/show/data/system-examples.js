@@ -39,7 +39,7 @@ window.SYSTEM_EXAMPLES = {
         },
         {
           "label": "Как разложено дерево",
-          "url": "https://github.com/Vepricov/claude-brainlab#the-vault-is-the-tree"
+          "url": "https://github.com/shkodnik1917/claude-brainlab#the-vault-is-the-tree"
         }
       ]
     },
@@ -128,7 +128,7 @@ window.SYSTEM_EXAMPLES = {
       "links": [
         {
           "label": "Для участников лаборатории",
-          "url": "https://github.com/Vepricov/claude-brainlab#for-brain-lab-members"
+          "url": "https://github.com/shkodnik1917/claude-brainlab#for-brain-lab-members"
         }
       ]
     }
@@ -279,11 +279,11 @@ window.SYSTEM_EXAMPLES = {
     "links": [
       {
         "label": "Как устроена база",
-        "url": "https://github.com/Vepricov/claude-brainlab#lab-knowledge-the-shared-research-base"
+        "url": "https://github.com/shkodnik1917/claude-brainlab#lab-knowledge-the-shared-research-base"
       },
       {
         "label": "Набор инструментов BRAIn Lab",
-        "url": "https://github.com/Vepricov/claude-brainlab"
+        "url": "https://github.com/shkodnik1917/claude-brainlab"
       }
     ],
     "runtime": [
